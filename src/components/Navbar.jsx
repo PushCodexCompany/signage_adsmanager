@@ -6,9 +6,10 @@ import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-import avatar from "../data/avatar.jpg";
+import avatar from "../assets/img/avatar.png";
 import { Cart, Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
+import User from "../libs/admin";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -37,6 +38,8 @@ const Navbar = () => {
     setScreenSize,
     screenSize,
   } = useStateContext();
+
+  const user = User.getCookieData();
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -114,7 +117,7 @@ const Navbar = () => {
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                Michael
+                {user.name}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
@@ -124,7 +127,7 @@ const Navbar = () => {
         {isClicked.cart && <Cart />}
         {isClicked.chat && <Chat />}
         {isClicked.notification && <Notification />}
-        {isClicked.userProfile && <UserProfile />}
+        {isClicked.userProfile && <UserProfile user={user} />}
       </div>
     </div>
   );

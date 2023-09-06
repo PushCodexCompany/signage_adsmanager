@@ -1,0 +1,67 @@
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import {
+  Dashboard,
+  Orders,
+  Calendar,
+  Employees,
+  Stacked,
+  Pyramid,
+  Customers,
+  Kanban,
+  Line,
+  Area,
+  Bar,
+  Pie,
+  Financial,
+  ColorPicker,
+  ColorMapping,
+  Editor,
+  Main_Dashboard,
+  Pdf,
+} from "../pages";
+
+import User from "../libs/admin";
+
+const Routing = () => {
+  const user = User.getCookieData();
+
+  return (
+    <>
+      <Routes>
+        {/* Production */}
+        <Route exact path="/" element={<Main_Dashboard />} />
+        <Route path="/dashboard" element={<Main_Dashboard />} />
+        <Route path="/pdf" element={<Pdf />} />
+        {/* Components */}
+        <Route path="/dashboard_mockup" element={<Dashboard />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/employees" element={<Employees />} />
+        <Route path="/customers" element={<Customers />} />
+        <Route path="/kanban" element={<Kanban />} />
+        <Route path="/editor" element={<Editor />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/color-picker" element={<ColorPicker />} />
+        <Route path="/line" element={<Line />} />
+        <Route path="/area" element={<Area />} />
+        <Route path="/bar" element={<Bar />} />
+        <Route path="/pie" element={<Pie />} />
+        <Route path="/financial" element={<Financial />} />
+        <Route path="/color-mapping" element={<ColorMapping />} />
+        <Route path="/pyramid" element={<Pyramid />} />
+        <Route path="/stacked" element={<Stacked />} />
+      </Routes>
+      {/* example ซ่อน Menu สำหรับ role */}
+      {/* {user.position === "admin" ? (
+				<>
+					<Route exact path="/user/list" component={UserList} />
+					
+				</>
+			) : (
+				""
+			)} */}
+    </>
+  );
+};
+
+export default Routing;

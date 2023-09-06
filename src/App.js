@@ -4,33 +4,16 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
-import {
-  Dashboard,
-  Orders,
-  Calendar,
-  Employees,
-  Stacked,
-  Pyramid,
-  Customers,
-  Kanban,
-  Line,
-  Area,
-  Bar,
-  Pie,
-  Financial,
-  ColorPicker,
-  ColorMapping,
-  Editor,
-  Main_Dashboard,
-  Pdf,
-  Login,
-} from "./pages";
+import { Login } from "./pages";
+import Routing from "./route/routing";
 
 import "./App.css";
 
-import PrivateRoute from "./utils/PrivateRoutes";
-
 import { useStateContext } from "./contexts/ContextProvider";
+
+import { AuthProvider } from "./contexts/AuthContext";
+
+import User from "./libs/admin";
 
 const App = () => {
   const {
@@ -52,16 +35,16 @@ const App = () => {
     }
   }, []);
 
-  const isLogin = false;
+  const user = User.getCookieData();
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
-        {isLogin ? (
+        {user ? (
           <>
             <div className="flex relative dark:bg-main-dark-bg">
               {/* ToolTip */}
-              <div
+              {/* <div
                 className="fixed right-4 bottom-4"
                 style={{ zIndex: "1000" }}
               >
@@ -75,7 +58,7 @@ const App = () => {
                     <FiSettings />
                   </button>
                 </TooltipComponent>
-              </div>
+              </div> */}
 
               {/* Sidebar */}
               {activeMenu ? (
@@ -101,30 +84,7 @@ const App = () => {
                 </div>
                 <div>
                   {themeSettings && <ThemeSettings />}
-
-                  <Routes>
-                    {/* Production */}
-                    <Route exact path="/" element={<PrivateRoute />} />
-                    <Route path="/dashboard" element={<Main_Dashboard />} />
-                    <Route path="/pdf" element={<Pdf />} />
-                    {/* Components */}
-                    <Route path="/dashboard_mockup" element={<Dashboard />} />
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/employees" element={<Employees />} />
-                    <Route path="/customers" element={<Customers />} />
-                    <Route path="/kanban" element={<Kanban />} />
-                    <Route path="/editor" element={<Editor />} />
-                    <Route path="/calendar" element={<Calendar />} />
-                    <Route path="/color-picker" element={<ColorPicker />} />
-                    <Route path="/line" element={<Line />} />
-                    <Route path="/area" element={<Area />} />
-                    <Route path="/bar" element={<Bar />} />
-                    <Route path="/pie" element={<Pie />} />
-                    <Route path="/financial" element={<Financial />} />
-                    <Route path="/color-mapping" element={<ColorMapping />} />
-                    <Route path="/pyramid" element={<Pyramid />} />
-                    <Route path="/stacked" element={<Stacked />} />
-                  </Routes>
+                  <Routing />
                 </div>
                 <Footer />
               </div>
@@ -132,8 +92,8 @@ const App = () => {
           </>
         ) : (
           <>
+            <Login />
             <Routes>
-              <Route exact path="/" element={<PrivateRoute />} />
               <Route exact path="/login" element={<Login />} />
             </Routes>
           </>

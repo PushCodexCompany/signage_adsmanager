@@ -1,13 +1,23 @@
-import React from 'react';
-import { MdOutlineCancel } from 'react-icons/md';
+import React from "react";
+import { MdOutlineCancel } from "react-icons/md";
 
-import { Button } from '.';
-import { userProfileData } from '../data/dummy';
-import { useStateContext } from '../contexts/ContextProvider';
-import avatar from '../data/avatar.jpg';
+import { Button } from ".";
+import { userProfileData } from "../data/dummy";
+import { useStateContext } from "../contexts/ContextProvider";
+import avatar from "../assets/img/avatar.png";
+import User from "../libs/admin";
 
-const UserProfile = () => {
+const UserProfile = ({ user }) => {
   const { currentColor } = useStateContext();
+
+  const handleLogout = async () => {
+    const status = await User.logout();
+    if (status) {
+      window.location.href = "";
+      return false;
+      //window.location.reload()
+    }
+  };
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -28,14 +38,26 @@ const UserProfile = () => {
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200"> Michael Roberts </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400">  Administrator   </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> info@shop.com </p>
+          <p className="font-semibold text-xl dark:text-gray-200">
+            {" "}
+            {user.name}{" "}
+          </p>
+          <p className="text-gray-500 text-sm dark:text-gray-400">
+            {" "}
+            {user.role === 1 ? "Admin" : "Member"}{" "}
+          </p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
+            {" "}
+            {user.email}{" "}
+          </p>
         </div>
       </div>
       <div>
         {userProfileData.map((item, index) => (
-          <div key={index} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]">
+          <div
+            key={index}
+            className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]"
+          >
             <button
               type="button"
               style={{ color: item.iconColor, backgroundColor: item.iconBg }}
@@ -46,22 +68,23 @@ const UserProfile = () => {
 
             <div>
               <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
-              <p className="text-gray-500 text-sm dark:text-gray-400"> {item.desc} </p>
+              <p className="text-gray-500 text-sm dark:text-gray-400">
+                {" "}
+                {item.desc}{" "}
+              </p>
             </div>
           </div>
         ))}
       </div>
       <div className="mt-5">
-        <Button
-          color="white"
-          bgColor={currentColor}
-          text="Logout"
-          borderRadius="10px"
-          width="full"
-        />
+        <button
+          onClick={() => handleLogout()}
+          className="text-white bg-cyan-400 rounded-[10px] w-[100px] h-[50px]"
+        >
+          Logout
+        </button>
       </div>
     </div>
-
   );
 };
 

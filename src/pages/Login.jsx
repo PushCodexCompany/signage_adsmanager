@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import User from "../libs/admin";
 
 const Login = () => {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
+
+  useEffect(() => {
+    User.saveRedirect();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    try {
+      const status = await User.login(username, password);
+
+      if (status) {
+        window.location.reload();
+      } else {
+        console.log()(User._errorMsg);
+      }
+    } catch (e) {
+      console.log()(User._errorMsg);
+      console.log(`request failed: ${e}`);
+    }
+  };
+
   return (
     <section class="bg-gray-200 min-h-screen flex items-center justify-center">
       <div class="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-5xl">
@@ -18,13 +41,13 @@ const Login = () => {
           <p class="text-sm mt-4 text-[#002D74]">
             If you have an account, please login
           </p>
-          <form class="mt-6" action="#" method="POST">
+          <form class="mt-6" onSubmit={(e) => handleSubmit(e)}>
             <div>
               <label class="block text-gray-700">Email Address</label>
               <input
+                onChange={(e) => setUsername(e.target.value)}
+                value={username}
                 type="email"
-                name=""
-                id=""
                 placeholder="Enter Email Address"
                 class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 autofocus
@@ -36,9 +59,9 @@ const Login = () => {
             <div class="mt-4">
               <label class="block text-gray-700">Password</label>
               <input
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
                 type="password"
-                name=""
-                id=""
                 placeholder="Enter Password"
                 minlength="6"
                 class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
@@ -58,6 +81,7 @@ const Login = () => {
 
             <button
               type="submit"
+              // onClick={() => signin()}
               class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6"
             >

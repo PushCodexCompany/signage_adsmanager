@@ -529,7 +529,6 @@ const Pdf = () => {
   };
 
   const handlePrint = () => {
-    console.log("print");
     const pdfGenerate = pdfMake.createPdf(docDefination);
 
     pdfGenerate.getBlob((blob) => {
