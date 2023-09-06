@@ -19,3 +19,4 @@ export { default as Stacked } from "./Charts/Stacked";
 
 export { default as Main_Dashboard } from "./Main_Dashboard";
 export { default as Pdf } from "./Pdf";
+export { default as Login } from "./Login";

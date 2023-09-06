@@ -3,7 +3,6 @@ import Link from "react-router-dom";
 
 const Header = ({ title, subtitle }) => {
   const pathname = window.location.pathname.split("/").filter((x) => x);
-  console.log("pathname", pathname);
   return (
     <>
       <div className=" mb-10">
