@@ -108,22 +108,6 @@ const Brands = () => {
             </button>
           </div>
         ))}
-        {/* {mock_data.map((items) => (
-          <div>
-            <button>
-              <img
-                className="block ml-auto mr-auto mt-30px w-3/5 rounded-3xl "
-                src={items.img}
-              />
-              <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px]">
-                {items.name}
-              </div>
-              <div className="text-[14px] text-slate-500 m-auto w-[70%]">
-                {items.des}
-              </div>
-            </button>
-          </div>
-        ))} */}
       </div>
     </div>
   );
