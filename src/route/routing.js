@@ -19,6 +19,7 @@ import {
   Editor,
   Main_Dashboard,
   Pdf,
+  Brands,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -30,9 +31,11 @@ const Routing = () => {
     <>
       <Routes>
         {/* Production */}
-        <Route exact path="/" element={<Main_Dashboard />} />
+        <Route exact path="/" element={<Brands />} />
         <Route path="/dashboard" element={<Main_Dashboard />} />
         <Route path="/pdf" element={<Pdf />} />
+        <Route path="/brand" element={<Brands />} />
+
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />

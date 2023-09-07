@@ -3,6 +3,7 @@ import Axios from "axios";
 import avatar from "../assets/img/avatar.png";
 
 const SIGNAGE_MEMBER_COOKIE = "signage-member";
+const SIGNAGE_CAMPAIGN_COOKIE = "signage-campaign";
 const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
 
 export default {
@@ -48,6 +49,7 @@ export default {
       name: "John Doe",
       img: avatar,
       role: 1,
+      brand: [1, 4],
       email: "test@mail.com",
     };
 
@@ -73,6 +75,7 @@ export default {
   deleteCookie: function () {
     cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
     cookie.remove(SIGNAGE_MEMBER_COOKIE_TOKEN, { path: "/" });
+    cookie.remove("redirect_uri", { path: "/" });
   },
   // save cookie
   saveCookie: function (data) {
@@ -118,5 +121,10 @@ export default {
   // get cookie
   getCookieData: function () {
     return cookie.load(SIGNAGE_MEMBER_COOKIE) || false;
+  },
+
+  //get Campaign
+  getCampaign: function () {
+    return cookie.load(SIGNAGE_CAMPAIGN_COOKIE) || false;
   },
 };

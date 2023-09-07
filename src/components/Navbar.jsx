@@ -15,7 +15,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
     <button
       type="button"
-      onClick={() => customFunc()}
+      onClick={() => search()}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -27,6 +27,10 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
     </button>
   </TooltipComponent>
 );
+
+const search = () => {
+  alert("search");
+};
 
 const Navbar = () => {
   const {
@@ -40,6 +44,16 @@ const Navbar = () => {
   } = useStateContext();
 
   const user = User.getCookieData();
+  const select_campaign = User.getCampaign();
+
+  const role = {
+    1: {
+      name: "Admin",
+    },
+    2: {
+      name: "User",
+    },
+  };
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -64,27 +78,28 @@ const Navbar = () => {
   return (
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
       <div className="flex">
-        <NavButton
-          title="Menu"
-          customFunc={handleActiveMenu}
-          color={currentColor}
-          icon={<AiOutlineMenu />}
-        />
+        {select_campaign ? (
+          <NavButton
+            title="Menu"
+            customFunc={handleActiveMenu}
+            color={currentColor}
+            icon={<AiOutlineMenu />}
+          />
+        ) : (
+          <></>
+        )}
+
+        <NavButton title="Search" color="grey" icon={<AiOutlineSearch />} />
         <input
-          className="w-full h-56px rounded relative bg-[rgba(255, 255, 255, 0.3)] transiti"
+          className="w-full h-56px rounded relative bg-[rgba(255, 255, 255, 0.3)] transition"
           type="text"
           name="name"
           placeholder="Search..."
         />
-        <NavButton
-          title="Search"
-          color={currentColor}
-          icon={<AiOutlineSearch />}
-        />
       </div>
 
       <div className="flex">
-        <NavButton
+        {/* <NavButton
           title="Cart"
           customFunc={() => handleClick("cart")}
           color={currentColor}
@@ -96,7 +111,7 @@ const Navbar = () => {
           customFunc={() => handleClick("chat")}
           color={currentColor}
           icon={<BsChatLeft />}
-        />
+        /> */}
         <NavButton
           title="Notification"
           dotColor="rgb(254, 201, 15)"
@@ -115,10 +130,18 @@ const Navbar = () => {
               alt="user-profile"
             />
             <p>
-              <span className="text-gray-400 text-14">Hi,</span>{" "}
-              <span className="text-gray-400 font-bold ml-1 text-14">
+              <span className="">
+                <text className="text-black font-bold text-14">
+                  {user.name}
+                </text>{" "}
+                <br />{" "}
+                <text className="text-gray-400 text-10">
+                  {role[user.role].name}
+                </text>
+              </span>{" "}
+              {/* <span className="text-gray-400 font-bold ml-1 text-14">
                 {user.name}
-              </span>
+              </span> */}
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
           </div>

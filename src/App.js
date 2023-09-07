@@ -36,6 +36,8 @@ const App = () => {
   }, []);
 
   const user = User.getCookieData();
+  const select_campaign = User.getCampaign();
+  console.log("select_campaign", select_campaign);
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
@@ -63,11 +65,11 @@ const App = () => {
               {/* Sidebar */}
               {activeMenu ? (
                 <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-                  <Sidebar />
+                  {select_campaign ? <Sidebar /> : <></>}
                 </div>
               ) : (
                 <div className="w-0 dark:bg-secondary-dark-bg">
-                  <Sidebar />
+                  {select_campaign ? <Sidebar /> : <></>}
                 </div>
               )}
 
