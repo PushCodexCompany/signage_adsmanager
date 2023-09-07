@@ -49,7 +49,7 @@ export default {
       name: "John Doe",
       img: avatar,
       role: 1,
-      brand: [1, 4],
+      brand: [1, 4, 3],
       email: "test@mail.com",
     };
 

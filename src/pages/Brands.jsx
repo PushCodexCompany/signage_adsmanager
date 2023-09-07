@@ -80,7 +80,18 @@ const Brands = () => {
         Lorem ipsum is simply dummy text of the printing and typesetting
         industry.
       </div>
-      <div class={`grid grid-cols-1 gap-4 sm:grid-cols-${user.brand.length}`}>
+
+      <div
+        class={
+          user.brand.length === 1
+            ? "grid grid-cols-1 gap-4 sm:grid-cols-1"
+            : user.brand.length === 2
+            ? "grid grid-cols-1 gap-4 sm:grid-cols-2"
+            : user.brand.length === 3
+            ? "grid grid-cols-1 gap-4 sm:grid-cols-3"
+            : "grid grid-cols-1 gap-4 sm:grid-cols-4"
+        }
+      >
         {user.brand.map((items) => (
           <div>
             <button onClick={() => selectCampaign(items)}>
