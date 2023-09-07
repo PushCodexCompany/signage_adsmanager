@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
+import Login_Bg from "../assets/img/login_bg.png";
 
 const Login = () => {
   const [username, setUsername] = useState(null);
@@ -25,117 +26,58 @@ const Login = () => {
   };
 
   return (
-    <section class="bg-gray-200 min-h-screen flex items-center justify-center">
-      <div class="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-5xl">
-        <div class="w-1/2 md:block hidden ">
-          <img
-            src="https://pushcodex.com/images/gallery_06.png"
-            class="rounded-2xl"
-            alt="page img"
-          />
+    <>
+      <div class="h-screen md:flex">
+        {/* left panal */}
+        {/* <div class="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden"> */}
+        <div className="relative overflow-hidden md:flex w-1/2 hidden">
+          <img src={Login_Bg} />
         </div>
-        <div class="md:w-1/2 px-5 mt-[60px]">
-          <h2 class="text-4xl font-bold text-[#002D74]">
-            Easily Manage Your Booking.
-          </h2>
-          <p class="text-sm mt-4 text-[#002D74]">
-            If you have an account, please login
-          </p>
-          <form class="mt-6" onSubmit={(e) => handleSubmit(e)}>
-            <div>
-              <label class="block text-gray-700">Email Address</label>
+        {/* </div> */}
+
+        {/* right panal */}
+        <div class="flex md:w-1/2 justify-center py-10 items-center bg-white">
+          <form class="bg-white" onSubmit={(e) => handleSubmit(e)}>
+            <h1 class="text-gray-800 font-bold text-4xl mb-10 text-center">
+              {" "}
+              Easily Manage <br /> Your Booking.
+            </h1>
+            <p class="text-sm font-normal text-gray-600 mb-20 ">
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </p>
+
+            <div class="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
               <input
+                class="pl-2 outline-none border-none"
                 onChange={(e) => setUsername(e.target.value)}
-                value={username}
                 type="email"
-                placeholder="Enter Email Address"
-                class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                placeholder="Your Email"
+                value={username}
+                required
                 autofocus
                 autocomplete
-                required
               />
             </div>
-
-            <div class="mt-4">
-              <label class="block text-gray-700">Password</label>
+            <div class="flex items-center border-2 py-2 px-3 rounded-2xl">
               <input
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                class="pl-2 outline-none border-none"
                 type="password"
-                placeholder="Enter Password"
-                minlength="6"
-                class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
-                  focus:bg-white focus:outline-none"
+                value={password}
                 required
+                placeholder="Your Password"
               />
             </div>
-
-            {/* <div class="text-right mt-2">
-              <a
-                href="#"
-                class="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
-              >
-                Forgot Password?
-              </a>
-            </div> */}
-
             <button
               type="submit"
-              // onClick={() => signin()}
-              class="w-full block bg-blue-500 hover:bg-blue-400 focus:bg-blue-400 text-white font-semibold rounded-lg
-                px-4 py-3 mt-6"
+              class="block w-full bg-[#2f3847] mt-4 py-2 rounded-sm text-white font-semibold mb-2"
             >
-              Log In
+              Sign In
             </button>
           </form>
-
-          {/* <div class="mt-7 grid grid-cols-3 items-center text-gray-500">
-            <hr class="border-gray-500" />
-            <p class="text-center text-sm">OR</p>
-            <hr class="border-gray-500" />
-          </div> */}
-
-          {/* <button class="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6"
-              viewBox="0 0 48 48"
-            >
-              <defs>
-                <path
-                  id="a"
-                  d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"
-                />
-              </defs>
-              <path clip-path="url(#b)" fill="#FBBC05" d="M0 37V11l17 13z" />
-              <path
-                clip-path="url(#b)"
-                fill="#EA4335"
-                d="M0 11l17 13 7-6.1L48 14V0H0z"
-              />
-              <path
-                clip-path="url(#b)"
-                fill="#34A853"
-                d="M0 37l30-23 7.9 1L48 0v48H0z"
-              />
-              <path
-                clip-path="url(#b)"
-                fill="#4285F4"
-                d="M48 48L17 24l-4-3 35-10z"
-              />
-            </svg>
-            <span class="ml-4">Login with Google</span>
-          </button> */}
-
-          {/* <div class="text-sm flex justify-between items-center mt-3">
-            <p>If you don't have an account...</p>
-            <button class="py-2 px-5 ml-3 bg-white border rounded-xl hover:scale-110 duration-300 border-blue-400  ">
-              Register
-            </button>
-          </div> */}
         </div>
       </div>
-    </section>
+    </>
   );
 };
 
