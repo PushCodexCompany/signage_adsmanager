@@ -13,7 +13,7 @@ const UserProfile = ({ user }) => {
   const handleLogout = async () => {
     const status = await User.logout();
     if (status) {
-      window.location.href = "";
+      window.location.href = "/";
       return false;
       //window.location.reload()
     }

@@ -7,7 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState(null);
 
   useEffect(() => {
-    User.saveRedirect();
+    // User.saveRedirect();
   }, []);
 
   const handleSubmit = async (e) => {

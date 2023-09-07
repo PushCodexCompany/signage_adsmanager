@@ -3,7 +3,7 @@ import Axios from "axios";
 import avatar from "../assets/img/avatar.png";
 
 const SIGNAGE_MEMBER_COOKIE = "signage-member";
-const SIGNAGE_CAMPAIGN_COOKIE = "signage-campaign";
+const SIGNAGE_BRAND_COOKIE = "signage-brand";
 const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
 
 export default {
@@ -74,8 +74,9 @@ export default {
   // delete cookie
   deleteCookie: function () {
     cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
+    cookie.remove(SIGNAGE_BRAND_COOKIE, { path: false });
     cookie.remove(SIGNAGE_MEMBER_COOKIE_TOKEN, { path: "/" });
-    cookie.remove("redirect_uri", { path: "/" });
+    cookie.remove("redirect_uri", { path: null });
   },
   // save cookie
   saveCookie: function (data) {
@@ -85,6 +86,21 @@ export default {
         options.expires = new Date(data.expires);
       }
       cookie.save(SIGNAGE_MEMBER_COOKIE, data, options);
+    }
+  },
+
+  saveSelectedBrand: function (data) {
+    if (data) {
+      cookie.save(
+        SIGNAGE_BRAND_COOKIE,
+        { brand_id: data },
+        {
+          maxAge: 60 * 10,
+          path: "/",
+        }
+      );
+
+      return true;
     }
   },
 
@@ -125,6 +141,6 @@ export default {
 
   //get Campaign
   getCampaign: function () {
-    return cookie.load(SIGNAGE_CAMPAIGN_COOKIE) || false;
+    return cookie.load(SIGNAGE_BRAND_COOKIE) || false;
   },
 };

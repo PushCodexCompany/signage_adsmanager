@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Header } from "../components";
 
@@ -10,6 +10,7 @@ import sevenImg from "../assets/img/seven.png";
 import makroProImg from "../assets/img/makropro.jpeg";
 import lotusImg from "../assets/img/lotus.png";
 import centralPatImg from "../assets/img/centralpattana.jpg";
+import User from "../libs/admin";
 
 const mock_data = [
   {
@@ -55,6 +56,13 @@ const mock_data = [
 ];
 
 const Main_Dashboard = () => {
+  const select_campaign = User.getCampaign();
+  useEffect(() => {
+    if (!select_campaign) {
+      window.location.href = "/brand";
+    }
+  }, []);
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header title="DASHBOARD" subtitle="Welcome to Dashboard" />
