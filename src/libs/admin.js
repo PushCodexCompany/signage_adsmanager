@@ -74,7 +74,6 @@ export default {
   // delete cookie
   deleteCookie: function () {
     cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
-    cookie.remove(SIGNAGE_BRAND_COOKIE, { path: false });
     cookie.remove(SIGNAGE_MEMBER_COOKIE_TOKEN, { path: "/" });
     cookie.remove("redirect_uri", { path: null });
   },

@@ -15,7 +15,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
     <button
       type="button"
-      onClick={() => search()}
+      onClick={() => customFunc()}
       style={{ color }}
       className="relative text-xl rounded-full p-3 hover:bg-light-gray"
     >
@@ -79,17 +79,24 @@ const Navbar = () => {
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
       <div className="flex">
         {select_campaign ? (
-          <NavButton
-            title="Menu"
-            customFunc={handleActiveMenu}
-            color={currentColor}
-            icon={<AiOutlineMenu />}
-          />
+          <div className="md:hidden">
+            <NavButton
+              title="Menu"
+              customFunc={handleActiveMenu}
+              color={currentColor}
+              icon={<AiOutlineMenu />}
+            />
+          </div>
         ) : (
           <></>
         )}
 
-        <NavButton title="Search" color="grey" icon={<AiOutlineSearch />} />
+        <NavButton
+          customFunc={search}
+          title="Search"
+          color="grey"
+          icon={<AiOutlineSearch />}
+        />
         <input
           className="w-full h-56px rounded relative bg-[rgba(255, 255, 255, 0.3)] transition"
           type="text"

@@ -89,7 +89,7 @@ const App = () => {
                   {themeSettings && <ThemeSettings />}
                   <Routing />
                 </div>
-                <Footer />
+                {/* <Footer /> */}
               </div>
             </div>
           </>

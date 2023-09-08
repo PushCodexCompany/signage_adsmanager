@@ -1,11 +1,13 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
-import { MdOutlineCancel } from "react-icons/md";
+import { MdOutlineCancel, MdOutlineLogout } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { links } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
+
+import Central_Logo from "../assets/img/central-logo.png";
 
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
@@ -28,11 +30,12 @@ const Sidebar = () => {
         <>
           <div className="flex justify-between items-center">
             <Link
-              to="/"
+              to="/dashboard"
               onClick={handleCloseSideBar}
-              className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
+              className="items-center ml-3 mt-10 flex"
             >
-              <SiShopware /> <span>CMS</span>
+              {/* <SiShopware /> <span>CMS</span> */}
+              <img className="w-3/4 m-auto " src={Central_Logo} />
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button
@@ -48,7 +51,7 @@ const Sidebar = () => {
           <div className="mt-10 ">
             {links.map((item) => (
               <div key={item.title}>
-                <p className="text-gray-400 dark:text-gray-400 m-3 mt-4 uppercase">
+                <p className="text-gray-400 text-sm  dark:text-gray-400 m-3 mt-4 text-sm uppercase">
                   {item.title}
                 </p>
                 {item.links.map((link) => (
@@ -57,18 +60,41 @@ const Sidebar = () => {
                     key={link.link}
                     onClick={handleCloseSideBar}
                     style={({ isActive }) => ({
-                      backgroundColor: isActive ? currentColor : "",
+                      color: isActive ? "#6427FE" : "",
                     })}
                     className={({ isActive }) =>
                       isActive ? activeLink : normalLink
                     }
                   >
                     {link.icon}
-                    <span className="capitalize ">{link.name}</span>
+                    <span className="capitalize text-xs ">{link.name}</span>
+                    {link.notification.is_notification ? (
+                      <div className="bg-[#6427FE] w-[35px] h-[35px] rounded-full ml-auto">
+                        <div className="mt-[10px] text-xs font-bold text-white text-center">
+                          {link.notification.amount}
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </NavLink>
                 ))}
               </div>
             ))}
+
+            {/* Logout */}
+            {/* <NavLink
+              to={`/`}
+              key={"/"}
+              onClick={handleCloseSideBar}
+              style={({ isActive }) => ({
+                color: isActive ? "#6425fe" : "",
+              })}
+              className={({ isActive }) => (isActive ? activeLink : normalLink)}
+            >
+              <MdOutlineLogout size={25} />
+              <span className="capitalize text-xs ">Log Out</span>
+            </NavLink> */}
           </div>
         </>
       )}

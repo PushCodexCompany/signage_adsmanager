@@ -1,4 +1,5 @@
 import React from "react";
+import cookie from "react-cookies";
 import { MdOutlineCancel } from "react-icons/md";
 
 import { Button } from ".";
@@ -14,6 +15,7 @@ const UserProfile = ({ user }) => {
     const status = await User.logout();
     if (status) {
       window.location.href = "/";
+      cookie.remove("signage-brand", { path: false });
       return false;
       //window.location.reload()
     }
