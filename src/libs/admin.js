@@ -108,7 +108,7 @@ export default {
     if (data) {
       cookie.save(
         SIGNAGE_MERCHANDISE_COOKIE,
-        { brand_id: data },
+        { mwechandise_id: data },
         {
           maxAge: 86400,
           path: "/",
@@ -159,7 +159,7 @@ export default {
     return cookie.load(SIGNAGE_BRAND_COOKIE) || false;
   },
 
-  getMerchanduse: function () {
+  getMerchandise: function () {
     return cookie.load(SIGNAGE_MERCHANDISE_COOKIE) || false;
   },
 };

@@ -45,7 +45,7 @@ const Navbar = () => {
 
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
-  const select_merchandise = User.getMerchanduse();
+  const select_merchandise = User.getMerchandise();
 
   const role = {
     1: {
@@ -106,7 +106,7 @@ const Navbar = () => {
         />
       </div>
 
-      <div className="flex">
+      <div className="flex divide-x-1 divide-gray-300">
         {/* <NavButton
           title="Cart"
           customFunc={() => handleClick("cart")}
@@ -120,13 +120,19 @@ const Navbar = () => {
           color={currentColor}
           icon={<BsChatLeft />}
         /> */}
-        <NavButton
-          title="Notification"
-          dotColor="rgb(254, 201, 15)"
-          customFunc={() => handleClick("notification")}
-          color={currentColor}
-          icon={<RiNotification3Line />}
-        />
+
+        {select_campaign && select_merchandise ? (
+          <NavButton
+            title="Notification"
+            dotColor="red"
+            customFunc={() => handleClick("notification")}
+            color={"#000000"}
+            icon={<RiNotification3Line />}
+          />
+        ) : (
+          <></>
+        )}
+
         <TooltipComponent content="Profile" position="BottomCenter">
           <div
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"

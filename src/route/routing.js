@@ -21,6 +21,7 @@ import {
   Pdf,
   Brands,
   Merchandise,
+  Edit_Merchandises,
   Setting,
 } from "../pages";
 
@@ -38,6 +39,7 @@ const Routing = () => {
         <Route path="/pdf" element={<Pdf />} />
         <Route path="/brand" element={<Brands />} />
         <Route path="/merchandise" element={<Merchandise />} />
+        <Route path="/edit_merchandise/:id" element={<Edit_Merchandises />} />
         <Route path="/setting" element={<Setting />} />
 
         {/* Components */}

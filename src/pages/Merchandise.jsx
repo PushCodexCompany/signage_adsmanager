@@ -66,7 +66,7 @@ const brand_merchandise = {
 const Merchandise = () => {
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
-  const select_merchandise = User.getMerchanduse();
+  const select_merchandise = User.getMerchandise();
 
   const [merchandise, setMerchandise] = useState([]);
 

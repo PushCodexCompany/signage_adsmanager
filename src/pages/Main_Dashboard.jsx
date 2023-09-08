@@ -57,7 +57,7 @@ const mock_data = [
 
 const Main_Dashboard = () => {
   const select_campaign = User.getCampaign();
-  const select_merchandise = User.getMerchanduse();
+  const select_merchandise = User.getMerchandise();
 
   useEffect(() => {
     if (!select_campaign) {
