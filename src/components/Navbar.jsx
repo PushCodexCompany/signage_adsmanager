@@ -45,6 +45,7 @@ const Navbar = () => {
 
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
+  const select_merchandise = User.getMerchanduse();
 
   const role = {
     1: {
@@ -78,7 +79,7 @@ const Navbar = () => {
   return (
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
       <div className="flex">
-        {select_campaign ? (
+        {select_campaign && select_merchandise ? (
           <div className="md:hidden">
             <NavButton
               title="Menu"

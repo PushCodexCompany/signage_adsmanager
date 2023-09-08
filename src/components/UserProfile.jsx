@@ -16,6 +16,7 @@ const UserProfile = ({ user }) => {
     if (status) {
       window.location.href = "/";
       cookie.remove("signage-brand", { path: false });
+      cookie.remove("signage-merchandise", { path: false });
       return false;
       //window.location.reload()
     }

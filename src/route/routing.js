@@ -20,6 +20,8 @@ import {
   Main_Dashboard,
   Pdf,
   Brands,
+  Merchandise,
+  Setting,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -35,6 +37,8 @@ const Routing = () => {
         <Route path="/dashboard" element={<Main_Dashboard />} />
         <Route path="/pdf" element={<Pdf />} />
         <Route path="/brand" element={<Brands />} />
+        <Route path="/merchandise" element={<Merchandise />} />
+        <Route path="/setting" element={<Setting />} />
 
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard />} />

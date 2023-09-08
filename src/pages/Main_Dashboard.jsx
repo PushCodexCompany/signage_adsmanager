@@ -57,9 +57,14 @@ const mock_data = [
 
 const Main_Dashboard = () => {
   const select_campaign = User.getCampaign();
+  const select_merchandise = User.getMerchanduse();
+
   useEffect(() => {
     if (!select_campaign) {
       window.location.href = "/brand";
+    }
+    if (!select_merchandise) {
+      window.location.href = "/merchandise";
     }
   }, []);
 

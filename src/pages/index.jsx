@@ -21,3 +21,5 @@ export { default as Main_Dashboard } from "./Main_Dashboard";
 export { default as Pdf } from "./Pdf";
 export { default as Login } from "./Login";
 export { default as Brands } from "./Brands";
+export { default as Merchandise } from "./Merchandise";
+export { default as Setting } from "./Setting";

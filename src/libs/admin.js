@@ -4,6 +4,7 @@ import avatar from "../assets/img/avatar.png";
 
 const SIGNAGE_MEMBER_COOKIE = "signage-member";
 const SIGNAGE_BRAND_COOKIE = "signage-brand";
+const SIGNAGE_MERCHANDISE_COOKIE = "signage-merchandise";
 const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
 
 export default {
@@ -94,7 +95,22 @@ export default {
         SIGNAGE_BRAND_COOKIE,
         { brand_id: data },
         {
-          maxAge: 60 * 10,
+          maxAge: 86400,
+          path: "/",
+        }
+      );
+
+      return true;
+    }
+  },
+
+  saveSelectedMerchandise: function (data) {
+    if (data) {
+      cookie.save(
+        SIGNAGE_MERCHANDISE_COOKIE,
+        { brand_id: data },
+        {
+          maxAge: 86400,
           path: "/",
         }
       );
@@ -141,5 +157,9 @@ export default {
   //get Campaign
   getCampaign: function () {
     return cookie.load(SIGNAGE_BRAND_COOKIE) || false;
+  },
+
+  getMerchanduse: function () {
+    return cookie.load(SIGNAGE_MERCHANDISE_COOKIE) || false;
   },
 };

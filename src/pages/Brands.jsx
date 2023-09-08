@@ -57,9 +57,13 @@ const mock_data = {
 const Brands = () => {
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
+  const select_merchandise = User.getMerchanduse();
 
   useEffect(() => {
     if (select_campaign) {
+      window.location.href = "/merchandise";
+    }
+    if (select_merchandise) {
       window.location.href = "/dashboard";
     }
   }, []);
@@ -67,7 +71,7 @@ const Brands = () => {
   const selectCampaign = (brand_id) => {
     const status = User.saveSelectedBrand(brand_id);
     if (status) {
-      window.location.href = "/dashboard";
+      window.location.href = "/merchandise";
     } else {
       console.log("error select brand");
     }
