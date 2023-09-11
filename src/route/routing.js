@@ -23,6 +23,7 @@ import {
   Merchandise,
   Edit_Merchandises,
   Setting,
+  Campaign,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -41,6 +42,7 @@ const Routing = () => {
         <Route path="/merchandise" element={<Merchandise />} />
         <Route path="/edit_merchandise/:id" element={<Edit_Merchandises />} />
         <Route path="/setting" element={<Setting />} />
+        <Route path="/campaign" element={<Campaign />} />
 
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard />} />
