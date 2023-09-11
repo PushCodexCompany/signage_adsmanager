@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Header } from "../components";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import supersport_img from "../assets/img/merchandise/Super_Sports.png";
+import evisu_img from "../assets/img/merchandise/Evisu.png";
+import kfc_img from "../assets/img/merchandise/kfc.png";
 
 const Edit_Merchandises = () => {
   const { id } = useParams();
@@ -17,12 +19,32 @@ const Edit_Merchandises = () => {
   const fetchMerchandise = (merchandise_id) => {
     //fetch
 
-    const mock_merchandise = {
-      name: "Super Sports",
-      brand: "CDS",
-      full_brand: "Central Department Store",
-      img: supersport_img,
-    };
+    let mock_merchandise;
+
+    if (merchandise_id === "1") {
+      mock_merchandise = {
+        name: "Super Sports",
+        brand: "CDS",
+        full_brand: "Central Department Store",
+        img: supersport_img,
+      };
+    } else if (merchandise_id === "2") {
+      mock_merchandise = {
+        name: "Evisu",
+        brand: "EVS",
+        full_brand: "Evisu Store",
+        img: evisu_img,
+      };
+    } else if (merchandise_id === "3") {
+      mock_merchandise = {
+        name: "KFC",
+        brand: "KFC",
+        full_brand: "Kentucky Fried Chicken",
+        img: kfc_img,
+      };
+    }
+
+    console.log("mock_merchandise", mock_merchandise);
 
     setMerchendiseData(mock_merchandise);
   };
@@ -49,7 +71,7 @@ const Edit_Merchandises = () => {
           <div class="relative">
             <div class="flex items-center">
               <input
-                placeholder="CDS"
+                placeholder="name"
                 class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold"
                 defaultValue={merchandise_data.brand}
               />
@@ -59,7 +81,7 @@ const Edit_Merchandises = () => {
           <div class="relative mt-4">
             <div class="flex items-center">
               <input
-                placeholder="CDS"
+                placeholder="brand"
                 class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold"
                 defaultValue={merchandise_data.full_brand}
               />
@@ -67,7 +89,7 @@ const Edit_Merchandises = () => {
             </div>
           </div>
           <div class="relative mt-28 flex items-center justify-center">
-            <img src={supersport_img} className="w-1/2 rounded-xl" />
+            <img src={merchandise_data.img} className="w-1/2 rounded-xl" />
           </div>
           <div class="mt-4 flex items-center justify-center">
             <button
