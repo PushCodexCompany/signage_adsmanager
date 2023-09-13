@@ -11,10 +11,756 @@ import {
 } from "@syncfusion/ej2-react-grids";
 
 import { mechendiseData, merchendiseGrid } from "../libs/campaign_grid";
+import { MdOutlineModeEditOutline } from "react-icons/md";
+import { RiDeleteBin5Line } from "react-icons/ri";
+
+const Bar = ({ type = "none" }) => {
+  return (
+    <>
+      {type === "color" ? (
+        <div class="h-14 w-full flex justify-center mt-8 ">
+          <div
+            class="flex-grow bg-[#6427FE] rounded-l-lg"
+            style={{ width: "60%" }}
+          >
+            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+              <div>STW Promotion</div>
+              <div>60%</div>
+            </div>
+          </div>
+          <div class="flex-grow bg-[#00CB45]" style={{ width: "10%" }}>
+            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+              <div>Credit Card</div>
+              <div>10%</div>
+            </div>
+          </div>
+          <div class="flex-grow bg-[#FE8D25]" style={{ width: "10%" }}>
+            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+              <div>Category</div>
+              <div>10%</div>
+            </div>
+          </div>
+          <div class="flex-grow bg-[#E02020]" style={{ width: "10%" }}>
+            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+              <div>Brands</div>
+              <div>10%</div>
+            </div>
+          </div>
+          <div
+            class="flex-grow bg-[#B6B3B3] rounded-r-lg"
+            style={{ width: "10%" }}
+          >
+            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+              <div>Other</div>
+              <div>10%</div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div class="h-14 w-full flex justify-center mt-8 ">
+          <div class="flex-grow bg-[#444444] rounded-xl">
+            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+              <div>N/A</div>
+              <div>100%</div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+const LeftPanel = ({ is_disable }) => {
+  const [isChecked, setIsChecked] = useState(false);
+  const toggleCheckbox = () => {
+    setIsChecked(!isChecked);
+  };
+  return (
+    <div class="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
+      {/* Header */}
+      <div className="p-2 flex shadow-lg">
+        {/* CheckBox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+            />
+            <span
+              className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Dropdown */}
+        <div className="ml-2">
+          <button onClick={() => alert("collapse")}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#6425FE"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+        </div>
+        {/* Items Amount */}
+        <div className="ml-2">
+          <span class="ml-2 font-bold">5 Items</span>
+        </div>
+        {/* Action */}
+        <div className="ml-auto mr-3 font-bold">
+          <span>Action</span>
+        </div>
+      </div>
+
+      {/* Data */}
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+              disabled={is_disable}
+            />
+            <span
+              className={`h-5 w-5 border ${
+                is_disable ? "border-gray-300" : "border-[#6425FE]"
+              } rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            STW Promotion
+          </span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-3 flex space-x-2">
+          <button onClick={() => alert("edit")} disabled={is_disable}>
+            <MdOutlineModeEditOutline
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+          <button onClick={() => alert("delete")} disabled={is_disable}>
+            <RiDeleteBin5Line
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+              disabled={is_disable}
+            />
+            <span
+              className={`h-5 w-5 border ${
+                is_disable ? "border-gray-300" : "border-[#6425FE]"
+              } rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            Credit Card
+          </span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-3 flex space-x-2">
+          <button onClick={() => alert("edit")} disabled={is_disable}>
+            <MdOutlineModeEditOutline
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+          <button onClick={() => alert("delete")} disabled={is_disable}>
+            <RiDeleteBin5Line
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+              disabled={is_disable}
+            />
+            <span
+              className={`h-5 w-5 border ${
+                is_disable ? "border-gray-300" : "border-[#6425FE]"
+              } rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            Category
+          </span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-3 flex space-x-2">
+          <button onClick={() => alert("edit")} disabled={is_disable}>
+            <MdOutlineModeEditOutline
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+          <button onClick={() => alert("delete")} disabled={is_disable}>
+            <RiDeleteBin5Line
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+              disabled={is_disable}
+            />
+            <span
+              className={`h-5 w-5 border ${
+                is_disable ? "border-gray-300" : "border-[#6425FE]"
+              } rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            Brands
+          </span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-3 flex space-x-2">
+          <button onClick={() => alert("edit")} disabled={is_disable}>
+            <MdOutlineModeEditOutline
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+          <button onClick={() => alert("delete")} disabled={is_disable}>
+            <RiDeleteBin5Line
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+              disabled={is_disable}
+            />
+            <span
+              className={`h-5 w-5 border ${
+                is_disable ? "border-gray-300" : "border-[#6425FE]"
+              } rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            Other
+          </span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-3 flex space-x-2">
+          <button onClick={() => alert("edit")} disabled={is_disable}>
+            <MdOutlineModeEditOutline
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+          <button onClick={() => alert("delete")} disabled={is_disable}>
+            <RiDeleteBin5Line
+              size={20}
+              className={`${is_disable ? "text-gray-300" : "text-[#6425FE]"}`}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const RightPanel = () => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const toggleCheckbox = () => {
+    setIsChecked(!isChecked);
+  };
+  return (
+    <div class="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
+      <div className="p-2 flex shadow-lg">
+        {/* CheckBox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+            />
+            <span
+              className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Dropdown */}
+        <div className="ml-2">
+          <button onClick={() => alert("collapse")}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#6425FE"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+        </div>
+        {/* Items Amount */}
+        <div className="ml-2">
+          <span class="ml-2 font-bold">5 Items</span>
+        </div>
+
+        {/* Percent and Action */}
+        <div className="ml-auto mr-3 font-bold space-x-2 lg:space-x-24">
+          <span class="ml-2 font-bold">Percent</span>
+          <span>Action</span>
+        </div>
+      </div>
+      {/* Data */}
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+            />
+            <span
+              className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class="ml-2 font-bold">STW Promotion</span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-6 font-bold space-x-3 lg:space-x-32">
+          <span>60%</span>
+          <button onClick={() => alert("delete")}>
+            <RiDeleteBin5Line size={20} className="text-[#6425FE]" />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+            />
+            <span
+              className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class="ml-2 font-bold">Credit Card</span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-6 font-bold space-x-3 lg:space-x-32">
+          <span>60%</span>
+          <button onClick={() => alert("delete")}>
+            <RiDeleteBin5Line size={20} className="text-[#6425FE]" />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+            />
+            <span
+              className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class="ml-2 font-bold">Category</span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-6 font-bold space-x-3 lg:space-x-32">
+          <span>60%</span>
+          <button onClick={() => alert("delete")}>
+            <RiDeleteBin5Line size={20} className="text-[#6425FE]" />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+            />
+            <span
+              className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class="ml-2 font-bold">Brands</span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-6 font-bold space-x-3 lg:space-x-32">
+          <span>60%</span>
+          <button onClick={() => alert("delete")}>
+            <RiDeleteBin5Line size={20} className="text-[#6425FE]" />
+          </button>
+        </div>
+      </div>
+      <div className="p-2 flex mt-1 ">
+        {/* Checkbox */}
+        <div className="ml-2">
+          <label className="inline-flex items-center space-x-2">
+            <input
+              type="checkbox"
+              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+              checked={isChecked}
+              onChange={toggleCheckbox}
+            />
+            <span
+              className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                isChecked ? "bg-white" : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-3 w-3 text-white ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                } transition-opacity duration-300 ease-in-out`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="#6425FE"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </div>
+        {/* Type */}
+        <div className="ml-2">
+          <span class="ml-2 font-bold">Other</span>
+        </div>
+
+        {/* Delete */}
+        <div className="ml-auto mr-6 font-bold space-x-3 lg:space-x-32">
+          <span>60%</span>
+          <button onClick={() => alert("delete")}>
+            <RiDeleteBin5Line size={20} className="text-[#6425FE]" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Tabs = () => {
   const [openTab, setOpenTab] = React.useState(1);
-  console.log("openTab", openTab);
+
   return (
     <>
       <div className="flex flex-wrap">
@@ -84,8 +830,6 @@ const Tabs = () => {
             </div>
           </div>
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-            {/* <div className="px-4 py-5 flex-auto"> */}
-            {/* <div className="tab-content tab-space"> */}
             <div className={openTab === 1 ? "block" : "hidden"} id="link1">
               {/* Select Menu */}
               <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
@@ -256,13 +1000,69 @@ const Tabs = () => {
               </div>
             </div>
             <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-              <p>Content Type</p>
+              {/* Content Type */}
+              <Bar />
+              <div class="flex flex-col lg:flex-row justify-center lg:text-left">
+                {/* Left Panal */}
+                <LeftPanel is_disable={false} />
+
+                {/* Middle Button */}
+                <a
+                  onClick={() => alert("click")}
+                  class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
+                >
+                  <div className="p-2 justify-center flex mt-1">
+                    <svg
+                      width="61"
+                      height="33"
+                      viewBox="0 0 33 61"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M1.36216 1.35394C3.15618 -0.451313 6.06512 -0.451313 7.85909 1.35394L30.312 23.9684C33.8972 27.5796 33.8958 33.4308 30.3092 37.0401L7.84256 59.6458C6.04859 61.4514 3.13965 61.4514 1.34558 59.6458C-0.448524 57.8407 -0.448524 54.9137 1.34558 53.1086L20.5745 33.7604C22.3689 31.9553 22.3684 29.0283 20.5745 27.2232L1.36216 7.89121C-0.431944 6.08601 -0.431944 3.15914 1.36216 1.35394Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                </a>
+
+                {/* Right Panel */}
+                <RightPanel />
+              </div>
             </div>
             <div className={openTab === 3 ? "block" : "hidden"} id="link3">
-              <p>Media Rule</p>
+              {/* Media Rules */}
+              <Bar type="color" />
+              <div class="flex flex-col lg:flex-row justify-center lg:text-left">
+                {/* Left Panal */}
+                <LeftPanel is_disable={true} />
+
+                {/* Middle Button */}
+                <a
+                  onClick={() => alert("click")}
+                  class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
+                >
+                  <div className="p-2 justify-center flex mt-1">
+                    <svg
+                      width="61"
+                      height="33"
+                      viewBox="0 0 33 61"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M1.36216 1.35394C3.15618 -0.451313 6.06512 -0.451313 7.85909 1.35394L30.312 23.9684C33.8972 27.5796 33.8958 33.4308 30.3092 37.0401L7.84256 59.6458C6.04859 61.4514 3.13965 61.4514 1.34558 59.6458C-0.448524 57.8407 -0.448524 54.9137 1.34558 53.1086L20.5745 33.7604C22.3689 31.9553 22.3684 29.0283 20.5745 27.2232L1.36216 7.89121C-0.431944 6.08601 -0.431944 3.15914 1.36216 1.35394Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                </a>
+
+                {/* Right Panel */}
+                <RightPanel />
+              </div>
             </div>
-            {/* </div> */}
-            {/* </div> */}
           </div>
         </div>
       </div>
@@ -277,7 +1077,6 @@ const Campaign = () => {
       <div className="mt-10 mb-5 font-bold text-2xl">
         <text>Setting</text>
       </div>
-
       <Tabs />
     </div>
   );
