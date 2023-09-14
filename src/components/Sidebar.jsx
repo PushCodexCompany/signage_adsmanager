@@ -51,7 +51,7 @@ const Sidebar = () => {
           <div className="mt-10 ">
             {links.map((item) => (
               <div key={item.title}>
-                <p className="text-gray-400 text-sm  dark:text-gray-400 m-3 mt-4 text-sm uppercase">
+                <p className="text-gray-400 text-sm  dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
                   {item.title}
                 </p>
                 {item.links.map((link) => (
@@ -67,10 +67,12 @@ const Sidebar = () => {
                     }
                   >
                     {link.icon}
-                    <span className="capitalize text-xs ">{link.name}</span>
+                    <span className="capitalize text-xs font-poppins">
+                      {link.name}
+                    </span>
                     {link.notification.is_notification ? (
                       <div className="bg-[#6427FE] w-[35px] h-[35px] rounded-full ml-auto">
-                        <div className="mt-[10px] text-xs font-bold text-white text-center">
+                        <div className="mt-[10px] text-xs font-bold text-white text-center font-poppins">
                           {link.notification.amount}
                         </div>
                       </div>

@@ -79,8 +79,10 @@ const Brands = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <div className="text-4xl font-bold text-center">Select Your Brand</div>
-      <div className="text-xl text-center text-slate-500 mb-20">
+      <div className="text-6xl font-bold text-center font-poppins">
+        Select Your Brand
+      </div>
+      <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
         Lorem ipsum is simply dummy text of the printing and typesetting
         industry.
       </div>
@@ -103,10 +105,10 @@ const Brands = () => {
                 className={`block ml-auto mr-auto mt-30px w-2/5 rounded-3xl `}
                 src={mock_data[items].img}
               />
-              <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px]">
+              <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
                 {mock_data[items].name}
               </div>
-              <div className="text-[14px] text-slate-500 m-auto w-[70%]">
+              <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
                 {mock_data[items].des}
               </div>
             </button>

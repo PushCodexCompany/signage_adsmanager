@@ -11,8 +11,6 @@ import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
 
-import { AuthProvider } from "./contexts/AuthContext";
-
 import User from "./libs/admin";
 
 const App = () => {

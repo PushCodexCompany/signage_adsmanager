@@ -40,17 +40,17 @@ const Login = () => {
         {/* Right panel */}
         <div className="w-full md:w-1/2 mt-36 xl:mt-0 bg-white flex flex-col justify-center items-center p-6 md:p-12">
           <form className="w-full max-w-md" onSubmit={(e) => handleSubmit(e)}>
-            <h1 className="text-gray-800 font-bold text-4xl mb-10 text-center">
+            <h1 className="text-gray-800 font-bold text-4xl mb-10 text-center font-poppins">
               Easily Manage <br /> Your Booking.
             </h1>
-            <p className="text-sm font-normal text-gray-600 mb-8 md:mb-12 text-center">
+            <p className="text-sm font-normal text-gray-600 mb-8 md:mb-12 text-center font-poppins">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry.
             </p>
 
             <div className="mb-4">
               <input
-                className="w-full py-2 px-3 border-2 rounded-2xl outline-none"
+                className="w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins"
                 onChange={(e) => setUsername(e.target.value)}
                 type="email"
                 placeholder="Your Email"
@@ -62,7 +62,7 @@ const Login = () => {
             </div>
             <div className="mb-4">
               <input
-                className="w-full py-2 px-3 border-2 rounded-2xl outline-none"
+                className="w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins"
                 type="password"
                 value={password}
                 required
@@ -73,7 +73,7 @@ const Login = () => {
             <div className="text-center">
               <button
                 type="submit"
-                className="w-full md:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2"
+                className="w-full md:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
               >
                 Sign In
               </button>

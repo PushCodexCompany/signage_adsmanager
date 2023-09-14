@@ -99,7 +99,7 @@ const Navbar = () => {
           icon={<AiOutlineSearch />}
         />
         <input
-          className="w-full h-56px rounded relative bg-[rgba(255, 255, 255, 0.3)] transition"
+          className="w-full h-56px rounded relative bg-[rgba(255, 255, 255, 0.3)] transition font-poppins"
           type="text"
           name="name"
           placeholder="Search..."
@@ -145,11 +145,11 @@ const Navbar = () => {
             />
             <p>
               <span className="">
-                <text className="text-black font-bold text-14">
+                <text className="text-black font-bold text-14 font-poppins">
                   {user.name}
                 </text>{" "}
                 <br />{" "}
-                <text className="text-gray-400 text-10">
+                <text className="text-gray-400 text-10 font-poppins">
                   {role[user.role].name}
                 </text>
               </span>{" "}

@@ -63,7 +63,7 @@ const Edit_Merchandises = () => {
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="Page" title="Setting" />
-      <div className="mt-10 mb-5 font-bold text-2xl">
+      <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
         <text>Create Screen</text>
       </div>
       <div class="flex flex-col lg:flex-row">
@@ -72,7 +72,7 @@ const Edit_Merchandises = () => {
             <div class="flex items-center">
               <input
                 placeholder="name"
-                class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold"
+                class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
                 defaultValue={merchandise_data.brand}
               />
               <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
@@ -82,7 +82,7 @@ const Edit_Merchandises = () => {
             <div class="flex items-center">
               <input
                 placeholder="brand"
-                class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold"
+                class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
                 defaultValue={merchandise_data.full_brand}
               />
               <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
@@ -94,7 +94,7 @@ const Edit_Merchandises = () => {
           <div class="mt-4 flex items-center justify-center">
             <button
               onClick={() => handleButtonClick()}
-              className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg"
+              className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg font-poppins"
             >
               Upload Image
             </button>
@@ -108,26 +108,26 @@ const Edit_Merchandises = () => {
           </div>
         </div>
         <div class="w-full lg:w-1/2 p-4 lg:pl-8">
-          <div class="mt-3 mb-5 font-bold text-2xl">
+          <div class="mt-3 mb-5 font-bold text-2xl font-poppins">
             <text>Contact Person</text>
           </div>
           <div class="flex items-center">
             <input
               placeholder="Full Name"
-              class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500"
+              class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
           </div>
           <div class="flex items-center mt-3">
             <div class="w-1/2 pr-2">
               <input
                 placeholder="Department"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div class="w-1/2 pl-2">
               <input
                 placeholder="Position"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
           </div>
@@ -135,13 +135,13 @@ const Edit_Merchandises = () => {
             <div class="w-1/2 pr-2">
               <input
                 placeholder="Email"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div class="w-1/2 pl-2">
               <input
                 placeholder="Remark"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
           </div>
@@ -149,20 +149,20 @@ const Edit_Merchandises = () => {
           <div class="flex items-center mt-10">
             <input
               placeholder="Full Name"
-              class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500"
+              class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
           </div>
           <div class="flex items-center mt-3">
             <div class="w-1/2 pr-2">
               <input
                 placeholder="Department"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div class="w-1/2 pl-2">
               <input
                 placeholder="Position"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
           </div>
@@ -170,13 +170,13 @@ const Edit_Merchandises = () => {
             <div class="w-1/2 pr-2">
               <input
                 placeholder="Email"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div class="w-1/2 pl-2">
               <input
                 placeholder="Remark"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
           </div>
@@ -187,20 +187,20 @@ const Edit_Merchandises = () => {
           <div class="flex items-center">
             <input
               placeholder="Contract Name"
-              class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500"
+              class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
           </div>
           <div class="flex items-center mt-3">
             <div class="w-1/2 pr-2">
               <input
                 placeholder="Phone Number"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div class="w-1/2 pl-2">
               <input
                 placeholder="Street Address, P.O. Box, Etc"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
           </div>
@@ -208,20 +208,20 @@ const Edit_Merchandises = () => {
             <div class="w-1/2 pr-2">
               <input
                 placeholder="Country"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div class="w-1/2 pl-2">
               <input
                 placeholder="Zip, Postal Code"
-                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
           </div>
           <div className="mt-4 flex items-center justify-center">
             <button
               onClick={() => alert("Save")}
-              className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10"
+              className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
             >
               Save
             </button>

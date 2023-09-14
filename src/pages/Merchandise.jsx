@@ -96,10 +96,10 @@ const Merchandise = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <div className="text-4xl font-bold text-center">
+      <div className="text-6xl font-bold text-center font-poppins">
         Select Your Merchandise
       </div>
-      <div className="text-xl text-center text-slate-500 mb-20">
+      <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
         Lorem ipsum is simply dummy text of the printing and typesetting
         industry.
       </div>
@@ -122,10 +122,10 @@ const Merchandise = () => {
                 className={`block ml-auto mr-auto mt-30px w-3/5 rounded-3xl `}
                 src={items.img}
               />
-              <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px]">
+              <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
                 {items.name}
               </div>
-              <div className="text-[14px] text-slate-500 m-auto w-[70%]">
+              <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
                 {items.des}
               </div>
             </button>
