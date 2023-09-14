@@ -13,7 +13,7 @@ const Header = ({ title, subtitle }) => {
           <li class="inline-flex items-center">
             <a
               href="/"
-              class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+              class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white font-poppins"
             >
               {title}
             </a>
@@ -40,7 +40,7 @@ const Header = ({ title, subtitle }) => {
                       d="m1 9 4-4-4-4"
                     />
                   </svg>
-                  <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+                  <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400 font-poppins">
                     {items}
                   </span>
                 </div>
@@ -65,7 +65,7 @@ const Header = ({ title, subtitle }) => {
                   </svg>
                   <a
                     href={to}
-                    class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                    class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins"
                   >
                     {items}
                   </a>

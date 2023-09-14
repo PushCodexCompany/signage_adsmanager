@@ -5,6 +5,7 @@ module.exports = {
     fontFamily: {
       display: ["Open Sans", "sans-serif"],
       body: ["Open Sans", "sans-serif"],
+      poppins: ["Poppins", "sans-serif"],
     },
     extend: {
       fontSize: {
