@@ -73,7 +73,7 @@ const Booking = () => {
                   </div>
                 </div>
               </div>
-              <div class="relative w-full lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 mb-3">
+              <div class="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
                 <button className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md">
                   New Booking +
                 </button>
