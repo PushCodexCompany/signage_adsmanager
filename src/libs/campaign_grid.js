@@ -5,6 +5,7 @@ import powerbuyImg from "../assets/img/merchandise/Power_Buy.png";
 
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import { IoIosArrowDown } from "react-icons/io";
 
 const gridHeaderTemplate = (props) => {
   return (
@@ -73,21 +74,8 @@ const gridStatusTemplate = (props) => {
         <option value="1">Active</option>
         <option value="0">Deactive</option>
       </select>
-      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+        <IoIosArrowDown size="18" color="#6425FE" />
       </div>
     </div>
   );
@@ -105,21 +93,8 @@ const gridRoleTemplate = (props) => {
         <option value="0">Admin</option>
         <option value="1">User</option>
       </select>
-      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+        <IoIosArrowDown size="18" color="#6425FE" />
       </div>
     </div>
   );

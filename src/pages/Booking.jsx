@@ -10,6 +10,7 @@ import {
 } from "@syncfusion/ej2-react-grids";
 
 import { bookingData, bookingGrid } from "../libs/campaign_grid";
+import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 
 const Booking = () => {
   return (
@@ -36,21 +37,8 @@ const Booking = () => {
                       <option value="...">...</option>
                       <option value="...">...</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <IoIosArrowDown size={18} color="#6425FE" />
                     </div>
                   </div>
                   <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
@@ -64,21 +52,8 @@ const Booking = () => {
                       <option value="...">...</option>
                       <option value="...">...</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <IoIosArrowDown size={18} color="#6425FE" />
                     </div>
                   </div>
                   <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
@@ -92,21 +67,8 @@ const Booking = () => {
                       <option value="...">...</option>
                       <option value="...">...</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                      <IoIosArrowDown size={18} color="#6425FE" />
                     </div>
                   </div>
                 </div>
@@ -128,38 +90,16 @@ const Booking = () => {
             {/* filter active */}
             <button onClick={() => alert("deleted !")}>
               <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 text-[#6425FE] font-bold">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M14.293 5.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 11-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 11-1.414-1.414L8.586 10 4.293 5.707a1 1 0 111.414-1.414L10 8.586l4.293-4.293z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                  <IoIosClose size="22" color="#6425FE" />
                 </div>
                 <span className="text-sm">Active</span>
               </div>
             </button>
             <button onClick={() => alert("deleted !")}>
               <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 text-[#6425FE] font-bold">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-4 w-4"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M14.293 5.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 11-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 11-1.414-1.414L8.586 10 4.293 5.707a1 1 0 111.414-1.414L10 8.586l4.293-4.293z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
+                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                  <IoIosClose size="22" color="#6425FE" />
                 </div>
                 <span className="text-sm">Admin</span>
               </div>
