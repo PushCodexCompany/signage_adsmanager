@@ -26,3 +26,4 @@ export { default as Edit_Merchandises } from "./Edit_Merchandises";
 export { default as Setting } from "./Setting";
 export { default as Campaign } from "./Campaign";
 export { default as Ads_Media } from "./Ads_Media";
+export { default as Booking } from "./Booking";

@@ -10,7 +10,7 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 
-import { mechendiseData, merchendiseGrid } from "../libs/campaign_grid";
+import { mechendiseData, merchandiseGrid } from "../libs/campaign_grid";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
@@ -991,7 +991,7 @@ const Tabs = () => {
                 >
                   <ColumnsDirective>
                     {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                    {merchendiseGrid.map((item, index) => (
+                    {merchandiseGrid.map((item, index) => (
                       <ColumnDirective key={index} {...item} />
                     ))}
                   </ColumnsDirective>

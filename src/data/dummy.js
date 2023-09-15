@@ -1570,14 +1570,14 @@ export const mechendiseData = [
   {
     id: 1,
     username_email: ["User0123", "useradmin@mail.com"],
-    merchendise: [1, 2, 3, 4],
+    merchandise: [1, 2, 3, 4],
     status: 1,
     role: 1,
   },
   {
     id: 2,
     username_email: ["Admin01", "teerachai_14@mail.com"],
-    merchendise: [3, 4],
+    merchandise: [3, 4],
     status: 1,
     role: 1,
   },

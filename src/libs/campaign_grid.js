@@ -4,11 +4,14 @@ import supersportImg from "../assets/img/merchandise/Super_Sports.png";
 import powerbuyImg from "../assets/img/merchandise/Power_Buy.png";
 
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
 const gridHeaderTemplate = (props) => {
   return (
     <div>
-      <span className="text-lg">{props.headerText}</span>
+      <span className="text-lg font-poppins text-[#59606C]">
+        {props.headerText}
+      </span>
     </div>
   );
 };
@@ -16,7 +19,7 @@ const gridHeaderTemplate = (props) => {
 const gridIDTemplate = (props) => {
   return (
     <div>
-      <span className="text-lg font-bold ml-1">{props.id}</span>
+      <span className="text-lg font-bold ml-1 font-poppins">{props.id}</span>
     </div>
   );
 };
@@ -24,9 +27,11 @@ const gridIDTemplate = (props) => {
 const gridUserNameTemplate = (props) => {
   return (
     <div>
-      <span className="text-lg font-bold">{props.username_email[0]}</span>{" "}
+      <span className="text-lg font-bold font-poppins">
+        {props.username_email[0]}
+      </span>{" "}
       <br />
-      <span className="text-xs ">{props.username_email[1]}</span>
+      <span className="text-xs font-poppins">{props.username_email[1]}</span>
     </div>
   );
 };
@@ -49,7 +54,7 @@ const gridMerchandiseTemplate = (props) => {
 
   return (
     <div className="flex space-x-1 ">
-      {props.merchendise.map((items) => (
+      {props.merchandise.map((items) => (
         <img className="w-[80px] h-[80px] rounded-md" src={getImg(items)} />
       ))}
     </div>
@@ -132,101 +137,251 @@ const gridActionTemplate = (props) => {
   );
 };
 
+// Booking
+
+const gridBookingUserNameTemplate = (props) => {
+  return (
+    <div>
+      <span className="text-lg font-bold font-poppins text-[#6425FE]">
+        {props.username_email[0]}
+      </span>{" "}
+      <br />
+      <span className="text-xs font-poppins text-[#59606C]">
+        {props.username_email[1]}
+      </span>
+    </div>
+  );
+};
+
+const gridContentTemplate = (props) => {
+  const get_content_type = (id) => {
+    let type;
+    if (id === 1) {
+      type = "STW Promotion";
+    } else if (id === 2) {
+      type = "Brand";
+    } else if (id === 3) {
+      type = "Credit Card";
+    } else if (id === 4) {
+      type = "Category";
+    }
+
+    return type;
+  };
+  return (
+    <div>
+      <span className="text-lg font-bold font-poppins">
+        {get_content_type(props.content_type)}
+      </span>
+    </div>
+  );
+};
+
+const gridBookingMerchandiseTemplate = (props) => {
+  const getImg = (id) => {
+    let img;
+    if (id === 1) {
+      img = topImg;
+    } else if (id === 2) {
+      img = matsumotoImg;
+    } else if (id === 3) {
+      img = supersportImg;
+    } else if (id === 4) {
+      img = powerbuyImg;
+    }
+
+    return img;
+  };
+
+  return (
+    <div className="flex justify-center items-center ">
+      <img
+        className="w-[80px] h-[80px] rounded-md"
+        src={getImg(props.merchandise)}
+      />
+    </div>
+  );
+};
+
+const gridScreenTemplate = (props) => {
+  return (
+    <div>
+      <span className="text-lg font-bold font-poppins">{props.screen}</span>
+    </div>
+  );
+};
+
+const gridSlotTemplate = (props) => {
+  return (
+    <div>
+      <span className="text-lg font-bold font-poppins">{props.slot}</span>
+    </div>
+  );
+};
+
+const gridBookingTemplate = (props) => {
+  const getBooking = (id) => {
+    let booking;
+
+    if (id === 1) {
+      booking = ["Pending Review", true];
+    } else if (id === 2) {
+      booking = ["Need Revise", false];
+    } else if (id === 3) {
+      booking = ["Rejected", false];
+    } else if (id === 4) {
+      booking = ["Approved", true];
+    }
+
+    return booking;
+  };
+
+  return (
+    <div>
+      <span
+        className={`text-lg font-bold font-poppins ${
+          getBooking(props.booking)[1] ? "text-[#0CA71B]" : "text-[#FF0000]"
+        }`}
+      >
+        {getBooking(props.booking)[0]}
+      </span>
+    </div>
+  );
+};
+
+const gridContentBookingTemplate = (props) => {
+  const getContentType = (id) => {
+    let content;
+
+    if (id === 1) {
+      content = ["LOCKED", false];
+    } else if (id === 2) {
+      content = ["Need Revise", true];
+    }
+
+    return content;
+  };
+
+  return (
+    <div>
+      <span
+        className={`text-lg font-bold font-poppins ${
+          getContentType(props.content)[1] ? "text-[#0CA71B]" : "text-[#B9B7BD]"
+        }`}
+      >
+        {getContentType(props.content)[0]}
+      </span>
+    </div>
+  );
+};
+
+const gridBookingActionTemplate = (props) => {
+  const onClickAction = (id) => {
+    alert("click:", id);
+  };
+
+  return (
+    <button onClick={() => onClickAction(props.id)}>
+      <MdOutlineModeEditOutline size={20} className="text-[#6425FE]" />
+    </button>
+  );
+};
+
 export const mechendiseData = [
   {
     id: 1,
     username_email: ["User0123", "useradmin@mail.com"],
-    merchendise: [1, 2, 3, 4],
+    merchandise: [1, 2, 3, 4],
     status: 1,
     role: 0,
   },
   {
     id: 2,
     username_email: ["Admin01", "teerachai_14@mail.com"],
-    merchendise: [3, 4],
+    merchandise: [3, 4],
     status: 1,
     role: 0,
   },
   {
     id: 3,
     username_email: ["CDS_Admin", "cdspro_a@mail.com"],
-    merchendise: [4],
+    merchandise: [4],
     status: 1,
     role: 0,
   },
   {
     id: 4,
     username_email: ["CDS_Sale01", "cds_sale41@mail.com"],
-    merchendise: [2],
+    merchandise: [2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    merchendise: [1, 2],
+    merchandise: [1, 2],
     status: 1,
     role: 0,
   },
 ];
 
-export const merchendiseGrid = [
+export const merchandiseGrid = [
   {
     headerText: "ID",
     field: "id",
@@ -244,8 +399,8 @@ export const merchendiseGrid = [
     template: gridUserNameTemplate,
   },
   {
-    headerText: "Merchendise",
-    field: "merchendise",
+    headerText: "merchandise",
+    field: "merchandise",
     width: "400",
     textAlign: "Left",
     headerTemplate: gridHeaderTemplate,
@@ -274,5 +429,133 @@ export const merchendiseGrid = [
     textAlign: "Center",
     headerTemplate: gridHeaderTemplate,
     template: gridActionTemplate,
+  },
+];
+
+export const bookingData = [
+  {
+    id: 1,
+    username_email: ["Booking Name 1", "CDS-BT-230101-004"],
+    content_type: 1,
+    merchandise: 1,
+    screen: 7,
+    slot: 10,
+    booking: 1,
+    content: 1,
+  },
+  {
+    id: 2,
+    username_email: ["Booking Name 2", "CDS-BT-230101-002"],
+    content_type: 2,
+    merchandise: 3,
+    screen: 4,
+    slot: 5,
+    booking: 2,
+    content: 1,
+  },
+  {
+    id: 3,
+    username_email: ["Booking Name 3", "CDS-BT-230101-003"],
+    content_type: 3,
+    merchandise: 4,
+    screen: 6,
+    slot: 5,
+    booking: 3,
+    content: 1,
+  },
+  {
+    id: 4,
+    username_email: ["Booking Name 4", "CDS-BT-230101-004"],
+    content_type: 4,
+    merchandise: 2,
+    screen: 7,
+    slot: 10,
+    booking: 4,
+    content: 2,
+  },
+  {
+    id: 5,
+    username_email: ["Booking Name 5", "CDS-BT-230101-005"],
+    content_type: 2,
+    merchandise: 1,
+    screen: 12,
+    slot: 10,
+    booking: 4,
+    content: 2,
+  },
+];
+
+export const bookingGrid = [
+  {
+    headerText: "ID",
+    field: "id",
+    width: "50",
+    textAlign: "Left",
+    headerTemplate: gridHeaderTemplate,
+    template: gridIDTemplate,
+  },
+  {
+    headerText: "Username",
+    field: "username_email",
+    width: "150",
+    textAlign: "Left",
+    headerTemplate: gridHeaderTemplate,
+    template: gridBookingUserNameTemplate,
+  },
+  {
+    headerText: "Content Type",
+    field: "content_type",
+    width: "150",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridContentTemplate,
+  },
+  {
+    headerText: "Merchandise",
+    field: "merchandise",
+    width: "150",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridBookingMerchandiseTemplate,
+  },
+  {
+    headerText: "Screen",
+    field: "screen",
+    width: "100",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridScreenTemplate,
+  },
+  {
+    headerText: "Slot",
+    field: "slot",
+    width: "100",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridSlotTemplate,
+  },
+  {
+    headerText: "Booking",
+    field: "booking",
+    width: "150",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridBookingTemplate,
+  },
+  {
+    headerText: "Content",
+    field: "content",
+    width: "150",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridContentBookingTemplate,
+  },
+  {
+    headerText: "Action",
+    field: "id",
+    width: "100",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridBookingActionTemplate,
   },
 ];

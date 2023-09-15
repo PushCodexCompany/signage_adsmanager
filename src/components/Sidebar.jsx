@@ -1,13 +1,219 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
-import { MdOutlineCancel, MdOutlineLogout } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-import { links } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 
 import Central_Logo from "../assets/img/central-logo.png";
+import {
+  MdOutlineHome,
+  MdOutlineCancel,
+  MdOutlineMenuBook,
+  MdOutlineCloudQueue,
+  MdOutlineMoveToInbox,
+  MdOutlineDocumentScanner,
+  MdOutlinePictureAsPdf,
+  MdOutlineSettings,
+  MdInfoOutline,
+  MdOutlineLogout,
+  MdOutlineInsertChartOutlined,
+  MdOutlineBook,
+} from "react-icons/md";
+import { FiShoppingBag, FiEdit, FiPieChart } from "react-icons/fi";
+import {
+  AiOutlineCalendar,
+  AiOutlineShoppingCart,
+  AiOutlineAreaChart,
+  AiOutlineBarChart,
+  AiOutlineStock,
+} from "react-icons/ai";
+import { IoMdContacts } from "react-icons/io";
+import { RiContactsLine, RiStockLine } from "react-icons/ri";
+import { BsKanban, BsBarChart } from "react-icons/bs";
+import { BiColorFill } from "react-icons/bi";
+import { GiLouvrePyramid } from "react-icons/gi";
+
+export const links = [
+  {
+    title: "Main menu",
+    links: [
+      {
+        name: "Dashboard",
+        link: "dashboard",
+        icon: <MdOutlineHome size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Campaign",
+        link: "campaign",
+        icon: <MdOutlineInsertChartOutlined size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Ads Media",
+        link: "ads-media",
+        icon: <MdOutlineCloudQueue size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Booking",
+        link: "booking",
+        icon: <MdOutlineMenuBook size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Invoices",
+        link: "invoices",
+        icon: <MdOutlineBook size={25} />,
+        notification: { is_notification: true, amount: 2 },
+      },
+      {
+        name: "Inbox",
+        link: "inbox",
+        icon: <MdOutlineMoveToInbox size={25} />,
+        notification: { is_notification: true, amount: 25 },
+      },
+      {
+        name: "Log",
+        link: "log",
+        icon: <MdOutlineDocumentScanner size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Pdf",
+        link: "pdf",
+        icon: <MdOutlinePictureAsPdf size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+    ],
+  },
+  {
+    title: "Preference",
+    links: [
+      {
+        name: "setting",
+        link: "setting",
+        icon: <MdOutlineSettings size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Help & Center",
+        link: "help_center",
+        icon: <MdInfoOutline size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Log Out",
+        link: "",
+        icon: <MdOutlineLogout size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+    ],
+  },
+  {
+    title: "Component",
+    links: [
+      {
+        name: "dashboard_mockup",
+        link: "dashboard_mockup",
+        icon: <FiShoppingBag size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "orders",
+        link: "orders",
+        icon: <AiOutlineShoppingCart size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "employees",
+        link: "employees",
+        icon: <IoMdContacts size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "customers",
+        link: "customers",
+        icon: <RiContactsLine size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "calendar",
+        link: "calendar",
+        icon: <AiOutlineCalendar size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "kanban",
+        link: "kanban",
+        icon: <BsKanban size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "editor",
+        link: "editor",
+        icon: <FiEdit size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "color-picker",
+        link: "color-picker",
+        icon: <BiColorFill size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "line",
+        link: "line",
+        icon: <AiOutlineStock size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "area",
+        link: "area",
+        icon: <AiOutlineAreaChart size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+
+      {
+        name: "bar",
+        link: "bar",
+        icon: <AiOutlineBarChart size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "pie",
+        link: "pie",
+        icon: <FiPieChart size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "financial",
+        link: "financial",
+        icon: <RiStockLine size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "color-mapping",
+        link: "color-mapping",
+        icon: <BsBarChart size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "pyramid",
+        link: "pyramid",
+        icon: <GiLouvrePyramid size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "stacked",
+        link: "stacked",
+        icon: <AiOutlineBarChart size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+    ],
+  },
+];
 
 const Sidebar = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =

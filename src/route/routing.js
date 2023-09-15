@@ -25,6 +25,7 @@ import {
   Setting,
   Campaign,
   Ads_Media,
+  Booking,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -45,7 +46,7 @@ const Routing = () => {
         <Route path="/setting" element={<Setting />} />
         <Route path="/campaign" element={<Campaign />} />
         <Route path="/ads-media" element={<Ads_Media />} />
-
+        <Route path="/booking" element={<Booking />} />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />

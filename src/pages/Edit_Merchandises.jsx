@@ -10,7 +10,7 @@ const Edit_Merchandises = () => {
   const { id } = useParams();
   const fileInputRef = useRef(null);
 
-  const [merchandise_data, setMerchendiseData] = useState([]);
+  const [merchandise_data, setmerchandiseData] = useState([]);
 
   useEffect(() => {
     fetchMerchandise(id);
@@ -46,7 +46,7 @@ const Edit_Merchandises = () => {
 
     console.log("mock_merchandise", mock_merchandise);
 
-    setMerchendiseData(mock_merchandise);
+    setmerchandiseData(mock_merchandise);
   };
 
   const handleButtonClick = () => {
