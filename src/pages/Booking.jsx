@@ -84,37 +84,28 @@ const Booking = () => {
       </div>
 
       {/* Filter */}
-      <div class=" h-[50px] flex items-center mt-1  lg:ml-10 ">
-        <div class="flex flex-col lg:flex-row">
-          <div class="w-full lg:w-3/4 flex justify-center items-center">
-            {/* filter active */}
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                  <IoIosClose size="22" color="#6425FE" />
-                </div>
-                <span className="text-sm">Active</span>
-              </div>
-            </button>
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                  <IoIosClose size="22" color="#6425FE" />
-                </div>
-                <span className="text-sm">Admin</span>
-              </div>
-            </button>
-            {/* filter active */}
-
-            {/* Button Clear All */}
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <span className="text-sm">Clear All</span>
-              </div>
-            </button>
-            {/* Button Clear All */}
+      <div class="flex">
+        <button onClick={() => alert("deleted !")}>
+          <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+              <IoIosClose size="22" color="#6425FE" />
+            </div>
+            <span className="text-sm font-poppins">Active</span>
           </div>
-        </div>
+        </button>
+        <button onClick={() => alert("deleted !")}>
+          <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+              <IoIosClose size="22" color="#6425FE" />
+            </div>
+            <span className="text-sm font-poppins">Admin</span>
+          </div>
+        </button>
+        <button onClick={() => alert("deleted !")}>
+          <div class="relative w-[100px] lg:w-[130px] h-[40px]  mt-1 flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+            <span className="text-sm font-poppins">Clear All</span>
+          </div>
+        </button>
       </div>
 
       <div className="mt-5">

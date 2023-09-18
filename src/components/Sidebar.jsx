@@ -19,6 +19,7 @@ import {
   MdOutlineLogout,
   MdOutlineInsertChartOutlined,
   MdOutlineBook,
+  MdOutlineEvent,
 } from "react-icons/md";
 import { FiShoppingBag, FiEdit, FiPieChart } from "react-icons/fi";
 import {
@@ -60,6 +61,12 @@ export const links = [
         name: "Booking",
         link: "booking",
         icon: <MdOutlineMenuBook size={25} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Event",
+        link: "event",
+        icon: <MdOutlineEvent size={25} />,
         notification: { is_notification: false, amount: 0 },
       },
       {

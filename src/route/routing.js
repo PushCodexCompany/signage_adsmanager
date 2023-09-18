@@ -27,6 +27,7 @@ import {
   Ads_Media,
   Booking,
   Inbox,
+  Event,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -48,7 +49,8 @@ const Routing = () => {
         <Route path="/campaign" element={<Campaign />} />
         <Route path="/ads-media" element={<Ads_Media />} />
         <Route path="/booking" element={<Booking />} />
-        <Route path="inbox" element={<Inbox />} />
+        <Route path="/inbox" element={<Inbox />} />
+        <Route path="/event" element={<Event />} />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />
