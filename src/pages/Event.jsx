@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../components";
 import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import {
@@ -23,6 +23,16 @@ import event13 from "../assets/img/event/event13.png";
 import event14 from "../assets/img/event/event14.png";
 import event15 from "../assets/img/event/event15.png";
 import event16 from "../assets/img/event/event16.png";
+
+import { eventData, eventGrid } from "../libs/campaign_grid";
+import {
+  GridComponent,
+  Inject,
+  ColumnsDirective,
+  ColumnDirective,
+  Search,
+  Page,
+} from "@syncfusion/ej2-react-grids";
 
 const mockup = [
   {
@@ -108,6 +118,70 @@ const mockup = [
 ];
 
 const Event = () => {
+  const [view, setView] = useState(true);
+
+  const handleView = () => {
+    setView(!view);
+  };
+
+  const GridImgComponent = () => {
+    return (
+      <div className="w-auto h-[800px] mt-10  border border-[#DBDBDB] rounded-lg">
+        <div className="h-[800px] overflow-y-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 p-10 space-x-0">
+            {mockup.map((items, index) => (
+              <div
+                key={index}
+                className={`border border-[#B6B3B3] w-[210px] h-[380px] ${
+                  index >= 6 ? "mt-4" : ""
+                } grid grid-rows-8`}
+              >
+                <div className="flex justify-center items-center ">
+                  <img src={items.img} />
+                </div>
+                <div className="  ml-1 row-span-2 ">
+                  <div className="ml-1 text-lg font-bold font-poppins">
+                    {items.name}
+                  </div>
+                  <div className="ml-1 text-sm font-poppins">{items.des}</div>
+                </div>
+                <div className="space-y-2 flex flex-col items-center justify-center ">
+                  <button
+                    onClick={() => alert(`edit : ${items.name}`)}
+                    className="w-[80%] bg-[#6425FE] text-white py-2 rounded-lg font-bold font-poppins "
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => alert(`delete : ${items.name}`)}
+                    className="w-[80%] bg-white text-[#6425FE] border border-[#6425FE] py-2 rounded-lg font-bold font-poppins"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ListComponent = () => {
+    return (
+      <div className="mt-5">
+        <GridComponent dataSource={eventData} height={600} width={"auto"}>
+          <ColumnsDirective>
+            {eventGrid.map((item, index) => (
+              <ColumnDirective key={index} {...item} />
+            ))}
+          </ColumnsDirective>
+          <Inject services={[Search, Page]} />
+        </GridComponent>
+      </div>
+    );
+  };
+
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="Page" title="Dashboard" />
@@ -258,54 +332,24 @@ const Event = () => {
           </div>
           <div class="basis-1/12">
             <div className="flex flex-row">
-              <div className="flex basis-1/2 justify-center align-middle">
-                <PiGridFourFill size={42} color="#6425FE" />
-              </div>
-              <div className="flex basis-1/2 justify-center align-middle">
-                <PiListDashesFill size={42} color="#6425FE" />
-              </div>
+              {view ? (
+                <div className="flex basis-1/2 justify-end align-middle">
+                  <button onClick={() => handleView()}>
+                    <PiListDashesFill size={42} color="#6425FE" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex basis-1/2 justify-end align-middle">
+                  <button onClick={() => handleView()}>
+                    <PiGridFourFill size={42} color="#6425FE" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="w-auto h-[800px] mt-10  border border-[#DBDBDB] rounded-lg">
-          <div className="h-[800px] overflow-y-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 p-10 space-x-0">
-              {mockup.map((items, index) => (
-                <div
-                  key={index}
-                  className={`border border-[#B6B3B3] w-[210px] h-[380px] ${
-                    index >= 6 ? "mt-4" : ""
-                  } grid grid-rows-8`}
-                >
-                  <div className="flex justify-center items-center ">
-                    <img src={items.img} />
-                  </div>
-                  <div className="  ml-1 row-span-2 ">
-                    <div className="ml-1 text-lg font-bold font-poppins">
-                      {items.name}
-                    </div>
-                    <div className="ml-1 text-sm font-poppins">{items.des}</div>
-                  </div>
-                  <div className="space-y-2 flex flex-col items-center justify-center ">
-                    <button
-                      onClick={() => alert("edit")}
-                      className="w-[80%] bg-[#6425FE] text-white py-2 rounded-lg font-bold font-poppins "
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => alert("delete")}
-                      className="w-[80%] bg-white text-[#6425FE] border border-[#6425FE] py-2 rounded-lg font-bold font-poppins"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        {view ? <GridImgComponent /> : <ListComponent />}
       </div>
     </div>
   );

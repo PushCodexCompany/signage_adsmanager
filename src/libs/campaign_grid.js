@@ -262,6 +262,41 @@ const gridBookingActionTemplate = (props) => {
   );
 };
 
+// event
+
+const gridEventNameTemplate = (props) => {
+  return (
+    <div>
+      <span className="text-lg font-bold font-poppins">{props.event_name}</span>
+    </div>
+  );
+};
+
+const gridEventDescriptionTemplate = (props) => {
+  return (
+    <div>
+      <span className="text-lg font-poppins">{props.des}</span>
+    </div>
+  );
+};
+
+const gridEventActionTemplate = (props) => {
+  const onClickAction = (id) => {
+    alert("click:", id);
+  };
+
+  return (
+    <div className="space-x-2">
+      <button onClick={() => onClickAction(props.id)}>
+        <MdOutlineModeEditOutline size={30} className="text-[#6425FE]" />
+      </button>
+      <button onClick={() => onClickAction(props.id)}>
+        <RiDeleteBin5Line size={30} className="text-[#6425FE]" />
+      </button>
+    </div>
+  );
+};
+
 export const mechendiseData = [
   {
     id: 1,
@@ -532,5 +567,115 @@ export const bookingGrid = [
     textAlign: "Center",
     headerTemplate: gridHeaderTemplate,
     template: gridBookingActionTemplate,
+  },
+];
+
+export const eventData = [
+  {
+    id: 1,
+    event_name: "Event 1",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 2,
+    event_name: "Event 2",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 3,
+    event_name: "Event 3",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 4,
+    event_name: "Event 4",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 5,
+    event_name: "Event 5",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 6,
+    event_name: "Event 6",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 7,
+    event_name: "Event 7",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 8,
+    event_name: "Event 8",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 9,
+    event_name: "Event 9",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 10,
+    event_name: "Event 10",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 11,
+    event_name: "Event 11",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 12,
+    event_name: "Event 12",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 13,
+    event_name: "Event 13",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 14,
+    event_name: "Event 14",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 15,
+    event_name: "Event 15",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+  {
+    id: 16,
+    event_name: "Event 16",
+    des: "The event typically includes runway shows, exhibitions ",
+  },
+];
+
+export const eventGrid = [
+  {
+    headerText: "Event Name",
+    field: "event_name",
+    width: "100",
+    textAlign: "Left",
+    headerTemplate: gridHeaderTemplate,
+    template: gridEventNameTemplate,
+  },
+  {
+    headerText: "Description",
+    field: "des",
+    width: "400",
+    textAlign: "Left",
+    headerTemplate: gridHeaderTemplate,
+    template: gridEventDescriptionTemplate,
+  },
+  {
+    headerText: "Action",
+    field: "id",
+    width: "100",
+    textAlign: "Center",
+    headerTemplate: gridHeaderTemplate,
+    template: gridEventActionTemplate,
   },
 ];

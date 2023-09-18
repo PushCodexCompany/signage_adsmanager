@@ -44,8 +44,6 @@ const Edit_Merchandises = () => {
       };
     }
 
-    console.log("mock_merchandise", mock_merchandise);
-
     setmerchandiseData(mock_merchandise);
   };
 
