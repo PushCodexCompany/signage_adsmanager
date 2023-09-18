@@ -126,24 +126,26 @@ const Event = () => {
 
   const GridImgComponent = () => {
     return (
-      <div className="w-auto h-[800px] mt-10  border border-[#DBDBDB] rounded-lg">
+      <div className="w-auto  h-[800px] mt-10  border border-[#DBDBDB] rounded-lg">
         <div className="h-[800px] overflow-y-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 p-10 space-x-0">
             {mockup.map((items, index) => (
               <div
                 key={index}
-                className={`border border-[#B6B3B3] w-[210px] h-[380px] ${
-                  index >= 6 ? "mt-4" : ""
-                } grid grid-rows-8`}
+                className={`border border-[#B6B3B3] md:h-[400px] lg:w-[210px] lg:h-[380px] ${
+                  index >= 6 ? "lg:mt-4" : "mt-4"
+                } ${index >= 3 ? "md : mt-3 " : "mt-3"} grid grid-rows-8`}
               >
                 <div className="flex justify-center items-center ">
-                  <img src={items.img} />
+                  <img src={items.img} className="w-[150px] h-[150px]" />
                 </div>
                 <div className="  ml-1 row-span-2 ">
                   <div className="ml-1 text-lg font-bold font-poppins">
                     {items.name}
                   </div>
-                  <div className="ml-1 text-sm font-poppins">{items.des}</div>
+                  <div className="ml-1 mt-3 text-sm font-poppins">
+                    {items.des}
+                  </div>
                 </div>
                 <div className="space-y-2 flex flex-col items-center justify-center ">
                   <button
