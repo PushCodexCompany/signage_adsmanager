@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Header } from "../components";
-import { IoIosArrowDown, IoIosClose } from "react-icons/io";
+import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import {
   PiSlidersHorizontalFill,
   PiGridFourFill,
@@ -121,6 +121,12 @@ const Event = () => {
   const [view, setView] = useState(true);
   // const [toggle, settoggle] = useState(0.5);
   const [showRightPanel, setShowRightPanel] = useState(false);
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
 
   const handleView = () => {
     setView(!view);
@@ -366,14 +372,14 @@ const Event = () => {
       {showRightPanel && (
         <a
           onClick={() => setShowRightPanel(!showRightPanel)}
-          className="fixed top-0 right-52 w-screen h-screen opacity-50 bg-black z-50 backdrop-blur"
+          className="fixed top-0 lg:right-52 w-screen h-screen opacity-50 bg-black z-50 backdrop-blur"
         />
       )}
 
       {showRightPanel && (
         <div className="fixed right-0 top-0 h-screen w-1/4 bg-[#E8E8E8] z-50 rounded-md ">
-          <div className="flex justify-between items-center p-2 mt-3 border-b-2 border-[#E8E8E8]">
-            <span className="text-center flex-grow font-poppins">
+          <div className="flex justify-between items-center p-2 mt-3 border-b-2 border-gray-300">
+            <span className="text-center text-sm flex-grow font-poppins">
               Filter and sort
             </span>
             <button onClick={() => setShowRightPanel(!showRightPanel)}>
@@ -381,7 +387,107 @@ const Event = () => {
             </button>
           </div>
 
-          {/* <button onClick={() => setShowRightPanel(!showRightPanel)}>X</button> */}
+          {/* Sort */}
+          <div className="p-12 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">
+                  Sort <br />
+                  <span className="font-poppins text-xs  text-[#59606C] ">
+                    Best match
+                  </span>
+                </span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-11">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Sector */}
+          <div className="p-12 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Sector</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-11">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </>
