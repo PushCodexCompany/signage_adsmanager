@@ -119,9 +119,15 @@ const mockup = [
 
 const Event = () => {
   const [view, setView] = useState(true);
+  // const [toggle, settoggle] = useState(0.5);
+  const [showRightPanel, setShowRightPanel] = useState(false);
 
   const handleView = () => {
     setView(!view);
+  };
+
+  const showAllFilter = () => {
+    setShowRightPanel(!showRightPanel);
   };
 
   const GridImgComponent = () => {
@@ -185,175 +191,200 @@ const Event = () => {
   };
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Page" title="Dashboard" />
-      <div className="flex justify-between mt-10 mb-5 font-bold text-2xl font-poppins">
-        <div className="flex items-center">
-          <div className="font-poppins">Event</div>
+    <>
+      <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+        <Header category="Page" title="Dashboard" />
+        <div className="flex justify-between mt-10 mb-5 font-bold text-2xl font-poppins">
+          <div className="flex items-center">
+            <div className="font-poppins">Event</div>
+          </div>
+          <button className="bg-[#6425FE] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md">
+            Create New Event +
+          </button>
         </div>
-        <button className="bg-[#6425FE] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md">
-          Create New Event +
-        </button>
-      </div>
 
-      <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-        {/* Select Menu */}
-        <div class="rounded-lg h-[50px] flex items-center shadow-md">
-          <div class="flex flex-col lg:flex-row">
-            <div class="w-full lg:w-3/4 flex justify-center items-center">
-              <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                <select
-                  name="sector"
-                  id="sector"
-                  class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                >
-                  <option value="Sector">Sector</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <IoIosArrowDown size={18} color="#6425FE" />
+        <div className="relative flex flex-col min-w-0  w-full mb-6 ">
+          {/* Select Menu */}
+          <div class="rounded-lg h-[50px] flex items-center shadow-md">
+            <div class="flex flex-col lg:flex-row">
+              <div class="w-full lg:w-3/4 flex justify-center items-center">
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="sector"
+                    id="sector"
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Sector">Sector</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <IoIosArrowDown size={18} color="#6425FE" />
+                  </div>
                 </div>
-              </div>
-              <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                <select
-                  name="region"
-                  id="region"
-                  class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                >
-                  <option value="Region">Region</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                  <IoIosArrowDown size={18} color="#6425FE" />
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="region"
+                    id="region"
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Region">Region</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                    <IoIosArrowDown size={18} color="#6425FE" />
+                  </div>
                 </div>
-              </div>
-              <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                <select
-                  name="store_cluster"
-                  id="store_cluster"
-                  class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                >
-                  <option value="Store Cluster">Store Cluster</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <IoIosArrowDown size={18} color="#6425FE" />
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="store_cluster"
+                    id="store_cluster"
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Store Cluster">Store Cluster</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <IoIosArrowDown size={18} color="#6425FE" />
+                  </div>
                 </div>
-              </div>
-              <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                <select
-                  name="branch"
-                  id="branch"
-                  class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                >
-                  <option value="Branch">Branch</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <IoIosArrowDown size={18} color="#6425FE" />
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="branch"
+                    id="branch"
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Branch">Branch</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <IoIosArrowDown size={18} color="#6425FE" />
+                  </div>
                 </div>
-              </div>
-              <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                <select
-                  name="department"
-                  id="department"
-                  class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                >
-                  <option value="Department">Department</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                  <option value="...">...</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <IoIosArrowDown size={18} color="#6425FE" />
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="department"
+                    id="department"
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Department">Department</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <IoIosArrowDown size={18} color="#6425FE" />
+                  </div>
                 </div>
-              </div>
-              <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                <button
-                  name="role"
-                  class="block appearance-none w-full bg-[#f2f2f2] text-sm text-left border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                >
-                  All filter
-                </button>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <PiSlidersHorizontalFill size={18} color="#6425FE" />
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <button
+                    onClick={() => showAllFilter()}
+                    name="role"
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm text-left border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    All filter
+                  </button>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <PiSlidersHorizontalFill size={18} color="#6425FE" />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Filter  */}
-        <div class="flex flex-row mt-4">
-          <div class="basis-11/12">
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                  <IoIosClose size="22" color="#6425FE" />
+          {/* Filter  */}
+          <div class="flex flex-row mt-4">
+            <div class="basis-11/12">
+              <button onClick={() => alert("deleted !")}>
+                <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                    <IoIosClose size="22" color="#6425FE" />
+                  </div>
+                  <span className="text-sm font-poppins">North</span>
                 </div>
-                <span className="text-sm font-poppins">North</span>
+              </button>
+              <button onClick={() => alert("deleted !")}>
+                <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                    <IoIosClose size="22" color="#6425FE" />
+                  </div>
+                  <span className="text-sm font-poppins">Flagship</span>
+                </div>
+              </button>
+              <button onClick={() => alert("deleted !")}>
+                <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                    <IoIosClose size="22" color="#6425FE" />
+                  </div>
+                  <span className="text-sm font-poppins">Beauty</span>
+                </div>
+              </button>
+              <button onClick={() => alert("deleted !")}>
+                <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                    <IoIosClose size="22" color="#6425FE" />
+                  </div>
+                  <span className="text-sm font-poppins">Portrait</span>
+                </div>
+              </button>
+              <button onClick={() => alert("deleted !")}>
+                <div class="relative w-[100px] lg:w-[130px] h-[40px]  mt-1 flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+                  <span className="text-sm font-poppins">Clear All</span>
+                </div>
+              </button>
+            </div>
+            <div class="basis-1/12">
+              <div className="flex flex-row">
+                {view ? (
+                  <div className="flex basis-1/2 justify-end align-middle">
+                    <button onClick={() => handleView()}>
+                      <PiListDashesFill size={42} color="#6425FE" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex basis-1/2 justify-end align-middle">
+                    <button onClick={() => handleView()}>
+                      <PiGridFourFill size={42} color="#6425FE" />
+                    </button>
+                  </div>
+                )}
               </div>
-            </button>
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                  <IoIosClose size="22" color="#6425FE" />
-                </div>
-                <span className="text-sm font-poppins">Flagship</span>
-              </div>
-            </button>
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                  <IoIosClose size="22" color="#6425FE" />
-                </div>
-                <span className="text-sm font-poppins">Beauty</span>
-              </div>
-            </button>
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px] mt-1  flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                  <IoIosClose size="22" color="#6425FE" />
-                </div>
-                <span className="text-sm font-poppins">Portrait</span>
-              </div>
-            </button>
-            <button onClick={() => alert("deleted !")}>
-              <div class="relative w-[100px] lg:w-[130px] h-[40px]  mt-1 flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <span className="text-sm font-poppins">Clear All</span>
-              </div>
-            </button>
-          </div>
-          <div class="basis-1/12">
-            <div className="flex flex-row">
-              {view ? (
-                <div className="flex basis-1/2 justify-end align-middle">
-                  <button onClick={() => handleView()}>
-                    <PiListDashesFill size={42} color="#6425FE" />
-                  </button>
-                </div>
-              ) : (
-                <div className="flex basis-1/2 justify-end align-middle">
-                  <button onClick={() => handleView()}>
-                    <PiGridFourFill size={42} color="#6425FE" />
-                  </button>
-                </div>
-              )}
             </div>
           </div>
-        </div>
 
-        {view ? <GridImgComponent /> : <ListComponent />}
+          {view ? <GridImgComponent /> : <ListComponent />}
+        </div>
       </div>
-    </div>
+
+      {showRightPanel && (
+        <a
+          onClick={() => setShowRightPanel(!showRightPanel)}
+          className="fixed top-0 right-52 w-screen h-screen opacity-50 bg-black z-50 backdrop-blur"
+        />
+      )}
+
+      {showRightPanel && (
+        <div className="fixed right-0 top-0 h-screen w-1/4 bg-[#E8E8E8] z-50 rounded-md ">
+          <div className="flex justify-between items-center p-2 mt-3 border-b-2 border-[#E8E8E8]">
+            <span className="text-center flex-grow font-poppins">
+              Filter and sort
+            </span>
+            <button onClick={() => setShowRightPanel(!showRightPanel)}>
+              <IoIosClose size="42" color="#6425FE" />
+            </button>
+          </div>
+
+          {/* <button onClick={() => setShowRightPanel(!showRightPanel)}>X</button> */}
+        </div>
+      )}
+    </>
   );
 };
 
