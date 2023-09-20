@@ -196,6 +196,11 @@ const Event = () => {
     );
   };
 
+  const [isChecked, setIsChecked] = useState(false);
+  const toggleCheckbox = () => {
+    setIsChecked(!isChecked);
+  };
+
   return (
     <>
       <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
@@ -377,7 +382,7 @@ const Event = () => {
       )}
 
       {showRightPanel && (
-        <div className="fixed right-0 top-0 h-screen w-1/4 bg-[#E8E8E8] z-50 rounded-md ">
+        <div className="fixed right-0 top-0 h-screen w-1/4 bg-[#E8E8E8] z-50 rounded-md max-h- overflow-y-auto">
           <div className="flex justify-between items-center p-2 mt-3 border-b-2 border-gray-300">
             <span className="text-center text-sm flex-grow font-poppins">
               Filter and sort
@@ -388,12 +393,16 @@ const Event = () => {
           </div>
 
           {/* Sort */}
-          <div className="p-12 border-b-2 border-gray-300">
+          <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
                 <span className="font-poppins text-md ">
                   Sort <br />
-                  <span className="font-poppins text-xs  text-[#59606C] ">
+                  <span
+                    className={`font-poppins text-xs  text-[#59606C] ${
+                      !isCollapsed ? "hidden" : ""
+                    }`}
+                  >
                     Best match
                   </span>
                 </span>
@@ -415,7 +424,7 @@ const Event = () => {
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
               <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-11">
+                <div class="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
                 <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
@@ -441,7 +450,7 @@ const Event = () => {
             </div>
           </div>
           {/* Sector */}
-          <div className="p-12 border-b-2 border-gray-300">
+          <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Sector</span>
@@ -463,7 +472,569 @@ const Event = () => {
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
               <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-11">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Region */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Region</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Store Cluster */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Store Cluster</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Branch */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Branch</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Department */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Department</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Floor */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Floor</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-sm ">G Floor</span>
+                </div>
+                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <span className="font-poppins text-sm mr-1">12</span>
+                    <label className="inline-flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="opacity-0 absolute h-4 w-4 cursor-pointer"
+                        checked={isChecked}
+                        onChange={toggleCheckbox}
+                      />
+                      <span
+                        className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                          isChecked ? "bg-white" : ""
+                        }`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`h-3 w-3 text-white ${
+                            isChecked ? "opacity-100" : "opacity-0"
+                          } transition-opacity duration-300 ease-in-out`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="#6425FE"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-sm ">1 Floor</span>
+                </div>
+                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <span className="font-poppins text-sm mr-1">5</span>
+                  <label className="inline-flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
+                      checked={isChecked}
+                      onChange={toggleCheckbox}
+                    />
+                    <span
+                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                        isChecked ? "bg-white" : ""
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-3 w-3 text-white ${
+                          isChecked ? "opacity-100" : "opacity-0"
+                        } transition-opacity duration-300 ease-in-out`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="#6425FE"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-sm ">2 Floor</span>
+                </div>
+                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <span className="font-poppins text-sm mr-1">4</span>
+                  <label className="inline-flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
+                      checked={isChecked}
+                      onChange={toggleCheckbox}
+                    />
+                    <span
+                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                        isChecked ? "bg-white" : ""
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-3 w-3 text-white ${
+                          isChecked ? "opacity-100" : "opacity-0"
+                        } transition-opacity duration-300 ease-in-out`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="#6425FE"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-sm ">3 Floor</span>
+                </div>
+                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <span className="font-poppins text-sm mr-1">10</span>
+                  <label className="inline-flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
+                      checked={isChecked}
+                      onChange={toggleCheckbox}
+                    />
+                    <span
+                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                        isChecked ? "bg-white" : ""
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-3 w-3 text-white ${
+                          isChecked ? "opacity-100" : "opacity-0"
+                        } transition-opacity duration-300 ease-in-out`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="#6425FE"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Location */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Location</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Orientation */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Orientation</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Size */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">Size</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
+                  <span className="font-poppins text-xs ">Best match</span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="1" name="sort" value="1" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-3">
+                  <span className="font-poppins text-xs ">
+                    Price: low to high
+                  </span>
+                </div>
+                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                  <div>
+                    <input type="radio" id="2" name="sort" value="2" checked />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* File Type */}
+          <div className="p-6 border-b-2 border-gray-300">
+            <div class="flex flex-row ">
+              <div class="flex basis-11/12  ">
+                <span className="font-poppins text-md ">File Type</span>
+              </div>
+              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                <div>
+                  <button
+                    className="w-full text-left p-2 focus:outline-none"
+                    onClick={toggleCollapse}
+                  >
+                    {isCollapsed ? (
+                      <IoIosArrowDown size={28} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowUp size={28} color="#6425FE" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className={`${isCollapsed ? "hidden" : ""}`}>
+              <div class="flex flex-row ">
+                <div class="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
                 <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
