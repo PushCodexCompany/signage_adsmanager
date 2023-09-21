@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -6,6 +6,10 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { useStateContext } from "../contexts/ContextProvider";
 
 import Central_Logo from "../assets/img/central-logo.png";
+import Bluetree_logo from "../assets/img/logo/bluetree.svg";
+import Cpn_logo from "../assets/img/logo/cpn.svg";
+import Cpn_vertical_logo from "../assets/img/logo/cpn_vertical.svg";
+
 import {
   MdOutlineHome,
   MdOutlineCancel,
@@ -232,6 +236,38 @@ const Sidebar = () => {
     }
   };
 
+  const [imgClass, setImgClass] = useState("");
+
+  useEffect(() => {
+    const loadImgClass = async () => {
+      const cssValue = await generateImgHeight(Cpn_logo);
+      setImgClass(cssValue); // Update the state with the CSS class
+    };
+
+    loadImgClass();
+  }, []); // Run this effect once on component mount
+
+  const generateImgHeight = async (img_logo) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = img_logo;
+
+      img.onload = function () {
+        const width = img.width; // Get the width of the image
+        const height = img.height; // Get the height of the image
+
+        let css_value;
+        if (height > 60) {
+          css_value = "w-1/4 ";
+        } else {
+          css_value = "w-3/4";
+        }
+
+        resolve(css_value); // Resolve the Promise with the css_value
+      };
+    });
+  };
+
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
   const normalLink =
@@ -241,16 +277,16 @@ const Sidebar = () => {
     <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
       {activeMenu && (
         <>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-center items-center">
             <Link
               to="/dashboard"
               onClick={handleCloseSideBar}
-              className="items-center ml-3 mt-10 flex"
+              className="items-center justify-center ml-3 mt-10 flex"
             >
               {/* <SiShopware /> <span>CMS</span> */}
-              <img className="w-3/4 m-auto " src={Central_Logo} />
+              <img className={`${imgClass}`} src={Cpn_logo} />
             </Link>
-            <TooltipComponent content="Menu" position="BottomCenter">
+            {/* <TooltipComponent content="Menu" position="BottomCenter">
               <button
                 type="button"
                 onClick={() => setActiveMenu(!activeMenu)}
@@ -259,7 +295,7 @@ const Sidebar = () => {
               >
                 <MdOutlineCancel />
               </button>
-            </TooltipComponent>
+            </TooltipComponent> */}
           </div>
           <div className="mt-10 ">
             {links.map((item) => (
