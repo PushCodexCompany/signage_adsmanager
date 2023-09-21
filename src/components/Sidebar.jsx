@@ -240,7 +240,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     const loadImgClass = async () => {
-      const cssValue = await generateImgHeight(Cpn_logo);
+      const cssValue = await generateImgHeight(Central_Logo);
       setImgClass(cssValue); // Update the state with the CSS class
     };
 
@@ -284,7 +284,7 @@ const Sidebar = () => {
               className="items-center justify-center ml-3 mt-10 flex"
             >
               {/* <SiShopware /> <span>CMS</span> */}
-              <img className={`${imgClass}`} src={Cpn_logo} />
+              <img className={`${imgClass}`} src={Central_Logo} />
             </Link>
             {/* <TooltipComponent content="Menu" position="BottomCenter">
               <button
