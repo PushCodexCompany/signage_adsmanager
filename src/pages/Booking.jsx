@@ -152,11 +152,13 @@ const Booking = () => {
               </div>
             </button>
           ))}
-        <button onClick={() => clearFilter()}>
-          <div class="relative w-[100px] lg:w-[130px] h-[40px]  mt-1 flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-            <span className="text-sm font-poppins">Clear All</span>
-          </div>
-        </button>
+        {filter.length > 0 && (
+          <button onClick={() => clearFilter()}>
+            <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+              <span className="text-sm">Clear All</span>
+            </div>
+          </button>
+        )}
       </div>
 
       <div className="mt-5">
