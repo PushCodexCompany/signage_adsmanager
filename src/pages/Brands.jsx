@@ -61,17 +61,17 @@ const Brands = () => {
 
   useEffect(() => {
     if (select_campaign) {
-      window.location.href = "/merchandise";
-    }
-    if (select_merchandise) {
       window.location.href = "/dashboard";
     }
+    // if (select_merchandise) {
+    //   window.location.href = "/dashboard";
+    // }
   }, []);
 
   const selectCampaign = (brand_id) => {
     const status = User.saveSelectedBrand(brand_id);
     if (status) {
-      window.location.href = "/merchandise";
+      window.location.href = "/dashboard";
     } else {
       console.log("error select brand");
     }

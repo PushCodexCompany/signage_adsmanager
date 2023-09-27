@@ -63,11 +63,13 @@ const App = () => {
               {/* Sidebar */}
               {activeMenu ? (
                 <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-                  {select_campaign && select_merchandise ? <Sidebar /> : <></>}
+                  {/* {select_campaign && select_merchandise ? <Sidebar /> : <></>} */}
+                  {select_campaign ? <Sidebar /> : <></>}
                 </div>
               ) : (
                 <div className="w-0 dark:bg-secondary-dark-bg">
-                  {select_campaign && select_merchandise ? <Sidebar /> : <></>}
+                  {/* {select_campaign && select_merchandise ? <Sidebar /> : <></>} */}
+                  {select_campaign ? <Sidebar /> : <></>}
                 </div>
               )}
 
@@ -75,7 +77,8 @@ const App = () => {
                 className={
                   activeMenu
                     ? `dark:bg-main-dark-bg  bg-main-bg min-h-screen md: ${
-                        select_campaign && select_merchandise ? "ml-72" : ""
+                        // select_campaign && select_merchandise ? "ml-72" : ""
+                        select_campaign ? "ml-72" : ""
                       } w-full`
                     : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
                 }

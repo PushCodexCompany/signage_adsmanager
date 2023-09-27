@@ -116,7 +116,7 @@ export const links = [
       },
       {
         name: "Log Out",
-        link: "",
+        link: "logout",
         icon: <MdOutlineLogout size={25} />,
         notification: { is_notification: false, amount: 0 },
       },

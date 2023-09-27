@@ -28,6 +28,7 @@ import {
   Booking,
   Inbox,
   Event,
+  Logout,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -51,6 +52,7 @@ const Routing = () => {
         <Route path="/booking" element={<Booking />} />
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/event" element={<Event />} />
+        <Route path="/logout" element={<Logout />} />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard />} />
         <Route path="/orders" element={<Orders />} />

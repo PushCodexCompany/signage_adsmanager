@@ -79,7 +79,8 @@ const Navbar = () => {
   return (
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
       <div className="flex">
-        {select_campaign && select_merchandise ? (
+        {/* {select_campaign && select_merchandise ? ( */}
+        {select_campaign ? (
           <div className="lg:hidden">
             <NavButton
               title="Menu"

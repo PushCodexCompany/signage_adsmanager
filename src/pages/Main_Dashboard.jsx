@@ -63,9 +63,6 @@ const Main_Dashboard = () => {
     if (!select_campaign) {
       window.location.href = "/brand";
     }
-    if (!select_merchandise) {
-      window.location.href = "/merchandise";
-    }
   }, []);
 
   return (

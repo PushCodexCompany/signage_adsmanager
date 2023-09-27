@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import {
@@ -134,8 +134,10 @@ const Event = () => {
     "North",
     "Flagship",
     "Beauty",
-    "Potrait",
+    "Portrait",
   ]);
+
+  useEffect(() => {}, []);
 
   const toggleSectorSelect = () => {
     setIsSectorOpen((prevIsOpen) => !prevIsOpen);
