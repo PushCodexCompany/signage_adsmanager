@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Header } from "../components";
 
 import {
@@ -19,6 +19,70 @@ import {
   IoIosClose,
   IoIosCheckmark,
 } from "react-icons/io";
+
+const _tags = [
+  {
+    name: "STW Promotion",
+    color: "#6427fe",
+  },
+  {
+    name: "Credit Card",
+    color: "#00cb45",
+  },
+  {
+    name: "Category",
+    color: "#fe8d25",
+  },
+  {
+    name: "Brands",
+    color: "#e02020",
+  },
+  {
+    name: "Other",
+    color: "#b6b3b3",
+  },
+];
+
+const styles = {
+  tag: {
+    padding: 4,
+    height: "60px",
+    textAlign: "center",
+    position: "relative",
+    borderRightWidth: ".1em",
+    borderRightStyle: "solid",
+    borderRightColor: "white",
+    boxSizing: "border-box",
+    borderLeftWidth: ".1em",
+    borderLeftStyle: "solid",
+    borderLeftColor: "white",
+  },
+  tagText: {
+    color: "white",
+    fontWeight: 700,
+    userSelect: "none",
+    display: "block",
+    overflow: "hidden",
+    fontFamily: "serif",
+  },
+  sliderButton: {
+    width: "2em",
+    height: "2em",
+    backgroundColor: "white",
+    position: "absolute",
+    borderRadius: "2em",
+    right: "calc(-1.1em)",
+    top: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    bottom: 0,
+    margin: "auto",
+    zIndex: 10,
+    cursor: "ew-resize",
+    userSelect: "none",
+  },
+};
 
 const Bar = ({ type = "none" }) => {
   return (
@@ -75,6 +139,170 @@ const Bar = ({ type = "none" }) => {
     </>
   );
 };
+////////////////////////////////////////////////////////////////
+
+const TagSection = ({
+  name,
+  color,
+  width,
+  isFirst,
+  isLast,
+  onSliderSelect,
+}) => {
+  const tagClasses = `tag ${isFirst ? "rounded-l-full" : ""} ${
+    isLast ? "rounded-r-full" : ""
+  }`;
+  const sliderButtonClasses = `slider-button`;
+  return (
+    <div
+      className={tagClasses}
+      style={{
+        ...styles.tag,
+        background: color,
+        width: width + "%",
+      }}
+    >
+      <div>
+        <span className="text-white text-sm font-bold font-poppins">
+          {name}
+        </span>
+      </div>
+      <div>
+        <span className="text-white text-sm font-bold font-poppins">
+          {width + "%"}
+        </span>
+      </div>
+      {!isLast ? (
+        <div
+          style={styles.sliderButton}
+          className={sliderButtonClasses}
+          onPointerDown={onSliderSelect}
+        >
+          <img
+            src={"https://assets.codepen.io/576444/slider-arrows.svg"}
+            className="h-30"
+          />
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
+  );
+};
+
+const getPercentage = (containerWidth, distanceMoved) => {
+  return (distanceMoved / containerWidth) * 100;
+};
+
+const limitNumberWithinRange = (value, min, max) => {
+  return Math.min(Math.max(value, min), max);
+};
+
+const nearestN = (N, number) => Math.ceil(number / N) * N;
+
+const TagSlider = () => {
+  const defaultPercentages = [60, 10, 10, 10, 10];
+
+  const [widths, setWidths] = useState(defaultPercentages);
+  const [tags, setTags] = useState(_tags);
+  const TagSliderRef = useRef(null);
+
+  return (
+    <>
+      <div
+        ref={TagSliderRef}
+        style={{
+          width: "100%",
+          display: "flex",
+        }}
+      >
+        {_tags.map((tag, index) => (
+          <TagSection
+            width={widths[index]}
+            key={index}
+            name={tag.name}
+            color={tag.color}
+            isFirst={index === 0}
+            isLast={index === _tags.length - 1}
+            onSliderSelect={(e) => {
+              e.preventDefault();
+              document.body.style.cursor = "ew-resize";
+              const startDragX = e.pageX;
+              const sliderWidth = TagSliderRef.current.offsetWidth;
+              const resize = (e) => {
+                e.preventDefault();
+                const endDragX = e.touches ? e.touches[0].pageX : e.pageX;
+                const distanceMoved = endDragX - startDragX;
+                const maxPercent = widths[index] + widths[index + 1];
+                const percentageMoved = nearestN(
+                  1,
+                  getPercentage(sliderWidth, distanceMoved)
+                );
+                const _widths = widths.slice();
+                const prevPercentage = _widths[index];
+                const newPercentage = prevPercentage + percentageMoved;
+                const currentSectionWidth = limitNumberWithinRange(
+                  newPercentage,
+                  0,
+                  maxPercent
+                );
+                _widths[index] = currentSectionWidth;
+                const nextSectionIndex = index + 1;
+                const nextSectionNewPercentage =
+                  _widths[nextSectionIndex] - percentageMoved;
+                const nextSectionWidth = limitNumberWithinRange(
+                  nextSectionNewPercentage,
+                  0,
+                  maxPercent
+                );
+                _widths[nextSectionIndex] = nextSectionWidth;
+                if (tags.length > 2) {
+                  if (_widths[index] === 0) {
+                    _widths[nextSectionIndex] = maxPercent;
+                    _widths.splice(index, 1);
+                    setTags(tags.filter((t, i) => i !== index));
+                    removeEventListener();
+                  }
+                  if (_widths[nextSectionIndex] === 0) {
+                    _widths[index] = maxPercent;
+                    _widths.splice(nextSectionIndex, 1);
+                    setTags(tags.filter((t, i) => i !== nextSectionIndex));
+                    removeEventListener();
+                  }
+                }
+                setWidths(_widths);
+              };
+              window.addEventListener("pointermove", resize);
+              window.addEventListener("touchmove", resize);
+              const removeEventListener = () => {
+                window.removeEventListener("pointermove", resize);
+                window.removeEventListener("touchmove", resize);
+              };
+
+              const handleEventUp = (e) => {
+                e.preventDefault();
+                document.body.style.cursor = "initial";
+                removeEventListener();
+              };
+              window.addEventListener("touchend", handleEventUp);
+              window.addEventListener("pointerup", handleEventUp);
+            }}
+          />
+        ))}
+      </div>
+      <button
+        onClick={() => {
+          setTags(_tags);
+          setWidths(new Array(_tags.length).fill(100 / _tags.length));
+        }}
+        style={{ marginTop: 10 }}
+      >
+        Refresh
+      </button>
+    </>
+  );
+};
+////////////////////////////////////////////////////////////////
 
 const LeftPanel = ({ is_disable }) => {
   const [isChecked, setIsChecked] = useState(false);
@@ -1008,34 +1236,36 @@ const Tabs = () => {
             </div>
             <div className={openTab === 3 ? "block" : "hidden"} id="link3">
               {/* Media Rules */}
-              <Bar type="color" />
-              <div class="flex flex-col lg:flex-row justify-center lg:text-left">
-                {/* Left Panal */}
-                <LeftPanel is_disable={true} />
+              <div className="container mx-auto mt-10">
+                <TagSlider />
+                <div class="flex flex-col lg:flex-row justify-center lg:text-left">
+                  {/* Left Panal */}
+                  <LeftPanel is_disable={true} />
 
-                {/* Middle Button */}
-                <a
-                  onClick={() => alert("click")}
-                  class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
-                >
-                  <div className="p-2 justify-center flex mt-1">
-                    <svg
-                      width="61"
-                      height="33"
-                      viewBox="0 0 33 61"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M1.36216 1.35394C3.15618 -0.451313 6.06512 -0.451313 7.85909 1.35394L30.312 23.9684C33.8972 27.5796 33.8958 33.4308 30.3092 37.0401L7.84256 59.6458C6.04859 61.4514 3.13965 61.4514 1.34558 59.6458C-0.448524 57.8407 -0.448524 54.9137 1.34558 53.1086L20.5745 33.7604C22.3689 31.9553 22.3684 29.0283 20.5745 27.2232L1.36216 7.89121C-0.431944 6.08601 -0.431944 3.15914 1.36216 1.35394Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </div>
-                </a>
+                  {/* Middle Button */}
+                  <a
+                    onClick={() => alert("click")}
+                    class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
+                  >
+                    <div className="p-2 justify-center flex mt-1">
+                      <svg
+                        width="61"
+                        height="33"
+                        viewBox="0 0 33 61"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1.36216 1.35394C3.15618 -0.451313 6.06512 -0.451313 7.85909 1.35394L30.312 23.9684C33.8972 27.5796 33.8958 33.4308 30.3092 37.0401L7.84256 59.6458C6.04859 61.4514 3.13965 61.4514 1.34558 59.6458C-0.448524 57.8407 -0.448524 54.9137 1.34558 53.1086L20.5745 33.7604C22.3689 31.9553 22.3684 29.0283 20.5745 27.2232L1.36216 7.89121C-0.431944 6.08601 -0.431944 3.15914 1.36216 1.35394Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </div>
+                  </a>
 
-                {/* Right Panel */}
-                <RightPanel />
+                  {/* Right Panel */}
+                  <RightPanel />
+                </div>
               </div>
             </div>
           </div>
