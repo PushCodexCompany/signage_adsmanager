@@ -197,8 +197,12 @@ const TagSection = ({
         width: width + "%",
       }}
     >
-      <span style={styles.tagText}>{name}</span>
-      <span style={{ ...styles.tagText, fontSize: 12 }}>{width + "%"}</span>
+      <span className="text-white font-[700] select-none block overflow-hidden">
+        <div className="font-poppins">{name} </div>
+      </span>
+      <span className="text-white text-sm font-[700] select-none block overflow-hidden">
+        <div className="font-poppins">{width + "%"} </div>
+      </span>
 
       <div
         style={styles.sliderButton}
