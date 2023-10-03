@@ -4,6 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const Header = ({ title, subtitle }) => {
   const pathname = window.location.pathname.split("/").filter((x) => x);
+
   return (
     <>
       {/* <div className=" mb-10">
@@ -28,7 +29,7 @@ const Header = ({ title, subtitle }) => {
                 <div class="flex items-center">
                   <IoIosArrowForward />
                   <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400 font-poppins">
-                    {items}
+                    {items.charAt(0).toUpperCase() + items.slice(1)}
                   </span>
                 </div>
               </li>
@@ -40,7 +41,7 @@ const Header = ({ title, subtitle }) => {
                     href={to}
                     class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins"
                   >
-                    {items}
+                    {items.charAt(0).toUpperCase() + items.slice(1)}
                   </a>
                 </div>
               </li>

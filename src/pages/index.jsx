@@ -1,4 +1,4 @@
-export { default as Dashboard } from "./Dashboard";
+export { default as Dashboard_mockup } from "./Dashboard_mockup";
 export { default as Kanban } from "./Kanban";
 export { default as Orders } from "./Orders";
 export { default as Employees } from "./Employees";
@@ -18,6 +18,7 @@ export { default as Stacked } from "./Charts/Stacked";
 // Production
 
 export { default as Main_Dashboard } from "./Main_Dashboard";
+export { default as Dashboard } from "./Dashboard";
 export { default as Pdf } from "./Pdf";
 export { default as Login } from "./Login";
 export { default as Brands } from "./Brands";

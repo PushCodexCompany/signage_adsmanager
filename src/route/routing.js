@@ -29,6 +29,7 @@ import {
   Inbox,
   Event,
   Logout,
+  Dashboard_mockup,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -41,7 +42,7 @@ const Routing = () => {
       <Routes>
         {/* Production */}
         <Route exact path="/" element={<Brands />} />
-        <Route path="/dashboard" element={<Main_Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pdf" element={<Pdf />} />
         <Route path="/brand" element={<Brands />} />
         <Route path="/merchandise" element={<Merchandise />} />
@@ -54,7 +55,7 @@ const Routing = () => {
         <Route path="/event" element={<Event />} />
         <Route path="/logout" element={<Logout />} />
         {/* Components */}
-        <Route path="/dashboard_mockup" element={<Dashboard />} />
+        <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/employees" element={<Employees />} />
         <Route path="/customers" element={<Customers />} />

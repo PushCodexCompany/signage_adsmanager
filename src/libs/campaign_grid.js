@@ -10,9 +10,9 @@ import { IoIosArrowDown } from "react-icons/io";
 const gridHeaderTemplate = (props) => {
   return (
     <div>
-      <span className="text-lg font-poppins text-[#59606C]">
+      <div className="text-lg font-poppins text-[#59606C]">
         {props.headerText}
-      </span>
+      </div>
     </div>
   );
 };

@@ -122,7 +122,7 @@ const Navbar = () => {
           icon={<BsChatLeft />}
         /> */}
 
-        {select_campaign && select_merchandise ? (
+        {select_campaign ? (
           <NavButton
             title="Notification"
             dotColor="red"

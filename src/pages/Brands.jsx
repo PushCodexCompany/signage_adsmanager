@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
 
 import { Header } from "../components";
-import centralImg from "../assets/img/central.jpeg";
+import centralImg from "../assets/img/central.png";
+import robinsonImg from "../assets/img/robinson.png";
 import superSportImg from "../assets/img/supersport.png";
 import centralRetailImg from "../assets/img/centralretail.jpeg";
 import cmgImg from "../assets/img/cmg.jpg";
@@ -10,47 +11,53 @@ import sevenImg from "../assets/img/seven.png";
 import makroProImg from "../assets/img/makropro.jpeg";
 import lotusImg from "../assets/img/lotus.png";
 import centralPatImg from "../assets/img/centralpattana.jpg";
+import add_new_img from "../assets/img/add_new_brand.png";
 
 const mock_data = {
   1: {
-    name: "Central",
+    name: "CDS",
     img: centralImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "Central Department Store",
   },
   2: {
     name: "Super Sports",
     img: superSportImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "Super Sports",
   },
   3: {
     name: "Central Retail",
     img: centralRetailImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "Central Retail",
   },
   4: {
     name: "CMG",
     img: cmgImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "CMG",
   },
   5: {
     name: "7-11",
     img: sevenImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "7-11",
   },
   6: {
     name: "Makro Pro",
     img: makroProImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "Makro Pro",
   },
   7: {
     name: "Lotus's",
     img: lotusImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "Lotus's",
   },
   8: {
     name: "Central Pattana",
     img: centralPatImg,
-    des: "Discover Saint Laurent Official Online Store. Explore the latest Collection of luxury",
+    des: "Central Pattana",
+  },
+  9: {
+    name: "Robinson",
+    img: robinsonImg,
+    des: "Robinson Department Store",
   },
 };
 
@@ -79,31 +86,37 @@ const Brands = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <div className="text-6xl font-bold text-center font-poppins">
+      <div className="text-6xl font-[700] text-center font-poppins">
         Select Your Brand
       </div>
-      <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
-        Lorem ipsum is simply dummy text of the printing and typesetting
-        industry.
+      <div className="text-xl text-center text-slate-500 mb-20 font-poppins font-[500]">
+        Choose your brand from the list to access brand-specific content and
+        bookings.
       </div>
 
-      <div
-        class={
-          user.brand.length === 1
-            ? "grid grid-cols-1 gap-4 sm:grid-cols-1"
-            : user.brand.length === 2
-            ? "grid grid-cols-1 gap-4 sm:grid-cols-2"
-            : user.brand.length === 3
-            ? "grid grid-cols-1 gap-4 sm:grid-cols-3"
-            : "grid grid-cols-1 gap-4 sm:grid-cols-4"
-        }
-      >
-        {user.brand.map((items) => (
-          <div>
+      <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
+        <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
+          <button onClick={() => alert("addnew")}>
+            <img
+              className="block ml-auto mr-auto mt-30px w-4/5 rounded-3xl"
+              src={add_new_img}
+              alt={"add new brand"}
+            />
+            <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins">
+              Add new Brand
+            </div>
+          </button>
+        </div>
+        {user.brand.map((items, key) => (
+          <div
+            key={key}
+            className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center"
+          >
             <button onClick={() => selectCampaign(items)}>
               <img
-                className={`block ml-auto mr-auto mt-30px w-2/5 rounded-3xl `}
+                className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
                 src={mock_data[items].img}
+                alt={mock_data[items].name}
               />
               <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
                 {mock_data[items].name}

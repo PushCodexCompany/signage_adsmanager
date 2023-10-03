@@ -62,7 +62,7 @@ const Edit_Merchandises = () => {
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="Page" title="Setting" />
       <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
-        <text>Create Screen</text>
+        <text>Create Brand</text>
       </div>
       <div class="flex flex-col lg:flex-row">
         <div class="w-full lg:w-1/2 p-4">
@@ -144,7 +144,7 @@ const Edit_Merchandises = () => {
             </div>
           </div>
 
-          <div class="flex items-center mt-10">
+          {/* <div class="flex items-center mt-10">
             <input
               placeholder="Full Name"
               class="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
@@ -177,7 +177,7 @@ const Edit_Merchandises = () => {
                 class="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
-          </div>
+          </div> */}
 
           <div class="mt-10 mb-5 font-bold text-2xl">
             <text>Billing Address</text>

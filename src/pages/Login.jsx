@@ -40,12 +40,11 @@ const Login = () => {
         {/* Right panel */}
         <div className="w-full md:w-1/2 mt-36 xl:mt-0 bg-white flex flex-col justify-center items-center p-6 md:p-12">
           <form className="w-full max-w-md" onSubmit={(e) => handleSubmit(e)}>
-            <h1 className="text-gray-800 font-bold text-4xl mb-10 text-center font-poppins">
-              Easily Manage <br /> Your Booking.
+            <h1 className="text-gray-800 font-[700] text-4xl mb-4 text-center font-poppins">
+              Elevate Your Advertising Game with Our Digital Signage Solutions
             </h1>
-            <p className="text-sm font-normal text-gray-600 mb-8 md:mb-12 text-center font-poppins">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
+            <p className="text-sm font-[300] text-gray-600 mb-8 md:mb-12 text-center font-poppins">
+              Sign in to unleash the power of digital advertising
             </p>
 
             <div className="mb-4">

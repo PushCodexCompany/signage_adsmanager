@@ -1,395 +1,377 @@
-import React from "react";
-import { BsCurrencyDollar } from "react-icons/bs";
-
-import { IoIosMore } from "react-icons/io";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-
-import { Stacked, Pie, Button, LineChart, SparkLine } from "../components";
+import React, { useEffect, useState } from "react";
+import { Header } from "../components";
+import { MdOutlineCalendarToday, MdCalendarToday } from "react-icons/md";
+import central_img from "../assets/img/central.png";
 import {
-  earningData,
-  medicalproBranding,
-  recentTransactions,
-  weeklyStats,
-  dropdownData,
-  SparklineAreaData,
-  ecomPieChartData,
-} from "../data/dummy";
-import { useStateContext } from "../contexts/ContextProvider";
-import product9 from "../data/product9.jpg";
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Doughnut, Line } from "react-chartjs-2";
 
-const DropDown = ({ currentMode }) => (
-  <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
-    <DropDownListComponent
-      id="time"
-      fields={{ text: "Time", value: "Id" }}
-      style={{ border: "none", color: currentMode === "Dark" && "white" }}
-      value="1"
-      dataSource={dropdownData}
-      popupHeight="220px"
-      popupWidth="120px"
-    />
-  </div>
-);
+import { ImArrowUp, ImArrowDown } from "react-icons/im";
+
+import {
+  GridComponent,
+  Inject,
+  ColumnsDirective,
+  ColumnDirective,
+  Search,
+  Page,
+} from "@syncfusion/ej2-react-grids";
+
+import { dashboardData, dashboardGrid } from "../libs/dashboard_grid";
 
 const Dashboard = () => {
-  const { currentColor, currentMode } = useStateContext();
+  const [isYearOpen, setIsYearOpen] = useState(false);
+  const [isUp, setIsUp] = useState(true);
+
+  const toggleYearSelect = () => {
+    setIsYearOpen((prevIsOpen) => !prevIsOpen);
+  };
+
+  const RightPanel = () => {
+    const PieChart = () => {
+      ChartJS.register(
+        ArcElement,
+        Tooltip,
+        Legend,
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title
+      );
+
+      const data = {
+        datasets: [
+          {
+            label: "Total Earning",
+            data: [10, 10, 10],
+            backgroundColor: ["#5125BC", "#706195", "#A47FFE"],
+            borderColor: ["#808080", "#808080", "#808080"],
+            borderWidth: 1,
+          },
+        ],
+      };
+
+      const options = {
+        cutout: 120, // Adjust this value to control the thickness
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      };
+
+      return (
+        <div className="flex items-center justify-center">
+          <div className="relative w-[150px] h-[150px] lg:w-[280px] lg:h-[280px]">
+            <Doughnut data={data} options={options} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="lg:text-5xl text-2xl font-bold flex ">500K</div>
+              {isUp ? (
+                <div className="flex lg:h-12 items-end">
+                  <ImArrowUp
+                    color="#05EF00"
+                    className="relative bottom-[3px] lg:bottom-[6px]"
+                  />
+                  <div className="text-[#05EF00] font-poppins font-bold">
+                    10%
+                  </div>
+                </div>
+              ) : (
+                <div className="flex lg:h-12 items-end ">
+                  <ImArrowDown
+                    color="red"
+                    className="relative bottom-[14px] lg:bottom-[6px]"
+                  />
+                  <div className="text-red-600 font-poppins font-bold">10%</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const TotalSection = () => {
+      return (
+        <>
+          <div className="flex items-center justify-center mt-2">
+            <img className="w-2/5 rounded-md" src={central_img} />
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="font-poppins text-sm lg:text-2xl font-bold">
+              CDS
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="font-poppins text-[6px] lg:text-sm text-gray-400">
+              Central Department Store
+            </div>
+          </div>
+          <div className="flex mt-5">
+            <div class="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
+              574
+            </div>
+            <div class="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
+              1245
+            </div>
+            <div class="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
+              148
+            </div>
+          </div>
+          <div className="flex mb-5">
+            <div class="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
+              Total Screen
+            </div>
+            <div class="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
+              Total Content
+            </div>
+            <div class="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
+              Total Booking
+            </div>
+          </div>
+        </>
+      );
+    };
+
+    return (
+      <div class="col-span-2 row-span-4 ">
+        <div className="border border-gray-200 rounded-lg">
+          <TotalSection />
+        </div>
+        <div className="border border-gray-200 rounded-lg mt-8">
+          <div className="flex items-center justify-center font-semibold font-poppins lg:text-xl mt-2">
+            Total Earning 2023
+          </div>
+          <div className="flex item-center justify-center mt-10">
+            <PieChart />
+          </div>
+          <div className="space-y-2 mt-3 p-1 mb-5">
+            <div className="flex border border-gray-200 rounded-lg ">
+              <div className="w-[21px] h-[55px] ml-2 mt-1 bg-[#5125BC] rounded-lg" />
+              <div className="space-y-[-3px]">
+                <div className="flex justify-start items-center ml-2 text-gray-600 font-poppins text-xl">
+                  YTD Revenue
+                </div>
+                <div className="flex ml-2">
+                  <div className="grid grid-cols-5 gap-4 lg:gap-6">
+                    <div className="flex col-span-4 justify-start items-center font-poppins font-bold text-3xl">
+                      74
+                    </div>
+                    <div className="flex justify-end items-center min-w-0">
+                      <ImArrowUp color="#008A1E" size={15} />
+                      <div className="text-[#008A1E] text-xl font-poppins">
+                        10%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex border border-gray-200 rounded-lg">
+              <div className="w-[21px] h-[55px] ml-2 mt-1 bg-[#A47FFE] rounded-lg" />
+              <div className="space-y-[-3px]">
+                <div className="flex justify-start items-center ml-2 text-gray-600 font-poppins text-xl">
+                  MTD Revenue
+                </div>
+                <div className="flex ml-2">
+                  <div className="grid grid-cols-5 gap-6">
+                    <div className="flex col-span-4 justify-start items-center font-poppins font-bold text-3xl ">
+                      148
+                    </div>
+                    <div className="flex justify-end items-center min-w-0">
+                      <ImArrowUp color="#008A1E" size={15} />
+                      <div className="text-[#008A1E] text-xl font-poppins">
+                        10%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex border border-gray-200 rounded-lg">
+              <div className="w-[21px] h-[55px] ml-2 mt-1 bg-[#706195] rounded-lg" />
+              <div className="space-y-[-3px]">
+                <div className="flex justify-start items-center ml-2 text-gray-600 font-poppins text-xl">
+                  Number of Brand Booking
+                </div>
+                <div className="flex ml-2">
+                  <div className="grid grid-cols-5 gap-6">
+                    <div className="flex col-span-4 justify-start items-center font-poppins font-bold text-3xl ">
+                      14
+                    </div>
+                    <div className="flex justify-end items-center min-w-0">
+                      <ImArrowUp color="#008A1E" size={15} />
+                      <div className="text-[#008A1E] text-xl font-poppins">
+                        10%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const LeftPanel = () => {
+    const LineChart = () => {
+      const data = {
+        labels: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
+        datasets: [
+          {
+            label: "YTD",
+            data: [20, 25, 10, 29, 15, 35, 40, 48, 55, 51, 65, 85],
+            borderColor: "#5125BC",
+            fill: false,
+          },
+        ],
+      };
+
+      const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+            position: "top",
+          },
+          title: {
+            display: false,
+            text: "Chart.js Line Chart",
+          },
+        },
+        scales: {
+          y: {
+            display: true, // Hide Y axis labels
+            suggestedMin: 0,
+            suggestedMax: 100,
+          },
+          x: {
+            display: true, // Hide X axis labels
+            grid: {
+              display: false, // Hide X-axis grid lines
+            },
+          },
+        },
+      };
+
+      return <Line data={data} options={options} />;
+    };
+
+    return (
+      <>
+        {/* Top */}
+        <div class="col-span-5 row-span-2 ">
+          <div className="flex space-x-3">
+            <div className=" w-2/4">
+              <div className="font-poppins font-bold text-lg mb-3">
+                by Month Store
+              </div>
+              <GridComponent
+                dataSource={dashboardData}
+                height={400}
+                width={"auto"}
+              >
+                <ColumnsDirective>
+                  {dashboardGrid.map((item, index) => (
+                    <ColumnDirective key={index} {...item} />
+                  ))}
+                </ColumnsDirective>
+                <Inject services={[Search, Page]} />
+              </GridComponent>
+            </div>
+            <div className="w-2/4">
+              <div className="font-poppins font-bold text-lg mb-3">
+                by Month YTD
+              </div>
+              <div className="bg-gray-100 h-[445px] border border-gray-200">
+                <div className="h-[80%] mt-5 ">
+                  <LineChart />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Bottom */}
+        <div class="col-span-5 row-span-2 bg-purple-500">
+          <div className="flex space-x-3">
+            <div className="bg-red-500 w-2/3">
+              <div>box</div>
+            </div>
+            <div className="bg-yellow-500 w-1/3">
+              <div className="font-poppins font-bold text-lg">
+                by Category YTD
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
 
   return (
-    <div className="mt-24">
-      <div className="flex flex-wrap lg:flex-nowrap justify-center ">
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-44 rounded-xl w-full lg:w-80 p-8 pt-9 m-3 bg-hero-pattern bg-no-repeat bg-cover bg-center">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="font-bold text-gray-400">Earnings</p>
-              <p className="text-2xl">$63,448.78</p>
-            </div>
-            <button
-              type="button"
-              style={{ backgroundColor: currentColor }}
-              className="text-2xl opacity-0.9 text-white hover:drop-shadow-xl rounded-full  p-4"
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+      <Header title="Home" subtitle="Welcome to Dashboard" />
+
+      <div className="mt-5 flex">
+        <div className=" font-poppins font-semibold text-3xl flex justify-center items-center">
+          Revenue
+        </div>
+        <div className="font-poppins font-semibold text-xl flex justify-center items-center space-x-3 ml-16 lg:ml-28">
+          <div class="relative w-full lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+            <select
+              name="year"
+              id="year"
+              onClick={toggleYearSelect}
+              class="block appearance-none w-full bg-[#f2f2f2]  text-lg font-poppins  rounded p-1 pr-6  "
             >
-              <BsCurrencyDollar />
-            </button>
-          </div>
-          <div className="mt-6">
-            <Button
-              color="white"
-              bgColor={currentColor}
-              text="Download"
-              borderRadius="10px"
-            />
-          </div>
-        </div>
-        <div className="flex m-3 flex-wrap justify-center gap-1 items-center">
-          {earningData.map((item) => (
-            <div
-              key={item.title}
-              className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56  p-4 pt-9 rounded-2xl "
-            >
-              <button
-                type="button"
-                style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-                className="text-2xl opacity-0.9 rounded-full  p-4 hover:drop-shadow-xl"
-              >
-                {item.icon}
-              </button>
-              <p className="mt-3">
-                <span className="text-lg font-semibold">{item.amount}</span>
-                <span className={`text-sm text-${item.pcColor} ml-2`}>
-                  {item.percentage}
-                </span>
-              </p>
-              <p className="text-sm text-gray-400  mt-1">{item.title}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex gap-10 flex-wrap justify-center">
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
-          <div className="flex justify-between">
-            <p className="font-semibold text-xl">Revenue Updates</p>
-            <div className="flex items-center gap-4">
-              <p className="flex items-center gap-2 text-gray-600 hover:drop-shadow-xl">
-                <span>
-                  <IoIosMore />
-                </span>
-                <span>Expense</span>
-              </p>
-              <p className="flex items-center gap-2 text-green-400 hover:drop-shadow-xl">
-                <span>
-                  <IoIosMore />
-                </span>
-                <span>Budget</span>
-              </p>
-            </div>
-          </div>
-          <div className="mt-10 flex gap-10 flex-wrap justify-center">
-            <div className=" border-r-1 border-color m-4 pr-10">
-              <div>
-                <p>
-                  <span className="text-3xl font-semibold">$93,438</span>
-                  <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
-                    23%
-                  </span>
-                </p>
-                <p className="text-gray-500 mt-1">Budget</p>
-              </div>
-              <div className="mt-8">
-                <p className="text-3xl font-semibold">$48,487</p>
-
-                <p className="text-gray-500 mt-1">Expense</p>
-              </div>
-
-              <div className="mt-5">
-                <SparkLine
-                  currentColor={currentColor}
-                  id="line-sparkLine"
-                  type="Line"
-                  height="80px"
-                  width="250px"
-                  data={SparklineAreaData}
-                  color={currentColor}
-                />
-              </div>
-              <div className="mt-10">
-                <Button
-                  color="white"
-                  bgColor={currentColor}
-                  text="Download Report"
-                  borderRadius="10px"
-                />
-              </div>
-            </div>
-            <div>
-              <Stacked currentMode={currentMode} width="320px" height="360px" />
-            </div>
-          </div>
-        </div>
-        <div>
-          <div
-            className=" rounded-2xl md:w-400 p-4 m-3"
-            style={{ backgroundColor: currentColor }}
-          >
-            <div className="flex justify-between items-center ">
-              <p className="font-semibold text-white text-2xl">Earnings</p>
-
-              <div>
-                <p className="text-2xl text-white font-semibold mt-8">
-                  $63,448.78
-                </p>
-                <p className="text-gray-200">Monthly revenue</p>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <SparkLine
-                currentColor={currentColor}
-                id="column-sparkLine"
-                height="100px"
-                type="Column"
-                data={SparklineAreaData}
-                width="320"
-                color="rgb(242, 252, 253)"
-              />
-            </div>
-          </div>
-
-          <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl md:w-400 p-8 m-3 flex justify-center items-center gap-10">
-            <div>
-              <p className="text-2xl font-semibold ">$43,246</p>
-              <p className="text-gray-400">Yearly sales</p>
-            </div>
-
-            <div className="w-40">
-              <Pie
-                id="pie-chart"
-                data={ecomPieChartData}
-                legendVisiblity={false}
-                height="160px"
-              />
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              {isYearOpen ? (
+                <MdCalendarToday size={28} color={"#6425FE"} />
+              ) : (
+                <MdOutlineCalendarToday size={28} color={"#6425FE"} />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex gap-10 m-4 flex-wrap justify-center">
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl">
-          <div className="flex justify-between items-center gap-2">
-            <p className="text-xl font-semibold">Recent Transactions</p>
-            <DropDown currentMode={currentMode} />
-          </div>
-          <div className="mt-10 w-72 md:w-400">
-            {recentTransactions.map((item) => (
-              <div key={item.title} className="flex justify-between mt-4">
-                <div className="flex gap-4">
-                  <button
-                    type="button"
-                    style={{
-                      color: item.iconColor,
-                      backgroundColor: item.iconBg,
-                    }}
-                    className="text-2xl rounded-lg p-4 hover:drop-shadow-xl"
-                  >
-                    {item.icon}
-                  </button>
-                  <div>
-                    <p className="text-md font-semibold">{item.title}</p>
-                    <p className="text-sm text-gray-400">{item.desc}</p>
-                  </div>
-                </div>
-                <p className={`text-${item.pcColor}`}>{item.amount}</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-between items-center mt-5 border-t-1 border-color">
-            <div className="mt-3">
-              <Button
-                color="white"
-                bgColor={currentColor}
-                text="Add"
-                borderRadius="10px"
-              />
-            </div>
-
-            <p className="text-gray-400 text-sm">36 Recent Transactions</p>
-          </div>
-        </div>
-        <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl w-96 md:w-760">
-          <div className="flex justify-between items-center gap-2 mb-10">
-            <p className="text-xl font-semibold">Sales Overview</p>
-            <DropDown currentMode={currentMode} />
-          </div>
-          <div className="md:w-full overflow-auto">
-            <LineChart />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap justify-center">
-        <div className="md:w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
-          <div className="flex justify-between">
-            <p className="text-xl font-semibold">Weekly Stats</p>
-            <button
-              type="button"
-              className="text-xl font-semibold text-gray-500"
-            >
-              <IoIosMore />
-            </button>
-          </div>
-
-          <div className="mt-10 ">
-            {weeklyStats.map((item) => (
-              <div
-                key={item.title}
-                className="flex justify-between mt-4 w-full"
-              >
-                <div className="flex gap-4">
-                  <button
-                    type="button"
-                    style={{ background: item.iconBg }}
-                    className="text-2xl hover:drop-shadow-xl text-white rounded-full p-3"
-                  >
-                    {item.icon}
-                  </button>
-                  <div>
-                    <p className="text-md font-semibold">{item.title}</p>
-                    <p className="text-sm text-gray-400">{item.desc}</p>
-                  </div>
-                </div>
-
-                <p className={`text-${item.pcColor}`}>{item.amount}</p>
-              </div>
-            ))}
-            <div className="mt-4">
-              <SparkLine
-                currentColor={currentColor}
-                id="area-sparkLine"
-                height="160px"
-                type="Area"
-                data={SparklineAreaData}
-                width="320"
-                color="rgb(242, 252, 253)"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
-          <div className="flex justify-between">
-            <p className="text-xl font-semibold">MedicalPro Branding</p>
-            <button
-              type="button"
-              className="text-xl font-semibold text-gray-400"
-            >
-              <IoIosMore />
-            </button>
-          </div>
-          <p className="text-xs cursor-pointer hover:drop-shadow-xl font-semibold rounded-lg w-24 bg-orange-400 py-0.5 px-2 text-gray-200 mt-10">
-            16 APR, 2021
-          </p>
-
-          <div className="flex gap-4 border-b-1 border-color mt-6">
-            {medicalproBranding.data.map((item) => (
-              <div
-                key={item.title}
-                className="border-r-1 border-color pr-4 pb-2"
-              >
-                <p className="text-xs text-gray-400">{item.title}</p>
-                <p className="text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="border-b-1 border-color pb-4 mt-2">
-            <p className="text-md font-semibold mb-2">Teams</p>
-
-            <div className="flex gap-4">
-              {medicalproBranding.teams.map((item) => (
-                <p
-                  key={item.name}
-                  style={{ background: item.color }}
-                  className="cursor-pointer hover:drop-shadow-xl text-white py-0.5 px-3 rounded-lg text-xs"
-                >
-                  {item.name}
-                </p>
-              ))}
-            </div>
-          </div>
-          <div className="mt-2">
-            <p className="text-md font-semibold mb-2">Leaders</p>
-            <div className="flex gap-4">
-              {medicalproBranding.leaders.map((item, index) => (
-                <img
-                  key={index}
-                  className="rounded-full w-8 h-8"
-                  src={item.image}
-                  alt=""
-                />
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-between items-center mt-5 border-t-1 border-color">
-            <div className="mt-3">
-              <Button
-                color="white"
-                bgColor={currentColor}
-                text="Add"
-                borderRadius="10px"
-              />
-            </div>
-
-            <p className="text-gray-400 text-sm">36 Recent Transactions</p>
-          </div>
-        </div>
-        <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
-          <div className="flex justify-between">
-            <p className="text-xl font-semibold">Daily Activities</p>
-            <button
-              type="button"
-              className="text-xl font-semibold text-gray-500"
-            >
-              <IoIosMore />
-            </button>
-          </div>
-          <div className="mt-10">
-            <img className="md:w-96 h-50 " src={product9} alt="" />
-            <div className="mt-8">
-              <p className="font-semibold text-lg">React 18 coming soon!</p>
-              <p className="text-gray-400 ">By Johnathan Doe</p>
-              <p className="mt-8 text-sm text-gray-400">
-                This will be the small description for the news you have shown
-                here. There could be some great info.
-              </p>
-              <div className="mt-3">
-                <Button
-                  color="white"
-                  bgColor={currentColor}
-                  text="Read More"
-                  borderRadius="10px"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="grid grid-rows-4 grid-cols-7 grid-flow-col gap-4 mt-10">
+        {/* Left Panel */}
+        <LeftPanel />
+        {/* RightPanel  */}
+        <RightPanel />
       </div>
     </div>
   );

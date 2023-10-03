@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { Header } from "../components";
 
-import centralImg from "../assets/img/central.jpeg";
+import centralImg from "../assets/img/central.png";
 import superSportImg from "../assets/img/supersport.png";
 import centralRetailImg from "../assets/img/centralretail.jpeg";
 import cmgImg from "../assets/img/cmg.jpg";
@@ -67,7 +67,7 @@ const Main_Dashboard = () => {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header title="DASHBOARD" subtitle="Welcome to Dashboard" />
+      <Header title="Home" subtitle="Welcome to Dashboard" />
 
       <div className="text-4xl font-bold text-center">
         Select Your Merchandise
