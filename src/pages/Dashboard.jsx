@@ -823,9 +823,9 @@ const Dashboard = () => {
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header title="Home" subtitle="Welcome to Dashboard" />
 
-      <div className="grid grid-cols-8 mt-3">
-        <div className="lg:col-span-1 col-span-2">
-          <div className="font-poppins font-semibold text-3xl">Revenue</div>
+      <div className="grid grid-cols-8 mt-10">
+        <div className="lg:col-span-1 col-span-2 ">
+          <div className="font-poppins font-semibold text-2xl">Revenue</div>
         </div>
         <div className="relative lg:col-span-1 col-span-1 lg:ml-12 mr-1">
           <select

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { SiShopware } from "react-icons/si";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { useStateContext } from "../contexts/ContextProvider";
@@ -11,33 +10,16 @@ import Cpn_logo from "../assets/img/logo/cpn.svg";
 import Cpn_vertical_logo from "../assets/img/logo/cpn_vertical.svg";
 
 import {
-  MdOutlineHome,
-  MdOutlineCancel,
-  MdOutlineMenuBook,
   MdOutlineCloudQueue,
-  MdOutlineMoveToInbox,
-  MdOutlineDocumentScanner,
-  MdOutlinePictureAsPdf,
   MdOutlineSettings,
   MdInfoOutline,
   MdOutlineLogout,
-  MdOutlineInsertChartOutlined,
-  MdOutlineBook,
-  MdOutlineEvent,
 } from "react-icons/md";
-import { FiShoppingBag, FiEdit, FiPieChart } from "react-icons/fi";
-import {
-  AiOutlineCalendar,
-  AiOutlineShoppingCart,
-  AiOutlineAreaChart,
-  AiOutlineBarChart,
-  AiOutlineStock,
-} from "react-icons/ai";
-import { IoMdContacts } from "react-icons/io";
-import { RiContactsLine, RiStockLine } from "react-icons/ri";
-import { BsKanban, BsBarChart } from "react-icons/bs";
-import { BiColorFill } from "react-icons/bi";
-import { GiLouvrePyramid } from "react-icons/gi";
+
+import { SlScreenDesktop, SlChart } from "react-icons/sl";
+import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { RiFileEditLine } from "react-icons/ri";
 
 export const links = [
   {
@@ -46,57 +28,82 @@ export const links = [
       {
         name: "Dashboard",
         link: "dashboard",
-        icon: <MdOutlineHome size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "Campaign",
-        link: "campaign",
-        icon: <MdOutlineInsertChartOutlined size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "Ads Media",
-        link: "ads-media",
-        icon: <MdOutlineCloudQueue size={25} />,
+        icon: <HiOutlineChartSquareBar size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
       {
         name: "Booking",
         link: "booking",
-        icon: <MdOutlineMenuBook size={25} />,
+        icon: <RiFileEditLine size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
       {
-        name: "Event",
-        link: "event",
-        icon: <MdOutlineEvent size={25} />,
+        name: "Screens",
+        link: "screen",
+        icon: <SlScreenDesktop size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
       {
-        name: "Invoices",
-        link: "invoices",
-        icon: <MdOutlineBook size={25} />,
-        notification: { is_notification: true, amount: 2 },
-      },
-      {
-        name: "Inbox",
-        link: "inbox",
-        icon: <MdOutlineMoveToInbox size={25} />,
-        notification: { is_notification: true, amount: 25 },
-      },
-      {
-        name: "Log",
-        link: "log",
-        icon: <MdOutlineDocumentScanner size={25} />,
+        name: "Statics",
+        link: "static",
+        icon: <HiOutlineNewspaper size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
       {
-        name: "Pdf",
-        link: "pdf",
-        icon: <MdOutlinePictureAsPdf size={25} />,
+        name: "Ad Media",
+        link: "ads-media",
+        icon: <MdOutlineCloudQueue size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
+      {
+        name: "Merchandise",
+        link: "merchandise",
+        icon: <IoDocumentTextOutline size={27} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      {
+        name: "Analytics",
+        link: "analytic",
+        icon: <SlChart size={27} />,
+        notification: { is_notification: false, amount: 0 },
+      },
+      // {
+      //   name: "Campaign",
+      //   link: "campaign",
+      //   icon: <MdOutlineInsertChartOutlined size={27} />,
+      //   notification: { is_notification: false, amount: 0 },
+      // },
+
+      // {
+      //   name: "Event",
+      //   link: "event",
+      //   icon: <MdOutlineEvent size={27} />,
+      //   notification: { is_notification: false, amount: 0 },
+      // },
+      // {
+      //   name: "Invoices",
+      //   link: "invoices",
+      //   icon: <MdOutlineBook size={27} />,
+      //   notification: { is_notification: true, amount: 2 },
+      // },
+      // {
+      //   name: "Inbox",
+      //   link: "inbox",
+      //   icon: <MdOutlineMoveToInbox size={27} />,
+      //   notification: { is_notification: true, amount: 27 },
+      // },
+      // {
+      //   name: "Log",
+      //   link: "log",
+      //   icon: <MdOutlineDocumentScanner size={27} />,
+      //   notification: { is_notification: false, amount: 0 },
+      // },
+      // {
+      //   name: "Pdf",
+      //   link: "pdf",
+      //   icon: <MdOutlinePictureAsPdf size={27} />,
+      //   notification: { is_notification: false, amount: 0 },
+      // },
     ],
   },
   {
@@ -105,125 +112,125 @@ export const links = [
       {
         name: "setting",
         link: "setting",
-        icon: <MdOutlineSettings size={25} />,
+        icon: <MdOutlineSettings size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
       {
         name: "Help & Center",
         link: "help_center",
-        icon: <MdInfoOutline size={25} />,
+        icon: <MdInfoOutline size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
       {
         name: "Log Out",
         link: "logout",
-        icon: <MdOutlineLogout size={25} />,
+        icon: <MdOutlineLogout size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
     ],
   },
-  {
-    title: "Component",
-    links: [
-      {
-        name: "dashboard_mockup",
-        link: "dashboard_mockup",
-        icon: <FiShoppingBag size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "orders",
-        link: "orders",
-        icon: <AiOutlineShoppingCart size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "employees",
-        link: "employees",
-        icon: <IoMdContacts size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "customers",
-        link: "customers",
-        icon: <RiContactsLine size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "calendar",
-        link: "calendar",
-        icon: <AiOutlineCalendar size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "kanban",
-        link: "kanban",
-        icon: <BsKanban size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "editor",
-        link: "editor",
-        icon: <FiEdit size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "color-picker",
-        link: "color-picker",
-        icon: <BiColorFill size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "line",
-        link: "line",
-        icon: <AiOutlineStock size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "area",
-        link: "area",
-        icon: <AiOutlineAreaChart size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
+  // {
+  //   title: "Component",
+  //   links: [
+  //     {
+  //       name: "dashboard_mockup",
+  //       link: "dashboard_mockup",
+  //       icon: <FiShoppingBag size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "orders",
+  //       link: "orders",
+  //       icon: <AiOutlineShoppingCart size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "employees",
+  //       link: "employees",
+  //       icon: <IoMdContacts size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "customers",
+  //       link: "customers",
+  //       icon: <RiContactsLine size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "calendar",
+  //       link: "calendar",
+  //       icon: <AiOutlineCalendar size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "kanban",
+  //       link: "kanban",
+  //       icon: <BsKanban size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "editor",
+  //       link: "editor",
+  //       icon: <FiEdit size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "color-picker",
+  //       link: "color-picker",
+  //       icon: <BiColorFill size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "line",
+  //       link: "line",
+  //       icon: <AiOutlineStock size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "area",
+  //       link: "area",
+  //       icon: <AiOutlineAreaChart size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
 
-      {
-        name: "bar",
-        link: "bar",
-        icon: <AiOutlineBarChart size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "pie",
-        link: "pie",
-        icon: <FiPieChart size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "financial",
-        link: "financial",
-        icon: <RiStockLine size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "color-mapping",
-        link: "color-mapping",
-        icon: <BsBarChart size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "pyramid",
-        link: "pyramid",
-        icon: <GiLouvrePyramid size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-      {
-        name: "stacked",
-        link: "stacked",
-        icon: <AiOutlineBarChart size={25} />,
-        notification: { is_notification: false, amount: 0 },
-      },
-    ],
-  },
+  //     {
+  //       name: "bar",
+  //       link: "bar",
+  //       icon: <AiOutlineBarChart size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "pie",
+  //       link: "pie",
+  //       icon: <FiPieChart size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "financial",
+  //       link: "financial",
+  //       icon: <RiStockLine size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "color-mapping",
+  //       link: "color-mapping",
+  //       icon: <BsBarChart size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "pyramid",
+  //       link: "pyramid",
+  //       icon: <GiLouvrePyramid size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //     {
+  //       name: "stacked",
+  //       link: "stacked",
+  //       icon: <AiOutlineBarChart size={27} />,
+  //       notification: { is_notification: false, amount: 0 },
+  //     },
+  //   ],
+  // },
 ];
 
 const Sidebar = () => {
@@ -316,9 +323,9 @@ const Sidebar = () => {
                     }
                   >
                     {link.icon}
-                    <span className="capitalize text-xs font-poppins">
+                    <div className="capitalize text-sm font-poppins ">
                       {link.name}
-                    </span>
+                    </div>
                     {link.notification.is_notification ? (
                       <div className="bg-[#6427FE] w-[35px] h-[35px] rounded-full ml-auto">
                         <div className="mt-[10px] text-xs font-bold text-white text-center font-poppins">

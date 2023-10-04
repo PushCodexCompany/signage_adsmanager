@@ -85,13 +85,8 @@ const Merchandise = () => {
     setMerchandise(brand_merchandise[select_campaign.brand_id]);
   };
 
-  const selectMerchandise = (merch_id) => {
-    const status = User.saveSelectedMerchandise(merch_id);
-    if (status) {
-      window.location.href = "/dashboard";
-    } else {
-      console.log("error select merchandise");
-    }
+  const selectMerchandise = (merchendise) => {
+    alert(`Select : ${merchendise.name}`);
   };
 
   return (
@@ -117,7 +112,7 @@ const Merchandise = () => {
       >
         {merchandise.map((items) => (
           <div>
-            <button onClick={() => selectMerchandise(items.id)}>
+            <button onClick={() => selectMerchandise(items)}>
               <img
                 className={`block ml-auto mr-auto mt-30px w-3/5 rounded-3xl `}
                 src={items.img}

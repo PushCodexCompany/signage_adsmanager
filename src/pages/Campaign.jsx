@@ -143,52 +143,8 @@ const Bar = ({ type = "none" }) => {
 };
 ////////////////////////////////////////////////////////////////
 
-const TagSection = ({
-  name,
-  color,
-  width,
-  isFirst,
-  isLast,
-  onSliderSelect,
-}) => {
-  // const tagClasses = `tag ${isFirst ? "rounded-l-full" : ""} ${
-  //   isLast ? "rounded-r-full" : ""
-  // }`;
-  // const sliderButtonClasses = `slider-button`;
+const TagSection = ({ name, color, width, onSliderSelect }) => {
   return (
-    // <div
-    //   className={tagClasses}
-    //   style={{
-    //     ...styles.tag,
-    //     background: color,
-    //     width: width + "%",
-    //   }}
-    // >
-    //   <div>
-    //     <span className="text-white text-sm font-bold font-poppins">
-    //       {name}
-    //     </span>
-    //   </div>
-    //   <div>
-    //     <span className="text-white text-sm font-bold font-poppins">
-    //       {width + "%"}
-    //     </span>
-    //   </div>
-    //   {!isLast ? (
-    //     <div
-    //       style={styles.sliderButton}
-    //       className={sliderButtonClasses}
-    //       onPointerDown={onSliderSelect}
-    //     >
-    //       <img
-    //         src={"https://assets.codepen.io/576444/slider-arrows.svg"}
-    //         className="h-30"
-    //       />
-    //     </div>
-    //   ) : (
-    //     ""
-    //   )}
-    // </div>
     <div
       className="tag"
       style={{
@@ -227,127 +183,6 @@ const limitNumberWithinRange = (value, min, max) => {
 };
 
 const nearestN = (N, number) => Math.ceil(number / N) * N;
-
-// const TagSlider = () => {
-//   const defaultPercentages = [60, 10, 10, 10, 10];
-
-//   const [widths, setWidths] = useState(defaultPercentages);
-//   const [tags, setTags] = useState(_tags);
-//   const TagSliderRef = useRef(null);
-
-//   const updateWidths = (newWidths, startIndex) => {
-//     // Ensure the sum of percentages is always 100%
-//     const totalPercentage = newWidths.reduce((sum, width) => sum + width, 0);
-//     if (totalPercentage === 100) {
-//       setWidths(newWidths);
-//     } else {
-//       // If the sum is not 100%, adjust the last section accordingly
-//       const adjustedWidths = [...newWidths];
-//       const lastIndex = adjustedWidths.length - 1;
-//       adjustedWidths[lastIndex] =
-//         100 -
-//         adjustedWidths
-//           .slice(0, lastIndex)
-//           .reduce((sum, width) => sum + width, 0);
-//       setWidths(adjustedWidths);
-//     }
-//   };
-
-//   return (
-//     <>
-//       <div
-//         ref={TagSliderRef}
-//         style={{
-//           width: "100%",
-//           display: "flex",
-//         }}
-//       >
-//         {_tags.map((tag, index) => (
-//           <TagSection
-//             width={widths[index]}
-//             key={index}
-//             name={tag.name}
-//             color={tag.color}
-//             isFirst={index === 0}
-//             isLast={index === _tags.length - 1}
-//             onSliderSelect={(e) => {
-//               e.preventDefault();
-//               document.body.style.cursor = "ew-resize";
-//               const startDragX = e.pageX;
-//               const sliderWidth = TagSliderRef.current.offsetWidth;
-//               const resize = (e) => {
-//                 e.preventDefault();
-//                 const endDragX = e.touches ? e.touches[0].pageX : e.pageX;
-//                 const distanceMoved = endDragX - startDragX;
-//                 const maxPercent = widths[index] + widths[index + 1];
-//                 const percentageMoved = nearestN(
-//                   1,
-//                   getPercentage(sliderWidth, distanceMoved)
-//                 );
-//                 const _widths = widths.slice();
-//                 const prevPercentage = _widths[index];
-//                 const newPercentage = prevPercentage + percentageMoved;
-//                 const currentSectionWidth = limitNumberWithinRange(
-//                   newPercentage,
-//                   0,
-//                   maxPercent
-//                 );
-//                 _widths[index] = currentSectionWidth;
-//                 const nextSectionIndex = index + 1;
-//                 const nextSectionNewPercentage =
-//                   _widths[nextSectionIndex] - percentageMoved;
-//                 const nextSectionWidth = limitNumberWithinRange(
-//                   nextSectionNewPercentage,
-//                   0,
-//                   maxPercent
-//                 );
-//                 _widths[nextSectionIndex] = nextSectionWidth;
-//                 if (tags.length > 2) {
-//                   if (_widths[index] === 0) {
-//                     _widths[nextSectionIndex] = maxPercent;
-//                     _widths.splice(index, 1);
-//                     setTags(tags.filter((t, i) => i !== index));
-//                     removeEventListener();
-//                   }
-//                   if (_widths[nextSectionIndex] === 0) {
-//                     _widths[index] = maxPercent;
-//                     _widths.splice(nextSectionIndex, 1);
-//                     setTags(tags.filter((t, i) => i !== nextSectionIndex));
-//                     removeEventListener();
-//                   }
-//                 }
-//                 updateWidths(_widths);
-//               };
-//               window.addEventListener("pointermove", resize);
-//               window.addEventListener("touchmove", resize);
-//               const removeEventListener = () => {
-//                 window.removeEventListener("pointermove", resize);
-//                 window.removeEventListener("touchmove", resize);
-//               };
-
-//               const handleEventUp = (e) => {
-//                 e.preventDefault();
-//                 document.body.style.cursor = "initial";
-//                 removeEventListener();
-//               };
-//               window.addEventListener("touchend", handleEventUp);
-//               window.addEventListener("pointerup", handleEventUp);
-//             }}
-//           />
-//         ))}
-//       </div>
-//       <button
-//         onClick={() => {
-//           setTags(_tags);
-//           setWidths(new Array(_tags.length).fill(100 / _tags.length));
-//         }}
-//         style={{ marginTop: 10 }}
-//       >
-//         Refresh
-//       </button>
-//     </>
-//   );
-// };
 
 const TagSlider = () => {
   const defaultPercentages = [60, 10, 10, 10, 10];
@@ -1444,7 +1279,7 @@ const Campaign = () => {
   return (
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Home" />
-      <div className="mt-10 mb-5 font-bold text-2xl">
+      <div className="font-poppins font-semibold text-2xl mt-10">
         <text>Setting</text>
       </div>
       <Tabs />
