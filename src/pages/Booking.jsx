@@ -55,7 +55,7 @@ const Booking = () => {
   };
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Home" />
       <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
         <text>My booking</text>

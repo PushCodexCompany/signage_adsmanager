@@ -116,7 +116,7 @@ export const dashboardData = [
     store: 1,
     jan: {
       value: 22,
-      is_up: false,
+      is_up: true,
       percent: 10,
     },
     feb: {
