@@ -261,14 +261,16 @@ const Dashboard = () => {
         <div className="font-poppins font-bold text-lg mb-3">
           by Month Store
         </div>
-        <GridComponent dataSource={dashboardData} height={400} width={"auto"}>
-          <ColumnsDirective>
-            {dashboardGrid.map((item, index) => (
-              <ColumnDirective key={index} {...item} />
-            ))}
-          </ColumnsDirective>
-          <Inject services={[Search, Page]} />
-        </GridComponent>
+        <div className="">
+          <GridComponent dataSource={dashboardData} height={400} width={"auto"}>
+            <ColumnsDirective>
+              {dashboardGrid.map((item, index) => (
+                <ColumnDirective key={index} {...item} />
+              ))}
+            </ColumnsDirective>
+            <Inject services={[Search, Page]} />
+          </GridComponent>
+        </div>
       </>
     );
   };
@@ -343,7 +345,7 @@ const Dashboard = () => {
     return (
       <>
         <div className="font-poppins font-bold text-lg mb-3">by Month YTD</div>
-        <div className="bg-gray-100 h-[445px] border border-gray-200">
+        <div className="h-[445px] border border-gray-200">
           <div className="h-[80%] mt-5 ">
             <LineChart />
           </div>
@@ -541,7 +543,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="bg-gray-100 h-[445px]">
+        <div className="h-[445px]">
           <BarChart />
           <div className="grid grid-cols-4 gap-1 w-auto mt-3">
             <div className="grid grid-cols-6 gap-1 p-1 space-x-1">
@@ -810,7 +812,7 @@ const Dashboard = () => {
         <div className="font-poppins font-bold text-lg mb-3">
           by Category YTD
         </div>
-        <div className="bg-gray-100 h-[445px] border border-gray-200">
+        <div className="h-[445px] border border-gray-200">
           <div className="h-[110%] mt-5 ">
             <BarHorizontal />
           </div>

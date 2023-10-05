@@ -20,6 +20,9 @@ import { SlScreenDesktop, SlChart } from "react-icons/sl";
 import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { RiFileEditLine } from "react-icons/ri";
+import { AiOutlineIdcard } from "react-icons/ai";
+import { GrDocumentText } from "react-icons/gr";
+import { IoIosArrowForward } from "react-icons/io";
 
 export const links = [
   {
@@ -110,10 +113,28 @@ export const links = [
     title: "Preference",
     links: [
       {
-        name: "setting",
+        name: "Setting",
         link: "setting",
         icon: <MdOutlineSettings size={27} />,
         notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "User Managament",
+            icon: <AiOutlineIdcard size={27} />,
+            submenu: [
+              {
+                name: "User",
+                link: "setting",
+                icon: <AiOutlineIdcard size={27} />,
+              },
+              {
+                name: "Activity Log",
+                link: "activity-log",
+                icon: <GrDocumentText size={27} />,
+              },
+            ],
+          },
+        ],
       },
       {
         name: "Help & Center",
@@ -281,82 +302,68 @@ const Sidebar = () => {
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
   return (
-    <div className="ml-1 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
-      {activeMenu && (
-        <>
-          <div className="flex justify-center items-center">
-            <Link
-              to="/dashboard"
-              onClick={handleCloseSideBar}
-              className="items-center justify-center ml-3 mt-10 flex"
-            >
-              {/* <SiShopware /> <span>CMS</span> */}
-              <img className={`${imgClass}`} src={Central_Logo} />
-            </Link>
-            {/* <TooltipComponent content="Menu" position="BottomCenter">
-              <button
-                type="button"
-                onClick={() => setActiveMenu(!activeMenu)}
-                style={{ color: currentColor }}
-                className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
-              >
-                <MdOutlineCancel />
-              </button>
-            </TooltipComponent> */}
-          </div>
-          <div className="mt-10 ">
-            {links.map((item) => (
-              <div key={item.title}>
-                <p className="text-gray-400 text-sm  dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
-                  {item.title}
-                </p>
-                {item.links.map((link) => (
-                  <NavLink
-                    to={`/${link.link}`}
-                    key={link.link}
-                    onClick={handleCloseSideBar}
-                    style={({ isActive }) => ({
-                      color: isActive ? "#6427FE" : "",
-                    })}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    {link.icon}
-                    <div className="capitalize text-sm font-poppins ">
-                      {link.name}
-                    </div>
-                    {link.notification.is_notification ? (
-                      <div className="bg-[#6427FE] w-[35px] h-[35px] rounded-full ml-auto">
-                        <div className="mt-[10px] text-xs font-bold text-white text-center font-poppins">
-                          {link.notification.amount}
-                        </div>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                  </NavLink>
+    <>
+      <div className="ml-1 h-screen pb-10">
+        <div className="">
+          {activeMenu && (
+            <>
+              <div className="flex justify-center items-center">
+                <Link
+                  to="/dashboard"
+                  onClick={handleCloseSideBar}
+                  className="items-center justify-center ml-3 mt-10 flex"
+                >
+                  <img className={`${imgClass}`} src={Central_Logo} />
+                </Link>
+              </div>
+              <div className="mt-10 ">
+                {links.map((item) => (
+                  <div key={item.title}>
+                    <p className="text-gray-400 text-sm  dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
+                      {item.title}
+                    </p>
+                    {item.links.map((link) => (
+                      <NavLink
+                        to={`/${link.link}`}
+                        key={link.link}
+                        onClick={handleCloseSideBar}
+                        style={({ isActive }) => ({
+                          color: isActive ? "#6427FE" : "",
+                        })}
+                        className={({ isActive }) =>
+                          isActive ? activeLink : normalLink
+                        }
+                      >
+                        {link.icon}
+                        {link.submenu ? (
+                          <div className="relative group">
+                            <div className="capitalize text-sm font-poppins ">
+                              {link.name}
+                            </div>
+                            <div className="hidden group-hover:block absolute left-28 top-0 w-48 bg-white border border-gray-300 shadow-lg p-4 z-50">
+                              <div className="hover:bg-gray-200 p-2 cursor-pointer">
+                                test3.1
+                              </div>
+                              <div className="hover:bg-gray-200 p-2 cursor-pointer">
+                                test3.2
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="capitalize text-sm font-poppins ">
+                            {link.name}
+                          </div>
+                        )}
+                      </NavLink>
+                    ))}
+                  </div>
                 ))}
               </div>
-            ))}
-
-            {/* Logout */}
-            {/* <NavLink
-              to={`/`}
-              key={"/"}
-              onClick={handleCloseSideBar}
-              style={({ isActive }) => ({
-                color: isActive ? "#6425fe" : "",
-              })}
-              className={({ isActive }) => (isActive ? activeLink : normalLink)}
-            >
-              <MdOutlineLogout size={25} />
-              <span className="capitalize text-xs ">Log Out</span>
-            </NavLink> */}
-          </div>
-        </>
-      )}
-    </div>
+            </>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

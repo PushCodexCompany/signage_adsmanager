@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -24,6 +24,12 @@ const App = () => {
     setThemeSettings,
   } = useStateContext();
 
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleMenuClick = () => {
+    setIsSubmenuOpen(!isSubmenuOpen);
+  };
+
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
@@ -38,69 +44,50 @@ const App = () => {
   const select_merchandise = User.getMerchandise();
 
   return (
-    <div className={currentMode === "Dark" ? "dark" : ""}>
+    <div className="dark:bg-main-dark-bg">
       <BrowserRouter>
         {user ? (
-          <>
-            <div className="flex relative dark:bg-main-dark-bg">
-              {/* ToolTip */}
-              {/* <div
-                className="fixed right-4 bottom-4"
-                style={{ zIndex: "1000" }}
-              >
-                <TooltipComponent content="Settings" position="Top">
-                  <button
-                    type="button"
-                    onClick={() => setThemeSettings(true)}
-                    style={{ background: currentColor, borderRadius: "50%" }}
-                    className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
-                  >
-                    <FiSettings />
-                  </button>
-                </TooltipComponent>
-              </div> */}
+          <div className="flex relative">
+            {/* Sidebar */}
+            {activeMenu ? (
+              <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white z-auto">
+                <Sidebar />
+              </div>
+            ) : (
+              <div className="w-0 dark:bg-secondary-dark-bg z-auto">
+                <Sidebar />
+              </div>
+            )}
 
-              {/* Sidebar */}
-              {activeMenu ? (
-                <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-                  {/* {select_campaign && select_merchandise ? <Sidebar /> : <></>} */}
-                  {select_campaign ? <Sidebar /> : <></>}
-                </div>
-              ) : (
-                <div className="w-0 dark:bg-secondary-dark-bg">
-                  {/* {select_campaign && select_merchandise ? <Sidebar /> : <></>} */}
-                  {select_campaign ? <Sidebar /> : <></>}
+            <div
+              className={`${
+                activeMenu
+                  ? "dark:bg-main-dark-bg bg-main-bg min-h-screen md:ml-72 w-full"
+                  : "bg-main-bg dark:bg-main-dark-bg w-full min-h-screen flex-2"
+              }`}
+            >
+              {/* Navbar */}
+              <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
+                <Navbar />
+              </div>
+              <div>
+                {themeSettings && <ThemeSettings />}
+                <Routing />
+              </div>
+              {/* Submenu */}
+              {isSubmenuOpen && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-white dark:bg-secondary-dark-bg p-4 rounded-lg shadow-lg">
+                    Submenu Content
+                  </div>
                 </div>
               )}
-
-              <div
-                className={
-                  activeMenu
-                    ? `dark:bg-main-dark-bg  bg-main-bg min-h-screen md: ${
-                        // select_campaign && select_merchandise ? "ml-72" : ""
-                        select_campaign ? "ml-72" : ""
-                      } w-full`
-                    : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
-                }
-              >
-                {/* Navbar */}
-                <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-                  <Navbar />
-                </div>
-                <div>
-                  {themeSettings && <ThemeSettings />}
-                  <Routing />
-                </div>
-                {/* <Footer /> */}
-              </div>
             </div>
-          </>
+          </div>
         ) : (
           <>
             <Login />
-            <Routes>
-              <Route exact path="/login" element={<Login />} />
-            </Routes>
+            <Route exact path="/login" element={<Login />} />
           </>
         )}
       </BrowserRouter>
