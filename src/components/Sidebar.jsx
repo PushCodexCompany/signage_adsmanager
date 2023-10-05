@@ -357,22 +357,9 @@ const Sidebar = () => {
                     )}
 
                     {link.submenu ? (
-                      // <div className="ml-auto relative group">
-                      //   <div className="text-xs font-bold text-gray-600 text-center font-poppins">
-                      //     <IoIosArrowForward size={26} />
-                      //   </div>
-                      //   <div className="hidden group-hover:block absolute left-28 top-0 w-48 bg-white border border-gray-300 shadow-lg p-4 z-50">
-                      //     <div className="hover:bg-gray-200 p-2 cursor-pointer">
-                      //       test3.1
-                      //     </div>
-                      //     <div className="hover:bg-gray-200 p-2 cursor-pointer">
-                      //       test3.2
-                      //     </div>
-                      //   </div>
-                      // </div>
                       <div className="relative group">
                         <div className="flex">
-                          <div className="w-[35px] h-[35px] rounded-full ml-auto">
+                          <div className="w-[35px] h-[35px] rounded-full ml-20">
                             <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
                               <IoIosArrowForward size={26} />
                             </div>
