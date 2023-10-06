@@ -366,7 +366,7 @@ const Sidebar = () => {
                           </div>
                         </div>
 
-                        <div className="hidden group-hover:block absolute left-28 top-0 w-48 bg-white border border-gray-300 shadow-lg p-4 z-50">
+                        <div className="hidden group-hover:block absolute left-28 top-0 w-48 bg-white border border-gray-300 shadow-lg p-4 z-20">
                           <div className="hover:bg-gray-200 p-2 cursor-pointer">
                             test3.1
                           </div>

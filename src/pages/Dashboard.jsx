@@ -18,16 +18,7 @@ import { Doughnut, Line, Bar } from "react-chartjs-2";
 
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
-import {
-  GridComponent,
-  Inject,
-  ColumnsDirective,
-  ColumnDirective,
-  Search,
-  Page,
-} from "@syncfusion/ej2-react-grids";
-
-import { dashboardData, dashboardGrid } from "../libs/dashboard_grid";
+import { GridTable } from "../libs/dashboard_grid";
 import "./css/dashboard.css";
 
 ChartJS.register(
@@ -261,16 +252,7 @@ const Dashboard = () => {
         <div className="font-poppins font-bold text-lg mb-3">
           by Month Store
         </div>
-        <div className="">
-          <GridComponent dataSource={dashboardData} height={400} width={"auto"}>
-            <ColumnsDirective>
-              {dashboardGrid.map((item, index) => (
-                <ColumnDirective key={index} {...item} />
-              ))}
-            </ColumnsDirective>
-            <Inject services={[Search, Page]} />
-          </GridComponent>
-        </div>
+        <GridTable />
       </>
     );
   };

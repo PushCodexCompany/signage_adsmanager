@@ -2,106 +2,21 @@ import central_logo from "../assets/img/central.png";
 import robinson_logo from "../assets/img/robinson.png";
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
-const gridHeaderTemplate = (props) => {
-  return (
-    <div>
-      <div className="text-sm font-poppins text-[#59606C]">
-        {props.headerText}
-      </div>
-    </div>
-  );
-};
-
-const gridIDTemplate = (props) => {
-  return (
-    <div>
-      <div className="text-sm font-bold font-poppins">{props.id}</div>
-    </div>
-  );
-};
-
-const gridStoreTemplate = (props) => {
-  const getImg = (id) => {
-    let img;
-    if (id === 1) {
-      img = central_logo;
-    } else if (id === 2) {
-      img = robinson_logo;
-    }
-
-    return img;
-  };
-
-  return (
-    <div className="flex">
-      <img className="w-[40px] h-[40px] rounded-md" src={getImg(props.store)} />
-    </div>
-  );
-};
-
-const gridMonthJanTemplate = (props) => {
-  return <GenerateMonth month={props.jan} />;
-};
-
-const gridMonthFebTemplate = (props) => {
-  return <GenerateMonth month={props.feb} />;
-};
-
-const gridMonthMarTemplate = (props) => {
-  return <GenerateMonth month={props.mar} />;
-};
-
-const gridMonthAprTemplate = (props) => {
-  return <GenerateMonth month={props.apr} />;
-};
-
-const gridMonthMayTemplate = (props) => {
-  return <GenerateMonth month={props.may} />;
-};
-
-const gridMonthJunTemplate = (props) => {
-  return <GenerateMonth month={props.jun} />;
-};
-
-const gridMonthJulTemplate = (props) => {
-  return <GenerateMonth month={props.jul} />;
-};
-
-const gridMonthAugTemplate = (props) => {
-  return <GenerateMonth month={props.aug} />;
-};
-
-const gridMonthSepTemplate = (props) => {
-  return <GenerateMonth month={props.sep} />;
-};
-
-const gridMonthOctTemplate = (props) => {
-  return <GenerateMonth month={props.oct} />;
-};
-
-const gridMonthNovTemplate = (props) => {
-  return <GenerateMonth month={props.nov} />;
-};
-
-const gridMonthDecTemplate = (props) => {
-  return <GenerateMonth month={props.dec} />;
-};
-
 const GenerateMonth = (data) => {
   return (
     <div>
-      <div className="flex ">
+      <div className="flex space-x-1">
         <div className="text-sm font-bold font-poppins">{data.month.value}</div>
         <div className="flex items-end ">
           {data.month.is_up ? (
             <div className="flex text-[#008A1E] font-bold text-[10px]">
-              <ImArrowUp size={10} className="relative top-[5px]" />
-              <div className="relative top-[1px]">{data.month.percent}%</div>
+              <ImArrowUp size={10} className="relative" />
+              <div className="relative">{data.month.percent}%</div>
             </div>
           ) : (
             <div className="flex text-red-500 font-bold text-[10px]">
-              <ImArrowDown size={10} className="relative top-[6px]" />
-              <div className="relative top-[2px]">{data.month.percent}%</div>
+              <ImArrowDown size={10} className="relative" />
+              <div className="relative">{data.month.percent}%</div>
             </div>
           )}
         </div>
@@ -433,117 +348,115 @@ export const dashboardData = [
   },
 ];
 
-export const dashboardGrid = [
-  {
-    headerText: "ID",
-    field: "id",
-    width: "60",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridIDTemplate,
-  },
-  {
-    headerText: "Store",
-    field: "store",
-    width: "120",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridStoreTemplate,
-  },
-  {
-    headerText: "Jan",
-    field: "jan",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthJanTemplate,
-  },
-  {
-    headerText: "Feb",
-    field: "feb",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthFebTemplate,
-  },
-  {
-    headerText: "Mar",
-    field: "mar",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthMarTemplate,
-  },
-  {
-    headerText: "Apr",
-    field: "apr",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthAprTemplate,
-  },
-  {
-    headerText: "May",
-    field: "may",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthMayTemplate,
-  },
-  {
-    headerText: "Jun",
-    field: "jun",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthJunTemplate,
-  },
-  {
-    headerText: "Jul",
-    field: "jul",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthJulTemplate,
-  },
-  {
-    headerText: "Aug",
-    field: "aug",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthAugTemplate,
-  },
-  {
-    headerText: "Sep",
-    field: "sep",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthSepTemplate,
-  },
-  {
-    headerText: "Oct",
-    field: "oct",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthOctTemplate,
-  },
-  {
-    headerText: "Nov",
-    field: "nov",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthNovTemplate,
-  },
-  {
-    headerText: "Dec",
-    field: "dec",
-    width: "90",
-    textAlign: "Left",
-    headerTemplate: gridHeaderTemplate,
-    template: gridMonthDecTemplate,
-  },
-];
+export const getImg = (id) => {
+  let img;
+  if (id === 1) {
+    img = central_logo;
+  } else if (id === 2) {
+    img = robinson_logo;
+  }
+
+  return img;
+};
+
+export const GridTable = () => {
+  return (
+    <>
+      <div className="w-auto h-[400px] overflow-auto">
+        <table className="min-w-full border border-gray-300">
+          <thead>
+            <tr>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                ID
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Store
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Jan
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Feb
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Mar
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Apr
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                May
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Jun
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Aug
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Sep
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Oct
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Nov
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                Dec
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {dashboardData.map((row) => (
+              <tr key={row.id}>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  {row.id}
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b border-gray-200">
+                  <img
+                    className="w-[40px] h-[40px] rounded-md"
+                    src={getImg(row.store)}
+                  />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.jan} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.feb} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.mar} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.apr} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.may} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.jun} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.aug} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.sep} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.oct} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.nov} />
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
+                  <GenerateMonth month={row.dec} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+};
