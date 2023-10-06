@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+
+import { FaHome, FaUser, FaCog } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
+
 import { useStateContext } from "../contexts/ContextProvider";
 
 import Central_Logo from "../assets/img/central-logo.png";
@@ -18,11 +23,12 @@ import {
 
 import { SlScreenDesktop, SlChart } from "react-icons/sl";
 import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
-import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoDocumentTextOutline, IoShieldOutline } from "react-icons/io5";
 import { RiFileEditLine } from "react-icons/ri";
 import { AiOutlineIdcard } from "react-icons/ai";
 import { GrDocumentText } from "react-icons/gr";
 import { IoIosArrowForward } from "react-icons/io";
+import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
 export const links = [
   {
     title: "Main menu",
@@ -132,6 +138,18 @@ export const links = [
                 icon: <GrDocumentText size={27} />,
               },
             ],
+          },
+          {
+            name: "Media Rule",
+            icon: <IoShieldOutline size={27} />,
+          },
+          {
+            name: "Content Type",
+            icon: <BiShapeSquare size={27} />,
+          },
+          {
+            name: "Tag Management",
+            icon: <BiPurchaseTag size={27} />,
           },
         ],
       },
@@ -253,7 +271,7 @@ export const links = [
   // },
 ];
 
-const Sidebar = () => {
+const SidebarMain = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
 
@@ -295,6 +313,12 @@ const Sidebar = () => {
     });
   };
 
+  const [isSubMenuOpen, setSubMenuOpen] = useState(false);
+
+  const toggleSubMenu = () => {
+    setSubMenuOpen(!isSubMenuOpen);
+  };
+
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
   const normalLink =
@@ -310,19 +334,8 @@ const Sidebar = () => {
               onClick={handleCloseSideBar}
               className="items-center justify-center ml-3 mt-10 flex"
             >
-              {/* <SiShopware /> <span>CMS</span> */}
               <img className={`${imgClass}`} src={Central_Logo} />
             </Link>
-            {/* <TooltipComponent content="Menu" position="BottomCenter">
-              <button
-                type="button"
-                onClick={() => setActiveMenu(!activeMenu)}
-                style={{ color: currentColor }}
-                className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
-              >
-                <MdOutlineCancel />
-              </button>
-            </TooltipComponent> */}
           </div>
           <div className="mt-10 ">
             {links.map((item) => (
@@ -356,7 +369,7 @@ const Sidebar = () => {
                       <></>
                     )}
 
-                    {link.submenu ? (
+                    {link.submenu && (
                       <div className="relative group">
                         <div className="flex">
                           <div className="w-[35px] h-[35px] rounded-full ml-20">
@@ -366,36 +379,55 @@ const Sidebar = () => {
                           </div>
                         </div>
 
-                        <div className="hidden group-hover:block absolute left-28 top-0 w-48 bg-white border border-gray-300 shadow-lg p-4 z-20">
-                          <div className="hover:bg-gray-200 p-2 cursor-pointer">
-                            test3.1
-                          </div>
-                          <div className="hover:bg-gray-200 p-2 cursor-pointer">
-                            test3.2
-                          </div>
+                        <div className="hidden group-hover:block absolute left-28 top-[-10px] w-72 bg-white border border-gray-300 shadow-lg p-3">
+                          {link.submenu.map((items) => (
+                            <NavLink
+                              to={`/${items.link}`}
+                              key={items.link}
+                              style={({ isActive }) => ({
+                                color: isActive ? "#6427FE" : "",
+                              })}
+                              className={({ isActive }) =>
+                                isActive ? activeLink : normalLink
+                              }
+                            >
+                              <div className="w-full flex hover:text-[#804DFE]">
+                                <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
+                                  <div>{items.icon}</div>
+                                  <div>{items.name}</div>
+                                </div>
+                                <div className="w-1/4">
+                                  <div className="flex justify-end">
+                                    {items.submenu && (
+                                      <div className="relative group">
+                                        <div className="flex">
+                                          <div className="w-[35px] h-[35px] rounded-full ml-20">
+                                            <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
+                                              <IoIosArrowForward size={26} />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        {/* <div className="hidden group-hover:block absolute left-36 top-[-32px] w-72 bg-white border border-gray-300 shadow-lg p-3">
+                                          {items.submenu.map((submenuItem) => (
+                                            <div key={submenuItem.link}>
+                                              {submenuItem.name}
+                                            </div>
+                                          ))}
+                                        </div> */}
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </NavLink>
+                          ))}
                         </div>
                       </div>
-                    ) : (
-                      <></>
                     )}
                   </NavLink>
                 ))}
               </div>
             ))}
-
-            {/* Logout */}
-            {/* <NavLink
-              to={`/`}
-              key={"/"}
-              onClick={handleCloseSideBar}
-              style={({ isActive }) => ({
-                color: isActive ? "#6425fe" : "",
-              })}
-              className={({ isActive }) => (isActive ? activeLink : normalLink)}
-            >
-              <MdOutlineLogout size={25} />
-              <span className="capitalize text-xs ">Log Out</span>
-            </NavLink> */}
           </div>
         </>
       )}
@@ -403,4 +435,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SidebarMain;
