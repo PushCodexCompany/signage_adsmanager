@@ -25,8 +25,7 @@ import { SlScreenDesktop, SlChart } from "react-icons/sl";
 import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
 import { IoDocumentTextOutline, IoShieldOutline } from "react-icons/io5";
 import { RiFileEditLine } from "react-icons/ri";
-import { AiOutlineIdcard } from "react-icons/ai";
-import { GrDocumentText } from "react-icons/gr";
+import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
 export const links = [
@@ -59,7 +58,7 @@ export const links = [
       },
       {
         name: "Ad Media",
-        link: "ads-media",
+        link: "ads_media",
         icon: <MdOutlineCloudQueue size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
@@ -129,26 +128,29 @@ export const links = [
             submenu: [
               {
                 name: "User",
-                link: "setting",
+                link: "setting/user_management/user",
                 icon: <AiOutlineIdcard size={27} />,
               },
               {
                 name: "Activity Log",
-                link: "activity-log",
-                icon: <GrDocumentText size={27} />,
+                link: "setting/user_management/activity_log",
+                icon: <AiOutlineFileText size={27} />,
               },
             ],
           },
           {
             name: "Media Rule",
+            link: "setting/media_rule",
             icon: <IoShieldOutline size={27} />,
           },
           {
             name: "Content Type",
+            link: "setting/content_type",
             icon: <BiShapeSquare size={27} />,
           },
           {
             name: "Tag Management",
+            link: "setting/tag_management",
             icon: <BiPurchaseTag size={27} />,
           },
         ],
@@ -275,6 +277,18 @@ const SidebarMain = () => {
   const { currentColor, activeMenu, setActiveMenu, screenSize } =
     useStateContext();
 
+  const [openLevel1, setOpenLevel1] = useState(false);
+  const [openLevel2, setOpenLevel2] = useState(false);
+
+  const toggleLevel1 = () => {
+    setOpenLevel1(!openLevel1);
+    setOpenLevel2(false);
+  };
+
+  const toggleLevel2 = () => {
+    setOpenLevel2(!openLevel2);
+  };
+
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
@@ -315,123 +329,221 @@ const SidebarMain = () => {
 
   const [isSubMenuOpen, setSubMenuOpen] = useState(false);
 
-  const toggleSubMenu = () => {
-    setSubMenuOpen(!isSubMenuOpen);
-  };
-
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
   const normalLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
   return (
-    <div className="ml-1 h-screen  pb-10">
-      {activeMenu && (
-        <>
-          <div className="flex justify-center items-center">
-            <Link
-              to="/dashboard"
-              onClick={handleCloseSideBar}
-              className="items-center justify-center ml-3 mt-10 flex"
-            >
-              <img className={`${imgClass}`} src={Central_Logo} />
-            </Link>
-          </div>
-          <div className="mt-10 ">
-            {links.map((item) => (
-              <div key={item.title}>
-                <p className="text-gray-400 text-sm  dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
-                  {item.title}
-                </p>
-                {item.links.map((link) => (
-                  <NavLink
-                    to={`/${link.link}`}
-                    key={link.link}
-                    onClick={handleCloseSideBar}
-                    style={({ isActive }) => ({
-                      color: isActive ? "#6427FE" : "",
-                    })}
-                    className={({ isActive }) =>
-                      isActive ? activeLink : normalLink
-                    }
-                  >
-                    {link.icon}
-                    <div className="capitalize text-sm font-poppins ">
-                      {link.name}
-                    </div>
-                    {link.notification.is_notification ? (
-                      <div className="bg-[#6427FE] w-[35px] h-[35px] rounded-full ml-auto">
-                        <div className="mt-[10px] text-xs font-bold text-white text-center font-poppins">
-                          {link.notification.amount}
-                        </div>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-
-                    {link.submenu && (
-                      <div className="relative group">
-                        <div className="flex">
-                          <div className="w-[35px] h-[35px] rounded-full ml-20">
-                            <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                              <IoIosArrowForward size={26} />
+    <>
+      <div className="ml-1 h-screen  pb-10">
+        {activeMenu && (
+          <>
+            <div className="flex justify-center items-center">
+              <Link
+                to="/dashboard"
+                onClick={handleCloseSideBar}
+                className="items-center justify-center ml-3 mt-10 flex"
+              >
+                <img className={`${imgClass}`} src={Central_Logo} />
+              </Link>
+            </div>
+            <div className="mt-10">
+              {links.map((item) => (
+                <div key={item.title}>
+                  <p className="text-gray-400 text-sm dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
+                    {item.title}
+                  </p>
+                  {item.links.map((link) => (
+                    <div key={link.link}>
+                      {link.submenu ? (
+                        <>
+                          <div
+                            to={`/${link.link}`}
+                            key={link.link}
+                            onClick={handleCloseSideBar}
+                            // style={({ isActive }) => ({
+                            //   color: isActive ? "#6427FE" : "",
+                            // })}
+                            className={normalLink}
+                          >
+                            {link.icon}
+                            <div className="capitalize text-sm font-poppins ">
+                              {link.name}
                             </div>
-                          </div>
-                        </div>
 
-                        <div className="hidden group-hover:block absolute left-28 top-[-10px] w-72 bg-white border border-gray-300 shadow-lg p-3">
-                          {link.submenu.map((items) => (
-                            <NavLink
-                              to={`/${items.link}`}
-                              key={items.link}
-                              style={({ isActive }) => ({
-                                color: isActive ? "#6427FE" : "",
-                              })}
-                              className={({ isActive }) =>
-                                isActive ? activeLink : normalLink
-                              }
-                            >
-                              <div className="w-full flex hover:text-[#804DFE]">
-                                <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
-                                  <div>{items.icon}</div>
-                                  <div>{items.name}</div>
-                                </div>
-                                <div className="w-1/4">
-                                  <div className="flex justify-end">
-                                    {items.submenu && (
-                                      <div className="relative group">
-                                        <div className="flex">
-                                          <div className="w-[35px] h-[35px] rounded-full ml-20">
-                                            <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                                              <IoIosArrowForward size={26} />
-                                            </div>
-                                          </div>
-                                        </div>
-                                        {/* <div className="hidden group-hover:block absolute left-36 top-[-32px] w-72 bg-white border border-gray-300 shadow-lg p-3">
-                                          {items.submenu.map((submenuItem) => (
-                                            <div key={submenuItem.link}>
-                                              {submenuItem.name}
-                                            </div>
-                                          ))}
-                                        </div> */}
-                                      </div>
-                                    )}
+                            <div className="relative group">
+                              <div className="flex">
+                                <div className="w-[35px] h-[35px] rounded-full ml-20">
+                                  <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
+                                    <button onClick={() => toggleLevel1()}>
+                                      <IoIosArrowForward size={26} />
+                                    </button>
                                   </div>
                                 </div>
                               </div>
-                            </NavLink>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </NavLink>
-                ))}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+
+                              {openLevel1 && (
+                                <div className="absolute left-28 top-[-10px] w-72 bg-white border border-gray-300 shadow-lg p-3">
+                                  {link.submenu.map((items) => (
+                                    <>
+                                      {items.submenu ? (
+                                        <div
+                                          to={`/${items.link}`}
+                                          key={items.link}
+                                          className={`flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-gray-700  text-md m-2`}
+                                        >
+                                          <div className="w-full flex hover:text-[#804DFE]">
+                                            <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
+                                              <div>{items.icon}</div>
+                                              <div>{items.name}</div>
+                                            </div>
+                                            <div className="w-1/4">
+                                              <div className="flex justify-end">
+                                                {items.submenu && (
+                                                  <div className="relative group">
+                                                    <div className="flex">
+                                                      <div className="w-[35px] h-[35px] rounded-full ml-20">
+                                                        <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
+                                                          <button
+                                                            onClick={() =>
+                                                              toggleLevel2()
+                                                            }
+                                                          >
+                                                            <IoIosArrowForward
+                                                              size={26}
+                                                            />
+                                                          </button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    {openLevel2 && (
+                                                      <div className="absolute left-[140px] top-[-32px] w-72 bg-white border border-gray-300 shadow-lg p-3">
+                                                        {items.submenu.map(
+                                                          (submenuItem) => (
+                                                            <NavLink
+                                                              to={`/${submenuItem.link}`}
+                                                              onClick={() => {
+                                                                setOpenLevel2(
+                                                                  !openLevel2
+                                                                );
+                                                                setOpenLevel1(
+                                                                  !openLevel1
+                                                                );
+                                                              }}
+                                                              key={
+                                                                submenuItem.link
+                                                              }
+                                                              style={({
+                                                                isActive,
+                                                              }) => ({
+                                                                color: isActive
+                                                                  ? "#6427FE"
+                                                                  : "",
+                                                              })}
+                                                              className={({
+                                                                isActive,
+                                                              }) =>
+                                                                isActive
+                                                                  ? activeLink
+                                                                  : normalLink
+                                                              }
+                                                            >
+                                                              {submenuItem.icon}
+                                                              <div className="capitalize text-sm font-poppins ">
+                                                                {
+                                                                  submenuItem.name
+                                                                }
+                                                              </div>
+                                                            </NavLink>
+                                                          )
+                                                        )}
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                )}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <NavLink
+                                          to={`/${items.link}`}
+                                          key={items.link}
+                                          style={({ isActive }) => ({
+                                            color: isActive ? "#6427FE" : "",
+                                          })}
+                                          className={({ isActive }) =>
+                                            isActive ? activeLink : normalLink
+                                          }
+                                        >
+                                          <div className="w-full flex hover:text-[#804DFE]">
+                                            <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
+                                              <div>{items.icon}</div>
+                                              <div>{items.name}</div>
+                                            </div>
+                                            <div className="w-1/4">
+                                              <div className="flex justify-end">
+                                                {items.submenu && (
+                                                  <div className="relative group">
+                                                    <div className="flex">
+                                                      <div className="w-[35px] h-[35px] rounded-full ml-20">
+                                                        <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
+                                                          <button
+                                                            onClick={() =>
+                                                              toggleLevel2()
+                                                            }
+                                                          >
+                                                            <IoIosArrowForward
+                                                              size={26}
+                                                            />
+                                                          </button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                )}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </NavLink>
+                                      )}
+                                    </>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <NavLink
+                            to={`/${link.link}`}
+                            key={link.link}
+                            onClick={handleCloseSideBar}
+                            style={({ isActive }) => ({
+                              color: isActive ? "#6427FE" : "",
+                            })}
+                            className={({ isActive }) =>
+                              isActive ? activeLink : normalLink
+                            }
+                          >
+                            {link.icon}
+                            <div className="capitalize text-sm font-poppins ">
+                              {link.name}
+                            </div>
+                          </NavLink>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

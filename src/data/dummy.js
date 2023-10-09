@@ -542,7 +542,7 @@ export const links = [
       },
       {
         name: "Ads Media",
-        link: "ads-media",
+        link: "ads_media",
         icon: <MdOutlineCloudQueue size={25} />,
         notification: { is_notification: false, amount: 0 },
       },
