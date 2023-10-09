@@ -89,7 +89,7 @@ const Navbar = () => {
             />
           )}
         </div>
-        <div class="basis-11/12 rounded-lg border border-gray-300">
+        <div class="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-300">
           <div className="flex">
             <NavButton
               customFunc={search}
@@ -105,7 +105,7 @@ const Navbar = () => {
             />
           </div>
         </div>
-        <div class=" basis-2/12">
+        <div class="basis-4/12 lg:basis-2/12">
           <div className="flex divide-x-1 divide-gray-300">
             {select_campaign && (
               <NavButton
