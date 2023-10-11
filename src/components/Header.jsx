@@ -28,12 +28,12 @@ const Header = ({ title, subtitle }) => {
               <li aria-current="page">
                 <div class="flex items-center">
                   <IoIosArrowForward />
-                  <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400 font-poppins">
+                  <div class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400 font-poppins">
                     {(items.charAt(0).toUpperCase() + items.slice(1)).replace(
                       /_/g,
                       " "
                     )}
-                  </span>
+                  </div>
                 </div>
               </li>
             ) : (

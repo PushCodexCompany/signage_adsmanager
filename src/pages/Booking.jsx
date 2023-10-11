@@ -9,6 +9,8 @@ import {
   Page,
 } from "@syncfusion/ej2-react-grids";
 
+import { GridTable } from "../libs/booking_grid";
+
 import { bookingData, bookingGrid } from "../libs/campaign_grid";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 
@@ -17,7 +19,7 @@ const Booking = () => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
 
-  const [filter, setFilter] = useState(["Admin"]);
+  const [filter, setFilter] = useState(["Active", "Admin"]);
 
   const toggleSortSelect = () => {
     setIsSortOpen((prevIsOpen) => !prevIsOpen);
@@ -115,9 +117,26 @@ const Booking = () => {
                       onChange={handleStatusChange}
                       className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     >
-                      <option value="0">Role</option>
-                      <option value="Admin">Admin</option>
                       <option value="User">User</option>
+                      <option value="Admin">Admin</option>
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                      {isRoleOpen ? (
+                        <IoIosArrowUp size={18} color="#6425FE" />
+                      ) : (
+                        <IoIosArrowDown size={18} color="#6425FE" />
+                      )}
+                    </div>
+                  </div>
+                  <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                    <select
+                      name="role"
+                      id="role"
+                      onClick={toggleRoleSelect}
+                      onChange={handleStatusChange}
+                      className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                    >
+                      <option value="Merchandise">Merchandise</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
                       {isRoleOpen ? (
@@ -161,23 +180,8 @@ const Booking = () => {
         )}
       </div>
 
-      <div className="mt-5">
-        <GridComponent
-          dataSource={bookingData}
-          height={600}
-          width={"auto"}
-          // allowSorting
-          // pageSettings={{ pageCount: 10 }}
-          // editSettings={editing}
-        >
-          <ColumnsDirective>
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            {bookingGrid.map((item, index) => (
-              <ColumnDirective key={index} {...item} />
-            ))}
-          </ColumnsDirective>
-          <Inject services={[Search, Page]} />
-        </GridComponent>
+      <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
+        <GridTable />
       </div>
     </div>
   );

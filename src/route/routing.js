@@ -31,6 +31,9 @@ import {
   Logout,
   Dashboard_mockup,
   User_Setting,
+  Content_type,
+  Media_Rule,
+  Create_Media_Rule,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -58,6 +61,12 @@ const Routing = () => {
         <Route
           path="/setting/user_management/user"
           element={<User_Setting />}
+        />
+        <Route path="/setting/content_type" element={<Content_type />} />
+        <Route path="/setting/media_rule" element={<Media_Rule />} />
+        <Route
+          path="/setting/media_rule/create"
+          element={<Create_Media_Rule />}
         />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
