@@ -34,4 +34,5 @@ export { default as Logout } from "./Logout";
 export { default as User_Setting } from "./setting/user_management/User";
 export { default as Content_type } from "./setting/Content_type";
 export { default as Media_Rule } from "./setting/Media_rules";
+export { default as Tag_management } from "./setting/Tag_managment";
 export { default as Create_Media_Rule } from "./setting/Media_Rule/Create_Media_Rule";

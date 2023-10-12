@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
-import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-
 import { FaHome, FaUser, FaCog } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 
