@@ -17,12 +17,13 @@ import {
   MdOutlineSettings,
   MdInfoOutline,
   MdOutlineLogout,
+  MdFolderOpen,
 } from "react-icons/md";
 
 import { SlScreenDesktop, SlChart } from "react-icons/sl";
 import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
 import { IoDocumentTextOutline, IoShieldOutline } from "react-icons/io5";
-import { RiFileEditLine } from "react-icons/ri";
+import { RiFileEditLine, RiFileList2Line } from "react-icons/ri";
 import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
@@ -59,6 +60,18 @@ export const links = [
         link: "ads_media",
         icon: <MdOutlineCloudQueue size={27} />,
         notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "Ads Management",
+            link: "ad_media/ads_management",
+            icon: <RiFileList2Line size={27} />,
+          },
+          {
+            name: "Media Libraly",
+            link: "ad_media/media_libraly",
+            icon: <MdFolderOpen size={27} />,
+          },
+        ],
       },
       {
         name: "Merchandise",
@@ -278,9 +291,12 @@ const SidebarMain = () => {
   const [openLevel1, setOpenLevel1] = useState(false);
   const [openLevel2, setOpenLevel2] = useState(false);
 
-  const toggleLevel1 = () => {
-    setOpenLevel1(!openLevel1);
-    setOpenLevel2(false);
+  const toggleLevel1 = (index) => {
+    if (openLevel1 === index) {
+      setOpenLevel1(null);
+    } else {
+      setOpenLevel1(index);
+    }
   };
 
   const toggleLevel2 = () => {
@@ -334,7 +350,7 @@ const SidebarMain = () => {
 
   return (
     <>
-      <div className="ml-1 h-screen  pb-10">
+      <div className="ml-1 h-screen pb-10">
         {activeMenu && (
           <>
             <div className="flex justify-center items-center">
@@ -347,7 +363,7 @@ const SidebarMain = () => {
               </Link>
             </div>
             <div className="mt-10">
-              {links.map((item) => (
+              {links.map((item, index) => (
                 <div key={item.title}>
                   <p className="text-gray-400 text-sm dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
                     {item.title}
@@ -366,23 +382,23 @@ const SidebarMain = () => {
                             className={normalLink}
                           >
                             {link.icon}
-                            <div className="capitalize text-sm font-poppins ">
+                            <div className="capitalize text-sm font-poppins">
                               {link.name}
                             </div>
 
-                            <div className="relative group">
-                              <div className="flex">
-                                <div className="w-[35px] h-[35px] rounded-full ml-20">
-                                  <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                                    <button onClick={() => toggleLevel1()}>
-                                      <IoIosArrowForward size={26} />
-                                    </button>
-                                  </div>
+                            <div className="flex">
+                              <div className="w-[10px] h-[35px] rounded-full ml-20">
+                                <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
+                                  <button onClick={() => toggleLevel1(index)}>
+                                    <IoIosArrowForward size={26} />
+                                  </button>
                                 </div>
                               </div>
+                            </div>
 
-                              {openLevel1 && (
-                                <div className="absolute left-28 top-[-10px] w-72 bg-white border border-gray-300 shadow-lg p-3">
+                            <div className="relative group">
+                              {openLevel1 === index && (
+                                <div className="absolute  top-[-50px] w-72 bg-white border border-gray-300 shadow-lg p-3">
                                   {link.submenu.map((items) => (
                                     <>
                                       {items.submenu ? (

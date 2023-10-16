@@ -10,13 +10,13 @@ const GenerateMonth = (data) => {
         <div className="flex items-end ">
           {data.month.is_up ? (
             <div className="flex text-[#008A1E] font-bold text-[10px]">
-              <ImArrowUp size={10} className="relative" />
-              <div className="relative">{data.month.percent}%</div>
+              <ImArrowUp size={10} />
+              <div>{data.month.percent}%</div>
             </div>
           ) : (
             <div className="flex text-red-500 font-bold text-[10px]">
-              <ImArrowDown size={10} className="relative" />
-              <div className="relative">{data.month.percent}%</div>
+              <ImArrowDown size={10} />
+              <div>{data.month.percent}%</div>
             </div>
           )}
         </div>

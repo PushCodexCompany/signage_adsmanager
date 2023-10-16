@@ -57,8 +57,12 @@ const Tag_managment = () => {
   };
 
   const addTag = () => {
-    console.log(new_tag);
-    const temp_cat = [...select_cat];
+    if (new_tag && new_tag.trim() !== "") {
+      const updatedTag = [...select_cat.tag, new_tag];
+      const updatedSelectCat = { ...select_cat, tag: updatedTag };
+      setSelectCat(updatedSelectCat);
+      setNewTag(""); // Clear the input field after adding the tag
+    }
   };
 
   const removeTag = (event) => {
@@ -152,7 +156,7 @@ const Tag_managment = () => {
           </div>
         </div>
 
-        <div className="col-span-5 bg-[#FAFAFA]">
+        <div className="col-span-5 bg-[#FAFAFA] w-full">
           <div className="p-3">
             <div className="font-poppins font-bold text-2xl">
               Tag : {select_cat.name}
@@ -177,17 +181,19 @@ const Tag_managment = () => {
               </div>
             </div>
 
-            <div className="flex mt-5">
+            <div className="grid grid-cols-6 gap-1 mt-5 space-y-1">
               {select_cat.tag &&
                 select_cat.tag.map((items, index) => (
-                  <button onClick={() => removeTag(items)}>
-                    <div className="relative w-[100px] lg:w-[160px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                        <IoIosClose size="22" color="#6425FE" />
+                  <div key={items}>
+                    <button onClick={() => removeTag(items)}>
+                      <div className="relative w-[100px] lg:w-[160px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                          <IoIosClose size="22" color="#6425FE" />
+                        </div>
+                        <div className="text-sm font-poppins">{items}</div>
                       </div>
-                      <div className="text-sm font-poppins">{items}</div>
-                    </div>
-                  </button>
+                    </button>
+                  </div>
                 ))}
             </div>
           </div>
