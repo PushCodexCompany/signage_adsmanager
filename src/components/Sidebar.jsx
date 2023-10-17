@@ -308,32 +308,23 @@ const SidebarMain = () => {
                                                       <div className="absolute left-[140px] top-[-32px] w-72 bg-white border border-gray-300 shadow-lg p-3">
                                                         {items.submenu.map(
                                                           (submenuItem) => (
-                                                            <NavLink
-                                                              to={`/${submenuItem.link}`}
+                                                            <div
+                                                              // to={`/${submenuItem.link}`}
                                                               onClick={() => {
-                                                                setOpenLevel2(
-                                                                  !openLevel2
-                                                                );
-                                                                setOpenLevel1(
-                                                                  !openLevel1
-                                                                );
+                                                                window.location.href = `/${submenuItem.link}`;
                                                               }}
                                                               key={
                                                                 submenuItem.link
                                                               }
-                                                              style={({
-                                                                isActive,
-                                                              }) => ({
-                                                                color: isActive
-                                                                  ? "#6427FE"
-                                                                  : "",
-                                                              })}
-                                                              className={({
-                                                                isActive,
-                                                              }) =>
-                                                                isActive
-                                                                  ? activeLink
-                                                                  : normalLink
+                                                              // style={({
+                                                              //   isActive,
+                                                              // }) => ({
+                                                              //   color: isActive
+                                                              //     ? "#6427FE"
+                                                              //     : "",
+                                                              // })}
+                                                              className={
+                                                                normalLink
                                                               }
                                                             >
                                                               {submenuItem.icon}
@@ -342,7 +333,7 @@ const SidebarMain = () => {
                                                                   submenuItem.name
                                                                 }
                                                               </div>
-                                                            </NavLink>
+                                                            </div>
                                                           )
                                                         )}
                                                       </div>
@@ -368,29 +359,6 @@ const SidebarMain = () => {
                                             <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
                                               <div>{items.icon}</div>
                                               <div>{items.name}</div>
-                                            </div>
-                                            <div className="w-1/4">
-                                              <div className="flex justify-end">
-                                                {items.submenu && (
-                                                  <div className="relative group">
-                                                    <div className="flex">
-                                                      <div className="w-[35px] h-[35px] rounded-full ml-20">
-                                                        <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                                                          <button
-                                                            onClick={() =>
-                                                              toggleLevel2()
-                                                            }
-                                                          >
-                                                            <IoIosArrowForward
-                                                              size={26}
-                                                            />
-                                                          </button>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                )}
-                                              </div>
                                             </div>
                                           </div>
                                         </NavLink>
