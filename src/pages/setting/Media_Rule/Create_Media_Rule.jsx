@@ -15,7 +15,7 @@ const Create_Media_Rule = () => {
             <div className=" h-10 rounded-sm flex items-center justify-start">
               <div className="flex-grow h-full w-full border-1 border-gray-300 rounded-sm ">
                 <input
-                  className="font-bold text-sm w-full h-full font-poppins"
+                  className="font-bold text-sm w-full h-full font-poppins pl-4"
                   placeholder="Media Rule Name"
                 />
               </div>
@@ -327,7 +327,7 @@ const Create_Media_Rule = () => {
                         name="stw"
                         required
                         defaultValue={0}
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md"
+                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
                   </div>
@@ -344,7 +344,7 @@ const Create_Media_Rule = () => {
                         name="category"
                         required
                         defaultValue={0}
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md"
+                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
                   </div>
@@ -361,7 +361,7 @@ const Create_Media_Rule = () => {
                         name="advertising"
                         required
                         defaultValue={0}
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md"
+                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
                   </div>
@@ -382,7 +382,7 @@ const Create_Media_Rule = () => {
                         name="bank"
                         required
                         defaultValue={0}
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md"
+                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
                   </div>
@@ -399,7 +399,7 @@ const Create_Media_Rule = () => {
                         name="branding"
                         required
                         defaultValue={0}
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md"
+                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
                   </div>
