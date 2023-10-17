@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
-import { FaHome, FaUser, FaCog } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
 
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -85,43 +81,6 @@ export const links = [
         icon: <SlChart size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
-      // {
-      //   name: "Campaign",
-      //   link: "campaign",
-      //   icon: <MdOutlineInsertChartOutlined size={27} />,
-      //   notification: { is_notification: false, amount: 0 },
-      // },
-
-      // {
-      //   name: "Event",
-      //   link: "event",
-      //   icon: <MdOutlineEvent size={27} />,
-      //   notification: { is_notification: false, amount: 0 },
-      // },
-      // {
-      //   name: "Invoices",
-      //   link: "invoices",
-      //   icon: <MdOutlineBook size={27} />,
-      //   notification: { is_notification: true, amount: 2 },
-      // },
-      // {
-      //   name: "Inbox",
-      //   link: "inbox",
-      //   icon: <MdOutlineMoveToInbox size={27} />,
-      //   notification: { is_notification: true, amount: 27 },
-      // },
-      // {
-      //   name: "Log",
-      //   link: "log",
-      //   icon: <MdOutlineDocumentScanner size={27} />,
-      //   notification: { is_notification: false, amount: 0 },
-      // },
-      // {
-      //   name: "Pdf",
-      //   link: "pdf",
-      //   icon: <MdOutlinePictureAsPdf size={27} />,
-      //   notification: { is_notification: false, amount: 0 },
-      // },
     ],
   },
   {
@@ -180,108 +139,6 @@ export const links = [
       },
     ],
   },
-  // {
-  //   title: "Component",
-  //   links: [
-  //     {
-  //       name: "dashboard_mockup",
-  //       link: "dashboard_mockup",
-  //       icon: <FiShoppingBag size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "orders",
-  //       link: "orders",
-  //       icon: <AiOutlineShoppingCart size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "employees",
-  //       link: "employees",
-  //       icon: <IoMdContacts size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "customers",
-  //       link: "customers",
-  //       icon: <RiContactsLine size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "calendar",
-  //       link: "calendar",
-  //       icon: <AiOutlineCalendar size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "kanban",
-  //       link: "kanban",
-  //       icon: <BsKanban size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "editor",
-  //       link: "editor",
-  //       icon: <FiEdit size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "color-picker",
-  //       link: "color-picker",
-  //       icon: <BiColorFill size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "line",
-  //       link: "line",
-  //       icon: <AiOutlineStock size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "area",
-  //       link: "area",
-  //       icon: <AiOutlineAreaChart size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-
-  //     {
-  //       name: "bar",
-  //       link: "bar",
-  //       icon: <AiOutlineBarChart size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "pie",
-  //       link: "pie",
-  //       icon: <FiPieChart size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "financial",
-  //       link: "financial",
-  //       icon: <RiStockLine size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "color-mapping",
-  //       link: "color-mapping",
-  //       icon: <BsBarChart size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "pyramid",
-  //       link: "pyramid",
-  //       icon: <GiLouvrePyramid size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //     {
-  //       name: "stacked",
-  //       link: "stacked",
-  //       icon: <AiOutlineBarChart size={27} />,
-  //       notification: { is_notification: false, amount: 0 },
-  //     },
-  //   ],
-  // },
 ];
 
 const SidebarMain = () => {
@@ -291,6 +148,22 @@ const SidebarMain = () => {
   const [openLevel1, setOpenLevel1] = useState(false);
   const [openLevel2, setOpenLevel2] = useState(false);
 
+  const sidebarRef = useRef(null);
+
+  const handleOutsideClick = (e) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+      setOpenLevel1(false);
+      setOpenLevel2(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+
   const toggleLevel1 = (index) => {
     if (openLevel1 === index) {
       setOpenLevel1(null);
@@ -299,14 +172,18 @@ const SidebarMain = () => {
     }
   };
 
-  const toggleLevel2 = () => {
+  const toggleLevel2 = (openLevel1, event) => {
+    setOpenLevel1(openLevel1); // Set openLevel1 to the passed value
     setOpenLevel2(!openLevel2);
+    event.stopPropagation(); // Prevent the click event from propagating to the parent div
   };
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
+
+    handleOutsideClick();
   };
 
   const [imgClass, setImgClass] = useState("");
@@ -341,8 +218,6 @@ const SidebarMain = () => {
     });
   };
 
-  const [isSubMenuOpen, setSubMenuOpen] = useState(false);
-
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
   const normalLink =
@@ -353,7 +228,7 @@ const SidebarMain = () => {
       <div className="ml-1 h-screen pb-10">
         {activeMenu && (
           <>
-            <div className="flex justify-center items-center">
+            <div ref={sidebarRef} className="flex justify-center items-center">
               <Link
                 to="/dashboard"
                 onClick={handleCloseSideBar}
@@ -362,7 +237,7 @@ const SidebarMain = () => {
                 <img className={`${imgClass}`} src={Central_Logo} />
               </Link>
             </div>
-            <div className="mt-10">
+            <div ref={sidebarRef} className="mt-10">
               {links.map((item, index) => (
                 <div key={item.title}>
                   <p className="text-gray-400 text-sm dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
@@ -375,11 +250,12 @@ const SidebarMain = () => {
                           <div
                             to={`/${link.link}`}
                             key={link.link}
-                            onClick={handleCloseSideBar}
+                            // onClick={handleCloseSideBar}
                             // style={({ isActive }) => ({
                             //   color: isActive ? "#6427FE" : "",
                             // })}
-                            className={normalLink}
+                            className={`${normalLink} cursor-pointer`}
+                            onClick={() => toggleLevel1(index)}
                           >
                             {link.icon}
                             <div className="capitalize text-sm font-poppins">
@@ -389,9 +265,7 @@ const SidebarMain = () => {
                             <div className="flex">
                               <div className="w-[10px] h-[35px] rounded-full ml-20">
                                 <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                                  <button onClick={() => toggleLevel1(index)}>
-                                    <IoIosArrowForward size={26} />
-                                  </button>
+                                  <IoIosArrowForward size={26} />
                                 </div>
                               </div>
                             </div>
@@ -407,7 +281,12 @@ const SidebarMain = () => {
                                           key={items.link}
                                           className={`flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-gray-700  text-md m-2`}
                                         >
-                                          <div className="w-full flex hover:text-[#804DFE]">
+                                          <div
+                                            onClick={(event) =>
+                                              toggleLevel2(openLevel1, event)
+                                            }
+                                            className="w-full flex hover:text-[#804DFE]"
+                                          >
                                             <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
                                               <div>{items.icon}</div>
                                               <div>{items.name}</div>
@@ -419,15 +298,9 @@ const SidebarMain = () => {
                                                     <div className="flex">
                                                       <div className="w-[35px] h-[35px] rounded-full ml-20">
                                                         <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                                                          <button
-                                                            onClick={() =>
-                                                              toggleLevel2()
-                                                            }
-                                                          >
-                                                            <IoIosArrowForward
-                                                              size={26}
-                                                            />
-                                                          </button>
+                                                          <IoIosArrowForward
+                                                            size={26}
+                                                          />
                                                         </div>
                                                       </div>
                                                     </div>
