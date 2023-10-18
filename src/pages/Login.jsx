@@ -65,6 +65,7 @@ const Login = () => {
                 type="password"
                 value={password}
                 required
+                minlength={6}
                 placeholder="Your Password"
                 autoComplete="current-password"
               />
