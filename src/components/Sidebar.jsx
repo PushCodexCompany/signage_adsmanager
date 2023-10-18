@@ -23,6 +23,7 @@ import { RiFileEditLine, RiFileList2Line } from "react-icons/ri";
 import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
+import { FaRegListAlt } from "react-icons/fa";
 export const links = [
   {
     title: "Main menu",
@@ -50,6 +51,23 @@ export const links = [
         link: "static",
         icon: <HiOutlineNewspaper size={27} />,
         notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "Activities Log",
+            link: "statics/activities_log",
+            icon: <FaRegListAlt size={27} />,
+          },
+          {
+            name: "Media Log",
+            link: "statics/media_log",
+            icon: <FaRegListAlt size={27} />,
+          },
+          {
+            name: "Screen",
+            link: "statics/screen",
+            icon: <FaRegListAlt size={27} />,
+          },
+        ],
       },
       {
         name: "Ad Media",
