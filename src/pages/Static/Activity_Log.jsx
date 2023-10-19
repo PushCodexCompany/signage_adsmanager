@@ -6,6 +6,7 @@ import {
   PiGridFourFill,
   PiListDashesFill,
 } from "react-icons/pi";
+import { GridTable } from "../../libs/activities_log_grid";
 
 const Activity_Log = () => {
   const [showRightPanel, setShowRightPanel] = useState(false);
@@ -85,11 +86,23 @@ const Activity_Log = () => {
   };
 
   const GridImgComponent = () => {
-    return <>grid</>;
+    return (
+      <>
+        <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
+          <div>grid</div>
+        </div>
+      </>
+    );
   };
 
   const ListComponent = () => {
-    return <>list</>;
+    return (
+      <>
+        <div className="w-auto  h-[600px] border border-[#DBDBDB] rounded-lg">
+          <GridTable />
+        </div>
+      </>
+    );
   };
 
   return (
@@ -224,7 +237,7 @@ const Activity_Log = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div class="relative w-full lg:w-[300px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <button
                     onClick={() => showAllFilter()}
                     name="role"
@@ -306,8 +319,9 @@ const Activity_Log = () => {
           </div>
         </div>
       </div>
-
-      {view ? <GridImgComponent /> : <ListComponent />}
+      <div className="m-1 md:m-5 p-2 md:p-5 bg-white rounded-3xl">
+        {view ? <GridImgComponent /> : <ListComponent />}
+      </div>
 
       {showRightPanel && (
         <a
