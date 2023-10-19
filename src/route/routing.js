@@ -36,6 +36,7 @@ import {
   Create_Media_Rule,
   Tag_management,
   Media_Libraly,
+  Activity_Log,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -72,6 +73,7 @@ const Routing = () => {
         />
         <Route path="/setting/Tag_management" element={<Tag_management />} />
         <Route path="/ad_media/media_libraly" element={<Media_Libraly />} />
+        <Route path="/statics/activities_log" element={<Activity_Log />} />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
         <Route path="/orders" element={<Orders />} />

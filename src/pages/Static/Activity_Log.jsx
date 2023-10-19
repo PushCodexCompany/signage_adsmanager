@@ -1,29 +1,46 @@
 import React, { useState } from "react";
-
-import { Header } from "../../../components";
+import { Header } from "../../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-
 import {
   PiSlidersHorizontalFill,
   PiGridFourFill,
   PiListDashesFill,
 } from "react-icons/pi";
 
-import { GridTable } from "../../../libs/user_grid";
-
-const User = () => {
-  const [isStatusOpen, setIsStatusOpen] = useState(false);
-  const [isRoleOpen, setIsRoleOpen] = useState(false);
+const Activity_Log = () => {
   const [showRightPanel, setShowRightPanel] = useState(false);
+  const [view, setView] = useState(true);
+  const [isSectorOpen, setIsSectorOpen] = useState(false);
+  const [isRegionOpen, setIsRegionOpen] = useState(false);
+  const [isClustorOpen, setIsClustorOpen] = useState(false);
+  const [isBranchOpen, setIsBranchOpen] = useState(false);
+  const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
+
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [filter, setFilter] = useState(["Active", "Admin"]);
 
-  const toggleStatusSelect = () => {
-    setIsStatusOpen((prevIsOpen) => !prevIsOpen);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [filter, setFilter] = useState([
+    "North",
+    "Flagship",
+    "Beauty",
+    "Portrait",
+  ]);
+
+  const toggleSectorSelect = () => {
+    setIsSectorOpen((prevIsOpen) => !prevIsOpen);
   };
-
-  const toggleRoleSelect = () => {
-    setIsRoleOpen((prevIsOpen) => !prevIsOpen);
+  const toggleRegionSelect = () => {
+    setIsRegionOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const toggleClustorSelect = () => {
+    setIsClustorOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const toggleBranchSelect = () => {
+    setIsBranchOpen((prevIsOpen) => !prevIsOpen);
+  };
+  const toggleDepartmentSelect = () => {
+    setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
   };
 
   const handleStatusChange = (event) => {
@@ -41,19 +58,6 @@ const User = () => {
     }
   };
 
-  const showAllFilter = () => {
-    setShowRightPanel(!showRightPanel);
-  };
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const [isChecked, setIsChecked] = useState(false);
-  const toggleCheckbox = () => {
-    setIsChecked(!isChecked);
-  };
-
   const removeFilter = (event) => {
     const selectedValue = event;
     const updatedFilter = filter.filter((value) => value !== selectedValue);
@@ -64,101 +68,246 @@ const User = () => {
     setFilter([]);
   };
 
+  const showAllFilter = () => {
+    setShowRightPanel(!showRightPanel);
+  };
+
+  const handleView = () => {
+    setView(!view);
+  };
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  const toggleCheckbox = () => {
+    setIsChecked(!isChecked);
+  };
+
+  const GridImgComponent = () => {
+    return <>grid</>;
+  };
+
+  const ListComponent = () => {
+    return <>list</>;
+  };
+
   return (
     <>
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
-        <div className="flex justify-between mt-10 mb-5 font-bold text-2xl font-poppins">
-          <div className="flex items-center">
-            <div className="font-poppins">User</div>
+        <div class="grid grid-cols-5 gap-4 mt-10">
+          <div class="col-span-4">
+            <div className="font-poppins font-semibold text-2xl">
+              <text>Activities log</text>
+            </div>
+          </div>
+          <div class="col-span-1">
+            <button
+              onClick={() =>
+                (window.location.href = "/setting/media_rule/create")
+              }
+              className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[200px] lg:h-[45px] rounded-md"
+            >
+              Export
+            </button>
           </div>
         </div>
 
-        <div className="relative flex flex-col min-w-0  w-full mb-6 ">
+        <div className="relative flex flex-col max-w-0  w-full mb-6 bg-red-500 ">
           {/* Select Menu */}
-          <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+          <div class="rounded-lg h-[50px] flex items-center shadow-md">
             <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-between items-center">
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+              <div class="w-full lg:w-3/4 flex justify-center items-center">
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
-                    name="status"
-                    id="status"
-                    onClick={toggleStatusSelect}
+                    name="sector"
+                    id="sector"
+                    onClick={toggleSectorSelect}
                     onChange={handleStatusChange}
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="Sector">Sector</option>
+                    <option value="Portrait">Portrait</option>
+                    <option value="Landscape">Landscape</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isStatusOpen ? (
+                    {isSectorOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
                       <IoIosArrowDown size={18} color="#6425FE" />
                     )}
                   </div>
                 </div>
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
-                    name="role"
-                    id="role"
-                    onClick={toggleRoleSelect}
+                    name="region"
+                    id="region"
+                    onClick={toggleRegionSelect}
                     onChange={handleStatusChange}
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
-                    <option value="Admin">Admin</option>
-                    <option value="User">User</option>
+                    <option value="Region">Region</option>
+                    <option value="North">North</option>
+                    <option value="West">West</option>
+                    <option value="East">East</option>
+                    <option value="South">South</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                    {isRoleOpen ? (
+                    {isRegionOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
                       <IoIosArrowDown size={18} color="#6425FE" />
                     )}
+                  </div>
+                </div>
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="store_cluster"
+                    id="store_cluster"
+                    onClick={toggleClustorSelect}
+                    onChange={handleStatusChange}
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Store Cluster">Store Cluster</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    {isClustorOpen ? (
+                      <IoIosArrowUp size={18} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowDown size={18} color="#6425FE" />
+                    )}
+                  </div>
+                </div>
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="branch"
+                    id="branch"
+                    onClick={toggleBranchSelect}
+                    onChange={handleStatusChange}
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Branch">Branch</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                    <option value="...">...</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    {isBranchOpen ? (
+                      <IoIosArrowUp size={18} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowDown size={18} color="#6425FE" />
+                    )}
+                  </div>
+                </div>
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <select
+                    name="department"
+                    id="department"
+                    onClick={toggleDepartmentSelect}
+                    onChange={handleStatusChange}
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    <option value="Department">Department</option>
+                    <option value="Beauty">Beauty</option>
+                    <option value="Toy">Toy</option>
+                    <option value="Electronics">Electronics</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    {isDepartmentOpen ? (
+                      <IoIosArrowUp size={18} color="#6425FE" />
+                    ) : (
+                      <IoIosArrowDown size={18} color="#6425FE" />
+                    )}
+                  </div>
+                </div>
+                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                  <button
+                    onClick={() => showAllFilter()}
+                    name="role"
+                    class="block appearance-none w-full bg-[#f2f2f2] text-sm text-left border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  >
+                    All filter
+                  </button>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <PiSlidersHorizontalFill size={18} color="#6425FE" />
                   </div>
                 </div>
               </div>
             </div>
-            <div class="relative w-full lg:w-full h-[40px] flex items-center justify-end font-bold text-sm lg:text-base ml-3 mb-3">
-              <button
-                onClick={() => showAllFilter()}
-                className=" text-[#6425FE]text-sm font-poppins w-full lg:w-[50px] lg:h-[45px] rounded-md"
-              >
-                <PiSlidersHorizontalFill size={26} color="#6425FE" />
-              </button>
-            </div>
           </div>
 
           {/* Select Menu */}
         </div>
 
-        <div class="flex flex-row mt-4">
+        {/* Filter */}
+        <div className="flex">
           <div class="basis-11/12">
             {filter &&
               filter.map((items) => (
                 <button onClick={() => removeFilter(items)}>
-                  <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                      <IoIosClose size="22" color="#6425FE" />
+                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
+                    <div className="grid grid-cols-4">
+                      <div className="col-span-1 mt-[6px]">
+                        <div className="flex justify-end items-center">
+                          <IoIosClose size="27" color="#6425FE" />
+                        </div>
+                      </div>
+                      <div className="col-span-3 mt-[8px]">
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-sm">{items}</div>
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-sm">{items}</span>
                   </div>
                 </button>
               ))}
             {filter.length > 0 && (
               <button onClick={() => clearFilter()}>
-                <div class="relative w-[100px] lg:w-[130px] h-[40px] flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                  <span className="text-sm">Clear All</span>
+                <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+                  <div className="grid grid-cols-12">
+                    <div className="col-span-1 mt-[6px]">
+                      <div className="flex justify-end items-center">
+                        <IoIosClose size="27" color="#6425FE" />
+                      </div>
+                    </div>
+                    <div className="col-span-11 mt-[8px]">
+                      <div className="flex justify-center items-center">
+                        <div className="font-poppins text-sm text-white">
+                          Clear All
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </button>
             )}
           </div>
-        </div>
 
-        <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable />
+          <div class="basis-1/12">
+            <div className="flex flex-row">
+              {view ? (
+                <div className="flex basis-1/2 justify-end align-middle">
+                  <button onClick={() => handleView()}>
+                    <PiListDashesFill size={42} color="#6425FE" />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex basis-1/2 justify-end align-middle">
+                  <button onClick={() => handleView()}>
+                    <PiGridFourFill size={42} color="#6425FE" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
+
+      {view ? <GridImgComponent /> : <ListComponent />}
 
       {showRightPanel && (
         <a
@@ -851,4 +1000,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Activity_Log;

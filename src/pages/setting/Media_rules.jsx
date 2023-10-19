@@ -12,16 +12,13 @@ const Media_rules = () => {
             <text>Media Rule</text>
           </div>
         </div>
-        <div class="">
-          <button
-            onClick={() =>
-              (window.location.href = "/setting/media_rule/create")
-            }
-            className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
-          >
-            New Media Rule +
-          </button>
-        </div>
+
+        <button
+          onClick={() => (window.location.href = "/setting/media_rule/create")}
+          className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+        >
+          New Media Rule +
+        </button>
       </div>
       <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
         <GridTable />

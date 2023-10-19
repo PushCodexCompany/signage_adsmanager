@@ -163,18 +163,39 @@ const Booking = () => {
         {filter &&
           filter.map((items) => (
             <button onClick={() => removeFilter(items)}>
-              <div className="relative w-[100px] lg:w-[130px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                  <IoIosClose size="22" color="#6425FE" />
+              <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
+                <div className="grid grid-cols-4">
+                  <div className="col-span-1 mt-[6px]">
+                    <div className="flex justify-end items-center">
+                      <IoIosClose size="27" color="#6425FE" />
+                    </div>
+                  </div>
+                  <div className="col-span-3 mt-[8px]">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-sm">{items}</div>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-sm">{items}</span>
               </div>
             </button>
           ))}
         {filter.length > 0 && (
           <button onClick={() => clearFilter()}>
-            <div className="relative w-[100px] lg:w-[130px] h-[40px] flex items-center bg-[#6425FE] text-white justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-              <span className="text-sm">Clear All</span>
+            <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+              <div className="grid grid-cols-12">
+                <div className="col-span-1 mt-[6px]">
+                  <div className="flex justify-end items-center">
+                    <IoIosClose size="27" color="#6425FE" />
+                  </div>
+                </div>
+                <div className="col-span-11 mt-[8px]">
+                  <div className="flex justify-center items-center">
+                    <div className="font-poppins text-sm text-white">
+                      Clear All
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </button>
         )}

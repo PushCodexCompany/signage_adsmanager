@@ -168,20 +168,6 @@ const SidebarMain = () => {
 
   const sidebarRef = useRef(null);
 
-  const handleOutsideClick = (e) => {
-    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
-      setOpenLevel1(false);
-      setOpenLevel2(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
-
   const toggleLevel1 = (index) => {
     if (openLevel1 === index) {
       setOpenLevel1(null);
@@ -200,8 +186,7 @@ const SidebarMain = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
       setActiveMenu(false);
     }
-
-    handleOutsideClick();
+    // handleOutsideClick();
   };
 
   const [imgClass, setImgClass] = useState("");
@@ -214,6 +199,21 @@ const SidebarMain = () => {
 
     loadImgClass();
   }, []); // Run this effect once on component mount
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setOpenLevel1(null);
+        setOpenLevel2(false);
+      }
+    }
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const generateImgHeight = async (img_logo) => {
     return new Promise((resolve) => {
@@ -256,12 +256,12 @@ const SidebarMain = () => {
               </Link>
             </div>
             <div ref={sidebarRef} className="mt-10">
-              {links.map((item, index) => (
+              {links.map((item) => (
                 <div key={item.title}>
                   <p className="text-gray-400 text-sm dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
                     {item.title}
                   </p>
-                  {item.links.map((link) => (
+                  {item.links.map((link, index) => (
                     <div key={link.link}>
                       {link.submenu ? (
                         <>
@@ -272,7 +272,7 @@ const SidebarMain = () => {
                             // style={({ isActive }) => ({
                             //   color: isActive ? "#6427FE" : "",
                             // })}
-                            className={`${normalLink} cursor-pointer`}
+                            className={`flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2  cursor-pointer `}
                             onClick={() => toggleLevel1(index)}
                           >
                             {link.icon}
@@ -280,11 +280,9 @@ const SidebarMain = () => {
                               {link.name}
                             </div>
 
-                            <div className="flex">
-                              <div className="w-[10px] h-[35px] rounded-full ml-20">
-                                <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                                  <IoIosArrowForward size={26} />
-                                </div>
+                            <div className="ml-auto">
+                              <div className="text-xs font-bold text-gray-300">
+                                <IoIosArrowForward size={26} />
                               </div>
                             </div>
 
