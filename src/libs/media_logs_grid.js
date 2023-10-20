@@ -12,78 +12,90 @@ const convertTimestampToFormattedDate = (timestamp) => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
+const secondsToTime = (value) => {
+  const hours = Math.floor(value / 3600);
+  const minutes = Math.floor((value % 3600) / 60);
+  const seconds = value % 60;
+
+  const formattedHours = hours.toString().padStart(2, "0");
+  const formattedMinutes = minutes.toString().padStart(2, "0");
+  const formattedSeconds = seconds.toString().padStart(2, "0");
+
+  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+};
+
 const logData = [
   {
-    user: "Admin01",
-    page: "Requests",
-    time: 1658469600000,
-    action: "Approve",
-    action_on: "Booking",
-    value: "#001",
+    media_name: "Mid year sale 2023.mp4",
+    merchandise: "Nike",
+    screen: "Screen 1",
+    start_time: 1658901600000,
+    end_time: 1658901600000,
+    Duration: 15,
   },
   {
-    user: "Admin02",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Content",
-    value: "#002",
+    media_name: "Promotion Summer.mp4",
+    merchandise: "Adidas",
+    screen: "Screen 2",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
   {
-    user: "Sale01",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Content",
-    value: "#003",
+    media_name: "Sample Ads.png",
+    merchandise: "Adidas 3",
+    screen: "Screen 2",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
   {
-    user: "Supachai4",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Content",
-    value: "#004",
+    media_name: "Mid Night Sale 2023.mp4",
+    merchandise: "FILA",
+    screen: "Screen 3",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
   {
-    user: "Nidarat_ssu",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Content",
-    value: "#005",
+    media_name: "Mid year sale 2023.mp4",
+    merchandise: "FILA",
+    screen: "Screen 4",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
   {
-    user: "Admin_sale",
-    page: "Request",
-    time: 1658468700000,
-    action: "Approve",
-    action_on: "Booking",
-    value: "#006",
+    media_name: "Mid year sale 2023.mp4",
+    merchandise: "BAOBAO",
+    screen: "Screen 5",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
   {
-    user: "Admin05",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Booking",
-    value: "#007",
+    media_name: "Food Hall Ads.png",
+    merchandise: "After You",
+    screen: "Screen 5",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
   {
-    user: "Admin010",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Approve",
-    action_on: "Content",
-    value: "#008",
+    media_name: "Mid year sale 2023.mp4",
+    merchandise: "Adidas",
+    screen: "Screen 7",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
   {
-    user: "Admin12",
-    page: "Requests",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Booking",
-    value: "#009",
+    media_name: "Pet Show 2023.mp4",
+    merchandise: "Tops",
+    screen: "Screen 10",
+    start_time: 1658900700000,
+    end_time: 1658900700000,
+    Duration: 15,
   },
 ];
 
@@ -98,22 +110,22 @@ export const GridTable = () => {
                 ID
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                User
+                Media Name
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Page
+                Merchandise
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Time
+                Screen
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Action
+                Start Time
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Action On
+                End Time
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Value
+                Duration
               </th>
             </tr>
           </thead>
@@ -127,32 +139,33 @@ export const GridTable = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.user}
+                    {row.media_name}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.page}
+                    {row.merchandise}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {convertTimestampToFormattedDate(row.time)}
+                    {row.screen}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.action}
+                    {convertTimestampToFormattedDate(row.start_time)}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.action_on}
+                    {convertTimestampToFormattedDate(row.end_time)}
                   </div>
                 </td>
+
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.value}
+                    {secondsToTime(row.Duration)}
                   </div>
                 </td>
               </tr>

@@ -37,6 +37,8 @@ import {
   Tag_management,
   Media_Libraly,
   Activity_Log,
+  Media_Log,
+  Screen,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -74,6 +76,8 @@ const Routing = () => {
         <Route path="/setting/Tag_management" element={<Tag_management />} />
         <Route path="/ad_media/media_libraly" element={<Media_Libraly />} />
         <Route path="/statics/activities_log" element={<Activity_Log />} />
+        <Route path="/statics/media_log" element={<Media_Log />} />
+        <Route path="/statics/screen" element={<Screen />} />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
         <Route path="/orders" element={<Orders />} />

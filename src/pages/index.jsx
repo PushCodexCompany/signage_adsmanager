@@ -38,3 +38,5 @@ export { default as Tag_management } from "./setting/Tag_managment";
 export { default as Create_Media_Rule } from "./setting/Media_Rule/Create_Media_Rule";
 export { default as Media_Libraly } from "./Ads_Media/Media_Libraly";
 export { default as Activity_Log } from "./Static/Activity_Log";
+export { default as Media_Log } from "./Static/Media_Log";
+export { default as Screen } from "./Static/Screen";

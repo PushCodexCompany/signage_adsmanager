@@ -6,9 +6,10 @@ import {
   PiGridFourFill,
   PiListDashesFill,
 } from "react-icons/pi";
-import { GridTable } from "../../libs/activities_log_grid";
 
-const Activity_Log = () => {
+import { GridTable } from "../../libs/screen_grid";
+
+const Screen = () => {
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [view, setView] = useState(true);
   const [isSectorOpen, setIsSectorOpen] = useState(false);
@@ -112,7 +113,7 @@ const Activity_Log = () => {
         <div class="grid grid-cols-5 gap-4 mt-10">
           <div class="col-span-4">
             <div className="font-poppins font-semibold text-2xl">
-              <text>Activities log</text>
+              <text>Screen (Only available up to last 15 days)</text>
             </div>
           </div>
           <div class="col-span-1">
@@ -321,6 +322,7 @@ const Activity_Log = () => {
           </div>
         </div>
       </div>
+
       <div className="m-1 md:m-5 p-2 md:p-5 bg-white rounded-3xl">
         {view ? <ListComponent /> : <GridImgComponent />}
       </div>
@@ -1016,4 +1018,4 @@ const Activity_Log = () => {
   );
 };
 
-export default Activity_Log;
+export default Screen;

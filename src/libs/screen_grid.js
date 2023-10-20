@@ -12,78 +12,72 @@ const convertTimestampToFormattedDate = (timestamp) => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
+const secondsToTime = (value) => {
+  const hours = Math.floor(value / 3600);
+  const minutes = Math.floor((value % 3600) / 60);
+  const seconds = value % 60;
+
+  const formattedHours = hours.toString().padStart(2, "0");
+  const formattedMinutes = minutes.toString().padStart(2, "0");
+  const formattedSeconds = seconds.toString().padStart(2, "0");
+
+  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+};
+
 const logData = [
   {
-    user: "Admin01",
-    page: "Requests",
-    time: 1658469600000,
-    action: "Approve",
-    action_on: "Booking",
-    value: "#001",
+    screen_name: "Screen 1",
+    event: "Event 1",
+    time: 1658901600000,
+    status: "Up",
   },
   {
-    user: "Admin02",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Content",
-    value: "#002",
+    screen_name: "Screen 2",
+    event: "Event 2",
+    time: 1658900700000,
+    status: "Up",
   },
   {
-    user: "Sale01",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Content",
-    value: "#003",
+    screen_name: "Screen 3",
+    event: "Event 3",
+    time: 1658900700000,
+    status: "Down",
   },
   {
-    user: "Supachai4",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Content",
-    value: "#004",
+    screen_name: "Screen 4",
+    event: "Event 4",
+    time: 1658900700000,
+    status: "Down",
   },
   {
-    user: "Nidarat_ssu",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Content",
-    value: "#005",
+    screen_name: "Screen 5",
+    event: "Event 5",
+    time: 1658900700000,
+    status: "Up",
   },
   {
-    user: "Admin_sale",
-    page: "Request",
-    time: 1658468700000,
-    action: "Approve",
-    action_on: "Booking",
-    value: "#006",
+    screen_name: "Screen 6",
+    event: "Event 6",
+    time: 1658900700000,
+    status: "Down",
   },
   {
-    user: "Admin05",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Booking",
-    value: "#007",
+    screen_name: "Screen 7",
+    event: "Event 7",
+    time: 1658900700000,
+    status: "Down",
   },
   {
-    user: "Admin010",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Approve",
-    action_on: "Content",
-    value: "#008",
+    screen_name: "Screen 8",
+    event: "Event 8",
+    time: 1658900700000,
+    status: "Up",
   },
   {
-    user: "Admin12",
-    page: "Requests",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Booking",
-    value: "#009",
+    screen_name: "Screen 9",
+    event: "Event 9",
+    time: 1658900700000,
+    status: "Up",
   },
 ];
 
@@ -98,22 +92,16 @@ export const GridTable = () => {
                 ID
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                User
+                Screen Name
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Page
+                Event
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Time
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Action
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Action On
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Value
+                Status
               </th>
             </tr>
           </thead>
@@ -127,14 +115,15 @@ export const GridTable = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.user}
+                    {row.screen_name}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.page}
+                    {row.event}
                   </div>
                 </td>
+
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
                     {convertTimestampToFormattedDate(row.time)}
@@ -142,17 +131,7 @@ export const GridTable = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.action}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">
-                    {row.action_on}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">
-                    {row.value}
+                    {row.status}
                   </div>
                 </td>
               </tr>
