@@ -143,7 +143,9 @@ const Role_permission = () => {
       return (
         <div className="col-span-1">
           <div className="grid grid-rows-5 gap-4">
-            <div className="font-poppins font-bold">{title}</div>
+            <div className="font-poppins font-bold">
+              {title[0].toUpperCase() + title.slice(1)}
+            </div>
             {items.map((item, index) => (
               <div className="grid grid-cols-4" key={index}>
                 <div className="col-span-1">
