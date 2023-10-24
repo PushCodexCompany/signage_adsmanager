@@ -18,7 +18,11 @@ import {
 
 import { SlScreenDesktop, SlChart } from "react-icons/sl";
 import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
-import { IoDocumentTextOutline, IoShieldOutline } from "react-icons/io5";
+import {
+  IoDocumentTextOutline,
+  IoShieldOutline,
+  IoPersonOutline,
+} from "react-icons/io5";
 import { RiFileEditLine, RiFileList2Line } from "react-icons/ri";
 import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
 import { IoIosArrowForward } from "react-icons/io";
@@ -140,6 +144,11 @@ export const links = [
             name: "Tag Management",
             link: "setting/tag_management",
             icon: <BiPurchaseTag size={27} />,
+          },
+          {
+            name: "Role And Permission",
+            link: "setting/role_permission",
+            icon: <IoPersonOutline size={27} />,
           },
         ],
       },
@@ -288,7 +297,7 @@ const SidebarMain = () => {
 
                             <div className="relative group">
                               {openLevel1 === index && (
-                                <div className="absolute  top-[-50px] w-72 bg-white border border-gray-300 shadow-lg p-3">
+                                <div className="absolute  top-[-50px] w-80 bg-white border border-gray-300 shadow-lg p-3">
                                   {link.submenu.map((items) => (
                                     <>
                                       {items.submenu ? (
@@ -332,13 +341,6 @@ const SidebarMain = () => {
                                                               key={
                                                                 submenuItem.link
                                                               }
-                                                              // style={({
-                                                              //   isActive,
-                                                              // }) => ({
-                                                              //   color: isActive
-                                                              //     ? "#6427FE"
-                                                              //     : "",
-                                                              // })}
                                                               className={
                                                                 normalLink
                                                               }

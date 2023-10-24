@@ -90,6 +90,7 @@ const Tag_managment = () => {
       </div>
 
       <div className="mt-7 grid grid-cols-7 gap-2">
+        {/* Left Panel */}
         <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
           <div className="p-3">
             <div className="font-poppins font-bold text-2xl">Category</div>
@@ -155,6 +156,7 @@ const Tag_managment = () => {
             ))}
           </div>
         </div>
+        {/* Left Panel */}
 
         <div className="col-span-5 bg-[#FAFAFA] w-full">
           <div className="p-3">

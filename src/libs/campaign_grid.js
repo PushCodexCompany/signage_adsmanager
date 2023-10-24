@@ -64,17 +64,17 @@ const gridMerchandiseTemplate = (props) => {
 
 const gridStatusTemplate = (props) => {
   return (
-    <div class="relative w-full lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+    <div className="relative w-full lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
       <select
         name="status"
         id="status"
-        class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+        className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
         defaultValue={props.status}
       >
         <option value="1">Active</option>
         <option value="0">Deactive</option>
       </select>
-      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
         <IoIosArrowDown size="18" color="#6425FE" />
       </div>
     </div>
@@ -83,17 +83,17 @@ const gridStatusTemplate = (props) => {
 
 const gridRoleTemplate = (props) => {
   return (
-    <div class="relative w-full lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+    <div className="relative w-full lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
       <select
         name="status"
         id="status"
-        class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+        className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
         defaultValue={props.role}
       >
         <option value="0">Admin</option>
         <option value="1">User</option>
       </select>
-      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
         <IoIosArrowDown size="18" color="#6425FE" />
       </div>
     </div>

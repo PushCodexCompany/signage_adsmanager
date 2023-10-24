@@ -39,6 +39,7 @@ import {
   Activity_Log,
   Media_Log,
   Screen,
+  Role_permission,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -78,6 +79,7 @@ const Routing = () => {
         <Route path="/statics/activities_log" element={<Activity_Log />} />
         <Route path="/statics/media_log" element={<Media_Log />} />
         <Route path="/statics/screen" element={<Screen />} />
+        <Route path="/setting/role_permission" element={<Role_permission />} />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
         <Route path="/orders" element={<Orders />} />

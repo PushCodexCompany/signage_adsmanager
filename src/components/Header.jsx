@@ -10,12 +10,12 @@ const Header = ({ title, subtitle }) => {
       {/* <div className=" mb-10">
         <p className="text-[24px] text-gray-700 font-bold">{title}</p>
       </div> */}
-      <nav class="flex" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-3">
-          <li class="inline-flex items-center">
+      <nav className="flex" aria-label="Breadcrumb">
+        <ol className="inline-flex items-center space-x-1 md:space-x-3">
+          <li className="inline-flex items-center">
             <a
               href="/dashboard"
-              class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white font-poppins"
+              className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white font-poppins"
             >
               {title}
             </a>
@@ -26,9 +26,9 @@ const Header = ({ title, subtitle }) => {
             const last = index === pathname.length - 1;
             return last ? (
               <li aria-current="page">
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <IoIosArrowForward />
-                  <div class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400 font-poppins">
+                  <div className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400 font-poppins">
                     {(items.charAt(0).toUpperCase() + items.slice(1)).replace(
                       /_/g,
                       " "
@@ -38,11 +38,11 @@ const Header = ({ title, subtitle }) => {
               </li>
             ) : (
               <li>
-                <div class="flex items-center">
+                <div className="flex items-center">
                   <IoIosArrowForward />
                   <a
                     href={to}
-                    class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins"
+                    className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins"
                   >
                     {(items.charAt(0).toUpperCase() + items.slice(1)).replace(
                       /_/g,

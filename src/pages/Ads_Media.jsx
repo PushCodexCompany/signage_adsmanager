@@ -15,8 +15,8 @@ const Ads_Media = () => {
       <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
         <text>New Screen Media Rule</text>
       </div>
-      <div class="flex flex-col lg:flex-row">
-        <div class="w-full lg:w-1/2 p-4">
+      <div className="flex flex-col lg:flex-row">
+        <div className="w-full lg:w-1/2 p-4">
           <div>
             <div className=" h-10 rounded-sm flex items-center justify-start">
               <div className="flex-grow h-full w-full border-1 border-gray-300 rounded-sm ">
@@ -50,7 +50,7 @@ const Ads_Media = () => {
             </div>
           </div>
         </div>
-        <div class="w-full lg:w-1/2 p-4 lg:pl-8 ">
+        <div className="w-full lg:w-1/2 p-4 lg:pl-8 ">
           <div>
             <span className="font-bold text-3xl font-poppins">
               Media Rule Setting
@@ -69,12 +69,12 @@ const Ads_Media = () => {
               <div className="text-xl font-bold font-poppins">Rule 1</div>
             </div>
             <div className="flex flex-row mt-3">
-              <div class="flex-grow" style={{ width: "50%" }}>
-                <div class="relative flex flex-col justify-center items-center h-full text-sm font-bold">
+              <div className="flex-grow" style={{ width: "50%" }}>
+                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
                   <select
                     name="resolution"
                     id="resolution"
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     placeholder="Resolution"
                   >
                     <option value="">Resolution</option>
@@ -83,7 +83,7 @@ const Ads_Media = () => {
                     <option value="3">2560 x 1440</option>
                     <option value="4">3840 x 2160</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
                       width="13"
                       height="15"
@@ -102,8 +102,8 @@ const Ads_Media = () => {
                   </div>
                 </div>
               </div>
-              <div class="flex-grow " style={{ width: "20%" }}>
-                <div class="flex flex-col justify-center items-end h-full text-sm font-bold mr-1 font-poppins">
+              <div className="flex-grow " style={{ width: "20%" }}>
+                <div className="flex flex-col justify-center items-end h-full text-sm font-bold mr-1 font-poppins">
                   <div>Position</div>
                 </div>
               </div>
@@ -115,7 +115,7 @@ const Ads_Media = () => {
                   />
                 </div>
               </div>
-              <div class="flex-grow  ml-1" style={{ width: "15%" }}>
+              <div className="flex-grow  ml-1" style={{ width: "15%" }}>
                 <div className="flex flex-col justify-center items-center h-full text-white text-sm font-bold font-poppins">
                   <input
                     className="w-full h-full text-center placeholder-center"
@@ -141,47 +141,17 @@ const Ads_Media = () => {
               <div className="text-xl font-bold font-poppins">Rule 2</div>
             </div>
             <div className="flex flex-row mt-3">
-              <div class="flex-grow" style={{ width: "33%" }}>
-                <div class="relative flex flex-col justify-center items-center h-full text-sm font-bold">
+              <div className="flex-grow" style={{ width: "33%" }}>
+                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
                   <select
                     name="condition_type"
                     id="condition_type"
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     placeholder="Resolution"
                   >
                     <option value="1">File Size</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div class="flex-grow " style={{ width: "33%" }}>
-                <div class="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                  <select
-                    name="config_type"
-                    id="config_type"
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    placeholder="Resolution"
-                  >
-                    <option value="1">Less Than</option>
-                    <option value="2">More Than</option>
-                  </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
                       width="13"
                       height="15"
@@ -201,18 +171,48 @@ const Ads_Media = () => {
                 </div>
               </div>
               <div className="flex-grow " style={{ width: "33%" }}>
-                <div class="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                  <select
+                    name="config_type"
+                    id="config_type"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                    placeholder="Resolution"
+                  >
+                    <option value="1">Less Than</option>
+                    <option value="2">More Than</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                    <svg
+                      width="13"
+                      height="15"
+                      viewBox="0 0 13 21"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
+                        stroke="#6425FE"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-grow " style={{ width: "33%" }}>
+                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                   <select
                     name="file_size_type"
                     id="file_size_type"
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     placeholder="Resolution"
                   >
                     <option value="1">300(KB)</option>
                     <option value="2">500(KB)</option>
                     <option value="2">1(MB)</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
                       width="13"
                       height="15"
@@ -243,18 +243,18 @@ const Ads_Media = () => {
               <div className="text-xl font-bold font-poppins">Ads capacity</div>
             </div>
             <div className="flex flex-row mt-3">
-              <div class="flex-grow" style={{ width: "50%" }}>
-                <div class="relative flex flex-col justify-center items-center h-full text-sm font-bold">
+              <div className="flex-grow" style={{ width: "50%" }}>
+                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
                   <select
                     name="ads_capacity"
                     id="ads_capacity"
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                   >
                     <option value="1">10</option>
                     <option value="2">20</option>
                     <option value="3">30</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
                       width="13"
                       height="15"
@@ -273,8 +273,8 @@ const Ads_Media = () => {
                   </div>
                 </div>
               </div>
-              <div class="flex-grow" style={{ width: "25%" }}></div>
-              <div class="flex-grow" style={{ width: "25%" }}></div>
+              <div className="flex-grow" style={{ width: "25%" }}></div>
+              <div className="flex-grow" style={{ width: "25%" }}></div>
             </div>
             <div className="flex justify-center text-sm mt-3 font-poppins">
               Lorem Ipsum is simply dummy text of the printing and typesetting

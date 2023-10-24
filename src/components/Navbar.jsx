@@ -78,8 +78,8 @@ const Navbar = () => {
 
   return (
     <div className="p-2 md:ml-6 md:mr-6 relative">
-      <div class="flex flex-row space-x-1">
-        <div class="lg:hidden basis-1/12">
+      <div className="flex flex-row space-x-1">
+        <div className="lg:hidden basis-1/12">
           {select_campaign && (
             <NavButton
               title="Menu"
@@ -89,7 +89,7 @@ const Navbar = () => {
             />
           )}
         </div>
-        <div class="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
+        <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
           <div className="flex">
             <NavButton
               customFunc={search}
@@ -105,7 +105,7 @@ const Navbar = () => {
             />
           </div>
         </div>
-        <div class="basis-4/12 lg:basis-2/12">
+        <div className="basis-4/12 lg:basis-2/12">
           <div className="flex divide-x-1 divide-gray-300">
             {select_campaign && (
               <NavButton
