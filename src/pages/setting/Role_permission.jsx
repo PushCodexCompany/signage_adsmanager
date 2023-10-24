@@ -157,13 +157,13 @@ const Role_permission = () => {
                       onChange={() => toggleCheckbox(item)}
                     />
                     <span
-                      className={`h-5 w-5 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                      className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
                         checkboxes[item] ? "bg-white" : ""
                       }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className={`h-3 w-3 text-white ${
+                        className={`h-6 w-6 text-white ${
                           checkboxes[item] ? "opacity-100" : "opacity-0"
                         } transition-opacity duration-300 ease-in-out`}
                         fill="none"
@@ -173,7 +173,7 @@ const Role_permission = () => {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth="2"
+                          strokeWidth="3"
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
