@@ -19,7 +19,7 @@ const mock_data = [
       booking: 2,
     },
     other_permission: {
-      assign_booking: 1,
+      assign_booking: 0,
       assign_screen: 1,
       publish: 1,
     },
@@ -41,27 +41,29 @@ const mock_data = [
     other_permission: {
       assign_booking: 1,
       assign_screen: 1,
-      publish: 1,
+      publish: 0,
     },
   },
 ];
 const Role_permission = () => {
   const [permission, setPermission] = useState([]);
   const [select_role, setSelectRole] = useState(0);
+
   useEffect(() => {
     const updatedData = mock_data.map((item) => {
       return {
         ...item,
         page_permission: convertPermissionValuesToBoolean([item])
           .page_permission,
+        other_permission: convertPermissionValuesToBoolean([item])
+          .other_permission,
       };
     });
-
     setPermission(updatedData);
   }, []);
 
   const convertPermissionValuesToBoolean = (data) => {
-    const convertedData = { page_permission: {} };
+    const convertedData = { page_permission: {}, other_permission: {} };
 
     data.map((items) => {
       for (const resource in items.page_permission) {
@@ -73,6 +75,12 @@ const Role_permission = () => {
           delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
         };
         convertedData.page_permission[resource] = resourcePermissions;
+      }
+
+      for (const permission in items.other_permission) {
+        const value = items.other_permission[permission];
+        convertedData.other_permission[permission] =
+          value === 1 || value === true;
       }
     });
 
@@ -111,7 +119,18 @@ const Role_permission = () => {
       summary[resource] = resourceValue;
     }
 
-    return { ...data, page_permission: summary };
+    const otherPermissionSummary = {};
+    for (const permission in data.other_permission) {
+      otherPermissionSummary[permission] = data.other_permission[permission]
+        ? 1
+        : 0;
+    }
+
+    return {
+      ...data,
+      page_permission: summary,
+      other_permission: otherPermissionSummary,
+    };
   };
 
   const handleSave = (role) => {
@@ -147,7 +166,10 @@ const Role_permission = () => {
               {title[0].toUpperCase() + title.slice(1)}
             </div>
             {items.map((item, index) => (
-              <div className="grid grid-cols-4" key={index}>
+              <div
+                className="grid grid-cols-4 space-x-3 lg:space-x-2"
+                key={index}
+              >
                 <div className="col-span-1">
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -181,12 +203,93 @@ const Role_permission = () => {
                   </label>
                 </div>
                 <div className="col-span-3">
-                  <div className="font-poppins">{item}</div>
+                  <div className="font-poppins">
+                    {item[0].toUpperCase() + item.slice(1)}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
+      );
+    };
+
+    const OtherBoxGroup = ({ data }) => {
+      const [checkboxes, setCheckboxes] = useState(
+        Object.keys(data).reduce((acc, item) => {
+          acc[item] = data[item]; // Initialize checkboxes based on the provided data
+          return acc;
+        }, {})
+      );
+
+      const toggleCheckbox = (itemName) => {
+        setCheckboxes((prevCheckboxes) => ({
+          ...prevCheckboxes,
+          [itemName]: !prevCheckboxes[itemName],
+        }));
+
+        roleData.other_permission[itemName] =
+          !roleData.other_permission[itemName];
+      };
+
+      return (
+        <>
+          <div className="grid grid-cols-7">
+            <div className="col-span-3">
+              {/* ------------------ */}
+              {Object.keys(data).map((item, key) => (
+                <div className="mb-5" key={key}>
+                  <div className="grid grid-cols-7 gap-4">
+                    <div className="col-span-1 flex items-center justify-center">
+                      <label className="inline-flex items-center ">
+                        <input
+                          type="checkbox"
+                          className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                          checked={checkboxes[item]}
+                          onChange={() => toggleCheckbox(item)}
+                        />
+                        <span
+                          className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                            checkboxes[item] ? "bg-white" : ""
+                          }`}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`h-6 w-6 text-white ${
+                              checkboxes[item] ? "opacity-100" : "opacity-0"
+                            } transition-opacity duration-300 ease-in-out`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="#6425FE"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </span>
+                      </label>
+                    </div>
+                    <div className="col-span-6">
+                      <div className="font-poppins font-bold">
+                        {item
+                          .replace(/_/g, " ")
+                          .replace(
+                            /\w+/g,
+                            (w) => w[0].toUpperCase() + w.slice(1)
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* ------------------ */}
+            </div>
+          </div>
+        </>
       );
     };
 
@@ -286,17 +389,11 @@ const Role_permission = () => {
                   </div>
                   {/* 2nd  */}
                 </div>
-                <div className="p-4">
-                  <button
-                    className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
-                    onClick={() => handleSave(permission[select_role])}
-                  >
-                    Save
-                  </button>
-                </div>
               </div>
               <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                2
+                <div className="p-4">
+                  <OtherBoxGroup data={roleData.other_permission} />
+                </div>
               </div>
             </div>
           </div>
@@ -316,10 +413,9 @@ const Role_permission = () => {
         <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
           <div className="p-3">
             <div className="font-poppins font-bold text-2xl">Role</div>
-            <div className="w-[40%] h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
+            <div className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
               <button>New Role +</button>
             </div>
-
             {permission.map((items, key) => (
               <>
                 <div
@@ -353,9 +449,20 @@ const Role_permission = () => {
           </div>
         </div>
         {/* Left Panel */}
+
+        {/* Right Panel */}
         <div className="col-span-5 bg-[#FAFAFA] w-full">
           {permission.length > 0 && <Tabs roleData={permission[select_role]} />}
+          <div className="p-4">
+            <button
+              className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
+              onClick={() => handleSave(permission[select_role])}
+            >
+              Save
+            </button>
+          </div>
         </div>
+        {/* Right Panel */}
       </div>
     </div>
   );
