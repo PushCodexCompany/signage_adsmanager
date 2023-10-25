@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
-import { IoIosClose } from "react-icons/io";
+import { AiOutlineClose } from "react-icons/ai";
 
 const mock_data = [
   {
@@ -48,6 +48,8 @@ const mock_data = [
 const Role_permission = () => {
   const [permission, setPermission] = useState([]);
   const [select_role, setSelectRole] = useState(0);
+
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const updatedData = mock_data.map((item) => {
@@ -402,69 +404,113 @@ const Role_permission = () => {
     );
   };
 
+  const createNewRole = () => {
+    setShowModal(!showModal);
+  };
+
+  const closeModal = () => {
+    setShowModal(!showModal);
+  };
+
   return (
-    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-      <Header category="Page" title="Home" />
-      <div className="font-poppins font-semibold text-2xl mt-10">
-        <text>Role And Permission</text>
-      </div>
-      <div className="mt-7 grid grid-cols-7 gap-2">
-        {/* Left Panel */}
-        <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
-          <div className="p-3">
-            <div className="font-poppins font-bold text-2xl">Role</div>
-            <div className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
-              <button>New Role +</button>
-            </div>
-            {permission.map((items, key) => (
-              <>
-                <div
-                  key={key}
-                  className={`grid grid-cols-7 gap-2 mt-5 
+    <>
+      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+        <Header category="Page" title="Home" />
+        <div className="font-poppins font-semibold text-2xl mt-10">
+          <text>Role And Permission</text>
+        </div>
+        <div className="mt-7 grid grid-cols-7 gap-2">
+          {/* Left Panel */}
+          <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
+            <div className="p-3">
+              <div className="font-poppins font-bold text-2xl">Role</div>
+              <div className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
+                <button onClick={() => createNewRole()}>New Role +</button>
+              </div>
+              {permission.map((items, key) => (
+                <>
+                  <div
+                    key={key}
+                    className={`grid grid-cols-7 gap-2 mt-5 
                   ${key === select_role ? "bg-[#FAFAFA]" : ""} 
                   cursor-pointer`}
-                  onClick={() => selectRole(key)}
-                >
-                  <div className="col-span-5 ml-2">
-                    <div className="font-poppins text-2xl ">{items.name}</div>
-                    <div className="text-xs">{items.description}</div>
-                  </div>
+                    onClick={() => selectRole(key)}
+                  >
+                    <div className="col-span-5 ml-2">
+                      <div className="font-poppins text-2xl ">{items.name}</div>
+                      <div className="text-xs">{items.description}</div>
+                    </div>
 
-                  <div className="col-span-2">
-                    <div className="flex justify-center items-center mt-3 space-x-4">
-                      <button onClick={() => selectRole(key)}>
-                        <RiEditLine size={20} className="text-[#6425FE]" />
-                      </button>
-                      <button>
-                        <RiDeleteBin5Line
-                          size={20}
-                          className="text-[#6425FE]"
-                        />
-                      </button>
+                    <div className="col-span-2">
+                      <div className="flex justify-center items-center mt-3 space-x-4">
+                        <button onClick={() => selectRole(key)}>
+                          <RiEditLine size={20} className="text-[#6425FE]" />
+                        </button>
+                        <button>
+                          <RiDeleteBin5Line
+                            size={20}
+                            className="text-[#6425FE]"
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </>
-            ))}
+                </>
+              ))}
+            </div>
           </div>
-        </div>
-        {/* Left Panel */}
+          {/* Left Panel */}
 
-        {/* Right Panel */}
-        <div className="col-span-5 bg-[#FAFAFA] w-full">
-          {permission.length > 0 && <Tabs roleData={permission[select_role]} />}
-          <div className="p-4">
-            <button
-              className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
-              onClick={() => handleSave(permission[select_role])}
-            >
-              Save
-            </button>
+          {/* Right Panel */}
+          <div className="col-span-5 bg-[#FAFAFA] w-full">
+            {permission.length > 0 && (
+              <Tabs roleData={permission[select_role]} />
+            )}
+            <div className="p-4">
+              <button
+                className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
+                onClick={() => handleSave(permission[select_role])}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+          {/* Right Panel */}
+        </div>
+      </div>
+
+      {showModal && (
+        <a
+          onClick={() => setShowModal(!showModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {showModal && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-14 lg:top-12 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => closeModal()}>
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">New Role</div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </div>
+            </div>
           </div>
         </div>
-        {/* Right Panel */}
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
