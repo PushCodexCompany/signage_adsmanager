@@ -99,7 +99,11 @@ const App = () => {
           <>
             <Login />
             <Routes>
-              <Route exact path="/login" element={<Login />} />
+              <Route
+                exact
+                path={`${process.env.MAIN_DIR}/login`}
+                element={<Login />}
+              />
             </Routes>
           </>
         )}
