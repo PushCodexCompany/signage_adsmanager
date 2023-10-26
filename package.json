@@ -1,5 +1,6 @@
 {
   "name": "signage_booking_cms",
+  "homepage": "./adsmanager",
   "version": "0.1.0",
   "private": true,
   "homepage": "https://cds.push-signage.com/adsmanager/",
