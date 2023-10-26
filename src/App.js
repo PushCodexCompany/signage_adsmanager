@@ -39,7 +39,7 @@ const App = () => {
 
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
-      <BrowserRouter>
+      <BrowserRouter basename={`${process.env.REACT_APP_SUB_DIR}`}>
         {user ? (
           <>
             <div className="flex relative dark:bg-main-dark-bg">

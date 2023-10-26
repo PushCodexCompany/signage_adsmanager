@@ -68,7 +68,7 @@ const Brands = () => {
 
   useEffect(() => {
     if (select_campaign) {
-      window.location.href = "/dashboard";
+      window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     }
     // if (select_merchandise) {
     //   window.location.href = "/dashboard";
@@ -78,7 +78,7 @@ const Brands = () => {
   const selectCampaign = (brand_id) => {
     const status = User.saveSelectedBrand(brand_id);
     if (status) {
-      window.location.href = "/dashboard";
+      window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     } else {
       console.log("error select brand");
     }

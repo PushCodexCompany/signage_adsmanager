@@ -336,7 +336,7 @@ const SidebarMain = () => {
                                                             <div
                                                               // to={`/${submenuItem.link}`}
                                                               onClick={() => {
-                                                                window.location.href = `/${submenuItem.link}`;
+                                                                window.location.href = `${process.env.REACT_APP_SUB_DIR}/${submenuItem.link}`;
                                                               }}
                                                               key={
                                                                 submenuItem.link

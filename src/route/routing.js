@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import {
   Dashboard,
   Orders,
@@ -49,12 +49,20 @@ const Routing = () => {
 
   return (
     <>
-      <Routes basename={`/adsmanager`}>
+      <Routes>
         {/* Production */}
-        <Route exact path="/" element={<Brands />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/pdf" element={<Pdf />} />
-        <Route path="/brand" element={<Brands />} />
+        <Route path={`${process.env.REACT_APP_SUB_DIR}`} element={<Brands />} />
+        <Route
+          // path={`${process.env.REACT_APP_SUB_DIR}/dashboard`}
+          path={`/dashboard`}
+          element={<Dashboard />}
+        />
+        <Route
+          // path={`${process.env.REACT_APP_SUB_DIR}/pdf`}
+          path={`/pdf`}
+          element={<Pdf />}
+        />
+        {/* <Route path="/brand" element={<Brands />} /> */}
         <Route path="/merchandise" element={<Merchandise />} />
         <Route path="/edit_merchandise/:id" element={<Edit_Merchandises />} />
         <Route path="/setting" element={<Setting />} />
@@ -80,6 +88,10 @@ const Routing = () => {
         <Route path="/statics/media_log" element={<Media_Log />} />
         <Route path="/statics/screen" element={<Screen />} />
         <Route path="/setting/role_permission" element={<Role_permission />} />
+        <Route
+          path="*"
+          element={<div> Not Found or You do not have permission.</div>}
+        />
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
         <Route path="/orders" element={<Orders />} />
