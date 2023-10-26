@@ -49,7 +49,7 @@ const Routing = () => {
 
   return (
     <>
-      <Routes>
+      <Routes basename={`/adsmanager`}>
         {/* Production */}
         <Route exact path="/" element={<Brands />} />
         <Route path="/dashboard" element={<Dashboard />} />

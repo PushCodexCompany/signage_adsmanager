@@ -5,7 +5,7 @@ const Logout = () => {
   useEffect(async () => {
     const status = await User.logout();
     if (status) {
-      window.location.href = "/";
+      window.location.href = process.env.MAIN_DIR;
       cookie.remove("signage-brand", { path: false });
       cookie.remove("signage-merchandise", { path: false });
       return false;
