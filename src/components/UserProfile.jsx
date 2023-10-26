@@ -14,7 +14,7 @@ const UserProfile = ({ user }) => {
   const handleLogout = async () => {
     const status = await User.logout();
     if (status) {
-      window.location.href = "/";
+      window.location.href = "/adsmanager";
       cookie.remove("signage-brand", { path: false });
       cookie.remove("signage-merchandise", { path: false });
       return false;

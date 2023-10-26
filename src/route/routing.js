@@ -51,17 +51,9 @@ const Routing = () => {
     <>
       <Routes>
         {/* Production */}
-        <Route path={`${process.env.REACT_APP_SUB_DIR}`} element={<Brands />} />
-        <Route
-          // path={`${process.env.REACT_APP_SUB_DIR}/dashboard`}
-          path={`/dashboard`}
-          element={<Dashboard />}
-        />
-        <Route
-          // path={`${process.env.REACT_APP_SUB_DIR}/pdf`}
-          path={`/pdf`}
-          element={<Pdf />}
-        />
+        <Route path="/brand" element={<Brands />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/pdf" element={<Pdf />} />
         {/* <Route path="/brand" element={<Brands />} /> */}
         <Route path="/merchandise" element={<Merchandise />} />
         <Route path="/edit_merchandise/:id" element={<Edit_Merchandises />} />

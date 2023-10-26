@@ -1,6 +1,5 @@
 {
   "name": "signage_booking_cms",
-  "homepage": "https://signage-cms-tailwindcss.vercel.app/adsmanager",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

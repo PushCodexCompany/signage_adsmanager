@@ -98,13 +98,13 @@ const App = () => {
         ) : (
           <>
             <Login />
-            <Routes>
+            {/* <Routes>
               <Route
                 exact
-                path={`${process.env.MAIN_DIR}/login`}
+                path={`${process.env.REACT_APP_SUB_DIR}`}
                 element={<Login />}
               />
-            </Routes>
+            </Routes> */}
           </>
         )}
       </BrowserRouter>

@@ -16,7 +16,7 @@ const Login = () => {
     try {
       const status = await User.login(username, password);
       if (status) {
-        navigate("/adsmanager");
+        navigate("/brand");
       } else {
         console.log()(User._errorMsg);
       }
