@@ -507,9 +507,14 @@ const Role_permission = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">Role</div>
-              <div className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
-                <button onClick={() => createNewRole()}>New Role +</button>
-              </div>
+
+              <button
+                className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins rounded-lg"
+                onClick={() => createNewRole()}
+              >
+                New Role +
+              </button>
+
               {permission.map((items, key) => (
                 <>
                   <div
