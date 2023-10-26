@@ -51,6 +51,34 @@ const Role_permission = () => {
 
   const [showModal, setShowModal] = useState(false);
 
+  const [newRole, setNewRole] = useState({
+    name: null,
+    description: null,
+    page_permission: {
+      brands: { view: false, create: false, update: false, delete: false },
+      branch: { view: false, create: false, update: false, delete: false },
+      screen: { view: false, create: false, update: false, delete: false },
+      playlist: { view: false, create: false, update: false, delete: false },
+      media: { view: false, create: false, update: false, delete: false },
+      user: { view: false, create: false, update: false, delete: false },
+      role: { view: false, create: false, update: false, delete: false },
+      booking: { view: false, create: false, update: false, delete: false },
+    },
+    other_permission: {
+      assign_booking: 0,
+      assign_screen: 0,
+      publish: 0,
+    },
+  });
+  const [openTab, setOpenTab] = React.useState(1);
+
+  const handleRoleChange = (e, fieldName) => {
+    setNewRole({
+      ...newRole,
+      [fieldName]: e.target.value,
+    });
+  };
+
   useEffect(() => {
     const updatedData = mock_data.map((item) => {
       return {
@@ -140,7 +168,7 @@ const Role_permission = () => {
     console.log(summary);
   };
 
-  const Tabs = ({ roleData }) => {
+  const Tabs = ({ roleData, type }) => {
     const [openTab, setOpenTab] = React.useState(1);
 
     const CheckboxGroup = ({ title, items, data }) => {
@@ -236,7 +264,7 @@ const Role_permission = () => {
 
       return (
         <>
-          <div className="grid grid-cols-7">
+          <div className="grid grid-cols-7 mt-5">
             <div className="col-span-3">
               {/* ------------------ */}
               {Object.keys(data).map((item, key) => (
@@ -299,7 +327,7 @@ const Role_permission = () => {
       <>
         <div className="flex flex-wrap">
           <div className="w-full">
-            <div className="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 ">
+            <div className="rounded-lg h-[50px] flex items-center mt-3 ">
               <div className="flex flex-col lg:flex-row">
                 <div className="w-full lg:w-3/4 flex justify-center items-center">
                   <a
@@ -307,7 +335,7 @@ const Role_permission = () => {
                       "w-[full] lg:w-[300px] font-poppins text-base font-bold  px-5 py-3  rounded block leading-normal " +
                       (openTab === 1
                         ? "text-white bg-[#6425FE] border border-gray-300 "
-                        : "text-[#6425FE] bg-white")
+                        : "text-[#6425FE] bg-white border border-gray-300")
                     }
                     onClick={(e) => {
                       e.preventDefault();
@@ -324,7 +352,7 @@ const Role_permission = () => {
                       "w-[full] lg:w-[300px] font-poppins text-base font-bold  px-5 py-3  rounded block leading-normal " +
                       (openTab === 2
                         ? "text-white bg-[#6425FE] border border-gray-300 "
-                        : "text-[#6425FE] bg-white")
+                        : "text-[#6425FE] bg-white border border-gray-300")
                     }
                     onClick={(e) => {
                       e.preventDefault();
@@ -342,54 +370,104 @@ const Role_permission = () => {
             <div className="flex flex-col min-w-0  w-full mb-6 ">
               <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                 <div className="p-4">
-                  {/* 1st */}
-                  <div className=" grid grid-cols-6 gap-4 mb-11">
-                    <CheckboxGroup
-                      title="brands"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.brands}
-                    />
-                    <CheckboxGroup
-                      title="branch"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.branch}
-                    />
-                    <CheckboxGroup
-                      title="screen"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.screen}
-                    />
-                    <CheckboxGroup
-                      title="playlist"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.playlist}
-                    />
-                    <CheckboxGroup
-                      title="media"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.media}
-                    />
-                    <CheckboxGroup
-                      title="user"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.user}
-                    />
-                  </div>
-                  {/* 1st */}
-                  {/* 2nd  */}
-                  <div className=" grid grid-cols-6 gap-4 mb-2">
-                    <CheckboxGroup
-                      title="role"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.role}
-                    />
-                    <CheckboxGroup
-                      title="booking"
-                      items={["view", "create", "update", "delete"]}
-                      data={roleData.page_permission.booking}
-                    />
-                  </div>
-                  {/* 2nd  */}
+                  {/* type 0 = new role  */}
+                  {type === 0 ? (
+                    <>
+                      <div className=" grid grid-cols-8 gap-4 mt-5">
+                        <CheckboxGroup
+                          title="brands"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.brands}
+                        />
+                        <CheckboxGroup
+                          title="branch"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.branch}
+                        />
+                        <CheckboxGroup
+                          title="screen"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.screen}
+                        />
+                        <CheckboxGroup
+                          title="playlist"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.playlist}
+                        />
+                        <CheckboxGroup
+                          title="media"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.media}
+                        />
+                        <CheckboxGroup
+                          title="user"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.user}
+                        />
+                        <CheckboxGroup
+                          title="role"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.role}
+                        />
+                        <CheckboxGroup
+                          title="booking"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.booking}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* 1st */}
+                      <div className=" grid grid-cols-6 gap-4 mb-11 mt-5">
+                        <CheckboxGroup
+                          title="brands"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.brands}
+                        />
+                        <CheckboxGroup
+                          title="branch"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.branch}
+                        />
+                        <CheckboxGroup
+                          title="screen"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.screen}
+                        />
+                        <CheckboxGroup
+                          title="playlist"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.playlist}
+                        />
+                        <CheckboxGroup
+                          title="media"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.media}
+                        />
+                        <CheckboxGroup
+                          title="user"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.user}
+                        />
+                      </div>
+                      {/* 1st */}
+                      {/* 2nd  */}
+                      <div className=" grid grid-cols-6 gap-4 mb-2">
+                        <CheckboxGroup
+                          title="role"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.role}
+                        />
+                        <CheckboxGroup
+                          title="booking"
+                          items={["view", "create", "update", "delete"]}
+                          data={roleData.page_permission.booking}
+                        />
+                      </div>
+                      {/* 2nd  */}
+                    </>
+                  )}
                 </div>
               </div>
               <div className={openTab === 2 ? "block" : "hidden"} id="link2">
@@ -410,6 +488,11 @@ const Role_permission = () => {
 
   const closeModal = () => {
     setShowModal(!showModal);
+  };
+
+  const handleSaveNewRole = () => {
+    const summary = convertBooleanToPermissionSummary(newRole);
+    console.log("new role : ", summary);
   };
 
   return (
@@ -502,10 +585,53 @@ const Role_permission = () => {
               <div className="font-poppins text-5xl font-bold">New Role</div>
             </div>
             <div className="flex justify-center items-center mt-2">
-              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+              <div className="font-poppins text-xs lg:text-sm ">
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </div>
+            </div>
+            <div className="flex justify-center items-center mt-10">
+              <div className="grid grid-cols-6 gap-2">
+                <div className="col-span-3 flex items-center justify-start">
+                  <div className="font-poppins">Role Name:</div>
+                </div>
+                <div className="col-span-3 ">
+                  <input
+                    type="text"
+                    value={newRole.name}
+                    onChange={(e) => handleRoleChange(e, "name")}
+                    className="w-full p-2  border rounded"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-6">
+              <div className="grid grid-cols-6 gap-2">
+                <div className="col-span-3 flex items-center justify-start">
+                  <div className="font-poppins">Role Description:</div>
+                </div>
+                <div className="col-span-3 ">
+                  <input
+                    type="text"
+                    value={newRole.description}
+                    onChange={(e) => handleRoleChange(e, "description")}
+                    className="w-full p-2  border rounded"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="p-10 mt-2 ">
+              <div className="bg-[#FAFAFA]">
+                <Tabs roleData={newRole} type={0} />
+              </div>
+            </div>
+            <div className="flex justify-center items-center -mt-3">
+              <button
+                onClick={() => handleSaveNewRole()}
+                className="bg-[#6425FE] text-white w-36 h-10 font-poppins rounded-lg"
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
