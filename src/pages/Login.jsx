@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
 import Login_Bg from "../assets/img/login_bg.png";
 import { useNavigate } from "react-router-dom";
+import cookie from "react-cookies";
 
 const Login = () => {
   const [username, setUsername] = useState(null);
@@ -9,6 +10,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const select_campaign = User.getCampaign();
+    if (select_campaign) {
+      cookie.remove("signage-brand", { path: false });
+    }
     // User.saveRedirect();
   }, []);
 

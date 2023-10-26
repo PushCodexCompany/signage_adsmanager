@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import { Login } from "./pages";
 import Routing from "./route/routing";
@@ -27,6 +26,11 @@ const App = () => {
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
+
+    const pathname = window.location.pathname;
+    if (pathname == "/") {
+      window.location.href = "/adsmanager";
+    }
     if (currentThemeColor && currentThemeMode) {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
