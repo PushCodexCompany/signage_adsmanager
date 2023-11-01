@@ -130,13 +130,13 @@ const Navbar = () => {
                 <p>
                   <span className="">
                     <text className="text-black font-bold text-14 font-poppins">
-                      {user.name}
-                    </text>{" "}
-                    <br />{" "}
-                    <text className="text-gray-400 text-10 font-poppins">
-                      {role[user.role].name}
+                      {user.user.firstname}
                     </text>
-                  </span>{" "}
+                    <br />
+                    <text className="text-gray-400 text-10 font-poppins">
+                      {user.user.role}
+                    </text>
+                  </span>
                 </p>
                 <MdKeyboardArrowDown className="text-gray-400 text-14" />
               </div>
