@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
-import { Login } from "./pages";
+import { Login, Brands } from "./pages";
 import Routing from "./route/routing";
 
 import "./App.css";
@@ -47,23 +47,6 @@ const App = () => {
         {user ? (
           <>
             <div className="flex relative dark:bg-main-dark-bg">
-              {/* ToolTip */}
-              {/* <div
-                className="fixed right-4 bottom-4"
-                style={{ zIndex: "1000" }}
-              >
-                <TooltipComponent content="Settings" position="Top">
-                  <button
-                    type="button"
-                    onClick={() => setThemeSettings(true)}
-                    style={{ background: currentColor, borderRadius: "50%" }}
-                    className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
-                  >
-                    <FiSettings />
-                  </button>
-                </TooltipComponent>
-              </div> */}
-
               {/* Sidebar */}
               {activeMenu ? (
                 <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
@@ -101,14 +84,10 @@ const App = () => {
           </>
         ) : (
           <>
-            <Login />
-            {/* <Routes>
-              <Route
-                exact
-                path={`${process.env.REACT_APP_SUB_DIR}`}
-                element={<Login />}
-              />
-            </Routes> */}
+            <Routes>
+              <Route exact path={`/`} element={<Login />} />
+              <Route exact path={`/brand`} element={<Brands />} />
+            </Routes>
           </>
         )}
       </BrowserRouter>

@@ -12,7 +12,6 @@ const Login = () => {
   const [password, setPassword] = useState(null);
   // const [isPassword, setIsPassword] = useState(true);
   const navigate = useNavigate();
-
   useEffect(async () => {
     const select_campaign = User.getCampaign();
     // const data = await User.getPHP();
@@ -68,12 +67,12 @@ const Login = () => {
         const hash = generateCombinedMD5Hash(username, password);
         const status = await User.login(hash);
         if (status) {
+          navigate("/brand");
           Swal.fire({
             icon: "success",
             title: "Login ...",
             text: "เข้าสู่ระบบได้!",
           });
-          window.location.href = "/adsmanager/brand";
         } else {
           Swal.fire({
             icon: "error",

@@ -102,15 +102,6 @@ const Routing = () => {
         <Route path="/pyramid" element={<Pyramid />} />
         <Route path="/stacked" element={<Stacked />} />
       </Routes>
-      {/* example ซ่อน Menu สำหรับ role */}
-      {/* {user.position === "admin" ? (
-				<>
-					<Route exact path="/user/list" component={UserList} />
-					
-				</>
-			) : (
-				""
-			)} */}
     </>
   );
 };
