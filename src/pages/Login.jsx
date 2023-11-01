@@ -11,6 +11,7 @@ const Login = () => {
 
   useEffect(() => {
     const select_campaign = User.getCampaign();
+    User.getPHP();
     if (select_campaign) {
       cookie.remove("signage-brand", { path: false });
     }

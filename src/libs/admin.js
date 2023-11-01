@@ -16,7 +16,7 @@ export default {
     return this._axios(path, "post", body);
   },
   _get: async function (path) {
-    return this._axios(path);
+    return this._axios(path, "get");
   },
   _delete: async function (path, body) {
     return this._axios(path, "delete", body);
@@ -25,17 +25,19 @@ export default {
     const options = {
       method,
       data: body,
-      url: `${process.env.REACT_APP_API_ROOT}/${path}`,
+      url: `${process.env.REACT_APP_API_ADSMANAGER}/${path}`,
       withCredentials: true,
     };
-    const { data } = await Axios(options);
-    if (data.status === 200) {
-      return data;
-    } else {
-      console.log(`User lib error ${path}: ${data.message}`);
-      this._errorMsg = data.message;
-      return data;
-    }
+
+    const data = await Axios(options);
+    console.log("data", data);
+    // if (data.status === 200) {
+    //   return data;
+    // } else {
+    //   console.log(`User lib error ${path}: ${data.message}`);
+    //   this._errorMsg = data.message;
+    //   return data;
+    // }
   },
 
   /**
@@ -161,5 +163,9 @@ export default {
 
   getMerchandise: function () {
     return cookie.load(SIGNAGE_MERCHANDISE_COOKIE) || false;
+  },
+
+  getPHP: async function () {
+    await this._get("api/hello-nf/");
   },
 };
