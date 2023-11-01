@@ -2,7 +2,7 @@
   "name": "signage_booking_cms",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://signage-cms-tailwindcss.vercel.app/adsmanager",
+  "homepage": "./adsmanager",
   "dependencies": {
     "@syncfusion/ej2": "^19.4.48",
     "@syncfusion/ej2-react-calendars": "^19.4.48",
