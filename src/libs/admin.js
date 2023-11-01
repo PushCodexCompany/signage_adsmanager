@@ -30,14 +30,13 @@ export default {
     };
 
     const data = await Axios(options);
-    console.log("data", data);
-    // if (data.status === 200) {
-    //   return data;
-    // } else {
-    //   console.log(`User lib error ${path}: ${data.message}`);
-    //   this._errorMsg = data.message;
-    //   return data;
-    // }
+    if (data.status === 200) {
+      return data;
+    } else {
+      console.log(`User lib error ${path}: ${data.message}`);
+      this._errorMsg = data.message;
+      return false;
+    }
   },
 
   /**
@@ -45,18 +44,21 @@ export default {
    */
 
   // login
-  login: async function (username, password) {
-    // const { data } = await this._post("/login", { username, password })
-    const data = {
-      _id: "12314123123",
-      name: "John Doe",
-      img: avatar,
-      role: 1,
-      brand: [1, 9],
-      email: "test@mail.com",
-    };
+  login: async function (hash) {
+    const { data } = await this._post(`api/v1/login?hash=${hash}`);
 
-    if (data && data._id) {
+    // const { data } = await this._post(`api/v1/login?hash=${hash}`);
+    // console.log(data);
+    // const data = {
+    //   _id: "12314123123",
+    //   name: "John Doe",
+    //   img: avatar,
+    //   role: 1,
+    //   brand: [1, 9],
+    //   email: "test@mail.com",
+    // };
+
+    if (data) {
       this.saveCookie(data);
       return true;
     } else {
@@ -166,6 +168,7 @@ export default {
   },
 
   getPHP: async function () {
-    await this._get("api/hello-nf/");
+    const data = await this._get("api/hello-nf/");
+    return data;
   },
 };

@@ -62,14 +62,18 @@ const mock_data = {
 };
 
 const Brands = () => {
-  const user = User.getCookieData();
+  const { user } = User.getCookieData();
   const select_campaign = User.getCampaign();
   const select_merchandise = User.getMerchandise();
+
+  const [brand, setBrand] = useState([]);
 
   useEffect(() => {
     if (select_campaign) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     }
+    user.brand = [1, 9];
+    setBrand(user.brand);
     // if (select_merchandise) {
     //   window.location.href = "/dashboard";
     // }
@@ -107,26 +111,27 @@ const Brands = () => {
             </div>
           </button>
         </div>
-        {user.brand.map((items, key) => (
-          <div
-            key={key}
-            className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center"
-          >
-            <button onClick={() => selectCampaign(items)}>
-              <img
-                className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
-                src={mock_data[items].img}
-                alt={mock_data[items].name}
-              />
-              <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
-                {mock_data[items].name}
-              </div>
-              <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
-                {mock_data[items].des}
-              </div>
-            </button>
-          </div>
-        ))}
+        {brand.length > 0 &&
+          brand.map((items, key) => (
+            <div
+              key={key}
+              className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center"
+            >
+              <button onClick={() => selectCampaign(items)}>
+                <img
+                  className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
+                  src={mock_data[items].img}
+                  alt={mock_data[items].name}
+                />
+                <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
+                  {mock_data[items].name}
+                </div>
+                <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
+                  {mock_data[items].des}
+                </div>
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );
