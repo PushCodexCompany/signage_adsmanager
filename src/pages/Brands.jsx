@@ -11,6 +11,7 @@ import makroProImg from "../assets/img/makropro.jpeg";
 import lotusImg from "../assets/img/lotus.png";
 import centralPatImg from "../assets/img/centralpattana.jpg";
 import add_new_img from "../assets/img/add_new_brand.png";
+import cookie from "react-cookies";
 
 const mock_data = {
   1: {
@@ -68,6 +69,7 @@ const Brands = () => {
   const [brand, setBrand] = useState([]);
 
   useEffect(() => {
+    cookie.remove("signage-brand");
     if (select_campaign) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     }
