@@ -7,7 +7,12 @@ import CryptoJS from "crypto-js";
 import Swal from "sweetalert2";
 import { PiCaretUpDown, PiSlidersHorizontalFill } from "react-icons/pi";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
-import { IoIosClose, IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import {
+  IoIosClose,
+  IoIosArrowUp,
+  IoIosArrowDown,
+  IoIosCheckmarkCircleOutline,
+} from "react-icons/io";
 
 // brand
 
@@ -95,7 +100,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Check Login & Register
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(3);
 
   // Login
   const [username, setUsername] = useState(null);
@@ -307,6 +312,8 @@ const Login = () => {
       console.log("re-password", reg_re_password);
       console.log("brand", reg_brand);
       console.log("merchandise", reg_merchandise);
+
+      setIsLogin(3);
     } else {
       Swal.fire({
         icon: "error",
@@ -330,7 +337,7 @@ const Login = () => {
 
         {/* Right panel */}
         <div className="w-full md:w-1/2 mt-36 xl:mt-0 bg-white flex flex-col justify-center items-center p-6 md:p-12">
-          {isLogin ? (
+          {isLogin === 1 ? (
             <>
               <div className="w-full  max-w-lg">
                 <h1 className="text-gray-800 font-[700] text-4xl mb-4 text-center font-poppins">
@@ -377,7 +384,7 @@ const Login = () => {
                 <div className="text-center">
                   <button
                     type="submit"
-                    onClick={() => setIsLogin(false)}
+                    onClick={() => setIsLogin(2)}
                     className="w-full  py-2 rounded-sm text-[#6425FE] hover:text-[#b29bec]  mb-2 font-poppins"
                   >
                     "Don't have an account yet? Sign Up"
@@ -385,7 +392,7 @@ const Login = () => {
                 </div>
               </div>
             </>
-          ) : (
+          ) : isLogin === 2 ? (
             <>
               <div className="w-full  max-w-lg">
                 <h1 className="text-gray-800 font-[700] text-4xl mb-4 text-center font-poppins">
@@ -497,11 +504,36 @@ const Login = () => {
                 <div className="text-center">
                   <button
                     type="submit"
-                    onClick={() => setIsLogin(true)}
+                    onClick={() => setIsLogin(1)}
                     className="w-full  py-2 rounded-sm text-[#6425FE] hover:text-[#b29bec]  mb-2 font-poppins"
                   >
                     "Have an account ? Sign In"
                   </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="w-full">
+                <h1 className="mb-4 flex justify-center text-center font-poppins">
+                  <IoIosCheckmarkCircleOutline size={300} color="#2F3847" />
+                </h1>
+                <div className="text-3xl font-bold text-gray-600 mb-8 md:mb-12 text-center font-poppins">
+                  Registration Completed Successfully
+                </div>
+                <div className="text-center">
+                  <button
+                    onClick={() => setIsLogin(1)}
+                    className="w-full lg:w-[300px]  py-2 rounded-sm bg-[#6425FE] text-white hover:text-[#b29bec]  mb-2 font-poppins"
+                  >
+                    OK
+                  </button>
+                </div>
+                <div className="mt-4 text-center">
+                  <div className="font-poppins text-sm">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry.
+                  </div>
                 </div>
               </div>
             </>
