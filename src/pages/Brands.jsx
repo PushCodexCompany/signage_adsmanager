@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
 
-import { Header } from "../components";
 import centralImg from "../assets/img/central.png";
 import robinsonImg from "../assets/img/robinson.png";
 import superSportImg from "../assets/img/supersport.png";
@@ -12,6 +11,7 @@ import makroProImg from "../assets/img/makropro.jpeg";
 import lotusImg from "../assets/img/lotus.png";
 import centralPatImg from "../assets/img/centralpattana.jpg";
 import add_new_img from "../assets/img/add_new_brand.png";
+import cookie from "react-cookies";
 
 const mock_data = {
   1: {
@@ -69,6 +69,7 @@ const Brands = () => {
   const [brand, setBrand] = useState([]);
 
   useEffect(() => {
+    cookie.remove("signage-brand");
     if (select_campaign) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     }
@@ -89,51 +90,56 @@ const Brands = () => {
   };
 
   return (
-    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-      <div className="text-6xl font-[700] text-center font-poppins">
-        Select Your Brand
-      </div>
-      <div className="text-xl text-center text-slate-500 mb-20 font-poppins font-[500]">
-        Choose your brand from the list to access brand-specific content and
-        bookings.
-      </div>
-
-      <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
-        <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
-          <button onClick={() => alert("addnew")}>
-            <img
-              className="block ml-auto mr-auto mt-30px w-4/5 rounded-3xl"
-              src={add_new_img}
-              alt={"add new brand"}
-            />
-            <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins">
-              Add new Brand
-            </div>
-          </button>
+    <>
+      {/* <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+        <Navbar />
+      </div> */}
+      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+        <div className="text-6xl font-[700] text-center font-poppins">
+          Select Your Brand
         </div>
-        {brand.length > 0 &&
-          brand.map((items, key) => (
-            <div
-              key={key}
-              className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center"
-            >
-              <button onClick={() => selectCampaign(items)}>
-                <img
-                  className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
-                  src={mock_data[items].img}
-                  alt={mock_data[items].name}
-                />
-                <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
-                  {mock_data[items].name}
-                </div>
-                <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
-                  {mock_data[items].des}
-                </div>
-              </button>
-            </div>
-          ))}
+        <div className="text-xl text-center text-slate-500 mb-20 font-poppins font-[500]">
+          Choose your brand from the list to access brand-specific content and
+          bookings.
+        </div>
+
+        <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
+          <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
+            <button onClick={() => alert("addnew")}>
+              <img
+                className="block ml-auto mr-auto mt-30px w-4/5 rounded-3xl"
+                src={add_new_img}
+                alt={"add new brand"}
+              />
+              <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins">
+                Add new Brand
+              </div>
+            </button>
+          </div>
+          {brand.length > 0 &&
+            brand.map((items, key) => (
+              <div
+                key={key}
+                className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center"
+              >
+                <button onClick={() => selectCampaign(items)}>
+                  <img
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
+                    src={mock_data[items].img}
+                    alt={mock_data[items].name}
+                  />
+                  <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
+                    {mock_data[items].name}
+                  </div>
+                  <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
+                    {mock_data[items].des}
+                  </div>
+                </button>
+              </div>
+            ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

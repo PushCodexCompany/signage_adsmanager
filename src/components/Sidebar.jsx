@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 import { useStateContext } from "../contexts/ContextProvider";
+import User from "../libs/admin";
 
 import Central_Logo from "../assets/img/central-logo.png";
+import Robinson_Logo from "../assets/img/robinson-logo.png";
 import Bluetree_logo from "../assets/img/logo/bluetree.svg";
 import Cpn_logo from "../assets/img/logo/cpn.svg";
 import Cpn_vertical_logo from "../assets/img/logo/cpn_vertical.svg";
@@ -174,6 +176,7 @@ const SidebarMain = () => {
 
   const [openLevel1, setOpenLevel1] = useState(false);
   const [openLevel2, setOpenLevel2] = useState(false);
+  const [logo_img, setLogoImg] = useState();
 
   const sidebarRef = useRef(null);
 
@@ -201,8 +204,16 @@ const SidebarMain = () => {
   const [imgClass, setImgClass] = useState("");
 
   useEffect(() => {
+    const { brand_id } = User.getCampaign();
+
+    if (brand_id === 1) {
+      setLogoImg(Central_Logo);
+    } else {
+      setLogoImg(Robinson_Logo);
+    }
+
     const loadImgClass = async () => {
-      const cssValue = await generateImgHeight(Central_Logo);
+      const cssValue = await generateImgHeight(logo_img);
       setImgClass(cssValue); // Update the state with the CSS class
     };
 
@@ -261,7 +272,7 @@ const SidebarMain = () => {
                 onClick={handleCloseSideBar}
                 className="items-center justify-center ml-3 mt-10 flex"
               >
-                <img className={`${imgClass}`} src={Central_Logo} />
+                <img className={`w-2/3 h-2/4`} src={logo_img} />
               </Link>
             </div>
             <div ref={sidebarRef} className="mt-10">
