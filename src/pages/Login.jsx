@@ -100,7 +100,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Check Login & Register
-  const [isLogin, setIsLogin] = useState(3);
+  const [isLogin, setIsLogin] = useState(1);
 
   // Login
   const [username, setUsername] = useState(null);
