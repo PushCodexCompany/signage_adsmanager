@@ -100,7 +100,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Check Login & Register
-  const [isLogin, setIsLogin] = useState(3);
+  const [isLogin, setIsLogin] = useState(1);
 
   // Login
   const [username, setUsername] = useState(null);
@@ -430,7 +430,7 @@ const Login = () => {
                     className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     onChange={(e) => setRegRePassword(e.target.value)}
                     type="password"
-                    placeholder="Re-Password"
+                    placeholder="Confirm Password"
                     value={reg_re_password === null ? "" : reg_re_password}
                     required
                     autoFocus
@@ -507,7 +507,7 @@ const Login = () => {
                     onClick={() => setIsLogin(1)}
                     className="w-full  py-2 rounded-sm text-[#6425FE] hover:text-[#b29bec]  mb-2 font-poppins"
                   >
-                    "Have an account ? Sign In"
+                    "Already have an account? Sign In"
                   </button>
                 </div>
               </div>
@@ -531,8 +531,7 @@ const Login = () => {
                 </div>
                 <div className="mt-4 text-center">
                   <div className="font-poppins text-sm">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
+                    "Please continue to login"
                   </div>
                 </div>
               </div>
