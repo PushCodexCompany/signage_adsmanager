@@ -7,6 +7,7 @@ import {
   PiSlidersHorizontalFill,
   PiGridFourFill,
   PiListDashesFill,
+  PiCaretUpDown,
 } from "react-icons/pi";
 
 import { GridTable } from "../../../libs/user_grid";

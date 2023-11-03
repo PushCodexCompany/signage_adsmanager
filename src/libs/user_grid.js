@@ -3,8 +3,12 @@ import matsumotoImg from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
 import supersportImg from "../assets/img/merchandise/Super_Sports.png";
 import powerbuyImg from "../assets/img/merchandise/Power_Buy.png";
 
+import central_logo from "../assets/img/central.jpeg";
+import robinson_logo from "../assets/img/robinson.png";
+
 import { IoIosArrowDown } from "react-icons/io";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { PiCaretUpDown } from "react-icons/pi";
 
 const getImg = (id) => {
   let img;
@@ -21,6 +25,17 @@ const getImg = (id) => {
   return img;
 };
 
+const getImgBrand = (id) => {
+  let img;
+  if (id === 1) {
+    img = central_logo;
+  } else if (id === 9) {
+    img = robinson_logo;
+  }
+
+  return img;
+};
+
 const onClickAction = (id) => {
   alert(`click : ${id}`);
 };
@@ -29,6 +44,7 @@ const dashboardData = [
   {
     id: 1,
     username_email: ["User0123", "useradmin@mail.com"],
+    brand: [1],
     merchandise: [1, 2, 3, 4],
     status: 1,
     role: 0,
@@ -36,6 +52,7 @@ const dashboardData = [
   {
     id: 2,
     username_email: ["Admin01", "teerachai_14@mail.com"],
+    brand: [9],
     merchandise: [3, 4],
     status: 1,
     role: 0,
@@ -43,6 +60,7 @@ const dashboardData = [
   {
     id: 3,
     username_email: ["CDS_Admin", "cdspro_a@mail.com"],
+    brand: [1, 9],
     merchandise: [4],
     status: 1,
     role: 0,
@@ -50,6 +68,7 @@ const dashboardData = [
   {
     id: 4,
     username_email: ["CDS_Sale01", "cds_sale41@mail.com"],
+    brand: [9],
     merchandise: [2],
     status: 1,
     role: 0,
@@ -57,6 +76,7 @@ const dashboardData = [
   {
     id: 5,
     username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
+    brand: [1],
     merchandise: [1, 2],
     status: 1,
     role: 0,
@@ -75,6 +95,9 @@ export const GridTable = () => {
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Username
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                Brand
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Merchandise
@@ -106,9 +129,19 @@ export const GridTable = () => {
                 </td>
                 <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                   <div className="flex space-x-1 ">
+                    {row.brand.map((items) => (
+                      <img
+                        className="w-[50px] h-[50px] rounded-md"
+                        src={getImgBrand(items)}
+                      />
+                    ))}
+                  </div>
+                </td>
+                <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="flex space-x-1 ">
                     {row.merchandise.map((items) => (
                       <img
-                        className="w-[80px] h-[80px] rounded-md"
+                        className="w-[50px] h-[50px] rounded-md"
                         src={getImg(items)}
                       />
                     ))}
@@ -126,7 +159,7 @@ export const GridTable = () => {
                       <option value="0">Deactive</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                      <IoIosArrowDown size="18" color="#6425FE" />
+                      <PiCaretUpDown size="18" color="#6425FE" />
                     </div>
                   </div>
                 </td>
@@ -142,7 +175,7 @@ export const GridTable = () => {
                       <option value="1">User</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                      <IoIosArrowDown size="18" color="#6425FE" />
+                      <PiCaretUpDown size="18" color="#6425FE" />
                     </div>
                   </div>
                 </td>
