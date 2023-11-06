@@ -17,6 +17,7 @@ import evisu_img from "../assets/img/merchandise/Evisu.png";
 import fila_img from "../assets/img/merchandise/Fila.png";
 import alice_img from "../assets/img/merchandise/Alice.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
+import { Navbar } from "../components";
 
 const mock_data_brands = [
   {
@@ -231,6 +232,7 @@ const User = () => {
 
   return (
     <>
+      <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <div className="font-poppins font-semibold text-2xl mt-10 ml-3">
           <text>User</text>
