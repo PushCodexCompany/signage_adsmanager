@@ -1,8 +1,11 @@
 import React from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/media_rule_grid";
+import { useNavigate } from "react-router-dom";
 
 const Media_rules = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Home" />
@@ -14,7 +17,7 @@ const Media_rules = () => {
         </div>
 
         <button
-          onClick={() => (window.location.href = "/setting/media_rule/create")}
+          onClick={() => navigate("/setting/media_rule/create")}
           className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
         >
           New Media Rule +

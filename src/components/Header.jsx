@@ -81,15 +81,16 @@ const Header = ({ title, subtitle }) => {
               <li>
                 <div className="flex items-center">
                   <IoIosArrowForward />
-                  <a
-                    href={to}
+                  <div
+                    onClick={() => navigate(to)}
+                    // href={to}
                     className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins"
                   >
                     {(items.charAt(0).toUpperCase() + items.slice(1)).replace(
                       /_/g,
                       " "
                     )}
-                  </a>
+                  </div>
                 </div>
               </li>
             );
