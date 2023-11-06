@@ -1,15 +1,20 @@
 import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
 import { MdOutlineCancel } from "react-icons/md";
-
+import { FaUsersBetweenLines } from "react-icons/fa6";
 import { Button } from ".";
 import { userProfileData } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../assets/img/avatar.png";
 import User from "../libs/admin";
+import { BiBookContent } from "react-icons/bi";
 
 const UserProfile = ({ user }) => {
   const { currentColor } = useStateContext();
+  const navigate = useNavigate();
+  const getBrand = User.getCampaign();
+  console.log(getBrand);
 
   const handleLogout = async () => {
     const status = await User.logout();
@@ -44,47 +49,65 @@ const UserProfile = ({ user }) => {
         />
         <div>
           <p className="font-semibold text-xl dark:text-gray-200 font-poppins">
-            {" "}
-            {user.name}{" "}
+            {`${user.user.firstname} ${user.user.lastname}`}
           </p>
           <p className="text-gray-500 text-sm dark:text-gray-400 font-poppins">
-            {" "}
-            {user.role === 1 ? "Admin" : "Member"}{" "}
-          </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400 font-poppins">
-            {" "}
-            {user.email}{" "}
+            {user.user.role}
           </p>
         </div>
       </div>
-      <div>
-        {userProfileData.map((item, index) => (
-          <div
-            key={index}
-            className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]"
-          >
-            <button
-              type="button"
-              style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-              className=" text-xl rounded-lg p-3 hover:bg-light-gray"
-            >
-              {item.icon}
-            </button>
-
-            <div>
-              <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
-              <p className="text-gray-500 text-sm dark:text-gray-400">
-                {" "}
-                {item.desc}{" "}
-              </p>
+      <div className="mt-4">
+        <button className="w-full" onClick={() => navigate("/user")}>
+          <div className="grid grid-cols-5">
+            <div className="col-span-1 ">
+              <button
+                type="button"
+                style={{ color: "#6425FE", backgroundColor: "#E5FAFB" }}
+                className="text-xl rounded-lg p-3 hover:bg-light-gray"
+              >
+                <FaUsersBetweenLines />
+              </button>
+            </div>
+            <div className="col-span-4 ">
+              <div className="flex justify-start hover:text-[#6425FE] left-2 font-semibold dark:text-gray-200 font-poppins">
+                User Management
+              </div>
+              <div className="flex justify-start left-2 text-gray-500 text-sm dark:text-gray-400 font-poppins">
+                User Management Setting
+              </div>
             </div>
           </div>
-        ))}
+        </button>
+        {!getBrand && (
+          <div className="mt-4">
+            <button className="w-full" onClick={() => navigate("/brand")}>
+              <div className="grid grid-cols-5">
+                <div className="col-span-1 ">
+                  <button
+                    type="button"
+                    style={{ color: "#6425FE", backgroundColor: "#E5FAFB" }}
+                    className="text-xl rounded-lg p-3 hover:bg-light-gray"
+                  >
+                    <BiBookContent />
+                  </button>
+                </div>
+                <div className="col-span-4 ">
+                  <div className="flex justify-start left-2 hover:text-[#6425FE] font-semibold dark:text-gray-200 font-poppins">
+                    Brand
+                  </div>
+                  <div className="flex justify-start left-2 text-gray-500 text-sm dark:text-gray-400 font-poppins">
+                    Select Brand
+                  </div>
+                </div>
+              </div>
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-5">
         <button
           onClick={() => handleLogout()}
-          className="text-white bg-cyan-400 rounded-[10px] w-full h-[50px] font-poppins"
+          className="text-white bg-[#6425FE] rounded-[10px] w-full h-[50px] font-poppins"
         >
           Logout
         </button>

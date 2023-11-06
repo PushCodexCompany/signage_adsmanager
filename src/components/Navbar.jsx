@@ -77,72 +77,81 @@ const Navbar = () => {
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
   return (
-    <div className="p-2 md:ml-6 md:mr-6 relative">
-      <div className="flex flex-row space-x-1">
-        <div className="lg:hidden basis-1/12">
-          {select_campaign && (
-            <NavButton
-              title="Menu"
-              customFunc={handleActiveMenu}
-              color={currentColor}
-              icon={<AiOutlineMenu />}
-            />
-          )}
-        </div>
-        <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
-          <div className="flex">
-            <NavButton
-              customFunc={search}
-              title="Search"
-              color="grey"
-              icon={<AiOutlineSearch />}
-            />
-            <input
-              className=" w-full h-56px rounded relative border-gray-500  transition font-poppins"
-              type="text"
-              name="name"
-              placeholder="Search..."
-            />
-          </div>
-        </div>
-        <div className="basis-4/12 lg:basis-2/12">
-          <div className="flex divide-x-1 divide-gray-300">
+    <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+      <div className="p-2 md:ml-6 md:mr-6 relative">
+        <div className="flex flex-row space-x-1">
+          <div className="lg:hidden basis-1/12">
             {select_campaign && (
               <NavButton
-                title="Notification"
-                dotColor="red"
-                customFunc={() => handleClick("notification")}
-                color={"#000000"}
-                icon={<RiNotification3Line />}
+                title="Menu"
+                customFunc={handleActiveMenu}
+                color={currentColor}
+                icon={<AiOutlineMenu />}
               />
             )}
-
-            <TooltipComponent content="Profile" position="BottomCenter">
-              <div className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg">
-                <img
-                  className="rounded-full w-8 h-8"
-                  src={avatar}
-                  alt="user-profile"
+          </div>
+          <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
+            <div className="flex">
+              <NavButton
+                customFunc={search}
+                title="Search"
+                color="grey"
+                icon={<AiOutlineSearch />}
+              />
+              <input
+                className=" w-full h-56px rounded relative border-gray-500  transition font-poppins"
+                type="text"
+                name="name"
+                placeholder="Search..."
+              />
+            </div>
+          </div>
+          <div className="basis-4/12 lg:basis-2/12">
+            <div className="flex divide-x-1 divide-gray-300">
+              {select_campaign && (
+                <NavButton
+                  title="Notification"
+                  dotColor="red"
+                  customFunc={() => handleClick("notification")}
+                  color={"#000000"}
+                  icon={<RiNotification3Line />}
                 />
-                <p>
-                  <span className="">
-                    <text className="text-black font-bold text-14 font-poppins">
-                      {`${user.user.firstname} ${user.user.lastname}`}
-                    </text>
-                    <br />
-                    <text className="text-gray-400 text-10 font-poppins">
-                      {user.user.role}
-                    </text>
-                  </span>
-                </p>
-                {/* <MdKeyboardArrowDown className="text-gray-400 text-14" /> */}
-              </div>
-            </TooltipComponent>
+              )}
 
-            {/* {isClicked.cart && <Cart />}
-            {isClicked.chat && <Chat />}
-            {isClicked.notification && <Notification />}
-            {isClicked.userProfile && <UserProfile user={user} />} */}
+              <TooltipComponent content="Profile" position="BottomCenter">
+                <div
+                  className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+                  onClick={() => handleClick("userProfile")}
+                >
+                  <img
+                    className="rounded-full w-8 h-8"
+                    src={avatar}
+                    alt="user-profile"
+                  />
+                  <p>
+                    <span className="">
+                      <text className="text-black font-bold text-14 font-poppins">
+                        {`${user.user.firstname} ${user.user.lastname}`}
+                      </text>
+                      <br />
+                      <text className="text-gray-400 text-10 font-poppins">
+                        {user.user.role}
+                      </text>
+                    </span>
+                  </p>
+                  {!select_campaign && (
+                    <MdKeyboardArrowDown className="text-gray-400 text-14" />
+                  )}
+                </div>
+              </TooltipComponent>
+
+              {/* {isClicked.cart && <Cart />} */}
+              {/* {isClicked.chat && <Chat />} */}
+              {/* {isClicked.notification && <Notification />} */}
+              {!select_campaign && (
+                <>{isClicked.userProfile && <UserProfile user={user} />}</>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -21,6 +21,8 @@ import { ImArrowUp, ImArrowDown } from "react-icons/im";
 import { GridTable } from "../libs/dashboard_grid";
 import "./css/dashboard.css";
 
+import { Navbar } from "../components";
+
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -804,42 +806,46 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-      <Header title="Home" subtitle="Welcome to Dashboard" />
+    <>
+      <Navbar />
 
-      <div className="grid grid-cols-8 mt-10">
-        <div className="lg:col-span-1 col-span-2 ">
-          <div className="font-poppins font-semibold text-2xl">Revenue</div>
+      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+        <Header title="Home" subtitle="Welcome to Dashboard" />
+
+        <div className="grid grid-cols-8 mt-10">
+          <div className="lg:col-span-1 col-span-2 ">
+            <div className="font-poppins font-semibold text-2xl">Revenue</div>
+          </div>
+          <div className="relative lg:col-span-1 col-span-1 lg:ml-12 mr-1">
+            <select
+              name="year"
+              id="year"
+              onClick={toggleYearSelect}
+              class="block appearance-none w-full bg-[#f2f2f2] font-bold text-lg font-poppins rounded p-1"
+            >
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              {isYearOpen ? (
+                <MdCalendarToday size={28} color={"#6425FE"} />
+              ) : (
+                <MdOutlineCalendarToday size={28} color={"#6425FE"} />
+              )}
+            </div>
+          </div>
         </div>
-        <div className="relative lg:col-span-1 col-span-1 lg:ml-12 mr-1">
-          <select
-            name="year"
-            id="year"
-            onClick={toggleYearSelect}
-            class="block appearance-none w-full bg-[#f2f2f2] font-bold text-lg font-poppins rounded p-1"
-          >
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-          </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            {isYearOpen ? (
-              <MdCalendarToday size={28} color={"#6425FE"} />
-            ) : (
-              <MdOutlineCalendarToday size={28} color={"#6425FE"} />
-            )}
+        <div className="grid grid-cols-8 mt-3">
+          <div className="col-span-6 mt-2 space-y-2">
+            <LeftPanale />
+          </div>
+          <div className="col-span-2">
+            <RightPanel />
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-8 mt-3">
-        <div className="col-span-6 mt-2 space-y-2">
-          <LeftPanale />
-        </div>
-        <div className="col-span-2">
-          <RightPanel />
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 

@@ -3,6 +3,7 @@ import { Header } from "../../components";
 
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { IoIosClose } from "react-icons/io";
+import { Navbar } from "../../components";
 
 const category = [
   {
@@ -83,25 +84,27 @@ const Tag_managment = () => {
   };
 
   return (
-    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-      <Header category="Page" title="Home" />
-      <div className="font-poppins font-semibold text-2xl mt-10">
-        <text>Tag Management</text>
-      </div>
+    <>
+      <Navbar />
+      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+        <Header category="Page" title="Home" />
+        <div className="font-poppins font-semibold text-2xl mt-10">
+          <text>Tag Management</text>
+        </div>
 
-      <div className="mt-7 grid grid-cols-7 gap-2">
-        {/* Left Panel */}
-        <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
-          <div className="p-3">
-            <div className="font-poppins font-bold text-2xl">Category</div>
-            <div className="w-[40%] h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
-              <button>New Category +</button>
-            </div>
+        <div className="mt-7 grid grid-cols-7 gap-2">
+          {/* Left Panel */}
+          <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
+            <div className="p-3">
+              <div className="font-poppins font-bold text-2xl">Category</div>
+              <div className="w-[40%] h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
+                <button>New Category +</button>
+              </div>
 
-            {category.map((items, key) => (
-              <>
-                <div key={key} className="grid grid-cols-7 gap-2 mt-5">
-                  {/* <div className="col-span-1">
+              {category.map((items, key) => (
+                <>
+                  <div key={key} className="grid grid-cols-7 gap-2 mt-5">
+                    {/* <div className="col-span-1">
                     <label className="inline-flex mt-3 ml-1 items-center space-x-2">
                       <input
                         type="checkbox"
@@ -133,75 +136,76 @@ const Tag_managment = () => {
                       </span>
                     </label>
                   </div> */}
-                  <div className="col-span-5 ml-2">
-                    <div className="font-poppins text-2xl">{items.name}</div>
-                    <div className="text-xs">{items.description}</div>
-                  </div>
+                    <div className="col-span-5 ml-2">
+                      <div className="font-poppins text-2xl">{items.name}</div>
+                      <div className="text-xs">{items.description}</div>
+                    </div>
 
-                  <div className="col-span-2">
-                    <div className="flex justify-center items-center mt-3 space-x-4">
-                      <button onClick={() => selectCategory(items)}>
-                        <RiEditLine size={20} className="text-[#6425FE]" />
-                      </button>
-                      <button>
-                        <RiDeleteBin5Line
-                          size={20}
-                          className="text-[#6425FE]"
-                        />
-                      </button>
+                    <div className="col-span-2">
+                      <div className="flex justify-center items-center mt-3 space-x-4">
+                        <button onClick={() => selectCategory(items)}>
+                          <RiEditLine size={20} className="text-[#6425FE]" />
+                        </button>
+                        <button>
+                          <RiDeleteBin5Line
+                            size={20}
+                            className="text-[#6425FE]"
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </>
-            ))}
+                </>
+              ))}
+            </div>
           </div>
-        </div>
-        {/* Left Panel */}
+          {/* Left Panel */}
 
-        <div className="col-span-5 bg-[#FAFAFA] w-full">
-          <div className="p-3">
-            <div className="font-poppins font-bold text-2xl">
-              Tag : {select_cat.name}
-            </div>
-
-            <div className="grid grid-cols-7 gap-2 mt-5">
-              <div className="col-span-6  h-12">
-                <input
-                  type="text"
-                  className="w-[100%] h-[100%] border border-gray-300 rounded-md pl-4 placeholder-ml-2"
-                  placeholder="Enter Tag"
-                  onChange={(e) => setNewTag(e.target.value)}
-                />
+          <div className="col-span-5 bg-[#FAFAFA] w-full">
+            <div className="p-3">
+              <div className="font-poppins font-bold text-2xl">
+                Tag : {select_cat.name}
               </div>
-              <div className="col-span-1 h-12">
-                <button
-                  onClick={() => addTag()}
-                  className="w-[100%] h-[100%] rounded-lg bg-[#6425FE] font-poppins text-white"
-                >
-                  Add +
-                </button>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-6 gap-1 mt-5 space-y-1">
-              {select_cat.tag &&
-                select_cat.tag.map((items, index) => (
-                  <div key={items}>
-                    <button onClick={() => removeTag(items)}>
-                      <div className="relative w-[100px] lg:w-[160px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                          <IoIosClose size="22" color="#6425FE" />
+              <div className="grid grid-cols-7 gap-2 mt-5">
+                <div className="col-span-6  h-12">
+                  <input
+                    type="text"
+                    className="w-[100%] h-[100%] border border-gray-300 rounded-md pl-4 placeholder-ml-2"
+                    placeholder="Enter Tag"
+                    onChange={(e) => setNewTag(e.target.value)}
+                  />
+                </div>
+                <div className="col-span-1 h-12">
+                  <button
+                    onClick={() => addTag()}
+                    className="w-[100%] h-[100%] rounded-lg bg-[#6425FE] font-poppins text-white"
+                  >
+                    Add +
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-1 mt-5 space-y-1">
+                {select_cat.tag &&
+                  select_cat.tag.map((items, index) => (
+                    <div key={items}>
+                      <button onClick={() => removeTag(items)}>
+                        <div className="relative w-[100px] lg:w-[160px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
+                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+                            <IoIosClose size="22" color="#6425FE" />
+                          </div>
+                          <div className="text-sm font-poppins">{items}</div>
                         </div>
-                        <div className="text-sm font-poppins">{items}</div>
-                      </div>
-                    </button>
-                  </div>
-                ))}
+                      </button>
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

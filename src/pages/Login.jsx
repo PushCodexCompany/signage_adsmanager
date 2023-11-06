@@ -381,7 +381,7 @@ const Login = () => {
                     Login
                   </button>
                 </div>
-                <div className="text-center">
+                {/* <div className="text-center">
                   <button
                     type="submit"
                     onClick={() => setIsLogin(2)}
@@ -389,7 +389,7 @@ const Login = () => {
                   >
                     "Don't have an account yet? Sign Up"
                   </button>
-                </div>
+                </div> */}
               </div>
             </>
           ) : isLogin === 2 ? (

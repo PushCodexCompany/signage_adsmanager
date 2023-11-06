@@ -10,6 +10,8 @@ import {
   IoIosCheckmark,
 } from "react-icons/io";
 
+import { Navbar } from "../../components";
+
 const _tags = [
   {
     name: "STW Promotion",
@@ -896,45 +898,48 @@ const Content_type = () => {
   };
 
   return (
-    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-      <Header category="Page" title="Home" />
-      <div className="font-poppins font-semibold text-2xl mt-10">
-        <text>Content Type</text>
-      </div>
-      {/* Media Rules */}
-      <div className="container mx-auto mt-10">
-        {/* <Bar type="color" /> */}
-        <TagSlider />
-        <div class="flex flex-col lg:flex-row justify-center lg:text-left">
-          {/* Left Panal */}
-          <LeftPanel is_disable={true} />
+    <>
+      <Navbar />
+      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+        <Header category="Page" title="Home" />
+        <div className="font-poppins font-semibold text-2xl mt-10">
+          <text>Content Type</text>
+        </div>
+        {/* Media Rules */}
+        <div className="container mx-auto mt-10">
+          {/* <Bar type="color" /> */}
+          <TagSlider />
+          <div class="flex flex-col lg:flex-row justify-center lg:text-left">
+            {/* Left Panal */}
+            <LeftPanel is_disable={true} />
 
-          {/* Middle Button */}
-          <a
-            onClick={() => alert("click")}
-            class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
-          >
-            <div className="p-2 justify-center flex mt-1">
-              <svg
-                width="61"
-                height="33"
-                viewBox="0 0 33 61"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1.36216 1.35394C3.15618 -0.451313 6.06512 -0.451313 7.85909 1.35394L30.312 23.9684C33.8972 27.5796 33.8958 33.4308 30.3092 37.0401L7.84256 59.6458C6.04859 61.4514 3.13965 61.4514 1.34558 59.6458C-0.448524 57.8407 -0.448524 54.9137 1.34558 53.1086L20.5745 33.7604C22.3689 31.9553 22.3684 29.0283 20.5745 27.2232L1.36216 7.89121C-0.431944 6.08601 -0.431944 3.15914 1.36216 1.35394Z"
-                  fill="white"
-                />
-              </svg>
-            </div>
-          </a>
+            {/* Middle Button */}
+            <a
+              onClick={() => alert("click")}
+              class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
+            >
+              <div className="p-2 justify-center flex mt-1">
+                <svg
+                  width="61"
+                  height="33"
+                  viewBox="0 0 33 61"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.36216 1.35394C3.15618 -0.451313 6.06512 -0.451313 7.85909 1.35394L30.312 23.9684C33.8972 27.5796 33.8958 33.4308 30.3092 37.0401L7.84256 59.6458C6.04859 61.4514 3.13965 61.4514 1.34558 59.6458C-0.448524 57.8407 -0.448524 54.9137 1.34558 53.1086L20.5745 33.7604C22.3689 31.9553 22.3684 29.0283 20.5745 27.2232L1.36216 7.89121C-0.431944 6.08601 -0.431944 3.15914 1.36216 1.35394Z"
+                    fill="white"
+                  />
+                </svg>
+              </div>
+            </a>
 
-          {/* Right Panel */}
-          <RightPanel />
+            {/* Right Panel */}
+            <RightPanel />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

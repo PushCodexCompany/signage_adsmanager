@@ -40,6 +40,7 @@ import {
   Media_Log,
   Screen,
   Role_permission,
+  User_Page,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -64,6 +65,7 @@ const Routing = () => {
         <Route path="/inbox" element={<Inbox />} />
         <Route path="/event" element={<Event />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/user" element={<User_Page />} />
         <Route
           path="/setting/user_management/user"
           element={<User_Setting />}

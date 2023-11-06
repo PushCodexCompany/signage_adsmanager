@@ -84,7 +84,7 @@ const Header = ({ title, subtitle }) => {
                   <div
                     onClick={() => navigate(to)}
                     // href={to}
-                    className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins"
+                    className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins hover:cursor-pointer"
                   >
                     {(items.charAt(0).toUpperCase() + items.slice(1)).replace(
                       /_/g,

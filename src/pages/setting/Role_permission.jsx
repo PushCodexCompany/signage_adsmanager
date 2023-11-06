@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Header } from "../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { AiOutlineClose } from "react-icons/ai";
-
+import { Navbar } from "../../components";
 const mock_data = [
   {
     id: 1,
@@ -497,6 +497,7 @@ const Role_permission = () => {
 
   return (
     <>
+      <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div className="font-poppins font-semibold text-2xl mt-10">

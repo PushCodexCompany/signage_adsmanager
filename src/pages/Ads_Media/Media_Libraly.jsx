@@ -3,6 +3,7 @@ import { Header } from "../../components";
 import { GridTable } from "../../libs/media_libraly_grid";
 import { AiOutlineClose, AiOutlineCloudUpload } from "react-icons/ai";
 import { BsCheckCircle } from "react-icons/bs";
+import { Navbar } from "../../components";
 
 const Media_Libraly = () => {
   const [showModal, setShowModal] = useState(false);
@@ -72,6 +73,8 @@ const Media_Libraly = () => {
 
   return (
     <>
+      <Navbar />
+
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div class="grid grid-cols-5 gap-4 mt-10">

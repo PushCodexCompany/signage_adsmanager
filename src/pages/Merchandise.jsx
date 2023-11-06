@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Navbar } from "../components";
 
 import top_img from "../assets/img/merchandise/tops.png";
 import matsumoto_img from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
@@ -90,44 +91,47 @@ const Merchandise = () => {
   };
 
   return (
-    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-      <div className="text-6xl font-bold text-center font-poppins">
-        Select Your Merchandise
-      </div>
-      <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
-        Lorem ipsum is simply dummy text of the printing and typesetting
-        industry.
-      </div>
+    <>
+      <Navbar />
+      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+        <div className="text-6xl font-bold text-center font-poppins">
+          Select Your Merchandise
+        </div>
+        <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
+          Lorem ipsum is simply dummy text of the printing and typesetting
+          industry.
+        </div>
 
-      <div
-        class={
-          merchandise.length === 1
-            ? "grid grid-cols-1 gap-4 sm:grid-cols-1"
-            : merchandise.length === 2
-            ? "grid grid-cols-1 gap-4 sm:grid-cols-2"
-            : merchandise.length === 3
-            ? "grid grid-cols-1 gap-4 sm:grid-cols-3"
-            : "grid grid-cols-1 gap-4 sm:grid-cols-4"
-        }
-      >
-        {merchandise.map((items) => (
-          <div>
-            <button onClick={() => selectMerchandise(items)}>
-              <img
-                className={`block ml-auto mr-auto mt-30px w-3/5 rounded-3xl `}
-                src={items.img}
-              />
-              <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
-                {items.name}
-              </div>
-              <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
-                {items.des}
-              </div>
-            </button>
-          </div>
-        ))}
+        <div
+          class={
+            merchandise.length === 1
+              ? "grid grid-cols-1 gap-4 sm:grid-cols-1"
+              : merchandise.length === 2
+              ? "grid grid-cols-1 gap-4 sm:grid-cols-2"
+              : merchandise.length === 3
+              ? "grid grid-cols-1 gap-4 sm:grid-cols-3"
+              : "grid grid-cols-1 gap-4 sm:grid-cols-4"
+          }
+        >
+          {merchandise.map((items) => (
+            <div>
+              <button onClick={() => selectMerchandise(items)}>
+                <img
+                  className={`block ml-auto mr-auto mt-30px w-3/5 rounded-3xl `}
+                  src={items.img}
+                />
+                <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
+                  {items.name}
+                </div>
+                <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
+                  {items.des}
+                </div>
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

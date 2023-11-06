@@ -7,6 +7,7 @@ import {
   PiListDashesFill,
 } from "react-icons/pi";
 import { GridTable } from "../../libs/activities_log_grid";
+import { Navbar } from "../../components";
 
 const Activity_Log = () => {
   const [showRightPanel, setShowRightPanel] = useState(false);
@@ -107,6 +108,8 @@ const Activity_Log = () => {
 
   return (
     <>
+      <Navbar />
+
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div class="grid grid-cols-5 gap-4 mt-10">

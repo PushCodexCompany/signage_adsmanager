@@ -13,6 +13,8 @@ import centralPatImg from "../assets/img/centralpattana.jpg";
 import add_new_img from "../assets/img/add_new_brand.png";
 import cookie from "react-cookies";
 
+import { Navbar } from "../components";
+
 const mock_data = {
   1: {
     name: "CDS",
@@ -91,9 +93,8 @@ const Brands = () => {
 
   return (
     <>
-      {/* <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-        <Navbar />
-      </div> */}
+      <Navbar />
+
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <div className="text-6xl font-[700] text-center font-poppins">
           Select Your Brand

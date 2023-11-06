@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Header } from "../../../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-
+import { Navbar } from "../../../components";
 import {
   PiSlidersHorizontalFill,
   PiGridFourFill,
@@ -67,6 +67,7 @@ const User = () => {
 
   return (
     <>
+      <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div className="flex justify-between mt-10 mb-5 font-bold text-2xl font-poppins">

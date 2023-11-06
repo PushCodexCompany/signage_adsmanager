@@ -41,3 +41,4 @@ export { default as Activity_Log } from "./Static/Activity_Log";
 export { default as Media_Log } from "./Static/Media_Log";
 export { default as Screen } from "./Static/Screen";
 export { default as Role_permission } from "./setting/Role_permission";
+export { default as User_Page } from "./User";

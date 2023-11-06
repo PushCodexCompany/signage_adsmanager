@@ -8,6 +8,7 @@ import {
 } from "react-icons/pi";
 
 import { GridTable } from "../../libs/screen_grid";
+import { Navbar } from "../../components";
 
 const Screen = () => {
   const [showRightPanel, setShowRightPanel] = useState(false);
@@ -108,6 +109,8 @@ const Screen = () => {
 
   return (
     <>
+      <Navbar />
+
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div class="grid grid-cols-5 gap-4 mt-10">
