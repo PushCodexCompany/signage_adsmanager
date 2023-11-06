@@ -14,7 +14,6 @@ const UserProfile = ({ user }) => {
   const { currentColor } = useStateContext();
   const navigate = useNavigate();
   const getBrand = User.getCampaign();
-  console.log(getBrand);
 
   const handleLogout = async () => {
     const status = await User.logout();
