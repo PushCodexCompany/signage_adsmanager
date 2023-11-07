@@ -85,13 +85,13 @@ const mockup_merchandise = [
   },
 ];
 
-const User = () => {
+const User_Management = ({ setShowModal }) => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [filter, setFilter] = useState(["Active", "Admin"]);
 
-  const [showModal, setShowModal] = useState(false);
+  //   const [showModal, setShowModal] = useState(false);
 
   //Register
   const [reg_email, setRegEmail] = useState();
@@ -106,6 +106,7 @@ const User = () => {
   const [isBranchOpen, setIsBranchOpen] = useState(false);
   const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
 
+  const [showRegister, setShowRegister] = useState(false);
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
 
@@ -232,131 +233,134 @@ const User = () => {
 
   return (
     <>
-      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <div className="font-poppins font-semibold text-2xl mt-10 ml-3">
-          <text>User</text>
+      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+        {/* First div (circle) */}
+        <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+          <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+            <button onClick={() => setShowModal(false)}>
+              <AiOutlineClose size={25} color={"#6425FE"} />
+            </button>
+          </div>
         </div>
-        {/* Select Menu */}
-        <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-          <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-            <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-between items-center">
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
-                  <select
-                    name="status"
-                    id="status"
-                    onClick={toggleStatusSelect}
-                    onChange={handleStatusChange}
-                    class="block appearance-none font-poppins w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isStatusOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
+        {/* Second div (gray background) */}
+        <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+          <div className="font-poppins font-semibold text-2xl mt-10 ml-3">
+            <text>User</text>
+          </div>
+          {/* Select Menu */}
+          <div className="relative flex flex-col min-w-0  w-full mb-6 ">
+            <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+              <div class="flex flex-col lg:flex-row">
+                <div class="w-full lg:w-3/4 flex justify-between items-center">
+                  <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+                    <select
+                      name="status"
+                      id="status"
+                      onClick={toggleStatusSelect}
+                      onChange={handleStatusChange}
+                      class="block appearance-none font-poppins w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    >
+                      <option value="Active">Active</option>
+                      <option value="Inactive">Inactive</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      {isStatusOpen ? (
+                        <IoIosArrowUp size={18} color="#6425FE" />
+                      ) : (
+                        <IoIosArrowDown size={18} color="#6425FE" />
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
-                  <select
-                    name="role"
-                    id="role"
-                    onClick={toggleRoleSelect}
-                    onChange={handleStatusChange}
-                    class="block appearance-none w-full font-poppins bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="Admin">Admin</option>
-                    <option value="User">User</option>
-                  </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                    {isRoleOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
+                  <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                    <select
+                      name="role"
+                      id="role"
+                      onClick={toggleRoleSelect}
+                      onChange={handleStatusChange}
+                      class="block appearance-none w-full font-poppins bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    >
+                      <option value="Admin">Admin</option>
+                      <option value="User">User</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                      {isRoleOpen ? (
+                        <IoIosArrowUp size={18} color="#6425FE" />
+                      ) : (
+                        <IoIosArrowDown size={18} color="#6425FE" />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
-              <button
-                onClick={() => setShowModal(true)}
-                className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
-              >
-                New User +
-              </button>
+              <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
+                <button
+                  onClick={() => setShowRegister(true)}
+                  className="bg-[#6425FE] text-white text-sm font-poppins w-[200px] lg:w-[300px] lg:h-[45px] rounded-md mr-1"
+                >
+                  New User +
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        {/* Select Menu */}
+          {/* Select Menu */}
 
-        {/* Filter */}
-        <div className="flex flex-row mt-4">
-          <div className="basis-11/12">
-            {filter &&
-              filter.map((items) => (
-                <button onClick={() => removeFilter(items)}>
-                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
-                    <div className="grid grid-cols-4">
+          {/* Filter */}
+          <div className="flex flex-row mt-4">
+            <div className="basis-11/12">
+              {filter &&
+                filter.map((items) => (
+                  <button onClick={() => removeFilter(items)}>
+                    <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
+                      <div className="grid grid-cols-4">
+                        <div className="col-span-1 mt-[6px]">
+                          <div className="flex justify-end items-center">
+                            <IoIosClose size="27" color="#6425FE" />
+                          </div>
+                        </div>
+                        <div className="col-span-3 mt-[8px]">
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-sm">{items}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              {filter.length > 0 && (
+                <button onClick={() => clearFilter()}>
+                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+                    <div className="grid grid-cols-12">
                       <div className="col-span-1 mt-[6px]">
                         <div className="flex justify-end items-center">
                           <IoIosClose size="27" color="#6425FE" />
                         </div>
                       </div>
-                      <div className="col-span-3 mt-[8px]">
+                      <div className="col-span-11 mt-[8px]">
                         <div className="flex justify-center items-center">
-                          <div className="font-poppins text-sm">{items}</div>
+                          <div className="font-poppins text-sm text-white">
+                            Clear All
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </button>
-              ))}
-            {filter.length > 0 && (
-              <button onClick={() => clearFilter()}>
-                <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
-                  <div className="grid grid-cols-12">
-                    <div className="col-span-1 mt-[6px]">
-                      <div className="flex justify-end items-center">
-                        <IoIosClose size="27" color="#6425FE" />
-                      </div>
-                    </div>
-                    <div className="col-span-11 mt-[8px]">
-                      <div className="flex justify-center items-center">
-                        <div className="font-poppins text-sm text-white">
-                          Clear All
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-        {/* Filter */}
-
-        <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable />
+          {/* Filter */}
+          <div className="w-auto mt-5 h-[400px]  rounded-lg p-2">
+            <GridTable />
+          </div>
         </div>
       </div>
 
-      {showModal && (
-        <a
-          onClick={() => setShowModal(!showModal)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )}
-
-      {showModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+      {showRegister && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-30 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
           {/* First div (circle) */}
-          <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setShowModal(!showModal)}>
+              <button onClick={() => setShowRegister(!showRegister)}>
                 <AiOutlineClose size={25} color={"#6425FE"} />
               </button>
             </div>
@@ -476,9 +480,9 @@ const User = () => {
       )}
 
       {showBrandModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
           {/* First div (circle) */}
-          <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setShowBrandModal(!showBrandModal)}>
                 <AiOutlineClose size={25} color={"#6425FE"} />
@@ -739,9 +743,9 @@ const User = () => {
       )}
 
       {showMerchandiseModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
           {/* First div (circle) */}
-          <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button
                 onClick={() => showMerchandiseModal(!showMerchandiseModal)}
@@ -1009,4 +1013,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default User_Management;
