@@ -41,6 +41,7 @@ import {
   Screen,
   Role_permission,
   User_Page,
+  Create_Booking,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -82,6 +83,7 @@ const Routing = () => {
         <Route path="/statics/media_log" element={<Media_Log />} />
         <Route path="/statics/screen" element={<Screen />} />
         <Route path="/setting/role_permission" element={<Role_permission />} />
+        <Route path="/booking/create_booking" element={<Create_Booking />} />
         <Route
           path="*"
           element={<div> Not Found or You do not have permission.</div>}

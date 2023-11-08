@@ -46,16 +46,21 @@ export default {
   // login
   login: async function (hash) {
     const { data } = await this._post(`api/v1/login?hash=${hash}`);
-
-    // const { data } = await this._post(`api/v1/login?hash=${hash}`);
+    console.log("data", data);
     // console.log(data);
     // const data = {
-    //   _id: "12314123123",
-    //   name: "John Doe",
-    //   img: avatar,
-    //   role: 1,
-    //   brand: [1, 9],
-    //   email: "test@mail.com",
+    //   token:
+    //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQVVNIQ09ERVggQ09NUEFOWSBMSU1JVEVEIiwiYXVkIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UiLCJhdXRoIjoiYzRjYTQyMzhhMGI5MjM4MjBkY2M1MDlhNmY3NTg0OWIifQ.loVz8S_JNKD4Smkuan3TSrrcjX568OOSxZcw96xrOP0",
+    //   user: {
+    //     userid: 1,
+    //     username: "spaads",
+    //     firstname: "Push Codex",
+    //     lastname: "Administrator",
+    //     contactnumber: null,
+    //     role: "Super Admin",
+    //     permission: 1,
+    //     lastseen: "2023-11-08 16:33:01",
+    //   },
     // };
 
     if (data) {

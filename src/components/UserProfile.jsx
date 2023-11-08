@@ -50,7 +50,8 @@ const UserProfile = ({ user }) => {
             />
             <div>
               <p className="font-semibold text-xl dark:text-gray-200 font-poppins">
-                {`${user.user.firstname} ${user.user.lastname}`}
+                {user ? `${user.user.firstname} ${user.user.lastname}` : ""}
+                {/* {`${user.user.username}`} */}
               </p>
               <p className="text-gray-500 text-sm dark:text-gray-400 font-poppins">
                 {user.user.role}

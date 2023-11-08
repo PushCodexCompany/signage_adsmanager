@@ -8,7 +8,7 @@ import {
   Search,
   Page,
 } from "@syncfusion/ej2-react-grids";
-
+import { useNavigate } from "react-router-dom";
 import { GridTable } from "../libs/booking_grid";
 
 import { bookingData, bookingGrid } from "../libs/campaign_grid";
@@ -21,6 +21,7 @@ const Booking = () => {
   const [isRoleOpen, setIsRoleOpen] = useState(false);
 
   const [filter, setFilter] = useState(["Active", "Admin"]);
+  const navigate = useNavigate();
 
   const toggleSortSelect = () => {
     setIsSortOpen((prevIsOpen) => !prevIsOpen);
@@ -153,7 +154,10 @@ const Booking = () => {
                   </div>
                 </div>
                 <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
-                  <button className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md">
+                  <button
+                    onClick={() => navigate("/booking/create_booking")}
+                    className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+                  >
                     New Booking +
                   </button>
                 </div>

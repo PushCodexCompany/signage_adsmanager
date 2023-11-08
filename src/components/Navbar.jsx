@@ -131,11 +131,14 @@ const Navbar = () => {
                   <p>
                     <span className="">
                       <text className="text-black font-bold text-14 font-poppins">
-                        {`${user.user.firstname} ${user.user.lastname}`}
+                        {user
+                          ? `${user.user.firstname} ${user.user.lastname}`
+                          : ""}
+                        {/* {user ? `${user.user.username}` : ""} */}
                       </text>
                       <br />
                       <text className="text-gray-400 text-10 font-poppins">
-                        {user.user.role}
+                        {user ? user.user.role : ""}
                       </text>
                     </span>
                   </p>

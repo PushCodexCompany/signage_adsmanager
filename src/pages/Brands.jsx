@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
+import { useNavigate } from "react-router-dom";
 
 import centralImg from "../assets/img/central.png";
 import robinsonImg from "../assets/img/robinson.png";
@@ -67,14 +68,20 @@ const Brands = () => {
   const { user } = User.getCookieData();
   const select_campaign = User.getCampaign();
   const select_merchandise = User.getMerchandise();
+  const navigate = useNavigate();
 
   const [brand, setBrand] = useState([]);
 
   useEffect(() => {
+    if (!user) {
+      window.location.href = "/adsmanager";
+    }
+
     cookie.remove("signage-brand");
     if (select_campaign) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     }
+
     user.brand = [1, 9];
     setBrand(user.brand);
     // if (select_merchandise) {
