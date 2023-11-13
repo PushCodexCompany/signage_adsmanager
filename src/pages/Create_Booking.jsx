@@ -7,6 +7,24 @@ import {
   PiGridFourFill,
   PiListDashesFill,
 } from "react-icons/pi";
+
+const mock_data = {
+  name: "Tops",
+  booking_name: ["Booking Name 1", "CDS-BT-230101-004"],
+  content_type: 2,
+  merchandise: 1,
+  screen: {
+    name: "Screen 1",
+    location: "Central Chidlom F3",
+    status: 1,
+    booking_period: ["1687280400000", "1687885200000"],
+    loops: 5,
+    booking: 1,
+    content: 1,
+    booking: [2, 7, 4, 1, 5, 7, 10, 10],
+  },
+};
+
 const Create_Booking = () => {
   const inputRef = useRef(null);
   const [bookingName, setBookingName] = useState("Booking Name 1");
@@ -27,6 +45,9 @@ const Create_Booking = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const [isChecked, setIsChecked] = useState(false);
+
+  const [fill_all, setFillAll] = useState(false);
+  const [display_fully, setDisplayFully] = useState(false);
 
   const focusInput = () => {
     inputRef.current.focus();
@@ -298,35 +319,145 @@ const Create_Booking = () => {
 
           <div class="basis-4/12">
             <div className="grid grid-cols-6 space-x-1">
-              <div className="col-span-2 bg-red-500">
+              <div className="col-span-3">
                 <div className="flex space-x-2">
-                  <div>1</div>
+                  <label className="inline-flex items-center ">
+                    <input
+                      type="checkbox"
+                      className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                      checked={fill_all}
+                      onChange={() => setFillAll(!fill_all)}
+                    />
+                    <span
+                      className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                        fill_all ? "bg-white" : ""
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-6 w-6 text-white ${
+                          fill_all ? "opacity-100" : "opacity-0"
+                        } transition-opacity duration-300 ease-in-out`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="#6425FE"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="3"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+                  </label>
                   <div className="font-poppins text-sm font-bold flex items-center">
                     Fill All Available Slots
                   </div>
                 </div>
               </div>
-              <div className="col-span-4 bg-green-500">
+              <div className="col-span-3">
                 <div className="flex space-x-2">
-                  <div>1</div>
+                  <label className="inline-flex items-center ">
+                    <input
+                      type="checkbox"
+                      className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                      checked={display_fully}
+                      onChange={() => setDisplayFully(!display_fully)}
+                    />
+                    <span
+                      className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                        display_fully ? "bg-white" : ""
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-6 w-6 text-white ${
+                          display_fully ? "opacity-100" : "opacity-0"
+                        } transition-opacity duration-300 ease-in-out`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="#6425FE"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="3"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+                  </label>
                   <div className="font-poppins text-sm font-bold flex items-center">
                     Display Only Fully Available
                   </div>
                 </div>
               </div>
-
-              {/* <div className="col-span-1">1</div>
-              <div className="col-span-2">
-                <div className="font-poppins">Fill All Available Slots</div>
-              </div>
-              <div className="col-span-1">3</div>
-              <div className="col-span-2">
-                <div className="font-poppins">Display Only Fully Available</div>
-              </div> */}
             </div>
           </div>
         </div>
         {/* Filter */}
+
+        <div className="mt-7 grid grid-cols-7 gap-2">
+          {/* Left Panel */}
+          <div className="col-span-2 h-[800px]">
+            <div className="p-3">
+              <div className="font-poppins font-bold text-2xl">Role</div>
+
+              {/* <button className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins rounded-lg">
+                New Role +
+              </button> */}
+
+              {/* {permission.map((items, key) => (
+                <>
+                  <div
+                    key={key}
+                    className={`grid grid-cols-7 gap-2 mt-5 
+                  ${key === select_role ? "bg-[#FAFAFA]" : ""} 
+                  cursor-pointer`}
+                    onClick={() => selectRole(key)}
+                  >
+                    <div className="col-span-5 ml-2">
+                      <div className="font-poppins text-2xl ">{items.name}</div>
+                      <div className="text-xs">{items.description}</div>
+                    </div>
+
+                    <div className="col-span-2">
+                      <div className="flex justify-center items-center mt-3 space-x-4">
+                        <button onClick={() => selectRole(key)}>
+                          <RiEditLine size={20} className="text-[#6425FE]" />
+                        </button>
+                        <button>
+                          <RiDeleteBin5Line
+                            size={20}
+                            className="text-[#6425FE]"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ))} */}
+            </div>
+          </div>
+          {/* Left Panel */}
+
+          {/* Right Panel */}
+          <div className="col-span-5 bg-[#FAFAFA] w-full">
+            {/* {permission.length > 0 && (
+              <Tabs roleData={permission[select_role]} />
+            )}
+            <div className="p-4">
+              <button
+                className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
+                onClick={() => handleSave(permission[select_role])}
+              >
+                Save
+              </button>
+            </div> */}
+          </div>
+          {/* Right Panel */}
+        </div>
       </div>
 
       {showRightPanel && (

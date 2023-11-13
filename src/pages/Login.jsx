@@ -137,47 +137,48 @@ const Login = () => {
     if (select_campaign) {
       cookie.remove("signage-brand", { path: false });
     }
-    axios
-      .post("https://cds.push-signage.com/adsmanager/api/v1/testencrypt")
-      .then((response) => {
-        testAAA();
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+
     // User.saveRedirect();
   }, []);
 
-  const testAAA = async () => {
-    let data = "hello world";
-    let password = "mypassword";
-    let iv = "0000000000000000";
+  // const handleLogin = () => {
 
-    let password_hash = CryptoJS.SHA256(password).toString();
-    let key = CryptoJS.enc.Hex.parse(password_hash);
+  //   var CryptoJSAesJson = {
+  //     parse: function (jsonStr) {
+  //       var j = JSON.parse(jsonStr);
+  //       var cipherParams = CryptoJS.lib.CipherParams.create({
+  //         ciphertext: CryptoJS.enc.Base64.parse(j.ct),
+  //       });
 
-    // let encryptedData = CryptoJS.AES.encrypt(data, key, {
-    //   iv: CryptoJS.enc.Hex.parse(iv),
-    //   mode: CryptoJS.mode.CBC,
-    //   padding: CryptoJS.pad.Pkcs7,
-    // }).toString();
+  //       if (j.iv) cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
+  //       if (j.s) cipherParams.salt = CryptoJS.enc.Hex.parse(j.s);
+  //       return cipherParams;
+  //     },
+  //   };
 
-    // console.log("Base64 Encrypted:", encryptedData);
+  //   axios
+  //     .post("https://cds.push-signage.com/adsmanager/api/v1/testencrypt")
+  //     .then((response) => {
 
-    let decryptedText = CryptoJS.AES.decrypt("s6qT2WRF8qkY77FM8z7lqg==", key, {
-      iv: CryptoJS.enc.Hex.parse(iv),
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    }).toString(CryptoJS.enc.Utf8);
+  //       const encrypted = {
+  //         ct: "RmOD1uKiiS2kng4ZLxoxWA==",
+  //         iv: "2aae24ce6839edbacdf50826c04a35da",
+  //         s: "31dbf10d26af2e62",
+  //       };
 
-    console.log("Decrypted Text:", decryptedText);
-  };
+  //       // Stringify the encrypted object before decrypting
+  //       var encryptedString = JSON.stringify(encrypted);
 
-  function hexToString(hex) {
-    let string = "";
-    for (let i = 0; i < hex.length; i += 2) {
-      string += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    }
-    return string;
-  }
+  //       var decrypted = JSON.parse(
+  //         CryptoJS.AES.decrypt(encryptedString, "aaaaaaaaaaaaaaa", {
+  //           format: CryptoJSAesJson,
+  //         }).toString(CryptoJS.enc.Utf8)
+  //       );
+
+  //       console.log("Decrypted : ", decrypted);
+  //     })
+  //     .catch((error) => console.error("Error fetching data:", error));
+  // }
 
   const generateMD5Hash = (input) => {
     // Calculate the MD5 hash of the input
