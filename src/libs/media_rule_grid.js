@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import topImg from "../assets/img/merchandise/tops.png";
 import matsumotoImg from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
 import supersportImg from "../assets/img/merchandise/Super_Sports.png";
@@ -5,33 +6,6 @@ import powerbuyImg from "../assets/img/merchandise/Power_Buy.png";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { RiDeleteBin5Line, RiEditLine, RiShareBoxLine } from "react-icons/ri";
-
-const getImg = (id) => {
-  let img;
-  if (id === 1) {
-    img = topImg;
-  } else if (id === 2) {
-    img = matsumotoImg;
-  } else if (id === 3) {
-    img = supersportImg;
-  } else if (id === 4) {
-    img = powerbuyImg;
-  }
-
-  return img;
-};
-
-const onClickEdit = (id) => {
-  alert(`edit : ${id}`);
-};
-
-const onClickDelete = (id) => {
-  alert(`delete : ${id}`);
-};
-
-const onClickView = (id) => {
-  alert(`View : ${id}`);
-};
 
 const dashboardData = [
   {
@@ -49,6 +23,35 @@ const dashboardData = [
 ];
 
 export const GridTable = () => {
+  const navigate = useNavigate();
+
+  const getImg = (id) => {
+    let img;
+    if (id === 1) {
+      img = topImg;
+    } else if (id === 2) {
+      img = matsumotoImg;
+    } else if (id === 3) {
+      img = supersportImg;
+    } else if (id === 4) {
+      img = powerbuyImg;
+    }
+
+    return img;
+  };
+
+  const onClickEdit = (id) => {
+    navigate("/setting/media_rule/create", { state: { id: id } });
+  };
+
+  const onClickDelete = (id) => {
+    alert(`delete : ${id}`);
+  };
+
+  const onClickView = (id) => {
+    alert(`View : ${id}`);
+  };
+
   return (
     <>
       <div className="w-auto h-[600px] overflow-auto">

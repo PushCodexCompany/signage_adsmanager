@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../../../components";
 import ReactPlayer from "react-player/youtube";
+import { useLocation } from "react-router-dom";
 
 const Create_Media_Rule = () => {
+  const location = useLocation();
+
+  const [media_rule_name, setMediaRulename] = useState(null);
+  const [video, setVideo] = useState(null);
+
+  useEffect(() => {}, []);
+
+  console.log("location", location.state.id);
   return (
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Home" />

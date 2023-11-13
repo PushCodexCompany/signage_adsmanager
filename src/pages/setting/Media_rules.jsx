@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/media_rule_grid";
 import { useNavigate } from "react-router-dom";

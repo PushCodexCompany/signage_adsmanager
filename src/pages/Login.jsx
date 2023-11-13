@@ -141,45 +141,6 @@ const Login = () => {
     // User.saveRedirect();
   }, []);
 
-  // const handleLogin = () => {
-
-  //   var CryptoJSAesJson = {
-  //     parse: function (jsonStr) {
-  //       var j = JSON.parse(jsonStr);
-  //       var cipherParams = CryptoJS.lib.CipherParams.create({
-  //         ciphertext: CryptoJS.enc.Base64.parse(j.ct),
-  //       });
-
-  //       if (j.iv) cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
-  //       if (j.s) cipherParams.salt = CryptoJS.enc.Hex.parse(j.s);
-  //       return cipherParams;
-  //     },
-  //   };
-
-  //   axios
-  //     .post("https://cds.push-signage.com/adsmanager/api/v1/testencrypt")
-  //     .then((response) => {
-
-  //       const encrypted = {
-  //         ct: "RmOD1uKiiS2kng4ZLxoxWA==",
-  //         iv: "2aae24ce6839edbacdf50826c04a35da",
-  //         s: "31dbf10d26af2e62",
-  //       };
-
-  //       // Stringify the encrypted object before decrypting
-  //       var encryptedString = JSON.stringify(encrypted);
-
-  //       var decrypted = JSON.parse(
-  //         CryptoJS.AES.decrypt(encryptedString, "aaaaaaaaaaaaaaa", {
-  //           format: CryptoJSAesJson,
-  //         }).toString(CryptoJS.enc.Utf8)
-  //       );
-
-  //       console.log("Decrypted : ", decrypted);
-  //     })
-  //     .catch((error) => console.error("Error fetching data:", error));
-  // }
-
   const generateMD5Hash = (input) => {
     // Calculate the MD5 hash of the input
     const md5Hash = CryptoJS.MD5(input).toString();
@@ -267,6 +228,8 @@ const Login = () => {
     try {
       // if (checkEmailTemplate()) {
       if (checkPasswordTemplate()) {
+        // const encrypted = CryptoJS.AES.encrypt(JSON.stringify("value to encrypt"), "my passphrase", {format: CryptoJSAesJson}).toString();
+
         const hash = generateCombinedMD5Hash(username, password);
         const status = await User.login(hash);
         if (status) {
