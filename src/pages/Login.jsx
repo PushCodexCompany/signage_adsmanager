@@ -224,14 +224,55 @@ const Login = () => {
     }
   };
 
+  const CryptoJSAesJson = {
+    stringify: function (cipherParams) {
+      var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64) };
+      if (cipherParams.iv) j.iv = cipherParams.iv.toString();
+      if (cipherParams.salt) j.s = cipherParams.salt.toString();
+      j.ts = Date.now();
+      return JSON.stringify(j).replace(/\s/g, "");
+    },
+    parse: function (jsonStr) {
+      var j = JSON.parse(jsonStr);
+      var cipherParams = CryptoJS.lib.CipherParams.create({
+        ciphertext: CryptoJS.enc.Base64.parse(j.ct),
+      });
+      if (j.iv) cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
+      if (j.s) cipherParams.salt = CryptoJS.enc.Hex.parse(j.s);
+      return cipherParams;
+    },
+  };
+
   const handleSubmit = async () => {
     try {
       // if (checkEmailTemplate()) {
       if (checkPasswordTemplate()) {
         // const encrypted = CryptoJS.AES.encrypt(JSON.stringify("value to encrypt"), "my passphrase", {format: CryptoJSAesJson}).toString();
 
-        const hash = generateCombinedMD5Hash(username, password);
-        const status = await User.login(hash);
+        // const hash = generateCombinedMD5Hash(username, password);
+
+        const key = "puShc0d3x778899";
+        const date = Date.now() + 1;
+        const pp = key.concat("", date);
+        const obj = {
+          action: "login",
+          data: {
+            username: username,
+            password: password,
+          },
+        };
+
+        console.log("obj", obj);
+
+        const encrypt = CryptoJS.AES.encrypt(JSON.stringify(obj), pp, {
+          format: CryptoJSAesJson,
+        }).toString();
+
+        const encrypted = btoa(encrypt);
+
+        console.log("Encrypted:", encrypted);
+
+        const status = await User.login(encrypted);
         if (status) {
           navigate("/brand");
           Swal.fire({
