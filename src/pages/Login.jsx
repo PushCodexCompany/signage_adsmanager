@@ -262,16 +262,11 @@ const Login = () => {
           },
         };
 
-        console.log("obj", obj);
-
         const encrypt = CryptoJS.AES.encrypt(JSON.stringify(obj), pp, {
           format: CryptoJSAesJson,
         }).toString();
 
         const encrypted = btoa(encrypt);
-
-        console.log("Encrypted:", encrypted);
-
         const status = await User.login(encrypted);
         if (status) {
           navigate("/brand");

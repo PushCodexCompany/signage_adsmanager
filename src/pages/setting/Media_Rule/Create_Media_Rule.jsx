@@ -5,13 +5,67 @@ import { useLocation } from "react-router-dom";
 
 const Create_Media_Rule = () => {
   const location = useLocation();
-
   const [media_rule_name, setMediaRulename] = useState(null);
   const [video, setVideo] = useState(null);
 
-  useEffect(() => {}, []);
+  const [media_value, setMediaValue] = useState([]);
 
-  console.log("location", location.state.id);
+  useEffect(() => {
+    if (location.state) {
+      fetchData();
+    }
+  }, []);
+
+  const fetchData = () => {
+    //fetch data
+
+    let obj;
+    if (location.state.id === 1) {
+      obj = {
+        name: "1080x1920",
+        video: "https://www.youtube.com/watch?v=Jq2vmjOVSew",
+        rule1: {
+          width: "1",
+          height: "1",
+        },
+        rule2: {
+          type: "1",
+          size: "1",
+        },
+        ads_capacity: {
+          stw: 60,
+          category: 10,
+          advertising: 10,
+          bank_partner: 10,
+          branding: 10,
+        },
+      };
+    } else {
+      obj = {
+        name: "Facade - 12Clients",
+        video: "https://www.youtube.com/watch?v=ZmXzsOFbb5g",
+        rule1: {
+          width: "2",
+          height: "2",
+        },
+        rule2: {
+          type: "2",
+          size: "3",
+        },
+        ads_capacity: {
+          stw: 50,
+          category: 20,
+          advertising: 10,
+          bank_partner: 10,
+          branding: 10,
+        },
+      };
+    }
+
+    setMediaValue(obj);
+  };
+
+  // console.log("location", location.state.id);
   return (
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Home" />
@@ -26,20 +80,32 @@ const Create_Media_Rule = () => {
                 <input
                   className="font-bold text-sm w-full h-full font-poppins pl-4"
                   placeholder="Media Rule Name"
+                  defaultValue={media_value.name ? media_value.name : ""}
                 />
               </div>
             </div>
             <div className="flex justify-center mt-14 font-bold text-xl font-poppins">
               Preview
             </div>
-            <div className="flex justify-center mt-4">
-              <ReactPlayer
-                url="https://www.youtube.com/watch?v=xqyUdNxWazA"
-                width="851px"
-                height="420px"
-                controls
-              />
-            </div>
+            {media_value.video ? (
+              <>
+                <div className="flex justify-center mt-4">
+                  <ReactPlayer
+                    url={media_value.video ? media_value.video : ""}
+                    width="851px"
+                    height="420px"
+                    controls
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-center mt-4">
+                  <div className="w-[851px] h-[420px] bg-black"></div>
+                </div>
+              </>
+            )}
+
             <div className="flex justify-center mt-10">
               <button className="bg-[#6425FE] w-[420px] h-[65px] text-white font-bold font-poppins">
                 Create
@@ -82,10 +148,10 @@ const Create_Media_Rule = () => {
                     placeholder="Resolution"
                   >
                     <option value="">Resolution</option>
-                    <option value="1">1280 x 720</option>
+                    {/* <option value="1">1280 x 720</option>
                     <option value="2">1920 x 1080</option>
                     <option value="3">2560 x 1440</option>
-                    <option value="4">3840 x 2160</option>
+                    <option value="4">3840 x 2160</option> */}
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
@@ -106,6 +172,7 @@ const Create_Media_Rule = () => {
                   </div>
                 </div>
               </div>
+              {/* {console.log("media_value", media_value.rule1.width)} */}
               <div className="col-span-2">
                 <div class="relative flex flex-col justify-center items-center h-full text-sm font-bold">
                   <select
@@ -114,9 +181,30 @@ const Create_Media_Rule = () => {
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     placeholder="Resolution"
                   >
-                    <option value="2">1080</option>
-                    <option value="3">1440</option>
-                    <option value="4">2160</option>
+                    <option
+                      selected={
+                        media_value.rule1?.height === "1" ? true : false
+                      }
+                      value="1"
+                    >
+                      1080
+                    </option>
+                    <option
+                      selected={
+                        media_value.rule1?.height === "2" ? true : false
+                      }
+                      value="2"
+                    >
+                      1440
+                    </option>
+                    <option
+                      selected={
+                        media_value.rule1?.height === "3" ? true : false
+                      }
+                      value="3"
+                    >
+                      2160
+                    </option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
@@ -150,9 +238,24 @@ const Create_Media_Rule = () => {
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     placeholder="Resolution"
                   >
-                    <option value="2">1920</option>
-                    <option value="3">2560</option>
-                    <option value="4">3840</option>
+                    <option
+                      selected={media_value.rule1?.width === "1" ? true : false}
+                      value="1"
+                    >
+                      1920
+                    </option>
+                    <option
+                      selected={media_value.rule1?.width === "2" ? true : false}
+                      value="2"
+                    >
+                      2560
+                    </option>
+                    <option
+                      selected={media_value.rule1?.width === "3" ? true : false}
+                      value="3"
+                    >
+                      3840
+                    </option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
@@ -258,8 +361,18 @@ const Create_Media_Rule = () => {
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     placeholder="Resolution"
                   >
-                    <option value="1">Less Than</option>
-                    <option value="2">More Than</option>
+                    <option
+                      selected={media_value.rule2?.type === "1" ? true : false}
+                      value="1"
+                    >
+                      Less Than
+                    </option>
+                    <option
+                      selected={media_value.rule2?.type === "2" ? true : false}
+                      value="2"
+                    >
+                      More Than
+                    </option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
@@ -288,9 +401,24 @@ const Create_Media_Rule = () => {
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     placeholder="Resolution"
                   >
-                    <option value="1">300(KB)</option>
-                    <option value="2">500(KB)</option>
-                    <option value="2">1(MB)</option>
+                    <option
+                      selected={media_value.rule2?.size === "1" ? true : false}
+                      value="1"
+                    >
+                      300(KB)
+                    </option>
+                    <option
+                      selected={media_value.rule2?.size === "2" ? true : false}
+                      value="2"
+                    >
+                      500(KB)
+                    </option>
+                    <option
+                      selected={media_value.rule2?.size === "3" ? true : false}
+                      value="3"
+                    >
+                      1(MB)
+                    </option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
@@ -329,13 +457,14 @@ const Create_Media_Rule = () => {
                     <div className="col-span-2">
                       <div className="font-poppins font-bold mt-4">STW</div>
                     </div>
+                    {/* {console.log(media_value.ads_capacity.stw)} */}
                     <div className="col-span-5">
                       <input
-                        type="text"
+                        type="number"
                         id="stw"
                         name="stw"
                         required
-                        defaultValue={0}
+                        defaultValue={media_value.ads_capacity?.stw || 0}
                         className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
@@ -348,11 +477,15 @@ const Create_Media_Rule = () => {
                     </div>
                     <div className="col-span-5">
                       <input
-                        type="text"
+                        type="number"
                         id="category"
                         name="category"
                         required
-                        defaultValue={0}
+                        defaultValue={
+                          media_value.ads_capacity?.category
+                            ? media_value.ads_capacity?.category
+                            : "0"
+                        }
                         className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
@@ -365,7 +498,7 @@ const Create_Media_Rule = () => {
                     </div>
                     <div className="col-span-5">
                       <input
-                        type="text"
+                        type="number"
                         id="advertising"
                         name="advertising"
                         required
@@ -386,11 +519,15 @@ const Create_Media_Rule = () => {
                     </div>
                     <div className="col-span-4">
                       <input
-                        type="text"
+                        type="number"
                         id="bank"
                         name="bank"
                         required
-                        defaultValue={0}
+                        defaultValue={
+                          media_value.ads_capacity?.bank_partner
+                            ? media_value.ads_capacity?.bank_partner
+                            : "0"
+                        }
                         className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>
@@ -403,11 +540,15 @@ const Create_Media_Rule = () => {
                     </div>
                     <div className="col-span-4">
                       <input
-                        type="text"
+                        type="number"
                         id="branding"
                         name="branding"
                         required
-                        defaultValue={0}
+                        defaultValue={
+                          media_value.ads_capacity?.branding
+                            ? media_value.ads_capacity?.branding
+                            : "0"
+                        }
                         className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
                       />
                     </div>

@@ -252,8 +252,11 @@ const User_Management = ({ setShowModal }) => {
         data: {
           username: reg_email,
           password: reg_password,
+          accountcode: "huUpa8dN4i",
         },
       };
+
+      console.log("obj", obj);
 
       const encrypt = CryptoJS.AES.encrypt(JSON.stringify(obj), pp, {
         format: CryptoJSAesJson,
@@ -262,9 +265,6 @@ const User_Management = ({ setShowModal }) => {
       const encrypted = btoa(encrypt);
 
       console.log("Encrypted:", encrypted);
-
-      // const encrypted = btoa(encrypt);
-      // console.log("encrypted", encrypted);
     } else {
       Swal.fire({
         icon: "error",
