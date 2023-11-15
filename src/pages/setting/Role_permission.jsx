@@ -3,6 +3,7 @@ import { Header } from "../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { AiOutlineClose } from "react-icons/ai";
 import { Navbar } from "../../components";
+import useCheckPermission from "../../libs/useCheckPermission";
 const mock_data = [
   {
     id: 1,
@@ -46,6 +47,7 @@ const mock_data = [
   },
 ];
 const Role_permission = () => {
+  useCheckPermission();
   const [permission, setPermission] = useState([]);
   const [select_role, setSelectRole] = useState(0);
 

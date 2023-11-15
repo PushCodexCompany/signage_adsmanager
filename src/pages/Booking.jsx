@@ -14,8 +14,10 @@ import { GridTable } from "../libs/booking_grid";
 import { bookingData, bookingGrid } from "../libs/campaign_grid";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { Navbar } from "../components";
-
+import useCheckPermission from "../libs/useCheckPermission";
 const Booking = () => {
+  useCheckPermission();
+
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);

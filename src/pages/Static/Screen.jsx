@@ -9,8 +9,10 @@ import {
 
 import { GridTable } from "../../libs/screen_grid";
 import { Navbar } from "../../components";
+import useCheckPermission from "../../libs/useCheckPermission";
 
 const Screen = () => {
+  useCheckPermission();
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [view, setView] = useState(true);
   const [isSectorOpen, setIsSectorOpen] = useState(false);

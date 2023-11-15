@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Header } from "../../../components";
 import ReactPlayer from "react-player/youtube";
 import { useLocation } from "react-router-dom";
+import useCheckPermission from "../../../libs/useCheckPermission";
 
 const Create_Media_Rule = () => {
   const location = useLocation();
+  useCheckPermission();
   const [media_rule_name, setMediaRulename] = useState(null);
   const [video, setVideo] = useState(null);
 

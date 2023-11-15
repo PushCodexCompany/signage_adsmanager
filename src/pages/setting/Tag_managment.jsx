@@ -4,6 +4,7 @@ import { Header } from "../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { IoIosClose } from "react-icons/io";
 import { Navbar } from "../../components";
+import useCheckPermission from "../../libs/useCheckPermission";
 
 const category = [
   {
@@ -45,6 +46,7 @@ const category = [
 ];
 
 const Tag_managment = () => {
+  useCheckPermission();
   const [checkboxes, setCheckboxes] = useState(
     Array(category.length).fill(false)
   );

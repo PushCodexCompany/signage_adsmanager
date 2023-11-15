@@ -9,8 +9,10 @@ import {
 
 import { GridTable } from "../../libs/media_logs_grid";
 import { Navbar } from "../../components";
+import useCheckPermission from "../../libs/useCheckPermission";
 
 const Media_Log = () => {
+  useCheckPermission();
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [view, setView] = useState(true);
   const [isSectorOpen, setIsSectorOpen] = useState(false);

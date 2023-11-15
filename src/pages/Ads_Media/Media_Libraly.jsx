@@ -4,8 +4,10 @@ import { GridTable } from "../../libs/media_libraly_grid";
 import { AiOutlineClose, AiOutlineCloudUpload } from "react-icons/ai";
 import { BsCheckCircle } from "react-icons/bs";
 import { Navbar } from "../../components";
+import useCheckPermission from "../../libs/useCheckPermission";
 
 const Media_Libraly = () => {
+  useCheckPermission();
   const [showModal, setShowModal] = useState(false);
 
   const [uploads, setUploads] = useState({

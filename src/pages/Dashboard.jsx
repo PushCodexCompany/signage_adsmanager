@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../components";
 import { MdOutlineCalendarToday, MdCalendarToday } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import central_img from "../assets/img/central.png";
 import {
   Chart as ChartJS,
@@ -22,6 +23,8 @@ import { GridTable } from "../libs/dashboard_grid";
 import "./css/dashboard.css";
 
 import { Navbar } from "../components";
+import User from "../libs/admin";
+import useCheckPermission from "../libs/useCheckPermission";
 
 ChartJS.register(
   ArcElement,
@@ -36,8 +39,14 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  useCheckPermission();
   const [isYearOpen, setIsYearOpen] = useState(false);
   const [isUp, setIsUp] = useState(true);
+  const navigate = useNavigate();
+
+  const { user } = User.getCookieData();
+  const account = User.getAccount();
+  const brand = User.getCampaign();
 
   const toggleYearSelect = () => {
     setIsYearOpen((prevIsOpen) => !prevIsOpen);

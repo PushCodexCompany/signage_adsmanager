@@ -11,8 +11,10 @@ import {
 } from "react-icons/pi";
 
 import { GridTable } from "../../../libs/user_grid";
+import useCheckPermission from "../../../libs/useCheckPermission";
 
 const User = () => {
+  useCheckPermission();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [showRightPanel, setShowRightPanel] = useState(false);

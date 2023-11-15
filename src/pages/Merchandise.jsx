@@ -9,7 +9,7 @@ import evisu_img from "../assets/img/merchandise/Evisu.png";
 import fila_img from "../assets/img/merchandise/Fila.png";
 import alice_img from "../assets/img/merchandise/Alice.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
-
+import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
 
 const brand_merchandise = {
@@ -65,6 +65,7 @@ const brand_merchandise = {
   ],
 };
 const Merchandise = () => {
+  useCheckPermission();
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
   const select_merchandise = User.getMerchandise();
@@ -72,13 +73,6 @@ const Merchandise = () => {
   const [merchandise, setMerchandise] = useState([]);
 
   useEffect(() => {
-    if (!select_campaign) {
-      window.location.href = "/brand";
-    }
-    if (select_merchandise) {
-      window.location.href = "/dashboard";
-    }
-
     getMechendise();
   }, []);
 

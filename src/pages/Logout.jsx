@@ -7,12 +7,13 @@ const Logout = () => {
     if (status) {
       window.location.href = "/adsmanager";
       cookie.remove("signage-brand", { path: false });
+      cookie.remove("signage-account", { path: false });
       cookie.remove("signage-merchandise", { path: false });
       return false;
     }
   }, []);
 
-  return <>TEST</>;
+  return <>Log out...</>;
 };
 
 export default Logout;

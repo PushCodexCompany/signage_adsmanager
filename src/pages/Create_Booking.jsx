@@ -7,6 +7,7 @@ import {
   PiGridFourFill,
   PiListDashesFill,
 } from "react-icons/pi";
+import useCheckPermission from "../libs/useCheckPermission";
 
 const mock_data = {
   name: "Tops",
@@ -27,6 +28,8 @@ const mock_data = {
 
 const Create_Booking = () => {
   const inputRef = useRef(null);
+  useCheckPermission();
+
   const [bookingName, setBookingName] = useState("Booking Name 1");
   const [view, setView] = useState(true);
   const [filter, setFilter] = useState([

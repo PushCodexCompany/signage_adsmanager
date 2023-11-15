@@ -134,8 +134,13 @@ const Login = () => {
 
   useEffect(async () => {
     const select_campaign = User.getCampaign();
+    const select_account = User.getAccount();
     if (select_campaign) {
       cookie.remove("signage-brand", { path: false });
+    }
+
+    if (select_account) {
+      cookie.remove("signage-account", { path: false });
     }
 
     // User.saveRedirect();

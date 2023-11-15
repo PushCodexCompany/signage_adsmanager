@@ -8,8 +8,10 @@ import {
 } from "react-icons/pi";
 import { GridTable } from "../../libs/activities_log_grid";
 import { Navbar } from "../../components";
+import useCheckPermission from "../../libs/useCheckPermission";
 
 const Activity_Log = () => {
+  useCheckPermission();
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [view, setView] = useState(true);
   const [isSectorOpen, setIsSectorOpen] = useState(false);
@@ -120,9 +122,7 @@ const Activity_Log = () => {
           </div>
           <div class="col-span-1">
             <button
-              onClick={() =>
-                (window.location.href = "/setting/media_rule/create")
-              }
+              onClick={() => alert("export")}
               className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[200px] lg:h-[45px] rounded-md"
             >
               Export

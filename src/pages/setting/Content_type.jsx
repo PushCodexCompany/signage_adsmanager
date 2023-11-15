@@ -9,6 +9,7 @@ import {
   IoIosClose,
   IoIosCheckmark,
 } from "react-icons/io";
+import useCheckPermission from "../../libs/useCheckPermission";
 
 import { Navbar } from "../../components";
 
@@ -77,6 +78,8 @@ const styles = {
 };
 
 const Content_type = () => {
+  useCheckPermission();
+
   const TagSection = ({ name, color, width, onSliderSelect }) => {
     return (
       <div
