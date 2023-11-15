@@ -20,6 +20,7 @@ const UserProfile = ({ user }) => {
     if (status) {
       window.location.href = "/adsmanager";
       cookie.remove("signage-brand", { path: false });
+      cookie.remove("signage-account", { path: false });
       cookie.remove("signage-merchandise", { path: false });
       return false;
       //window.location.reload()

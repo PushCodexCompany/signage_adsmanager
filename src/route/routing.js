@@ -42,6 +42,7 @@ import {
   Role_permission,
   User_Page,
   Create_Booking,
+  User_Account,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -54,6 +55,7 @@ const Routing = () => {
       <Routes>
         {/* Production */}
         <Route path="/brand" element={<Brands />} />
+        <Route path="/user_account" element={<User_Account />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pdf" element={<Pdf />} />
         {/* <Route path="/brand" element={<Brands />} /> */}

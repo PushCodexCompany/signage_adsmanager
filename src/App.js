@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
-import { Login, Brands } from "./pages";
+import { Login, Brands, User_Account } from "./pages";
 import Routing from "./route/routing";
 
 import "./App.css";
@@ -87,6 +87,7 @@ const App = () => {
             <Routes>
               <Route exact path={`/`} element={<Login />} />
               <Route exact path={`/brand`} element={<Brands />} />
+              <Route exact path={`/user_account`} element={<User_Account />} />
             </Routes>
           </>
         )}

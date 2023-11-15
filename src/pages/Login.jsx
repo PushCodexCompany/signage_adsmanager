@@ -233,7 +233,13 @@ const Login = () => {
 
         const status = await User.login(encrypted);
         if (status) {
-          navigate("/brand");
+          const user_data = User.getCookieData();
+          if (user_data.user.role === "Super Admin") {
+            navigate("/user_account");
+          } else {
+            navigate("/brand");
+          }
+
           Swal.fire({
             icon: "success",
             title: "Login ...",

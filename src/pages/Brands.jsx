@@ -68,11 +68,19 @@ const Brands = () => {
   const { user } = User.getCookieData();
   const select_campaign = User.getCampaign();
   const select_merchandise = User.getMerchandise();
+  const select_account = User.getAccount();
+
   const navigate = useNavigate();
 
   const [brand, setBrand] = useState([]);
 
   useEffect(() => {
+    if (user.role === "Super Admin") {
+      if (!select_account) {
+        navigate("/user_account");
+      }
+    }
+
     if (!user) {
       window.location.href = "/adsmanager";
     }
