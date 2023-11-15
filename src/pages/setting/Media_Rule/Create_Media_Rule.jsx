@@ -457,17 +457,35 @@ const Create_Media_Rule = () => {
                     <div className="col-span-2">
                       <div className="font-poppins font-bold mt-4">STW</div>
                     </div>
-                    {/* {console.log(media_value.ads_capacity.stw)} */}
-                    <div className="col-span-5">
-                      <input
-                        type="number"
-                        id="stw"
-                        name="stw"
-                        required
-                        defaultValue={media_value.ads_capacity?.stw || 0}
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
-                      />
-                    </div>
+
+                    {media_value.ads_capacity?.stw !== undefined ? (
+                      <>
+                        {console.log(media_value.ads_capacity?.stw)}
+                        <div className="col-span-5">
+                          <input
+                            type="number"
+                            id="stw"
+                            name="stw"
+                            required
+                            defaultValue={media_value.ads_capacity?.stw}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-span-5">
+                          <input
+                            type="number"
+                            id="stw"
+                            name="stw"
+                            required
+                            defaultValue={0}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="grid grid-cols-7">
                     <div className="col-span-2">
@@ -475,20 +493,34 @@ const Create_Media_Rule = () => {
                         Category
                       </div>
                     </div>
-                    <div className="col-span-5">
-                      <input
-                        type="number"
-                        id="category"
-                        name="category"
-                        required
-                        defaultValue={
-                          media_value.ads_capacity?.category
-                            ? media_value.ads_capacity?.category
-                            : "0"
-                        }
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
-                      />
-                    </div>
+                    {media_value.ads_capacity?.category !== undefined ? (
+                      <>
+                        {console.log(media_value.ads_capacity?.category)}
+                        <div className="col-span-5">
+                          <input
+                            type="number"
+                            id="category"
+                            name="category"
+                            required
+                            defaultValue={media_value.ads_capacity?.category}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-span-5">
+                          <input
+                            type="number"
+                            id="category"
+                            name="category"
+                            required
+                            defaultValue={0}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="grid grid-cols-7">
                     <div className="col-span-2">
@@ -496,16 +528,34 @@ const Create_Media_Rule = () => {
                         Advertising
                       </div>
                     </div>
-                    <div className="col-span-5">
-                      <input
-                        type="number"
-                        id="advertising"
-                        name="advertising"
-                        required
-                        defaultValue={0}
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
-                      />
-                    </div>
+                    {media_value.ads_capacity?.advertising !== undefined ? (
+                      <>
+                        {console.log(media_value.ads_capacity?.advertising)}
+                        <div className="col-span-5">
+                          <input
+                            type="number"
+                            id="advertising"
+                            name="advertising"
+                            required
+                            defaultValue={media_value.ads_capacity?.advertising}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-span-5">
+                          <input
+                            type="number"
+                            id="advertising"
+                            name="advertising"
+                            required
+                            defaultValue={0}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -517,20 +567,36 @@ const Create_Media_Rule = () => {
                         Bank & Partner
                       </div>
                     </div>
-                    <div className="col-span-4">
-                      <input
-                        type="number"
-                        id="bank"
-                        name="bank"
-                        required
-                        defaultValue={
-                          media_value.ads_capacity?.bank_partner
-                            ? media_value.ads_capacity?.bank_partner
-                            : "0"
-                        }
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
-                      />
-                    </div>
+                    {media_value.ads_capacity?.bank_partner !== undefined ? (
+                      <>
+                        {console.log(media_value.ads_capacity?.bank_partner)}
+                        <div className="col-span-4">
+                          <input
+                            type="number"
+                            id="bank_partner"
+                            name="bank_partner"
+                            required
+                            defaultValue={
+                              media_value.ads_capacity?.bank_partner
+                            }
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-span-4">
+                          <input
+                            type="number"
+                            id="bank_partner"
+                            name="bank_partner"
+                            required
+                            defaultValue={0}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="grid grid-cols-7">
                     <div className="col-span-3">
@@ -538,20 +604,34 @@ const Create_Media_Rule = () => {
                         Branding
                       </div>
                     </div>
-                    <div className="col-span-4">
-                      <input
-                        type="number"
-                        id="branding"
-                        name="branding"
-                        required
-                        defaultValue={
-                          media_value.ads_capacity?.branding
-                            ? media_value.ads_capacity?.branding
-                            : "0"
-                        }
-                        className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
-                      />
-                    </div>
+                    {media_value.ads_capacity?.branding !== undefined ? (
+                      <>
+                        {console.log(media_value.ads_capacity?.branding)}
+                        <div className="col-span-4">
+                          <input
+                            type="number"
+                            id="branding"
+                            name="branding"
+                            required
+                            defaultValue={media_value.ads_capacity?.branding}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="col-span-4">
+                          <input
+                            type="number"
+                            id="branding"
+                            name="branding"
+                            required
+                            defaultValue={0}
+                            className="font-poppins ml-7 mt-2 border border-gray-300 w-2/3 h-[40px] rounded-md pl-4"
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

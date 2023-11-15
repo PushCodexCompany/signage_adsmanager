@@ -18,8 +18,8 @@ import fila_img from "../assets/img/merchandise/Fila.png";
 import alice_img from "../assets/img/merchandise/Alice.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
 import { Navbar } from "../components";
-import CryptoJS from "crypto-js";
-
+import Encryption from "../libs/encryption";
+import User from "../libs/admin";
 const mock_data_brands = [
   {
     id: 1,
@@ -208,33 +208,7 @@ const User_Management = ({ setShowModal }) => {
     return merchandise ? merchandise.img : null;
   };
 
-  const generateMD5Hash = (input) => {
-    // Calculate the MD5 hash of the input
-    const md5Hash = CryptoJS.MD5(input).toString();
-
-    return md5Hash;
-  };
-
-  const CryptoJSAesJson = {
-    stringify: function (cipherParams) {
-      var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64) };
-      if (cipherParams.iv) j.iv = cipherParams.iv.toString();
-      if (cipherParams.salt) j.s = cipherParams.salt.toString();
-      j.ts = Date.now();
-      return JSON.stringify(j).replace(/\s/g, "");
-    },
-    parse: function (jsonStr) {
-      var j = JSON.parse(jsonStr);
-      var cipherParams = CryptoJS.lib.CipherParams.create({
-        ciphertext: CryptoJS.enc.Base64.parse(j.ct),
-      });
-      if (j.iv) cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
-      if (j.s) cipherParams.salt = CryptoJS.enc.Hex.parse(j.s);
-      return cipherParams;
-    },
-  };
-
-  const registerNewUser = () => {
+  const registerNewUser = async () => {
     if (!reg_password) {
       Swal.fire({
         icon: "error",
@@ -244,27 +218,28 @@ const User_Management = ({ setShowModal }) => {
     }
 
     if (reg_password === reg_re_password) {
-      const key = "puShc0d3x778899";
-      const date = Date.now() + 1;
-      const pp = key.concat("", date);
-      const obj = {
-        action: "create",
-        data: {
-          username: reg_email,
-          password: reg_password,
-          accountcode: "huUpa8dN4i",
-        },
+      const value = {
+        username: reg_email,
+        password: reg_password,
+        accountcode: "huUpa8dN4i",
       };
 
-      console.log("obj", obj);
+      const encrypted = await Encryption.encryption(value, "create");
 
-      const encrypt = CryptoJS.AES.encrypt(JSON.stringify(obj), pp, {
-        format: CryptoJSAesJson,
-      }).toString();
-
-      const encrypted = btoa(encrypt);
-
-      console.log("Encrypted:", encrypted);
+      const status = await User.createUser(encrypted);
+      if (status) {
+        Swal.fire({
+          icon: "success",
+          title: "Login ...",
+          text: "สร้าง User สำเร็จ!",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed ...",
+          text: "ไม่สามารถสร้าง User ได้!",
+        });
+      }
     } else {
       Swal.fire({
         icon: "error",

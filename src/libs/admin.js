@@ -175,4 +175,13 @@ export default {
     const data = await this._get("api/hello-nf/");
     return data;
   },
+
+  createUser: async function (hash) {
+    const { data } = await this._post(`api/v1/create_user?hash=${hash}`);
+    if (data) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };

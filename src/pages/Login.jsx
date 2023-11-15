@@ -3,7 +3,6 @@ import User from "../libs/admin";
 import Login_Bg from "../assets/img/login_bg.png";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
-import CryptoJS from "crypto-js";
 import Swal from "sweetalert2";
 import { PiCaretUpDown, PiSlidersHorizontalFill } from "react-icons/pi";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
@@ -31,6 +30,7 @@ import fila_img from "../assets/img/merchandise/Fila.png";
 import alice_img from "../assets/img/merchandise/Alice.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
 import { Axios } from "axios";
+import Encryption from "../libs/encryption";
 
 const mock_data_brands = [
   {
@@ -141,25 +141,25 @@ const Login = () => {
     // User.saveRedirect();
   }, []);
 
-  const generateMD5Hash = (input) => {
-    // Calculate the MD5 hash of the input
-    const md5Hash = CryptoJS.MD5(input).toString();
+  // const generateMD5Hash = (input) => {
+  //   // Calculate the MD5 hash of the input
+  //   const md5Hash = CryptoJS.MD5(input).toString();
 
-    return md5Hash;
-  };
+  //   return md5Hash;
+  // };
 
-  const generateCombinedMD5Hash = (username, password) => {
-    // Calculate the MD5 hash of the password
-    const passwordMD5 = generateMD5Hash(password);
+  // const generateCombinedMD5Hash = (username, password) => {
+  //   // Calculate the MD5 hash of the password
+  //   const passwordMD5 = generateMD5Hash(password);
 
-    // Concatenate the username and the MD5 hash of the password
-    const combinedInput = username + passwordMD5;
+  //   // Concatenate the username and the MD5 hash of the password
+  //   const combinedInput = username + passwordMD5;
 
-    // Calculate the MD5 hash of the concatenated string
-    const result = generateMD5Hash(combinedInput);
+  //   // Calculate the MD5 hash of the concatenated string
+  //   const result = generateMD5Hash(combinedInput);
 
-    return result;
-  };
+  //   return result;
+  // };
 
   const checkEmailTemplate = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -224,49 +224,13 @@ const Login = () => {
     }
   };
 
-  const CryptoJSAesJson = {
-    stringify: function (cipherParams) {
-      var j = { ct: cipherParams.ciphertext.toString(CryptoJS.enc.Base64) };
-      if (cipherParams.iv) j.iv = cipherParams.iv.toString();
-      if (cipherParams.salt) j.s = cipherParams.salt.toString();
-      j.ts = Date.now();
-      return JSON.stringify(j).replace(/\s/g, "");
-    },
-    parse: function (jsonStr) {
-      var j = JSON.parse(jsonStr);
-      var cipherParams = CryptoJS.lib.CipherParams.create({
-        ciphertext: CryptoJS.enc.Base64.parse(j.ct),
-      });
-      if (j.iv) cipherParams.iv = CryptoJS.enc.Hex.parse(j.iv);
-      if (j.s) cipherParams.salt = CryptoJS.enc.Hex.parse(j.s);
-      return cipherParams;
-    },
-  };
-
   const handleSubmit = async () => {
     try {
       // if (checkEmailTemplate()) {
       if (checkPasswordTemplate()) {
-        // const encrypted = CryptoJS.AES.encrypt(JSON.stringify("value to encrypt"), "my passphrase", {format: CryptoJSAesJson}).toString();
+        const value = { username: username, password: password };
+        const encrypted = await Encryption.encryption(value, "login");
 
-        // const hash = generateCombinedMD5Hash(username, password);
-
-        const key = "puShc0d3x778899";
-        const date = Date.now() + 1;
-        const pp = key.concat("", date);
-        const obj = {
-          action: "login",
-          data: {
-            username: username,
-            password: password,
-          },
-        };
-
-        const encrypt = CryptoJS.AES.encrypt(JSON.stringify(obj), pp, {
-          format: CryptoJSAesJson,
-        }).toString();
-
-        const encrypted = btoa(encrypt);
         const status = await User.login(encrypted);
         if (status) {
           navigate("/brand");
