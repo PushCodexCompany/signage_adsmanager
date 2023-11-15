@@ -234,7 +234,7 @@ const Login = () => {
       // if (checkEmailTemplate()) {
       if (checkPasswordTemplate()) {
         const value = { username: username, password: password };
-        const encrypted = await Encryption.encryption(value, "login");
+        const encrypted = await Encryption.encryption(value, "login", false);
 
         const status = await User.login(encrypted);
         if (status) {

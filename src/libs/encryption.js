@@ -21,19 +21,34 @@ const CryptoJSAesJson = {
 };
 
 export default {
-  encryption: async function (data, type) {
+  encryption: async function (data, type, condition) {
+    // condition
+    // false = local test
+    // true = https
+
     const date = Date.now() + 1;
     const pp = key.concat("", date);
+    let encrypt;
 
-    const obj = {
-      action: type,
-      data: data,
-    };
+    if (condition) {
+      const obj = {
+        action: type,
+        data: data,
+        hash: true,
+      };
 
-    const encrypt = CryptoJS.AES.encrypt(JSON.stringify(obj), pp, {
-      format: CryptoJSAesJson,
-    }).toString();
+      encrypt = CryptoJS.AES.encrypt(JSON.stringify(obj), pp, {
+        format: CryptoJSAesJson,
+      }).toString();
+    } else {
+      const obj = {
+        action: type,
+        data: data,
+        hash: false,
+      };
 
+      encrypt = JSON.stringify(obj);
+    }
     const encrypted = btoa(encrypt);
 
     return encrypted;

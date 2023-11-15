@@ -224,7 +224,7 @@ const User_Management = ({ setShowModal }) => {
         accountcode: "huUpa8dN4i",
       };
 
-      const encrypted = await Encryption.encryption(value, "create");
+      const encrypted = await Encryption.encryption(value, "create", false);
 
       const status = await User.createUser(encrypted);
       if (status) {
