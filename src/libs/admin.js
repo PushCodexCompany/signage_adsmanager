@@ -13,8 +13,8 @@ export default {
    * axios wrappers
    */
   _errorMsg: "",
-  _post: async function (path, body) {
-    return this._axios(path, "post", body);
+  _post: async function (path, body, header) {
+    return this._axios(path, "post", body, header);
   },
   _get: async function (path) {
     return this._axios(path, "get");
@@ -22,11 +22,12 @@ export default {
   _delete: async function (path, body) {
     return this._axios(path, "delete", body);
   },
-  _axios: async function (path, method, body) {
+  _axios: async function (path, method, body, config) {
     const options = {
       method,
       data: body,
       url: `${process.env.REACT_APP_API_ADSMANAGER}/${path}`,
+      headers: config.headers,
       withCredentials: true,
     };
 
@@ -62,7 +63,6 @@ export default {
     //     lastseen: "2023-11-08 16:33:01",
     //   },
     // };
-
     if (data.token) {
       this.saveCookie(data);
       return true;
@@ -196,7 +196,26 @@ export default {
     return data;
   },
 
-  createUser: async function (hash) {
+  createUser: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_user?hash=${hash}`,
+      "",
+      config
+    );
+
+    if (data.code !== 404) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  addNewPermissionRole: async function (hash) {
     const { data } = await this._post(`api/v1/create_user?hash=${hash}`);
     if (data) {
       return true;

@@ -224,9 +224,11 @@ const User_Management = ({ setShowModal }) => {
         accountcode: "huUpa8dN4i",
       };
 
+      const { token } = User.getCookieData();
       const encrypted = await Encryption.encryption(value, "create", false);
+      // console.log(encrypted);
 
-      const status = await User.createUser(encrypted);
+      const status = await User.createUser(encrypted, token);
       if (status) {
         Swal.fire({
           icon: "success",

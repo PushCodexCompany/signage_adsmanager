@@ -4,6 +4,8 @@ import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { AiOutlineClose } from "react-icons/ai";
 import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
+import Encryption from "../../libs/encryption";
+import User from "../../libs/admin";
 const mock_data = [
   {
     id: 1,
@@ -492,9 +494,32 @@ const Role_permission = () => {
     setShowModal(!showModal);
   };
 
-  const handleSaveNewRole = () => {
+  const handleSaveNewRole = async () => {
     const summary = convertBooleanToPermissionSummary(newRole);
-    console.log("new role : ", summary);
+    console.log("summary", summary);
+    const value = {
+      rolename: newRole.name,
+      rolepermissions: summary.page_permission,
+      accountcode: "huUpa8dN4i",
+    };
+    console.log("value", value);
+
+    const encrypted = await Encryption.encryption(
+      value,
+      "add_permission_role",
+      false
+    );
+
+    console.log("encrypted", encrypted);
+
+    // const status = await User.addNewPermissionRole(encrypted);
+
+    // if (status) {
+    //   alert("create success");
+    // }
+    // rolename , rolepermissions , accountcode
+
+    // console.log("new role : ", summary);
   };
 
   return (
