@@ -6,13 +6,13 @@ import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
 import Encryption from "../../libs/encryption";
 import User from "../../libs/admin";
+
 const mock_data = [
   {
     id: 1,
-    name: "Super Admin",
-    description: "Super Admin Description Text",
-    page_permission: {
-      brands: 2,
+    role: "Super Admin",
+    permissions: {
+      brand: 2,
       branch: 2,
       screen: 2,
       playlist: 2,
@@ -29,10 +29,9 @@ const mock_data = [
   },
   {
     id: 2,
-    name: "Admin",
-    description: "Admin Description Text",
-    page_permission: {
-      brands: 30,
+    role: "Admin",
+    permissions: {
+      brand: 30,
       branch: 30,
       screen: 30,
       playlist: 30,
@@ -50,16 +49,18 @@ const mock_data = [
 ];
 const Role_permission = () => {
   useCheckPermission();
-  const [permission, setPermission] = useState([]);
+  const [permissions, setPermission] = useState([]);
   const [select_role, setSelectRole] = useState(0);
-
+  const [editRoleName, setEditRoleName] = useState(true);
+  const [newRoleName, setNewRoleName] = useState("");
+  const [oldRoleName, setOldRoleName] = useState("");
+  const [selectOldRole, setSelectOldRole] = useState("");
   const [showModal, setShowModal] = useState(false);
-
   const [newRole, setNewRole] = useState({
     name: null,
     description: null,
-    page_permission: {
-      brands: { view: false, create: false, update: false, delete: false },
+    permissions: {
+      brand: { view: false, create: false, update: false, delete: false },
       branch: { view: false, create: false, update: false, delete: false },
       screen: { view: false, create: false, update: false, delete: false },
       playlist: { view: false, create: false, update: false, delete: false },
@@ -74,46 +75,44 @@ const Role_permission = () => {
       publish: 0,
     },
   });
-  const [openTab, setOpenTab] = React.useState(1);
-
-  const handleRoleChange = (e, fieldName) => {
-    setNewRole({
-      ...newRole,
-      [fieldName]: e.target.value,
-    });
-  };
 
   useEffect(() => {
-    const updatedData = mock_data.map((item) => {
+    const { user } = User.getCookieData();
+    const user_permission = [user];
+    const updatedData = user_permission.map((item) => {
       return {
         ...item,
-        page_permission: convertPermissionValuesToBoolean([item])
-          .page_permission,
-        other_permission: convertPermissionValuesToBoolean([item])
-          .other_permission,
+        permissions: convertPermissionValuesToBoolean([item]).permissions,
+        other_permission: item.other_permission
+          ? convertPermissionValuesToBoolean([item]).other_permission
+          : [],
       };
     });
+    const oldRole = user_permission.map((permission) => permission.role);
+    setOldRoleName(oldRole);
+    setSelectOldRole(oldRole[0]);
     setPermission(updatedData);
   }, []);
 
   const convertPermissionValuesToBoolean = (data) => {
-    const convertedData = { page_permission: {}, other_permission: {} };
+    const convertedData = { permissions: {}, other_permission: {} };
 
     data.map((items) => {
-      for (const resource in items.page_permission) {
-        const value = items.page_permission[resource];
+      for (const resource in items.permissions) {
+        const value = items.permissions[resource];
+
         const resourcePermissions = {
           view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
           create: (value & (2 ** 2)) !== 0, // Check if the "create" bit is set
           update: (value & (2 ** 3)) !== 0, // Check if the "update" bit is set
           delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
         };
-        convertedData.page_permission[resource] = resourcePermissions;
+        convertedData.permissions[resource] = resourcePermissions;
       }
 
-      for (const permission in items.other_permission) {
-        const value = items.other_permission[permission];
-        convertedData.other_permission[permission] =
+      for (const permissions in items.other_permission) {
+        const value = items.other_permission[permissions];
+        convertedData.other_permission[permissions] =
           value === 1 || value === true;
       }
     });
@@ -121,8 +120,8 @@ const Role_permission = () => {
     return convertedData;
   };
 
-  const selectRole = (items) => {
-    setSelectRole(items);
+  const selectRole = (key) => {
+    setSelectRole(key);
   };
 
   const actionToBitIndex = (action) => {
@@ -143,10 +142,10 @@ const Role_permission = () => {
   const convertBooleanToPermissionSummary = (data) => {
     const summary = {};
 
-    for (const resource in data.page_permission) {
+    for (const resource in data.permissions) {
       let resourceValue = 0;
-      for (const action in data.page_permission[resource]) {
-        resourceValue += data.page_permission[resource][action]
+      for (const action in data.permissions[resource]) {
+        resourceValue += data.permissions[resource][action]
           ? 2 ** actionToBitIndex(action)
           : 0;
       }
@@ -154,22 +153,41 @@ const Role_permission = () => {
     }
 
     const otherPermissionSummary = {};
-    for (const permission in data.other_permission) {
-      otherPermissionSummary[permission] = data.other_permission[permission]
+    for (const permissions in data.other_permission) {
+      otherPermissionSummary[permissions] = data.other_permission[permissions]
         ? 1
         : 0;
     }
 
     return {
       ...data,
-      page_permission: summary,
+      permissions: summary,
       other_permission: otherPermissionSummary,
     };
   };
 
-  const handleSave = (role) => {
+  const handleSave = async (role) => {
     const summary = convertBooleanToPermissionSummary(role);
-    console.log(summary);
+
+    const obj = {
+      rolename: selectOldRole,
+      rolenamenew: summary.role,
+      permissions: summary.permissions,
+      accountcode: "huUpa8dN4i",
+    };
+
+    console.log("obj", obj);
+
+    const encrypted = await Encryption.encryption(obj, "edit_role", false);
+
+    console.log("encrypted", encrypted);
+  };
+
+  const handleRoleChange = (e, fieldName) => {
+    setNewRole({
+      ...newRole,
+      [fieldName]: e.target.value,
+    });
   };
 
   const Tabs = ({ roleData, type }) => {
@@ -189,8 +207,8 @@ const Role_permission = () => {
           [itemName]: !prevCheckboxes[itemName],
         }));
 
-        roleData.page_permission[title][itemName] =
-          !roleData.page_permission[title][itemName];
+        roleData.permissions[title][itemName] =
+          !roleData.permissions[title][itemName];
       };
 
       return (
@@ -379,44 +397,44 @@ const Role_permission = () => {
                     <>
                       <div className=" grid grid-cols-8 gap-4 mt-5">
                         <CheckboxGroup
-                          title="brands"
+                          title="brand"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.brands}
+                          data={roleData.permissions.brand}
                         />
                         <CheckboxGroup
                           title="branch"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.branch}
+                          data={roleData.permissions.branch}
                         />
                         <CheckboxGroup
                           title="screen"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.screen}
+                          data={roleData.permissions.screen}
                         />
                         <CheckboxGroup
                           title="playlist"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.playlist}
+                          data={roleData.permissions.playlist}
                         />
                         <CheckboxGroup
                           title="media"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.media}
+                          data={roleData.permissions.media}
                         />
                         <CheckboxGroup
                           title="user"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.user}
+                          data={roleData.permissions.user}
                         />
                         <CheckboxGroup
                           title="role"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.role}
+                          data={roleData.permissions.role}
                         />
                         <CheckboxGroup
                           title="booking"
                           items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.booking}
+                          data={roleData.permissions.booking}
                         />
                       </div>
                     </>
@@ -424,50 +442,66 @@ const Role_permission = () => {
                     <>
                       {/* 1st */}
                       <div className=" grid grid-cols-6 gap-4 mb-11 mt-5">
-                        <CheckboxGroup
-                          title="brands"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.brands}
-                        />
-                        <CheckboxGroup
-                          title="branch"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.branch}
-                        />
-                        <CheckboxGroup
-                          title="screen"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.screen}
-                        />
-                        <CheckboxGroup
-                          title="playlist"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.playlist}
-                        />
-                        <CheckboxGroup
-                          title="media"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.media}
-                        />
-                        <CheckboxGroup
-                          title="user"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.user}
-                        />
+                        {roleData.permissions.brand && (
+                          <CheckboxGroup
+                            title="brand"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.brand}
+                          />
+                        )}
+                        {roleData.permissions.branch && (
+                          <CheckboxGroup
+                            title="branch"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.branch}
+                          />
+                        )}
+                        {roleData.permissions.screen && (
+                          <CheckboxGroup
+                            title="screen"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.screen}
+                          />
+                        )}
+                        {roleData.permissions.playlist && (
+                          <CheckboxGroup
+                            title="playlist"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.playlist}
+                          />
+                        )}
+                        {roleData.permissions.media && (
+                          <CheckboxGroup
+                            title="media"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.media}
+                          />
+                        )}
+                        {roleData.permissions.user && (
+                          <CheckboxGroup
+                            title="user"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.user}
+                          />
+                        )}
                       </div>
                       {/* 1st */}
                       {/* 2nd  */}
                       <div className=" grid grid-cols-6 gap-4 mb-2">
-                        <CheckboxGroup
-                          title="role"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.role}
-                        />
-                        <CheckboxGroup
-                          title="booking"
-                          items={["view", "create", "update", "delete"]}
-                          data={roleData.page_permission.booking}
-                        />
+                        {roleData.permissions.role && (
+                          <CheckboxGroup
+                            title="role"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.role}
+                          />
+                        )}
+                        {roleData.permissions.booking && (
+                          <CheckboxGroup
+                            title="booking"
+                            items={["view", "create", "update", "delete"]}
+                            data={roleData.permissions.booking}
+                          />
+                        )}
                       </div>
                       {/* 2nd  */}
                     </>
@@ -494,15 +528,46 @@ const Role_permission = () => {
     setShowModal(!showModal);
   };
 
+  const removeZeroPermissions = (data) => {
+    const updatedPermissions = {};
+    for (const key in data.permissions) {
+      if (data.permissions[key] !== 0) {
+        updatedPermissions[key] = data.permissions[key];
+      }
+    }
+
+    // Create a new object with updated permissions
+    const updatedData = {
+      ...data,
+      permissions: updatedPermissions,
+    };
+
+    return updatedData;
+  };
+
   const handleSaveNewRole = async () => {
     const summary = convertBooleanToPermissionSummary(newRole);
-    console.log("summary", summary);
-    const value = {
-      rolename: newRole.name,
-      rolepermissions: summary.page_permission,
-      accountcode: "huUpa8dN4i",
-    };
-    console.log("value", value);
+
+    const isAnyValueGreaterThanZero = Object.values(summary.permissions).some(
+      (value) => value > 0
+    );
+    let obj;
+
+    if (isAnyValueGreaterThanZero) {
+      obj = {
+        rolename: newRole.name,
+        permissions: summary.permissions,
+        accountcode: "huUpa8dN4i",
+      };
+    } else {
+      obj = {
+        rolename: newRole.name,
+        permissions: "",
+        accountcode: "huUpa8dN4i",
+      };
+    }
+
+    const value = removeZeroPermissions(obj);
 
     const encrypted = await Encryption.encryption(
       value,
@@ -510,16 +575,37 @@ const Role_permission = () => {
       false
     );
 
-    console.log("encrypted", encrypted);
+    const { token } = User.getCookieData();
+    const status = await User.addNewPermissionRole(encrypted, token);
 
-    // const status = await User.addNewPermissionRole(encrypted);
+    if (status) {
+      alert("create success");
+    }
+  };
 
-    // if (status) {
-    //   alert("create success");
-    // }
-    // rolename , rolepermissions , accountcode
+  const handleEditRoleName = () => {
+    setEditRoleName(!editRoleName);
+  };
 
-    // console.log("new role : ", summary);
+  const handleOutFocusRoleName = (newName, key) => {
+    setEditRoleName(false);
+    if (newName) {
+      setNewRoleName("");
+      // Update the role value in the state
+      const updatedPermissions = [...permissions];
+      updatedPermissions[key].role = newName;
+      setPermission(updatedPermissions);
+    }
+  };
+
+  const handleSetNewRoleName = (value) => {
+    setNewRoleName(value);
+  };
+
+  const tempOldData = (key) => {
+    const oldRole = oldRoleName[key];
+    setSelectOldRole(oldRole);
+    selectRole(key);
   };
 
   return (
@@ -542,24 +628,36 @@ const Role_permission = () => {
               >
                 New Role +
               </button>
-
-              {permission.map((items, key) => (
+              {permissions.map((items, key) => (
                 <>
                   <div
                     key={key}
                     className={`grid grid-cols-7 gap-2 mt-5 
-                  ${key === select_role ? "bg-[#FAFAFA]" : ""} 
+                  ${key === select_role ? "text-[#6425FE]" : ""} 
                   cursor-pointer`}
-                    onClick={() => selectRole(key)}
+                    onClick={() => tempOldData(key)}
                   >
                     <div className="col-span-5 ml-2">
-                      <div className="font-poppins text-2xl ">{items.name}</div>
-                      <div className="text-xs">{items.description}</div>
+                      <div className={`font-poppins text-2xl`}>
+                        <input
+                          type="text"
+                          defaultValue={items.role}
+                          disabled={editRoleName}
+                          onChange={(e) => handleSetNewRoleName(e.target.value)}
+                          onBlur={() =>
+                            handleOutFocusRoleName(newRoleName, key)
+                          }
+                          // className="w-60"
+                        />
+                      </div>
+                      <div className="text-xs">
+                        {`${items.role} Description`}
+                      </div>
                     </div>
 
                     <div className="col-span-2">
                       <div className="flex justify-center items-center mt-3 space-x-4">
-                        <button onClick={() => selectRole(key)}>
+                        <button onClick={() => handleEditRoleName()}>
                           <RiEditLine size={20} className="text-[#6425FE]" />
                         </button>
                         <button>
@@ -579,13 +677,13 @@ const Role_permission = () => {
 
           {/* Right Panel */}
           <div className="col-span-5 bg-[#FAFAFA] w-full">
-            {permission.length > 0 && (
-              <Tabs roleData={permission[select_role]} />
+            {permissions.length > 0 && (
+              <Tabs roleData={permissions[select_role]} />
             )}
             <div className="p-4">
               <button
                 className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
-                onClick={() => handleSave(permission[select_role])}
+                onClick={() => handleSave(permissions[select_role])}
               >
                 Save
               </button>

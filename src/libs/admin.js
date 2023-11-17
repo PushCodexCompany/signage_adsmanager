@@ -13,7 +13,7 @@ export default {
    * axios wrappers
    */
   _errorMsg: "",
-  _post: async function (path, body, header) {
+  _post: async function (path, body = null, header = null) {
     return this._axios(path, "post", body, header);
   },
   _get: async function (path) {
@@ -23,13 +23,23 @@ export default {
     return this._axios(path, "delete", body);
   },
   _axios: async function (path, method, body, config) {
-    const options = {
-      method,
-      data: body,
-      url: `${process.env.REACT_APP_API_ADSMANAGER}/${path}`,
-      headers: config.headers,
-      withCredentials: true,
-    };
+    let options;
+    if (config) {
+      options = {
+        method,
+        data: body,
+        url: `${process.env.REACT_APP_API_ADSMANAGER}/${path}`,
+        headers: config.headers,
+        withCredentials: true,
+      };
+    } else {
+      options = {
+        method,
+        data: body,
+        url: `${process.env.REACT_APP_API_ADSMANAGER}/${path}`,
+        withCredentials: true,
+      };
+    }
 
     const data = await Axios(options);
     if (data.status === 200) {
@@ -215,9 +225,21 @@ export default {
     }
   },
 
-  addNewPermissionRole: async function (hash) {
-    const { data } = await this._post(`api/v1/create_user?hash=${hash}`);
-    if (data) {
+  addNewPermissionRole: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_userrole?hash=${hash}`,
+      "",
+      config
+    );
+
+    console.log("data", data);
+
+    if (data.code !== 404) {
       return true;
     } else {
       return false;

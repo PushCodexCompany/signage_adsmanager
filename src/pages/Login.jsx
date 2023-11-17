@@ -237,6 +237,7 @@ const Login = () => {
         const encrypted = await Encryption.encryption(value, "login", false);
         // console.log("encrypted", encrypted);
         const status = await User.login(encrypted);
+        // console.log("status", status);
         if (status) {
           const user_data = User.getCookieData();
           if (user_data.user.role === "Super Admin") {
@@ -323,11 +324,11 @@ const Login = () => {
 
   const registerNewUser = () => {
     if (reg_password === reg_re_password) {
-      console.log("email", reg_email);
-      console.log("password", reg_password);
-      console.log("re-password", reg_re_password);
-      console.log("brand", reg_brand);
-      console.log("merchandise", reg_merchandise);
+      // console.log("email", reg_email);
+      // console.log("password", reg_password);
+      // console.log("re-password", reg_re_password);
+      // console.log("brand", reg_brand);
+      // console.log("merchandise", reg_merchandise);
 
       setIsLogin(3);
     } else {
