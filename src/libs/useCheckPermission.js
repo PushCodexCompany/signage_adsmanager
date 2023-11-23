@@ -11,18 +11,24 @@ const useCheckPermission = () => {
       const account = User.getAccount();
       const brand = User.getCampaign();
 
-      if (user.role === "Super Admin") {
-        if (!account) {
-          navigate("/user_account");
+      if (!user) {
+        navigate("/");
+      }
+
+      if (user) {
+        if (user.role === "Super Admin") {
+          if (!account) {
+            navigate("/user_account");
+          }
+
+          if (!brand) {
+            navigate("/brand");
+          }
         }
 
         if (!brand) {
           navigate("/brand");
         }
-      }
-
-      if (!brand) {
-        navigate("/brand");
       }
     };
 

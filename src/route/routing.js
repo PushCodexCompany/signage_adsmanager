@@ -86,10 +86,10 @@ const Routing = () => {
         <Route path="/statics/screen" element={<Screen />} />
         <Route path="/setting/role_permission" element={<Role_permission />} />
         <Route path="/booking/create_booking" element={<Create_Booking />} />
-        <Route
+        {/* <Route
           path="*"
           element={<div> Not Found or You do not have permission.</div>}
-        />
+        /> */}
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
         <Route path="/orders" element={<Orders />} />

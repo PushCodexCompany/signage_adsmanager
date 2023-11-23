@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
 import { useNavigate } from "react-router-dom";
+import { IoAddCircleSharp } from "react-icons/io5";
 
 import centralImg from "../assets/img/central.png";
 import robinsonImg from "../assets/img/robinson.png";
@@ -11,8 +12,9 @@ import sevenImg from "../assets/img/seven.png";
 import makroProImg from "../assets/img/makropro.jpeg";
 import lotusImg from "../assets/img/lotus.png";
 import centralPatImg from "../assets/img/centralpattana.jpg";
-import add_new_img from "../assets/img/add_new_brand.png";
+import add_new_img from "../assets/img/add_brand.png";
 import cookie from "react-cookies";
+import New_Brand from "../components/New_Brand";
 
 import { Navbar } from "../components";
 
@@ -70,19 +72,21 @@ const Brands = () => {
   const select_merchandise = User.getMerchandise();
   const select_account = User.getAccount();
 
+  const [showModalAddNewBrand, setShowModalAddNewBrand] = useState(false);
+
   const navigate = useNavigate();
 
   const [brand, setBrand] = useState([]);
 
   useEffect(() => {
+    if (!user) {
+      window.location.href = "/adsmanager";
+    }
+
     if (user.role === "Super Admin") {
       if (!select_account) {
         navigate("/user_account");
       }
-    }
-
-    if (!user) {
-      window.location.href = "/adsmanager";
     }
 
     cookie.remove("signage-brand");
@@ -121,12 +125,15 @@ const Brands = () => {
 
         <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
           <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
-            <button onClick={() => alert("addnew")}>
+            <button
+              onClick={() => setShowModalAddNewBrand(!showModalAddNewBrand)}
+            >
               <img
-                className="block ml-auto mr-auto mt-30px w-4/5 rounded-3xl"
+                className="block ml-auto mr-auto mt-30px w-2/5 rounded-3xl"
                 src={add_new_img}
                 alt={"add new brand"}
               />
+
               <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins">
                 Add new Brand
               </div>
@@ -155,6 +162,17 @@ const Brands = () => {
             ))}
         </div>
       </div>
+
+      {showModalAddNewBrand && (
+        <a
+          onClick={() => setShowModalAddNewBrand(!showModalAddNewBrand)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {showModalAddNewBrand && (
+        <New_Brand setShowModalAddNewBrand={setShowModalAddNewBrand} />
+      )}
     </>
   );
 };

@@ -78,6 +78,7 @@ const Role_permission = () => {
 
   useEffect(() => {
     const { user } = User.getCookieData();
+    // const user_permission = mock_data;
     const user_permission = [user];
     const updatedData = user_permission.map((item) => {
       return {
@@ -608,6 +609,19 @@ const Role_permission = () => {
     selectRole(key);
   };
 
+  const handleDeleteRoleName = async (key) => {
+    const obj = {
+      rolename: oldRoleName[key],
+      accountcode: "huUpa8dN4i",
+    };
+
+    console.log("obj", obj);
+
+    const encrypted = await Encryption.encryption(obj, "delete_role", false);
+
+    console.log("encrypted", encrypted);
+  };
+
   return (
     <>
       <Navbar />
@@ -660,7 +674,7 @@ const Role_permission = () => {
                         <button onClick={() => handleEditRoleName()}>
                           <RiEditLine size={20} className="text-[#6425FE]" />
                         </button>
-                        <button>
+                        <button onClick={() => handleDeleteRoleName(key)}>
                           <RiDeleteBin5Line
                             size={20}
                             className="text-[#6425FE]"

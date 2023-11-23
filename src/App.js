@@ -88,6 +88,10 @@ const App = () => {
               <Route exact path={`/`} element={<Login />} />
               <Route exact path={`/brand`} element={<Brands />} />
               <Route exact path={`/user_account`} element={<User_Account />} />
+              <Route
+                path="*"
+                element={<div> Not Found or You do not have permission.</div>}
+              />
             </Routes>
           </>
         )}
