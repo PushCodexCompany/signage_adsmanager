@@ -84,7 +84,10 @@ const Routing = () => {
         <Route path="/statics/activities_log" element={<Activity_Log />} />
         <Route path="/statics/media_log" element={<Media_Log />} />
         <Route path="/statics/screen" element={<Screen />} />
-        <Route path="/setting/role_permission" element={<Role_permission />} />
+        <Route
+          path="/setting/user_management/role_permission"
+          element={<Role_permission />}
+        />
         <Route path="/booking/create_booking" element={<Create_Booking />} />
         {/* <Route
           path="*"

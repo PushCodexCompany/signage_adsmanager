@@ -126,6 +126,11 @@ export const links = [
                 icon: <AiOutlineIdcard size={27} />,
               },
               {
+                name: "Role And Permission",
+                link: "setting/user_management/role_permission",
+                icon: <IoPersonOutline size={27} />,
+              },
+              {
                 name: "Activity Log",
                 link: "setting/user_management/activity_log",
                 icon: <AiOutlineFileText size={27} />,
@@ -146,11 +151,6 @@ export const links = [
             name: "Tag Management",
             link: "setting/tag_management",
             icon: <BiPurchaseTag size={27} />,
-          },
-          {
-            name: "Role And Permission",
-            link: "setting/role_permission",
-            icon: <IoPersonOutline size={27} />,
           },
         ],
       },

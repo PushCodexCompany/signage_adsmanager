@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "../../components";
+import { Header } from "../../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { AiOutlineClose } from "react-icons/ai";
-import { Navbar } from "../../components";
-import useCheckPermission from "../../libs/useCheckPermission";
-import Encryption from "../../libs/encryption";
-import User from "../../libs/admin";
+import { Navbar } from "../../../components";
+import useCheckPermission from "../../../libs/useCheckPermission";
+import Encryption from "../../../libs/encryption";
+import User from "../../../libs/admin";
 
 const mock_data = [
   {

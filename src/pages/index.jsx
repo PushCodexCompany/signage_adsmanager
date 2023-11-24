@@ -40,7 +40,7 @@ export { default as Media_Libraly } from "./Ads_Media/Media_Libraly";
 export { default as Activity_Log } from "./Static/Activity_Log";
 export { default as Media_Log } from "./Static/Media_Log";
 export { default as Screen } from "./Static/Screen";
-export { default as Role_permission } from "./setting/Role_permission";
+export { default as Role_permission } from "./setting/User_management/Role_permission";
 export { default as User_Page } from "./User";
 export { default as Create_Booking } from "./Create_Booking";
 export { default as User_Account } from "./User_Account";
