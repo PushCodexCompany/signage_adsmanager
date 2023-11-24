@@ -102,6 +102,7 @@ const User_Management = () => {
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [filter, setFilter] = useState(["Active", "Admin"]);
+  const [user_lists, setUserLists] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
   const [modalNewUser, setModalNewUser] = useState(false);
   const [showBrandModal, setShowBrandModal] = useState(false);
@@ -114,13 +115,20 @@ const User_Management = () => {
   const [reg_brand, setRegBrand] = useState([]);
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
+  const { token } = User.getCookieData();
+
   useEffect(() => {
     fetchRoleData();
+    fetchUsersList();
     setPermission();
   }, []);
 
+  const fetchUsersList = async () => {
+    const lists = await User.getUsersList(token);
+    setUserLists(lists);
+  };
+
   const fetchRoleData = async () => {
-    const { token } = User.getCookieData();
     const roles = await User.getUserRoles(token);
     setDefaultRoles(roles);
   };
@@ -128,7 +136,7 @@ const User_Management = () => {
   const setPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = convertPermissionValuesToBoolean([user]);
-    console.log("permissions", permissions.user);
+    // console.log("permissions", permissions.user);
   };
 
   const convertPermissionValuesToBoolean = (data) => {
@@ -420,7 +428,7 @@ const User_Management = () => {
         </div>
 
         <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable />
+          <GridTable user_lists={user_lists} />
         </div>
       </div>
 

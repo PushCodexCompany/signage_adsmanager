@@ -246,6 +246,21 @@ export default {
     }
   },
 
+  getUsersList: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_users`, "", config);
+    if (data.code !== 404) {
+      return data.users;
+    } else {
+      return false;
+    }
+  },
+
   getUserRoles: async function (token) {
     const config = {
       headers: {

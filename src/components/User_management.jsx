@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { PiCaretUpDown, PiSlidersHorizontalFill } from "react-icons/pi";
@@ -92,12 +92,16 @@ const User_Management = ({ setShowModal }) => {
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [filter, setFilter] = useState(["Active", "Admin"]);
 
+  const [user_lists, setUserLists] = useState([]);
+  const [default_roles, setDefaultRoles] = useState([]);
+
   //   const [showModal, setShowModal] = useState(false);
 
   //Register
-  const [reg_email, setRegEmail] = useState();
-  const [reg_password, setRegPassword] = useState();
-  const [reg_re_password, setRegRePassword] = useState();
+  const [reg_email, setRegEmail] = useState(null);
+  const [reg_password, setRegPassword] = useState(null);
+  const [reg_re_password, setRegRePassword] = useState(null);
+  const [reg_role, setRegRole] = useState(null);
   const [reg_brand, setRegBrand] = useState([]);
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
@@ -110,6 +114,56 @@ const User_Management = ({ setShowModal }) => {
   const [showRegister, setShowRegister] = useState(false);
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
+
+  const { token } = User.getCookieData();
+
+  useEffect(() => {
+    fetchRoleData();
+    fetchUsersList();
+    setPermission();
+  }, []);
+
+  const fetchUsersList = async () => {
+    const lists = await User.getUsersList(token);
+    setUserLists(lists);
+  };
+
+  const fetchRoleData = async () => {
+    const roles = await User.getUserRoles(token);
+    setDefaultRoles(roles);
+  };
+
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = convertPermissionValuesToBoolean([user]);
+    // console.log("permissions", permissions.user);
+  };
+
+  const convertPermissionValuesToBoolean = (data) => {
+    const convertedData = { permissions: {} };
+
+    data.map((items) => {
+      for (const resource in items.permissions) {
+        const value = items.permissions[resource];
+
+        const resourcePermissions = {
+          view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
+          create: (value & (2 ** 2)) !== 0, // Check if the "create" bit is set
+          update: (value & (2 ** 3)) !== 0, // Check if the "update" bit is set
+          delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
+        };
+        convertedData.permissions[resource] = resourcePermissions;
+      }
+
+      for (const permissions in items.other_permission) {
+        const value = items.other_permission[permissions];
+        convertedData.other_permission[permissions] =
+          value === 1 || value === true;
+      }
+    });
+
+    return convertedData;
+  };
 
   const toggleStatusSelect = () => {
     setIsStatusOpen((prevIsOpen) => !prevIsOpen);
@@ -374,7 +428,7 @@ const User_Management = ({ setShowModal }) => {
           </div>
           {/* Filter */}
           <div className="w-auto mt-5 h-[400px]  rounded-lg p-2">
-            <GridTable />
+            <GridTable user_lists={user_lists} />
           </div>
         </div>
       </div>
@@ -420,7 +474,6 @@ const User_Management = ({ setShowModal }) => {
                 placeholder="Your Password"
                 value={reg_password === null ? "" : reg_password}
                 required
-                autoFocus
                 autoComplete="password"
               />
             </div>
@@ -432,9 +485,22 @@ const User_Management = ({ setShowModal }) => {
                 placeholder="Confirm Password"
                 value={reg_re_password === null ? "" : reg_re_password}
                 required
-                autoFocus
                 autoComplete="password"
               />
+            </div>
+            <div className="mb-4 flex justify-center items-center">
+              <select
+                name="role"
+                id="role"
+                onClick={toggleStatusSelect}
+                onChange={(e) => setRegRole(e.target.value)}
+                value={reg_role}
+                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+              >
+                {default_roles.map((items) => (
+                  <option value={items.RoleKey}>{items.RoleName}</option>
+                ))}
+              </select>
             </div>
             <div className="mb-4 flex justify-center items-center">
               <div className="relative w-[60%]  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
