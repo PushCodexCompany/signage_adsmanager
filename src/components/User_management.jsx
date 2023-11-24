@@ -225,7 +225,11 @@ const User_Management = ({ setShowModal }) => {
       };
 
       const { token } = User.getCookieData();
-      const encrypted = await Encryption.encryption(value, "create", false);
+      const encrypted = await Encryption.encryption(
+        value,
+        "create_user",
+        false
+      );
       // console.log(encrypted);
 
       const status = await User.createUser(encrypted, token);
@@ -768,7 +772,7 @@ const User_Management = ({ setShowModal }) => {
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button
-                onClick={() => showMerchandiseModal(!showMerchandiseModal)}
+                onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
               >
                 <AiOutlineClose size={25} color={"#6425FE"} />
               </button>

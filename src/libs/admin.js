@@ -16,8 +16,8 @@ export default {
   _post: async function (path, body = null, header = null) {
     return this._axios(path, "post", body, header);
   },
-  _get: async function (path) {
-    return this._axios(path, "get");
+  _get: async function (path, body = null, header = null) {
+    return this._axios(path, "get", body, header);
   },
   _delete: async function (path, body) {
     return this._axios(path, "delete", body);
@@ -241,6 +241,21 @@ export default {
 
     if (data.code !== 404) {
       return true;
+    } else {
+      return false;
+    }
+  },
+
+  getUserRoles: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_userroles`, "", config);
+    if (data.code !== 404) {
+      return data.roles;
     } else {
       return false;
     }

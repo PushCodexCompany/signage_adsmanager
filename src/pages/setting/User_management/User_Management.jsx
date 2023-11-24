@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Header } from "../../../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
+import { AiOutlineClose } from "react-icons/ai";
 import { Navbar } from "../../../components";
 import {
   PiSlidersHorizontalFill,
@@ -9,17 +10,152 @@ import {
   PiListDashesFill,
   PiCaretUpDown,
 } from "react-icons/pi";
+import User from "../../../libs/admin";
 
 import { GridTable } from "../../../libs/user_grid";
 import useCheckPermission from "../../../libs/useCheckPermission";
 
-const User = () => {
+import centralImg from "../../../assets/img/central.png";
+import robinsonImg from "../../../assets/img/robinson.png";
+
+import top_img from "../../../assets/img/merchandise/tops.png";
+import matsumoto_img from "../../../assets/img/merchandise/Matsumoto_KiYoshi.png";
+import supersport_img from "../../../assets/img/merchandise/Super_Sports.png";
+import powerbuy_img from "../../../assets/img/merchandise/Power_Buy.png";
+import evisu_img from "../../../assets/img/merchandise/Evisu.png";
+import fila_img from "../../../assets/img/merchandise/Fila.png";
+import alice_img from "../../../assets/img/merchandise/Alice.png";
+import kfc_img from "../../../assets/img/merchandise/kfc.png";
+import Encryption from "../../../libs/encryption";
+import Swal from "sweetalert2";
+
+const mock_data_brands = [
+  {
+    id: 1,
+    name: "CDS",
+    img: centralImg,
+    des: "Central Department Store",
+  },
+  {
+    id: 2,
+    name: "Robinson",
+    img: robinsonImg,
+    des: "Robinson Department Store",
+  },
+];
+
+const mockup_merchandise = [
+  {
+    id: 1,
+    name: "Tops",
+    img: top_img,
+    des: "Tops Supermarkety",
+  },
+  {
+    id: 2,
+    name: "Matsumoto KiYoshi",
+    img: matsumoto_img,
+    des: "Matsumoto KiYoshi",
+  },
+  {
+    id: 3,
+    name: "Super Sports",
+    img: supersport_img,
+    des: "Super Sports",
+  },
+  {
+    id: 4,
+    name: "Power Buy",
+    img: powerbuy_img,
+    des: "Power Buy",
+  },
+  {
+    id: 5,
+    name: "Evisu",
+    img: evisu_img,
+    des: "Evisu",
+  },
+  {
+    id: 6,
+    name: "Fila",
+    img: fila_img,
+    des: "Fila",
+  },
+  {
+    id: 7,
+    name: "Alice And Olivia",
+    img: alice_img,
+    des: "Alice And Olivia",
+  },
+  {
+    id: 8,
+    name: "KFC",
+    img: kfc_img,
+    des: "KFC",
+  },
+];
+
+const User_Management = () => {
   useCheckPermission();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [showRightPanel, setShowRightPanel] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [filter, setFilter] = useState(["Active", "Admin"]);
+  const [default_roles, setDefaultRoles] = useState([]);
+  const [modalNewUser, setModalNewUser] = useState(false);
+  const [showBrandModal, setShowBrandModal] = useState(false);
+  const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
+
+  const [reg_email, setRegEmail] = useState(null);
+  const [reg_password, setRegPassword] = useState(null);
+  const [reg_re_password, setRegRePassword] = useState(null);
+  const [reg_role, setRegRole] = useState(null);
+  const [reg_brand, setRegBrand] = useState([]);
+  const [reg_merchandise, setRegMerchandise] = useState([]);
+
+  useEffect(() => {
+    fetchRoleData();
+    setPermission();
+  }, []);
+
+  const fetchRoleData = async () => {
+    const { token } = User.getCookieData();
+    const roles = await User.getUserRoles(token);
+    setDefaultRoles(roles);
+  };
+
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = convertPermissionValuesToBoolean([user]);
+    console.log("permissions", permissions.user);
+  };
+
+  const convertPermissionValuesToBoolean = (data) => {
+    const convertedData = { permissions: {} };
+
+    data.map((items) => {
+      for (const resource in items.permissions) {
+        const value = items.permissions[resource];
+
+        const resourcePermissions = {
+          view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
+          create: (value & (2 ** 2)) !== 0, // Check if the "create" bit is set
+          update: (value & (2 ** 3)) !== 0, // Check if the "update" bit is set
+          delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
+        };
+        convertedData.permissions[resource] = resourcePermissions;
+      }
+
+      for (const permissions in items.other_permission) {
+        const value = items.other_permission[permissions];
+        convertedData.other_permission[permissions] =
+          value === 1 || value === true;
+      }
+    });
+
+    return convertedData;
+  };
 
   const toggleStatusSelect = () => {
     setIsStatusOpen((prevIsOpen) => !prevIsOpen);
@@ -67,15 +203,118 @@ const User = () => {
     setFilter([]);
   };
 
+  const findBrandImg = (id) => {
+    const brand = mock_data_brands.find((item) => item.id === id);
+    return brand ? brand.img : null;
+  };
+
+  const findMerchImg = (id) => {
+    const merchandise = mockup_merchandise.find((item) => item.id === id);
+    return merchandise ? merchandise.img : null;
+  };
+
+  const registerNewUser = async () => {
+    if (!reg_password) {
+      Swal.fire({
+        icon: "error",
+        title: "Register Failed ...",
+        text: "กรุณากรอกรหัสผ่าน!",
+      });
+    }
+
+    if (reg_password === reg_re_password) {
+      const value = {
+        username: reg_email,
+        password: reg_password,
+        role: reg_role,
+        accountcode: "huUpa8dN4i",
+      };
+
+      // console.log("value222", value);
+
+      // const { token } = User.getCookieData();
+      // const encrypted = await Encryption.encryption(
+      //   value,
+      //   "create_user",
+      //   false
+      // );
+      // console.log(encrypted);
+
+      // const status = await User.createUser(encrypted, token);
+      // if (status) {
+      //   Swal.fire({
+      //     icon: "success",
+      //     title: "Login ...",
+      //     text: "สร้าง User สำเร็จ!",
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "Login Failed ...",
+      //     text: "ไม่สามารถสร้าง User ได้!",
+      //   });
+      // }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Register Failed ...",
+        text: "กรุณากรอกรหัสผ่านให้เหมือนกัน!",
+      });
+    }
+  };
+
+  const handleCheckboxChange = (id, type) => {
+    if (type === "brand") {
+      const newCheckedItems = [...reg_brand];
+      if (newCheckedItems.includes(id)) {
+        const indexToRemove = newCheckedItems.indexOf(id);
+        newCheckedItems.splice(indexToRemove, 1);
+      } else {
+        newCheckedItems.push(id);
+      }
+      setRegBrand(newCheckedItems);
+    } else if (type === "merchandise") {
+      const newCheckedItems = [...reg_merchandise];
+      if (newCheckedItems.includes(id)) {
+        const indexToRemove = newCheckedItems.indexOf(id);
+        newCheckedItems.splice(indexToRemove, 1);
+      } else {
+        newCheckedItems.push(id);
+      }
+      setRegMerchandise(newCheckedItems);
+    }
+  };
+
+  const saveBrandReg = () => {
+    const sortBrand = reg_brand.slice().sort((a, b) => a - b);
+    setRegBrand(sortBrand);
+    setShowBrandModal(!showBrandModal);
+  };
+
+  const saveBrandMerchandise = () => {
+    const sortMerch = reg_merchandise.slice().sort((a, b) => a - b);
+    setRegMerchandise(sortMerch);
+    setShowMerchandiseModal(!showMerchandiseModal);
+  };
+
   return (
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
-        <div className="flex justify-between mt-10 mb-5 font-bold text-2xl font-poppins">
-          <div className="flex items-center">
-            <div className="font-poppins">User</div>
+        <div class="grid grid-cols-5 gap-4 mt-10">
+          <div class="col-span-4">
+            <div className="font-poppins font-semibold text-2xl">
+              <text>User</text>
+            </div>
           </div>
+
+          <button
+            onClick={() => setModalNewUser(!modalNewUser)}
+            className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+          >
+            New User +
+          </button>
         </div>
 
         <div className="relative flex flex-col min-w-0  w-full mb-6 ">
@@ -872,8 +1111,309 @@ const User = () => {
           </div>
         </div>
       )}
+
+      {modalNewUser && (
+        <a
+          onClick={() => setModalNewUser(!modalNewUser)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {modalNewUser && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-30 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setModalNewUser(!modalNewUser)}>
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">Sign Up</div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Sign Up To Unleash The Power Of Digital Advertising
+              </div>
+            </div>
+            <div className="mt-10 mb-4 flex justify-center items-center">
+              <input
+                className={` w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                onChange={(e) => setRegEmail(e.target.value)}
+                type="text"
+                placeholder="Your Email"
+                value={reg_email === null ? "" : reg_email}
+                required
+                autoFocus
+                autoComplete="email"
+              />
+            </div>
+            <div className="mb-4 flex justify-center items-center">
+              <input
+                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                onChange={(e) => setRegPassword(e.target.value)}
+                type="password"
+                placeholder="Your Password"
+                value={reg_password === null ? "" : reg_password}
+                required
+                autoComplete="password"
+              />
+            </div>
+            <div className="mb-4 flex justify-center items-center">
+              <input
+                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                onChange={(e) => setRegRePassword(e.target.value)}
+                type="password"
+                placeholder="Confirm Password"
+                value={reg_re_password === null ? "" : reg_re_password}
+                required
+                autoComplete="password"
+              />
+            </div>
+            <div className="mb-4 flex justify-center items-center">
+              <select
+                name="role"
+                id="role"
+                onClick={toggleStatusSelect}
+                onChange={(e) => setRegRole(e.target.value)}
+                value={reg_role}
+                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+              >
+                {default_roles.map((items) => (
+                  <option value={items.RoleKey}>{items.RoleName}</option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4 flex justify-center items-center">
+              <div className="relative w-[60%]  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                <button
+                  onClick={() => setShowBrandModal(true)}
+                  name="brand"
+                  className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                >
+                  Select Brand
+                </button>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <PiCaretUpDown size={20} color="#6425FE" />
+                </div>
+              </div>
+            </div>
+            {reg_brand.length > 0 && (
+              <div className="mb-4 flex ml-36 lg:ml-80 items-center space-x-4">
+                {reg_brand.map((item, index) => (
+                  <div key={index} className="flex">
+                    <img
+                      className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                      src={findBrandImg(item)}
+                      alt={item.name}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="mb-4 flex justify-center items-center">
+              <div className="relative w-[60%]  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                <button
+                  onClick={() => setShowMerchandiseModal(true)}
+                  name="merchandise"
+                  className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                >
+                  Select Merchandise
+                </button>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <PiCaretUpDown size={20} color="#6425FE" />
+                </div>
+              </div>
+            </div>
+            {reg_merchandise.length > 0 && (
+              <div className="mb-4 flex ml-36 lg:ml-80 items-center space-x-4 ">
+                {reg_merchandise.map((item, index) => (
+                  <div key={index} className="flex items-center">
+                    <img
+                      className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                      src={findMerchImg(item)}
+                      alt={item.name}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="text-center">
+              <button
+                type="submit"
+                onClick={() => registerNewUser()}
+                className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
+              >
+                Sign Up
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showBrandModal && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setShowBrandModal(!showBrandModal)}>
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">
+                Select Brands
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Sign Up To Unleash The Power Of Digital Advertising
+              </div>
+            </div>
+            <div className="mt-2 p-2">
+              <div className="h-[350px]  mt-8 overflow-y-auto">
+                <div className="h-[250px] flex items-start justify-center mt-3">
+                  <div className="grid grid-cols-2 gap-8">
+                    {mock_data_brands.map((item, index) => (
+                      <div key={index}>
+                        <div className="h-64 w-64 relative">
+                          <input
+                            type="checkbox"
+                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                            onChange={() =>
+                              handleCheckboxChange(item.id, "brand")
+                            }
+                            checked={reg_brand.includes(item.id)}
+                          />
+
+                          <div className="w-full h-full flex items-center justify-center">
+                            <img
+                              className="block ml-auto mr-auto w-auto h-auto rounded-3xl"
+                              src={item.img}
+                              alt={item.name}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-xl font-bold">
+                            {item.name}
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-[#6F6F6F] text-sm">
+                            {item.des}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <button
+                    onClick={() => saveBrandReg()}
+                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showMerchandiseModal && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
+              >
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">
+                Select Merchandise
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Sign Up to unleash the power of digital advertising
+              </div>
+            </div>
+            <div className="mt-2 p-2">
+              <div className="h-[350px]  mt-8 overflow-y-auto">
+                <div className="h-[250px] flex items-start justify-center mt-3">
+                  <div className="grid grid-cols-4 gap-8">
+                    {mockup_merchandise.map((item, index) => (
+                      <div key={index}>
+                        <div className="h-64 w-64 relative">
+                          <input
+                            type="checkbox"
+                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                            onChange={() =>
+                              handleCheckboxChange(item.id, "merchandise")
+                            }
+                            checked={reg_merchandise.includes(item.id)}
+                          />
+
+                          <div className="w-full h-full flex items-center justify-center">
+                            <img
+                              className="block ml-auto mr-auto w-auto h-auto rounded-3xl"
+                              src={item.img}
+                              alt={item.name}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-xl font-bold">
+                            {item.name}
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-[#6F6F6F] text-sm">
+                            {item.des}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <button
+                    onClick={() => saveBrandMerchandise()}
+                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
 
-export default User;
+export default User_Management;
