@@ -12,6 +12,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { PiCaretUpDown } from "react-icons/pi";
 import User from "../libs/admin";
+import Encryption from "../libs/encryption";
 
 const getImg = (id) => {
   let img;
@@ -109,14 +110,13 @@ export const GridTable = ({ user_lists }) => {
   };
 
   const onSelectEdit = (id) => {
-    const { UserID, Username, Email, Activated, RoleName } = user_lists.find(
-      (item) => item.UserID === id
-    );
+    const { UserID, Username, Email, Activated, RoleName, RoleID } =
+      user_lists.find((item) => item.UserID === id);
     setEditId(UserID);
     setEditUsername(Username);
     setEditEmail(Email);
     setEditActivate(Activated);
-    setEditRolename(RoleName);
+    setEditRolename(RoleID);
     setModalEdit(!modal_edit);
   };
 
@@ -124,16 +124,20 @@ export const GridTable = ({ user_lists }) => {
     setIsStatusOpen((prevIsOpen) => !prevIsOpen);
   };
 
-  const handleSaveEdit = (id) => {
+  const handleSaveEdit = async (id) => {
+    const { token } = User.getCookieData();
     const obj = {
-      UserID: id,
-      Username: edit_username,
-      Email: edit_email,
-      Activated: edit_activate,
-      RoleName: edit_rolename,
+      userid: id,
+      email: edit_email,
+      activated: edit_activate,
+      roleid: edit_rolename,
     };
+    console.log(obj);
+    const encrypted = await Encryption.encryption(obj, "edit_user", false);
+    console.log(encrypted);
 
-    console.log("obj", obj);
+    const status = await User.updateUser(encrypted, token);
+    console.log("status", status);
   };
 
   return (
@@ -310,12 +314,12 @@ export const GridTable = ({ user_lists }) => {
                 name="role"
                 id="role"
                 onClick={toggleStatusSelect}
-                onChange={(e) => setEditRolename(e.target.value)}
+                onChange={(e) => setEditRolename(parseInt(e.target.value))}
                 value={edit_rolename}
                 className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
               >
                 {default_roles.map((items) => (
-                  <option value={items.RoleKey}>{items.RoleName}</option>
+                  <option value={items.RoleID}>{items.RoleName}</option>
                 ))}
               </select>
             </div>
