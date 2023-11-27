@@ -87,7 +87,7 @@ const dashboardData = [
   },
 ];
 
-export const GridTable = ({ user_lists }) => {
+export const GridTable = ({ user_lists, page_permission }) => {
   const [modal_edit, setModalEdit] = useState(false);
   const [default_roles, setDefaultRoles] = useState([]);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -177,11 +177,17 @@ export const GridTable = ({ user_lists }) => {
                     <div className="font-poppins text-xl">{key + 1}</div>
                   </td>
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
-                      <a onClick={() => onSelectEdit(row.UserID)}>
-                        {row.Username}
-                      </a>
-                    </div>
+                    {page_permission.update ? (
+                      <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
+                        <a onClick={() => onSelectEdit(row.UserID)}>
+                          {row.Username}
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="font-poppins text-xl font-bold">
+                        <div>{row.Username}</div>
+                      </div>
+                    )}
                     <div className="font-poppins text-sm text-gray-500">
                       {row.Email ? row.Email : "-- No Email --"}
                     </div>
@@ -244,10 +250,18 @@ export const GridTable = ({ user_lists }) => {
                     </div>
                   </div> */}
                   </td>
+
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <button onClick={() => onClickAction(row.id)}>
-                      <RiDeleteBin5Line size={20} className="text-[#6425FE]" />
-                    </button>
+                    {page_permission.delete ? (
+                      <button onClick={() => onClickAction(row.id)}>
+                        <RiDeleteBin5Line
+                          size={20}
+                          className="text-[#6425FE]"
+                        />
+                      </button>
+                    ) : (
+                      ""
+                    )}
                   </td>
                 </tr>
               ))}

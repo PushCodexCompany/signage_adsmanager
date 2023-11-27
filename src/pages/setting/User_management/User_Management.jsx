@@ -115,6 +115,8 @@ const User_Management = () => {
   const [reg_brand, setRegBrand] = useState([]);
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
+  const [page_permission, setPagePermission] = useState([]);
+
   const { token } = User.getCookieData();
 
   useEffect(() => {
@@ -136,7 +138,8 @@ const User_Management = () => {
   const setPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = convertPermissionValuesToBoolean([user]);
-    // console.log("permissions", permissions.user);
+
+    setPagePermission(permissions.user);
   };
 
   const convertPermissionValuesToBoolean = (data) => {
@@ -317,12 +320,16 @@ const User_Management = () => {
             </div>
           </div>
 
-          <button
-            onClick={() => setModalNewUser(!modalNewUser)}
-            className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
-          >
-            New User +
-          </button>
+          {page_permission.create ? (
+            <button
+              onClick={() => setModalNewUser(!modalNewUser)}
+              className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+            >
+              New User +
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div className="relative flex flex-col min-w-0  w-full mb-6 ">
@@ -370,14 +377,14 @@ const User_Management = () => {
                 </div>
               </div>
             </div>
-            <div class="relative w-full lg:w-full h-[40px] flex items-center justify-end font-bold text-sm lg:text-base ml-3 mb-3">
+            {/* <div class="relative w-full lg:w-full h-[40px] flex items-center justify-end font-bold text-sm lg:text-base ml-3 mb-3">
               <button
                 onClick={() => showAllFilter()}
                 className=" text-[#6425FE]text-sm font-poppins w-full lg:w-[50px] lg:h-[45px] rounded-md"
               >
                 <PiSlidersHorizontalFill size={26} color="#6425FE" />
               </button>
-            </div>
+            </div> */}
           </div>
 
           {/* Select Menu */}
@@ -428,7 +435,10 @@ const User_Management = () => {
         </div>
 
         <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable user_lists={user_lists} />
+          <GridTable
+            user_lists={user_lists}
+            page_permission={page_permission}
+          />
         </div>
       </div>
 

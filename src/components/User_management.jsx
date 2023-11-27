@@ -114,6 +114,7 @@ const User_Management = ({ setShowModal }) => {
   const [showRegister, setShowRegister] = useState(false);
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
+  const [page_permission, setPagePermission] = useState([]);
 
   const { token } = User.getCookieData();
 
@@ -136,7 +137,7 @@ const User_Management = ({ setShowModal }) => {
   const setPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = convertPermissionValuesToBoolean([user]);
-    // console.log("permissions", permissions.user);
+    setPagePermission(permissions.user);
   };
 
   const convertPermissionValuesToBoolean = (data) => {
@@ -370,14 +371,18 @@ const User_Management = ({ setShowModal }) => {
                   </div>
                 </div>
               </div>
-              <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
-                <button
-                  onClick={() => setShowRegister(true)}
-                  className="bg-[#6425FE] text-white text-sm font-poppins w-[200px] lg:w-[300px] lg:h-[45px] rounded-md mr-1"
-                >
-                  New User +
-                </button>
-              </div>
+              {page_permission.create ? (
+                <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
+                  <button
+                    onClick={() => setShowRegister(true)}
+                    className="bg-[#6425FE] text-white text-sm font-poppins w-[200px] lg:w-[300px] lg:h-[45px] rounded-md mr-1"
+                  >
+                    New User +
+                  </button>
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           {/* Select Menu */}
@@ -428,7 +433,10 @@ const User_Management = ({ setShowModal }) => {
           </div>
           {/* Filter */}
           <div className="w-auto mt-5 h-[400px]  rounded-lg p-2">
-            <GridTable user_lists={user_lists} />
+            <GridTable
+              user_lists={user_lists}
+              page_permission={page_permission}
+            />
           </div>
         </div>
       </div>
