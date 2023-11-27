@@ -76,6 +76,8 @@ const Role_permission = () => {
     },
   });
 
+  const [page_permission, setPagePermission] = useState([]);
+
   useEffect(() => {
     const { user } = User.getCookieData();
     // const user_permission = mock_data;
@@ -93,7 +95,14 @@ const Role_permission = () => {
     setOldRoleName(oldRole);
     setSelectOldRole(oldRole[0]);
     setPermission(updatedData);
+    setPermissionPage();
   }, []);
+
+  const setPermissionPage = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = convertPermissionValuesToBoolean([user]);
+    setPagePermission(permissions.userrole);
+  };
 
   const convertPermissionValuesToBoolean = (data) => {
     const convertedData = { permissions: {}, other_permission: {} };
@@ -191,7 +200,7 @@ const Role_permission = () => {
     });
   };
 
-  const Tabs = ({ roleData, type }) => {
+  const Tabs = ({ roleData, type, page_permission }) => {
     const [openTab, setOpenTab] = React.useState(1);
 
     const CheckboxGroup = ({ title, items, data }) => {
@@ -228,6 +237,7 @@ const Role_permission = () => {
                     <input
                       type="checkbox"
                       className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                      disabled={page_permission.update ? false : true}
                       checked={checkboxes[item]}
                       onChange={() => toggleCheckbox(item)}
                     />
@@ -298,6 +308,7 @@ const Role_permission = () => {
                         <input
                           type="checkbox"
                           className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                          disabled={page_permission.update ? false : true}
                           checked={checkboxes[item]}
                           onChange={() => toggleCheckbox(item)}
                         />
@@ -635,13 +646,17 @@ const Role_permission = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">Role</div>
+              {page_permission.create ? (
+                <button
+                  className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins rounded-lg"
+                  onClick={() => createNewRole()}
+                >
+                  New Role +
+                </button>
+              ) : (
+                ""
+              )}
 
-              <button
-                className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins rounded-lg"
-                onClick={() => createNewRole()}
-              >
-                New Role +
-              </button>
               {permissions.map((items, key) => (
                 <>
                   <div
@@ -671,15 +686,24 @@ const Role_permission = () => {
 
                     <div className="col-span-2">
                       <div className="flex justify-center items-center mt-3 space-x-4">
-                        <button onClick={() => handleEditRoleName()}>
-                          <RiEditLine size={20} className="text-[#6425FE]" />
-                        </button>
-                        <button onClick={() => handleDeleteRoleName(key)}>
-                          <RiDeleteBin5Line
-                            size={20}
-                            className="text-[#6425FE]"
-                          />
-                        </button>
+                        {page_permission.update ? (
+                          <button onClick={() => handleEditRoleName()}>
+                            <RiEditLine size={20} className="text-[#6425FE]" />
+                          </button>
+                        ) : (
+                          ""
+                        )}
+
+                        {page_permission.delete ? (
+                          <button onClick={() => handleDeleteRoleName(key)}>
+                            <RiDeleteBin5Line
+                              size={20}
+                              className="text-[#6425FE]"
+                            />
+                          </button>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                   </div>
@@ -692,7 +716,10 @@ const Role_permission = () => {
           {/* Right Panel */}
           <div className="col-span-5 bg-[#FAFAFA] w-full">
             {permissions.length > 0 && (
-              <Tabs roleData={permissions[select_role]} />
+              <Tabs
+                roleData={permissions[select_role]}
+                page_permission={page_permission}
+              />
             )}
             <div className="p-4">
               <button
