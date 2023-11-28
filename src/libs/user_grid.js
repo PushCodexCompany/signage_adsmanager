@@ -40,8 +40,15 @@ const getImgBrand = (id) => {
   return img;
 };
 
-const onClickAction = (id) => {
-  alert(`click : ${id}`);
+const onClickDelete = async (id) => {
+  const { token } = User.getCookieData();
+  const obj = {
+    userid: id,
+  };
+  const encrypted = await Encryption.encryption(obj, "delete_user", false);
+
+  const status = await User.deleteUser(encrypted, token);
+  console.log("status", status);
 };
 
 const dashboardData = [
@@ -253,7 +260,7 @@ export const GridTable = ({ user_lists, page_permission }) => {
 
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                     {page_permission.delete ? (
-                      <button onClick={() => onClickAction(row.id)}>
+                      <button onClick={() => onClickDelete(row.UserID)}>
                         <RiDeleteBin5Line
                           size={20}
                           className="text-[#6425FE]"

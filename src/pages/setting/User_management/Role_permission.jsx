@@ -9,8 +9,8 @@ import User from "../../../libs/admin";
 
 const mock_data = [
   {
-    id: 1,
-    role: "Super Admin",
+    RoleID: 5,
+    RoleName: "Admin",
     permissions: {
       brand: 2,
       branch: 2,
@@ -28,8 +28,8 @@ const mock_data = [
     },
   },
   {
-    id: 2,
-    role: "Admin",
+    RoleID: 6,
+    RoleName: "Publisher",
     permissions: {
       brand: 30,
       branch: 30,
@@ -78,10 +78,10 @@ const Role_permission = () => {
 
   const [page_permission, setPagePermission] = useState([]);
 
-  useEffect(() => {
-    const { user } = User.getCookieData();
+  useEffect(async () => {
+    const { token } = User.getCookieData();
+    const user_permission = await User.getUserRoles(token);
     // const user_permission = mock_data;
-    const user_permission = [user];
     const updatedData = user_permission.map((item) => {
       return {
         ...item,
@@ -176,23 +176,6 @@ const Role_permission = () => {
     };
   };
 
-  const handleSave = async (role) => {
-    const summary = convertBooleanToPermissionSummary(role);
-
-    const obj = {
-      rolename: selectOldRole,
-      rolenamenew: summary.role,
-      permissions: summary.permissions,
-      accountcode: "huUpa8dN4i",
-    };
-
-    console.log("obj", obj);
-
-    const encrypted = await Encryption.encryption(obj, "edit_role", false);
-
-    console.log("encrypted", encrypted);
-  };
-
   const handleRoleChange = (e, fieldName) => {
     setNewRole({
       ...newRole,
@@ -222,58 +205,60 @@ const Role_permission = () => {
       };
 
       return (
-        <div className="col-span-1">
-          <div className="grid grid-rows-5 gap-4">
-            <div className="font-poppins font-bold">
-              {title[0].toUpperCase() + title.slice(1)}
-            </div>
-            {items.map((item, index) => (
-              <div
-                className="grid grid-cols-4 space-x-3 lg:space-x-2"
-                key={index}
-              >
-                <div className="col-span-1">
-                  <label className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                      disabled={page_permission.update ? false : true}
-                      checked={checkboxes[item]}
-                      onChange={() => toggleCheckbox(item)}
-                    />
-                    <span
-                      className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                        checkboxes[item] ? "bg-white" : ""
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-6 w-6 text-white ${
-                          checkboxes[item] ? "opacity-100" : "opacity-0"
-                        } transition-opacity duration-300 ease-in-out`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
+        <>
+          <div className="col-span-1">
+            <div className="grid grid-rows-5 gap-4">
+              <div className="font-poppins font-bold">
+                {title[0].toUpperCase() + title.slice(1)}
+              </div>
+              {items.map((item, index) => (
+                <div
+                  className="grid grid-cols-4 space-x-3 lg:space-x-2"
+                  key={index}
+                >
+                  <div className="col-span-1">
+                    <label className="inline-flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                        disabled={page_permission.update ? false : true}
+                        checked={checkboxes[item]}
+                        onChange={() => toggleCheckbox(item)}
+                      />
+                      <span
+                        className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                          checkboxes[item] ? "bg-white" : ""
+                        }`}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="3"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                </div>
-                <div className="col-span-3">
-                  <div className="font-poppins">
-                    {item[0].toUpperCase() + item.slice(1)}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`h-6 w-6 text-white ${
+                            checkboxes[item] ? "opacity-100" : "opacity-0"
+                          } transition-opacity duration-300 ease-in-out`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="#6425FE"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </span>
+                    </label>
+                  </div>
+                  <div className="col-span-3">
+                    <div className="font-poppins">
+                      {item[0].toUpperCase() + item.slice(1)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       );
     };
 
@@ -557,6 +542,32 @@ const Role_permission = () => {
     return updatedData;
   };
 
+  const handleEditRoleName = () => {
+    setEditRoleName(!editRoleName);
+  };
+
+  const handleOutFocusRoleName = (newName, key) => {
+    setEditRoleName(false);
+    if (newName) {
+      setNewRoleName("");
+      // Update the role value in the state
+      const updatedPermissions = [...permissions];
+      updatedPermissions[key].role = newName;
+      setPermission(updatedPermissions);
+    }
+  };
+
+  const handleSetNewRoleName = (value) => {
+    setNewRoleName(value);
+  };
+
+  const tempOldData = (key) => {
+    const oldRole = oldRoleName[key];
+    setSelectOldRole(oldRole);
+    selectRole(key);
+  };
+
+  //Create
   const handleSaveNewRole = async () => {
     const summary = convertBooleanToPermissionSummary(newRole);
 
@@ -595,31 +606,24 @@ const Role_permission = () => {
     }
   };
 
-  const handleEditRoleName = () => {
-    setEditRoleName(!editRoleName);
+  //Update
+  const handleSave = async (role) => {
+    const summary = convertBooleanToPermissionSummary(role);
+    const obj = {
+      roleid: summary.RoleID,
+      rolenamenew: summary.role ? summary.role : summary.RoleName,
+      permissions: summary.permissions,
+      accountcode: "huUpa8dN4i",
+    };
+
+    console.log(obj);
+
+    const encrypted = await Encryption.encryption(obj, "edit_role", false);
+
+    console.log("encrypted", encrypted);
   };
 
-  const handleOutFocusRoleName = (newName, key) => {
-    setEditRoleName(false);
-    if (newName) {
-      setNewRoleName("");
-      // Update the role value in the state
-      const updatedPermissions = [...permissions];
-      updatedPermissions[key].role = newName;
-      setPermission(updatedPermissions);
-    }
-  };
-
-  const handleSetNewRoleName = (value) => {
-    setNewRoleName(value);
-  };
-
-  const tempOldData = (key) => {
-    const oldRole = oldRoleName[key];
-    setSelectOldRole(oldRole);
-    selectRole(key);
-  };
-
+  //Delete
   const handleDeleteRoleName = async (key) => {
     const obj = {
       rolename: oldRoleName[key],
@@ -670,7 +674,7 @@ const Role_permission = () => {
                       <div className={`font-poppins text-2xl`}>
                         <input
                           type="text"
-                          defaultValue={items.role}
+                          defaultValue={items.RoleName}
                           disabled={editRoleName}
                           onChange={(e) => handleSetNewRoleName(e.target.value)}
                           onBlur={() =>
@@ -680,7 +684,7 @@ const Role_permission = () => {
                         />
                       </div>
                       <div className="text-xs">
-                        {`${items.role} Description`}
+                        {`${items.RoleName} Description`}
                       </div>
                     </div>
 
@@ -794,7 +798,11 @@ const Role_permission = () => {
             </div>
             <div className="p-10 mt-2 ">
               <div className="bg-[#FAFAFA]">
-                <Tabs roleData={newRole} type={0} />
+                <Tabs
+                  page_permission={{ update: true }}
+                  roleData={newRole}
+                  type={0}
+                />
               </div>
             </div>
             <div className="flex justify-center items-center -mt-3">
