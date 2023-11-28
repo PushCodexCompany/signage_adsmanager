@@ -12,6 +12,7 @@ import { useStateContext } from "./contexts/ContextProvider";
 
 import User from "./libs/admin";
 
+//test comment
 const App = () => {
   const {
     setCurrentColor,
@@ -64,9 +65,9 @@ const App = () => {
                 className={
                   activeMenu
                     ? `dark:bg-main-dark-bg  bg-main-bg min-h-screen md: ${
-                        // select_campaign && select_merchandise ? "ml-72" : ""
-                        select_campaign ? "ml-72" : ""
-                      } w-full`
+                    // select_campaign && select_merchandise ? "ml-72" : ""
+                    select_campaign ? "ml-72" : ""
+                    } w-full`
                     : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
                 }
               >
