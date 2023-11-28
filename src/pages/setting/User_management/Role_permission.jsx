@@ -611,7 +611,7 @@ const Role_permission = () => {
     const summary = convertBooleanToPermissionSummary(role);
     const obj = {
       roleid: summary.RoleID,
-      rolenamenew: summary.role ? summary.role : summary.RoleName,
+      rolename: summary.role ? summary.role : summary.RoleName,
       permissions: summary.permissions,
       accountcode: "huUpa8dN4i",
     };
