@@ -315,4 +315,25 @@ export default {
       return false;
     }
   },
+
+  updateUserRole: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/update_userrole?hash=${hash}`,
+      "",
+      config
+    );
+
+    console.log("data", data);
+
+    if (data.code !== 404) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 };

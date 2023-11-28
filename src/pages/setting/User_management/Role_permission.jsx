@@ -77,9 +77,9 @@ const Role_permission = () => {
   });
 
   const [page_permission, setPagePermission] = useState([]);
+  const { token } = User.getCookieData();
 
   useEffect(async () => {
-    const { token } = User.getCookieData();
     const user_permission = await User.getUserRoles(token);
     // const user_permission = mock_data;
     const updatedData = user_permission.map((item) => {
@@ -598,7 +598,6 @@ const Role_permission = () => {
       false
     );
 
-    const { token } = User.getCookieData();
     const status = await User.addNewPermissionRole(encrypted, token);
 
     if (status) {
@@ -616,11 +615,12 @@ const Role_permission = () => {
       accountcode: "huUpa8dN4i",
     };
 
-    console.log(obj);
-
     const encrypted = await Encryption.encryption(obj, "edit_role", false);
+    const status = await User.updateUserRole(encrypted, token);
 
-    console.log("encrypted", encrypted);
+    if (status) {
+      alert("update success");
+    }
   };
 
   //Delete
