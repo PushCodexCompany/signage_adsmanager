@@ -225,27 +225,6 @@ export default {
     }
   },
 
-  addNewPermissionRole: async function (hash, token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const { data } = await this._post(
-      `api/v1/create_userrole?hash=${hash}`,
-      "",
-      config
-    );
-
-    console.log("data", data);
-
-    if (data.code !== 404) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
   getUsersList: async function (token) {
     const config = {
       headers: {
@@ -316,6 +295,21 @@ export default {
     }
   },
 
+  createUserRole: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_userrole?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
   updateUserRole: async function (hash, token) {
     const config = {
       headers: {
@@ -328,12 +322,21 @@ export default {
       config
     );
 
-    console.log("data", data);
+    return data;
+  },
 
-    if (data.code !== 404) {
-      return true;
-    } else {
-      return false;
-    }
+  deleteUserRole: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/delete_userrole?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
   },
 };
