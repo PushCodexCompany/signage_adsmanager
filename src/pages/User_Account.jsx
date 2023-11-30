@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import add_new_img from "../assets/img/add_new_brand.png";
 import { Navbar } from "../components";
+import New_Account from "../components/New_Account";
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -42,8 +43,11 @@ const User_Account = () => {
   const select_account = User.getAccount();
 
   const [account, setAccount] = useState([]);
+  const [showModalAddNewAccount, setShowModalAddNewAccount] = useState(false);
 
   useEffect(() => {
+    const user = User.getCookieData();
+
     if (!user) {
       cookie.remove("signage-brand");
       cookie.remove("signage-account");
@@ -84,7 +88,9 @@ const User_Account = () => {
 
         <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
           <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
-            <button onClick={() => alert("addnew")}>
+            <button
+              onClick={() => setShowModalAddNewAccount(!showModalAddNewAccount)}
+            >
               <img
                 className="block ml-auto mr-auto mt-30px w-4/5 rounded-3xl"
                 src={add_new_img}
@@ -118,6 +124,17 @@ const User_Account = () => {
             ))}
         </div>
       </div>
+
+      {showModalAddNewAccount && (
+        <a
+          onClick={() => setShowModalAddNewAccount(!showModalAddNewAccount)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {showModalAddNewAccount && (
+        <New_Account setShowModalAddNewAccount={setShowModalAddNewAccount} />
+      )}
     </>
   );
 };

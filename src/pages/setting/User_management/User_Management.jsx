@@ -108,6 +108,7 @@ const User_Management = () => {
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
 
+  const [reg_username, setRegUserName] = useState(null);
   const [reg_email, setRegEmail] = useState(null);
   const [reg_password, setRegPassword] = useState(null);
   const [reg_re_password, setRegRePassword] = useState(null);
@@ -234,37 +235,53 @@ const User_Management = () => {
     }
 
     if (reg_password === reg_re_password) {
-      const value = {
-        username: reg_email,
-        password: reg_password,
-        role: reg_role,
-        accountcode: "huUpa8dN4i",
-      };
+      if (reg_role) {
+        const value = {
+          username: reg_username,
+          email: reg_email,
+          password: reg_password,
+          role: reg_role,
+          accountcode: "huUpa8dN4i",
+        };
 
-      // console.log("value222", value);
-
-      // const { token } = User.getCookieData();
-      // const encrypted = await Encryption.encryption(
-      //   value,
-      //   "create_user",
-      //   false
-      // );
-      // console.log(encrypted);
-
-      // const status = await User.createUser(encrypted, token);
-      // if (status) {
-      //   Swal.fire({
-      //     icon: "success",
-      //     title: "Login ...",
-      //     text: "สร้าง User สำเร็จ!",
-      //   });
-      // } else {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Login Failed ...",
-      //     text: "ไม่สามารถสร้าง User ได้!",
-      //   });
-      // }
+        const { token } = User.getCookieData();
+        const encrypted = await Encryption.encryption(
+          value,
+          "create_user",
+          false
+        );
+        // console.log(encrypted);
+        try {
+          const data = await User.createUser(encrypted, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              title: "สร้างผู้ใช้งานสำเร็จ!",
+              text: `สร้างผู้ใช้งานสำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Register Failed ...",
+          text: "กรุณาเลือก Role!",
+        });
+      }
     } else {
       Swal.fire({
         icon: "error",
@@ -1158,108 +1175,186 @@ const User_Management = () => {
                 Sign Up To Unleash The Power Of Digital Advertising
               </div>
             </div>
-            <div className="mt-10 mb-4 flex justify-center items-center">
-              <input
-                className={` w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                onChange={(e) => setRegEmail(e.target.value)}
-                type="text"
-                placeholder="Your Email"
-                value={reg_email === null ? "" : reg_email}
-                required
-                autoFocus
-                autoComplete="email"
-              />
-            </div>
-            <div className="mb-4 flex justify-center items-center">
-              <input
-                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                onChange={(e) => setRegPassword(e.target.value)}
-                type="password"
-                placeholder="Your Password"
-                value={reg_password === null ? "" : reg_password}
-                required
-                autoComplete="password"
-              />
-            </div>
-            <div className="mb-4 flex justify-center items-center">
-              <input
-                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                onChange={(e) => setRegRePassword(e.target.value)}
-                type="password"
-                placeholder="Confirm Password"
-                value={reg_re_password === null ? "" : reg_re_password}
-                required
-                autoComplete="password"
-              />
-            </div>
-            <div className="mb-4 flex justify-center items-center">
-              <select
-                name="role"
-                id="role"
-                onClick={toggleStatusSelect}
-                onChange={(e) => setRegRole(e.target.value)}
-                value={reg_role}
-                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-              >
-                {default_roles.map((items) => (
-                  <option value={items.RoleKey}>{items.RoleName}</option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-4 flex justify-center items-center">
-              <div className="relative w-[60%]  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
-                <button
-                  onClick={() => setShowBrandModal(true)}
-                  name="brand"
-                  className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
-                >
-                  Select Brand
-                </button>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <PiCaretUpDown size={20} color="#6425FE" />
+            <div className="mt-10 mx-40">
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                    Username :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <input
+                    className={` lg:w-[60%]  py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    onChange={(e) => setRegUserName(e.target.value)}
+                    type="text"
+                    placeholder="Your Username"
+                    value={reg_username === null ? "" : reg_username}
+                    required
+                    autoFocus
+                    autoComplete="username"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Email :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <input
+                    className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    onChange={(e) => setRegEmail(e.target.value)}
+                    type="text"
+                    placeholder="Your Email"
+                    value={reg_email === null ? "" : reg_email}
+                    required
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Password :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <input
+                    className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    type="password"
+                    placeholder="Your Password"
+                    value={reg_password === null ? "" : reg_password}
+                    required
+                    autoComplete="password"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Confirm Password :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <input
+                    className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    onChange={(e) => setRegRePassword(e.target.value)}
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={reg_re_password === null ? "" : reg_re_password}
+                    required
+                    autoComplete="password"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Role :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <select
+                    name="role"
+                    id="role"
+                    onClick={toggleStatusSelect}
+                    onChange={(e) => setRegRole(e.target.value)}
+                    value={reg_role}
+                    className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                  >
+                    <option value={null}>-- Please Select Role ---</option>
+                    {default_roles.map((items) => (
+                      <option value={items.RoleID}>{items.RoleName}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Brand :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                    <button
+                      onClick={() => setShowBrandModal(true)}
+                      name="brand"
+                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                    >
+                      Select Brand
+                    </button>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <PiCaretUpDown size={20} color="#6425FE" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right"></div>
+                </div>
+                <div className="col-span-8">
+                  {reg_brand.length > 0 && (
+                    <div className="flex items-center space-x-4">
+                      {reg_brand.map((item, index) => (
+                        <div key={index} className="flex">
+                          <img
+                            className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                            src={findBrandImg(item)}
+                            alt={item.name}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Merchandise :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <div className="relative lg:w-[60%]  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                    <button
+                      onClick={() => setShowMerchandiseModal(true)}
+                      name="merchandise"
+                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                    >
+                      Select Merchandise
+                    </button>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <PiCaretUpDown size={20} color="#6425FE" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-6">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right"></div>
+                </div>
+                <div className="col-span-8">
+                  {reg_merchandise.length > 0 && (
+                    <div className="flex  items-center space-x-4 ">
+                      {reg_merchandise.map((item, index) => (
+                        <div key={index} className="flex items-center">
+                          <img
+                            className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                            src={findMerchImg(item)}
+                            alt={item.name}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            {reg_brand.length > 0 && (
-              <div className="mb-4 flex ml-36 lg:ml-80 items-center space-x-4">
-                {reg_brand.map((item, index) => (
-                  <div key={index} className="flex">
-                    <img
-                      className="block ml-auto mr-auto w-12 h-12 rounded-lg"
-                      src={findBrandImg(item)}
-                      alt={item.name}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-            <div className="mb-4 flex justify-center items-center">
-              <div className="relative w-[60%]  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
-                <button
-                  onClick={() => setShowMerchandiseModal(true)}
-                  name="merchandise"
-                  className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
-                >
-                  Select Merchandise
-                </button>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <PiCaretUpDown size={20} color="#6425FE" />
-                </div>
-              </div>
-            </div>
-            {reg_merchandise.length > 0 && (
-              <div className="mb-4 flex ml-36 lg:ml-80 items-center space-x-4 ">
-                {reg_merchandise.map((item, index) => (
-                  <div key={index} className="flex items-center">
-                    <img
-                      className="block ml-auto mr-auto w-12 h-12 rounded-lg"
-                      src={findMerchImg(item)}
-                      alt={item.name}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
+
             <div className="text-center">
               <button
                 type="submit"
@@ -1293,7 +1388,7 @@ const User_Management = () => {
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Sign Up To Unleash The Power Of Digital Advertising
+                Select Brands To Unleash The Power Of Digital Advertising
               </div>
             </div>
             <div className="mt-2 p-2">

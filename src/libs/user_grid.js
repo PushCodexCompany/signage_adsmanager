@@ -9,10 +9,11 @@ import robinson_logo from "../assets/img/robinson.png";
 
 import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
-import { RiDeleteBin5Line } from "react-icons/ri";
+import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { PiCaretUpDown } from "react-icons/pi";
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
+import Swal from "sweetalert2";
 
 const getImg = (id) => {
   let img;
@@ -40,15 +41,44 @@ const getImgBrand = (id) => {
   return img;
 };
 
-const onClickDelete = async (id) => {
-  const { token } = User.getCookieData();
-  const obj = {
-    userid: id,
-  };
-  const encrypted = await Encryption.encryption(obj, "delete_user", false);
-
-  const status = await User.deleteUser(encrypted, token);
-  console.log("status", status);
+const onClickDelete = async (id, name) => {
+  Swal.fire({
+    title: "คุณต้องการลบผู้ใช้งาน?",
+    text: `คุณต้องการลบผู้ใช้งาน : ${name}?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "ยืนยัน!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      const { token } = User.getCookieData();
+      const obj = {
+        userid: id,
+      };
+      const encrypted = await Encryption.encryption(obj, "delete_user", false);
+      const data = await User.deleteUser(encrypted, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          title: "ลบผู้ใช้งาน!",
+          text: `ลบผู้ใช้งาน ${name} สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            window.location.reload();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    }
+  });
 };
 
 const dashboardData = [
@@ -132,19 +162,47 @@ export const GridTable = ({ user_lists, page_permission }) => {
   };
 
   const handleSaveEdit = async (id) => {
-    const { token } = User.getCookieData();
-    const obj = {
-      userid: id,
-      email: edit_email,
-      activated: edit_activate,
-      roleid: edit_rolename,
-    };
-    console.log(obj);
-    const encrypted = await Encryption.encryption(obj, "edit_user", false);
-    console.log(encrypted);
+    try {
+      if (edit_rolename) {
+        const { token } = User.getCookieData();
+        const obj = {
+          userid: id,
+          email: edit_email,
+          activated: edit_activate,
+          roleid: edit_rolename,
+        };
+        const encrypted = await Encryption.encryption(obj, "edit_user", false);
+        const data = await User.updateUser(encrypted, token);
 
-    const status = await User.updateUser(encrypted, token);
-    console.log("status", status);
+        if (data.code !== 404) {
+          Swal.fire({
+            title: "แก้ไขผู้ใช้งานสำเร็จ!",
+            text: `แก้ไขผู้ใช้งานสำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Register Failed ...",
+          text: "กรุณาเลือก Role!",
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -258,9 +316,18 @@ export const GridTable = ({ user_lists, page_permission }) => {
                   </div> */}
                   </td>
 
-                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
+                    {page_permission.update ? (
+                      <button onClick={() => onSelectEdit(row.UserID)}>
+                        <RiEditLine size={20} className="text-[#6425FE]" />
+                      </button>
+                    ) : (
+                      <></>
+                    )}
                     {page_permission.delete ? (
-                      <button onClick={() => onClickDelete(row.UserID)}>
+                      <button
+                        onClick={() => onClickDelete(row.UserID, row.Username)}
+                      >
                         <RiDeleteBin5Line
                           size={20}
                           className="text-[#6425FE]"
@@ -304,58 +371,90 @@ export const GridTable = ({ user_lists, page_permission }) => {
                 Edit User To Unleash The Power Of Digital Advertising
               </div>
             </div>
-            <div className="mt-10 mb-4 flex justify-center items-center">
-              <input
-                className={` w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                onChange={(e) => setEditUsername(e.target.value)}
-                type="text"
-                placeholder="Your Username"
-                defaultValue={edit_username}
-                value={edit_username}
-                required
-                autoFocus
-                autoComplete="username"
-              />
-            </div>
-            <div className="mt-10 mb-4 flex justify-center items-center">
-              <input
-                className={` w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                onChange={(e) => setEditEmail(e.target.value)}
-                type="text"
-                placeholder="Your Email"
-                defaultValue={edit_email}
-                value={edit_email}
-                required
-                autoFocus
-                autoComplete="email"
-              />
-            </div>
-            <div className="mt-10 mb-4 flex justify-center items-center">
-              <select
-                name="role"
-                id="role"
-                onClick={toggleStatusSelect}
-                onChange={(e) => setEditRolename(parseInt(e.target.value))}
-                value={edit_rolename}
-                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-              >
-                {default_roles.map((items) => (
-                  <option value={items.RoleID}>{items.RoleName}</option>
-                ))}
-              </select>
-            </div>
-            <div className="mt-10 mb-4 flex justify-center items-center">
-              <select
-                name="role"
-                id="role"
-                onClick={toggleStatusSelect}
-                onChange={(e) => setEditActivate(parseInt(e.target.value))}
-                value={edit_activate}
-                className={`w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-              >
-                <option value="1">Activated</option>
-                <option value="0">Deactivated</option>
-              </select>
+
+            <div className="mt-10 mx-40">
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                    Username :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <input
+                    className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    onChange={(e) => setEditUsername(e.target.value)}
+                    type="text"
+                    placeholder="Your Username"
+                    defaultValue={edit_username}
+                    value={edit_username}
+                    required
+                    disabled
+                    autoComplete="username"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                    Email :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <input
+                    className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    onChange={(e) => setEditEmail(e.target.value)}
+                    type="text"
+                    placeholder="Your Email"
+                    defaultValue={edit_email}
+                    value={edit_email}
+                    required
+                    autoFocus
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                    Role :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <select
+                    name="role"
+                    id="role"
+                    onClick={toggleStatusSelect}
+                    onChange={(e) => setEditRolename(parseInt(e.target.value))}
+                    value={edit_rolename}
+                    className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                  >
+                    <option value="null">-- Please Select Role ---</option>
+                    {default_roles.map((items) => (
+                      <option value={items.RoleID}>{items.RoleName}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                    Status :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <select
+                    name="status"
+                    id="status"
+                    onClick={toggleStatusSelect}
+                    onChange={(e) => setEditActivate(parseInt(e.target.value))}
+                    value={edit_activate}
+                    className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                  >
+                    <option value="1">Activated</option>
+                    <option value="0">Deactivated</option>
+                  </select>
+                </div>
+              </div>
             </div>
             <div className="text-center">
               <button

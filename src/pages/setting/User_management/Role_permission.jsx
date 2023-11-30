@@ -273,28 +273,30 @@ const Role_permission = () => {
       "add_permission_role",
       false
     );
-
-    const data = await User.createUserRole(encrypted, token);
-
-    if (data.code !== 404) {
-      Swal.fire({
-        icon: "success",
-        title: "Create User Role Success ...",
-        text: "สร้าง User Role สำเร็จ!",
-      }).then((result) => {
-        if (
-          result.isConfirmed ||
-          result.dismiss === Swal.DismissReason.backdrop
-        ) {
-          window.location.reload();
-        }
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: data.message,
-      });
+    try {
+      const data = await User.createUserRole(encrypted, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "Create User Role Success ...",
+          text: "สร้าง User Role สำเร็จ!",
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            window.location.reload();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -309,10 +311,7 @@ const Role_permission = () => {
       accountcode: "huUpa8dN4i",
     };
 
-    console.log("obj", obj);
-
     const encrypted = await Encryption.encryption(obj, "edit_role", false);
-    console.log("encrypted", encrypted);
     const data = await User.updateUserRole(encrypted, token);
 
     if (data.code !== 404) {

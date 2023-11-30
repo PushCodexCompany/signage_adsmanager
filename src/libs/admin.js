@@ -206,25 +206,6 @@ export default {
     return data;
   },
 
-  createUser: async function (hash, token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const { data } = await this._post(
-      `api/v1/create_user?hash=${hash}`,
-      "",
-      config
-    );
-
-    if (data.code !== 404) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
   getUsersList: async function (token) {
     const config = {
       headers: {
@@ -255,6 +236,21 @@ export default {
     }
   },
 
+  createUser: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_user?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
   updateUser: async function (hash, token) {
     const config = {
       headers: {
@@ -267,11 +263,7 @@ export default {
       config
     );
 
-    if (data.code !== 404) {
-      return true;
-    } else {
-      return false;
-    }
+    return data;
   },
 
   deleteUser: async function (hash, token) {
@@ -286,13 +278,7 @@ export default {
       config
     );
 
-    console.log("data", data);
-
-    if (data.code !== 404) {
-      return true;
-    } else {
-      return false;
-    }
+    return data;
   },
 
   createUserRole: async function (hash, token) {
