@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
 import { useNavigate } from "react-router-dom";
 import { IoAddCircleSharp } from "react-icons/io5";
+import { TbDots } from "react-icons/tb";
 
 import centralImg from "../assets/img/central.png";
 import robinsonImg from "../assets/img/robinson.png";
@@ -73,6 +74,7 @@ const Brands = () => {
   const select_account = User.getAccount();
 
   const [showModalAddNewBrand, setShowModalAddNewBrand] = useState(false);
+  const [dropdownStates, setDropdownStates] = useState({});
 
   const navigate = useNavigate();
 
@@ -110,6 +112,13 @@ const Brands = () => {
     }
   };
 
+  const toggleDropdown = (itemId) => {
+    setDropdownStates((prevStates) => ({
+      ...prevStates,
+      [itemId]: !prevStates[itemId],
+    }));
+  };
+
   return (
     <>
       <Navbar />
@@ -123,38 +132,76 @@ const Brands = () => {
           bookings.
         </div>
 
-        <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
-          <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
+        <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2">
+          <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
             <button
               onClick={() => setShowModalAddNewBrand(!showModalAddNewBrand)}
+              className="flex flex-col items-center"
             >
               <img
                 className="block ml-auto mr-auto mt-30px w-2/5 rounded-3xl"
                 src={add_new_img}
                 alt={"add new brand"}
               />
-
-              <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins">
+              <div className="font-bold text-[20px] mt-[10px] font-poppins">
                 Add new Brand
               </div>
             </button>
           </div>
+
           {brand.length > 0 &&
             brand.map((items, key) => (
               <div
                 key={key}
-                className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center"
+                className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
               >
-                <button onClick={() => selectCampaign(items)}>
+                <div className="relative mb-4">
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
+                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl"
                     src={mock_data[items].img}
                     alt={mock_data[items].name}
                   />
-                  <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
+                  {/* Add icon inside img */}
+                  <div
+                    onClick={() => toggleDropdown(items)}
+                    className="absolute top-2 right-2 cursor-pointer"
+                  >
+                    <TbDots
+                      size={26}
+                      className="text-white hover:text-[#6425FE]"
+                    />
+                  </div>
+                  {dropdownStates[items] && (
+                    <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
+                      <button
+                        onClick={() => {
+                          alert(`Edit ${mock_data[items].name}`);
+                          toggleDropdown(items);
+                        }}
+                        className="block w-full text-left hover:bg-gray-100 py-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          alert(`Delete ${mock_data[items].name}`);
+                          toggleDropdown(items);
+                        }}
+                        className="block w-full text-left hover:bg-gray-100 py-2"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => selectCampaign(items)}
+                  className="w-full"
+                >
+                  <div className="font-bold text-[20px] mt-[10px] font-poppins">
                     {mock_data[items].name}
                   </div>
-                  <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
+                  <div className="text-[14px] text-slate-500 font-poppins">
                     {mock_data[items].des}
                   </div>
                 </button>
