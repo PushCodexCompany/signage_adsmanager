@@ -143,7 +143,7 @@ const Brands = () => {
                 src={add_new_img}
                 alt={"add new brand"}
               />
-              <div className="font-bold text-[20px] mt-[10px] font-poppins">
+              <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add new Brand
               </div>
             </button>
@@ -198,7 +198,7 @@ const Brands = () => {
                   onClick={() => selectCampaign(items)}
                   className="w-full"
                 >
-                  <div className="font-bold text-[20px] mt-[10px] font-poppins">
+                  <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                     {mock_data[items].name}
                   </div>
                   <div className="text-[14px] text-slate-500 font-poppins">

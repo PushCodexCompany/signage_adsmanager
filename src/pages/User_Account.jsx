@@ -5,6 +5,7 @@ import cookie from "react-cookies";
 import add_new_img from "../assets/img/add_new_brand.png";
 import { Navbar } from "../components";
 import New_Account from "../components/New_Account";
+import { TbDots } from "react-icons/tb";
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -44,6 +45,9 @@ const User_Account = () => {
 
   const [account, setAccount] = useState([]);
   const [showModalAddNewAccount, setShowModalAddNewAccount] = useState(false);
+  const [dropdownStates, setDropdownStates] = useState({});
+
+  const [edit_account, setEditAccount] = useState([]);
 
   useEffect(() => {
     const user = User.getCookieData();
@@ -88,6 +92,18 @@ const User_Account = () => {
     }
   };
 
+  const toggleDropdown = (accountId) => {
+    setDropdownStates((prevStates) => ({
+      ...prevStates,
+      [accountId]: !prevStates[accountId],
+    }));
+  };
+
+  const handleNewAccount = () => {
+    setEditAccount([]);
+    setShowModalAddNewAccount(!showModalAddNewAccount);
+  };
+
   return (
     <>
       <Navbar />
@@ -101,15 +117,13 @@ const User_Account = () => {
 
         <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
           <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
-            <button
-              onClick={() => setShowModalAddNewAccount(!showModalAddNewAccount)}
-            >
+            <button onClick={() => handleNewAccount()}>
               <img
                 className="block ml-auto mr-auto mt-30px w-4/5 rounded-3xl"
                 src={add_new_img}
                 alt={"Add New Account"}
               />
-              <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins">
+              <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add New Account
               </div>
             </button>
@@ -117,22 +131,59 @@ const User_Account = () => {
           {account.length > 0 &&
             account.map((items, key) => (
               <div
-                key={key}
-                className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center"
+                key={items.AccountID}
+                className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
               >
-                <button onClick={() => selectAccount(items)}>
+                <div className="relative mb-4">
                   <img
                     className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
                     src={`https://ui-avatars.com/api/?name=${
                       items.AccountName
-                    }&background=${getRandomColor()}&color=fff`}
+                    }&background=${"0496c7"}&color=fff`}
                     alt={items.AccountName}
                   />
-                  <div className="font-bold text-[20px] m-auto w-[100%] text-center mt-[10px] font-poppins">
-                    {/* {`${mock_data[items].name} ${mock_data[items].lastname}`} */}
+                  <div
+                    onClick={() => toggleDropdown(items.AccountID)}
+                    className="absolute top-2 right-2 cursor-pointer"
+                  >
+                    {/* Assuming TbDots is an SVG component */}
+                    <TbDots
+                      size={26}
+                      className="text-white hover:text-[#6425FE]"
+                    />
+                  </div>
+                  {dropdownStates[items.AccountID] && (
+                    <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
+                      <button
+                        onClick={() => {
+                          toggleDropdown(items.AccountID);
+                          setEditAccount(items);
+                          setShowModalAddNewAccount(true);
+                        }}
+                        className="block w-full text-left hover:bg-gray-100 py-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          alert(`Delete ${items.AccountName}`);
+                          toggleDropdown(items.AccountID);
+                        }}
+                        className="block w-full text-left hover:bg-gray-100 py-2"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => selectAccount(items)}
+                  className=" w-full"
+                >
+                  <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                     {items.AccountName}
                   </div>
-                  <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
+                  <div className="text-[14px] text-slate-500 font-poppins">
                     {items.AccountCode}
                   </div>
                 </button>
@@ -149,7 +200,10 @@ const User_Account = () => {
       )}
 
       {showModalAddNewAccount && (
-        <New_Account setShowModalAddNewAccount={setShowModalAddNewAccount} />
+        <New_Account
+          setShowModalAddNewAccount={setShowModalAddNewAccount}
+          edit_account={edit_account}
+        />
       )}
     </>
   );

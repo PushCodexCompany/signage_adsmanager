@@ -340,4 +340,19 @@ export default {
       return false;
     }
   },
+
+  createUserAccount: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_account?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
 };

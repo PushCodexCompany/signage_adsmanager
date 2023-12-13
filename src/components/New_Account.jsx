@@ -1,14 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Empty_Img from "../assets/img/empty_img.png";
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
+import Swal from "sweetalert2";
 
-const New_Account = ({ setShowModalAddNewAccount }) => {
+const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
   const [account_name, setAccountName] = useState(null);
   const [account_img, setAccountImg] = useState(null);
   const [preview_img, setPreviewImg] = useState(null);
+  console.log("edit_account", edit_account);
+
+  // const [file, setFile] = useState(null);
+
+  // const handleFileChange = (e) => {
+  //   setFile(e.target.files[0]);
+  // };
+
+  useEffect(() => {
+    if (edit_account.AccountID) {
+      setAccountName(edit_account.AccountName);
+      setPreviewImg(
+        `https://ui-avatars.com/api/?name=${
+          edit_account.AccountName
+        }&background=${"0496c7"}&color=fff`
+      );
+    }
+  }, []);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -21,23 +40,17 @@ const New_Account = ({ setShowModalAddNewAccount }) => {
 
   const generateImg = async () => {
     if (account_name) {
-      let img;
-
-      if (account_name.length === 1) {
-        img = `https://ui-avatars.com/api/?name=${account_name}&background=${getRandomColor()}&color=fff&size=400`;
-      } else {
-        //  const name =
-        img = `https://ui-avatars.com/api/?name=${account_name[0]}+${
-          account_name[1]
-        }&background=${getRandomColor()}&color=fff&size=400`;
-      }
-
+      const img = `https://ui-avatars.com/api/?name=${account_name}&background=0496c7&color=fff&size=400`;
       try {
         const response = await fetch(img);
         const blob = await response.blob();
         const file = new File([blob], `${account_name}_${+new Date()}.jpg`, {
           type: "image/jpeg",
         });
+
+        const formData = new FormData();
+        formData.append("file", file);
+
         const img_preview = URL.createObjectURL(blob);
         setAccountImg(file);
         setPreviewImg(img_preview);
@@ -51,9 +64,8 @@ const New_Account = ({ setShowModalAddNewAccount }) => {
     try {
       const obj = {
         accountname: account_name,
-        logo: account_img,
+        // logo: formData,
       };
-      console.log("obj", obj);
 
       const { token } = User.getCookieData();
       const encrypted = await Encryption.encryption(
@@ -61,35 +73,42 @@ const New_Account = ({ setShowModalAddNewAccount }) => {
         "create_account",
         false
       );
-      console.log(encrypted);
-      // try {
-      //   const data = await User.createUser(encrypted, token);
-      //   if (data.code !== 404) {
-      //     Swal.fire({
-      //       title: "สร้างผู้ใช้งานสำเร็จ!",
-      //       text: `สร้างผู้ใช้งานสำเร็จ!`,
-      //     }).then((result) => {
-      //       if (
-      //         result.isConfirmed ||
-      //         result.dismiss === Swal.DismissReason.backdrop
-      //       ) {
-      //         window.location.reload();
-      //       }
-      //     });
-      //   } else {
-      //     Swal.fire({
-      //       icon: "error",
-      //       title: "เกิดข้อผิดพลาด!",
-      //       text: data.message,
-      //     });
-      //   }
-      // } catch (error) {
-      //   console.error("Error:", error);
-      // }
+      try {
+        const data = await User.createUserAccount(encrypted, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            title: "สร้าง User Account สำเร็จ!",
+            text: `สร้าง User Account สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     } catch (error) {
       console.error("Error save account:", error);
     }
   };
+
+  // const handleUpload = () => {
+  // console.log(file);
+  // const formData = new FormData();
+  // formData.append("file", file);
+
+  // console.log("formData", formData);
+  // };
 
   return (
     <>
@@ -106,7 +125,7 @@ const New_Account = ({ setShowModalAddNewAccount }) => {
         <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
           <div className="flex justify-center items-center mt-8">
             <div className="font-poppins text-5xl font-bold">
-              Create Account
+              {edit_account.AccountID ? "Edit Account" : "Create Account"}
             </div>
           </div>
           <div className="flex justify-center items-center mt-2">
@@ -179,6 +198,11 @@ const New_Account = ({ setShowModalAddNewAccount }) => {
                     )}
                   </div>
                 </div>
+
+                {/* <div>
+                  <input type="file" onChange={handleFileChange} />
+                  <button onClick={handleUpload}>Upload</button>
+                </div> */}
 
                 {/* <div className="flex justify-center items-center">
                   <button
