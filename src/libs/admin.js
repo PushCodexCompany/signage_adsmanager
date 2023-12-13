@@ -325,4 +325,19 @@ export default {
 
     return data;
   },
+
+  getUserAccount: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_accounts`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
 };

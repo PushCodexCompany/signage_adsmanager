@@ -62,9 +62,22 @@ const User_Account = () => {
       navigate("/dashboard");
     }
 
-    user.account = [1, 2];
-    setAccount(user.account);
+    fetchData();
+
+    // user.account = [1, 2];
+    // setAccount(user.account);
   }, []);
+
+  const fetchData = async () => {
+    const { token } = User.getCookieData();
+
+    try {
+      const data = await User.getUserAccount(token);
+      setAccount(data);
+    } catch (error) {
+      console.error("Error : ", error);
+    }
+  };
 
   const selectAccount = (account_id) => {
     const status = User.saveSelectedAccount(account_id);
@@ -110,14 +123,17 @@ const User_Account = () => {
                 <button onClick={() => selectAccount(items)}>
                   <img
                     className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
-                    src={mock_data[items].img}
-                    alt={mock_data[items].name}
+                    src={`https://ui-avatars.com/api/?name=${
+                      items.AccountName
+                    }&background=${getRandomColor()}&color=fff`}
+                    alt={items.AccountName}
                   />
-                  <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
-                    {`${mock_data[items].name} ${mock_data[items].lastname}`}
+                  <div className="font-bold text-[20px] m-auto w-[100%] text-center mt-[10px] font-poppins">
+                    {/* {`${mock_data[items].name} ${mock_data[items].lastname}`} */}
+                    {items.AccountName}
                   </div>
                   <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
-                    {mock_data[items].des}
+                    {items.AccountCode}
                   </div>
                 </button>
               </div>

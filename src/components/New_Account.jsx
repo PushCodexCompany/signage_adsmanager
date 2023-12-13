@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Empty_Img from "../assets/img/empty_img.png";
+import User from "../libs/admin";
+import Encryption from "../libs/encryption";
 
 const New_Account = ({ setShowModalAddNewAccount }) => {
   const [account_name, setAccountName] = useState(null);
@@ -49,9 +51,41 @@ const New_Account = ({ setShowModalAddNewAccount }) => {
     try {
       const obj = {
         accountname: account_name,
-        accountimg: account_img,
+        logo: account_img,
       };
       console.log("obj", obj);
+
+      const { token } = User.getCookieData();
+      const encrypted = await Encryption.encryption(
+        obj,
+        "create_account",
+        false
+      );
+      console.log(encrypted);
+      // try {
+      //   const data = await User.createUser(encrypted, token);
+      //   if (data.code !== 404) {
+      //     Swal.fire({
+      //       title: "สร้างผู้ใช้งานสำเร็จ!",
+      //       text: `สร้างผู้ใช้งานสำเร็จ!`,
+      //     }).then((result) => {
+      //       if (
+      //         result.isConfirmed ||
+      //         result.dismiss === Swal.DismissReason.backdrop
+      //       ) {
+      //         window.location.reload();
+      //       }
+      //     });
+      //   } else {
+      //     Swal.fire({
+      //       icon: "error",
+      //       title: "เกิดข้อผิดพลาด!",
+      //       text: data.message,
+      //     });
+      //   }
+      // } catch (error) {
+      //   console.error("Error:", error);
+      // }
     } catch (error) {
       console.error("Error save account:", error);
     }
