@@ -355,4 +355,23 @@ export default {
 
     return data;
   },
+
+  SaveImgUserAccount: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/upload_logo?target=accountlogo`,
+      obj,
+      config
+    );
+
+    console.log("data", data);
+
+    return data;
+  },
 };

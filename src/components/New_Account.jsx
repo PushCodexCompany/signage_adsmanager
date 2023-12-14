@@ -10,7 +10,6 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
   const [account_name, setAccountName] = useState(null);
   const [account_img, setAccountImg] = useState(null);
   const [preview_img, setPreviewImg] = useState(null);
-  console.log("edit_account", edit_account);
 
   // const [file, setFile] = useState(null);
 
@@ -76,17 +75,32 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
       try {
         const data = await User.createUserAccount(encrypted, token);
         if (data.code !== 404) {
-          Swal.fire({
-            title: "สร้าง User Account สำเร็จ!",
-            text: `สร้าง User Account สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              window.location.reload();
-            }
-          });
+          const form = new FormData();
+          form.append("target", "accountlogo");
+          form.append("accountid", data.accountid);
+          form.append("logo", account_img);
+
+          const data_img = await User.SaveImgUserAccount(form, token);
+
+          if (data_img.code !== 404) {
+            Swal.fire({
+              title: "สร้าง User Account สำเร็จ!",
+              text: `สร้าง User Account สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data_img.message,
+            });
+          }
         } else {
           Swal.fire({
             icon: "error",

@@ -67,9 +67,6 @@ const User_Account = () => {
     }
 
     fetchData();
-
-    // user.account = [1, 2];
-    // setAccount(user.account);
   }, []);
 
   const fetchData = async () => {
@@ -116,10 +113,10 @@ const User_Account = () => {
         </div>
 
         <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
-          <div className="w-full sm:w-3/4 lg:w-1/4 h-[400px] p-2 flex justify-center items-center">
+          <div className="sm:w-1/2 lg:w-[27%] h-[400px] p-2 flex flex-col items-center">
             <button onClick={() => handleNewAccount()}>
               <img
-                className="block ml-auto mr-auto mt-30px w-4/5 rounded-3xl"
+                className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
                 src={add_new_img}
                 alt={"Add New Account"}
               />
@@ -132,14 +129,18 @@ const User_Account = () => {
             account.map((items, key) => (
               <div
                 key={items.AccountID}
-                className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
+                className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
               >
                 <div className="relative mb-4">
                   <img
                     className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
-                    src={`https://ui-avatars.com/api/?name=${
-                      items.AccountName
-                    }&background=${"0496c7"}&color=fff`}
+                    src={
+                      items.AccountLogo
+                        ? items.AccountLogo
+                        : `https://ui-avatars.com/api/?name=${
+                            items.AccountName
+                          }&background=${"000000"}&color=fff`
+                    }
                     alt={items.AccountName}
                   />
                   <div
