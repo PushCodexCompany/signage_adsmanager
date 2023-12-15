@@ -93,6 +93,7 @@ const User_Management = ({ setShowModal }) => {
   const [filter, setFilter] = useState(["Active", "Admin"]);
 
   const [user_lists, setUserLists] = useState([]);
+  const [default_account, setDefaultAccount] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
 
   //   const [showModal, setShowModal] = useState(false);
@@ -103,6 +104,7 @@ const User_Management = ({ setShowModal }) => {
   const [reg_password, setRegPassword] = useState(null);
   const [reg_re_password, setRegRePassword] = useState(null);
   const [reg_role, setRegRole] = useState(null);
+  const [reg_account, setRegAccount] = useState(null);
   const [reg_brand, setRegBrand] = useState([]);
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
@@ -117,17 +119,25 @@ const User_Management = ({ setShowModal }) => {
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
   const [page_permission, setPagePermission] = useState([]);
 
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+
   const { token } = User.getCookieData();
 
   useEffect(() => {
     fetchRoleData();
     fetchUsersList();
+    fetchAccount();
     setPermission();
   }, []);
 
   const fetchUsersList = async () => {
     const lists = await User.getUsersList(token);
     setUserLists(lists);
+  };
+
+  const fetchAccount = async () => {
+    const lists = await User.getUserAccount(token);
+    setDefaultAccount(lists);
   };
 
   const fetchRoleData = async () => {
@@ -137,6 +147,9 @@ const User_Management = ({ setShowModal }) => {
 
   const setPermission = async () => {
     const { user } = User.getCookieData();
+    if (user.role === "Super Admin") {
+      setIsSuperAdmin(true);
+    }
     const { permissions } = convertPermissionValuesToBoolean([user]);
     setPagePermission(permissions.user);
   };
@@ -279,7 +292,7 @@ const User_Management = ({ setShowModal }) => {
         email: reg_email,
         password: reg_password,
         role: reg_role,
-        accountcode: "huUpa8dN4i",
+        accountcode: reg_account,
       };
 
       console.log("value", value);
@@ -382,7 +395,7 @@ const User_Management = ({ setShowModal }) => {
                   </div>
                 </div>
               </div>
-              {page_permission.create ? (
+              {page_permission?.create ? (
                 <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
                   <button
                     onClick={() => setShowRegister(true)}
@@ -569,6 +582,35 @@ const User_Management = ({ setShowModal }) => {
                   </select>
                 </div>
               </div>
+              {isSuperAdmin ? (
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Account :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <select
+                      name="account"
+                      id="account"
+                      onClick={toggleStatusSelect}
+                      onChange={(e) => setRegAccount(e.target.value)}
+                      value={reg_role}
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    >
+                      <option value={null}>-- Please Select Account ---</option>
+                      {default_account.map((items) => (
+                        <option value={items.AccountCode}>
+                          {items.AccountName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
+
               <div className="grid grid-cols-12 space-x-2 mb-4">
                 <div className="col-span-4">
                   <div className="font-poppins text-[#8A8A8A] text-right mt-2">

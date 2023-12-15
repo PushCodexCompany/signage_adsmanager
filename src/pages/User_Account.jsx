@@ -6,6 +6,8 @@ import add_new_img from "../assets/img/add_new_brand.png";
 import { Navbar } from "../components";
 import New_Account from "../components/New_Account";
 import { TbDots } from "react-icons/tb";
+import Encryption from "../libs/encryption";
+import Swal from "sweetalert2";
 
 const getRandomColor = () => {
   const letters = "0123456789ABCDEF";
@@ -101,6 +103,48 @@ const User_Account = () => {
     setShowModalAddNewAccount(!showModalAddNewAccount);
   };
 
+  const handleDeleteAccount = async (acc_id) => {
+    try {
+      const obj = {
+        accountid: acc_id,
+      };
+
+      const { token } = User.getCookieData();
+      const encrypted = await Encryption.encryption(
+        obj,
+        "delete_account",
+        false
+      );
+      try {
+        const data = await User.deleteUserAccount(encrypted, token);
+
+        if (data.code !== 404) {
+          Swal.fire({
+            title: "ลบ User Account สำเร็จ!",
+            text: `ลบ User Account สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } catch (error) {
+      console.error("Error save account:", error);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -167,7 +211,7 @@ const User_Account = () => {
                       </button>
                       <button
                         onClick={() => {
-                          alert(`Delete ${items.AccountName}`);
+                          handleDeleteAccount(items.AccountID);
                           toggleDropdown(items.AccountID);
                         }}
                         className="block w-full text-left hover:bg-gray-100 py-2"

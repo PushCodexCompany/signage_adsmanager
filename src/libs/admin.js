@@ -356,6 +356,36 @@ export default {
     return data;
   },
 
+  editUserAccount: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/update_account?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  deleteUserAccount: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/delete_account?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
   SaveImgUserAccount: async function (obj, token) {
     const config = {
       headers: {

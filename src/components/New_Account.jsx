@@ -72,8 +72,10 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
         "create_account",
         false
       );
+
       try {
         const data = await User.createUserAccount(encrypted, token);
+        console.log("data", data);
         if (data.code !== 404) {
           const form = new FormData();
           form.append("target", "accountlogo");
@@ -101,6 +103,45 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
               text: data_img.message,
             });
           }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } catch (error) {
+      console.error("Error save account:", error);
+    }
+  };
+
+  const handleEditAccount = async () => {
+    try {
+      const obj = {
+        accountid: edit_account.AccountID,
+        accountname: account_name,
+      };
+
+      const { token } = User.getCookieData();
+      const encrypted = await Encryption.encryption(obj, "edit_account", false);
+
+      try {
+        const data = await User.editUserAccount(encrypted, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            title: "แก้ไข User Account สำเร็จ!",
+            text: `แก้ไข User Account สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
         } else {
           Swal.fire({
             icon: "error",
@@ -405,14 +446,25 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
               </div> */}
             </div>
           </div>
-          <div className="flex justify-center items-center mt-10">
-            <button
-              onClick={() => handleSaveNewAccount()}
-              className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
-            >
-              Create
-            </button>
-          </div>
+          {edit_account.AccountID ? (
+            <div className="flex justify-center items-center mt-10">
+              <button
+                onClick={() => handleEditAccount()}
+                className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+              >
+                Edit
+              </button>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center mt-10">
+              <button
+                onClick={() => handleSaveNewAccount()}
+                className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+              >
+                Create
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

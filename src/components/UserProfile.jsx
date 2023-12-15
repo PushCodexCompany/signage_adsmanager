@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
 import { MdOutlineCancel } from "react-icons/md";
@@ -60,7 +60,35 @@ const UserProfile = ({ user }) => {
             </div>
           </div>
           <div className="mt-4">
-            <button className="w-full" onClick={() => setShowModal(!showModal)}>
+            {user.user.permissions.user ? (
+              <button
+                className="w-full"
+                onClick={() => setShowModal(!showModal)}
+              >
+                <div className="grid grid-cols-5">
+                  <div className="col-span-1 ">
+                    <button
+                      type="button"
+                      style={{ color: "#6425FE", backgroundColor: "#E5FAFB" }}
+                      className="text-xl rounded-lg p-3 hover:bg-light-gray"
+                    >
+                      <FaUsersBetweenLines />
+                    </button>
+                  </div>
+                  <div className="col-span-4 ">
+                    <div className="flex justify-start hover:text-[#6425FE] left-2 font-semibold dark:text-gray-200 font-poppins">
+                      User Management
+                    </div>
+                    <div className="flex justify-start left-2 text-gray-500 text-sm dark:text-gray-400 font-poppins">
+                      User Management Setting
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ) : (
+              <></>
+            )}
+            {/* <button className="w-full" onClick={() => setShowModal(!showModal)}>
               <div className="grid grid-cols-5">
                 <div className="col-span-1 ">
                   <button
@@ -80,7 +108,7 @@ const UserProfile = ({ user }) => {
                   </div>
                 </div>
               </div>
-            </button>
+            </button> */}
             {/* {!getBrand && (
           <div className="mt-4">
             <button className="w-full" onClick={() => navigate("/brand")}>
