@@ -16,10 +16,17 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
   useEffect(() => {
     if (edit_account.AccountID) {
       setAccountName(edit_account.AccountName);
+      setAccountImg(
+        edit_account.AccountLogo ||
+          `https://ui-avatars.com/api/?name=${
+            edit_account.AccountName
+          }&background=${"000000"}&color=fff`
+      );
       setPreviewImg(
-        `https://ui-avatars.com/api/?name=${
-          edit_account.AccountName
-        }&background=${"0496c7"}&color=fff`
+        edit_account.AccountLogo ||
+          `https://ui-avatars.com/api/?name=${
+            edit_account.AccountName
+          }&background=${"000000"}&color=fff`
       );
     }
   }, []);
@@ -123,17 +130,62 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
       const { token } = User.getCookieData();
       const encrypted = await Encryption.encryption(obj, "edit_account", false);
 
-      try {
+      if (edit_account.AccountName === account_name) {
+        // เปลี่ยนรูปอย่างเดียว
+        const form = new FormData();
+        form.append("target", "accountlogo");
+        form.append("accountid", edit_account.AccountID);
+        form.append("logo", account_img);
+        const data_img = await User.SaveImgUserAccount(form, token);
+        if (data_img.code !== 404) {
+          Swal.fire({
+            title: "แก้ไข User Account สำเร็จ!",
+            text: `แก้ไข User Account สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data_img.message,
+          });
+        }
+      } else {
         const data = await User.editUserAccount(encrypted, token);
+
         if (data.code !== 404) {
-          const form = new FormData();
-          form.append("target", "accountlogo");
-          form.append("accountid", edit_account.AccountID);
-          form.append("logo", account_img);
-
-          const data_img = await User.SaveImgUserAccount(form, token);
-
-          if (data_img.code !== 404) {
+          if (edit_account.AccountLogo !== account_img) {
+            const form = new FormData();
+            form.append("target", "accountlogo");
+            form.append("accountid", edit_account.AccountID);
+            form.append("logo", account_img);
+            const data_img = await User.SaveImgUserAccount(form, token);
+            if (data_img.code !== 404) {
+              Swal.fire({
+                title: "แก้ไข User Account สำเร็จ!",
+                text: `แก้ไข User Account สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  window.location.reload();
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data_img.message,
+              });
+            }
+          } else {
             Swal.fire({
               title: "แก้ไข User Account สำเร็จ!",
               text: `แก้ไข User Account สำเร็จ!`,
@@ -145,12 +197,6 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
                 window.location.reload();
               }
             });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data_img.message,
-            });
           }
         } else {
           Swal.fire({
@@ -159,8 +205,6 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
             text: data.message,
           });
         }
-      } catch (error) {
-        console.error("Error:", error);
       }
     } catch (error) {
       console.error("Error save account:", error);
@@ -217,43 +261,35 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
             <div className="grid grid-cols-8 mt-4 space-x-4">
               <div className="col-span-3 space-y-4">
                 <div className="h-10 relative">
-                  <input
-                    className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                    type="text"
-                    placeholder="Account Name"
-                    value={account_name}
-                    onChange={(e) => setAccountName(e.target.value)}
-                    onBlur={() => generateImg()}
-                    required
-                    autoFocus
-                    autoComplete="account"
-                  />
+                  {edit_account.AccountID ? (
+                    <input
+                      className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                      type="text"
+                      placeholder="Account Name"
+                      value={account_name}
+                      onChange={(e) => setAccountName(e.target.value)}
+                      required
+                      autoComplete="account"
+                    />
+                  ) : (
+                    <input
+                      className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                      type="text"
+                      placeholder="Account Name"
+                      value={account_name}
+                      onChange={(e) => setAccountName(e.target.value)}
+                      onBlur={() => generateImg()}
+                      required
+                      autoComplete="account"
+                    />
+                  )}
+
                   <HiOutlinePencil
                     size={26}
                     color={"#6425FE"}
                     className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
                   />
                 </div>
-
-                {/* <div className="h-10 relative">
-                  <input
-                    className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                    type="text"
-                    placeholder="Brand Description"
-                    value={brand_description}
-                    onChange={(e) => setBrandDescription(e.target.value)}
-                    required
-                    autoFocus
-                    autoComplete="brand"
-                  />
-                  <HiOutlinePencil
-                    size={26}
-                    color={"#6425FE"}
-                    className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
-                    d
-                  />
-                </div> */}
-
                 <div className="flex items-center justify-center">
                   <div className="flex items-center justify-center  mt-3  rounded-lg">
                     {preview_img ? (
