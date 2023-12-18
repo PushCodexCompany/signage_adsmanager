@@ -11,11 +11,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
   const [account_img, setAccountImg] = useState(null);
   const [preview_img, setPreviewImg] = useState(null);
 
-  // const [file, setFile] = useState(null);
-
-  // const handleFileChange = (e) => {
-  //   setFile(e.target.files[0]);
-  // };
+  const [file, setFile] = useState(null);
 
   useEffect(() => {
     if (edit_account.AccountID) {
@@ -75,7 +71,6 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
 
       try {
         const data = await User.createUserAccount(encrypted, token);
-        console.log("data", data);
         if (data.code !== 404) {
           const form = new FormData();
           form.append("target", "accountlogo");
@@ -131,17 +126,32 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
       try {
         const data = await User.editUserAccount(encrypted, token);
         if (data.code !== 404) {
-          Swal.fire({
-            title: "แก้ไข User Account สำเร็จ!",
-            text: `แก้ไข User Account สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              window.location.reload();
-            }
-          });
+          const form = new FormData();
+          form.append("target", "accountlogo");
+          form.append("accountid", edit_account.AccountID);
+          form.append("logo", account_img);
+
+          const data_img = await User.SaveImgUserAccount(form, token);
+
+          if (data_img.code !== 404) {
+            Swal.fire({
+              title: "แก้ไข User Account สำเร็จ!",
+              text: `แก้ไข User Account สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data_img.message,
+            });
+          }
         } else {
           Swal.fire({
             icon: "error",
@@ -157,13 +167,21 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
     }
   };
 
-  // const handleUpload = () => {
-  // console.log(file);
-  // const formData = new FormData();
-  // formData.append("file", file);
+  const handleFileChange = (e) => {
+    setAccountImg(e.target.files[0]);
+    setPreviewImg(e.target.files);
 
-  // console.log("formData", formData);
-  // };
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImg(reader.result);
+    };
+
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setPreviewImg(null);
+    }
+  };
 
   return (
     <>
@@ -254,19 +272,15 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
                   </div>
                 </div>
 
-                {/* <div>
-                  <input type="file" onChange={handleFileChange} />
-                  <button onClick={handleUpload}>Upload</button>
-                </div> */}
-
-                {/* <div className="flex justify-center items-center">
-                  <button
-                    onClick={() => handleImageChange()}
-                    className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
-                  >
-                    Upload New Image
-                  </button>
-                </div> */}
+                {edit_account.AccountID ? (
+                  <>
+                    <div>
+                      <input type="file" onChange={handleFileChange} />
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
               {/* <div className="col-span-5 border border-[#DBDBDB] rounded-lg">
                 <div className="p-4">

@@ -295,36 +295,34 @@ const User_Management = ({ setShowModal }) => {
         accountcode: reg_account,
       };
 
-      console.log("value", value);
+      const { token } = User.getCookieData();
+      const encrypted = await Encryption.encryption(
+        value,
+        "create_user",
+        false
+      );
+      // console.log(encrypted);
 
-      // const { token } = User.getCookieData();
-      // const encrypted = await Encryption.encryption(
-      //   value,
-      //   "create_user",
-      //   false
-      // );
-      // // console.log(encrypted);
-
-      // const data = await User.createUser(encrypted, token);
-      // if (data.code !== 404) {
-      //   Swal.fire({
-      //     title: "สร้างผู้ใช้งานสำเร็จ!",
-      //     text: `สร้างผู้ใช้งานสำเร็จ!`,
-      //   }).then((result) => {
-      //     if (
-      //       result.isConfirmed ||
-      //       result.dismiss === Swal.DismissReason.backdrop
-      //     ) {
-      //       window.location.reload();
-      //     }
-      //   });
-      // } else {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "เกิดข้อผิดพลาด!",
-      //     text: data.message,
-      //   });
-      // }
+      const data = await User.createUser(encrypted, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          title: "สร้างผู้ใช้งานสำเร็จ!",
+          text: `สร้างผู้ใช้งานสำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            window.location.reload();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
     } else {
       Swal.fire({
         icon: "error",
