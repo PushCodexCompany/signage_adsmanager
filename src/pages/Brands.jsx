@@ -96,12 +96,24 @@ const Brands = () => {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     }
 
+    fetchData();
+
     user.brand = [1, 9];
     setBrand(user.brand);
     // if (select_merchandise) {
     //   window.location.href = "/dashboard";
     // }
   }, []);
+
+  const fetchData = async () => {
+    const { token } = User.getCookieData();
+    try {
+      const data = await User.getBrand(token);
+      // setBrand(data);
+    } catch (error) {
+      console.error("Error : ", error);
+    }
+  };
 
   const selectCampaign = (brand_id) => {
     const status = User.saveSelectedBrand(brand_id);
@@ -157,9 +169,10 @@ const Brands = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl"
+                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer"
                     src={mock_data[items].img}
                     alt={mock_data[items].name}
+                    onClick={() => selectCampaign(items)}
                   />
                   {/* Add icon inside img */}
                   <div
@@ -178,7 +191,7 @@ const Brands = () => {
                           alert(`Edit ${mock_data[items].name}`);
                           toggleDropdown(items);
                         }}
-                        className="block w-full text-left hover:bg-gray-100 py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
                         Edit
                       </button>
@@ -187,7 +200,7 @@ const Brands = () => {
                           alert(`Delete ${mock_data[items].name}`);
                           toggleDropdown(items);
                         }}
-                        className="block w-full text-left hover:bg-gray-100 py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
                         Delete
                       </button>

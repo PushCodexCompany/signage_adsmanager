@@ -105,41 +105,47 @@ const User_Account = () => {
 
   const handleDeleteAccount = async (acc_id) => {
     try {
-      const obj = {
-        accountid: acc_id,
-      };
-
-      const { token } = User.getCookieData();
-      const encrypted = await Encryption.encryption(
-        obj,
-        "delete_account",
-        false
-      );
-      try {
-        const data = await User.deleteUserAccount(encrypted, token);
-
-        if (data.code !== 404) {
-          Swal.fire({
-            title: "ลบ User Account สำเร็จ!",
-            text: `ลบ User Account สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              window.location.reload();
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
+      Swal.fire({
+        title: "คุณแน่ใจแล้วหรือไม่?",
+        text: "คุณต้องการลบข้อมูล User Account!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const obj = {
+            accountid: acc_id,
+          };
+          const { token } = User.getCookieData();
+          const encrypted = await Encryption.encryption(
+            obj,
+            "delete_account",
+            false
+          );
+          const data = await User.deleteUserAccount(encrypted, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              title: "ลบ User Account สำเร็จ!",
+              text: `ลบ User Account สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
         }
-      } catch (error) {
-        console.error("Error:", error);
-      }
+      });
     } catch (error) {
       console.error("Error save account:", error);
     }
@@ -177,7 +183,7 @@ const User_Account = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer"
                     src={
                       items.AccountLogo
                         ? items.AccountLogo
@@ -186,6 +192,7 @@ const User_Account = () => {
                           }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
+                    onClick={() => selectAccount(items)}
                   />
                   <div
                     onClick={() => toggleDropdown(items.AccountID)}
@@ -205,7 +212,7 @@ const User_Account = () => {
                           setEditAccount(items);
                           setShowModalAddNewAccount(true);
                         }}
-                        className="block w-full text-left hover:bg-gray-100 py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
                         Edit
                       </button>
@@ -214,7 +221,7 @@ const User_Account = () => {
                           handleDeleteAccount(items.AccountID);
                           toggleDropdown(items.AccountID);
                         }}
-                        className="block w-full text-left hover:bg-gray-100 py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
                         Delete
                       </button>

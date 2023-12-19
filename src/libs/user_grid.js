@@ -226,8 +226,11 @@ export const GridTable = ({ user_lists, page_permission }) => {
               <th className="lg:px-6 px-9 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Status
               </th>
-              <th className="lg:px-6 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Role
+              </th>
+              <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                Account
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
@@ -296,24 +299,16 @@ export const GridTable = ({ user_lists, page_permission }) => {
                     </div>
                   </div> */}
                   </td>
-                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                  <td className="px-7 py-2 whitespace-no-wrap border-b  border-gray-200">
                     <div className="font-poppins">
                       {row.RoleName ? row.RoleName : "-- No Role --"}
                     </div>
-                    {/* <div className="relative w-full lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
-                    <select
-                      name="status"
-                      id="status"
-                      className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                      defaultValue={row.role}
-                    >
-                      <option value="0">Admin</option>
-                      <option value="1">User</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                      <PiCaretUpDown size="18" color="#6425FE" />
+                  </td>
+
+                  <td className="px-7 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <div className="font-poppins">
+                      {row.AccountName ? row.AccountName : "-- No Account --"}
                     </div>
-                  </div> */}
                   </td>
 
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
