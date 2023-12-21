@@ -12,7 +12,6 @@ import {
   IoIosArrowDown,
   IoIosCheckmarkCircleOutline,
 } from "react-icons/io";
-import axios from "axios";
 
 // brand
 
@@ -29,7 +28,6 @@ import evisu_img from "../assets/img/merchandise/Evisu.png";
 import fila_img from "../assets/img/merchandise/Fila.png";
 import alice_img from "../assets/img/merchandise/Alice.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
-import { Axios } from "axios";
 import Encryption from "../libs/encryption";
 
 const mock_data_brands = [
@@ -146,34 +144,14 @@ const Login = () => {
     // User.saveRedirect();
   }, []);
 
-  // const generateMD5Hash = (input) => {
-  //   // Calculate the MD5 hash of the input
-  //   const md5Hash = CryptoJS.MD5(input).toString();
-
-  //   return md5Hash;
+  // const checkEmailTemplate = () => {
+  //   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  //   if (emailRegex.test(username)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
   // };
-
-  // const generateCombinedMD5Hash = (username, password) => {
-  //   // Calculate the MD5 hash of the password
-  //   const passwordMD5 = generateMD5Hash(password);
-
-  //   // Concatenate the username and the MD5 hash of the password
-  //   const combinedInput = username + passwordMD5;
-
-  //   // Calculate the MD5 hash of the concatenated string
-  //   const result = generateMD5Hash(combinedInput);
-
-  //   return result;
-  // };
-
-  const checkEmailTemplate = () => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (emailRegex.test(username)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   const checkPasswordTemplate = () => {
     const lengthRegex = /^.{6,}$/;
@@ -184,50 +162,50 @@ const Login = () => {
     }
   };
 
-  const removeFilter = (event) => {
-    const selectedValue = event;
-    const updatedFilter = filter.filter((value) => value !== selectedValue);
-    setFilter(updatedFilter);
-  };
+  // const removeFilter = (event) => {
+  //   const selectedValue = event;
+  //   const updatedFilter = filter.filter((value) => value !== selectedValue);
+  //   setFilter(updatedFilter);
+  // };
 
-  const clearFilter = () => {
-    setFilter([]);
-  };
+  // const clearFilter = () => {
+  //   setFilter([]);
+  // };
 
-  const toggleSectorSelect = () => {
-    setIsSectorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleRegionSelect = () => {
-    setIsRegionOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleClustorSelect = () => {
-    setIsClustorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleBranchSelect = () => {
-    setIsBranchOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleDepartmentSelect = () => {
-    setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
-  };
+  // const toggleSectorSelect = () => {
+  //   setIsSectorOpen((prevIsOpen) => !prevIsOpen);
+  // };
+  // const toggleRegionSelect = () => {
+  //   setIsRegionOpen((prevIsOpen) => !prevIsOpen);
+  // };
+  // const toggleClustorSelect = () => {
+  //   setIsClustorOpen((prevIsOpen) => !prevIsOpen);
+  // };
+  // const toggleBranchSelect = () => {
+  //   setIsBranchOpen((prevIsOpen) => !prevIsOpen);
+  // };
+  // const toggleDepartmentSelect = () => {
+  //   setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
+  // };
 
-  const showAllFilter = () => {
-    console.log("filter");
-  };
+  // const showAllFilter = () => {
+  //   console.log("filter");
+  // };
 
-  const handleStatusChange = (event) => {
-    const selectedValue = event.target.value;
-    if (selectedValue === "0") {
-      alert("Please select a valid status.");
-    } else {
-      setFilter((prevFilter) => {
-        if (prevFilter.includes(selectedValue)) {
-          return prevFilter; // Already selected, no change
-        } else {
-          return [...prevFilter, selectedValue]; // Add the selected value to the filter state
-        }
-      });
-    }
-  };
+  // const handleStatusChange = (event) => {
+  //   const selectedValue = event.target.value;
+  //   if (selectedValue === "0") {
+  //     alert("Please select a valid status.");
+  //   } else {
+  //     setFilter((prevFilter) => {
+  //       if (prevFilter.includes(selectedValue)) {
+  //         return prevFilter; // Already selected, no change
+  //       } else {
+  //         return [...prevFilter, selectedValue]; // Add the selected value to the filter state
+  //       }
+  //     });
+  //   }
+  // };
 
   const handleSubmit = async () => {
     try {
@@ -277,27 +255,27 @@ const Login = () => {
     }
   };
 
-  const handleCheckboxChange = (id, type) => {
-    if (type === "brand") {
-      const newCheckedItems = [...reg_brand];
-      if (newCheckedItems.includes(id)) {
-        const indexToRemove = newCheckedItems.indexOf(id);
-        newCheckedItems.splice(indexToRemove, 1);
-      } else {
-        newCheckedItems.push(id);
-      }
-      setRegBrand(newCheckedItems);
-    } else if (type === "merchandise") {
-      const newCheckedItems = [...reg_merchandise];
-      if (newCheckedItems.includes(id)) {
-        const indexToRemove = newCheckedItems.indexOf(id);
-        newCheckedItems.splice(indexToRemove, 1);
-      } else {
-        newCheckedItems.push(id);
-      }
-      setRegMerchandise(newCheckedItems);
-    }
-  };
+  // const handleCheckboxChange = (id, type) => {
+  //   if (type === "brand") {
+  //     const newCheckedItems = [...reg_brand];
+  //     if (newCheckedItems.includes(id)) {
+  //       const indexToRemove = newCheckedItems.indexOf(id);
+  //       newCheckedItems.splice(indexToRemove, 1);
+  //     } else {
+  //       newCheckedItems.push(id);
+  //     }
+  //     setRegBrand(newCheckedItems);
+  //   } else if (type === "merchandise") {
+  //     const newCheckedItems = [...reg_merchandise];
+  //     if (newCheckedItems.includes(id)) {
+  //       const indexToRemove = newCheckedItems.indexOf(id);
+  //       newCheckedItems.splice(indexToRemove, 1);
+  //     } else {
+  //       newCheckedItems.push(id);
+  //     }
+  //     setRegMerchandise(newCheckedItems);
+  //   }
+  // };
 
   const findBrandImg = (id) => {
     const brand = mock_data_brands.find((item) => item.id === id);
@@ -309,17 +287,17 @@ const Login = () => {
     return merchandise ? merchandise.img : null;
   };
 
-  const saveBrandReg = () => {
-    const sortBrand = reg_brand.slice().sort((a, b) => a - b);
-    setRegBrand(sortBrand);
-    setShowBrandModal(!showBrandModal);
-  };
+  // const saveBrandReg = () => {
+  //   const sortBrand = reg_brand.slice().sort((a, b) => a - b);
+  //   setRegBrand(sortBrand);
+  //   setShowBrandModal(!showBrandModal);
+  // };
 
-  const saveBrandMerchandise = () => {
-    const sortMerch = reg_merchandise.slice().sort((a, b) => a - b);
-    setRegMerchandise(sortMerch);
-    setShowMerchandiseModal(!showMerchandiseModal);
-  };
+  // const saveBrandMerchandise = () => {
+  //   const sortMerch = reg_merchandise.slice().sort((a, b) => a - b);
+  //   setRegMerchandise(sortMerch);
+  //   setShowMerchandiseModal(!showMerchandiseModal);
+  // };
 
   const registerNewUser = () => {
     if (reg_password === reg_re_password) {
@@ -555,16 +533,15 @@ const Login = () => {
           )}
         </div>
 
-        {showBrandModal && (
+        {/* {showBrandModal && (
           <a
             onClick={() => setShowBrandModal(!showBrandModal)}
             className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
           />
-        )}
+        )} */}
 
-        {showBrandModal && (
+        {/* {showBrandModal && (
           <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-            {/* First div (circle) */}
             <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
               <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
                 <button onClick={() => setShowBrandModal(!showBrandModal)}>
@@ -573,7 +550,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Second div (gray background) */}
             <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
               <div className="flex justify-center items-center mt-8">
                 <div className="font-poppins text-5xl font-bold">
@@ -598,7 +574,6 @@ const Login = () => {
               </div>
               <div className="mt-2 p-2">
                 <div className="relative flex flex-col  max-w-0  w-full mb-3 border-b-4 border-gray-600">
-                  {/* Select Menu */}
                   <div className="rounded-lg h-[50px] flex items-center shadow-md">
                     <div className="flex flex-col lg:flex-row">
                       <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
@@ -725,7 +700,6 @@ const Login = () => {
                       </div>
                     </div>
                   </div>
-                  {/* Select Menu */}
                 </div>
 
                 <div className="flex">
@@ -826,18 +800,17 @@ const Login = () => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
 
-        {showMerchandiseModal && (
+        {/* {showMerchandiseModal && (
           <a
             onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
             className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
           />
-        )}
+        )} */}
 
-        {showMerchandiseModal && (
+        {/* {showMerchandiseModal && (
           <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-            {/* First div (circle) */}
             <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
               <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
                 <button
@@ -848,7 +821,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Second div (gray background) */}
             <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
               <div className="flex justify-center items-center mt-8">
                 <div className="font-poppins text-5xl font-bold">
@@ -873,7 +845,6 @@ const Login = () => {
               </div>
 
               <div className="mt-2 p-2">
-                {/* Select Menu */}
                 <div className="relative flex flex-col  max-w-0  w-full mb-3 border-b-4 border-gray-600">
                   <div className="rounded-lg h-[50px] flex items-center shadow-md">
                     <div className="flex flex-col lg:flex-row">
@@ -1002,9 +973,7 @@ const Login = () => {
                     </div>
                   </div>
                 </div>
-                {/* Select Menu */}
-
-                {/* Filter  */}
+               
                 <div className="flex">
                   <div className="basis-12/12 ml-4">
                     {filter &&
@@ -1050,7 +1019,6 @@ const Login = () => {
                     )}
                   </div>
                 </div>
-                {/* Filter  */}
 
                 <div className="h-[350px]  mt-8 overflow-y-auto">
                   <div className="h-[250px] flex items-start justify-center mt-3">
@@ -1104,7 +1072,7 @@ const Login = () => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

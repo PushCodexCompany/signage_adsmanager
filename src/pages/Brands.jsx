@@ -98,8 +98,8 @@ const Brands = () => {
 
     fetchData();
 
-    user.brand = [1, 9];
-    setBrand(user.brand);
+    // user.brand = [1, 9];
+    // setBrand(user.brand);
     // if (select_merchandise) {
     //   window.location.href = "/dashboard";
     // }
@@ -109,7 +109,7 @@ const Brands = () => {
     const { token } = User.getCookieData();
     try {
       const data = await User.getBrand(token);
-      // setBrand(data);
+      setBrand(data);
     } catch (error) {
       console.error("Error : ", error);
     }
@@ -124,10 +124,10 @@ const Brands = () => {
     }
   };
 
-  const toggleDropdown = (itemId) => {
+  const toggleDropdown = (brandId) => {
     setDropdownStates((prevStates) => ({
       ...prevStates,
-      [itemId]: !prevStates[itemId],
+      [brandId]: !prevStates[brandId],
     }));
   };
 
@@ -170,13 +170,13 @@ const Brands = () => {
                 <div className="relative mb-4">
                   <img
                     className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer"
-                    src={mock_data[items].img}
-                    alt={mock_data[items].name}
-                    onClick={() => selectCampaign(items)}
+                    src={items.BrandLogo}
+                    alt={items.BrandName}
+                    onClick={() => selectCampaign(items.BrandID)}
                   />
                   {/* Add icon inside img */}
                   <div
-                    onClick={() => toggleDropdown(items)}
+                    onClick={() => toggleDropdown(items.BrandID)}
                     className="absolute top-2 right-2 cursor-pointer"
                   >
                     <TbDots
@@ -184,12 +184,12 @@ const Brands = () => {
                       className="text-white hover:text-[#6425FE]"
                     />
                   </div>
-                  {dropdownStates[items] && (
+                  {dropdownStates[items.BrandID] && (
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
                       <button
                         onClick={() => {
-                          alert(`Edit ${mock_data[items].name}`);
-                          toggleDropdown(items);
+                          alert(`Edit ${items.BrandName}`);
+                          toggleDropdown(items.BrandID);
                         }}
                         className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
@@ -197,8 +197,8 @@ const Brands = () => {
                       </button>
                       <button
                         onClick={() => {
-                          alert(`Delete ${mock_data[items].name}`);
-                          toggleDropdown(items);
+                          alert(`Delete ${items.BrandName}`);
+                          toggleDropdown(items.BrandID);
                         }}
                         className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
@@ -212,10 +212,10 @@ const Brands = () => {
                   className="w-full"
                 >
                   <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                    {mock_data[items].name}
+                    {items.BrandName}
                   </div>
                   <div className="text-[14px] text-slate-500 font-poppins">
-                    {mock_data[items].des}
+                    {items.BrandDesc}
                   </div>
                 </button>
               </div>

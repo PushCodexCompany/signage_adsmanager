@@ -95,6 +95,7 @@ const User_Management = ({ setShowModal }) => {
   const [user_lists, setUserLists] = useState([]);
   const [default_account, setDefaultAccount] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
+  const [default_brand, setDefaultBrand] = useState([]);
 
   //   const [showModal, setShowModal] = useState(false);
 
@@ -127,6 +128,7 @@ const User_Management = ({ setShowModal }) => {
     fetchRoleData();
     fetchUsersList();
     fetchAccount();
+    fetchBrand();
     setPermission();
   }, []);
 
@@ -143,6 +145,11 @@ const User_Management = ({ setShowModal }) => {
   const fetchRoleData = async () => {
     const roles = await User.getUserRoles(token);
     setDefaultRoles(roles);
+  };
+
+  const fetchBrand = async () => {
+    const brand = await User.getBrand(token);
+    setDefaultBrand(brand);
   };
 
   const setPermission = async () => {
@@ -268,8 +275,8 @@ const User_Management = ({ setShowModal }) => {
   };
 
   const findBrandImg = (id) => {
-    const brand = mock_data_brands.find((item) => item.id === id);
-    return brand ? brand.img : null;
+    const brand = default_brand.find((item) => item.BrandID === id);
+    return brand ? brand.BrandLogo : null;
   };
 
   const findMerchImg = (id) => {
@@ -293,6 +300,7 @@ const User_Management = ({ setShowModal }) => {
         password: reg_password,
         role: reg_role,
         accountcode: reg_account,
+        brands: reg_brand.map(String),
       };
 
       const { token } = User.getCookieData();
@@ -915,34 +923,34 @@ const User_Management = ({ setShowModal }) => {
               <div className="h-[350px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-2 gap-8">
-                    {mock_data_brands.map((item, index) => (
+                    {default_brand.map((item, index) => (
                       <div key={index}>
                         <div className="h-64 w-64 relative">
                           <input
                             type="checkbox"
                             className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
                             onChange={() =>
-                              handleCheckboxChange(item.id, "brand")
+                              handleCheckboxChange(item.BrandID, "brand")
                             }
-                            checked={reg_brand.includes(item.id)}
+                            checked={reg_brand.includes(item.BrandID)}
                           />
 
                           <div className="w-full h-full flex items-center justify-center">
                             <img
                               className="block ml-auto mr-auto w-auto h-auto rounded-3xl"
-                              src={item.img}
-                              alt={item.name}
+                              src={item.BrandLogo}
+                              alt={item.BrandName}
                             />
                           </div>
                         </div>
                         <div className="flex justify-center items-center">
                           <div className="font-poppins text-xl font-bold">
-                            {item.name}
+                            {item.BrandName}
                           </div>
                         </div>
                         <div className="flex justify-center items-center">
                           <div className="font-poppins text-[#6F6F6F] text-sm">
-                            {item.des}
+                            {item.BrandDesc}
                           </div>
                         </div>
                       </div>

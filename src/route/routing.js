@@ -2,22 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import {
   Dashboard,
-  Orders,
   Calendar,
-  Employees,
-  Stacked,
-  Pyramid,
-  Customers,
-  Kanban,
-  Line,
-  Area,
-  Bar,
-  Pie,
-  Financial,
-  ColorPicker,
-  ColorMapping,
-  Editor,
-  Main_Dashboard,
   Pdf,
   Brands,
   Merchandise,
@@ -30,7 +15,7 @@ import {
   Event,
   Logout,
   Dashboard_mockup,
-  User_Setting,
+  User_Management,
   Content_type,
   Media_Rule,
   Create_Media_Rule,
@@ -58,7 +43,6 @@ const Routing = () => {
         <Route path="/user_account" element={<User_Account />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pdf" element={<Pdf />} />
-        {/* <Route path="/brand" element={<Brands />} /> */}
         <Route path="/merchandise" element={<Merchandise />} />
         <Route path="/edit_merchandise/:id" element={<Edit_Merchandises />} />
         <Route path="/setting" element={<Setting />} />
@@ -71,7 +55,7 @@ const Routing = () => {
         <Route path="/user" element={<User_Page />} />
         <Route
           path="/setting/user_management/user"
-          element={<User_Setting />}
+          element={<User_Management />}
         />
         <Route path="/setting/content_type" element={<Content_type />} />
         <Route path="/setting/media_rule" element={<Media_Rule />} />
@@ -95,21 +79,7 @@ const Routing = () => {
         /> */}
         {/* Components */}
         <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/employees" element={<Employees />} />
-        <Route path="/customers" element={<Customers />} />
-        <Route path="/kanban" element={<Kanban />} />
-        <Route path="/editor" element={<Editor />} />
         <Route path="/calendar" element={<Calendar />} />
-        <Route path="/color-picker" element={<ColorPicker />} />
-        <Route path="/line" element={<Line />} />
-        <Route path="/area" element={<Area />} />
-        <Route path="/bar" element={<Bar />} />
-        <Route path="/pie" element={<Pie />} />
-        <Route path="/financial" element={<Financial />} />
-        <Route path="/color-mapping" element={<ColorMapping />} />
-        <Route path="/pyramid" element={<Pyramid />} />
-        <Route path="/stacked" element={<Stacked />} />
       </Routes>
     </>
   );
