@@ -303,34 +303,38 @@ const User_Management = ({ setShowModal }) => {
         brands: reg_brand.map(String),
       };
 
+      console.log(value);
+
       const { token } = User.getCookieData();
       const encrypted = await Encryption.encryption(
         value,
         "create_user",
         false
       );
+
+      console.log(encrypted);
       // console.log(encrypted);
 
       const data = await User.createUser(encrypted, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          title: "สร้างผู้ใช้งานสำเร็จ!",
-          text: `สร้างผู้ใช้งานสำเร็จ!`,
-        }).then((result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            window.location.reload();
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
-      }
+      // if (data.code !== 404) {
+      //   Swal.fire({
+      //     title: "สร้างผู้ใช้งานสำเร็จ!",
+      //     text: `สร้างผู้ใช้งานสำเร็จ!`,
+      //   }).then((result) => {
+      //     if (
+      //       result.isConfirmed ||
+      //       result.dismiss === Swal.DismissReason.backdrop
+      //     ) {
+      //       window.location.reload();
+      //     }
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "เกิดข้อผิดพลาด!",
+      //     text: data.message,
+      //   });
+      // }
     } else {
       Swal.fire({
         icon: "error",
@@ -920,8 +924,8 @@ const User_Management = ({ setShowModal }) => {
                 </div>
               </div> */}
 
-              <div className="h-[350px]  mt-8 overflow-y-auto">
-                <div className="h-[250px] flex items-start justify-center mt-3">
+              <div className="h-[500px]  mt-8 overflow-y-auto">
+                <div className="h-[40px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-2 gap-8">
                     {default_brand.map((item, index) => (
                       <div key={index}>

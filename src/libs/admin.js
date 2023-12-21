@@ -419,4 +419,38 @@ export default {
       return false;
     }
   },
+
+  createBrand: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_brand?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  SaveImgBrand: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/upload_logo?target=accountlogo`,
+      obj,
+      config
+    );
+
+    console.log("data", data);
+
+    return data;
+  },
 };

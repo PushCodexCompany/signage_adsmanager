@@ -213,6 +213,7 @@ const Login = () => {
       if (checkPasswordTemplate()) {
         const value = { username: username, password: password };
         const encrypted = await Encryption.encryption(value, "login", false);
+        console.log("encrypted", encrypted);
         const status = await User.login(encrypted);
         // console.log("status", status);
         if (status) {

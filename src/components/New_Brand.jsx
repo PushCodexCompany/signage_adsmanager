@@ -3,10 +3,15 @@ import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Empty_Img from "../assets/img/empty_img.png";
 
+import User from "../libs/admin";
+import Encryption from "../libs/encryption";
+import Swal from "sweetalert2";
+
 const New_Brand = ({ setShowModalAddNewBrand }) => {
   const [brand_name, setBrandName] = useState(null);
   const [brand_description, setBrandDescription] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [brand_img, setBrandImg] = useState(null);
   const fileInputRef = useRef(null);
 
   const [contact_person_name, setContactPersonName] = useState(null);
@@ -28,7 +33,7 @@ const New_Brand = ({ setShowModalAddNewBrand }) => {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-
+    setBrandImg(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -38,26 +43,58 @@ const New_Brand = ({ setShowModalAddNewBrand }) => {
     }
   };
 
-  const handleSaveNewBrand = () => {
+  const handleSaveNewBrand = async () => {
     const obj = {
-      brand_name,
-      brand_description,
-      img: selectedImage,
-      contact_person: {
-        contact_person_name,
-        department_contact,
-        position_contact,
-        email_contact,
-        remark_contact,
-      },
-      fullname,
-      department,
-      position,
-      email,
-      remark,
+      brandname: brand_name,
+      branddesc: brand_description,
+      contactname: contact_person_name,
+      department: department_contact,
+      position: position_contact,
+      email: email_contact,
+      remark: remark_contact,
     };
 
-    console.log(obj);
+    const { token } = User.getCookieData();
+    const encrypted = await Encryption.encryption(obj, "create_brand", false);
+    console.log("encrypted", encrypted);
+    try {
+      const data = await User.createBrand(encrypted, token);
+      console.log("data", data);
+      if (data.code !== 404) {
+        const form = new FormData();
+        form.append("target", "brandlogo");
+        form.append("brandid", data.brandid);
+        form.append("logo", brand_img);
+        const data_img = await User.SaveImgBrand(form, token);
+        if (data_img.code !== 404) {
+          Swal.fire({
+            title: "สร้าง Brand สำเร็จ!",
+            text: `สร้าง Brand สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data_img.message,
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
   return (
     <>
@@ -268,7 +305,7 @@ const New_Brand = ({ setShowModalAddNewBrand }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="h-10 relative mt-10">
+                  {/* <div className="h-10 relative mt-10">
                     <input
                       className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
                       type="text"
@@ -339,7 +376,7 @@ const New_Brand = ({ setShowModalAddNewBrand }) => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
