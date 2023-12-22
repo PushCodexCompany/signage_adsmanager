@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Empty_Img from "../assets/img/empty_img.png";
@@ -10,6 +10,8 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
   const [account_name, setAccountName] = useState(null);
   const [account_img, setAccountImg] = useState(null);
   const [preview_img, setPreviewImg] = useState(null);
+  const fileInputRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [file, setFile] = useState(null);
 
@@ -31,13 +33,21 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
     }
   }, []);
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+  const handleImageChange = () => {
+    // Trigger file input click
+    fileInputRef.current.click();
+  };
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setAccountImg(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImg(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
-    return color;
   };
 
   const generateImg = async () => {
@@ -211,22 +221,6 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
     }
   };
 
-  const handleFileChange = (e) => {
-    setAccountImg(e.target.files[0]);
-    setPreviewImg(e.target.files);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewImg(reader.result);
-    };
-
-    if (e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0]);
-    } else {
-      setPreviewImg(null);
-    }
-  };
-
   return (
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
@@ -292,6 +286,13 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
                 </div>
                 <div className="flex items-center justify-center">
                   <div className="flex items-center justify-center  mt-3  rounded-lg">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileInputChange}
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                    />
                     {preview_img ? (
                       <img
                         src={preview_img}
@@ -310,8 +311,13 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
 
                 {edit_account.AccountID ? (
                   <>
-                    <div>
-                      <input type="file" onChange={handleFileChange} />
+                    <div className="flex justify-center items-center">
+                      <button
+                        onClick={() => handleImageChange()}
+                        className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                      >
+                        Upload New Image
+                      </button>
                     </div>
                   </>
                 ) : (
