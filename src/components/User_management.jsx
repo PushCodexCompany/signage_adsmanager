@@ -924,9 +924,9 @@ const User_Management = ({ setShowModal }) => {
                 </div>
               </div> */}
 
-              <div className="h-[500px]  mt-8 overflow-y-auto">
-                <div className="h-[40px] flex items-start justify-center mt-3">
-                  <div className="grid grid-cols-2 gap-8">
+              <div className="h-[550px]  mt-8 overflow-y-auto">
+                <div className="h-[250px] flex items-start justify-center mt-3">
+                  <div className="grid grid-cols-4 gap-8">
                     {default_brand.map((item, index) => (
                       <div key={index}>
                         <div className="h-64 w-64 relative">
@@ -941,7 +941,7 @@ const User_Management = ({ setShowModal }) => {
 
                           <div className="w-full h-full flex items-center justify-center">
                             <img
-                              className="block ml-auto mr-auto w-auto h-auto rounded-3xl"
+                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl" // Adjust the size as needed
                               src={item.BrandLogo}
                               alt={item.BrandName}
                             />
