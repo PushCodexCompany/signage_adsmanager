@@ -125,16 +125,32 @@ const User_Management = ({ setShowModal }) => {
   const { token } = User.getCookieData();
 
   useEffect(() => {
-    fetchRoleData();
-    fetchUsersList();
-    fetchAccount();
     fetchBrand();
+    fetchRoleData();
+    fetchAccount();
     setPermission();
   }, []);
 
-  const fetchUsersList = async () => {
+  const fetchUsersList = async (brand) => {
     const lists = await User.getUsersList(token);
-    setUserLists(lists);
+
+    const updatedData = lists.map((item) => {
+      if (item.AccessContent.brands && item.AccessContent.brands.length > 0) {
+        const brandID = item.AccessContent.brands;
+        const foundBrand = findBrandByID(brandID.map(Number), brand);
+        if (foundBrand) {
+          item.AccessContent.brands = foundBrand;
+        }
+      }
+      return item;
+    });
+
+    setUserLists(updatedData);
+  };
+
+  const findBrandByID = (brandID, brand) => {
+    const value = brand.filter((brand) => brandID.includes(brand.BrandID));
+    return value;
   };
 
   const fetchAccount = async () => {
@@ -150,6 +166,7 @@ const User_Management = ({ setShowModal }) => {
   const fetchBrand = async () => {
     const brand = await User.getBrand(token);
     setDefaultBrand(brand);
+    fetchUsersList(brand);
   };
 
   const setPermission = async () => {
@@ -300,7 +317,10 @@ const User_Management = ({ setShowModal }) => {
         password: reg_password,
         role: reg_role,
         accountcode: reg_account,
-        brands: reg_brand.map(String),
+        accesscontent: {
+          brands: reg_brand.map(String),
+          merchandise: reg_merchandise,
+        },
       };
 
       console.log(value);
@@ -315,7 +335,7 @@ const User_Management = ({ setShowModal }) => {
       console.log(encrypted);
       // console.log(encrypted);
 
-      const data = await User.createUser(encrypted, token);
+      // const data = await User.createUser(encrypted, token);
       // if (data.code !== 404) {
       //   Swal.fire({
       //     title: "สร้างผู้ใช้งานสำเร็จ!",
@@ -362,21 +382,21 @@ const User_Management = ({ setShowModal }) => {
           </div>
           {/* Select Menu */}
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-            <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-              <div class="flex flex-col lg:flex-row">
-                <div class="w-full lg:w-3/4 flex justify-between items-center">
-                  <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+            <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+              <div className="flex flex-col lg:flex-row">
+                <div className="w-full lg:w-3/4 flex justify-between items-center">
+                  <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
                     <select
                       name="status"
                       id="status"
                       onClick={toggleStatusSelect}
                       onChange={handleStatusChange}
-                      class="block appearance-none font-poppins w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                      className="block appearance-none font-poppins w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                     >
                       <option value="Active">Active</option>
                       <option value="Inactive">Inactive</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                       {isStatusOpen ? (
                         <IoIosArrowUp size={18} color="#6425FE" />
                       ) : (
@@ -384,18 +404,18 @@ const User_Management = ({ setShowModal }) => {
                       )}
                     </div>
                   </div>
-                  <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                  <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
                     <select
                       name="role"
                       id="role"
                       onClick={toggleRoleSelect}
                       onChange={handleStatusChange}
-                      class="block appearance-none w-full font-poppins bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                      className="block appearance-none w-full font-poppins bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                     >
                       <option value="Admin">Admin</option>
                       <option value="User">User</option>
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
                       {isRoleOpen ? (
                         <IoIosArrowUp size={18} color="#6425FE" />
                       ) : (
@@ -467,10 +487,12 @@ const User_Management = ({ setShowModal }) => {
           </div>
           {/* Filter */}
           <div className="w-auto mt-5 h-[400px]  rounded-lg p-2">
-            <GridTable
-              user_lists={user_lists}
-              page_permission={page_permission}
-            />
+            {user_lists.length > 0 && (
+              <GridTable
+                user_lists={user_lists}
+                page_permission={page_permission}
+              />
+            )}
           </div>
         </div>
       </div>

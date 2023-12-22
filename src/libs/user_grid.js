@@ -125,6 +125,8 @@ const dashboardData = [
 ];
 
 export const GridTable = ({ user_lists, page_permission }) => {
+  const [list_data, setListData] = useState([]);
+
   const [modal_edit, setModalEdit] = useState(false);
   const [default_brand, setDefaultBrand] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
@@ -149,6 +151,7 @@ export const GridTable = ({ user_lists, page_permission }) => {
     const { token } = User.getCookieData();
     const roles = await User.getUserRoles(token);
     const brands = await User.getBrand(token);
+
     setDefaultBrand(brands);
     setDefaultRoles(roles);
   };
@@ -159,10 +162,22 @@ export const GridTable = ({ user_lists, page_permission }) => {
   };
 
   const onSelectEdit = (id) => {
-    const { UserID, Username, Email, Activated, RoleName, RoleID } =
-      user_lists.find((item) => item.UserID === id);
+    const {
+      UserID,
+      Username,
+      Email,
+      Activated,
+      RoleName,
+      RoleID,
+      AccessContent,
+    } = user_lists.find((item) => item.UserID === id);
     setEditId(UserID);
     setEditUsername(Username);
+    setRegBrand(
+      AccessContent?.brands
+        ? AccessContent.brands.map((brand) => brand.BrandID)
+        : []
+    );
     setEditEmail(Email);
     setEditActivate(Activated);
     setEditRolename(RoleID);
@@ -182,10 +197,16 @@ export const GridTable = ({ user_lists, page_permission }) => {
           email: edit_email,
           activated: edit_activate,
           roleid: edit_rolename,
-          brands: reg_brand.map(String),
+          accesscontent: {
+            brands: reg_brand.map(String),
+            merchandise: reg_merchandise,
+          },
         };
 
+        // console.log("obj", obj);
+
         const encrypted = await Encryption.encryption(obj, "edit_user", false);
+        // console.log("encrypted", encrypted);
         const data = await User.updateUser(encrypted, token);
 
         if (data.code !== 404) {
@@ -254,15 +275,15 @@ export const GridTable = ({ user_lists, page_permission }) => {
           <thead>
             <tr>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                No.
+                ID
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Username
               </th>
-              {/* <th className="lg:px-6 px-8 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="lg:px-6 px-8 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Brand
               </th>
-              <th className="lg:px-6 px-14 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              {/* <th className="lg:px-6 px-14 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Merchandise
               </th> */}
               <th className="lg:px-6 px-9 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
@@ -284,7 +305,7 @@ export const GridTable = ({ user_lists, page_permission }) => {
               user_lists.map((row, key) => (
                 <tr key={key}>
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="font-poppins text-xl">{key + 1}</div>
+                    <div className="font-poppins text-xl">{row.UserID}</div>
                   </td>
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                     {page_permission.update ? (
@@ -302,26 +323,27 @@ export const GridTable = ({ user_lists, page_permission }) => {
                       {row.Email ? row.Email : "-- No Email --"}
                     </div>
                   </td>
+                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <div className="flex space-x-1 ">
+                      {row.AccessContent?.brands &&
+                        row.AccessContent.brands.map((items) => (
+                          <img
+                            className="w-[50px] h-[50px] rounded-md"
+                            src={items.BrandLogo}
+                          />
+                        ))}
+                    </div>
+                  </td>
                   {/* <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex space-x-1 ">
-                    {row.brand.map((items) => (
-                      <img
-                        className="w-[50px] h-[50px] rounded-md"
-                        src={getImgBrand(items)}
-                      />
-                    ))}
-                  </div>
-                </td> */}
-                  {/* <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex space-x-1 ">
-                    {row.merchandise.map((items) => (
-                      <img
-                        className="w-[50px] h-[50px] rounded-md"
-                        src={getImg(items)}
-                      />
-                    ))}
-                  </div>
-                </td> */}
+                    <div className="flex space-x-1 ">
+                      {row.merchandise.map((items) => (
+                        <img
+                          className="w-[50px] h-[50px] rounded-md"
+                          src={getImg(items)}
+                        />
+                      ))}
+                    </div>
+                  </td> */}
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                     <div className="font-poppins">
                       {row.Activated === 1 ? "Active" : "Deactive"}
@@ -383,7 +405,7 @@ export const GridTable = ({ user_lists, page_permission }) => {
       {modal_edit && (
         <a
           onClick={() => setModalEdit(!modal_edit)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-10 bg-black z-10 backdrop-blur"
         />
       )}
 
