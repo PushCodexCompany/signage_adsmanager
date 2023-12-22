@@ -75,6 +75,7 @@ const Brands = () => {
 
   const [showModalAddNewBrand, setShowModalAddNewBrand] = useState(false);
   const [dropdownStates, setDropdownStates] = useState({});
+  const [edit_brand, setEditBrand] = useState([]);
 
   const navigate = useNavigate();
 
@@ -131,6 +132,11 @@ const Brands = () => {
     }));
   };
 
+  const handleNewBrand = () => {
+    setEditBrand([]);
+    setShowModalAddNewBrand(!showModalAddNewBrand);
+  };
+
   return (
     <>
       <Navbar />
@@ -147,7 +153,7 @@ const Brands = () => {
         <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2">
           <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
             <button
-              onClick={() => setShowModalAddNewBrand(!showModalAddNewBrand)}
+              onClick={() => handleNewBrand()}
               className="flex flex-col items-center"
             >
               <img
@@ -188,8 +194,9 @@ const Brands = () => {
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
                       <button
                         onClick={() => {
-                          alert(`Edit ${items.BrandName}`);
                           toggleDropdown(items.BrandID);
+                          setEditBrand(items);
+                          setShowModalAddNewBrand(true);
                         }}
                         className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
@@ -231,7 +238,10 @@ const Brands = () => {
       )}
 
       {showModalAddNewBrand && (
-        <New_Brand setShowModalAddNewBrand={setShowModalAddNewBrand} />
+        <New_Brand
+          setShowModalAddNewBrand={setShowModalAddNewBrand}
+          edit_brand={edit_brand}
+        />
       )}
     </>
   );

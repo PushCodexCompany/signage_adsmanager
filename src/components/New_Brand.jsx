@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Empty_Img from "../assets/img/empty_img.png";
@@ -7,7 +7,7 @@ import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 
-const New_Brand = ({ setShowModalAddNewBrand }) => {
+const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
   const [brand_name, setBrandName] = useState(null);
   const [brand_description, setBrandDescription] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -25,6 +25,18 @@ const New_Brand = ({ setShowModalAddNewBrand }) => {
   const [position, setPosition] = useState(null);
   const [email, setEmail] = useState(null);
   const [remark, setRemark] = useState(null);
+
+  useEffect(() => {
+    setBrandName(edit_brand.BrandName);
+    setBrandDescription(edit_brand.BrandDesc);
+    setSelectedImage(edit_brand.BrandLogo);
+
+    setContactPersonName(edit_brand.ContactName);
+    setDepartmentContact(edit_brand.Department);
+    setPositionContact(edit_brand.Position);
+    setEmailContact(edit_brand.Email);
+    setRemarkContact(edit_brand.Remark);
+  }, [edit_brand]);
 
   const handleImageChange = () => {
     // Trigger file input click
@@ -110,7 +122,9 @@ const New_Brand = ({ setShowModalAddNewBrand }) => {
         {/* Second div (gray background) */}
         <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
           <div className="flex justify-center items-center mt-8">
-            <div className="font-poppins text-5xl font-bold">Create Brand</div>
+            <div className="font-poppins text-5xl font-bold">
+              {edit_brand.BrandID ? "Edit Brand" : "Create Brand"}
+            </div>
           </div>
           <div className="flex justify-center items-center mt-2">
             <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
