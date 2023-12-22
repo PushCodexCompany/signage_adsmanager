@@ -11,9 +11,6 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
   const [account_img, setAccountImg] = useState(null);
   const [preview_img, setPreviewImg] = useState(null);
   const fileInputRef = useRef(null);
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     if (edit_account.AccountID) {

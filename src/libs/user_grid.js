@@ -126,6 +126,7 @@ const dashboardData = [
 
 export const GridTable = ({ user_lists, page_permission }) => {
   const [modal_edit, setModalEdit] = useState(false);
+  const [default_brand, setDefaultBrand] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
 
@@ -136,14 +137,25 @@ export const GridTable = ({ user_lists, page_permission }) => {
   const [edit_activate, setEditActivate] = useState(null);
   const [edit_rolename, setEditRolename] = useState(null);
 
+  const [showBrandModal, setShowBrandModal] = useState(false);
+  const [reg_brand, setRegBrand] = useState([]);
+  const [reg_merchandise, setRegMerchandise] = useState([]);
+
   useEffect(() => {
     fetchRoleData();
-  });
+  }, []);
 
   const fetchRoleData = async () => {
     const { token } = User.getCookieData();
     const roles = await User.getUserRoles(token);
+    const brands = await User.getBrand(token);
+    setDefaultBrand(brands);
     setDefaultRoles(roles);
+  };
+
+  const findBrandImg = (id) => {
+    const brand = default_brand.find((item) => item.BrandID === id);
+    return brand ? brand.BrandLogo : null;
   };
 
   const onSelectEdit = (id) => {
@@ -170,7 +182,9 @@ export const GridTable = ({ user_lists, page_permission }) => {
           email: edit_email,
           activated: edit_activate,
           roleid: edit_rolename,
+          brands: reg_brand.map(String),
         };
+
         const encrypted = await Encryption.encryption(obj, "edit_user", false);
         const data = await User.updateUser(encrypted, token);
 
@@ -203,6 +217,34 @@ export const GridTable = ({ user_lists, page_permission }) => {
     } catch (error) {
       console.error("Error:", error);
     }
+  };
+
+  const handleCheckboxChange = (id, type) => {
+    if (type === "brand") {
+      const newCheckedItems = [...reg_brand];
+      if (newCheckedItems.includes(id)) {
+        const indexToRemove = newCheckedItems.indexOf(id);
+        newCheckedItems.splice(indexToRemove, 1);
+      } else {
+        newCheckedItems.push(id);
+      }
+      setRegBrand(newCheckedItems);
+    } else if (type === "merchandise") {
+      const newCheckedItems = [...reg_merchandise];
+      if (newCheckedItems.includes(id)) {
+        const indexToRemove = newCheckedItems.indexOf(id);
+        newCheckedItems.splice(indexToRemove, 1);
+      } else {
+        newCheckedItems.push(id);
+      }
+      setRegMerchandise(newCheckedItems);
+    }
+  };
+
+  const saveBrandReg = () => {
+    const sortBrand = reg_brand.slice().sort((a, b) => a - b);
+    setRegBrand(sortBrand);
+    setShowBrandModal(!showBrandModal);
   };
 
   return (
@@ -450,6 +492,47 @@ export const GridTable = ({ user_lists, page_permission }) => {
                   </select>
                 </div>
               </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Brand :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                    <button
+                      onClick={() => setShowBrandModal(true)}
+                      name="brand"
+                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                    >
+                      Select Brand
+                    </button>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <PiCaretUpDown size={20} color="#6425FE" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right"></div>
+                </div>
+                <div className="col-span-8">
+                  {reg_brand.length > 0 && (
+                    <div className="flex items-center space-x-4">
+                      {reg_brand.map((item, index) => (
+                        <div key={index} className="flex">
+                          <img
+                            className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                            src={findBrandImg(item)}
+                            alt={item.name}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
             <div className="text-center">
               <button
@@ -459,6 +542,267 @@ export const GridTable = ({ user_lists, page_permission }) => {
               >
                 Save
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showBrandModal && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setShowBrandModal(!showBrandModal)}>
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">
+                Select Brands
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Sign Up To Unleash The Power Of Digital Advertising
+              </div>
+            </div>
+            {/* <div className="mt-2 p-2">
+              <div className="relative flex items-center justify-center">
+                <input
+                  className="w-[900px] h-10 border border-gray-300 rounded-md pl-10 pr-2 font-poppins"
+                  placeholder="Search"
+                />
+                <span className="absolute inset-y-0 left-0 lg:left-80 flex items-center pl-2">
+                  <AiOutlineSearch size={20} color="#DBDBDB" />
+                </span>
+              </div>
+            </div> */}
+            <div className="mt-2 p-2">
+              {/* <div className="relative flex flex-col  max-w-0  w-full mb-3 border-b-4 border-gray-600">
+                <div className="rounded-lg h-[50px] flex items-center shadow-md">
+                  <div className="flex flex-col lg:flex-row">
+                    <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
+                      <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="sector"
+                          id="sector"
+                          onClick={toggleSectorSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Sector">Sector</option>
+                          <option value="Portrait">Portrait</option>
+                          <option value="Landscape">Landscape</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isSectorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="region"
+                          id="region"
+                          onClick={toggleRegionSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Region">Region</option>
+                          <option value="North">North</option>
+                          <option value="West">West</option>
+                          <option value="East">East</option>
+                          <option value="South">South</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                          {isRegionOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="store_cluster"
+                          id="store_cluster"
+                          onClick={toggleClustorSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Store Cluster">Store Cluster</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isClustorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="branch"
+                          id="branch"
+                          onClick={toggleBranchSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Branch">Branch</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isBranchOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="department"
+                          id="department"
+                          onClick={toggleDepartmentSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Department">Department</option>
+                          <option value="Beauty">Beauty</option>
+                          <option value="Toy">Toy</option>
+                          <option value="Electronics">Electronics</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isDepartmentOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <button
+                          onClick={() => showAllFilter()}
+                          name="role"
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm text-left border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          All filter
+                        </button>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <PiSlidersHorizontalFill size={18} color="#6425FE" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> */}
+
+              {/* <div className="flex">
+                <div className="basis-12/12 ml-4">
+                  {filter &&
+                    filter.map((items) => (
+                      <button onClick={() => removeFilter(items)}>
+                        <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
+                          <div className="grid grid-cols-4">
+                            <div className="col-span-1 mt-[6px]">
+                              <div className="flex justify-end items-center">
+                                <IoIosClose size="27" color="#6425FE" />
+                              </div>
+                            </div>
+                            <div className="col-span-3 mt-[8px]">
+                              <div className="flex justify-center items-center">
+                                <div className="font-poppins text-sm font-bold">
+                                  {items}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  {filter.length > 0 && (
+                    <button onClick={() => clearFilter()}>
+                      <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+                        <div className="grid grid-cols-12">
+                          <div className="col-span-1 mt-[6px]">
+                            <div className="flex justify-end items-center">
+                              <IoIosClose size="27" color="#6425FE" />
+                            </div>
+                          </div>
+                          <div className="col-span-11 mt-[8px]">
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins text-sm text-white">
+                                Clear All
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  )}
+                </div>
+              </div> */}
+
+              <div className="h-[550px]  mt-8 overflow-y-auto">
+                <div className="h-[250px] flex items-start justify-center mt-3">
+                  <div className="grid grid-cols-4 gap-8">
+                    {default_brand.map((item, index) => (
+                      <div key={index}>
+                        <div className="h-64 w-64 relative">
+                          <input
+                            type="checkbox"
+                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                            onChange={() =>
+                              handleCheckboxChange(item.BrandID, "brand")
+                            }
+                            checked={reg_brand.includes(item.BrandID)}
+                          />
+
+                          <div className="w-full h-full flex items-center justify-center">
+                            <img
+                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl" // Adjust the size as needed
+                              src={item.BrandLogo}
+                              alt={item.BrandName}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-xl font-bold">
+                            {item.BrandName}
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-[#6F6F6F] text-sm">
+                            {item.BrandDesc}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <button
+                    onClick={() => saveBrandReg()}
+                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
