@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Navbar } from "../components";
+import { TbDots } from "react-icons/tb";
 
 import top_img from "../assets/img/merchandise/tops.png";
 import matsumoto_img from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
@@ -11,6 +12,8 @@ import alice_img from "../assets/img/merchandise/Alice.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
 import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
+
+import add_new_img from "../assets/img/add_brand.png";
 
 const brand_merchandise = {
   1: [
@@ -70,7 +73,12 @@ const Merchandise = () => {
   const select_campaign = User.getCampaign();
   const select_merchandise = User.getMerchandise();
 
+  const [edit_merchandise, setEditMerchandise] = useState([]);
+  const [showModalAddNewMerchandise, setShowModalAddNewMerchandise] =
+    useState(false);
+
   const [merchandise, setMerchandise] = useState([]);
+  const [dropdownStates, setDropdownStates] = useState({});
 
   useEffect(() => {
     getMechendise();
@@ -82,6 +90,18 @@ const Merchandise = () => {
 
   const selectMerchandise = (merchendise) => {
     alert(`Select : ${merchendise.name}`);
+  };
+
+  const handleNewMerchandise = () => {
+    setEditMerchandise([]);
+    setShowModalAddNewMerchandise(!showModalAddNewMerchandise);
+  };
+
+  const toggleDropdown = (id) => {
+    setDropdownStates((prevStates) => ({
+      ...prevStates,
+      [id]: !prevStates[id],
+    }));
   };
 
   return (
@@ -96,35 +116,93 @@ const Merchandise = () => {
           industry.
         </div>
 
-        <div
-          class={
-            merchandise.length === 1
-              ? "grid grid-cols-1 gap-4 sm:grid-cols-1"
-              : merchandise.length === 2
-              ? "grid grid-cols-1 gap-4 sm:grid-cols-2"
-              : merchandise.length === 3
-              ? "grid grid-cols-1 gap-4 sm:grid-cols-3"
-              : "grid grid-cols-1 gap-4 sm:grid-cols-4"
-          }
-        >
-          {merchandise.map((items) => (
-            <div>
-              <button onClick={() => selectMerchandise(items)}>
+        <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2">
+          <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
+            <button
+              onClick={() => handleNewMerchandise()}
+              className="flex flex-col items-center"
+            >
+              <div className="h-60 flex items-center justify-center">
                 <img
-                  className={`block ml-auto mr-auto mt-30px w-3/5 rounded-3xl `}
-                  src={items.img}
+                  className="block ml-auto mr-auto mt-30px w-1/5 rounded-3xl "
+                  src={add_new_img}
+                  alt={"add new merchandise"}
                 />
-                <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px] font-poppins">
-                  {items.name}
+              </div>
+              <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+                Add New Merchandise
+              </div>
+            </button>
+          </div>
+
+          {merchandise.length > 0 &&
+            merchandise.map((items, key) => (
+              <div
+                key={key}
+                className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
+              >
+                <div className="relative mb-4">
+                  <img
+                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer"
+                    src={items.img}
+                    alt={items.name}
+                  />
+                  {/* Add icon inside img */}
+                  <div
+                    onClick={() => toggleDropdown(items.id)}
+                    className="absolute top-2 right-2 cursor-pointer"
+                  >
+                    <TbDots
+                      size={26}
+                      className="text-white hover:text-[#6425FE]"
+                    />
+                  </div>
+                  {dropdownStates[items.id] && (
+                    <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
+                      <button
+                        onClick={() => {
+                          alert(`Edit ${items.name}`);
+                          toggleDropdown(items.id);
+                          // setEditBrand(items);
+                          // setShowModalAddNewBrand(true);
+                        }}
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          alert(`Delete ${items.name}`);
+                          toggleDropdown(items.id);
+                        }}
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <div className="text-[14px] text-slate-500 m-auto w-[70%] font-poppins">
-                  {items.des}
-                </div>
-              </button>
-            </div>
-          ))}
+                <button className="w-full">
+                  <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+                    {items.name}
+                  </div>
+                  <div className="text-[14px] text-slate-500 font-poppins">
+                    {items.des}
+                  </div>
+                </button>
+              </div>
+            ))}
         </div>
       </div>
+
+      {showModalAddNewMerchandise && (
+        <a
+          onClick={() =>
+            setShowModalAddNewMerchandise(!showModalAddNewMerchandise)
+          }
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
     </>
   );
 };

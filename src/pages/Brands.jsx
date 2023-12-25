@@ -156,11 +156,13 @@ const Brands = () => {
               onClick={() => handleNewBrand()}
               className="flex flex-col items-center"
             >
-              <img
-                className="block ml-auto mr-auto mt-30px w-2/5 rounded-3xl"
-                src={add_new_img}
-                alt={"add new brand"}
-              />
+              <div className="h-60 flex items-center justify-center">
+                <img
+                  className="block ml-auto mr-auto mt-30px w-1/5 rounded-3xl"
+                  src={add_new_img}
+                  alt={"add new brand"}
+                />
+              </div>
               <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add new Brand
               </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
-import add_new_img from "../assets/img/add_new_brand.png";
+import add_new_img from "../assets/img/add_brand.png";
 import { Navbar } from "../components";
 import New_Account from "../components/New_Account";
 import { TbDots } from "react-icons/tb";
@@ -165,11 +165,13 @@ const User_Account = () => {
         <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
           <div className="sm:w-1/2 lg:w-[27%] h-[400px] p-2 flex flex-col items-center">
             <button onClick={() => handleNewAccount()}>
-              <img
-                className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl"
-                src={add_new_img}
-                alt={"Add New Account"}
-              />
+              <div className="h-60 flex items-center justify-center">
+                <img
+                  className="block ml-auto mr-auto mt-30px w-1/5 rounded-3xl"
+                  src={add_new_img}
+                  alt={"Add New Account"}
+                />
+              </div>
               <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add New Account
               </div>
