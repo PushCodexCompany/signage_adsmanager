@@ -93,8 +93,7 @@ const Merchandise = () => {
   };
 
   const handleNewMerchandise = () => {
-    setEditMerchandise([]);
-    setShowModalAddNewMerchandise(!showModalAddNewMerchandise);
+    alert("add new Merchandise");
   };
 
   const toggleDropdown = (id) => {
@@ -194,15 +193,6 @@ const Merchandise = () => {
             ))}
         </div>
       </div>
-
-      {showModalAddNewMerchandise && (
-        <a
-          onClick={() =>
-            setShowModalAddNewMerchandise(!showModalAddNewMerchandise)
-          }
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )}
     </>
   );
 };
