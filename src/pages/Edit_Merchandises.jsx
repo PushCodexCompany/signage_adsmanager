@@ -15,6 +15,23 @@ const Edit_Merchandises = () => {
   const [merchandise_data, setmerchandiseData] = useState([]);
   const [preview_img, setPreviewImg] = useState(null);
 
+  // data
+  const [merchandise_name, setMerchandiseName] = useState();
+  const [merchandise_type, setMerchandiseType] = useState();
+  const [merchandise_img, setMerchandiseImage] = useState();
+  const [contact_person_name, setContactPersonName] = useState();
+  const [contact_person_dep, setContactPersonDep] = useState();
+  const [contact_person_pos, setContactPersonPos] = useState();
+  const [contact_person_email, setContactPersonEmail] = useState();
+  const [contact_person_phone, setContactPersonPhone] = useState();
+  const [billing_contact_name, setBillingContactName] = useState();
+  const [billing_email, setBillingEmail] = useState();
+  const [billing_contact_number, setBillingContactNumber] = useState();
+  const [billing_address, setBillingAddress] = useState();
+  const [billing_address2, setBillingAddress2] = useState();
+  const [billing_country, setBillingCountry] = useState();
+  const [billing_zip, setBillingZip] = useState();
+
   useEffect(() => {
     if (id !== "new") {
       fetchMerchandise(id);
@@ -59,7 +76,7 @@ const Edit_Merchandises = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-
+    setMerchandiseImage(event.target.files);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -67,6 +84,32 @@ const Edit_Merchandises = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleSave = () => {
+    const obj = {
+      merchandisename: merchandise_name,
+      merchandisetype: merchandise_type,
+      merchandiseimg: merchandise_img,
+      contactperson: {
+        name: contact_person_name,
+        department: contact_person_dep,
+        position: contact_person_pos,
+        email: contact_person_email,
+        phone: contact_person_phone,
+      },
+      billing: {
+        name: billing_contact_name,
+        email: billing_email,
+        phone: billing_contact_number,
+        address: billing_address,
+        address2: billing_address2,
+        country: billing_country,
+        zip: billing_zip,
+      },
+    };
+
+    console.log("obj", obj);
   };
 
   return (
@@ -82,7 +125,7 @@ const Edit_Merchandises = () => {
               <input
                 placeholder="Insert Merchandise Name"
                 className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
-                defaultValue={merchandise_data.brand}
+                onChange={(e) => setMerchandiseName(e.target.value)}
               />
               <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
             </div>
@@ -95,6 +138,7 @@ const Edit_Merchandises = () => {
                   id="file_size_type"
                   className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                   placeholder="Resolution"
+                  onChange={(e) => setMerchandiseType(e.target.value)}
                 >
                   <option value="1">Department Store</option>
                   <option value="2">Mock 1 </option>
@@ -185,6 +229,7 @@ const Edit_Merchandises = () => {
           <div className="flex items-center">
             <input
               placeholder="Full Name"
+              onChange={(e) => setContactPersonName(e.target.value)}
               className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
           </div>
@@ -192,12 +237,14 @@ const Edit_Merchandises = () => {
             <div className="w-1/2 pr-2">
               <input
                 placeholder="Department"
+                onChange={(e) => setContactPersonDep(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div className="w-1/2 pl-2">
               <input
                 placeholder="Position"
+                onChange={(e) => setContactPersonPos(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
@@ -206,12 +253,14 @@ const Edit_Merchandises = () => {
             <div className="w-1/2 pr-2">
               <input
                 placeholder="Email"
+                onChange={(e) => setContactPersonEmail(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div className="w-1/2 pl-2">
               <input
                 placeholder="Phone"
+                onChange={(e) => setContactPersonPhone(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
@@ -221,7 +270,8 @@ const Edit_Merchandises = () => {
           </div>
           <div className="flex items-center">
             <input
-              placeholder="Contract Name"
+              placeholder="Contact Name"
+              onChange={(e) => setBillingContactName(e.target.value)}
               className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
           </div>
@@ -229,12 +279,14 @@ const Edit_Merchandises = () => {
             <div className="w-1/2 pr-2">
               <input
                 placeholder="Email"
+                onChange={(e) => setBillingEmail(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div className="w-1/2 pl-2">
               <input
                 placeholder="Contact Number"
+                onChange={(e) => setBillingContactNumber(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
@@ -242,12 +294,14 @@ const Edit_Merchandises = () => {
           <div className="flex items-center mt-3">
             <input
               placeholder="Street Address"
+              onChange={(e) => setBillingAddress(e.target.value)}
               className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
           </div>
           <div className="flex items-center mt-3">
             <input
               placeholder="Address Line 2"
+              onChange={(e) => setBillingAddress2(e.target.value)}
               className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
           </div>
@@ -255,12 +309,14 @@ const Edit_Merchandises = () => {
             <div className="w-1/2 pr-2">
               <input
                 placeholder="Country"
+                onChange={(e) => setBillingCountry(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
             <div className="w-1/2 pl-2">
               <input
                 placeholder="Zip, Postal Code"
+                onChange={(e) => setBillingZip(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
@@ -273,7 +329,7 @@ const Edit_Merchandises = () => {
           </div>
           <div className="mt-4 flex items-center justify-center">
             <button
-              onClick={() => alert("Save")}
+              onClick={() => handleSave()}
               className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
             >
               Save
