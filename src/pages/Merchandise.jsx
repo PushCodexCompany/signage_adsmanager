@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import { TbDots } from "react-icons/tb";
 
@@ -69,6 +70,7 @@ const brand_merchandise = {
 };
 const Merchandise = () => {
   useCheckPermission();
+  const navigate = useNavigate();
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
   const select_merchandise = User.getMerchandise();
@@ -93,7 +95,7 @@ const Merchandise = () => {
   };
 
   const handleNewMerchandise = () => {
-    alert("add new Merchandise");
+    navigate("/edit_merchandise/new");
   };
 
   const toggleDropdown = (id) => {
