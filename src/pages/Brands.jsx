@@ -16,6 +16,8 @@ import centralPatImg from "../assets/img/centralpattana.jpg";
 import add_new_img from "../assets/img/add_brand.png";
 import cookie from "react-cookies";
 import New_Brand from "../components/New_Brand";
+import Encryption from "../libs/encryption";
+import Swal from "sweetalert2";
 
 import { Navbar } from "../components";
 
@@ -137,6 +139,54 @@ const Brands = () => {
     setShowModalAddNewBrand(!showModalAddNewBrand);
   };
 
+  const handleDeleteBrand = async (brand_id) => {
+    try {
+      Swal.fire({
+        title: "คุณแน่ใจแล้วหรือไม่?",
+        text: "คุณต้องการลบข้อมูล Brand!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ตกลง",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const obj = {
+            brandid: brand_id,
+          };
+          const { token } = User.getCookieData();
+          const encrypted = await Encryption.encryption(
+            obj,
+            "delete_brand",
+            false
+          );
+          const data = await User.deleteBrand(encrypted, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              title: "ลบ Brand สำเร็จ!",
+              text: `ลบ Brand สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error save account:", error);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -206,7 +256,7 @@ const Brands = () => {
                       </button>
                       <button
                         onClick={() => {
-                          alert(`Delete ${items.BrandName}`);
+                          handleDeleteBrand(items.BrandID);
                           toggleDropdown(items.BrandID);
                         }}
                         className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"

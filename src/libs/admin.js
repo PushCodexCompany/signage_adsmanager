@@ -435,6 +435,36 @@ export default {
     return data;
   },
 
+  editBrand: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/update_brand?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  deleteBrand: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/delete_brand?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
   SaveImgBrand: async function (obj, token) {
     const config = {
       headers: {

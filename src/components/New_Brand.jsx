@@ -20,17 +20,17 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
   const [email_contact, setEmailContact] = useState(null);
   const [remark_contact, setRemarkContact] = useState(null);
 
-  const [fullname, setFullName] = useState(null);
-  const [department, setDepartment] = useState(null);
-  const [position, setPosition] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [remark, setRemark] = useState(null);
+  // const [fullname, setFullName] = useState(null);
+  // const [department, setDepartment] = useState(null);
+  // const [position, setPosition] = useState(null);
+  // const [email, setEmail] = useState(null);
+  // const [remark, setRemark] = useState(null);
 
   useEffect(() => {
     setBrandName(edit_brand.BrandName);
     setBrandDescription(edit_brand.BrandDesc);
     setSelectedImage(edit_brand.BrandLogo);
-
+    setBrandImg(edit_brand.BrandLogo);
     setContactPersonName(edit_brand.ContactName);
     setDepartmentContact(edit_brand.Department);
     setPositionContact(edit_brand.Position);
@@ -68,10 +68,8 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
 
     const { token } = User.getCookieData();
     const encrypted = await Encryption.encryption(obj, "create_brand", false);
-    console.log("encrypted", encrypted);
     try {
       const data = await User.createBrand(encrypted, token);
-      console.log("data", data);
       if (data.code !== 404) {
         const form = new FormData();
         form.append("target", "brandlogo");
@@ -106,6 +104,122 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
       }
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  const handleEditBrand = async () => {
+    const obj = {
+      brandid: edit_brand.BrandID,
+      brandname: brand_name,
+      branddesc: brand_description,
+      contactname: contact_person_name,
+      department: department_contact,
+      position: position_contact,
+      email: email_contact,
+      remark: remark_contact,
+    };
+
+    const { token } = User.getCookieData();
+    const encrypted = await Encryption.encryption(obj, "edit_brand", false);
+
+    if (edit_brand.BrandName === brand_name) {
+      if (edit_brand.BrandLogo !== brand_img) {
+        // เปลี่ยนรูปอย่างเดียว
+        const form = new FormData();
+        form.append("target", "brandlogo");
+        form.append("brandid", edit_brand.BrandID);
+        form.append("logo", brand_img);
+
+        const data_img = await User.SaveImgBrand(form, token);
+        if (data_img.code !== 404) {
+          Swal.fire({
+            title: "แก้ไข Brand สำเร็จ!",
+            text: `แก้ไข Brand สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "คุณไม่ได้เลือกรูปที่ต้องการเปลี่ยน!",
+            text: data_img.message,
+          });
+        }
+      } else {
+        const data = await User.editBrand(encrypted, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            title: "แก้ไข Brand สำเร็จ!",
+            text: `แก้ไข Brand สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      }
+    } else {
+      const data = await User.editBrand(encrypted, token);
+      if (data.code !== 404) {
+        if (edit_brand.BrandLogo !== brand_img) {
+          const form = new FormData();
+          form.append("target", "brandlogo");
+          form.append("brandid", edit_brand.BrandID);
+          form.append("logo", brand_img);
+          const data_img = await User.SaveImgBrand(form, token);
+          if (data_img.code !== 404) {
+            Swal.fire({
+              title: "แก้ไข Brand สำเร็จ!",
+              text: `แก้ไข Brand สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาดในการเปลี่ยนรูป!",
+              text: data_img.message,
+            });
+          }
+        } else {
+          Swal.fire({
+            title: "แก้ไข Brand สำเร็จ!",
+            text: `แก้ไข Brand สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
     }
   };
   return (
@@ -395,14 +509,25 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
               </div>
             </div>
           </div>
-          <div className="flex justify-center items-center mt-10">
-            <button
-              onClick={() => handleSaveNewBrand()}
-              className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
-            >
-              Create
-            </button>
-          </div>
+          {edit_brand.BrandID ? (
+            <div className="flex justify-center items-center mt-10">
+              <button
+                onClick={() => handleEditBrand()}
+                className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+              >
+                Edit
+              </button>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center mt-10">
+              <button
+                onClick={() => handleSaveNewBrand()}
+                className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+              >
+                Create
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>
