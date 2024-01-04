@@ -3,71 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import { TbDots } from "react-icons/tb";
 
-import top_img from "../assets/img/merchandise/tops.png";
-import matsumoto_img from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
-import supersport_img from "../assets/img/merchandise/Super_Sports.png";
-import powerbuy_img from "../assets/img/merchandise/Power_Buy.png";
-import evisu_img from "../assets/img/merchandise/Evisu.png";
-import fila_img from "../assets/img/merchandise/Fila.png";
-import alice_img from "../assets/img/merchandise/Alice.png";
-import kfc_img from "../assets/img/merchandise/kfc.png";
+import empty_img from "../assets/img/empty_img.png";
+
 import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
 
 import add_new_img from "../assets/img/add_brand.png";
 
-const brand_merchandise = {
-  1: [
-    {
-      id: 1,
-      name: "Tops",
-      img: top_img,
-      des: "Tops Supermarkety",
-    },
-    {
-      id: 2,
-      name: "Matsumoto KiYoshi",
-      img: matsumoto_img,
-      des: "Matsumoto KiYoshi",
-    },
-    {
-      id: 3,
-      name: "Super Sports",
-      img: supersport_img,
-      des: "Super Sports",
-    },
-    {
-      id: 4,
-      name: "Power Buy",
-      img: powerbuy_img,
-      des: "Power Buy",
-    },
-    {
-      id: 5,
-      name: "Evisu",
-      img: evisu_img,
-      des: "Evisu",
-    },
-    {
-      id: 6,
-      name: "Fila",
-      img: fila_img,
-      des: "Fila",
-    },
-    {
-      id: 7,
-      name: "Alice And Olivia",
-      img: alice_img,
-      des: "Alice And Olivia",
-    },
-    {
-      id: 8,
-      name: "KFC",
-      img: kfc_img,
-      des: "KFC",
-    },
-  ],
-};
 const Merchandise = () => {
   useCheckPermission();
   const navigate = useNavigate();
@@ -86,8 +28,14 @@ const Merchandise = () => {
     getMechendise();
   }, []);
 
-  const getMechendise = () => {
-    setMerchandise(brand_merchandise[select_campaign.brand_id]);
+  const getMechendise = async () => {
+    const { token } = User.getCookieData();
+    try {
+      const data = await User.getMerchandiseList(token);
+      setMerchandise(data);
+    } catch (error) {
+      console.error("Error : ", error);
+    }
   };
 
   const selectMerchandise = (merchendise) => {
@@ -145,12 +93,12 @@ const Merchandise = () => {
                 <div className="relative mb-4">
                   <img
                     className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer"
-                    src={items.img}
-                    alt={items.name}
+                    src={items.AdvertiserLogo || empty_img}
+                    alt={items.AdvertiserName}
                   />
                   {/* Add icon inside img */}
                   <div
-                    onClick={() => toggleDropdown(items.id)}
+                    onClick={() => toggleDropdown(items.AdvertiserID)}
                     className="absolute top-2 right-2 cursor-pointer"
                   >
                     <TbDots
@@ -158,12 +106,12 @@ const Merchandise = () => {
                       className="text-white hover:text-[#6425FE]"
                     />
                   </div>
-                  {dropdownStates[items.id] && (
+                  {dropdownStates[items.AdvertiserID] && (
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
                       <button
                         onClick={() => {
-                          alert(`Edit ${items.name}`);
-                          toggleDropdown(items.id);
+                          alert(`Edit ${items.AdvertiserName}`);
+                          toggleDropdown(items.AdvertiserID);
                           // setEditBrand(items);
                           // setShowModalAddNewBrand(true);
                         }}
@@ -173,8 +121,8 @@ const Merchandise = () => {
                       </button>
                       <button
                         onClick={() => {
-                          alert(`Delete ${items.name}`);
-                          toggleDropdown(items.id);
+                          alert(`Delete ${items.AdvertiserName}`);
+                          toggleDropdown(items.AdvertiserID);
                         }}
                         className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
                       >
@@ -185,10 +133,10 @@ const Merchandise = () => {
                 </div>
                 <button className="w-full">
                   <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                    {items.name}
+                    {items.AdvertiserName}
                   </div>
                   <div className="text-[14px] text-slate-500 font-poppins">
-                    {items.des}
+                    {items.ContactName}
                   </div>
                 </button>
               </div>

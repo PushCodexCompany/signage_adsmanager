@@ -483,4 +483,53 @@ export default {
 
     return data;
   },
+
+  getMerchandiseList: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_advertisers`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  createMerchandise: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_advertiser?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  SaveImgMerchandise: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/upload_logo?target=advertiserlogo`,
+      obj,
+      config
+    );
+
+    console.log("data", data);
+
+    return data;
+  },
 };

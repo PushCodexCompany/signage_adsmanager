@@ -7,6 +7,10 @@ import evisu_img from "../assets/img/merchandise/Evisu.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
 import Empty_Img from "../assets/img/empty_img.png";
 
+import User from "../libs/admin";
+import Encryption from "../libs/encryption";
+import Swal from "sweetalert2";
+
 const Edit_Merchandises = () => {
   const { id } = useParams();
 
@@ -17,6 +21,7 @@ const Edit_Merchandises = () => {
 
   // data
   const [merchandise_name, setMerchandiseName] = useState();
+  const [merchandise_slot, setMerchandiseSlot] = useState();
   const [merchandise_type, setMerchandiseType] = useState();
   const [merchandise_img, setMerchandiseImage] = useState();
   const [contact_person_name, setContactPersonName] = useState();
@@ -76,7 +81,7 @@ const Edit_Merchandises = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    setMerchandiseImage(event.target.files);
+    setMerchandiseImage(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -86,30 +91,61 @@ const Edit_Merchandises = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const obj = {
-      merchandisename: merchandise_name,
-      merchandisetype: merchandise_type,
-      merchandiseimg: merchandise_img,
-      contactperson: {
-        name: contact_person_name,
-        department: contact_person_dep,
-        position: contact_person_pos,
-        email: contact_person_email,
-        phone: contact_person_phone,
-      },
-      billing: {
-        name: billing_contact_name,
-        email: billing_email,
-        phone: billing_contact_number,
-        address: billing_address,
-        address2: billing_address2,
-        country: billing_country,
-        zip: billing_zip,
-      },
+      advertisername: merchandise_name,
+      contactname: contact_person_name,
+      department: contact_person_dep,
+      position: contact_person_pos,
+      email: contact_person_email,
     };
 
-    console.log("obj", obj);
+    const { token } = User.getCookieData();
+    const encrypted = await Encryption.encryption(
+      obj,
+      "create_merchandise",
+      false
+    );
+
+    try {
+      const data = await User.createMerchandise(encrypted, token);
+      console.log("data", data);
+      if (data.code !== 404) {
+        const form = new FormData();
+        form.append("target", "advertiserlogo");
+        form.append("advertiserid", data.advertiserid);
+        form.append("logo", merchandise_img);
+        const data_img = await User.SaveImgMerchandise(form, token);
+        console.log("data_img", data_img);
+        if (data_img.code !== 404) {
+          Swal.fire({
+            title: "สร้าง Merchandise สำเร็จ!",
+            text: `สร้าง Merchandise สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data_img.message,
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -123,7 +159,7 @@ const Edit_Merchandises = () => {
           <div className="relative">
             <div className="flex items-center">
               <input
-                placeholder="Insert Merchandise Name"
+                placeholder="Merchandise Name"
                 className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
                 onChange={(e) => setMerchandiseName(e.target.value)}
               />
@@ -140,6 +176,7 @@ const Edit_Merchandises = () => {
                   placeholder="Resolution"
                   onChange={(e) => setMerchandiseType(e.target.value)}
                 >
+                  <option value="0">Category</option>
                   <option value="1">Department Store</option>
                   <option value="2">Mock 1 </option>
                   <option value="3">Mock 2</option>
@@ -170,13 +207,13 @@ const Edit_Merchandises = () => {
                 </div>
                 <div className="col-span-1">
                   <input
-                    placeholder="2"
-                    value="2"
-                    disabled
+                    onChange={(e) => setMerchandiseSlot(e.target.value)}
+                    value={merchandise_slot}
+                    placeholder="0"
                     className="border disabled:bg-[#DBDBDB] border-gray-300 rounded-lg p-3 w-full font-bold font-poppins text-center"
                   />
                 </div>
-                <div className="col-span-1 flex items-center justify-center">
+                {/* <div className="col-span-1 flex items-center justify-center">
                   <div className="font-poppins">/</div>
                 </div>
                 <div className="col-span-1">
@@ -185,7 +222,7 @@ const Edit_Merchandises = () => {
                     value="50"
                     className="border rounded-lg p-3 border-gray-300 w-full font-bold font-poppins text-center"
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -265,7 +302,7 @@ const Edit_Merchandises = () => {
               />
             </div>
           </div>
-          <div className="mt-10 mb-5 font-bold font-poppins text-2xl">
+          {/* <div className="mt-10 mb-5 font-bold font-poppins text-2xl">
             <text>Billing</text>
           </div>
           <div className="flex items-center">
@@ -320,7 +357,7 @@ const Edit_Merchandises = () => {
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center mt-3">
             <div className="font-poppins">
               Please provide details as they will be used in generating
