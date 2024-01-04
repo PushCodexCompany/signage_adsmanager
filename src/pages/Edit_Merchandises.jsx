@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Header } from "../components";
 import { MdOutlineModeEditOutline } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 import supersport_img from "../assets/img/merchandise/Super_Sports.png";
 import evisu_img from "../assets/img/merchandise/Evisu.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
@@ -13,6 +15,8 @@ import Swal from "sweetalert2";
 
 const Edit_Merchandises = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const fileInputRef = useRef(null);
 
@@ -20,6 +24,7 @@ const Edit_Merchandises = () => {
   const [preview_img, setPreviewImg] = useState(null);
 
   // data
+  const [merchandise_id, setMerchandiseId] = useState();
   const [merchandise_name, setMerchandiseName] = useState();
   const [merchandise_slot, setMerchandiseSlot] = useState();
   const [merchandise_type, setMerchandiseType] = useState();
@@ -39,39 +44,30 @@ const Edit_Merchandises = () => {
 
   useEffect(() => {
     if (id !== "new") {
-      fetchMerchandise(id);
+      fetchMerchandise();
     }
   }, [id]);
 
-  const fetchMerchandise = (merchandise_id) => {
-    //fetch
+  const fetchMerchandise = () => {
+    //set edit
+    const {
+      AdvertiserID,
+      AdvertiserLogo,
+      AdvertiserName,
+      ContactName,
+      Department,
+      Email,
+      Position,
+    } = location.state.merchandise;
 
-    let mock_merchandise;
-
-    if (merchandise_id === "1") {
-      mock_merchandise = {
-        name: "Super Sports",
-        brand: "CDS",
-        full_brand: "Central Department Store",
-        img: supersport_img,
-      };
-    } else if (merchandise_id === "2") {
-      mock_merchandise = {
-        name: "Evisu",
-        brand: "EVS",
-        full_brand: "Evisu Store",
-        img: evisu_img,
-      };
-    } else if (merchandise_id === "3") {
-      mock_merchandise = {
-        name: "KFC",
-        brand: "KFC",
-        full_brand: "Kentucky Fried Chicken",
-        img: kfc_img,
-      };
-    }
-
-    setmerchandiseData(mock_merchandise);
+    setMerchandiseId(AdvertiserID);
+    setMerchandiseName(AdvertiserName);
+    setMerchandiseImage(AdvertiserLogo);
+    setPreviewImg(AdvertiserLogo);
+    setContactPersonName(ContactName);
+    setContactPersonDep(Department);
+    setContactPersonPos(Position);
+    setContactPersonEmail(Email);
   };
 
   const handleButtonClick = () => {
@@ -109,14 +105,12 @@ const Edit_Merchandises = () => {
 
     try {
       const data = await User.createMerchandise(encrypted, token);
-      console.log("data", data);
       if (data.code !== 404) {
         const form = new FormData();
         form.append("target", "advertiserlogo");
         form.append("advertiserid", data.advertiserid);
         form.append("logo", merchandise_img);
-        const data_img = await User.SaveImgMerchandise(form, token);
-        console.log("data_img", data_img);
+        const data_img = await User.saveImgMerchandise(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
             title: "สร้าง Merchandise สำเร็จ!",
@@ -126,7 +120,7 @@ const Edit_Merchandises = () => {
               result.isConfirmed ||
               result.dismiss === Swal.DismissReason.backdrop
             ) {
-              window.location.reload();
+              navigate("/merchandise");
             }
           });
         } else {
@@ -148,6 +142,124 @@ const Edit_Merchandises = () => {
     }
   };
 
+  const handleEdit = async () => {
+    const obj = {
+      advertiserid: merchandise_id,
+      advertisername: merchandise_name,
+      contactname: contact_person_name,
+      department: contact_person_dep,
+      position: contact_person_pos,
+      email: contact_person_email,
+    };
+
+    const { token } = User.getCookieData();
+    const encrypted = await Encryption.encryption(
+      obj,
+      "edit_merchandise",
+      false
+    );
+
+    if (location.state.merchandise.AdvertiserName === merchandise_name) {
+      if (location.state.merchandise.AdvertiserLogo !== merchandise_img) {
+        // เปลี่ยนรูปอย่างเดียว
+        const form = new FormData();
+        form.append("target", "advertiserlogo");
+        form.append("advertiserid", merchandise_id);
+        form.append("logo", merchandise_img);
+        const data_img = await User.saveImgMerchandise(form, token);
+        if (data_img.code !== 404) {
+          Swal.fire({
+            title: "แก้ไข Merchandise สำเร็จ!",
+            text: `แก้ไข Merchandise สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              navigate("/merchandise");
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "คุณไม่ได้เลือกรูปที่ต้องการเปลี่ยน!",
+            text: data_img.message,
+          });
+        }
+      } else {
+        const data = await User.editMerchandise(encrypted, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            title: "แก้ไข Merchandise สำเร็จ!",
+            text: `แก้ไข Merchandise สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              navigate("/merchandise");
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      }
+    } else {
+      const data = await User.editMerchandise(encrypted, token);
+      if (data.code !== 404) {
+        if (location.state.merchandise.AdvertiserLogo !== merchandise_img) {
+          const form = new FormData();
+          form.append("target", "advertiserlogo");
+          form.append("advertiserid", merchandise_id);
+          form.append("logo", merchandise_img);
+          const data_img = await User.saveImgMerchandise(form, token);
+          if (data_img.code !== 404) {
+            Swal.fire({
+              title: "แก้ไข Merchandise สำเร็จ!",
+              text: `แก้ไข Merchandise สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                navigate("/merchandise");
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาดในการเปลี่ยนรูป!",
+              text: data_img.message,
+            });
+          }
+        } else {
+          console.log("nopic", data);
+          Swal.fire({
+            title: "แก้ไข Merchandise สำเร็จ!",
+            text: `แก้ไข Merchandise สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              navigate("/merchandise");
+            }
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    }
+  };
+
   return (
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Setting" />
@@ -161,6 +273,7 @@ const Edit_Merchandises = () => {
               <input
                 placeholder="Merchandise Name"
                 className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
+                value={merchandise_name}
                 onChange={(e) => setMerchandiseName(e.target.value)}
               />
               <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
@@ -266,6 +379,7 @@ const Edit_Merchandises = () => {
           <div className="flex items-center">
             <input
               placeholder="Full Name"
+              value={contact_person_name}
               onChange={(e) => setContactPersonName(e.target.value)}
               className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
             />
@@ -274,6 +388,7 @@ const Edit_Merchandises = () => {
             <div className="w-1/2 pr-2">
               <input
                 placeholder="Department"
+                value={contact_person_dep}
                 onChange={(e) => setContactPersonDep(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
@@ -281,6 +396,7 @@ const Edit_Merchandises = () => {
             <div className="w-1/2 pl-2">
               <input
                 placeholder="Position"
+                value={contact_person_pos}
                 onChange={(e) => setContactPersonPos(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
@@ -290,6 +406,7 @@ const Edit_Merchandises = () => {
             <div className="w-1/2 pr-2">
               <input
                 placeholder="Email"
+                value={contact_person_email}
                 onChange={(e) => setContactPersonEmail(e.target.value)}
                 className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
               />
@@ -364,14 +481,25 @@ const Edit_Merchandises = () => {
               quotations for your campaigns
             </div>
           </div>
-          <div className="mt-4 flex items-center justify-center">
-            <button
-              onClick={() => handleSave()}
-              className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
-            >
-              Save
-            </button>
-          </div>
+          {merchandise_id ? (
+            <div className="mt-4 flex items-center justify-center">
+              <button
+                onClick={() => handleEdit()}
+                className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
+              >
+                Save
+              </button>
+            </div>
+          ) : (
+            <div className="mt-4 flex items-center justify-center">
+              <button
+                onClick={() => handleSave()}
+                className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
+              >
+                Create
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

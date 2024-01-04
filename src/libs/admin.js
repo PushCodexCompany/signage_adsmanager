@@ -386,7 +386,7 @@ export default {
     return data;
   },
 
-  SaveImgUserAccount: async function (obj, token) {
+  saveImgUserAccount: async function (obj, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -465,7 +465,7 @@ export default {
     return data;
   },
 
-  SaveImgBrand: async function (obj, token) {
+  saveImgBrand: async function (obj, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -514,7 +514,7 @@ export default {
     return data;
   },
 
-  SaveImgMerchandise: async function (obj, token) {
+  saveImgMerchandise: async function (obj, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -529,6 +529,36 @@ export default {
     );
 
     console.log("data", data);
+
+    return data;
+  },
+
+  deleteMerchandise: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/delete_advertiser?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  editMerchandise: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/update_advertiser?hash=${hash}`,
+      "",
+      config
+    );
 
     return data;
   },

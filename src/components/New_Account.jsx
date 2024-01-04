@@ -91,7 +91,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
           form.append("accountid", data.accountid);
           form.append("logo", account_img);
 
-          const data_img = await User.SaveImgUserAccount(form, token);
+          const data_img = await User.saveImgUserAccount(form, token);
 
           if (data_img.code !== 404) {
             Swal.fire({
@@ -143,7 +143,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
         form.append("target", "accountlogo");
         form.append("accountid", edit_account.AccountID);
         form.append("logo", account_img);
-        const data_img = await User.SaveImgUserAccount(form, token);
+        const data_img = await User.saveImgUserAccount(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
             title: "แก้ไข User Account สำเร็จ!",
@@ -172,7 +172,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
             form.append("target", "accountlogo");
             form.append("accountid", edit_account.AccountID);
             form.append("logo", account_img);
-            const data_img = await User.SaveImgUserAccount(form, token);
+            const data_img = await User.saveImgUserAccount(form, token);
             if (data_img.code !== 404) {
               Swal.fire({
                 title: "แก้ไข User Account สำเร็จ!",

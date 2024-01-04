@@ -75,7 +75,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         form.append("target", "brandlogo");
         form.append("brandid", data.brandid);
         form.append("logo", brand_img);
-        const data_img = await User.SaveImgBrand(form, token);
+        const data_img = await User.saveImgBrand(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
             title: "สร้าง Brand สำเร็จ!",
@@ -130,7 +130,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         form.append("brandid", edit_brand.BrandID);
         form.append("logo", brand_img);
 
-        const data_img = await User.SaveImgBrand(form, token);
+        const data_img = await User.saveImgBrand(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
             title: "แก้ไข Brand สำเร็จ!",
@@ -180,7 +180,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
           form.append("target", "brandlogo");
           form.append("brandid", edit_brand.BrandID);
           form.append("logo", brand_img);
-          const data_img = await User.SaveImgBrand(form, token);
+          const data_img = await User.saveImgBrand(form, token);
           if (data_img.code !== 404) {
             Swal.fire({
               title: "แก้ไข Brand สำเร็จ!",

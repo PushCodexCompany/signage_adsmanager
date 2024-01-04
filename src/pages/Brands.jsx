@@ -4,15 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { TbDots } from "react-icons/tb";
 
-import centralImg from "../assets/img/central.png";
-import robinsonImg from "../assets/img/robinson.png";
-import superSportImg from "../assets/img/supersport.png";
-import centralRetailImg from "../assets/img/centralretail.jpeg";
-import cmgImg from "../assets/img/cmg.jpg";
-import sevenImg from "../assets/img/seven.png";
-import makroProImg from "../assets/img/makropro.jpeg";
-import lotusImg from "../assets/img/lotus.png";
-import centralPatImg from "../assets/img/centralpattana.jpg";
 import add_new_img from "../assets/img/add_brand.png";
 import cookie from "react-cookies";
 import New_Brand from "../components/New_Brand";
@@ -20,54 +11,6 @@ import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 
 import { Navbar } from "../components";
-
-const mock_data = {
-  1: {
-    name: "CDS",
-    img: centralImg,
-    des: "Central Department Store",
-  },
-  2: {
-    name: "Super Sports",
-    img: superSportImg,
-    des: "Super Sports",
-  },
-  3: {
-    name: "Central Retail",
-    img: centralRetailImg,
-    des: "Central Retail",
-  },
-  4: {
-    name: "CMG",
-    img: cmgImg,
-    des: "CMG",
-  },
-  5: {
-    name: "7-11",
-    img: sevenImg,
-    des: "7-11",
-  },
-  6: {
-    name: "Makro Pro",
-    img: makroProImg,
-    des: "Makro Pro",
-  },
-  7: {
-    name: "Lotus's",
-    img: lotusImg,
-    des: "Lotus's",
-  },
-  8: {
-    name: "Central Pattana",
-    img: centralPatImg,
-    des: "Central Pattana",
-  },
-  9: {
-    name: "Robinson",
-    img: robinsonImg,
-    des: "Robinson Department Store",
-  },
-};
 
 const Brands = () => {
   const { user } = User.getCookieData();

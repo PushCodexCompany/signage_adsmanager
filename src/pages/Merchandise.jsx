@@ -7,6 +7,8 @@ import empty_img from "../assets/img/empty_img.png";
 
 import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
+import Encryption from "../libs/encryption";
+import Swal from "sweetalert2";
 
 import add_new_img from "../assets/img/add_brand.png";
 
@@ -51,6 +53,65 @@ const Merchandise = () => {
       ...prevStates,
       [id]: !prevStates[id],
     }));
+  };
+
+  const handleDeleteMerchandise = async (merchandise_id, merchandise_name) => {
+    try {
+      Swal.fire({
+        title: "Do You Want Delete This Merchandise ?",
+        text: merchandise_name,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#6425FE",
+        confirmButtonText: "OK",
+        cancelButtonColor: "red",
+        cancelButtonText: "Cancel",
+        width: "600px",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const obj = {
+            advertiserid: merchandise_id,
+          };
+          console.log("obj", obj);
+          const { token } = User.getCookieData();
+          const encrypted = await Encryption.encryption(
+            obj,
+            "delete_merchandise",
+            false
+          );
+          console.log("encrypted", encrypted);
+          const data = await User.deleteMerchandise(encrypted, token);
+          console.log("data", data);
+          if (data.code !== 404) {
+            Swal.fire({
+              title: "ลบ Merchandise สำเร็จ!",
+              text: `ลบ Merchandise สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error save account:", error);
+    }
+  };
+
+  const handleEditMerchandise = (merchandise) => {
+    navigate(`/edit_merchandise/${merchandise.AdvertiserID}`, {
+      state: { merchandise: merchandise },
+    });
   };
 
   return (
@@ -110,9 +171,9 @@ const Merchandise = () => {
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
                       <button
                         onClick={() => {
-                          alert(`Edit ${items.AdvertiserName}`);
+                          setEditMerchandise(items);
+                          handleEditMerchandise(items);
                           toggleDropdown(items.AdvertiserID);
-                          // setEditBrand(items);
                           // setShowModalAddNewBrand(true);
                         }}
                         className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
@@ -121,7 +182,10 @@ const Merchandise = () => {
                       </button>
                       <button
                         onClick={() => {
-                          alert(`Delete ${items.AdvertiserName}`);
+                          handleDeleteMerchandise(
+                            items.AdvertiserID,
+                            items.AdvertiserName
+                          );
                           toggleDropdown(items.AdvertiserID);
                         }}
                         className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
