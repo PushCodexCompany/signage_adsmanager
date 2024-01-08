@@ -146,12 +146,12 @@ export const GridTable = () => {
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Slots
               </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Booking Status
               </th>
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Content Status
-              </th>
+              </th> */}
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
               </th>
@@ -172,7 +172,7 @@ export const GridTable = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md flex items-center justify-center">
+                  <div className="font-poppins text-md flex font-bold items-center justify-center">
                     {get_content_type(row.content_type)}
                   </div>
                 </td>
@@ -194,7 +194,7 @@ export const GridTable = () => {
                     {row.slot}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                {/* <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-xl flex justify-center items-center">
                     <span
                       className={`text-lg font-bold font-poppins ${
@@ -206,8 +206,8 @@ export const GridTable = () => {
                       {getBooking(row.booking_status)[0]}
                     </span>
                   </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                </td> */}
+                {/* <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-xl flex justify-center items-center">
                     <span
                       className={`text-lg font-bold font-poppins ${
@@ -219,7 +219,7 @@ export const GridTable = () => {
                       {getContentStatus(row.content)[0]}
                     </span>
                   </div>
-                </td>
+                </td> */}
 
                 <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">

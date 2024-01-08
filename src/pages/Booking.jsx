@@ -15,6 +15,8 @@ import { bookingData, bookingGrid } from "../libs/campaign_grid";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { Navbar } from "../components";
 import useCheckPermission from "../libs/useCheckPermission";
+import New_Booking from "../components/New_Booking";
+
 const Booking = () => {
   useCheckPermission();
 
@@ -23,6 +25,9 @@ const Booking = () => {
   const [isRoleOpen, setIsRoleOpen] = useState(false);
 
   const [filter, setFilter] = useState(["Active", "Admin"]);
+
+  const [showModalAddNewBooking, setShowModalAddNewBooking] = useState(false);
+
   const navigate = useNavigate();
 
   const toggleSortSelect = () => {
@@ -157,7 +162,7 @@ const Booking = () => {
                 </div>
                 <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
                   <button
-                    onClick={() => navigate("/booking/create_booking")}
+                    onClick={() => setShowModalAddNewBooking(true)}
                     className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
                   >
                     New Booking +
@@ -215,6 +220,17 @@ const Booking = () => {
           <GridTable />
         </div>
       </div>
+
+      {showModalAddNewBooking && (
+        <a
+          onClick={() => setShowModalAddNewBooking(!showModalAddNewBooking)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {showModalAddNewBooking && (
+        <New_Booking setShowModalAddNewBooking={setShowModalAddNewBooking} />
+      )}
     </>
   );
 };

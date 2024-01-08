@@ -72,16 +72,13 @@ const Merchandise = () => {
           const obj = {
             advertiserid: merchandise_id,
           };
-          console.log("obj", obj);
           const { token } = User.getCookieData();
           const encrypted = await Encryption.encryption(
             obj,
             "delete_merchandise",
             false
           );
-          console.log("encrypted", encrypted);
           const data = await User.deleteMerchandise(encrypted, token);
-          console.log("data", data);
           if (data.code !== 404) {
             Swal.fire({
               title: "ลบ Merchandise สำเร็จ!",
