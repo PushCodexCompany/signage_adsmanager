@@ -9,6 +9,22 @@ import Empty_Img from "../assets/img/empty_img.png";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+
+import {
+  add,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  getDay,
+  isSameMonth,
+  parse,
+  startOfToday,
+  differenceInMonths,
+  startOfWeek,
+  endOfWeek,
+} from "date-fns";
+
 const New_Booking = ({ setShowModalAddNewBooking }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState("1");
@@ -28,6 +44,55 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const [contact_person_pos, setContactPersonPos] = useState();
   const [contact_person_email, setContactPersonEmail] = useState();
   const [contact_person_phone, setContactPersonPhone] = useState();
+
+  // calendar
+  const today = startOfToday();
+  const [currMonth, setCurrMonth] = useState(() => format(today, "MMM-yyyy"));
+  let firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date());
+
+  const daysInMonth = eachDayOfInterval({
+    start: startOfWeek(firstDayOfMonth),
+    end: endOfWeek(endOfMonth(firstDayOfMonth)),
+  });
+
+  const getPrevMonth = (event) => {
+    event.preventDefault();
+    const firstDayOfPrevMonth = add(firstDayOfMonth, { months: -1 });
+    setCurrMonth(format(firstDayOfPrevMonth, "MMM-yyyy"));
+  };
+
+  const getNextMonth = (event) => {
+    event.preventDefault();
+    const firstDayOfNextMonth = add(firstDayOfMonth, { months: 1 });
+    setCurrMonth(format(firstDayOfNextMonth, "MMM-yyyy"));
+  };
+
+  useEffect(() => {
+    firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date());
+  }, [currMonth]);
+
+  const monthsToDisplay = [-1, 0, 1];
+  const currentIndex = monthsToDisplay.indexOf(0);
+
+  const colStartClasses = [
+    "",
+    "col-start-2",
+    "col-start-3",
+    "col-start-4",
+    "col-start-5",
+    "col-start-6",
+    "col-start-7",
+  ];
+
+  const days = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
 
   useEffect(() => {
     getMechendise();
@@ -125,6 +190,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         text: "กรุณาเลือก Merchandise!",
       });
     }
+  };
+
+  const capitalizeFirstLetter = (query) => {
+    return query.charAt(0).toUpperCase() + query.substring(1);
   };
 
   return (
@@ -258,6 +327,59 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Name your booking, select merchandise, and content type to
                 create a new booking. Personalize your campaign for maximum
                 impact.
+              </div>
+            </div>
+            <div className="mt-6 w-[70%] mx-auto ">
+              <div className="flex items-center justify-center">
+                <div className="flex items-center justify-evenly gap-6 sm:gap-12">
+                  <FaAngleLeft
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={getPrevMonth}
+                  />
+                  {monthsToDisplay.map((index) => {
+                    const monthToShow = add(firstDayOfMonth, { months: index });
+                    const isCurrentMonth =
+                      differenceInMonths(monthToShow, firstDayOfMonth) === 0;
+                    const textStyle = isCurrentMonth
+                      ? "text-[#000000]"
+                      : "text-[#AAAAAA]";
+
+                    return (
+                      <p
+                        key={index}
+                        className={`font-poppins text-2xl ${textStyle}`}
+                      >
+                        {format(monthToShow, "MMM yy")}
+                      </p>
+                    );
+                  })}
+                  <FaAngleRight
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={getNextMonth}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-7 gap-4 sm:gap-3 place-items-center mt-4">
+                {days.map((day, idx) => (
+                  <div key={idx} className="font-poppins text-sm">
+                    {capitalizeFirstLetter(day)}
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-7 gap-4 sm:gap-3 mt-6 place-items-center">
+                {daysInMonth.map((day, idx) => (
+                  <div key={idx} className={colStartClasses[getDay(day)]}>
+                    <p
+                      className={`cursor-pointer border-1 border-gray-300 hover:border-[#6425FE] flex items-center justify-center font-poppins h-8 w-32 hover:text-[#6425FE] ${
+                        isSameMonth(day, today)
+                          ? "text-gray-900"
+                          : "text-gray-400"
+                      }`}
+                    >
+                      {format(day, "d")}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
