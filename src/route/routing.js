@@ -72,7 +72,8 @@ const Routing = () => {
           path="/setting/user_management/role_permission"
           element={<Role_permission />}
         />
-        <Route path="/booking/create_booking" element={<Create_Booking />} />
+        <Route path="/booking/:name" element={<Create_Booking />} />
+
         {/* <Route
           path="*"
           element={<div> Not Found or You do not have permission.</div>}

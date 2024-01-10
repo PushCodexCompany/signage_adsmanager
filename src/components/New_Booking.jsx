@@ -25,6 +25,7 @@ import {
   endOfWeek,
   isSameDay,
   isBefore,
+  isToday,
 } from "date-fns";
 
 const New_Booking = ({ setShowModalAddNewBooking }) => {
@@ -266,13 +267,12 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     );
 
     const obj = {
-      merchandise: select_merchandise.AdvertiserID,
+      merchandise: select_merchandise,
       booking_date: booking_date,
       booking_name: booking_name,
       booking_slot: booking_slot,
     };
-
-    console.log("New Booking :", obj);
+    navigate(`/booking/${obj.booking_name}`, { state: { data: obj } });
   };
 
   return (
@@ -457,6 +457,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         isSameMonth(day, today)
                           ? "text-gray-900"
                           : "text-gray-400"
+                      }  ${
+                        selected_dates.length > 0
+                          ? ""
+                          : isToday(day) && "bg-red-500 text-white"
                       } ${
                         selected_dates.some((date) => isSameDay(date, day))
                           ? "bg-[#6425FE] border-3 border-[#6425FE] text-white"
@@ -584,6 +588,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <input
                       onChange={(e) => setBookingSlot(e.target.value)}
                       value={booking_slot}
+                      type="number"
                       className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
                       placeholder="Enter Slot Per Day"
                     />

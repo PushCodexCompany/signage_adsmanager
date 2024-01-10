@@ -452,7 +452,12 @@ const User_Management = () => {
         </div>
 
         <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable page_permission={page_permission} />
+          {user_lists.length > 0 && (
+            <GridTable
+              user_lists={user_lists}
+              page_permission={page_permission}
+            />
+          )}
         </div>
       </div>
 

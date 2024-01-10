@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "../components";
-import {
-  GridComponent,
-  Inject,
-  ColumnsDirective,
-  ColumnDirective,
-  Search,
-  Page,
-} from "@syncfusion/ej2-react-grids";
+
 import { useNavigate } from "react-router-dom";
 import { GridTable } from "../libs/booking_grid";
 
-import { bookingData, bookingGrid } from "../libs/campaign_grid";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { Navbar } from "../components";
 import useCheckPermission from "../libs/useCheckPermission";

@@ -1,47 +1,29 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Header, Navbar } from "../components";
-import { HiOutlinePencil } from "react-icons/hi2";
+import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-import {
-  PiSlidersHorizontalFill,
-  PiGridFourFill,
-  PiListDashesFill,
-} from "react-icons/pi";
+import { CiCalendar } from "react-icons/ci";
+import { BsInfoCircle } from "react-icons/bs";
+
+import { format } from "date-fns";
+
 import useCheckPermission from "../libs/useCheckPermission";
 
-const mock_data = {
-  name: "Tops",
-  booking_name: ["Booking Name 1", "CDS-BT-230101-004"],
-  content_type: 2,
-  merchandise: 1,
-  screen: {
-    name: "Screen 1",
-    location: "Central Chidlom F3",
-    status: 1,
-    booking_period: ["1687280400000", "1687885200000"],
-    loops: 5,
-    booking: 1,
-    content: 1,
-    booking: [2, 7, 4, 1, 5, 7, 10, 10],
-  },
-};
-
 const Create_Booking = () => {
-  const inputRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
   useCheckPermission();
 
-  const [bookingName, setBookingName] = useState("Booking Name 1");
+  const [bookingName, setBookingName] = useState("");
+  const [merchandise, setMerchandise] = useState([]);
+  const [booking_date, setBookingDate] = useState([]);
+  const [booking_slot, setBookingSlot] = useState();
   const [view, setView] = useState(true);
-  const [filter, setFilter] = useState([
-    "North",
-    "Flagship",
-    "Beauty",
-    "Portrait",
-  ]);
+  const [filter, setFilter] = useState(["Available", "Low < 5"]);
 
-  const [isSectorOpen, setIsSectorOpen] = useState(false);
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
-  const [isClustorOpen, setIsClustorOpen] = useState(false);
+  const [isSlotOpen, setIsSlotOpen] = useState(false);
+  const [isDateOpen, setIsDateOpen] = useState(false);
+  const [isConditionOpen, setIsConditionOpen] = useState(false);
   const [isBranchOpen, setIsBranchOpen] = useState(false);
   const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
   const [showRightPanel, setShowRightPanel] = useState(false);
@@ -52,18 +34,28 @@ const Create_Booking = () => {
   const [fill_all, setFillAll] = useState(false);
   const [display_fully, setDisplayFully] = useState(false);
 
-  const focusInput = () => {
-    inputRef.current.focus();
+  useEffect(() => {
+    setBookingData();
+  }, []);
+
+  const setBookingData = () => {
+    const { booking_name, merchandise, booking_slot, booking_date } =
+      location.state.data;
+
+    setBookingName(booking_name);
+    setMerchandise(merchandise);
+    setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
+    setBookingSlot(booking_slot);
   };
 
-  const toggleSectorSelect = () => {
-    setIsSectorOpen((prevIsOpen) => !prevIsOpen);
+  const toggleSlotSelect = () => {
+    setIsSlotOpen((prevIsOpen) => !prevIsOpen);
   };
-  const toggleRegionSelect = () => {
-    setIsRegionOpen((prevIsOpen) => !prevIsOpen);
+  const toggleDateSelect = () => {
+    setIsDateOpen((prevIsOpen) => !prevIsOpen);
   };
-  const toggleClustorSelect = () => {
-    setIsClustorOpen((prevIsOpen) => !prevIsOpen);
+  const toggleConditionSelect = () => {
+    setIsConditionOpen((prevIsOpen) => !prevIsOpen);
   };
   const toggleBranchSelect = () => {
     setIsBranchOpen((prevIsOpen) => !prevIsOpen);
@@ -112,35 +104,61 @@ const Create_Booking = () => {
   const handleView = () => {
     setView(!view);
   };
+
+  const boxData = [
+    { width: "70px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+    { width: "200px", height: "70px" },
+  ];
   return (
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
-        <div className="grid grid-cols-10 mt-10">
-          <div className="col-span-2">
-            <input
-              placeholder="Insert Booking Name ..."
-              value={bookingName}
-              className="font-poppins font-semibold text-2xl w-[95%] pl-2"
-              onChange={(e) => setBookingName(e.target.value)}
-              ref={inputRef}
-            />
+        <div className="grid grid-cols-10 mt-5">
+          <div className="col-span-6">
+            <div className="font-poppins font-semibold text-2xl w-[95%] pl-2">
+              {bookingName}
+            </div>
           </div>
-          <div className="col-span-5 ">
-            <HiOutlinePencil
-              size={26}
-              color={"#6425FE"}
-              onClick={focusInput}
-              className="cursor-pointer"
-            />
-          </div>
-          <div className="col-span-3">
+          <div className="col-span-4">
             <div className="flex space-x-1">
-              <button className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins">
+              <button
+                onClick={() => alert("edit")}
+                className="w-52 h-10 rounded-md text-[#6425FE] border-2 border-[#6425FE] font-poppins font-bold"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => alert("add Screen")}
+                className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
+              >
                 Add Screen+
               </button>
-              <button className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins">
+              <button
+                onClick={() => alert("Comfirm Booking")}
+                className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
+              >
                 Confirm Booking
               </button>
             </div>
@@ -153,18 +171,16 @@ const Create_Booking = () => {
               <div class="w-full lg:w-3/4 flex justify-center items-center">
                 <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
-                    name="sector"
-                    id="sector"
-                    onClick={toggleSectorSelect}
+                    name="slot"
+                    id="slot"
+                    onClick={toggleSlotSelect}
                     onChange={handleStatusChange}
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
-                    <option value="Sector">Sector</option>
-                    <option value="Portrait">Portrait</option>
-                    <option value="Landscape">Landscape</option>
+                    <option value="Avaliable Slot">Avaliable Slot</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isSectorOpen ? (
+                    {isSlotOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
                       <IoIosArrowDown size={18} color="#6425FE" />
@@ -173,20 +189,16 @@ const Create_Booking = () => {
                 </div>
                 <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
-                    name="region"
-                    id="region"
-                    onClick={toggleRegionSelect}
+                    name="date"
+                    id="date"
+                    onClick={toggleDateSelect}
                     onChange={handleStatusChange}
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
-                    <option value="Region">Region</option>
-                    <option value="North">North</option>
-                    <option value="West">West</option>
-                    <option value="East">East</option>
-                    <option value="South">South</option>
+                    <option value="Date">Date</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                    {isRegionOpen ? (
+                    {isDateOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
                       <IoIosArrowDown size={18} color="#6425FE" />
@@ -195,19 +207,16 @@ const Create_Booking = () => {
                 </div>
                 <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
-                    name="store_cluster"
-                    id="store_cluster"
-                    onClick={toggleClustorSelect}
+                    name="condition"
+                    id="condition"
+                    onClick={toggleConditionSelect}
                     onChange={handleStatusChange}
                     class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
-                    <option value="Store Cluster">Store Cluster</option>
-                    <option value="...">...</option>
-                    <option value="...">...</option>
-                    <option value="...">...</option>
+                    <option value="Store Cluster">{`Low The < 5`}</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isClustorOpen ? (
+                    {isConditionOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
                       <IoIosArrowDown size={18} color="#6425FE" />
@@ -256,7 +265,7 @@ const Create_Booking = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[300px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                {/* <div class="relative w-full lg:w-[300px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <button
                     onClick={() => showAllFilter()}
                     name="role"
@@ -267,7 +276,7 @@ const Create_Booking = () => {
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     <PiSlidersHorizontalFill size={18} color="#6425FE" />
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -320,7 +329,7 @@ const Create_Booking = () => {
             )}
           </div>
 
-          <div class="basis-4/12">
+          {/* <div class="basis-4/12">
             <div className="grid grid-cols-6 space-x-1">
               <div className="col-span-3">
                 <div className="flex space-x-2">
@@ -397,80 +406,130 @@ const Create_Booking = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         {/* Filter */}
 
-        <div className="mt-7 grid grid-cols-7 gap-2">
+        <div className="mt-7 grid grid-cols-8 ">
           {/* Left Panel */}
-          <div className="col-span-2 h-[800px]">
-            <div className="p-3">
-              <div className="font-poppins font-bold text-2xl">Role</div>
-
-              {/* <button className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins rounded-lg">
-                New Role +
-              </button> */}
-
-              {/* {permission.map((items, key) => (
-                <>
-                  <div
-                    key={key}
-                    className={`grid grid-cols-7 gap-2 mt-5 
-                  ${key === select_role ? "bg-[#FAFAFA]" : ""} 
-                  cursor-pointer`}
-                    onClick={() => selectRole(key)}
-                  >
-                    <div className="col-span-5 ml-2">
-                      <div className="font-poppins text-2xl ">{items.name}</div>
-                      <div className="text-xs">{items.description}</div>
-                    </div>
-
-                    <div className="col-span-2">
-                      <div className="flex justify-center items-center mt-3 space-x-4">
-                        <button onClick={() => selectRole(key)}>
-                          <RiEditLine size={20} className="text-[#6425FE]" />
-                        </button>
-                        <button>
-                          <RiDeleteBin5Line
-                            size={20}
-                            className="text-[#6425FE]"
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ))} */}
+          <div className="col-span-2">
+            <div>
+              <img
+                className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl `}
+                src={merchandise.AdvertiserLogo}
+                alt={merchandise.AdvertiserName}
+              />
+            </div>
+            <div className="mt-2">
+              <div className="flex justify-center items-center">
+                <div className="font-poppins text-xl font-bold text-[#2F3847]">
+                  {merchandise.AdvertiserName}
+                </div>
+              </div>
+              <div className="flex justify-center items-center">
+                <div className="font-poppins text-sm text-[#6F6F6F]">
+                  {merchandise.AccountCode}
+                </div>
+              </div>
+              <div className="flex justify-center items-center mt-5">
+                <div className="font-poppins font-bold text-xl text-[#59606C]">
+                  CDS-BT-230101-004
+                </div>
+              </div>
             </div>
           </div>
           {/* Left Panel */}
 
           {/* Right Panel */}
-          <div className="col-span-5 bg-[#FAFAFA] w-full">
-            {/* {permission.length > 0 && (
-              <Tabs roleData={permission[select_role]} />
-            )}
-            <div className="p-4">
-              <button
-                className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
-                onClick={() => handleSave(permission[select_role])}
-              >
-                Save
-              </button>
-            </div> */}
+          <div className="col-span-6 border-1 border-gray-300">
+            <div className="p-3">
+              <div className="grid grid-cols-12">
+                <div className="col-span-8 flex items-center space-x-2">
+                  <div className="col-span-8 flex items-center space-x-2">
+                    <CiCalendar
+                      size={20}
+                      className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
+                    />
+                    <div className="font-poppins text-xl font-bold">
+                      Booking Period :
+                    </div>
+                    <div className="font-poppins text-xl ">
+                      {booking_date.length > 0 &&
+                        `${format(
+                          booking_date[0],
+                          "EEE dd MMM yyyy"
+                        )} - ${format(
+                          booking_date[booking_date.length - 1],
+                          "EEE dd MMM yyyy"
+                        )}`}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-4 flex items-center justify-end space-x-5">
+                  <div className=" font-poppins text-[#8A8A8A] text-xl">
+                    {`You Select ${booking_slot} Slot(s) Per Day`}
+                  </div>
+                  <BsInfoCircle size={20} className=" text-[#6425FE] w-4 h-4" />
+                </div>
+              </div>
+              <div className="w-auto h-[550px] overflow-x-auto mt-5">
+                <div className="mt-3 flex min-w-[100%] space-x-2">
+                  <div className="min-w-[70px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center">
+                    <div className="text-xs font-poppins text-white">Clear</div>
+                    <div className="text-xs font-poppins text-white">
+                      Selection
+                    </div>
+                  </div>
+                  {/* {[...Array(parseInt(booking_slot)).keys()].map((index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-300 h-[70px] min-w-[200px] rounded-lg  flex justify-center items-center"
+                    >
+                      <div className="font-poppins">Slot {index + 1}</div>
+                    </div>
+                  ))} */}
+                </div>
+                {booking_date.length > 0 &&
+                  booking_date.map((items) => (
+                    <div className="mt-3 flex min-w-[100%] space-x-2">
+                      <div className="min-w-[70px] h-[70px] bg-[#59606C] rounded-lg">
+                        <div className="flex items-center justify-center text-xs font-poppins text-white">
+                          {format(items, "EEE")}
+                        </div>
+                        <div className="flex items-center justify-center text-3xl font-poppins text-white">
+                          {format(items, "dd")}
+                        </div>
+                        <div className="flex items-center justify-center text-xs font-poppins text-white">
+                          {format(items, "MMM yyyy")}
+                        </div>
+                      </div>
+                      {[...Array(parseInt(booking_slot)).keys()].map(
+                        (index) => (
+                          <div
+                            key={index}
+                            className="bg-gray-300 h-[70px] min-w-[200px] rounded-lg  flex justify-center items-center"
+                          >
+                            <div className="font-poppins">Slot {index + 1}</div>
+                          </div>
+                        )
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
           {/* Right Panel */}
         </div>
       </div>
 
-      {showRightPanel && (
+      {/* {showRightPanel && (
         <a
           onClick={() => setShowRightPanel(!showRightPanel)}
           className="fixed top-0 lg:right-52 w-screen h-screen opacity-50 bg-black z-50 backdrop-blur"
         />
-      )}
+      )} */}
 
-      {showRightPanel && (
+      {/* {showRightPanel && (
         <div className="fixed right-0 top-0 h-screen w-1/4 bg-[#E8E8E8] z-50 rounded-md max-h- overflow-y-auto">
           <div className="flex justify-between items-center p-2 mt-3 border-b-2 border-gray-300">
             <div className="text-center text-sm flex-grow font-poppins">
@@ -481,7 +540,6 @@ const Create_Booking = () => {
             </button>
           </div>
 
-          {/* Sort */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -538,7 +596,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Sector */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -586,7 +643,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Region */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -634,7 +690,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Store Cluster */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -682,7 +737,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Branch */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -730,7 +784,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Department */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -778,7 +831,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Floor */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -956,7 +1008,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Location */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -1004,7 +1055,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Orientation */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -1052,7 +1102,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* Size */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -1100,7 +1149,6 @@ const Create_Booking = () => {
               </div>
             </div>
           </div>
-          {/* File Type */}
           <div className="p-6 border-b-2 border-gray-300">
             <div class="flex flex-row ">
               <div class="flex basis-11/12  ">
@@ -1149,7 +1197,7 @@ const Create_Booking = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };
