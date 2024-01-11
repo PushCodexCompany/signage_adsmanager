@@ -3,7 +3,7 @@ import { Header, Navbar } from "../components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { CiCalendar } from "react-icons/ci";
-import { BsInfoCircle } from "react-icons/bs";
+import { BsInfoCircle, BsFillTagFill } from "react-icons/bs";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -34,6 +34,7 @@ const mockup = [
     name: "Screen 1",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -41,6 +42,7 @@ const mockup = [
     name: "Screen 2",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -48,6 +50,7 @@ const mockup = [
     name: "Screen 3",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -55,6 +58,7 @@ const mockup = [
     name: "Screen 4",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -62,6 +66,7 @@ const mockup = [
     name: "Screen 5",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -69,6 +74,7 @@ const mockup = [
     name: "Screen 6",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -76,6 +82,7 @@ const mockup = [
     name: "Screen 7",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -83,6 +90,7 @@ const mockup = [
     name: "Screen 8",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -90,6 +98,7 @@ const mockup = [
     name: "Screen 9",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -97,6 +106,7 @@ const mockup = [
     name: "Screen 10",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -104,6 +114,7 @@ const mockup = [
     name: "Screen 11",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -111,6 +122,7 @@ const mockup = [
     name: "Screen 12",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -118,6 +130,7 @@ const mockup = [
     name: "Screen 13",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -125,6 +138,7 @@ const mockup = [
     name: "Screen 14",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -132,6 +146,7 @@ const mockup = [
     name: "Screen 15",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
@@ -139,6 +154,7 @@ const mockup = [
     name: "Screen 16",
     location: "Central World,FL1",
     province: "Bangkok",
+    tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
 ];
@@ -905,9 +921,31 @@ const Create_Booking = () => {
                         <img src={items.img} className="w-[150px] h-[150px]" />
                       </div>
                       <div className="ml-1 row-span-2 ">
-                        <div className="ml-1 text-2xl font-bold font-poppins">
-                          {items.name}
+                        <div className="grid grid-cols-3">
+                          <div className="col-span-2 flex">
+                            <div className="ml-1 text-2xl font-bold font-poppins">
+                              {items.name}
+                            </div>
+                            <div className="bg-[#00C32B] w-[6px] h-[6px] mt-2 ml-1 rounded-xl"></div>
+                          </div>
+                          <div class="col-span-1 flex justify-center items-center relative">
+                            <div class="group relative">
+                              <div class="flex space-x-2 absolute top-full left-1/2 transform -translate-x-1/2 p-2 border-gray-500 bg-white border rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity w-auto">
+                                {items.tag.map((items) => (
+                                  <div className="border p-1 w-[130%] border-[#DBDBDB] rounded-lg flex justify-center items-center">
+                                    <div className="font-poppins  text-xs">
+                                      {items}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                              <div class="p-2 cursor-pointer">
+                                <BsFillTagFill size={25} color={"#6425FE"} />
+                              </div>
+                            </div>
+                          </div>
                         </div>
+
                         <div className="ml-1 mt-1 text-[#59606C] text-sm font-poppins">
                           {items.location}
                         </div>
