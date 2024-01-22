@@ -405,7 +405,7 @@ export const GridTable = ({ user_lists, page_permission }) => {
       {modal_edit && (
         <a
           onClick={() => setModalEdit(!modal_edit)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-10 bg-black z-10 backdrop-blur"
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
 

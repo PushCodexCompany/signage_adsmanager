@@ -9,6 +9,9 @@ import Empty_Img from "../assets/img/empty_img.png";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 import {
@@ -51,6 +54,11 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const [contact_person_pos, setContactPersonPos] = useState();
   const [contact_person_email, setContactPersonEmail] = useState();
   const [contact_person_phone, setContactPersonPhone] = useState();
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [dateRange, setDateRange] = useState([]);
+  const currentDate = new Date();
 
   // calendar
   const today = startOfToday();
@@ -99,6 +107,32 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       // Sort the dates before updating the state
       return updatedDates.sort((a, b) => a - b);
     });
+  };
+
+  const handleDateChange = (date) => {
+    if (!startDate || (startDate && endDate)) {
+      // If start date is not set or both start and end dates are set, set new start date
+      setStartDate(date);
+      setEndDate(null);
+      setDateRange([date]);
+      setSelectedDates([date]);
+    } else {
+      // If start date is already set, set end date
+      setEndDate(date);
+      const range = generateDateRange(startDate, date);
+      setDateRange(range);
+      setSelectedDates(range);
+    }
+  };
+
+  const generateDateRange = (start, end) => {
+    const range = [];
+    let currentDate = new Date(start);
+    while (currentDate <= end) {
+      range.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return range;
   };
 
   useEffect(() => {
@@ -408,7 +442,47 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 impact.
               </div>
             </div>
-            <div className="mt-16 w-[70%] mx-auto ">
+            <div className="flex justify-center items-center">
+              <div className="grid grid-cols-6 space-x-2 mt-9">
+                <div className="col-span-2">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => handleDateChange(date)}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    placeholderText="Start Date"
+                    dateFormat="dd/MM/yyyy"
+                    minDate={currentDate}
+                    showYearDropdown
+                    showMonthDropdown
+                    dropdownMode="select"
+                    className="font-poppins border-2 border-gray-300 pl-2 w-auto h-8"
+                  />
+                </div>
+                <div className="font-poppins text-2xl flex justify-center items-center">
+                  -
+                </div>
+                <div className="col-span-2">
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => handleDateChange(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    placeholderText="End Date"
+                    dateFormat="dd/MM/yyyy"
+                    minDate={startDate || currentDate}
+                    showYearDropdown
+                    showMonthDropdown
+                    dropdownMode="select"
+                    className="font-poppins border-2 border-gray-300 pl-2 w-auto h-8"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-11 w-[70%] mx-auto ">
               <div className="flex items-center justify-center">
                 <div className="flex items-center justify-evenly gap-6 sm:gap-12">
                   <FaAngleLeft
@@ -487,7 +561,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   ""
                 )}
               </div>
-              <div className="mt-16 flex justify-center items-center space-x-6">
+              <div className="mt-14 mb-5 flex justify-center items-center space-x-6">
                 <div
                   onClick={() => handleBackStep("1")}
                   className="border-2 border-[#6425FE] w-48 h-10 flex items-center justify-center cursor-pointer"
@@ -495,7 +569,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <button className="text-[#6425FE] font-poppins ">Back</button>
                 </div>
                 <div
-                  onClick={() => handleNextStep("3")}
+                  // onClick={() => handleNextStep("3")}
+                  onClick={() => console.log("selected_dates", selected_dates)}
                   className="border-2 border-[#6425FE] bg-[#6425FE] w-48 h-10 flex items-center justify-center cursor-pointer"
                 >
                   <button className="text-white font-poppins">Next</button>

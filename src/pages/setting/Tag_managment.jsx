@@ -99,7 +99,7 @@ const Tag_managment = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">Category</div>
-              <div className="w-[40%] h-[40px] mt-3 bg-[#6425FE] text-white font-poppins flex justify-center items-center rounded-lg">
+              <div className="w-[40%] h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins flex justify-center items-center rounded-lg">
                 <button>New Category +</button>
               </div>
 
@@ -181,7 +181,7 @@ const Tag_managment = () => {
                 <div className="col-span-1 h-12">
                   <button
                     onClick={() => addTag()}
-                    className="w-[100%] h-[100%] rounded-lg bg-[#6425FE] font-poppins text-white"
+                    className="w-[100%] h-[100%] rounded-lg bg-[#6425FE]  hover:bg-[#3b1694] font-poppins text-white"
                   >
                     Add +
                   </button>

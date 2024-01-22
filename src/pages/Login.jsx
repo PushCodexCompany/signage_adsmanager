@@ -364,14 +364,14 @@ const Login = () => {
                     required
                     minLength={6}
                     placeholder="Your Password"
-                    autoComplete="current-password"
+                    autoComplete="password"
                   />
                 </div>
                 <div className="text-center">
                   <button
                     type="submit"
                     onClick={() => handleSubmit()}
-                    className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
+                    className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins hover:bg-[#232a36]"
                   >
                     Login
                   </button>

@@ -12,7 +12,6 @@ import {
   Ads_Media,
   Booking,
   Inbox,
-  Event,
   Logout,
   Dashboard_mockup,
   User_Management,
@@ -23,6 +22,7 @@ import {
   Media_Libraly,
   Activity_Log,
   Media_Log,
+  Static_Screen,
   Screen,
   Role_permission,
   User_Page,
@@ -50,9 +50,10 @@ const Routing = () => {
         <Route path="/ads_media" element={<Ads_Media />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/inbox" element={<Inbox />} />
-        <Route path="/event" element={<Event />} />
+        {/* <Route path="/event" element={<Event />} /> */}
         <Route path="/logout" element={<Logout />} />
         <Route path="/user" element={<User_Page />} />
+        <Route path="/screen" element={<Screen />} />
         <Route
           path="/setting/user_management/user"
           element={<User_Management />}
@@ -67,7 +68,7 @@ const Routing = () => {
         <Route path="/ad_media/media_libraly" element={<Media_Libraly />} />
         <Route path="/statics/activities_log" element={<Activity_Log />} />
         <Route path="/statics/media_log" element={<Media_Log />} />
-        <Route path="/statics/screen" element={<Screen />} />
+        <Route path="/statics/screen" element={<Static_Screen />} />
         <Route
           path="/setting/user_management/role_permission"
           element={<Role_permission />}

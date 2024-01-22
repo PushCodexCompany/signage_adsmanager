@@ -780,7 +780,7 @@ const Role_permission = () => {
               <div className="font-poppins font-bold text-2xl">Role</div>
               {page_permission.create ? (
                 <button
-                  className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE] text-white font-poppins rounded-lg"
+                  className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins rounded-lg"
                   onClick={() => createNewRole()}
                 >
                   New Role +
@@ -854,7 +854,7 @@ const Role_permission = () => {
             )}
             <div className="p-4">
               <button
-                className="w-40 h-11 bg-[#6425FE] text-white font-poppins"
+                className="w-40 h-11 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins"
                 onClick={() => handleSave(child_permissions[select_role])}
               >
                 Save

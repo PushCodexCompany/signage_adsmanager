@@ -15,7 +15,7 @@ export { default as Campaign } from "./Campaign";
 export { default as Ads_Media } from "./Ads_Media";
 export { default as Booking } from "./Booking";
 export { default as Inbox } from "./Inbox";
-export { default as Event } from "./Event";
+export { default as Screen } from "./Screen";
 export { default as Logout } from "./Logout";
 export { default as User_Management } from "./setting/User_management/User_Management";
 export { default as Content_type } from "./setting/Content_type";
@@ -25,7 +25,7 @@ export { default as Create_Media_Rule } from "./setting/Media_Rule/Create_Media_
 export { default as Media_Libraly } from "./Ads_Media/Media_Libraly";
 export { default as Activity_Log } from "./Static/Activity_Log";
 export { default as Media_Log } from "./Static/Media_Log";
-export { default as Screen } from "./Static/Screen";
+export { default as Static_Screen } from "./Static/Screen";
 export { default as Role_permission } from "./setting/User_management/Role_permission";
 export { default as User_Page } from "./User";
 export { default as Create_Booking } from "./Create_Booking";

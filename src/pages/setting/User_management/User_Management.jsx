@@ -340,7 +340,7 @@ const User_Management = () => {
           {page_permission.create ? (
             <button
               onClick={() => setModalNewUser(!modalNewUser)}
-              className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+              className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
             >
               New User +
             </button>
@@ -430,7 +430,7 @@ const User_Management = () => {
               ))}
             {filter.length > 0 && (
               <button onClick={() => clearFilter()}>
-                <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+                <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE]  hover:bg-[#3b1694] border-gray-300 rounded-full">
                   <div className="grid grid-cols-12">
                     <div className="col-span-1 mt-[6px]">
                       <div className="flex justify-end items-center">

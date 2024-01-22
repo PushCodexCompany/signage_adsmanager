@@ -354,7 +354,7 @@ const Edit_Merchandises = () => {
           <div className="mt-4 flex items-center justify-center">
             <button
               onClick={() => handleButtonClick()}
-              className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg font-poppins"
+              className="bg-[#6425FE]  hover:bg-[#3b1694] text-white font-bold w-[300px] h-[45px] rounded-lg font-poppins"
             >
               Upload New Image
             </button>
@@ -494,7 +494,7 @@ const Edit_Merchandises = () => {
             <div className="mt-4 flex items-center justify-center">
               <button
                 onClick={() => handleSave()}
-                className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
+                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
               >
                 Create
               </button>
