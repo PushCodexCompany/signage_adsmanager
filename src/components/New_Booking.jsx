@@ -461,10 +461,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     showYearDropdown
                     showMonthDropdown
                     dropdownMode="select"
-                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-right"
+                    className="font-poppins text-[#6425FE] placeholder:text-[#6425FE] text-bold text-xl  pl-2 w-auto h-8 text-right"
                   />
                 </div>
-                <div className="basis-1/4font-poppins text-2xl text-bold flex justify-center items-center text-[#6425FE]">
+                <div className="basis-1/4 ml-2 font-poppins text-2xl text-bold flex justify-center items-center text-[#6425FE] ">
                   -
                 </div>
                 <div className="basis-1/2">
@@ -480,7 +480,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     showYearDropdown
                     showMonthDropdown
                     dropdownMode="select"
-                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-left"
+                    className="font-poppins text-[#6425FE] placeholder:text-[#6425FE] text-bold text-xl  pl-2 w-auto h-8 text-left"
                   />
                 </div>
               </div>
