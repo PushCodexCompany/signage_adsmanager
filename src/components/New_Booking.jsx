@@ -104,8 +104,12 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         ? prevSelectedDates.filter((date) => !isSameDay(date, clickedDate))
         : [...prevSelectedDates, clickedDate];
 
+      const sortIndex = updatedDates.sort((a, b) => a - b);
+      setStartDate(sortIndex[0]);
+      setEndDate(sortIndex[sortIndex.length - 1]);
+
       // Sort the dates before updating the state
-      return updatedDates.sort((a, b) => a - b);
+      return sortIndex;
     });
   };
 
@@ -442,8 +446,45 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 impact.
               </div>
             </div>
-            <div className="flex justify-center items-center">
-              <div className="grid grid-cols-6 space-x-2 mt-9">
+            <div className="flex items-center justify-center mt-5">
+              <div className="flex flex-row">
+                <div className="basis-1/2">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => handleDateChange(date)}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    placeholderText="Start Date"
+                    dateFormat="dd/MM/yyyy"
+                    minDate={currentDate}
+                    showYearDropdown
+                    showMonthDropdown
+                    dropdownMode="select"
+                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-right"
+                  />
+                </div>
+                <div className="basis-1/4font-poppins text-2xl text-bold flex justify-center items-center text-[#6425FE]">
+                  -
+                </div>
+                <div className="basis-1/2">
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => handleDateChange(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    placeholderText="End Date"
+                    dateFormat="dd/MM/yyyy"
+                    minDate={startDate || currentDate}
+                    showYearDropdown
+                    showMonthDropdown
+                    dropdownMode="select"
+                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-left"
+                  />
+                </div>
+              </div>
+              {/* <div className="grid grid-cols-6 space-x-1">
                 <div className="col-span-2">
                   <DatePicker
                     selected={startDate}
@@ -457,10 +498,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     showYearDropdown
                     showMonthDropdown
                     dropdownMode="select"
-                    className="font-poppins border-2 border-gray-300 pl-2 w-auto h-8"
+                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-right"
                   />
                 </div>
-                <div className="font-poppins text-2xl flex justify-center items-center">
+                <div className="font-poppins text-2xl text-bold flex justify-center items-center text-[#6425FE]">
                   -
                 </div>
                 <div className="col-span-2">
@@ -476,13 +517,13 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     showYearDropdown
                     showMonthDropdown
                     dropdownMode="select"
-                    className="font-poppins border-2 border-gray-300 pl-2 w-auto h-8"
+                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-left"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
 
-            <div className="mt-11 w-[70%] mx-auto ">
+            <div className="mt-5 w-[70%] mx-auto ">
               <div className="flex items-center justify-center">
                 <div className="flex items-center justify-evenly gap-6 sm:gap-12">
                   <FaAngleLeft
