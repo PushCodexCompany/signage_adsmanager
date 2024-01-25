@@ -777,7 +777,7 @@ const Role_permission = () => {
           {/* Left Panel */}
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
-              <div className="font-poppins font-bold text-2xl">Role</div>
+              <div className="font-poppins font-bold text-2xl">User Role</div>
               {page_permission.create ? (
                 <button
                   className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins rounded-lg"
