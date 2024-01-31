@@ -1,160 +1,80 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { CiCalendar } from "react-icons/ci";
-import { BsInfoCircle, BsFillTagFill } from "react-icons/bs";
+import { BsInfoCircle } from "react-icons/bs";
+import { ImBin } from "react-icons/im";
+import { PiMonitor } from "react-icons/pi";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
-
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
-import event1 from "../assets/img/event/event1.png";
-import event2 from "../assets/img/event/event2.png";
-import event3 from "../assets/img/event/event3.png";
-import event4 from "../assets/img/event/event4.png";
-import event5 from "../assets/img/event/event5.png";
-import event6 from "../assets/img/event/event6.png";
-import event7 from "../assets/img/event/event7.png";
-import event8 from "../assets/img/event/event8.png";
-import event9 from "../assets/img/event/event9.png";
-import event10 from "../assets/img/event/event10.png";
-import event11 from "../assets/img/event/event11.png";
-import event12 from "../assets/img/event/event12.png";
-import event13 from "../assets/img/event/event13.png";
-import event14 from "../assets/img/event/event14.png";
-import event15 from "../assets/img/event/event15.png";
-import event16 from "../assets/img/event/event16.png";
-
 import { format } from "date-fns";
-
 import useCheckPermission from "../libs/useCheckPermission";
+
 const mockup = [
   {
-    img: event1,
+    id: 1,
     name: "Screen 1",
     location: "Central World,FL1",
     province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
+    media_rule: "1920x1080",
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+      "1920x1080",
+      "1000MB",
+    ],
     price: 500,
   },
   {
-    img: event2,
+    id: 2,
     name: "Screen 2",
     location: "Central World,FL1",
     province: "Bangkok",
+    media_rule: "1920x1080",
     tag: ["Portrait", "North", "Fashion"],
     price: 500,
   },
   {
-    img: event3,
+    id: 3,
     name: "Screen 3",
     location: "Central World,FL1",
     province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
+    media_rule: "1080x1920",
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
     price: 500,
   },
   {
-    img: event4,
+    id: 4,
     name: "Screen 4",
     location: "Central World,FL1",
     province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event5,
-    name: "Screen 5",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event6,
-    name: "Screen 6",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event7,
-    name: "Screen 7",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event8,
-    name: "Screen 8",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event9,
-    name: "Screen 9",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event10,
-    name: "Screen 10",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event11,
-    name: "Screen 11",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event12,
-    name: "Screen 12",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event13,
-    name: "Screen 13",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event14,
-    name: "Screen 14",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event15,
-    name: "Screen 15",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    img: event16,
-    name: "Screen 16",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    tag: ["Portrait", "North", "Fashion"],
+    media_rule: "1080x1920",
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
     price: 500,
   },
 ];
@@ -200,8 +120,10 @@ const Create_Booking = () => {
   const [isLocationOpen, setIsLocationOpen] = useState(false);
 
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
-  const isScreenSelected = (itemName) =>
-    selectedScreenItems.some((item) => item.name === itemName);
+  const [screenData, setScreenData] = useState([]);
+
+  const [checkboxes, setCheckboxes] = useState({});
+  const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
     setBookingData();
@@ -301,42 +223,248 @@ const Create_Booking = () => {
     </TooltipComponent>
   );
 
-  const [checkboxes, setCheckboxes] = useState({
-    fillBookingPeriod: false,
-    ignoreUnavailableSlots: false,
-    // Add more checkboxes as needed
-  });
+  const toggleCheckboxAddScreen = (rowId) => {
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [rowId]: !prevCheckboxes[rowId],
+      };
 
-  const toggleCheckboxAddScreen = (checkboxName) => {
-    setCheckboxes((prevCheckboxes) => ({
-      ...prevCheckboxes,
-      [checkboxName]: !prevCheckboxes[checkboxName],
-    }));
+      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
+        (id) => updatedCheckboxes[id]
+      );
+
+      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
+
+      setSelectedScreenItems(intArray);
+
+      return updatedCheckboxes;
+    });
   };
 
-  const handleSelectScreen = (screen) => {
-    // Check if the item is already selected
-    const isItemSelected = selectedScreenItems.some(
-      (item) => item.name === screen.name
-    );
+  const toggleAllCheckboxes = () => {
+    const newCheckboxes = {};
+    const newSelectAll = !selectAll;
 
-    if (!isItemSelected) {
-      // Add the selected item to the array
-      setSelectedScreenItems((prevSelectedItems) => [
-        ...prevSelectedItems,
-        screen,
-      ]);
-    } else {
-      // Remove the selected item from the array if it's already selected
-      setSelectedScreenItems((prevSelectedItems) =>
-        prevSelectedItems.filter((item) => item.name !== screen.name)
-      );
-    }
+    // Set all checkboxes to the new state
+    mockup.forEach((row) => {
+      newCheckboxes[row.id] = newSelectAll;
+    });
+
+    setCheckboxes(newCheckboxes);
+    setSelectAll(newSelectAll);
+
+    // Do something with the checkedRowIds array (e.g., store it in state)
+    const checkedRowIds = newSelectAll ? mockup.map((row) => row.id) : [];
+    setSelectedScreenItems(checkedRowIds);
   };
 
   const handleCloseAddScreen = () => {
     setShowAddScreen(!showAddScreen);
     setSelectedScreenItems([]);
+  };
+
+  const handleAddScreen = () => {
+    // const data = User.getScreen()
+
+    const screens = [
+      {
+        id: 1,
+        name: "Screen 1",
+        capacity: 15,
+        rule: "1920x1080",
+        booking: [
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+          {
+            slot: 15,
+            free: 0,
+          },
+        ],
+      },
+      {
+        id: 2,
+        name: "Screen 2",
+        capacity: 15,
+        rule: "1920x1080",
+        booking: [
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+          {
+            slot: 10,
+            free: 0,
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: "Screen 3",
+        capacity: 15,
+        rule: "1080x1920",
+        booking: [
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+        ],
+      },
+      {
+        id: 4,
+        name: "Screen 4",
+        capacity: 15,
+        rule: "1080x1920",
+        booking: [
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+          {
+            slot: 20,
+            free: 0,
+          },
+        ],
+      },
+    ];
+
+    const data = screens.slice(0, selectedScreenItems.length);
+    setScreenData(data);
+    setShowAddScreen(!showAddScreen);
   };
 
   return (
@@ -351,25 +479,25 @@ const Create_Booking = () => {
             </div>
           </div>
           <div className="col-span-4">
-            <div className="flex space-x-1">
-              <button
+            <div className="flex justify-end space-x-1">
+              {/* <button
                 onClick={() => alert("edit")}
                 className="w-52 h-10 rounded-md text-[#6425FE] border-2 border-[#6425FE] font-poppins font-bold"
               >
                 Edit
-              </button>
+              </button> */}
               <button
                 onClick={() => setShowAddScreen(true)}
-                className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
+                className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
               >
                 Add Screen+
               </button>
-              <button
+              {/* <button
                 onClick={() => alert("Comfirm Booking")}
                 className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
               >
                 Confirm Booking
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -554,6 +682,38 @@ const Create_Booking = () => {
                   CDS-BT-230101-004
                 </div>
               </div>
+
+              <div className="flex justify-center items-center mt-5">
+                <div className="border border-gray-300 w-[80%] h-[75px]">
+                  <div className="grid grid-cols-10">
+                    <div className="col-span-2 flex justify-center items-center">
+                      <PiMonitor size={40} color={"#59606C"} />
+                    </div>
+                    <div className="col-span-6">
+                      <div className="flex justify-start items-center">
+                        <div className="font-poppins text-xl font-bold">
+                          Screen 1
+                        </div>
+                      </div>
+                      <div className="flex justify-start items-center">
+                        <div className="font-poppins text-sm">
+                          Central Chidlom F3
+                        </div>
+                      </div>
+                      <div className="flex justify-start items-center">
+                        <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
+                        <div className="font-poppins text-xs p-[2px]">
+                          Online
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
+                      <BsInfoCircle color={"#6425FE"} />
+                      <ImBin color={"#6425FE"} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           {/* Left Panel */}
@@ -561,78 +721,124 @@ const Create_Booking = () => {
           {/* Right Panel */}
           <div className="col-span-6 border-1 border-gray-300">
             <div className="p-3">
-              <div className="grid grid-cols-12">
-                <div className="col-span-8 flex items-center space-x-2">
-                  <div className="col-span-8 flex items-center space-x-2">
-                    <CiCalendar
-                      size={20}
-                      className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
-                    />
-                    <div className="font-poppins text-xl font-bold">
-                      Booking Period :
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2">
+                  <CiCalendar
+                    size={20}
+                    className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
+                  />
+                  <div>
+                    <div className="flex justify-center items-center space-x-2">
+                      <div className="font-poppins text-xl font-bold">
+                        Booking Period :
+                      </div>
+                      <div className="font-poppins text-2xl ">
+                        {booking_date.length > 0 && (
+                          <div>{` ${format(
+                            booking_date[0],
+                            "EEE dd MMM yyyy"
+                          )} - ${format(
+                            booking_date[booking_date.length - 1],
+                            "EEE dd MMM yyyy"
+                          )}`}</div>
+                        )}
+                      </div>
                     </div>
-                    <div className="font-poppins text-xl ">
-                      {booking_date.length > 0 &&
-                        `${format(
-                          booking_date[0],
-                          "EEE dd MMM yyyy"
-                        )} - ${format(
-                          booking_date[booking_date.length - 1],
-                          "EEE dd MMM yyyy"
-                        )}`}
+
+                    <div className="font-poppins text-xs">
+                      {`You Select ${booking_slot} Slot(s) Per Day`}
                     </div>
                   </div>
-                </div>
-                <div className="col-span-4 flex items-center justify-end space-x-5">
-                  <div className=" font-poppins text-[#8A8A8A] text-xl">
-                    {`You Select ${booking_slot} Slot(s) Per Day`}
-                  </div>
-                  <BsInfoCircle size={20} className=" text-[#6425FE] w-4 h-4" />
                 </div>
               </div>
-              <div className="w-auto h-[550px] overflow-x-auto mt-5">
-                <div className="mt-3 flex min-w-[100%] space-x-2">
-                  <div className="min-w-[70px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center">
-                    <div className="text-xs font-poppins text-white">Clear</div>
-                    <div className="text-xs font-poppins text-white">
-                      Selection
-                    </div>
-                  </div>
-                  {/* {[...Array(parseInt(booking_slot)).keys()].map((index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-300 h-[70px] min-w-[200px] rounded-lg  flex justify-center items-center"
-                    >
-                      <div className="font-poppins">Slot {index + 1}</div>
-                    </div>
-                  ))} */}
-                </div>
-                {booking_date.length > 0 &&
-                  booking_date.map((items) => (
-                    <div className="mt-3 flex min-w-[100%] space-x-2">
-                      <div className="min-w-[70px] h-[70px] bg-[#59606C] rounded-lg">
-                        <div className="flex items-center justify-center text-xs font-poppins text-white">
-                          {format(items, "EEE")}
+
+              <div className="w-[1140px] h-[550px] overflow-x-auto overflow-y-auto  mt-5">
+                <div className="grid grid-cols-12 space-x-1 mt-3">
+                  <div className="col-span-1">
+                    <div className="min-w-[100%]">
+                      <div
+                        onClick={() => alert("select all")}
+                        className="min-w-[70px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
+                      >
+                        <div className="text-xs font-poppins text-white">
+                          Select all
                         </div>
-                        <div className="flex items-center justify-center text-3xl font-poppins text-white">
-                          {format(items, "dd")}
-                        </div>
-                        <div className="flex items-center justify-center text-xs font-poppins text-white">
-                          {format(items, "MMM yyyy")}
+                        <div className="text-xs font-poppins text-white">
+                          available
                         </div>
                       </div>
-                      {[...Array(parseInt(booking_slot)).keys()].map(
-                        (index) => (
-                          <div
-                            key={index}
-                            className="bg-gray-300 h-[70px] min-w-[200px] rounded-lg  flex justify-center items-center"
-                          >
-                            <div className="font-poppins">Slot {index + 1}</div>
-                          </div>
-                        )
-                      )}
+                      <div>
+                        {booking_date.length > 0 &&
+                          booking_date.map((items, index) => (
+                            <div key={index} className="mt-3 space-x-2">
+                              <div className="min-w-[70px] h-[70px] bg-[#59606C] rounded-lg">
+                                <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                  {format(items, "EEE")}
+                                </div>
+                                <div className="flex items-center justify-center text-3xl font-poppins text-white">
+                                  {format(items, "dd")}
+                                </div>
+                                <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                  {format(items, "MMM yyyy")}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                  <div className="col-span-11">
+                    <div className="grid grid-cols-6 ">
+                      <div className="flex space-x-2">
+                        {screenData.length > 0 &&
+                          screenData.map((items, index) => (
+                            <>
+                              <div
+                                key={index}
+                                className="h-[70px] min-w-[310px] rounded-lg"
+                              >
+                                <div className="grid grid-cols-10">
+                                  <div className="col-span-2 flex justify-center items-center">
+                                    <PiMonitor size={40} color={"#59606C"} />
+                                  </div>
+                                  <div className="col-span-6">
+                                    <div className="flex justify-start items-center">
+                                      <div className="font-poppins text-xl font-bold">
+                                        {items.name}
+                                      </div>
+                                    </div>
+                                    <div className="flex justify-start items-center">
+                                      <div className="font-poppins text-sm">
+                                        Max Capacity {items.capacity}/Day
+                                      </div>
+                                    </div>
+                                    <div className="flex justify-start items-center">
+                                      <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                        Media Rule : {items.rule}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-span-2 flex justify-center items-center">
+                                    <BsInfoCircle color={"#6425FE"} />
+                                  </div>
+                                </div>
+
+                                <div className="mt-3 space-y-3">
+                                  {items.booking.map((items2, index2) => (
+                                    <div className="bg-[#018C41] h-[70px] min-w-[310px] rounded-lg flex justify-center items-center">
+                                      <div className="font-poppins text-white">
+                                        Available {items2.free}/{items2.slot}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -650,7 +856,7 @@ const Create_Booking = () => {
       {showAddScreen && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
           {/* First div (circle) */}
-          <div className="absolute right-10 top-14 lg:top-[-10px] lg:right-[150px] m-4 z-30">
+          <div className="absolute right-10 top-14 lg:top-5 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => handleCloseAddScreen()}>
                 <AiOutlineClose size={25} color={"#6425FE"} />
@@ -905,165 +1111,165 @@ const Create_Booking = () => {
               </div>
             </div>
             {/* Filter */}
+            <div className="mt-5 p-6">
+              <div className="font-poppins">
+                *Search result displays only screens available in your booking
+              </div>
+            </div>
 
-            {/* Grid */}
             <div className="p-4">
-              <div className="w-auto h-[450px] overflow-x-auto ">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 p-2 space-x-0">
-                  {mockup.map((items, index) => (
-                    <div
-                      key={index}
-                      className={`border border-[#B6B3B3] md:h-[350px] lg:w-[200px] lg:h-[350px] ${
-                        index >= 6 ? "lg:mt-4" : "mt-4"
-                      } ${index >= 3 ? "md : mt-3 " : "mt-3"} grid grid-rows-8`}
-                    >
-                      <div className="flex justify-center items-center ">
-                        <img src={items.img} className="w-[150px] h-[150px]" />
-                      </div>
-                      <div className="ml-1 row-span-2 ">
-                        <div className="grid grid-cols-3">
-                          <div className="col-span-2 flex">
-                            <div className="ml-1 text-2xl font-bold font-poppins">
-                              {items.name}
-                            </div>
-                            <div className="bg-[#00C32B] w-[6px] h-[6px] mt-2 ml-1 rounded-xl"></div>
+              <div className="w-auto h-[350px] overflow-auto">
+                <table className="min-w-full border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        <label className="inline-flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                            checked={selectAll}
+                            onChange={toggleAllCheckboxes}
+                          />
+                          <span
+                            className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                              selectAll ? "bg-white" : ""
+                            }`}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className={`h-6 w-6 text-white ${
+                                selectAll ? "opacity-100" : "opacity-0"
+                              } transition-opacity duration-300 ease-in-out`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="#6425FE"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </span>
+                        </label>
+                      </th>
+                      <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Screen Name
+                      </th>
+                      <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Media Rule
+                      </th>
+                      <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Tag
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {mockup.map((row, key) => (
+                      <tr key={row.id}>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="flex items-center">
+                            <label className="inline-flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                                checked={checkboxes[row.id] || false} // Set default value to false if row.id is not present
+                                onChange={() => toggleCheckboxAddScreen(row.id)}
+                              />
+                              <span
+                                className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                                  checkboxes[row.id] ? "bg-white" : ""
+                                }`}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className={`h-6 w-6 text-white ${
+                                    checkboxes[row.id]
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  } transition-opacity duration-300 ease-in-out`}
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="#6425FE"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                              </span>
+                            </label>
                           </div>
-                          <div class="col-span-1 flex justify-center items-center relative">
-                            <div class="group relative">
-                              <div class="flex space-x-2 absolute top-full left-1/2 transform -translate-x-1/2 p-2 border-gray-500 bg-white border rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity w-auto">
-                                {items.tag.map((items) => (
-                                  <div className="border p-1 w-[130%] border-[#DBDBDB] rounded-lg flex justify-center items-center">
-                                    <div className="font-poppins  text-xs">
-                                      {items}
-                                    </div>
-                                  </div>
-                                ))}
-                              </div>
-                              <div class="p-2 cursor-pointer">
-                                <BsFillTagFill size={25} color={"#6425FE"} />
-                              </div>
+                        </td>
+                        <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="flex">
+                            <div className="font-poppins text-xl font-bold">
+                              {row.name}
                             </div>
+                            <div className="bg-[#00C32B] w-[5px] h-[5px] mt-2 ml-1 rounded-xl"></div>
                           </div>
-                        </div>
+                        </td>
+                        <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="font-poppins text-sm text-[#59606C] font-bold">
+                            {row.location}
+                          </div>
+                          <div className="font-poppins text-sm font-bold">
+                            {row.province}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="font-poppins font-bold">
+                            {row.media_rule}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="flex flex-wrap">
+                            {row.tag.map((items, index) => (
+                              <div
+                                key={index}
+                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                                style={{ flexBasis: "calc(20% - 8px)" }} // Adjust the width to fit 5 items per row
+                              >
+                                <div className="font-poppins text-xs font-bold">
+                                  {items}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </td>
 
-                        <div className="ml-1 mt-1 text-[#59606C] text-sm font-poppins">
-                          {items.location}
-                        </div>
-                        <div className="ml-1 mt-1 text-sm font-bold font-poppins">
-                          {items.province}
-                        </div>
-                        <div className="flex justify-center items-center mt-4 text-2xl font-bold font-poppins">
-                          {`฿${items.price}/Loop`}
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-center ">
-                        <button
-                          onClick={() => handleSelectScreen(items)}
-                          className={`w-[80%] py-2 rounded-lg font-bold font-poppins ${
-                            isScreenSelected(items.name)
-                              ? "bg-red-500 text-white"
-                              : "bg-[#6425FE] text-white"
-                          }`}
-                        >
-                          {isScreenSelected(items.name) ? "Remove" : "Book"}
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                        <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                          <div className="space-x-2">
+                            <button
+                              className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
+                              onClick={() => alert(key)}
+                            >
+                              View Detail
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-            {/* Grid */}
 
-            <div className="mt-1 mb-3 flex items-center justify-center space-x-2">
-              <div className="flex space-x-2">
-                <label className="inline-flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                    checked={checkboxes.fillBookingPeriod}
-                    onChange={() =>
-                      toggleCheckboxAddScreen("fillBookingPeriod")
-                    }
-                  />
-                  <span
-                    className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                      checkboxes.fillBookingPeriod ? "bg-white" : ""
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`h-6 w-6 text-white ${
-                        checkboxes.fillBookingPeriod
-                          ? "opacity-100"
-                          : "opacity-0"
-                      } transition-opacity duration-300 ease-in-out`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="#6425FE"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="3"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </span>
-                </label>
-                <div className="font-poppins">Fill booking period</div>
-              </div>
-              <div className="flex space-x-2">
-                <label className="inline-flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                    checked={checkboxes.ignoreUnavailableSlots}
-                    onChange={() =>
-                      toggleCheckboxAddScreen("ignoreUnavailableSlots")
-                    }
-                  />
-                  <span
-                    className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                      checkboxes.ignoreUnavailableSlots ? "bg-white" : ""
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`h-6 w-6 text-white ${
-                        checkboxes.ignoreUnavailableSlots
-                          ? "opacity-100"
-                          : "opacity-0"
-                      } transition-opacity duration-300 ease-in-out`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="#6425FE"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="3"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </span>
-                </label>
-                <div className="font-poppins">Ignore unavailable slots</div>
-              </div>
-            </div>
             <div className="mt-1 mb-3 flex items-center justify-center">
-              <div className="text-[#FF0000] font-poppins">
-                Invalid : Screen 3 contains unmanageable slots during the
-                selected period
-              </div>
-            </div>
-            <div className="mt-1 mb-3 flex items-center justify-center">
-              {console.log("selectedScreenItems", selectedScreenItems)}
               <button
-                onClick={() => setShowAddScreen(!showAddScreen)}
+                onClick={() => handleAddScreen()}
                 className="w-[20%] bg-[#6425FE] text-white text-xl py-2 rounded-lg font-bold font-poppins "
               >
-                Add
+                Add Screen
               </button>
             </div>
           </div>

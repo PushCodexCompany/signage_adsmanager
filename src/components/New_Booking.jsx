@@ -484,43 +484,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   />
                 </div>
               </div>
-              {/* <div className="grid grid-cols-6 space-x-1">
-                <div className="col-span-2">
-                  <DatePicker
-                    selected={startDate}
-                    onChange={(date) => handleDateChange(date)}
-                    selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
-                    placeholderText="Start Date"
-                    dateFormat="dd/MM/yyyy"
-                    minDate={currentDate}
-                    showYearDropdown
-                    showMonthDropdown
-                    dropdownMode="select"
-                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-right"
-                  />
-                </div>
-                <div className="font-poppins text-2xl text-bold flex justify-center items-center text-[#6425FE]">
-                  -
-                </div>
-                <div className="col-span-2">
-                  <DatePicker
-                    selected={endDate}
-                    onChange={(date) => handleDateChange(date)}
-                    selectsEnd
-                    startDate={startDate}
-                    endDate={endDate}
-                    placeholderText="End Date"
-                    dateFormat="dd/MM/yyyy"
-                    minDate={startDate || currentDate}
-                    showYearDropdown
-                    showMonthDropdown
-                    dropdownMode="select"
-                    className="font-poppins text-[#6425FE] text-bold border-1 border-gray-300 pl-2 w-auto h-8 text-left"
-                  />
-                </div>
-              </div> */}
             </div>
 
             <div className="mt-5 w-[70%] mx-auto ">
@@ -610,8 +573,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <button className="text-[#6425FE] font-poppins ">Back</button>
                 </div>
                 <div
-                  // onClick={() => handleNextStep("3")}
-                  onClick={() => console.log("selected_dates", selected_dates)}
+                  onClick={() => handleNextStep("3")}
+                  // onClick={() => console.log("selected_dates", selected_dates)}
                   className="border-2 border-[#6425FE] bg-[#6425FE] w-48 h-10 flex items-center justify-center cursor-pointer"
                 >
                   <button className="text-white font-poppins">Next</button>
