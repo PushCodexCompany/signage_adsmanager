@@ -79,6 +79,234 @@ const mockup = [
   },
 ];
 
+const all_screen = [
+  {
+    id: 1,
+    name: "Screen 1",
+    location: "Central Chidlom F3",
+    status: 1,
+  },
+  {
+    id: 2,
+    name: "Screen 2",
+    location: "Central Chidlom F3",
+    status: 1,
+  },
+  {
+    id: 3,
+    name: "Screen 3",
+    location: "Central Chidlom F3",
+    status: 1,
+  },
+  {
+    id: 4,
+    name: "Screen 4",
+    location: "Central Chidlom F3",
+    status: 1,
+  },
+  {
+    id: 5,
+    name: "Screen 5",
+    location: "Central Chidlom F3",
+    status: 0,
+  },
+];
+
+const screens = [
+  {
+    id: 1,
+    name: "Screen 1",
+    capacity: 15,
+    rule: "1920x1080",
+    booking: [
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+      {
+        slot: 15,
+        free: 0,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Screen 2",
+    capacity: 15,
+    rule: "1920x1080",
+    booking: [
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+      {
+        slot: 10,
+        free: 0,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Screen 3",
+    capacity: 15,
+    rule: "1080x1920",
+    booking: [
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Screen 4",
+    capacity: 15,
+    rule: "1080x1920",
+    booking: [
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+      {
+        slot: 20,
+        free: 0,
+      },
+    ],
+  },
+];
+
 const Create_Booking = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -121,12 +349,16 @@ const Create_Booking = () => {
 
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
   const [screenData, setScreenData] = useState([]);
+  const [allScreenData, setAllScreenData] = useState([]);
 
   const [checkboxes, setCheckboxes] = useState({});
   const [selectAll, setSelectAll] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteModalIndex, setDeleteModalIndex] = useState({});
 
   useEffect(() => {
     setBookingData();
+    getAllScreen();
   }, []);
 
   const setBookingData = () => {
@@ -137,6 +369,10 @@ const Create_Booking = () => {
     setMerchandise(merchandise);
     setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
     setBookingSlot(booking_slot);
+  };
+
+  const getAllScreen = () => {
+    setAllScreenData(all_screen);
   };
 
   const toggleSlotSelect = () => {
@@ -235,11 +471,35 @@ const Create_Booking = () => {
       );
 
       const intArray = checkedRowIds.map((str) => parseInt(str, 10));
-
       setSelectedScreenItems(intArray);
 
       return updatedCheckboxes;
     });
+  };
+
+  const toggleScreenFromAllScreen = (id) => {
+    if (selectedScreenItems.some((screen) => screen === id)) {
+      // มีจอแล้ว
+    } else {
+      //ยังไม่มีจอ
+
+      const new_select_screen = [...selectedScreenItems];
+      new_select_screen.push(id);
+      setSelectedScreenItems(new_select_screen);
+      setCheckboxes((prevCheckboxes) => {
+        const updatedCheckboxes = {
+          ...prevCheckboxes,
+          [id]: !prevCheckboxes[id],
+        };
+
+        return updatedCheckboxes;
+      });
+
+      const screensToReturn = screens.filter((screen) =>
+        new_select_screen.includes(screen.id)
+      );
+      setScreenData(screensToReturn);
+    }
   };
 
   const toggleAllCheckboxes = () => {
@@ -261,210 +521,68 @@ const Create_Booking = () => {
 
   const handleCloseAddScreen = () => {
     setShowAddScreen(!showAddScreen);
-    setSelectedScreenItems([]);
+    // setSelectedScreenItems([]);
   };
 
   const handleAddScreen = () => {
     // const data = User.getScreen()
 
-    const screens = [
-      {
-        id: 1,
-        name: "Screen 1",
-        capacity: 15,
-        rule: "1920x1080",
-        booking: [
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-          {
-            slot: 15,
-            free: 0,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Screen 2",
-        capacity: 15,
-        rule: "1920x1080",
-        booking: [
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-          {
-            slot: 10,
-            free: 0,
-          },
-        ],
-      },
-      {
-        id: 3,
-        name: "Screen 3",
-        capacity: 15,
-        rule: "1080x1920",
-        booking: [
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-        ],
-      },
-      {
-        id: 4,
-        name: "Screen 4",
-        capacity: 15,
-        rule: "1080x1920",
-        booking: [
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-          {
-            slot: 20,
-            free: 0,
-          },
-        ],
-      },
-    ];
-
-    const data = screens.slice(0, selectedScreenItems.length);
-    setScreenData(data);
+    const screensToReturn = screens.filter((screen) =>
+      selectedScreenItems.includes(screen.id)
+    );
+    setScreenData(screensToReturn);
     setShowAddScreen(!showAddScreen);
+  };
+
+  const handleDeleteClick = (index) => {
+    setDeleteModalIndex((prevModal) => {
+      const updatedModal = {
+        ...prevModal,
+        [index]: !prevModal[index],
+      };
+
+      return updatedModal;
+    });
+  };
+
+  const handleConfirmDelete = (index, id) => {
+    const select_screen = [...selectedScreenItems];
+    const new_select_screen = select_screen.filter((item) => item !== id);
+    setSelectedScreenItems(new_select_screen);
+
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [id]: !prevCheckboxes[id],
+      };
+
+      return updatedCheckboxes;
+    });
+
+    const screensToReturn = screens.filter((screen) =>
+      new_select_screen.includes(screen.id)
+    );
+    setScreenData(screensToReturn);
+
+    setDeleteModalIndex((prevModal) => {
+      const updatedModal = {
+        ...prevModal,
+        [index]: !prevModal[index],
+      };
+
+      return updatedModal;
+    });
+  };
+
+  const handleCancelDelete = (index) => {
+    setDeleteModalIndex((prevModal) => {
+      const updatedModal = {
+        ...prevModal,
+        [index]: !prevModal[index],
+      };
+
+      return updatedModal;
+    });
   };
 
   return (
@@ -683,36 +801,104 @@ const Create_Booking = () => {
                 </div>
               </div>
 
-              <div className="flex justify-center items-center mt-5">
-                <div className="border border-gray-300 w-[80%] h-[75px]">
-                  <div className="grid grid-cols-10">
-                    <div className="col-span-2 flex justify-center items-center">
-                      <PiMonitor size={40} color={"#59606C"} />
-                    </div>
-                    <div className="col-span-6">
-                      <div className="flex justify-start items-center">
-                        <div className="font-poppins text-xl font-bold">
-                          Screen 1
+              <div className="h-[350px] overflow-y-auto mt-5">
+                {allScreenData.length > 0 &&
+                  allScreenData.map((items, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-center items-center mt-3 cursor-pointer"
+                    >
+                      <div
+                        className={`border border-gray-300 rounded-lg w-[80%] h-[75px] ${
+                          screenData.some((screen) => screen.id === items.id)
+                            ? "bg-[#FFBD49]"
+                            : ""
+                        }`}
+                        onClick={() => toggleScreenFromAllScreen(items.id)}
+                      >
+                        <div className="grid grid-cols-10">
+                          <div className="col-span-2 flex justify-center items-center">
+                            <PiMonitor size={40} color={"#59606C"} />
+                          </div>
+                          <div className="col-span-6">
+                            <div className="flex justify-start items-center">
+                              <div className="font-poppins text-xl font-bold">
+                                {items.name}
+                              </div>
+                            </div>
+                            <div className="flex justify-start items-center">
+                              <div className="font-poppins text-sm">
+                                {items.location}
+                              </div>
+                            </div>
+                            <div className="flex justify-start items-center">
+                              {items.status === 0 ? (
+                                <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
+                              ) : (
+                                <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
+                              )}
+                              <div className="font-poppins text-xs p-[2px]">
+                                {items.status === 0 ? "Offline" : "Online"}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
+                            <BsInfoCircle
+                              color={"#6425FE"}
+                              className="cursor-pointer"
+                            />
+                            {screenData.some(
+                              (screen) => screen.id === items.id
+                            ) && (
+                              <>
+                                <ImBin
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteClick(index);
+                                  }}
+                                  className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                />
+                                {deleteModalIndex[index] && (
+                                  <div className="absolute  left-[450px] flex items-center">
+                                    <div className=" bg-black bg-opacity-80 w-[400px] h-[130px]  p-8 rounded shadow-md">
+                                      <p className=" font-poppins text-xs text-white">
+                                        Do You Want to Delete This Screen. Lorem
+                                        Ipsum is simply dummy text of the
+                                        printing and typesetting industry.
+                                      </p>
+                                      <div className="flex justify-center items-center">
+                                        <button
+                                          className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleConfirmDelete(
+                                              index,
+                                              items.id
+                                            );
+                                          }}
+                                        >
+                                          Yes
+                                        </button>
+                                        <button
+                                          className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleCancelDelete(index);
+                                          }}
+                                        >
+                                          No
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div className="flex justify-start items-center">
-                        <div className="font-poppins text-sm">
-                          Central Chidlom F3
-                        </div>
-                      </div>
-                      <div className="flex justify-start items-center">
-                        <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
-                        <div className="font-poppins text-xs p-[2px]">
-                          Online
-                        </div>
-                      </div>
                     </div>
-                    <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
-                      <BsInfoCircle color={"#6425FE"} />
-                      <ImBin color={"#6425FE"} />
-                    </div>
-                  </div>
-                </div>
+                  ))}
               </div>
             </div>
           </div>
@@ -752,12 +938,17 @@ const Create_Booking = () => {
                 </div>
               </div>
 
-              <div className="w-[1140px] h-[550px] overflow-x-auto overflow-y-auto  mt-5">
+              <div className="w-[1140px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
                 <div className="grid grid-cols-12 space-x-1 mt-3">
                   <div className="col-span-1">
                     <div className="min-w-[100%]">
                       <div
-                        onClick={() => alert("select all")}
+                        onClick={() =>
+                          console.log(
+                            "selectedScreenItems",
+                            selectedScreenItems
+                          )
+                        }
                         className="min-w-[70px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
                       >
                         <div className="text-xs font-poppins text-white">
@@ -824,13 +1015,15 @@ const Create_Booking = () => {
                                 </div>
 
                                 <div className="mt-3 space-y-3">
-                                  {items.booking.map((items2, index2) => (
-                                    <div className="bg-[#018C41] h-[70px] min-w-[310px] rounded-lg flex justify-center items-center">
-                                      <div className="font-poppins text-white">
-                                        Available {items2.free}/{items2.slot}
+                                  {items.booking
+                                    .slice(0, booking_date.length)
+                                    .map((items2, index2) => (
+                                      <div className="bg-[#018C41] h-[70px] min-w-[310px] rounded-lg flex justify-center items-center">
+                                        <div className="font-poppins text-white">
+                                          Available {items2.free}/{items2.slot}
+                                        </div>
                                       </div>
-                                    </div>
-                                  ))}
+                                    ))}
                                 </div>
                               </div>
                             </>
