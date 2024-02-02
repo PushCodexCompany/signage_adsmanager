@@ -121,43 +121,27 @@ const screens = [
     booking: [
       {
         slot: 15,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 15,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 15,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 15,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 15,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 15,
-        free: 0,
-      },
-      {
-        slot: 15,
-        free: 0,
-      },
-      {
-        slot: 15,
-        free: 0,
-      },
-      {
-        slot: 15,
-        free: 0,
-      },
-      {
-        slot: 15,
-        free: 0,
+        booking: 0,
       },
     ],
   },
@@ -169,43 +153,27 @@ const screens = [
     booking: [
       {
         slot: 10,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 10,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 10,
-        free: 0,
+        booking: 10,
       },
       {
         slot: 10,
-        free: 0,
+        booking: 10,
       },
       {
         slot: 10,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 10,
-        free: 0,
-      },
-      {
-        slot: 10,
-        free: 0,
-      },
-      {
-        slot: 10,
-        free: 0,
-      },
-      {
-        slot: 10,
-        free: 0,
-      },
-      {
-        slot: 10,
-        free: 0,
+        booking: 0,
       },
     ],
   },
@@ -217,43 +185,27 @@ const screens = [
     booking: [
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 18,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 18,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
-      },
-      {
-        slot: 20,
-        free: 0,
-      },
-      {
-        slot: 20,
-        free: 0,
-      },
-      {
-        slot: 20,
-        free: 0,
-      },
-      {
-        slot: 20,
-        free: 0,
+        booking: 0,
       },
     ],
   },
@@ -265,43 +217,43 @@ const screens = [
     booking: [
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
       {
         slot: 20,
-        free: 0,
+        booking: 0,
       },
     ],
   },
@@ -316,7 +268,6 @@ const Create_Booking = () => {
   const [merchandise, setMerchandise] = useState([]);
   const [booking_date, setBookingDate] = useState([]);
   const [booking_slot, setBookingSlot] = useState();
-  const [view, setView] = useState(true);
   const [filter, setFilter] = useState(["Available", "Low < 5"]);
   const [filter_add_screen, setFilterAddScreen] = useState([
     "North",
@@ -330,10 +281,6 @@ const Create_Booking = () => {
   const [isConditionOpen, setIsConditionOpen] = useState(false);
   const [isBranchOpen, setIsBranchOpen] = useState(false);
   const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
-  const [showRightPanel, setShowRightPanel] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const [isChecked, setIsChecked] = useState(false);
 
   const [showAddScreen, setShowAddScreen] = useState(false);
 
@@ -353,8 +300,9 @@ const Create_Booking = () => {
 
   const [checkboxes, setCheckboxes] = useState({});
   const [selectAll, setSelectAll] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteModalIndex, setDeleteModalIndex] = useState({});
+
+  const [bookingSelect, setBookingSelect] = useState([]);
 
   useEffect(() => {
     setBookingData();
@@ -368,7 +316,7 @@ const Create_Booking = () => {
     setBookingName(booking_name);
     setMerchandise(merchandise);
     setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
-    setBookingSlot(booking_slot);
+    setBookingSlot(parseInt(booking_slot));
   };
 
   const getAllScreen = () => {
@@ -585,6 +533,35 @@ const Create_Booking = () => {
     });
   };
 
+  const handleSelectScreen = (screenIndex, dateIndex) => {
+    // Check if the selection already exists in bookingSelect
+    const isDuplicate = bookingSelect.some(
+      (selected) =>
+        selected.screenIndex === screenIndex && selected.dateIndex === dateIndex
+    );
+
+    if (!isDuplicate) {
+      // If not a duplicate, add the selection to bookingSelect
+      const newBookingSelect = [...bookingSelect, { screenIndex, dateIndex }];
+      setBookingSelect(newBookingSelect);
+    } else {
+      // If it's a duplicate, you may choose to remove it or handle it accordingly
+      // For this example, I'm removing the duplicate
+      const filteredBookingSelect = bookingSelect.filter(
+        (selected) =>
+          !(
+            selected.screenIndex === screenIndex &&
+            selected.dateIndex === dateIndex
+          )
+      );
+      setBookingSelect(filteredBookingSelect);
+    }
+  };
+
+  const handleSaveScreen = () => {
+    console.log("select screen :", bookingSelect);
+  };
+
   return (
     <>
       <Navbar />
@@ -598,24 +575,25 @@ const Create_Booking = () => {
           </div>
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
-              {/* <button
-                onClick={() => alert("edit")}
-                className="w-52 h-10 rounded-md text-[#6425FE] border-2 border-[#6425FE] font-poppins font-bold"
-              >
-                Edit
-              </button> */}
               <button
                 onClick={() => setShowAddScreen(true)}
                 className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
               >
                 Add Screen+
               </button>
-              {/* <button
+              <button
+                onClick={() => handleSaveScreen()}
+                className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+              >
+                Save Screen
+              </button>
+
+              <button
                 onClick={() => alert("Comfirm Booking")}
                 className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
               >
                 Confirm Booking
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
@@ -943,13 +921,8 @@ const Create_Booking = () => {
                   <div className="col-span-1">
                     <div className="min-w-[100%]">
                       <div
-                        onClick={() =>
-                          console.log(
-                            "selectedScreenItems",
-                            selectedScreenItems
-                          )
-                        }
-                        className="min-w-[70px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
+                        onClick={() => console.log("Select all")}
+                        className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
                       >
                         <div className="text-xs font-poppins text-white">
                           Select all
@@ -962,7 +935,7 @@ const Create_Booking = () => {
                         {booking_date.length > 0 &&
                           booking_date.map((items, index) => (
                             <div key={index} className="mt-3 space-x-2">
-                              <div className="min-w-[70px] h-[70px] bg-[#59606C] rounded-lg">
+                              <div className="min-w-[20px] h-[70px] bg-[#59606C] rounded-lg">
                                 <div className="flex items-center justify-center text-xs font-poppins text-white">
                                   {format(items, "EEE")}
                                 </div>
@@ -982,11 +955,11 @@ const Create_Booking = () => {
                     <div className="grid grid-cols-6 ">
                       <div className="flex space-x-2">
                         {screenData.length > 0 &&
-                          screenData.map((items, index) => (
+                          screenData.map((items, screenIndex) => (
                             <>
                               <div
-                                key={index}
-                                className="h-[70px] min-w-[310px] rounded-lg"
+                                key={screenIndex}
+                                className="h-[70px] min-w-[250px] rounded-lg"
                               >
                                 <div className="grid grid-cols-10">
                                   <div className="col-span-2 flex justify-center items-center">
@@ -1017,10 +990,67 @@ const Create_Booking = () => {
                                 <div className="mt-3 space-y-3">
                                   {items.booking
                                     .slice(0, booking_date.length)
-                                    .map((items2, index2) => (
-                                      <div className="bg-[#018C41] h-[70px] min-w-[310px] rounded-lg flex justify-center items-center">
-                                        <div className="font-poppins text-white">
-                                          Available {items2.free}/{items2.slot}
+                                    .map((items2, dateIndex) => (
+                                      <div
+                                        key={dateIndex}
+                                        onClick={() =>
+                                          items2.slot - items2.booking > 0
+                                            ? handleSelectScreen(
+                                                screenIndex,
+                                                dateIndex
+                                              )
+                                            : null
+                                        }
+                                        className={`${
+                                          bookingSelect.some(
+                                            (bookingItem) =>
+                                              bookingItem.screenIndex ===
+                                                screenIndex &&
+                                              bookingItem.dateIndex ===
+                                                dateIndex
+                                          )
+                                            ? "bg-[#FFBD49] cursor-pointer"
+                                            : items2.slot - items2.booking >=
+                                              booking_slot
+                                            ? "bg-[#018C41] cursor-pointer"
+                                            : "bg-[#5C5C5C] pointer-events-none"
+                                        } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
+                                      >
+                                        <div
+                                          className={`font-poppins ${
+                                            bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex
+                                            )
+                                              ? "text-[#4A4A4A]"
+                                              : items2.slot - items2.booking >=
+                                                booking_slot
+                                              ? "text-white"
+                                              : "text-white"
+                                          }`}
+                                        >
+                                          {bookingSelect.some(
+                                            (bookingItem) =>
+                                              bookingItem.screenIndex ===
+                                                screenIndex &&
+                                              bookingItem.dateIndex ===
+                                                dateIndex
+                                          )
+                                            ? `Selected ${
+                                                items2.booking + booking_slot
+                                              }/${items2.slot}`
+                                            : items2.slot - items2.booking >=
+                                              booking_slot
+                                            ? `Available ${items2.booking}/${items2.slot}`
+                                            : items2.slot - items2.booking === 0
+                                            ? `Full ${items2.booking}/${items2.slot}`
+                                            : items2.slot - items2.booking <=
+                                              booking_slot
+                                            ? `Not Available ${items2.booking}/${items2.slot}`
+                                            : ""}
                                         </div>
                                       </div>
                                     ))}
