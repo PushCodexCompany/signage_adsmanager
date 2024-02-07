@@ -11,6 +11,11 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { format } from "date-fns";
 import useCheckPermission from "../libs/useCheckPermission";
 
+import screen from "../assets/img/location/screen1.png";
+import location from "../assets/img/location/location.png";
+
+import Screen_Info from "../components/Screen_Info";
+
 const mockup = [
   {
     id: 1,
@@ -85,30 +90,522 @@ const all_screen = [
     name: "Screen 1",
     location: "Central Chidlom F3",
     status: 1,
+    tag: ["Store", "Fashion"],
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    resolutions: "1920x1080",
+    direction: "Portrait",
+    position: "Indoor",
+    price: 200,
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
   },
   {
     id: 2,
     name: "Screen 2",
     location: "Central Chidlom F3",
     status: 1,
+    img: screen,
+    tag: ["Store", "Fashion"],
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    resolutions: "1920x1080",
+    direction: "Portrait",
+    position: "Indoor",
+    price: 200,
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    schedule: [],
   },
   {
     id: 3,
     name: "Screen 3",
     location: "Central Chidlom F3",
     status: 1,
+    img: screen,
+    tag: ["Store", "Fashion"],
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    resolutions: "1920x1080",
+    direction: "Portrait",
+    position: "Indoor",
+    price: 200,
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    schedule: [],
   },
   {
     id: 4,
     name: "Screen 4",
     location: "Central Chidlom F3",
     status: 1,
+    img: screen,
+    tag: ["Store", "Fashion"],
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    resolutions: "1920x1080",
+    direction: "Portrait",
+    position: "Indoor",
+    price: 200,
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    schedule: [],
   },
   {
     id: 5,
     name: "Screen 5",
     location: "Central Chidlom F3",
     status: 0,
+    tag: ["Store", "Fashion"],
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    resolutions: "1920x1080",
+    direction: "Portrait",
+    position: "Indoor",
+    price: 200,
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    schedule: [],
   },
 ];
 
@@ -303,6 +800,9 @@ const Create_Booking = () => {
   const [deleteModalIndex, setDeleteModalIndex] = useState({});
 
   const [bookingSelect, setBookingSelect] = useState([]);
+
+  const [selectInfoScreen, setSelectInfoScren] = useState([]);
+  const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
 
   useEffect(() => {
     setBookingData();
@@ -561,6 +1061,13 @@ const Create_Booking = () => {
   const handleSaveScreen = () => {
     console.log("select screen :", bookingSelect);
   };
+
+  const handleSelectInfoScreen = (screen) => {
+    setSelectInfoScren(screen);
+    setOpenInfoScreenModal(!openInfoScreenModal);
+  };
+
+  const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
   return (
     <>
@@ -822,6 +1329,7 @@ const Create_Booking = () => {
                           </div>
                           <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
                             <BsInfoCircle
+                              onClick={() => handleSelectInfoScreen(items)}
                               color={"#6425FE"}
                               className="cursor-pointer"
                             />
@@ -1497,6 +2005,20 @@ const Create_Booking = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {openInfoScreenModal && (
+        <a
+          onClick={() => setOpenInfoScreenModal(!openInfoScreenModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openInfoScreenModal && (
+        <Screen_Info
+          setOpenInfoScreenModal={setOpenInfoScreenModal}
+          selectInfoScreen={selectInfoScreen}
+        />
       )}
     </>
   );

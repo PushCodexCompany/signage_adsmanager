@@ -20,6 +20,7 @@
     "date-fns": "^3.1.0",
     "pdfmake": "^0.2.7",
     "react": "^17.0.2",
+    "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.2.0",
     "react-cookies": "^0.1.1",
     "react-datepicker": "^4.25.0",
@@ -28,7 +29,8 @@
     "react-player": "^2.13.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "sweetalert2": "^11.0.11"
+    "sweetalert2": "^11.0.11",
+    "tailwind-scrollbar": "^3.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
