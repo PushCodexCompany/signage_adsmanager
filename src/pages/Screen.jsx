@@ -6,15 +6,1621 @@ import {
   PiGridFourFill,
   PiListDashesFill,
 } from "react-icons/pi";
+import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
+import screen from "../assets/img/location/screen1.png";
+import location from "../assets/img/location/location.png";
+import Screen_Info from "../components/Screen_Info";
 
-import { GridTable, ListTable } from "../libs/screen";
+const mockup = [
+  {
+    id: 1,
+    name: "Screen 1",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1920x1080",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 10,
+    loopDuration: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+      "1920x1080",
+      "1000MB",
+    ],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+  {
+    id: 2,
+    name: "Screen 2",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1920x1080",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 15,
+    loopDuration: 15,
+    tag: ["Portrait", "North", "Fashion"],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+  {
+    id: 3,
+    name: "Screen 3",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1080x1920",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 20,
+    loopDuration: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+  },
+  {
+    id: 4,
+    name: "Screen 4",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1080x1920",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 20,
+    loopDuration: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+  {
+    id: 5,
+    name: "Screen 5",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1920x1080",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 10,
+    loopDuration: 15,
+    tag: ["Portrait", "North", "Fashion", "Beauty"],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+  {
+    id: 6,
+    name: "Screen 6",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1080x1920",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 15,
+    loopDuration: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+  {
+    id: 7,
+    name: "Screen 7",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1920x1080",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 20,
+    loopDuration: 15,
+    tag: ["Portrait", "North", "Fashion", "Beauty", "Flagship"],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+  {
+    id: 8,
+    name: "Screen 8",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1920x1080",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 20,
+    loopDuration: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+      "1920x1080",
+      "1000MB",
+    ],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+  {
+    id: 9,
+    name: "Screen 9",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    resolutions: "1080x1920",
+    status: 1,
+    img: screen,
+    latitudeImg: location,
+    latitude: [13.746876513371383, 100.53902742618709],
+    officeHours: ["10.00", "22.00"],
+    rule: "Media Rule 1",
+    detailed: "4K",
+    direction: "Portrait",
+    position: "Indoor",
+    slotPerDay: 20,
+    loopDuration: 15,
+    tag: ["Portrait", "North", "Fashion"],
+    schedule: [
+      {
+        date: new Date(2023, 5, 21, 0, 0, 0, 0),
+        slot: 10,
+        booking: 9,
+        mediaSchedule: [
+          {
+            id: "1",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Nike",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "2",
+            name: "Promotion Summer.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "3",
+            name: "Sample Ads.png",
+            merchandise: "Adidas 3",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "4",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "5",
+            name: "Mid Night Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "6",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "FILA",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "7",
+            name: "Mid year Sale 2023.mp4",
+            merchandise: "BAOBAO",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "8",
+            name: "Food Hall Ads.mp4",
+            merchandise: "After You",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "9",
+            name: "Mid year sale 2023.mp4",
+            merchandise: "Adidas",
+            screen: "Screen 1",
+            duration: 15,
+          },
+          {
+            id: "10",
+            name: "Pet Show 2023.mp4",
+            merchandise: "Tops",
+            screen: "Screen 1",
+            duration: 15,
+          },
+        ],
+      },
+      {
+        date: new Date(2023, 5, 22, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 23, 0, 0, 0, 0),
+        slot: 10,
+        booking: 4,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 24, 0, 0, 0, 0),
+        slot: 10,
+        booking: 1,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 25, 0, 0, 0, 0),
+        slot: 10,
+        booking: 5,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 26, 0, 0, 0, 0),
+        slot: 10,
+        booking: 7,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 27, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 28, 0, 0, 0, 0),
+        slot: 10,
+        booking: 10,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 29, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 5, 30, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 1, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+      {
+        date: new Date(2023, 6, 2, 0, 0, 0, 0),
+        slot: 10,
+        booking: 0,
+        mediaSchedule: [],
+      },
+    ],
+    health: [
+      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
+      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
+      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
+    ],
+    uptime: 94,
+    maintenanceNoti: true,
+    offlineNotification: "Second",
+    price: 500,
+  },
+];
 
 const Event = () => {
-  const [view, setView] = useState(true);
-  // const [toggle, settoggle] = useState(0.5);
   const [showRightPanel, setShowRightPanel] = useState(false);
-
-  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const [isSectorOpen, setIsSectorOpen] = useState(false);
   const [isRegionOpen, setIsRegionOpen] = useState(false);
@@ -22,9 +1628,16 @@ const Event = () => {
   const [isBranchOpen, setIsBranchOpen] = useState(false);
   const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
 
+  const [selectAll, setSelectAll] = useState(false);
+  const [checkboxes, setCheckboxes] = useState({});
+  const [selectedScreenItems, setSelectedScreenItems] = useState([]);
+
+  const [selectInfoScreen, setSelectInfoScren] = useState([]);
+  const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
+
   const [filter, setFilter] = useState([
-    "North",
     "Flagship",
+    "5 Floor",
     "Beauty",
     "Portrait",
   ]);
@@ -70,37 +1683,48 @@ const Event = () => {
     setFilter([]);
   };
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const handleView = () => {
-    setView(!view);
-  };
-
   const showAllFilter = () => {
     setShowRightPanel(!showRightPanel);
   };
 
-  const GridImgComponent = () => {
-    return (
-      <div className="w-auto h-[800px] mt-10  border border-[#DBDBDB] rounded-lg">
-        <GridTable />
-      </div>
-    );
+  const toggleAllCheckboxes = () => {
+    const newCheckboxes = {};
+    const newSelectAll = !selectAll;
+
+    // Set all checkboxes to the new state
+    mockup.forEach((row) => {
+      newCheckboxes[row.id] = newSelectAll;
+    });
+
+    setCheckboxes(newCheckboxes);
+    setSelectAll(newSelectAll);
+
+    // Do something with the checkedRowIds array (e.g., store it in state)
+    const checkedRowIds = newSelectAll ? mockup.map((row) => row.id) : [];
+    setSelectedScreenItems(checkedRowIds);
   };
 
-  const ListComponent = () => {
-    return (
-      <div className="mt-5">
-        <ListTable />
-      </div>
-    );
+  const toggleCheckboxAddScreen = (rowId) => {
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [rowId]: !prevCheckboxes[rowId],
+      };
+
+      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
+        (id) => updatedCheckboxes[id]
+      );
+
+      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
+      setSelectedScreenItems(intArray);
+
+      return updatedCheckboxes;
+    });
   };
 
-  const [isChecked, setIsChecked] = useState(false);
-  const toggleCheckbox = () => {
-    setIsChecked(!isChecked);
+  const handleSelectInfoScreen = (screen) => {
+    setSelectInfoScren(screen);
+    setOpenInfoScreenModal(!openInfoScreenModal);
   };
 
   return (
@@ -285,7 +1909,7 @@ const Event = () => {
                 </button>
               )}
             </div>
-            <div class="basis-1/12">
+            {/* <div class="basis-1/12">
               <div className="flex flex-row">
                 {view ? (
                   <div className="flex basis-1/2 justify-end align-middle">
@@ -301,373 +1925,32 @@ const Event = () => {
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
-        {view ? <GridImgComponent /> : <ListComponent />}
-      </div>
-
-      {showRightPanel && (
-        <a
-          onClick={() => setShowRightPanel(!showRightPanel)}
-          className="fixed top-0 lg:right-52 w-screen h-screen opacity-50 bg-black z-50 backdrop-blur"
-        />
-      )}
-
-      {showRightPanel && (
-        <div className="fixed right-0 top-0 h-screen w-1/4 bg-[#E8E8E8] z-50 rounded-md max-h- overflow-y-auto">
-          <div className="flex justify-between items-center p-2 mt-3 border-b-2 border-gray-300">
-            <span className="text-center text-sm flex-grow font-poppins">
-              Filter and sort
-            </span>
-            <button onClick={() => setShowRightPanel(!showRightPanel)}>
-              <IoIosClose size="42" color="#6425FE" />
-            </button>
-          </div>
-
-          {/* Sort */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">
-                  Sort <br />
-                  <span
-                    className={`font-poppins text-xs  text-[#59606C] ${
-                      !isCollapsed ? "hidden" : ""
-                    }`}
-                  >
-                    Best match
-                  </span>
-                </span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Sector */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Sector</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Region */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Region</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Store Cluster */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Store Cluster</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Branch */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Branch</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Department */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Department</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Floor */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Floor</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-sm ">G Floor</span>
-                </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <span className="font-poppins text-sm mr-1">12</span>
+        <div className="mt-5">
+          <div className="w-auto h-[580px] overflow-auto">
+            <table className="min-w-full border border-gray-300">
+              <thead>
+                <tr>
+                  <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                     <label className="inline-flex items-center space-x-2">
                       <input
                         type="checkbox"
-                        className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                        checked={isChecked}
-                        onChange={toggleCheckbox}
+                        className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                        checked={selectAll}
+                        onChange={toggleAllCheckboxes}
                       />
                       <span
-                        className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                          isChecked ? "bg-white" : ""
+                        className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                          selectAll ? "bg-white" : ""
                         }`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className={`h-3 w-3 text-white ${
-                            isChecked ? "opacity-100" : "opacity-0"
+                          className={`h-6 w-6 text-white ${
+                            selectAll ? "opacity-100" : "opacity-0"
                           } transition-opacity duration-300 ease-in-out`}
                           fill="none"
                           viewBox="0 0 24 24"
@@ -676,324 +1959,164 @@ const Event = () => {
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            strokeWidth="2"
+                            strokeWidth="3"
                             d="M5 13l4 4L19 7"
                           />
                         </svg>
                       </span>
                     </label>
-                  </div>
-                </div>
-              </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-sm ">1 Floor</span>
-                </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <span className="font-poppins text-sm mr-1">5</span>
-                  <label className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                      checked={isChecked}
-                      onChange={toggleCheckbox}
-                    />
-                    <span
-                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                        isChecked ? "bg-white" : ""
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-3 w-3 text-white ${
-                          isChecked ? "opacity-100" : "opacity-0"
-                        } transition-opacity duration-300 ease-in-out`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                </div>
-              </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-sm ">2 Floor</span>
-                </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <span className="font-poppins text-sm mr-1">4</span>
-                  <label className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                      checked={isChecked}
-                      onChange={toggleCheckbox}
-                    />
-                    <span
-                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                        isChecked ? "bg-white" : ""
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-3 w-3 text-white ${
-                          isChecked ? "opacity-100" : "opacity-0"
-                        } transition-opacity duration-300 ease-in-out`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                </div>
-              </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-sm ">3 Floor</span>
-                </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <span className="font-poppins text-sm mr-1">10</span>
-                  <label className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                      checked={isChecked}
-                      onChange={toggleCheckbox}
-                    />
-                    <span
-                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                        isChecked ? "bg-white" : ""
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-3 w-3 text-white ${
-                          isChecked ? "opacity-100" : "opacity-0"
-                        } transition-opacity duration-300 ease-in-out`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Location */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Location</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Orientation */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Orientation</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Size */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Size</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* File Type */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
-                <span className="font-poppins text-md ">File Type</span>
-              </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
+                  </th>
+                  <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
+                    No
+                  </th>
+                  <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
+                    Screen Name
+                  </th>
+                  <th className="px-4 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Location
+                  </th>
+                  <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Media Rule
+                  </th>
+                  <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Slot Per Day
+                  </th>
+                  <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Loop Duration
+                  </th>
+                  <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Tag
+                  </th>
+                  <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockup.map((row, key) => (
+                  <tr key={row.id}>
+                    <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="flex items-center">
+                        <label className="inline-flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                            checked={checkboxes[row.id] || false} // Set default value to false if row.id is not present
+                            onChange={() => toggleCheckboxAddScreen(row.id)}
+                          />
+                          <span
+                            className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                              checkboxes[row.id] ? "bg-white" : ""
+                            }`}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className={`h-6 w-6 text-white ${
+                                checkboxes[row.id] ? "opacity-100" : "opacity-0"
+                              } transition-opacity duration-300 ease-in-out`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="#6425FE"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </span>
+                        </label>
+                      </div>
+                    </td>
+                    <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="flex">
+                        <div className="font-poppins text-xl font-bold">
+                          {row.id}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="flex">
+                        <div
+                          onClick={() => handleSelectInfoScreen(row)}
+                          className="font-poppins text-xl font-bold cursor-pointer"
+                        >
+                          {row.name}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="font-poppins text-sm text-[#59606C] font-bold">
+                        {row.location}
+                      </div>
+                      <div className="font-poppins text-sm font-bold">
+                        {row.province}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="font-poppins font-bold">
+                        {row.resolutions}
+                      </div>
+                    </td>
+                    <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                      <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                        {row.slotPerDay}
+                      </div>
+                    </td>
+                    <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                      <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                        {row.loopDuration}
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <div className="flex flex-wrap">
+                        {row.tag.map((items, index) => (
+                          <div
+                            key={index}
+                            className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                            style={{ flexBasis: "calc(20% - 8px)" }} // Adjust the width to fit 5 items per row
+                          >
+                            <div className="font-poppins text-xs font-bold">
+                              {items}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                      <div className="space-x-2">
+                        <button onClick={() => alert(`edit : ${row.id}`)}>
+                          <RiEditLine size={20} className="text-[#6425FE]" />
+                        </button>
+                        <button onClick={() => alert(`delete : ${row.id}`)}>
+                          <RiDeleteBin5Line
+                            size={20}
+                            className="text-[#6425FE]"
+                          />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
+      </div>
+
+      {openInfoScreenModal && (
+        <a
+          onClick={() => setOpenInfoScreenModal(!openInfoScreenModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openInfoScreenModal && (
+        <Screen_Info
+          setOpenInfoScreenModal={setOpenInfoScreenModal}
+          selectInfoScreen={selectInfoScreen}
+        />
       )}
     </>
   );

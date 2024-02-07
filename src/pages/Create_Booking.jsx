@@ -1067,8 +1067,6 @@ const Create_Booking = () => {
     setOpenInfoScreenModal(!openInfoScreenModal);
   };
 
-  const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
   return (
     <>
       <Navbar />
