@@ -30,3 +30,4 @@ export { default as Role_permission } from "./setting/User_management/Role_permi
 export { default as User_Page } from "./User";
 export { default as Create_Booking } from "./Create_Booking";
 export { default as User_Account } from "./User_Account";
+export { default as New_screen } from "./New_screen";

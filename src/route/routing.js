@@ -28,6 +28,7 @@ import {
   User_Page,
   Create_Booking,
   User_Account,
+  New_screen,
 } from "../pages";
 
 import User from "../libs/admin";
@@ -54,6 +55,7 @@ const Routing = () => {
         <Route path="/logout" element={<Logout />} />
         <Route path="/user" element={<User_Page />} />
         <Route path="/screen" element={<Screen />} />
+        <Route path="/screen/create" element={<New_screen />} />
         <Route
           path="/setting/user_management/user"
           element={<User_Management />}

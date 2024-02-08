@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header } from "../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import {
@@ -10,6 +11,7 @@ import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import screen from "../assets/img/location/screen1.png";
 import location from "../assets/img/location/location.png";
 import Screen_Info from "../components/Screen_Info";
+import { Navbar } from "../components";
 
 const mockup = [
   {
@@ -1642,6 +1644,8 @@ const Event = () => {
     "Portrait",
   ]);
 
+  const navigate = useNavigate();
+
   const toggleSectorSelect = () => {
     setIsSectorOpen((prevIsOpen) => !prevIsOpen);
   };
@@ -1729,13 +1733,17 @@ const Event = () => {
 
   return (
     <>
+      <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div className="flex justify-between mt-10 mb-5 font-bold text-2xl font-poppins">
           <div className="flex items-center">
             <div className="font-poppins">Screens</div>
           </div>
-          <button className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md">
+          <button
+            onClick={() => navigate("/screen/create")}
+            className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+          >
             New Screen +
           </button>
         </div>

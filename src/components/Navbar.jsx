@@ -90,7 +90,7 @@ const Navbar = () => {
               />
             )}
           </div>
-          <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
+          <div className="basis-8/12 lg:basis-11/12 h-[52px] rounded-lg border border-gray-200">
             <div className="flex">
               <NavButton
                 customFunc={search}
