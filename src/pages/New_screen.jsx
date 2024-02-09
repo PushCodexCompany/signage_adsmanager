@@ -6,6 +6,8 @@ import { Navbar } from "../components";
 import empty_img from "../assets/img/empty_location.png";
 import location_img from "../assets/img/location.png";
 import { HiOutlineClock } from "react-icons/hi";
+import { AiOutlineClose } from "react-icons/ai";
+import { BsInfoCircle } from "react-icons/bs";
 
 const New_screen = () => {
   const { id } = useParams();
@@ -17,7 +19,7 @@ const New_screen = () => {
 
   const [screenName, setScreenName] = useState();
   const [mediaRule, setMediaRule] = useState();
-  const [tag, setTag] = useState();
+  const [screenTag, setScreenTag] = useState([]);
   const [locationImg, setLocationImg] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
   const [latLong, setLatLong] = useState([]);
@@ -57,7 +59,7 @@ const New_screen = () => {
 
     setScreenName(name);
     setMediaRule(rule);
-    setTag(tag);
+    setScreenTag(tag);
     setLocationImg(img);
     setSelectedImage(img);
     setLatLong({ lat: latitude[0], long: latitude[1] });
@@ -156,9 +158,41 @@ const New_screen = () => {
                 </div>
               </div>
               <div className="mt-5">
-                <button className="bg-[#6425FE] text-white w-32 h-9 font-poppins rounded-lg">
+                <div className="grid grid-cols-6 space-x-2">
+                  <div className="col-span-1">
+                    <button className="w-[130px] h-[35px] rounded-lg  font-poppins bg-[#6425FE] text-white">
+                      New Tag+
+                    </button>
+                  </div>
+                  <div className="col-span-5">
+                    <div className="flex flex-wrap space-x-1 space-y-1">
+                      {screenTag.length > 0 ? (
+                        screenTag.map((items, index) => (
+                          <div
+                            key={index}
+                            className="w-1/5 border border-[#DBDBDB] p-1 rounded-lg flex justify-center items-center space-x-1"
+                            style={{ minWidth: "20%" }}
+                          >
+                            <div className="flex justify-center items-center">
+                              <AiOutlineClose className="text-[#6425FE]" />
+                            </div>
+                            <div className="flex-grow  font-poppins">
+                              {items}
+                            </div>
+                            <div className="flex justify-center items-center">
+                              <BsInfoCircle className="text-[#6425FE]" />
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/* <button className="bg-[#6425FE] text-white w-32 h-9 font-poppins rounded-lg">
                   New Tag+
-                </button>
+                </button> */}
               </div>
               <div className="mt-2 flex justify-center">
                 <div className=" items-center grid grid-cols-6 space-x-1">
