@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import {
   Dashboard,
   Calendar,
@@ -31,10 +31,10 @@ import {
   New_screen,
 } from "../pages";
 
-import User from "../libs/admin";
+// import User from "../libs/admin";
 
 const Routing = () => {
-  const user = User.getCookieData();
+  // const user = User.getCookieData();
 
   return (
     <>
@@ -55,7 +55,7 @@ const Routing = () => {
         <Route path="/logout" element={<Logout />} />
         <Route path="/user" element={<User_Page />} />
         <Route path="/screen" element={<Screen />} />
-        <Route path="/screen/create" element={<New_screen />} />
+        <Route path="/screen/create/:id" element={<New_screen />} />
         <Route
           path="/setting/user_management/user"
           element={<User_Management />}

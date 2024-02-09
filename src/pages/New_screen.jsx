@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Header } from "../components";
 import { Navbar } from "../components";
 import empty_img from "../assets/img/empty_location.png";
@@ -6,7 +8,91 @@ import location_img from "../assets/img/location.png";
 import { HiOutlineClock } from "react-icons/hi";
 
 const New_screen = () => {
+  const { id } = useParams();
+  const location = useLocation();
+
+  const fileInputRef = useRef(null);
+
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+
+  const [screenName, setScreenName] = useState();
+  const [mediaRule, setMediaRule] = useState();
+  const [tag, setTag] = useState();
+  const [locationImg, setLocationImg] = useState();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [latLong, setLatLong] = useState([]);
+  const [screenDescription, setScreenDescription] = useState();
+  const [screenResolution, setScreenResolution] = useState();
+  const [screenPhysical, setScreenPhysical] = useState();
+  const [orientation, setOrientation] = useState();
+  const [inDoorOutdoot, setIndoorOutDoor] = useState();
+  const [openTime, setOpenTime] = useState();
+  const [closeTime, setCloseTime] = useState();
+  const [pricing, setPricing] = useState();
   const [IsMaintenanceSwitchOn, setIsMaintenanceSwitchOn] = useState(false);
+  const [notificationDelay, setNotificationDelay] = useState();
+
+  useEffect(() => {
+    if (id !== "new") {
+      fetchScreen();
+    }
+  }, [id]);
+
+  const fetchScreen = () => {
+    console.log("location", location.state.screen);
+    // //set edit
+    const {
+      name,
+      rule,
+      tag,
+      img,
+      latitude,
+      resolutions,
+      direction,
+      position,
+      officeHours,
+      price,
+      maintenanceNoti,
+    } = location.state.screen;
+
+    setScreenName(name);
+    setMediaRule(rule);
+    setTag(tag);
+    setLocationImg(img);
+    setSelectedImage(img);
+    setLatLong({ lat: latitude[0], long: latitude[1] });
+    setScreenDescription(null);
+    setScreenResolution(resolutions);
+    // setScreenPhysical();
+    setOrientation(direction);
+    setIndoorOutDoor(position);
+    setOpenTime(officeHours[0]);
+    setCloseTime(officeHours[1]);
+    setPricing(price);
+    setIsMaintenanceSwitchOn(maintenanceNoti);
+    // setNotificationDelay()
+  };
+
+  const toggleStatusSelect = () => {
+    setIsStatusOpen((prevIsOpen) => !prevIsOpen);
+  };
+
+  const handleImageChange = () => {
+    // Trigger file input click
+    fileInputRef.current.click();
+  };
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setLocationImg(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const toggleMaintenanceSwitch = () => {
     setIsMaintenanceSwitchOn(!IsMaintenanceSwitchOn);
@@ -28,23 +114,27 @@ const New_screen = () => {
                 <input
                   placeholder="Screen Name"
                   className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  //   value={merchandise_name}
-                  //   onChange={(e) => setMerchandiseName(e.target.value)}
+                  value={screenName}
+                  onChange={(e) => setScreenName(e.target.value)}
                 />
               </div>
               <div className="mt-2">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                   <select
-                    name="file_size_type"
-                    id="file_size_type"
+                    name="mediaRule"
+                    id="mediaRule"
                     className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    placeholder="Resolution"
-                    // onChange={(e) => setMerchandiseType(e.target.value)}
+                    onClick={toggleStatusSelect}
+                    onChange={(e) => setMediaRule(e.target.value)}
+                    value={mediaRule}
                   >
-                    <option value="0">Media Rule</option>
-                    <option value="1">.</option>
-                    <option value="2">.</option>
-                    <option value="3">.</option>
+                    <option value="" disabled selected hidden>
+                      Media Rule
+                    </option>
+
+                    <option value="Media Rule 1">Media Rule 1</option>
+                    <option value="Media Rule 2">Media Rule 2</option>
+                    <option value="Media Rule 3">Media Rule 3</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
@@ -74,14 +164,32 @@ const New_screen = () => {
                 <div className=" items-center grid grid-cols-6 space-x-1">
                   <div className="col-span-3">
                     <div className="flex justify-center items-center w-[315px] h-[315px] border border-gray-300 rounded-lg">
-                      <img
-                        src={empty_img}
-                        className="object-cover w-[112px] h-[90px]"
-                        alt="Image"
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileInputChange}
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
                       />
+                      {selectedImage ? (
+                        <img
+                          src={selectedImage}
+                          className="flex items-center justify-center w-[250px] h-[250px]"
+                        />
+                      ) : (
+                        <div className=" flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
+                          <img
+                            src={empty_img}
+                            className="flex items-center justify-center"
+                          />
+                        </div>
+                      )}
                     </div>
                     <div className="mt-2 flex justify-center items-center">
-                      <button className="bg-[#6425FE] text-white font-poppins w-[315px] h-[48px] rounded-lg">
+                      <button
+                        onClick={() => handleImageChange()}
+                        className="bg-[#6425FE] text-white font-poppins w-[315px] h-[48px] rounded-lg"
+                      >
                         Upload Image
                       </button>
                     </div>
@@ -98,6 +206,10 @@ const New_screen = () => {
                       <div className="grid grid-cols-4 space-x-1">
                         <div className="col-span-2">
                           <input
+                            value={latLong.lat}
+                            onChange={(e) =>
+                              setLatLong({ lat: e.target.value })
+                            }
                             type="text"
                             placeholder="Lat"
                             className="w-[157px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
@@ -105,6 +217,10 @@ const New_screen = () => {
                         </div>
                         <div className="col-span-2">
                           <input
+                            value={latLong.long}
+                            onChange={(e) =>
+                              setLatLong({ long: e.target.value })
+                            }
                             type="text"
                             placeholder="Long"
                             className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
@@ -125,13 +241,15 @@ const New_screen = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-6 bg-yellow-500">
+          <div className="col-span-6">
             <div className="p-1 mt-5">
               <div className="font-poppins font-semibold text-2xl">
                 Screen Detail
               </div>
               <div className="mt-4">
                 <textarea
+                  value={screenDescription}
+                  onChange={(e) => setScreenDescription(e.target.value)}
                   placeholder="Screen Description"
                   className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300"
                   style={{
@@ -147,16 +265,18 @@ const New_screen = () => {
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
                       <select
-                        name="file_size_type"
-                        id="file_size_type"
+                        name="screenResolution"
+                        id="screenResolution"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        placeholder="Resolution"
-                        // onChange={(e) => setMerchandiseType(e.target.value)}
+                        onClick={toggleStatusSelect}
+                        onChange={(e) => setScreenResolution(e.target.value)}
+                        value={screenResolution}
                       >
-                        <option value="0">Screen Resolution</option>
-                        <option value="1">.</option>
-                        <option value="2">.</option>
-                        <option value="3">.</option>
+                        <option value="" disabled selected hidden>
+                          Screen Resolution
+                        </option>
+                        <option value="1920x1080">1920x1080</option>
+                        <option value="1080x1920">1080x1920</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -180,16 +300,18 @@ const New_screen = () => {
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                       <select
-                        name="file_size_type"
-                        id="file_size_type"
+                        name="screenPhysical"
+                        id="screenPhysical"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        placeholder="Resolution"
-                        // onChange={(e) => setMerchandiseType(e.target.value)}
+                        onClick={toggleStatusSelect}
+                        onChange={(e) => setScreenPhysical(e.target.value)}
+                        value={screenPhysical}
                       >
-                        <option value="0">Screen Physical Size</option>
+                        <option value="" disabled selected hidden>
+                          Screen Physical Size
+                        </option>
                         <option value="1">.</option>
                         <option value="2">.</option>
-                        <option value="3">.</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -217,16 +339,18 @@ const New_screen = () => {
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
                       <select
-                        name="file_size_type"
-                        id="file_size_type"
+                        name="orientation"
+                        id="orientation"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        placeholder="Resolution"
-                        // onChange={(e) => setMerchandiseType(e.target.value)}
+                        onClick={toggleStatusSelect}
+                        onChange={(e) => setOrientation(e.target.value)}
+                        value={orientation}
                       >
-                        <option value="0">Orientation</option>
-                        <option value="1">.</option>
-                        <option value="2">.</option>
-                        <option value="3">.</option>
+                        <option value="" disabled selected hidden>
+                          Orientation
+                        </option>
+                        <option value="Portrait">Portrait</option>
+                        <option value="Landscape">Landscape</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -250,16 +374,18 @@ const New_screen = () => {
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                       <select
-                        name="file_size_type"
-                        id="file_size_type"
+                        name="IndoorOutdoor"
+                        id="IndoorOutdoor"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        placeholder="Resolution"
-                        // onChange={(e) => setMerchandiseType(e.target.value)}
+                        onClick={toggleStatusSelect}
+                        onChange={(e) => setIndoorOutDoor(e.target.value)}
+                        value={inDoorOutdoot}
                       >
-                        <option value="0">Indoor / Outdoor</option>
-                        <option value="1">.</option>
-                        <option value="2">.</option>
-                        <option value="3">.</option>
+                        <option value="" disabled selected hidden>
+                          Indoor / Outdoor
+                        </option>
+                        <option value="Indoor">Indoor</option>
+                        <option value="Outdoor">Outdoor</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -292,15 +418,37 @@ const New_screen = () => {
                             name="open_time"
                             id="open_time"
                             className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            // onChange={(e) => setMerchandiseType(e.target.value)}
+                            onClick={toggleStatusSelect}
+                            onChange={(e) => setOpenTime(e.target.value)}
+                            value={openTime}
                           >
                             <option value="" disabled selected hidden>
                               Open Time
                             </option>
                             <option value="0">00:00</option>
-                            <option value="1">.</option>
-                            <option value="2">.</option>
-                            <option value="3">.</option>
+                            <option value="1">01:00</option>
+                            <option value="2">02:00</option>
+                            <option value="3">03:00</option>
+                            <option value="4">04:00</option>
+                            <option value="5">05:00</option>
+                            <option value="6">06:00</option>
+                            <option value="7">07:00</option>
+                            <option value="8">08:00</option>
+                            <option value="9">09:00</option>
+                            <option value="10">10:00</option>
+                            <option value="11">11:00</option>
+                            <option value="12">12:00</option>
+                            <option value="13">13:00</option>
+                            <option value="14">14:00</option>
+                            <option value="15">15:00</option>
+                            <option value="16">16:00</option>
+                            <option value="17">17:00</option>
+                            <option value="18">18:00</option>
+                            <option value="19">19:00</option>
+                            <option value="20">20:00</option>
+                            <option value="21">21:00</option>
+                            <option value="22">22:00</option>
+                            <option value="23">23:00</option>
                           </select>
                         </div>
                       </div>
@@ -315,15 +463,37 @@ const New_screen = () => {
                             name="close_time"
                             id="close_time"
                             className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            // onChange={(e) => setMerchandiseType(e.target.value)}
+                            onClick={toggleStatusSelect}
+                            onChange={(e) => setCloseTime(e.target.value)}
+                            value={closeTime}
                           >
                             <option value="" disabled selected hidden>
                               Close Time
                             </option>
                             <option value="0">00:00</option>
-                            <option value="1">.</option>
-                            <option value="2">.</option>
-                            <option value="3">.</option>
+                            <option value="1">01:00</option>
+                            <option value="2">02:00</option>
+                            <option value="3">03:00</option>
+                            <option value="4">04:00</option>
+                            <option value="5">05:00</option>
+                            <option value="6">06:00</option>
+                            <option value="7">07:00</option>
+                            <option value="8">08:00</option>
+                            <option value="9">09:00</option>
+                            <option value="10">10:00</option>
+                            <option value="11">11:00</option>
+                            <option value="12">12:00</option>
+                            <option value="13">13:00</option>
+                            <option value="14">14:00</option>
+                            <option value="15">15:00</option>
+                            <option value="16">16:00</option>
+                            <option value="17">17:00</option>
+                            <option value="18">18:00</option>
+                            <option value="19">19:00</option>
+                            <option value="20">20:00</option>
+                            <option value="21">21:00</option>
+                            <option value="22">22:00</option>
+                            <option value="23">23:00</option>
                           </select>
                         </div>
                       </div>
@@ -337,6 +507,8 @@ const New_screen = () => {
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
                       <input
+                        onChange={(e) => setPricing(e.target.value)}
+                        value={pricing}
                         type="number"
                         placeholder="Pricing Per Day"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
@@ -361,7 +533,11 @@ const New_screen = () => {
                             onClick={toggleMaintenanceSwitch}
                           >
                             <div
-                              className={`absolute left-1 top-[2px] w-4 h-4 bg-[#6425FE] rounded-full shadow-md transition-transform duration-300 ${
+                              className={`absolute left-1 top-[2px] w-4 h-4 ${
+                                IsMaintenanceSwitchOn
+                                  ? "bg-[#6425FE]"
+                                  : "bg-white border border-[#6425FE]"
+                              }  rounded-full shadow-md transition-transform duration-300 ${
                                 IsMaintenanceSwitchOn ? "translate-x-full" : ""
                               }`}
                             ></div>
@@ -384,8 +560,10 @@ const New_screen = () => {
                           <input
                             placeholder="Second"
                             className="border border-gray-300 rounded-lg p-3 pr-10 w-[80%] h-[30px]  font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                            //   value={merchandise_name}
-                            //   onChange={(e) => setMerchandiseName(e.target.value)}
+                            value={notificationDelay}
+                            onChange={(e) =>
+                              setNotificationDelay(e.target.value)
+                            }
                           />
                         </div>
                       </div>

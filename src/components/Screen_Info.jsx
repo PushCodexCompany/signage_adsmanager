@@ -77,31 +77,37 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       {selectInfoScreen.status === 0 ? "Offline" : "Online"}
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1 mt-2">
-                    <button className="w-[130px] h-[35px] rounded-lg text-[18px] font-poppins bg-[#6425FE] text-white">
-                      New Tag+
-                    </button>
-                    {selectInfoScreen.tag.map((items, index) => (
-                      <div
-                        key={index}
-                        className="border border-[#DBDBDB] p-1 rounded-lg grid grid-cols-6 space-x-1"
-                      >
-                        <div className="col-span-1 flex justify-center items-center">
-                          <div>
-                            <AiOutlineClose className="text-[#6425FE]" />
-                          </div>
-                        </div>
-                        <div className="col-span-4 flex justify-center items-center">
-                          <div className="font-poppins">{items}</div>
-                        </div>
-                        <div className="col-span-1 flex justify-center items-center">
-                          <div>
-                            <BsInfoCircle className="text-[#6425FE]" />
-                          </div>
+                  <div className="mt-2">
+                    <div className="grid grid-cols-6 space-x-2">
+                      <div className="col-span-1">
+                        <button className="w-[130px] h-[35px] rounded-lg text-[18px] font-poppins bg-[#6425FE] text-white">
+                          New Tag+
+                        </button>
+                      </div>
+                      <div className="col-span-5">
+                        <div className="flex flex-wrap space-x-1 space-y-1">
+                          {selectInfoScreen.tag.map((items, index) => (
+                            <div
+                              key={index}
+                              className="w-1/5 border border-[#DBDBDB] p-1 rounded-lg flex justify-center items-center space-x-1"
+                              style={{ minWidth: "20%" }}
+                            >
+                              <div className="flex justify-center items-center">
+                                <AiOutlineClose className="text-[#6425FE]" />
+                              </div>
+                              <div className="flex-grow  font-poppins">
+                                {items}
+                              </div>
+                              <div className="flex justify-center items-center">
+                                <BsInfoCircle className="text-[#6425FE]" />
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    ))}
+                    </div>
                   </div>
+
                   <div className="mt-2">
                     <div className="grid grid-cols-6 space-x-1">
                       <div className="col-span-3">

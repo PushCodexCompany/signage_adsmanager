@@ -24,7 +24,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -208,7 +208,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -381,7 +381,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -562,7 +562,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -744,7 +744,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -917,7 +917,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -1099,7 +1099,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -1272,7 +1272,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -1456,7 +1456,7 @@ const mockup = [
     img: screen,
     latitudeImg: location,
     latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
+    officeHours: [10.0, 22.0],
     rule: "Media Rule 1",
     detailed: "4K",
     direction: "Portrait",
@@ -1731,6 +1731,12 @@ const Event = () => {
     setOpenInfoScreenModal(!openInfoScreenModal);
   };
 
+  const handleEditScreen = (screen) => {
+    navigate(`/screen/create/${screen.id}`, {
+      state: { screen: screen },
+    });
+  };
+
   return (
     <>
       <Navbar />
@@ -1741,7 +1747,7 @@ const Event = () => {
             <div className="font-poppins">Screens</div>
           </div>
           <button
-            onClick={() => navigate("/screen/create")}
+            onClick={() => navigate("/screen/create/new")}
             className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
           >
             New Screen +
@@ -2094,7 +2100,7 @@ const Event = () => {
                     </td>
                     <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                       <div className="space-x-2">
-                        <button onClick={() => alert(`edit : ${row.id}`)}>
+                        <button onClick={() => handleEditScreen(row)}>
                           <RiEditLine size={20} className="text-[#6425FE]" />
                         </button>
                         <button onClick={() => alert(`delete : ${row.id}`)}>
