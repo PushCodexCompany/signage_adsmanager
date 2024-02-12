@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-import {
-  PiSlidersHorizontalFill,
-  PiGridFourFill,
-  PiListDashesFill,
-} from "react-icons/pi";
+import { PiSlidersHorizontalFill } from "react-icons/pi";
+import { BiLinkAlt } from "react-icons/bi";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 
 import Screen_Info from "../components/Screen_Info";
@@ -489,6 +486,13 @@ const Event = () => {
                     </td>
                     <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                       <div className="space-x-2">
+                        {row.isPair ? (
+                          <button>
+                            <BiLinkAlt size={20} className="text-[#6425FE]" />
+                          </button>
+                        ) : (
+                          <></>
+                        )}
                         <button onClick={() => handleEditScreen(row)}>
                           <RiEditLine size={20} className="text-[#6425FE]" />
                         </button>

@@ -185,6 +185,7 @@ export const screenMockup = [
     maintenanceNoti: true,
     offlineNotification: "Second",
     price: 500,
+    isPair: false,
   },
   {
     id: 2,
@@ -358,6 +359,7 @@ export const screenMockup = [
     maintenanceNoti: true,
     offlineNotification: "Second",
     price: 500,
+    isPair: true,
   },
   {
     id: 3,
@@ -539,6 +541,7 @@ export const screenMockup = [
     uptime: 94,
     maintenanceNoti: true,
     offlineNotification: "Second",
+    isPair: false,
   },
   {
     id: 4,
@@ -721,6 +724,7 @@ export const screenMockup = [
     maintenanceNoti: true,
     offlineNotification: "Second",
     price: 500,
+    isPair: false,
   },
   {
     id: 5,
@@ -894,6 +898,7 @@ export const screenMockup = [
     maintenanceNoti: true,
     offlineNotification: "Second",
     price: 500,
+    isPair: true,
   },
   {
     id: 6,
@@ -1076,6 +1081,7 @@ export const screenMockup = [
     maintenanceNoti: true,
     offlineNotification: "Second",
     price: 500,
+    isPair: true,
   },
   {
     id: 7,
@@ -1249,6 +1255,7 @@ export const screenMockup = [
     maintenanceNoti: true,
     offlineNotification: "Second",
     price: 500,
+    isPair: true,
   },
   {
     id: 8,

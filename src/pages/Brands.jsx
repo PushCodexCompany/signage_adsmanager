@@ -3,8 +3,7 @@ import User from "../libs/admin";
 import { useNavigate } from "react-router-dom";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { TbDots } from "react-icons/tb";
-
-import add_new_img from "../assets/img/add_brand.png";
+import { FaPlus } from "react-icons/fa";
 import cookie from "react-cookies";
 import New_Brand from "../components/New_Brand";
 import Encryption from "../libs/encryption";
@@ -150,11 +149,7 @@ const Brands = () => {
               className="flex flex-col items-center"
             >
               <div className="h-60 flex items-center justify-center">
-                <img
-                  className="block ml-auto mr-auto mt-30px w-1/5 rounded-3xl"
-                  src={add_new_img}
-                  alt={"add new brand"}
-                />
+                <FaPlus size={100} color="#6425FE" />
               </div>
               <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add new Brand

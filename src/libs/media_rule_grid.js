@@ -10,35 +10,20 @@ import { RiDeleteBin5Line, RiEditLine, RiShareBoxLine } from "react-icons/ri";
 const dashboardData = [
   {
     id: 1,
-    type: "Resolution",
     name: "1080x1920",
+    rule_properties: ["Resolution: 1080x1920", "Ads Capacity:5"],
     screen: 7,
   },
   {
     id: 2,
-    type: "Ads Limit",
-    name: "Facade - 12Clients",
+    name: "1920x1080",
+    rule_properties: ["Resolution: 1920x1080", "Ads Capacity:10"],
     screen: 4,
   },
 ];
 
 export const GridTable = () => {
   const navigate = useNavigate();
-
-  const getImg = (id) => {
-    let img;
-    if (id === 1) {
-      img = topImg;
-    } else if (id === 2) {
-      img = matsumotoImg;
-    } else if (id === 3) {
-      img = supersportImg;
-    } else if (id === 4) {
-      img = powerbuyImg;
-    }
-
-    return img;
-  };
 
   const onClickEdit = (id) => {
     navigate("/setting/media_rule/create", { state: { id: id } });
@@ -62,10 +47,10 @@ export const GridTable = () => {
                 ID
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Rule Type
+                Rule Name
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Rule Name
+                Rule Properties
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Screen
@@ -82,12 +67,24 @@ export const GridTable = () => {
                   <div className="font-poppins text-md">{row.id}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md text-[#6425FE]">
-                    {row.type}
+                  <div className="font-poppins text-md text-[#59606C]">
+                    {row.name}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md">{row.name}</div>
+                  <div className="flex flex-wrap">
+                    {row.rule_properties.map((items, index) => (
+                      <div
+                        key={index}
+                        className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
+                        style={{ flexBasis: "calc(30% - 8px)" }}
+                      >
+                        <div className="font-poppins text-sm text-[#6425FE] ">
+                          {items}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md ">{row.screen}</div>

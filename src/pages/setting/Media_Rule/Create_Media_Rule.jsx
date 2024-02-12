@@ -86,8 +86,8 @@ const Create_Media_Rule = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-center mt-14 font-bold text-xl font-poppins">
-              Preview
+            <div className="flex justify-center mt-14 font-bold text-2xl font-poppins">
+              Screen Ratio Preview
             </div>
             {media_value.video ? (
               <>
@@ -109,7 +109,7 @@ const Create_Media_Rule = () => {
             )}
 
             <div className="flex justify-center mt-10">
-              <button className="bg-[#6425FE] w-[420px] h-[65px] text-white font-bold font-poppins">
+              <button className="bg-[#6425FE] w-[420px] hover:bg-[#3b1694] text-xl rounded-lg h-[65px] text-white font-bold font-poppins">
                 Create
               </button>
             </div>
@@ -128,7 +128,7 @@ const Create_Media_Rule = () => {
             </span>
           </div>
 
-          {/* Rule 1 */}
+          {/* Resolution 1 */}
           <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-10">
             <div className="flex flex-row mt-3 space-x-5">
               <div>
@@ -137,7 +137,7 @@ const Create_Media_Rule = () => {
                   <div className="border-1 border-[#6425FE] w-9 h-5 bg-white peer-focus:outline-none peer-focus:ring-4 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-[#6425FE] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[#6425FE] after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-white"></div>
                 </label>
               </div>
-              <div className="text-xl font-bold font-poppins">Rule 1</div>
+              <div className="text-xl font-bold font-poppins">Resolution</div>
             </div>
 
             <div className="grid grid-cols-11 mt-3 space-x-2  justify-center items-center">
@@ -315,7 +315,7 @@ const Create_Media_Rule = () => {
           </div>
 
           {/* Rule 2 */}
-          <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-5">
+          {/* <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-5">
             <div className="flex flex-row mt-3 space-x-5">
               <div>
                 <label className="relative inline-flex items-center cursor-pointer mt-1">
@@ -445,14 +445,38 @@ const Create_Media_Rule = () => {
             <div className="flex justify-center text-sm mt-3 font-poppins">
               Maximum Image Size of Requests must be over than 300 X 300
             </div>
-          </div>
+          </div> */}
 
           {/* Ads capacity */}
           <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-5">
             <div className="flex flex-row mt-3 space-x-5">
               <div className="text-xl font-bold font-poppins">Ads capacity</div>
             </div>
-            <div className="mt-3 grid grid-cols-2 space-x-4">
+            <div className="grid grid-cols-6 mt-5 space-x-2">
+              <div className="col-span-2">
+                <input
+                  type="number"
+                  id="branding"
+                  name="branding"
+                  required
+                  defaultValue={0}
+                  className="font-poppins  border border-gray-300 h-[40px] rounded-md pl-4"
+                />
+              </div>
+              <div className="col-span-3">
+                <div className="flex justify-start items-center">
+                  <div className="font-poppins font-bold mt-2">
+                    Loops per Day
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-2">
+              <div className="font-poppins text-[15px]">
+                1 Loop = 15 Seconds
+              </div>
+            </div>
+            {/* <div className="mt-3 grid grid-cols-2 space-x-4">
               <div className="col-span-1 ">
                 <div className="grid grid-rows-3 space-y-2">
                   <div className="grid grid-cols-7">
@@ -462,7 +486,6 @@ const Create_Media_Rule = () => {
 
                     {media_value.ads_capacity?.stw !== undefined ? (
                       <>
-                        {console.log(media_value.ads_capacity?.stw)}
                         <div className="col-span-5">
                           <input
                             type="number"
@@ -532,7 +555,6 @@ const Create_Media_Rule = () => {
                     </div>
                     {media_value.ads_capacity?.advertising !== undefined ? (
                       <>
-                        {console.log(media_value.ads_capacity?.advertising)}
                         <div className="col-span-5">
                           <input
                             type="number"
@@ -637,12 +659,12 @@ const Create_Media_Rule = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="flex justify-center text-sm mt-5 font-poppins">
+            {/* <div className="flex justify-center text-sm mt-5 font-poppins">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry.
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

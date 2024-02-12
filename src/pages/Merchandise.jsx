@@ -2,15 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import { TbDots } from "react-icons/tb";
-
+import { FaPlus } from "react-icons/fa";
 import empty_img from "../assets/img/empty_img.png";
-
 import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
-
-import add_new_img from "../assets/img/add_brand.png";
 
 const Merchandise = () => {
   useCheckPermission();
@@ -130,11 +127,7 @@ const Merchandise = () => {
               className="flex flex-col items-center"
             >
               <div className="h-60 flex items-center justify-center">
-                <img
-                  className="block ml-auto mr-auto mt-30px w-1/5 rounded-3xl "
-                  src={add_new_img}
-                  alt={"add new merchandise"}
-                />
+                <FaPlus size={100} color="#6425FE" />
               </div>
               <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add New Merchandise

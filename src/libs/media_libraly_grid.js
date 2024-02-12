@@ -58,14 +58,23 @@ const dashboardData = [
   {
     id: 1,
     file_name: "Summer Sale 2023 Ads.mp4",
+    merchandise: "Super Sports",
     size: "130000000",
     status: 1,
   },
   {
     id: 2,
     file_name: "Midnight Sale 2023.png",
+    merchandise: "TOPS",
     size: "476000",
     status: 0,
+  },
+  {
+    id: 3,
+    file_name: "Promotion Event Ads.mp4",
+    merchandise: "TOPS",
+    size: "55000000",
+    status: 1,
   },
 ];
 
@@ -83,6 +92,9 @@ export const GridTable = () => {
                 File Name
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                Merchandise
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 File Size
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
@@ -97,36 +109,38 @@ export const GridTable = () => {
             {dashboardData.map((row) => (
               <tr key={row.id}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md">{row.id}</div>
+                  <div className="font-poppins text-md font-bold">{row.id}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md text-[#59606C]">
+                  <div className="font-poppins text-md font-bold">
                     {row.file_name}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md text-[#59606C]">
+                  <div className="font-poppins text-md font-bold">
+                    {row.merchandise}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="font-poppins text-md font-bold">
                     {calculateSize(row.size)}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md ">
+                  <div className="font-poppins text-md font-bold">
                     {generateStatus(row.status)}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
                     <button onClick={() => onClickPlay(row.id)}>
-                      <RiPlayCircleLine size={24} className="text-gray-400" />
+                      <RiPlayCircleLine size={24} color={"#6324FF"} />
                     </button>
                     <button onClick={() => onClickDownload(row.id)}>
-                      <RiDownloadCloud2Line
-                        size={24}
-                        className="text-gray-400"
-                      />
+                      <RiDownloadCloud2Line size={24} color={"#6324FF"} />
                     </button>
                     <button onClick={() => onClickDelete(row.id)}>
-                      <RiDeleteBin5Line size={24} className="text-gray-400" />
+                      <RiDeleteBin5Line size={24} color={"#6324FF"} />
                     </button>
                   </div>
                 </td>
