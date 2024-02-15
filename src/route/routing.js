@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import {
   Dashboard,
-  Calendar,
   Pdf,
   Brands,
   Merchandise,
@@ -13,7 +12,6 @@ import {
   Booking,
   Inbox,
   Logout,
-  Dashboard_mockup,
   User_Management,
   Content_type,
   Media_Rule,
@@ -81,9 +79,6 @@ const Routing = () => {
           path="*"
           element={<div> Not Found or You do not have permission.</div>}
         /> */}
-        {/* Components */}
-        <Route path="/dashboard_mockup" element={<Dashboard_mockup />} />
-        <Route path="/calendar" element={<Calendar />} />
       </Routes>
     </>
   );

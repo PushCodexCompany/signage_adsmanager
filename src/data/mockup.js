@@ -1615,3 +1615,500 @@ export const screenMockup = [
     price: 500,
   },
 ];
+
+export const screens = [
+  {
+    id: 1,
+    name: "Screen 1",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1920x1080",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+      "1920x1080",
+      "1000MB",
+    ],
+    booking: [
+      {
+        slot: 15,
+        booking: 0,
+      },
+      {
+        slot: 15,
+        booking: 0,
+      },
+      {
+        slot: 15,
+        booking: 0,
+      },
+      {
+        slot: 15,
+        booking: 0,
+      },
+      {
+        slot: 15,
+        booking: 0,
+      },
+      {
+        slot: 15,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 2,
+    name: "Screen 2",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1920x1080",
+    capacity: 15,
+    tag: ["Portrait", "North", "Fashion"],
+    booking: [
+      {
+        slot: 10,
+        booking: 0,
+      },
+      {
+        slot: 10,
+        booking: 0,
+      },
+      {
+        slot: 10,
+        booking: 10,
+      },
+      {
+        slot: 10,
+        booking: 10,
+      },
+      {
+        slot: 10,
+        booking: 0,
+      },
+      {
+        slot: 10,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 3,
+    name: "Screen 3",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1080x1920",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    booking: [
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 18,
+      },
+      {
+        slot: 20,
+        booking: 18,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 4,
+    name: "Screen 4",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1080x1920",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    booking: [
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 5,
+    name: "Screen 5",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1080x1920",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    booking: [
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 6,
+    name: "Screen 6",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1080x1920",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    booking: [
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 7,
+    name: "Screen 7",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1080x1920",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    booking: [
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 8,
+    name: "Screen 8",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1080x1920",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    booking: [
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+  {
+    id: 9,
+    name: "Screen 9",
+    location: "Central World,FL1",
+    province: "Bangkok",
+    media_rule: "1080x1920",
+    capacity: 15,
+    tag: [
+      "Portrait",
+      "North",
+      "Fashion",
+      "Beauty",
+      "Flagship",
+      "Jean",
+      "Indoor",
+      "4K",
+    ],
+    booking: [
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+      {
+        slot: 20,
+        booking: 0,
+      },
+    ],
+    price: 500,
+  },
+];

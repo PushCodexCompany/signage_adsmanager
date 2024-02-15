@@ -41,7 +41,6 @@ const New_screen = () => {
   }, [id]);
 
   const fetchScreen = () => {
-    console.log("location", location.state.screen);
     // //set edit
     const {
       name,

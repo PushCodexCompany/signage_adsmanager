@@ -1,8 +1,3 @@
-export { default as Dashboard_mockup } from "./Dashboard_mockup";
-export { default as Calendar } from "./Calendar";
-
-// Production
-
 export { default as Main_Dashboard } from "./Main_Dashboard";
 export { default as Dashboard } from "./Dashboard";
 export { default as Pdf } from "./Pdf";

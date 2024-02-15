@@ -5,756 +5,15 @@ import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { CiCalendar } from "react-icons/ci";
 import { BsInfoCircle } from "react-icons/bs";
 import { ImBin } from "react-icons/im";
-import { PiMonitor } from "react-icons/pi";
+import { PiMonitor, PiWarningCircleFill } from "react-icons/pi";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { format } from "date-fns";
 import useCheckPermission from "../libs/useCheckPermission";
-
-import screen from "../assets/img/location/screen1.png";
-import location from "../assets/img/location/location.png";
-
 import Screen_Info from "../components/Screen_Info";
+import New_Screen from "../components/New_Screen";
 
-const mockup = [
-  {
-    id: 1,
-    name: "Screen 1",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    media_rule: "1920x1080",
-    tag: [
-      "Portrait",
-      "North",
-      "Fashion",
-      "Beauty",
-      "Flagship",
-      "Jean",
-      "Indoor",
-      "4K",
-      "1920x1080",
-      "1000MB",
-    ],
-    price: 500,
-  },
-  {
-    id: 2,
-    name: "Screen 2",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    media_rule: "1920x1080",
-    tag: ["Portrait", "North", "Fashion"],
-    price: 500,
-  },
-  {
-    id: 3,
-    name: "Screen 3",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    media_rule: "1080x1920",
-    tag: [
-      "Portrait",
-      "North",
-      "Fashion",
-      "Beauty",
-      "Flagship",
-      "Jean",
-      "Indoor",
-      "4K",
-    ],
-    price: 500,
-  },
-  {
-    id: 4,
-    name: "Screen 4",
-    location: "Central World,FL1",
-    province: "Bangkok",
-    media_rule: "1080x1920",
-    tag: [
-      "Portrait",
-      "North",
-      "Fashion",
-      "Beauty",
-      "Flagship",
-      "Jean",
-      "Indoor",
-      "4K",
-    ],
-    price: 500,
-  },
-];
-
-const all_screen = [
-  {
-    id: 1,
-    name: "Screen 1",
-    location: "Central Chidlom F3",
-    status: 1,
-    tag: ["Store", "Fashion"],
-    img: screen,
-    latitudeImg: location,
-    latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
-    rule: "Media Rule 1",
-    detailed: "4K",
-    resolutions: "1920x1080",
-    direction: "Portrait",
-    position: "Indoor",
-    price: 200,
-    schedule: [
-      {
-        date: new Date(2023, 5, 21, 0, 0, 0, 0),
-        slot: 10,
-        booking: 9,
-        mediaSchedule: [
-          {
-            id: "1",
-            name: "Mid year sale 2023.mp4",
-            merchandise: "Nike",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "2",
-            name: "Promotion Summer.mp4",
-            merchandise: "Adidas",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "3",
-            name: "Sample Ads.png",
-            merchandise: "Adidas 3",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "4",
-            name: "Mid Night Sale 2023.mp4",
-            merchandise: "FILA",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "5",
-            name: "Mid Night Sale 2023.mp4",
-            merchandise: "FILA",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "6",
-            name: "Mid year Sale 2023.mp4",
-            merchandise: "FILA",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "7",
-            name: "Mid year Sale 2023.mp4",
-            merchandise: "BAOBAO",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "8",
-            name: "Food Hall Ads.mp4",
-            merchandise: "After You",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "9",
-            name: "Mid year sale 2023.mp4",
-            merchandise: "Adidas",
-            screen: "Screen 1",
-            duration: 15,
-          },
-          {
-            id: "10",
-            name: "Pet Show 2023.mp4",
-            merchandise: "Tops",
-            screen: "Screen 1",
-            duration: 15,
-          },
-        ],
-      },
-      {
-        date: new Date(2023, 5, 22, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 23, 0, 0, 0, 0),
-        slot: 10,
-        booking: 4,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 24, 0, 0, 0, 0),
-        slot: 10,
-        booking: 1,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 25, 0, 0, 0, 0),
-        slot: 10,
-        booking: 5,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 26, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 27, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 28, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 29, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 5, 30, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 6, 1, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-        mediaSchedule: [],
-      },
-      {
-        date: new Date(2023, 6, 2, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-        mediaSchedule: [],
-      },
-    ],
-    health: [
-      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
-      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
-      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
-    ],
-    uptime: 94,
-    maintenanceNoti: true,
-    offlineNotification: "Second",
-  },
-  {
-    id: 2,
-    name: "Screen 2",
-    location: "Central Chidlom F3",
-    status: 1,
-    img: screen,
-    tag: ["Store", "Fashion"],
-    latitudeImg: location,
-    latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
-    rule: "Media Rule 1",
-    detailed: "4K",
-    resolutions: "1920x1080",
-    direction: "Portrait",
-    position: "Indoor",
-    price: 200,
-    schedule: [
-      {
-        date: new Date(2023, 5, 21, 0, 0, 0, 0),
-        slot: 10,
-        booking: 9,
-      },
-      {
-        date: new Date(2023, 5, 22, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 23, 0, 0, 0, 0),
-        slot: 10,
-        booking: 4,
-      },
-      {
-        date: new Date(2023, 5, 24, 0, 0, 0, 0),
-        slot: 10,
-        booking: 1,
-      },
-      {
-        date: new Date(2023, 5, 25, 0, 0, 0, 0),
-        slot: 10,
-        booking: 5,
-      },
-      {
-        date: new Date(2023, 5, 26, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 27, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 28, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 29, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 5, 30, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 1, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 2, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-    ],
-    health: [
-      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
-      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
-      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
-    ],
-    uptime: 94,
-    maintenanceNoti: true,
-    offlineNotification: "Second",
-    schedule: [],
-  },
-  {
-    id: 3,
-    name: "Screen 3",
-    location: "Central Chidlom F3",
-    status: 1,
-    img: screen,
-    tag: ["Store", "Fashion"],
-    latitudeImg: location,
-    latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
-    rule: "Media Rule 1",
-    detailed: "4K",
-    resolutions: "1920x1080",
-    direction: "Portrait",
-    position: "Indoor",
-    price: 200,
-    schedule: [
-      {
-        date: new Date(2023, 5, 21, 0, 0, 0, 0),
-        slot: 10,
-        booking: 9,
-      },
-      {
-        date: new Date(2023, 5, 22, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 23, 0, 0, 0, 0),
-        slot: 10,
-        booking: 4,
-      },
-      {
-        date: new Date(2023, 5, 24, 0, 0, 0, 0),
-        slot: 10,
-        booking: 1,
-      },
-      {
-        date: new Date(2023, 5, 25, 0, 0, 0, 0),
-        slot: 10,
-        booking: 5,
-      },
-      {
-        date: new Date(2023, 5, 26, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 27, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 28, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 29, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 5, 30, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 1, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 2, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-    ],
-    health: [
-      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
-      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
-      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
-    ],
-    uptime: 94,
-    maintenanceNoti: true,
-    offlineNotification: "Second",
-    schedule: [],
-  },
-  {
-    id: 4,
-    name: "Screen 4",
-    location: "Central Chidlom F3",
-    status: 1,
-    img: screen,
-    tag: ["Store", "Fashion"],
-    latitudeImg: location,
-    latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
-    rule: "Media Rule 1",
-    detailed: "4K",
-    resolutions: "1920x1080",
-    direction: "Portrait",
-    position: "Indoor",
-    price: 200,
-    schedule: [
-      {
-        date: new Date(2023, 5, 21, 0, 0, 0, 0),
-        slot: 10,
-        booking: 9,
-      },
-      {
-        date: new Date(2023, 5, 22, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 23, 0, 0, 0, 0),
-        slot: 10,
-        booking: 4,
-      },
-      {
-        date: new Date(2023, 5, 24, 0, 0, 0, 0),
-        slot: 10,
-        booking: 1,
-      },
-      {
-        date: new Date(2023, 5, 25, 0, 0, 0, 0),
-        slot: 10,
-        booking: 5,
-      },
-      {
-        date: new Date(2023, 5, 26, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 27, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 28, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 29, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 5, 30, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 1, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 2, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-    ],
-    health: [
-      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
-      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
-      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
-    ],
-    uptime: 94,
-    maintenanceNoti: true,
-    offlineNotification: "Second",
-    schedule: [],
-  },
-  {
-    id: 5,
-    name: "Screen 5",
-    location: "Central Chidlom F3",
-    status: 0,
-    tag: ["Store", "Fashion"],
-    img: screen,
-    latitudeImg: location,
-    latitude: [13.746876513371383, 100.53902742618709],
-    officeHours: ["10.00", "22.00"],
-    rule: "Media Rule 1",
-    detailed: "4K",
-    resolutions: "1920x1080",
-    direction: "Portrait",
-    position: "Indoor",
-    price: 200,
-    schedule: [
-      {
-        date: new Date(2023, 5, 21, 0, 0, 0, 0),
-        slot: 10,
-        booking: 9,
-      },
-      {
-        date: new Date(2023, 5, 22, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 23, 0, 0, 0, 0),
-        slot: 10,
-        booking: 4,
-      },
-      {
-        date: new Date(2023, 5, 24, 0, 0, 0, 0),
-        slot: 10,
-        booking: 1,
-      },
-      {
-        date: new Date(2023, 5, 25, 0, 0, 0, 0),
-        slot: 10,
-        booking: 5,
-      },
-      {
-        date: new Date(2023, 5, 26, 0, 0, 0, 0),
-        slot: 10,
-        booking: 7,
-      },
-      {
-        date: new Date(2023, 5, 27, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 28, 0, 0, 0, 0),
-        slot: 10,
-        booking: 10,
-      },
-      {
-        date: new Date(2023, 5, 29, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 5, 30, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 1, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-      {
-        date: new Date(2023, 6, 2, 0, 0, 0, 0),
-        slot: 10,
-        booking: 0,
-      },
-    ],
-    health: [
-      80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80,
-      80, 80, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,
-      40, 80, 80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
-    ],
-    uptime: 94,
-    maintenanceNoti: true,
-    offlineNotification: "Second",
-    schedule: [],
-  },
-];
-
-const screens = [
-  {
-    id: 1,
-    name: "Screen 1",
-    capacity: 15,
-    rule: "1920x1080",
-    booking: [
-      {
-        slot: 15,
-        booking: 0,
-      },
-      {
-        slot: 15,
-        booking: 0,
-      },
-      {
-        slot: 15,
-        booking: 0,
-      },
-      {
-        slot: 15,
-        booking: 0,
-      },
-      {
-        slot: 15,
-        booking: 0,
-      },
-      {
-        slot: 15,
-        booking: 0,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Screen 2",
-    capacity: 15,
-    rule: "1920x1080",
-    booking: [
-      {
-        slot: 10,
-        booking: 0,
-      },
-      {
-        slot: 10,
-        booking: 0,
-      },
-      {
-        slot: 10,
-        booking: 10,
-      },
-      {
-        slot: 10,
-        booking: 10,
-      },
-      {
-        slot: 10,
-        booking: 0,
-      },
-      {
-        slot: 10,
-        booking: 0,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Screen 3",
-    capacity: 15,
-    rule: "1080x1920",
-    booking: [
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 18,
-      },
-      {
-        slot: 20,
-        booking: 18,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Screen 4",
-    capacity: 15,
-    rule: "1080x1920",
-    booking: [
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-      {
-        slot: 20,
-        booking: 0,
-      },
-    ],
-  },
-];
+import { screenMockup, screens } from "../data/mockup";
 
 const Create_Booking = () => {
   const navigate = useNavigate();
@@ -804,6 +63,10 @@ const Create_Booking = () => {
   const [selectInfoScreen, setSelectInfoScren] = useState([]);
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
 
+  const [openAddNewScreenModal, setOpenAddNewScreenModal] = useState(false);
+
+  const [openConfirmBookingModal, setOpenConfirmBookingModal] = useState(false);
+
   useEffect(() => {
     setBookingData();
     getAllScreen();
@@ -820,7 +83,7 @@ const Create_Booking = () => {
   };
 
   const getAllScreen = () => {
-    setAllScreenData(all_screen);
+    setAllScreenData(screenMockup);
   };
 
   const toggleSlotSelect = () => {
@@ -955,7 +218,7 @@ const Create_Booking = () => {
     const newSelectAll = !selectAll;
 
     // Set all checkboxes to the new state
-    mockup.forEach((row) => {
+    screens.forEach((row) => {
       newCheckboxes[row.id] = newSelectAll;
     });
 
@@ -963,7 +226,7 @@ const Create_Booking = () => {
     setSelectAll(newSelectAll);
 
     // Do something with the checkedRowIds array (e.g., store it in state)
-    const checkedRowIds = newSelectAll ? mockup.map((row) => row.id) : [];
+    const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
     setSelectedScreenItems(checkedRowIds);
   };
 
@@ -1059,12 +322,24 @@ const Create_Booking = () => {
   };
 
   const handleSaveScreen = () => {
-    console.log("select screen :", bookingSelect);
+    if (bookingSelect.length > 0) {
+      const updatedData = bookingSelect.map((item) => {
+        return { ...item, status: true };
+      });
+
+      setBookingSelect(updatedData);
+    } else {
+      alert("No select screen");
+    }
   };
 
   const handleSelectInfoScreen = (screen) => {
     setSelectInfoScren(screen);
     setOpenInfoScreenModal(!openInfoScreenModal);
+  };
+
+  const handleConfirmbooking = () => {
+    setOpenConfirmBookingModal(!openConfirmBookingModal);
   };
 
   return (
@@ -1090,11 +365,11 @@ const Create_Booking = () => {
                 onClick={() => handleSaveScreen()}
                 className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
               >
-                Save Screen
+                Save Booking
               </button>
 
               <button
-                onClick={() => alert("Comfirm Booking")}
+                onClick={() => handleConfirmbooking()}
                 className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
               >
                 Confirm Booking
@@ -1343,9 +618,9 @@ const Create_Booking = () => {
                                   className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                                 />
                                 {deleteModalIndex[index] && (
-                                  <div className="absolute  left-[450px] flex items-center">
-                                    <div className=" bg-black bg-opacity-80 w-[400px] h-[130px]  p-8 rounded shadow-md">
-                                      <p className=" font-poppins text-xs text-white">
+                                  <div className="absolute left-[680px] top-[800px] flex items-center">
+                                    <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
+                                      <p className="font-poppins text-xs text-white">
                                         Do You Want to Delete This Screen. Lorem
                                         Ipsum is simply dummy text of the
                                         printing and typesetting industry.
@@ -1513,8 +788,17 @@ const Create_Booking = () => {
                                               bookingItem.screenIndex ===
                                                 screenIndex &&
                                               bookingItem.dateIndex ===
-                                                dateIndex
+                                                dateIndex &&
+                                              bookingItem.status === true
                                           )
+                                            ? "bg-[#FD6822] cursor-pointer"
+                                            : bookingSelect.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                    dateIndex
+                                              )
                                             ? "bg-[#FFBD49] cursor-pointer"
                                             : items2.slot - items2.booking >=
                                               booking_slot
@@ -1529,8 +813,17 @@ const Create_Booking = () => {
                                                 bookingItem.screenIndex ===
                                                   screenIndex &&
                                                 bookingItem.dateIndex ===
-                                                  dateIndex
+                                                  dateIndex &&
+                                                bookingItem.status === true
                                             )
+                                              ? "text-white"
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
                                               ? "text-[#4A4A4A]"
                                               : items2.slot - items2.booking >=
                                                 booking_slot
@@ -1543,8 +836,19 @@ const Create_Booking = () => {
                                               bookingItem.screenIndex ===
                                                 screenIndex &&
                                               bookingItem.dateIndex ===
-                                                dateIndex
+                                                dateIndex &&
+                                              bookingItem.status === true
                                           )
+                                            ? `Booked ${
+                                                items2.booking + booking_slot
+                                              }/${items2.slot}`
+                                            : bookingSelect.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                    dateIndex
+                                              )
                                             ? `Selected ${
                                                 items2.booking + booking_slot
                                               }/${items2.slot}`
@@ -1610,7 +914,9 @@ const Create_Booking = () => {
                 </div>
                 <div className="flex justify-end items-center col-span-1 ">
                   <button
-                    onClick={() => alert("new screen")}
+                    onClick={() =>
+                      setOpenAddNewScreenModal(!openAddNewScreenModal)
+                    }
                     className="bg-[#6425FE] w-[200px] h-[45px] rounded-lg text-white font-poppins mr-10"
                   >
                     Create New Screen +
@@ -1901,7 +1207,7 @@ const Create_Booking = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {mockup.map((row, key) => (
+                    {screens.map((row, key) => (
                       <tr key={row.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                           <div className="flex items-center">
@@ -2017,6 +1323,81 @@ const Create_Booking = () => {
           setOpenInfoScreenModal={setOpenInfoScreenModal}
           selectInfoScreen={selectInfoScreen}
         />
+      )}
+
+      {openAddNewScreenModal && (
+        <a
+          onClick={() => setOpenAddNewScreenModal(!openAddNewScreenModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openAddNewScreenModal && (
+        <New_Screen setOpenAddNewScreenModal={setOpenAddNewScreenModal} />
+      )}
+
+      {openConfirmBookingModal && (
+        <a
+          onClick={() => setOpenConfirmBookingModal(!openConfirmBookingModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+      {openConfirmBookingModal && (
+        <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[970px] items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[540px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() =>
+                  setOpenConfirmBookingModal(!openConfirmBookingModal)
+                }
+              >
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          <div className="bg-[#FFFFFF] w-2/5 lg:w-2/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="mt-28">
+              <div className="p-2">
+                <div className="flex justify-center items-center">
+                  <PiWarningCircleFill size={200} color="#2F3847" />
+                </div>
+                <div className="flex justify-center items-center text-center ">
+                  <div className="font-poppins text-4xl font-bold">
+                    Do you want to Confirm Booking <br /> {bookingName} ?
+                  </div>
+                </div>
+                <div className="flex justify-center items-center text-center mt-3">
+                  <div className="font-poppins text-lg ">
+                    Once confirmed, the content management section will be
+                    unlocked. <br /> <b>Important:</b> After this step, editing
+                    the booking time won't be possible; only cancellation is
+                    allowed. Kindly ensure the correct booking time <br /> then
+                    click ‘OK’ to proceed.
+                  </div>
+                </div>
+                <div className="flex justify-center items-center text-center mt-5">
+                  <button
+                    onClick={() => console.log("OK")}
+                    className="bg-[#6425FE] w-[300px] h-[48px] rounded-lg text-white font-poppins font-bold"
+                  >
+                    OK
+                  </button>
+                </div>
+                <div className="flex justify-center items-center text-center mt-3">
+                  <button
+                    onClick={() =>
+                      setOpenConfirmBookingModal(!openConfirmBookingModal)
+                    }
+                    className="border-2 border-[#6425FE] w-[300px] h-[48px] rounded-lg text-[#6425FE] font-poppins font-bold"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
