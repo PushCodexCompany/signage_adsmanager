@@ -26,3 +26,4 @@ export { default as User_Page } from "./User";
 export { default as Create_Booking } from "./Create_Booking";
 export { default as User_Account } from "./User_Account";
 export { default as New_screen } from "./New_screen";
+export { default as Booking_Summary } from "./Booking_Summary";

@@ -305,7 +305,10 @@ const Create_Booking = () => {
 
     if (!isDuplicate) {
       // If not a duplicate, add the selection to bookingSelect
-      const newBookingSelect = [...bookingSelect, { screenIndex, dateIndex }];
+      const newBookingSelect = [
+        ...bookingSelect,
+        { screenIndex, dateIndex, id: screenIndex + 1 },
+      ];
       setBookingSelect(newBookingSelect);
     } else {
       // If it's a duplicate, you may choose to remove it or handle it accordingly
@@ -340,6 +343,52 @@ const Create_Booking = () => {
 
   const handleConfirmbooking = () => {
     setOpenConfirmBookingModal(!openConfirmBookingModal);
+  };
+
+  const GroupedData = (data) => {
+    const groupedData = data.reduce((acc, curr) => {
+      const id = curr.id;
+      acc[id] = acc[id] ? acc[id] + 1 : 1;
+      return acc;
+    }, {});
+
+    // Convert the grouped data into an array of objects
+    const result = Object.keys(groupedData).map((id) => ({
+      id: parseInt(id), // Convert id to integer
+      screen_booking_amount: groupedData[id],
+    }));
+
+    return result;
+  };
+
+  const handleConfirmBookingScreen = () => {
+    const screen = screens.filter((_, index) =>
+      selectedScreenItems.includes(index + 1)
+    );
+
+    const group_data = GroupedData(bookingSelect);
+
+    group_data.forEach((booking) => {
+      let screen_result = screen.find((screen) => screen.id === booking.id);
+      if (screen_result) {
+        screen_result.screen_booking_amount = booking.screen_booking_amount;
+      }
+    });
+
+    const total_slot = bookingSelect.length * booking_slot;
+
+    const booking_obj = {
+      screen,
+      booking_name: bookingName,
+      period: booking_date,
+      slot_per_days: booking_slot,
+      merchandise,
+      total_slot,
+    };
+
+    navigate(`/booking/booking_pricing_summary`, {
+      state: { data: booking_obj },
+    });
   };
 
   return (
@@ -1378,7 +1427,7 @@ const Create_Booking = () => {
                 </div>
                 <div className="flex justify-center items-center text-center mt-5">
                   <button
-                    onClick={() => console.log("OK")}
+                    onClick={() => handleConfirmBookingScreen()}
                     className="bg-[#6425FE] w-[300px] h-[48px] rounded-lg text-white font-poppins font-bold"
                   >
                     OK

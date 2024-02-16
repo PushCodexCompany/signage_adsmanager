@@ -27,6 +27,7 @@ import {
   Create_Booking,
   User_Account,
   New_screen,
+  Booking_Summary,
 } from "../pages";
 
 // import User from "../libs/admin";
@@ -74,6 +75,10 @@ const Routing = () => {
           element={<Role_permission />}
         />
         <Route path="/booking/:name" element={<Create_Booking />} />
+        <Route
+          path="/booking/booking_pricing_summary"
+          element={<Booking_Summary />}
+        />
 
         {/* <Route
           path="*"
