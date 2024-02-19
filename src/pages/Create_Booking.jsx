@@ -21,6 +21,7 @@ const Create_Booking = () => {
   useCheckPermission();
 
   const [bookingName, setBookingName] = useState("");
+  const [bookingCode, setBookingCode] = useState("CDS-BT-230101-004");
   const [merchandise, setMerchandise] = useState([]);
   const [booking_date, setBookingDate] = useState([]);
   const [booking_slot, setBookingSlot] = useState();
@@ -67,8 +68,17 @@ const Create_Booking = () => {
 
   const [openConfirmBookingModal, setOpenConfirmBookingModal] = useState(false);
 
+  const [isConfirmed, setIsComfirmed] = useState(false);
+
   useEffect(() => {
-    setBookingData();
+    if (location.state.isConfirmed) {
+      setConfirmBookingData();
+      setIsComfirmed(true);
+    } else {
+      setBookingData();
+      setIsComfirmed(false);
+    }
+
     getAllScreen();
   }, []);
 
@@ -80,6 +90,19 @@ const Create_Booking = () => {
     setMerchandise(merchandise);
     setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
     setBookingSlot(parseInt(booking_slot));
+  };
+
+  const setConfirmBookingData = () => {
+    console.log(location.state.data);
+    const { booking_name, merchandise, booking_slot, booking_date, screen } =
+      location.state.data;
+
+    setBookingName(booking_name[0]);
+    setBookingCode(booking_name[1]);
+    setMerchandise(merchandise);
+    setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
+    setBookingSlot(booking_slot);
+    setScreenData(screen);
   };
 
   const getAllScreen = () => {
@@ -404,25 +427,35 @@ const Create_Booking = () => {
           </div>
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
-              <button
-                onClick={() => setShowAddScreen(true)}
-                className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-              >
-                Add Screen+
-              </button>
-              <button
-                onClick={() => handleSaveScreen()}
-                className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-              >
-                Save Booking
-              </button>
-
-              <button
-                onClick={() => handleConfirmbooking()}
-                className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
-              >
-                Confirm Booking
-              </button>
+              {isConfirmed ? (
+                <button
+                  // onClick={() => setShowAddScreen(true)}
+                  className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                >
+                  Publish
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setShowAddScreen(true)}
+                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Add Screen+
+                  </button>
+                  <button
+                    onClick={() => handleSaveScreen()}
+                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Save Booking
+                  </button>
+                  <button
+                    onClick={() => handleConfirmbooking()}
+                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
+                  >
+                    Confirm Booking
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -583,280 +616,334 @@ const Create_Booking = () => {
 
         <div className="mt-7 grid grid-cols-8 ">
           {/* Left Panel */}
-          <div className="col-span-2">
-            <div>
-              <img
-                className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl `}
-                src={merchandise.AdvertiserLogo}
-                alt={merchandise.AdvertiserName}
-              />
-            </div>
-            <div className="mt-2">
-              <div className="flex justify-center items-center">
-                <div className="font-poppins text-xl font-bold text-[#2F3847]">
-                  {merchandise.AdvertiserName}
-                </div>
+          {isConfirmed ? (
+            <div className="col-span-2">
+              <div>
+                <img
+                  className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl `}
+                  src={merchandise.AdvertiserLogo}
+                  alt={merchandise.AdvertiserName}
+                />
               </div>
-              <div className="flex justify-center items-center">
-                <div className="font-poppins text-sm text-[#6F6F6F]">
-                  {merchandise.AccountCode}
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins text-xl font-bold text-[#2F3847]">
+                    {merchandise.AdvertiserName}
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-center items-center mt-5">
-                <div className="font-poppins font-bold text-xl text-[#59606C]">
-                  CDS-BT-230101-004
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins text-sm text-[#6F6F6F]">
+                    {merchandise.AccountCode}
+                  </div>
                 </div>
-              </div>
-
-              <div className="h-[350px] overflow-y-auto mt-5">
-                {allScreenData.length > 0 &&
-                  allScreenData.map((items, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-center items-center mt-3 cursor-pointer"
-                    >
+                <div className="flex justify-center items-center mt-5">
+                  <div className="font-poppins font-bold text-xl text-[#59606C]">
+                    {bookingCode}
+                  </div>
+                </div>
+                <div className="h-[350px] overflow-y-auto mt-5">
+                  {screenData.length > 0 &&
+                    screenData.map((items, index) => (
                       <div
-                        className={`border border-gray-300 rounded-lg w-[80%] h-[75px] ${
-                          screenData.some((screen) => screen.id === items.id)
-                            ? "bg-[#FFBD49]"
-                            : ""
-                        }`}
-                        onClick={() => toggleScreenFromAllScreen(items.id)}
+                        key={index}
+                        className="flex justify-center items-center mt-3 "
                       >
-                        <div className="grid grid-cols-10">
-                          <div className="col-span-2 flex justify-center items-center">
-                            <PiMonitor size={40} color={"#59606C"} />
-                          </div>
-                          <div className="col-span-6">
-                            <div className="flex justify-start items-center">
-                              <div className="font-poppins text-xl font-bold">
-                                {items.name}
-                              </div>
+                        <div
+                          className={`border border-gray-300 rounded-lg w-[80%] h-[75px] `}
+                        >
+                          <div className="grid grid-cols-10">
+                            <div className="col-span-2 flex justify-center items-center">
+                              <PiMonitor size={40} color={"#59606C"} />
                             </div>
-                            <div className="flex justify-start items-center">
-                              <div className="font-poppins text-sm">
-                                {items.location}
+                            <div className="col-span-6">
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins text-xl font-bold">
+                                  {items.name}
+                                </div>
                               </div>
-                            </div>
-                            <div className="flex justify-start items-center">
-                              {items.status === 0 ? (
-                                <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
-                              ) : (
-                                <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
-                              )}
-                              <div className="font-poppins text-xs p-[2px]">
-                                {items.status === 0 ? "Offline" : "Online"}
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins text-sm">
+                                  {items.location}
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
-                            <BsInfoCircle
-                              onClick={() => handleSelectInfoScreen(items)}
-                              color={"#6425FE"}
-                              className="cursor-pointer"
-                            />
-                            {screenData.some(
-                              (screen) => screen.id === items.id
-                            ) && (
-                              <>
-                                <ImBin
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteClick(index);
-                                  }}
-                                  className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
-                                />
-                                {deleteModalIndex[index] && (
-                                  <div className="absolute left-[680px] top-[800px] flex items-center">
-                                    <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
-                                      <p className="font-poppins text-xs text-white">
-                                        Do You Want to Delete This Screen. Lorem
-                                        Ipsum is simply dummy text of the
-                                        printing and typesetting industry.
-                                      </p>
-                                      <div className="flex justify-center items-center">
-                                        <button
-                                          className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleConfirmDelete(
-                                              index,
-                                              items.id
-                                            );
-                                          }}
-                                        >
-                                          Yes
-                                        </button>
-                                        <button
-                                          className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleCancelDelete(index);
-                                          }}
-                                        >
-                                          No
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
+                              <div className="flex justify-start items-center">
+                                {items.status === 0 ? (
+                                  <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
+                                ) : (
+                                  <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
                                 )}
-                              </>
-                            )}
+                                <div className="font-poppins text-xs p-[2px]">
+                                  {items.status === 0 ? "Offline" : "Online"}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
+                              <BsInfoCircle
+                                // onClick={() => handleSelectInfoScreen(items)}
+                                color={"#6425FE"}
+                                // className="cursor-pointer"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="col-span-2">
+              <div>
+                <img
+                  className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl `}
+                  src={merchandise.AdvertiserLogo}
+                  alt={merchandise.AdvertiserName}
+                />
+              </div>
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins text-xl font-bold text-[#2F3847]">
+                    {merchandise.AdvertiserName}
+                  </div>
+                </div>
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins text-sm text-[#6F6F6F]">
+                    {merchandise.AccountCode}
+                  </div>
+                </div>
+                <div className="flex justify-center items-center mt-5">
+                  <div className="font-poppins font-bold text-xl text-[#59606C]">
+                    {bookingCode}
+                  </div>
+                </div>
+
+                <div className="h-[350px] overflow-y-auto mt-5">
+                  {allScreenData.length > 0 &&
+                    allScreenData.map((items, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-center items-center mt-3 cursor-pointer"
+                      >
+                        <div
+                          className={`border border-gray-300 rounded-lg w-[80%] h-[75px] ${
+                            screenData.some((screen) => screen.id === items.id)
+                              ? "bg-[#FFBD49]"
+                              : ""
+                          }`}
+                          onClick={() => toggleScreenFromAllScreen(items.id)}
+                        >
+                          <div className="grid grid-cols-10">
+                            <div className="col-span-2 flex justify-center items-center">
+                              <PiMonitor size={40} color={"#59606C"} />
+                            </div>
+                            <div className="col-span-6">
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins text-xl font-bold">
+                                  {items.name}
+                                </div>
+                              </div>
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins text-sm">
+                                  {items.location}
+                                </div>
+                              </div>
+                              <div className="flex justify-start items-center">
+                                {items.status === 0 ? (
+                                  <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
+                                ) : (
+                                  <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
+                                )}
+                                <div className="font-poppins text-xs p-[2px]">
+                                  {items.status === 0 ? "Offline" : "Online"}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
+                              <BsInfoCircle
+                                onClick={() => handleSelectInfoScreen(items)}
+                                color={"#6425FE"}
+                                className="cursor-pointer"
+                              />
+                              {screenData.some(
+                                (screen) => screen.id === items.id
+                              ) && (
+                                <>
+                                  <ImBin
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteClick(index);
+                                    }}
+                                    className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                  />
+                                  {deleteModalIndex[index] && (
+                                    <div className="absolute left-[680px] top-[800px] flex items-center">
+                                      <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
+                                        <p className="font-poppins text-xs text-white">
+                                          Do You Want to Delete This Screen.
+                                          Lorem Ipsum is simply dummy text of
+                                          the printing and typesetting industry.
+                                        </p>
+                                        <div className="flex justify-center items-center">
+                                          <button
+                                            className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleConfirmDelete(
+                                                index,
+                                                items.id
+                                              );
+                                            }}
+                                          >
+                                            Yes
+                                          </button>
+                                          <button
+                                            className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleCancelDelete(index);
+                                            }}
+                                          >
+                                            No
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Left Panel */}
 
           {/* Right Panel */}
-          <div className="col-span-6 border-1 border-gray-300">
-            <div className="p-3">
-              <div className="flex items-center space-x-2">
+          {isConfirmed ? (
+            <div className="col-span-6 border-1 border-gray-300">
+              <div className="p-3">
                 <div className="flex items-center space-x-2">
-                  <CiCalendar
-                    size={20}
-                    className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
-                  />
-                  <div>
-                    <div className="flex justify-center items-center space-x-2">
-                      <div className="font-poppins text-xl font-bold">
-                        Booking Period :
+                  <div className="flex items-center space-x-2">
+                    <CiCalendar
+                      size={20}
+                      className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
+                    />
+                    <div>
+                      <div className="flex justify-center items-center space-x-2">
+                        <div className="font-poppins text-xl font-bold">
+                          Booking Period :
+                        </div>
+                        <div className="font-poppins text-2xl ">
+                          {booking_date.length > 0 && (
+                            <div>{` ${format(
+                              booking_date[0],
+                              "EEE dd MMM yyyy"
+                            )} - ${format(
+                              booking_date[booking_date.length - 1],
+                              "EEE dd MMM yyyy"
+                            )}`}</div>
+                          )}
+                        </div>
                       </div>
-                      <div className="font-poppins text-2xl ">
-                        {booking_date.length > 0 && (
-                          <div>{` ${format(
-                            booking_date[0],
-                            "EEE dd MMM yyyy"
-                          )} - ${format(
-                            booking_date[booking_date.length - 1],
-                            "EEE dd MMM yyyy"
-                          )}`}</div>
-                        )}
-                      </div>
-                    </div>
 
-                    <div className="font-poppins text-xs">
-                      {`You Select ${booking_slot} Slot(s) Per Day`}
+                      <div className="font-poppins text-xs">
+                        {`You Select ${booking_slot} Slot(s) Per Day`}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="w-[1140px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
-                <div className="grid grid-cols-12 space-x-1 mt-3">
-                  <div className="col-span-1">
-                    <div className="min-w-[100%]">
-                      <div
-                        onClick={() => console.log("Select all")}
-                        className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
-                      >
-                        <div className="text-xs font-poppins text-white">
-                          Select all
+                <div className="w-[1140px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
+                  <div className="grid grid-cols-12 space-x-1 mt-3">
+                    <div className="col-span-1">
+                      <div className="min-w-[100%]">
+                        <div
+                          onClick={() => console.log("Clear Selection")}
+                          className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
+                        >
+                          <div className="text-xs font-poppins text-white">
+                            Clear
+                          </div>
+                          <div className="text-xs font-poppins text-white">
+                            Selection
+                          </div>
                         </div>
-                        <div className="text-xs font-poppins text-white">
-                          available
-                        </div>
-                      </div>
-                      <div>
-                        {booking_date.length > 0 &&
-                          booking_date.map((items, index) => (
-                            <div key={index} className="mt-3 space-x-2">
-                              <div className="min-w-[20px] h-[70px] bg-[#59606C] rounded-lg">
-                                <div className="flex items-center justify-center text-xs font-poppins text-white">
-                                  {format(items, "EEE")}
-                                </div>
-                                <div className="flex items-center justify-center text-3xl font-poppins text-white">
-                                  {format(items, "dd")}
-                                </div>
-                                <div className="flex items-center justify-center text-xs font-poppins text-white">
-                                  {format(items, "MMM yyyy")}
+                        <div>
+                          {booking_date.length > 0 &&
+                            booking_date.map((items, index) => (
+                              <div key={index} className="mt-3 space-x-2">
+                                <div className="min-w-[20px] h-[70px] bg-[#59606C] rounded-lg">
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "EEE")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-3xl font-poppins text-white">
+                                    {format(items, "dd")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "MMM yyyy")}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          ))}
+                            ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-span-11">
-                    <div className="grid grid-cols-6 ">
-                      <div className="flex space-x-2">
-                        {screenData.length > 0 &&
-                          screenData.map((items, screenIndex) => (
-                            <>
-                              <div
-                                key={screenIndex}
-                                className="h-[70px] min-w-[250px] rounded-lg"
-                              >
-                                <div className="grid grid-cols-10">
-                                  <div className="col-span-2 flex justify-center items-center">
-                                    <PiMonitor size={40} color={"#59606C"} />
-                                  </div>
-                                  <div className="col-span-6">
-                                    <div className="flex justify-start items-center">
-                                      <div className="font-poppins text-xl font-bold">
-                                        {items.name}
+                    <div className="col-span-11">
+                      <div className="grid grid-cols-6 ">
+                        <div className="flex space-x-2">
+                          {screenData.length > 0 &&
+                            screenData.map((items, screenIndex) => (
+                              <>
+                                <div
+                                  key={screenIndex}
+                                  className="h-[70px] min-w-[250px] rounded-lg"
+                                >
+                                  <div className="grid grid-cols-10">
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <PiMonitor size={40} color={"#59606C"} />
+                                    </div>
+                                    <div className="col-span-6">
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xl font-bold">
+                                          {items.name}
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-sm text-[#8A8A8A]">
+                                          {items.location}
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                          Media Rule : {items.media_rule}
+                                        </div>
                                       </div>
                                     </div>
-                                    <div className="flex justify-start items-center">
-                                      <div className="font-poppins text-sm">
-                                        Max Capacity {items.capacity}/Day
-                                      </div>
-                                    </div>
-                                    <div className="flex justify-start items-center">
-                                      <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
-                                        Media Rule : {items.rule}
-                                      </div>
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <BsInfoCircle color={"#6425FE"} />
                                     </div>
                                   </div>
-                                  <div className="col-span-2 flex justify-center items-center">
-                                    <BsInfoCircle color={"#6425FE"} />
-                                  </div>
-                                </div>
 
-                                <div className="mt-3 space-y-3">
-                                  {items.booking
-                                    .slice(0, booking_date.length)
-                                    .map((items2, dateIndex) => (
-                                      <div
-                                        key={dateIndex}
-                                        onClick={() =>
-                                          items2.slot - items2.booking > 0
-                                            ? handleSelectScreen(
-                                                screenIndex,
-                                                dateIndex
-                                              )
-                                            : null
-                                        }
-                                        className={`${
-                                          bookingSelect.some(
-                                            (bookingItem) =>
-                                              bookingItem.screenIndex ===
-                                                screenIndex &&
-                                              bookingItem.dateIndex ===
-                                                dateIndex &&
-                                              bookingItem.status === true
-                                          )
-                                            ? "bg-[#FD6822] cursor-pointer"
-                                            : bookingSelect.some(
-                                                (bookingItem) =>
-                                                  bookingItem.screenIndex ===
-                                                    screenIndex &&
-                                                  bookingItem.dateIndex ===
-                                                    dateIndex
-                                              )
-                                            ? "bg-[#FFBD49] cursor-pointer"
-                                            : items2.slot - items2.booking >=
-                                              booking_slot
-                                            ? "bg-[#018C41] cursor-pointer"
-                                            : "bg-[#5C5C5C] pointer-events-none"
-                                        } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
-                                      >
+                                  {/* <div className="mt-3 space-y-3">
+                                    {items.booking
+                                      .slice(0, booking_date.length)
+                                      .map((items2, dateIndex) => (
                                         <div
-                                          className={`font-poppins ${
+                                          key={dateIndex}
+                                          onClick={() =>
+                                            items2.slot - items2.booking > 0
+                                              ? handleSelectScreen(
+                                                  screenIndex,
+                                                  dateIndex
+                                                )
+                                              : null
+                                          }
+                                          className={`${
                                             bookingSelect.some(
                                               (bookingItem) =>
                                                 bookingItem.screenIndex ===
@@ -865,7 +952,7 @@ const Create_Booking = () => {
                                                   dateIndex &&
                                                 bookingItem.status === true
                                             )
-                                              ? "text-white"
+                                              ? "bg-[#FD6822] cursor-pointer"
                                               : bookingSelect.some(
                                                   (bookingItem) =>
                                                     bookingItem.screenIndex ===
@@ -873,57 +960,302 @@ const Create_Booking = () => {
                                                     bookingItem.dateIndex ===
                                                       dateIndex
                                                 )
-                                              ? "text-[#4A4A4A]"
+                                              ? "bg-[#FFBD49] cursor-pointer"
                                               : items2.slot - items2.booking >=
                                                 booking_slot
-                                              ? "text-white"
-                                              : "text-white"
-                                          }`}
+                                              ? "bg-[#018C41] cursor-pointer"
+                                              : "bg-[#5C5C5C] pointer-events-none"
+                                          } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
                                         >
-                                          {bookingSelect.some(
-                                            (bookingItem) =>
-                                              bookingItem.screenIndex ===
-                                                screenIndex &&
-                                              bookingItem.dateIndex ===
-                                                dateIndex &&
-                                              bookingItem.status === true
-                                          )
-                                            ? `Booked ${
-                                                items2.booking + booking_slot
-                                              }/${items2.slot}`
-                                            : bookingSelect.some(
+                                          <div
+                                            className={`font-poppins ${
+                                              bookingSelect.some(
                                                 (bookingItem) =>
                                                   bookingItem.screenIndex ===
                                                     screenIndex &&
                                                   bookingItem.dateIndex ===
-                                                    dateIndex
+                                                    dateIndex &&
+                                                  bookingItem.status === true
                                               )
-                                            ? `Selected ${
-                                                items2.booking + booking_slot
-                                              }/${items2.slot}`
-                                            : items2.slot - items2.booking >=
-                                              booking_slot
-                                            ? `Available ${items2.booking}/${items2.slot}`
-                                            : items2.slot - items2.booking === 0
-                                            ? `Full ${items2.booking}/${items2.slot}`
-                                            : items2.slot - items2.booking <=
-                                              booking_slot
-                                            ? `Not Available ${items2.booking}/${items2.slot}`
-                                            : ""}
+                                                ? "text-white"
+                                                : bookingSelect.some(
+                                                    (bookingItem) =>
+                                                      bookingItem.screenIndex ===
+                                                        screenIndex &&
+                                                      bookingItem.dateIndex ===
+                                                        dateIndex
+                                                  )
+                                                ? "text-[#4A4A4A]"
+                                                : items2.slot -
+                                                    items2.booking >=
+                                                  booking_slot
+                                                ? "text-white"
+                                                : "text-white"
+                                            }`}
+                                          >
+                                            {bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex &&
+                                                bookingItem.status === true
+                                            )
+                                              ? `Booked ${
+                                                  items2.booking + booking_slot
+                                                }/${items2.slot}`
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
+                                              ? `Selected ${
+                                                  items2.booking + booking_slot
+                                                }/${items2.slot}`
+                                              : items2.slot - items2.booking >=
+                                                booking_slot
+                                              ? `Available ${items2.booking}/${items2.slot}`
+                                              : items2.slot - items2.booking ===
+                                                0
+                                              ? `Full ${items2.booking}/${items2.slot}`
+                                              : items2.slot - items2.booking <=
+                                                booking_slot
+                                              ? `Not Available ${items2.booking}/${items2.slot}`
+                                              : ""}
+                                          </div>
                                         </div>
-                                      </div>
-                                    ))}
+                                      ))}
+                                  </div> */}
                                 </div>
-                              </div>
-                            </>
-                          ))}
+                              </>
+                            ))}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="col-span-6 border-1 border-gray-300">
+              <div className="p-3">
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2">
+                    <CiCalendar
+                      size={20}
+                      className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
+                    />
+                    <div>
+                      <div className="flex justify-center items-center space-x-2">
+                        <div className="font-poppins text-xl font-bold">
+                          Booking Period :
+                        </div>
+                        <div className="font-poppins text-2xl ">
+                          {booking_date.length > 0 && (
+                            <div>{` ${format(
+                              booking_date[0],
+                              "EEE dd MMM yyyy"
+                            )} - ${format(
+                              booking_date[booking_date.length - 1],
+                              "EEE dd MMM yyyy"
+                            )}`}</div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="font-poppins text-xs">
+                        {`You Select ${booking_slot} Slot(s) Per Day`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-[1140px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
+                  <div className="grid grid-cols-12 space-x-1 mt-3">
+                    <div className="col-span-1">
+                      <div className="min-w-[100%]">
+                        <div
+                          onClick={() =>
+                            console.log("Select all", booking_date)
+                          }
+                          className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
+                        >
+                          <div className="text-xs font-poppins text-white">
+                            Select all
+                          </div>
+                          <div className="text-xs font-poppins text-white">
+                            available
+                          </div>
+                        </div>
+                        <div>
+                          {booking_date.length > 0 &&
+                            booking_date.map((items, index) => (
+                              <div key={index} className="mt-3 space-x-2">
+                                <div className="min-w-[20px] h-[70px] bg-[#59606C] rounded-lg">
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "EEE")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-3xl font-poppins text-white">
+                                    {format(items, "dd")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "MMM yyyy")}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-11">
+                      <div className="grid grid-cols-6 ">
+                        <div className="flex space-x-2">
+                          {screenData.length > 0 &&
+                            screenData.map((items, screenIndex) => (
+                              <>
+                                <div
+                                  key={screenIndex}
+                                  className="h-[70px] min-w-[250px] rounded-lg"
+                                >
+                                  <div className="grid grid-cols-10">
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <PiMonitor size={40} color={"#59606C"} />
+                                    </div>
+                                    <div className="col-span-6">
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xl font-bold">
+                                          {items.name}
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-sm">
+                                          Max Capacity {items.capacity}/Day
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                          Media Rule : {items.rule}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <BsInfoCircle color={"#6425FE"} />
+                                    </div>
+                                  </div>
+
+                                  <div className="mt-3 space-y-3">
+                                    {items.booking
+                                      .slice(0, booking_date.length)
+                                      .map((items2, dateIndex) => (
+                                        <div
+                                          key={dateIndex}
+                                          onClick={() =>
+                                            items2.slot - items2.booking > 0
+                                              ? handleSelectScreen(
+                                                  screenIndex,
+                                                  dateIndex
+                                                )
+                                              : null
+                                          }
+                                          className={`${
+                                            bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex &&
+                                                bookingItem.status === true
+                                            )
+                                              ? "bg-[#FD6822] cursor-pointer"
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
+                                              ? "bg-[#FFBD49] cursor-pointer"
+                                              : items2.slot - items2.booking >=
+                                                booking_slot
+                                              ? "bg-[#018C41] cursor-pointer"
+                                              : "bg-[#5C5C5C] pointer-events-none"
+                                          } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
+                                        >
+                                          <div
+                                            className={`font-poppins ${
+                                              bookingSelect.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                    dateIndex &&
+                                                  bookingItem.status === true
+                                              )
+                                                ? "text-white"
+                                                : bookingSelect.some(
+                                                    (bookingItem) =>
+                                                      bookingItem.screenIndex ===
+                                                        screenIndex &&
+                                                      bookingItem.dateIndex ===
+                                                        dateIndex
+                                                  )
+                                                ? "text-[#4A4A4A]"
+                                                : items2.slot -
+                                                    items2.booking >=
+                                                  booking_slot
+                                                ? "text-white"
+                                                : "text-white"
+                                            }`}
+                                          >
+                                            {bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex &&
+                                                bookingItem.status === true
+                                            )
+                                              ? `Booked ${
+                                                  items2.booking + booking_slot
+                                                }/${items2.slot}`
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
+                                              ? `Selected ${
+                                                  items2.booking + booking_slot
+                                                }/${items2.slot}`
+                                              : items2.slot - items2.booking >=
+                                                booking_slot
+                                              ? `Available ${items2.booking}/${items2.slot}`
+                                              : items2.slot - items2.booking ===
+                                                0
+                                              ? `Full ${items2.booking}/${items2.slot}`
+                                              : items2.slot - items2.booking <=
+                                                booking_slot
+                                              ? `Not Available ${items2.booking}/${items2.slot}`
+                                              : ""}
+                                          </div>
+                                        </div>
+                                      ))}
+                                  </div>
+                                </div>
+                              </>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Right Panel */}
         </div>
       </div>

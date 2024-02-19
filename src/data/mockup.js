@@ -2112,3 +2112,1693 @@ export const screens = [
     price: 500,
   },
 ];
+
+export const bookingData = [
+  {
+    id: 1,
+    booking_name: ["Booking Name 1", "CDS-BT-230101-004"],
+    content_type: "STW Promotion",
+    merchandise: {
+      AdvertiserID: 1,
+      AccountCode: "guUpa8dN4h",
+      AdvertiserName: "Test_Merchandise",
+      AdvertiserLogo:
+        "https://cds.push-signage.com/adsmanager/content/guUpa8dN4h/advertiserlogo/1704364903_76250.png",
+      ContactName: "Test_Merchandise",
+      Department: "Test_Merchandise",
+      Position: "Test_Merchandise",
+      Email: "test.merch@mail.com",
+    },
+    screen: [
+      {
+        id: 1,
+        name: "Screen 1",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+          "1920x1080",
+          "1000MB",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 2,
+        name: "Screen 2",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: ["Portrait", "North", "Fashion"],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 3,
+        name: "Screen 3",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 4,
+        name: "Screen 4",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 5,
+        name: "Screen 5",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 6,
+        name: "Screen 6",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 7,
+        name: "Screen 7",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+    ],
+    booking_date: [
+      "2024-02-18T17:00:00.000Z",
+      "2024-02-19T17:00:00.000Z",
+      "2024-02-20T17:00:00.000Z",
+      "2024-02-21T17:00:00.000Z",
+      "2024-02-22T17:00:00.000Z",
+    ],
+    booking_slot: 10,
+    booking_status: 1,
+    content: 1,
+  },
+  {
+    id: 2,
+    booking_name: ["Booking Name 2", "CDS-BT-230101-002"],
+    content_type: "Brand",
+    merchandise: {
+      AdvertiserID: 3,
+      AccountCode: "guUpa8dN4h",
+      AdvertiserName: "Test Merch 1",
+      AdvertiserLogo:
+        "https://cds.push-signage.com/adsmanager/content/guUpa8dN4h/advertiserlogo/1704363638_20861.png",
+      ContactName: "Test Merch 1",
+      Department: "Test Merch 1",
+      Position: "Test Merch 1",
+      Email: "test.merch@mail.com",
+    },
+    screen: [
+      {
+        id: 1,
+        name: "Screen 1",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+          "1920x1080",
+          "1000MB",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 2,
+        name: "Screen 2",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: ["Portrait", "North", "Fashion"],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 3,
+        name: "Screen 3",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 4,
+        name: "Screen 4",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+    ],
+    booking_date: [
+      "2024-02-18T17:00:00.000Z",
+      "2024-02-19T17:00:00.000Z",
+      "2024-02-20T17:00:00.000Z",
+      "2024-02-21T17:00:00.000Z",
+      "2024-02-22T17:00:00.000Z",
+    ],
+    booking_slot: 5,
+    booking_status: 2,
+    content: 1,
+  },
+  {
+    id: 3,
+    booking_name: ["Booking Name 3", "CDS-BT-230101-003"],
+    content_type: "Credit Card",
+    merchandise: {
+      AdvertiserID: 4,
+      AccountCode: "guUpa8dN4h",
+      AdvertiserName: "Test Merch 2",
+      AdvertiserLogo:
+        "https://cds.push-signage.com/adsmanager/content/guUpa8dN4h/advertiserlogo/1704354836_96930.png",
+      ContactName: "Test Merch 2",
+      Department: "Test Merch 2",
+      Position: "Test Merch 2",
+      Email: "test.merch@mail.com",
+    },
+    screen: [
+      {
+        id: 1,
+        name: "Screen 1",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+          "1920x1080",
+          "1000MB",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 2,
+        name: "Screen 2",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: ["Portrait", "North", "Fashion"],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 3,
+        name: "Screen 3",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 4,
+        name: "Screen 4",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 5,
+        name: "Screen 5",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 6,
+        name: "Screen 6",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+    ],
+    booking_date: [
+      "2024-02-18T17:00:00.000Z",
+      "2024-02-19T17:00:00.000Z",
+      "2024-02-20T17:00:00.000Z",
+      "2024-02-21T17:00:00.000Z",
+      "2024-02-22T17:00:00.000Z",
+    ],
+    booking_slot: 5,
+    booking_status: 3,
+    content: 1,
+  },
+  {
+    id: 4,
+    booking_name: ["Booking Name 4", "CDS-BT-230101-004"],
+    content_type: "Category",
+    merchandise: {
+      AdvertiserID: 2,
+      AccountCode: "guUpa8dN4h",
+      AdvertiserName: "Test Merch",
+      AdvertiserLogo:
+        "https://cds.push-signage.com/adsmanager/content/guUpa8dN4h/advertiserlogo/1704363712_66243.png",
+      ContactName: "Test Merch",
+      Department: "Test Merch",
+      Position: "Test Merch",
+      Email: "test.merch@mail.com",
+    },
+    screen: [
+      {
+        id: 1,
+        name: "Screen 1",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+          "1920x1080",
+          "1000MB",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 2,
+        name: "Screen 2",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: ["Portrait", "North", "Fashion"],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 3,
+        name: "Screen 3",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 4,
+        name: "Screen 4",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 5,
+        name: "Screen 5",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 6,
+        name: "Screen 6",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 7,
+        name: "Screen 7",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+    ],
+    booking_date: [
+      "2024-02-18T17:00:00.000Z",
+      "2024-02-19T17:00:00.000Z",
+      "2024-02-20T17:00:00.000Z",
+      "2024-02-21T17:00:00.000Z",
+      "2024-02-22T17:00:00.000Z",
+    ],
+    booking_slot: 10,
+    booking_status: 4,
+    content: 2,
+  },
+  {
+    id: 5,
+    booking_name: ["Booking Name 5", "CDS-BT-230101-005"],
+    content_type: "Brand",
+    merchandise: {
+      AdvertiserID: 1,
+      AccountCode: "guUpa8dN4h",
+      AdvertiserName: "Test_Merchandise",
+      AdvertiserLogo:
+        "https://cds.push-signage.com/adsmanager/content/guUpa8dN4h/advertiserlogo/1704364903_76250.png",
+      ContactName: "Test_Merchandise",
+      Department: "Test_Merchandise",
+      Position: "Test_Merchandise",
+      Email: "test.merch@mail.com",
+    },
+    screen: [
+      {
+        id: 1,
+        name: "Screen 1",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+          "1920x1080",
+          "1000MB",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+        status: 0,
+      },
+      {
+        id: 2,
+        name: "Screen 2",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1920x1080",
+        capacity: 15,
+        tag: ["Portrait", "North", "Fashion"],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 3,
+        name: "Screen 3",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 4,
+        name: "Screen 4",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 5,
+        name: "Screen 5",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 6,
+        name: "Screen 6",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+      {
+        id: 7,
+        name: "Screen 7",
+        location: "Central World,FL1",
+        province: "Bangkok",
+        media_rule: "1080x1920",
+        capacity: 15,
+        tag: [
+          "Portrait",
+          "North",
+          "Fashion",
+          "Beauty",
+          "Flagship",
+          "Jean",
+          "Indoor",
+          "4K",
+        ],
+        booking: [
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+          {
+            media: "",
+          },
+        ],
+        price: 500,
+      },
+    ],
+    booking_date: [
+      "2024-02-18T17:00:00.000Z",
+      "2024-02-19T17:00:00.000Z",
+      "2024-02-20T17:00:00.000Z",
+      "2024-02-21T17:00:00.000Z",
+      "2024-02-22T17:00:00.000Z",
+    ],
+    booking_slot: 10,
+    booking_status: 4,
+    content: 2,
+  },
+];

@@ -310,7 +310,9 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       booking_name: booking_name,
       booking_slot: booking_slot,
     };
-    navigate(`/booking/${obj.booking_name}`, { state: { data: obj } });
+    navigate(`/booking/${obj.booking_name}`, {
+      state: { data: obj, isConfirmed: false },
+    });
   };
 
   return (
