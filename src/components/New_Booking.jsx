@@ -337,6 +337,36 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="flex items-center justify-center pl-5">
                 <div className="font-poppins text-2xl ">{`>`}</div>
               </div>
+              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full">
+                <p className="text-gray-500 font-poppins text-lg">2</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="font-poppins text-gray-500 text-2xl ">
+                  Booking Period
+                </div>
+              </div>
+              <div className="flex items-center justify-center pl-5">
+                <div className="font-poppins text-2xl ">{`>`}</div>
+              </div>
+              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full">
+                <p className="text-gray-500  font-poppins text-lg">3</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="font-poppins text-gray-500 text-2xl ">
+                  Enter Booking Name
+                </div>
+              </div>
+              <div className="flex items-center justify-center pl-5">
+                <div className="font-poppins text-2xl ">{`>`}</div>
+              </div>
+              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full">
+                <p className="text-gray-500  font-poppins text-lg">4</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="font-poppins text-gray-500 text-2xl ">
+                  Booking is Created
+                </div>
+              </div>
             </div>
             <div className="flex items-center justify-center mt-5">
               <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
@@ -414,7 +444,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="flex items-center justify-center w-10 h-10 bg-[#6425FE] rounded-full">
                 <p className="text-white  font-poppins text-lg">1</p>
               </div>
-              <div className="flex items-center justify-center">
+              <div
+                onClick={() => setStep("1")}
+                className="flex items-center justify-center cursor-pointer"
+              >
                 <div className="font-poppins text-2xl ">Select Merchandise</div>
               </div>
               <div className="flex items-center justify-center pl-5">
@@ -428,6 +461,25 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               </div>
               <div className="flex items-center justify-center pl-5">
                 <div className="font-poppins text-2xl ">{`>`}</div>
+              </div>
+              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full">
+                <p className="text-gray-500  font-poppins text-lg">3</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="font-poppins text-gray-500 text-2xl ">
+                  Enter Booking Name
+                </div>
+              </div>
+              <div className="flex items-center justify-center pl-5">
+                <div className="font-poppins text-2xl ">{`>`}</div>
+              </div>
+              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full">
+                <p className="text-gray-500  font-poppins text-lg">4</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="font-poppins text-gray-500 text-2xl ">
+                  Booking is Created
+                </div>
               </div>
             </div>
             <div className="flex items-center justify-center mt-5">
@@ -584,16 +636,23 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="flex items-center justify-center w-10 h-10 bg-[#6425FE] rounded-full">
                 <p className="text-white  font-poppins text-lg">1</p>
               </div>
-              <div className="flex items-center justify-center">
+              <div
+                onClick={() => setStep("1")}
+                className="flex items-center justify-center cursor-pointer"
+              >
                 <div className="font-poppins text-2xl ">Select Merchandise</div>
               </div>
               <div className="flex items-center justify-center pl-5">
                 <div className="font-poppins text-2xl ">{`>`}</div>
               </div>
+
               <div className="flex items-center justify-center w-10 h-10 bg-[#6425FE] rounded-full">
                 <p className="text-white  font-poppins text-lg">2</p>
               </div>
-              <div className="flex items-center justify-center">
+              <div
+                onClick={() => setStep("2")}
+                className="flex items-center justify-center cursor-pointer"
+              >
                 <div className="font-poppins text-2xl ">Booking Period</div>
               </div>
               <div className="flex items-center justify-center pl-5">
@@ -607,6 +666,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               </div>
               <div className="flex items-center justify-center pl-5">
                 <div className="font-poppins text-2xl ">{`>`}</div>
+              </div>
+              <div className="flex items-center justify-center w-10 h-10 bg-gray-300 rounded-full">
+                <p className="text-gray-500  font-poppins text-lg">4</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="font-poppins text-gray-500 text-2xl ">
+                  Booking is Created
+                </div>
               </div>
             </div>
             <div className="flex items-center justify-center mt-5">
@@ -708,7 +775,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="flex items-center justify-center w-10 h-10 bg-[#6425FE] rounded-full">
                 <p className="text-white  font-poppins text-lg">1</p>
               </div>
-              <div className="flex items-center justify-center">
+              <div
+                onClick={() => setStep("1")}
+                className="flex items-center justify-center cursor-pointer"
+              >
                 <div className="font-poppins text-2xl ">Select Merchandise</div>
               </div>
               <div className="flex items-center justify-center pl-5">
@@ -717,7 +787,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="flex items-center justify-center w-10 h-10 bg-[#6425FE] rounded-full">
                 <p className="text-white  font-poppins text-lg">2</p>
               </div>
-              <div className="flex items-center justify-center">
+              <div
+                onClick={() => setStep("2")}
+                className="flex items-center justify-center cursor-pointer"
+              >
                 <div className="font-poppins text-2xl ">Booking Period</div>
               </div>
               <div className="flex items-center justify-center pl-5">
@@ -726,7 +799,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="flex items-center justify-center w-10 h-10 bg-[#6425FE] rounded-full">
                 <p className="text-white  font-poppins text-lg">3</p>
               </div>
-              <div className="flex items-center justify-center">
+              <div
+                onClick={() => setStep("3")}
+                className="flex items-center justify-center cursor-pointer"
+              >
                 <div className="font-poppins text-2xl ">Enter Booking Name</div>
               </div>
               <div className="flex items-center justify-center pl-5">
