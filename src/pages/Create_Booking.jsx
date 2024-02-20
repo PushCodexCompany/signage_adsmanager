@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
 import { useNavigate, useLocation } from "react-router-dom";
-import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-import { CiCalendar } from "react-icons/ci";
-import { BsInfoCircle } from "react-icons/bs";
-import { ImBin } from "react-icons/im";
+import {
+  IoIosArrowDown,
+  IoIosClose,
+  IoIosArrowUp,
+  IoIosPlayCircle,
+  IoIosCalendar,
+  IoIosInformationCircleOutline,
+  IoMdTrash,
+  IoIosSearch,
+} from "react-icons/io";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PiMonitor, PiWarningCircleFill } from "react-icons/pi";
-import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { format } from "date-fns";
 import useCheckPermission from "../libs/useCheckPermission";
@@ -70,6 +76,8 @@ const Create_Booking = () => {
 
   const [isConfirmed, setIsComfirmed] = useState(false);
 
+  const [booking_col, setBookingCol] = useState();
+
   useEffect(() => {
     if (location.state.isConfirmed) {
       setConfirmBookingData();
@@ -93,7 +101,6 @@ const Create_Booking = () => {
   };
 
   const setConfirmBookingData = () => {
-    console.log(location.state.data);
     const { booking_name, merchandise, booking_slot, booking_date, screen } =
       location.state.data;
 
@@ -103,6 +110,23 @@ const Create_Booking = () => {
     setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
     setBookingSlot(booking_slot);
     setScreenData(screen);
+
+    calculateSize(screen);
+  };
+
+  const calculateSize = (screen) => {
+    let maxLength = 0;
+    screen.forEach((screen) => {
+      screen.booking.forEach((booking) => {
+        const bookingLength = booking.media_list.length;
+        if (bookingLength > maxLength) {
+          maxLength = bookingLength;
+        }
+      });
+    });
+
+    const col_booking = Math.ceil(maxLength / 5);
+    setBookingCol(col_booking);
   };
 
   const getAllScreen = () => {
@@ -678,9 +702,10 @@ const Create_Booking = () => {
                               </div>
                             </div>
                             <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
-                              <BsInfoCircle
+                              <IoIosInformationCircleOutline
                                 // onClick={() => handleSelectInfoScreen(items)}
                                 color={"#6425FE"}
+                                size={22}
                                 // className="cursor-pointer"
                               />
                             </div>
@@ -759,20 +784,22 @@ const Create_Booking = () => {
                               </div>
                             </div>
                             <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
-                              <BsInfoCircle
+                              <IoIosInformationCircleOutline
                                 onClick={() => handleSelectInfoScreen(items)}
                                 color={"#6425FE"}
+                                size={22}
                                 className="cursor-pointer"
                               />
                               {screenData.some(
                                 (screen) => screen.id === items.id
                               ) && (
                                 <>
-                                  <ImBin
+                                  <IoMdTrash
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       handleDeleteClick(index);
                                     }}
+                                    size={22}
                                     className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                                   />
                                   {deleteModalIndex[index] && (
@@ -829,7 +856,7 @@ const Create_Booking = () => {
               <div className="p-3">
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-2">
-                    <CiCalendar
+                    <IoIosCalendar
                       size={20}
                       className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
                     />
@@ -877,14 +904,28 @@ const Create_Booking = () => {
                           {booking_date.length > 0 &&
                             booking_date.map((items, index) => (
                               <div key={index} className="mt-3 space-x-2">
-                                <div className="min-w-[20px] h-[70px] bg-[#59606C] rounded-lg">
-                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                <div
+                                  className={`min-w-[20px]  
+                                  ${
+                                    booking_col === 1
+                                      ? "h-[80px]"
+                                      : booking_col === 2
+                                      ? "h-[100px]"
+                                      : booking_col === 3
+                                      ? "h-[150px]"
+                                      : booking_col === 4
+                                      ? "h-[400px]"
+                                      : "h-[100px]"
+                                  } 
+                                  bg-[#59606C] rounded-lg flex flex-col justify-center items-center`}
+                                >
+                                  <div className="text-xs font-poppins text-white">
                                     {format(items, "EEE")}
                                   </div>
-                                  <div className="flex items-center justify-center text-3xl font-poppins text-white">
+                                  <div className="text-3xl font-poppins text-white">
                                     {format(items, "dd")}
                                   </div>
-                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                  <div className="text-xs font-poppins text-white">
                                     {format(items, "MMM yyyy")}
                                   </div>
                                 </div>
@@ -925,109 +966,53 @@ const Create_Booking = () => {
                                       </div>
                                     </div>
                                     <div className="col-span-2 flex justify-center items-center">
-                                      <BsInfoCircle color={"#6425FE"} />
+                                      <IoIosInformationCircleOutline
+                                        size={22}
+                                        color={"#6425FE"}
+                                      />
                                     </div>
                                   </div>
 
-                                  {/* <div className="mt-3 space-y-3">
-                                    {items.booking
-                                      .slice(0, booking_date.length)
-                                      .map((items2, dateIndex) => (
-                                        <div
-                                          key={dateIndex}
-                                          onClick={() =>
-                                            items2.slot - items2.booking > 0
-                                              ? handleSelectScreen(
-                                                  screenIndex,
-                                                  dateIndex
+                                  {items.booking.map((items, index) => (
+                                    <div className="mt-2">
+                                      <div className="p-2">
+                                        <div className="grid grid-cols-6 space-x-1">
+                                          <div className="col-span-5">
+                                            <div className="flex flex-wrap">
+                                              {items.media_list.map(
+                                                (item, index2) => (
+                                                  <div
+                                                    key={index2}
+                                                    className="w-[20%] p-1"
+                                                  >
+                                                    <div
+                                                      className={`w-[36px] h-[36px] ${
+                                                        item.media
+                                                          ? "bg-white border border-[#D9D9D9]"
+                                                          : "bg-[#D9D9D9] "
+                                                      } flex justify-center items-center`}
+                                                    >
+                                                      {item.media ? (
+                                                        <IoIosPlayCircle color="#6425FE" />
+                                                      ) : (
+                                                        ""
+                                                      )}
+                                                    </div>
+                                                  </div>
                                                 )
-                                              : null
-                                          }
-                                          className={`${
-                                            bookingSelect.some(
-                                              (bookingItem) =>
-                                                bookingItem.screenIndex ===
-                                                  screenIndex &&
-                                                bookingItem.dateIndex ===
-                                                  dateIndex &&
-                                                bookingItem.status === true
-                                            )
-                                              ? "bg-[#FD6822] cursor-pointer"
-                                              : bookingSelect.some(
-                                                  (bookingItem) =>
-                                                    bookingItem.screenIndex ===
-                                                      screenIndex &&
-                                                    bookingItem.dateIndex ===
-                                                      dateIndex
-                                                )
-                                              ? "bg-[#FFBD49] cursor-pointer"
-                                              : items2.slot - items2.booking >=
-                                                booking_slot
-                                              ? "bg-[#018C41] cursor-pointer"
-                                              : "bg-[#5C5C5C] pointer-events-none"
-                                          } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
-                                        >
-                                          <div
-                                            className={`font-poppins ${
-                                              bookingSelect.some(
-                                                (bookingItem) =>
-                                                  bookingItem.screenIndex ===
-                                                    screenIndex &&
-                                                  bookingItem.dateIndex ===
-                                                    dateIndex &&
-                                                  bookingItem.status === true
-                                              )
-                                                ? "text-white"
-                                                : bookingSelect.some(
-                                                    (bookingItem) =>
-                                                      bookingItem.screenIndex ===
-                                                        screenIndex &&
-                                                      bookingItem.dateIndex ===
-                                                        dateIndex
-                                                  )
-                                                ? "text-[#4A4A4A]"
-                                                : items2.slot -
-                                                    items2.booking >=
-                                                  booking_slot
-                                                ? "text-white"
-                                                : "text-white"
-                                            }`}
-                                          >
-                                            {bookingSelect.some(
-                                              (bookingItem) =>
-                                                bookingItem.screenIndex ===
-                                                  screenIndex &&
-                                                bookingItem.dateIndex ===
-                                                  dateIndex &&
-                                                bookingItem.status === true
-                                            )
-                                              ? `Booked ${
-                                                  items2.booking + booking_slot
-                                                }/${items2.slot}`
-                                              : bookingSelect.some(
-                                                  (bookingItem) =>
-                                                    bookingItem.screenIndex ===
-                                                      screenIndex &&
-                                                    bookingItem.dateIndex ===
-                                                      dateIndex
-                                                )
-                                              ? `Selected ${
-                                                  items2.booking + booking_slot
-                                                }/${items2.slot}`
-                                              : items2.slot - items2.booking >=
-                                                booking_slot
-                                              ? `Available ${items2.booking}/${items2.slot}`
-                                              : items2.slot - items2.booking ===
-                                                0
-                                              ? `Full ${items2.booking}/${items2.slot}`
-                                              : items2.slot - items2.booking <=
-                                                booking_slot
-                                              ? `Not Available ${items2.booking}/${items2.slot}`
-                                              : ""}
+                                              )}
+                                            </div>
+                                          </div>
+                                          <div className="col-span-1 flex justify-center items-center">
+                                            <MdOutlineModeEditOutline
+                                              size={26}
+                                              className="text-[#6425FE]"
+                                            />
                                           </div>
                                         </div>
-                                      ))}
-                                  </div> */}
+                                      </div>
+                                    </div>
+                                  ))}
                                 </div>
                               </>
                             ))}
@@ -1043,7 +1028,7 @@ const Create_Booking = () => {
               <div className="p-3">
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-2">
-                    <CiCalendar
+                    <IoIosCalendar
                       size={20}
                       className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
                     />
@@ -1141,7 +1126,10 @@ const Create_Booking = () => {
                                       </div>
                                     </div>
                                     <div className="col-span-2 flex justify-center items-center">
-                                      <BsInfoCircle color={"#6425FE"} />
+                                      <IoIosInformationCircleOutline
+                                        color={"#6425FE"}
+                                        size={22}
+                                      />
                                     </div>
                                   </div>
 
@@ -1273,7 +1261,7 @@ const Create_Booking = () => {
           <div className="absolute right-10 top-14 lg:top-5 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => handleCloseAddScreen()}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
@@ -1313,7 +1301,7 @@ const Create_Booking = () => {
                     customFunc={search}
                     title="Search"
                     color="grey"
-                    icon={<AiOutlineSearch />}
+                    icon={<IoIosSearch />}
                   />
                   <input
                     className=" w-full h-[46px] rounded relative border-gray-500  transition font-poppins"
@@ -1733,7 +1721,7 @@ const Create_Booking = () => {
                   setOpenConfirmBookingModal(!openConfirmBookingModal)
                 }
               >
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
