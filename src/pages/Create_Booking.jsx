@@ -32,6 +32,12 @@ const Create_Booking = () => {
   const [booking_date, setBookingDate] = useState([]);
   const [booking_slot, setBookingSlot] = useState();
   const [filter, setFilter] = useState(["Available", "Low < 5"]);
+  const [filter_publish_screen, setFilterPublishCreen] = useState([
+    "Flagship",
+    "5 Floor",
+    "Beauty",
+    "Portrait",
+  ]);
   const [filter_add_screen, setFilterAddScreen] = useState([
     "North",
     "Flagship",
@@ -46,6 +52,7 @@ const Create_Booking = () => {
   const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
 
   const [showAddScreen, setShowAddScreen] = useState(false);
+  const [showPublishScreen, setShowPublishScreen] = useState(false);
 
   //Add Screen Filter
 
@@ -63,6 +70,11 @@ const Create_Booking = () => {
 
   const [checkboxes, setCheckboxes] = useState({});
   const [selectAll, setSelectAll] = useState(false);
+
+  const [checkboxPublishScreen, setCheckboxPublishScreen] = useState({});
+  const [selectAllPubishScreen, setSelectAllPublishScreen] = useState(false);
+  const [selectPublihsScreen, setSelectPublishScreen] = useState([]);
+
   const [deleteModalIndex, setDeleteModalIndex] = useState({});
 
   const [bookingSelect, setBookingSelect] = useState([]);
@@ -164,6 +176,21 @@ const Create_Booking = () => {
     }
   };
 
+  const handleStatusPublishScreenChange = (event) => {
+    const selectedValue = event.target.value;
+    if (selectedValue === "0") {
+      alert("Please select a valid status.");
+    } else {
+      setFilterPublishCreen((prevFilter) => {
+        if (prevFilter.includes(selectedValue)) {
+          return prevFilter; // Already selected, no change
+        } else {
+          return [...prevFilter, selectedValue]; // Add the selected value to the filter state
+        }
+      });
+    }
+  };
+
   const removeFilter = (event) => {
     const selectedValue = event;
     const updatedFilter = filter.filter((value) => value !== selectedValue);
@@ -172,6 +199,18 @@ const Create_Booking = () => {
 
   const clearFilter = () => {
     setFilter([]);
+  };
+
+  const removePublishCreenFilter = (event) => {
+    const selectedValue = event;
+    const updatedFilter = filter_publish_screen.filter(
+      (value) => value !== selectedValue
+    );
+    setFilterPublishCreen(updatedFilter);
+  };
+
+  const clearPublishScreenFilter = () => {
+    setFilterPublishCreen([]);
   };
 
   const search = () => {
@@ -235,6 +274,24 @@ const Create_Booking = () => {
     });
   };
 
+  const toggleCheckboxPublishScreen = (rowId) => {
+    setCheckboxPublishScreen((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [rowId]: !prevCheckboxes[rowId],
+      };
+
+      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
+        (id) => updatedCheckboxes[id]
+      );
+
+      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
+      setSelectPublishScreen(intArray);
+
+      return updatedCheckboxes;
+    });
+  };
+
   const toggleScreenFromAllScreen = (id) => {
     if (selectedScreenItems.some((screen) => screen === id)) {
       // มีจอแล้ว
@@ -275,6 +332,23 @@ const Create_Booking = () => {
     // Do something with the checkedRowIds array (e.g., store it in state)
     const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
     setSelectedScreenItems(checkedRowIds);
+  };
+
+  const toggleAllCheckboxesPublishScreen = () => {
+    const newCheckboxes = {};
+    const newSelectAll = !selectAllPubishScreen;
+
+    // Set all checkboxes to the new state
+    screens.forEach((row) => {
+      newCheckboxes[row.id] = newSelectAll;
+    });
+
+    setCheckboxPublishScreen(newCheckboxes);
+    setSelectAllPublishScreen(newSelectAll);
+
+    // Do something with the checkedRowIds array (e.g., store it in state)
+    const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
+    setSelectPublishScreen(checkedRowIds);
   };
 
   const handleCloseAddScreen = () => {
@@ -453,7 +527,7 @@ const Create_Booking = () => {
             <div className="flex justify-end space-x-1">
               {isConfirmed ? (
                 <button
-                  // onClick={() => setShowAddScreen(true)}
+                  onClick={() => setShowPublishScreen(true)}
                   className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
                 >
                   Publish
@@ -1003,10 +1077,19 @@ const Create_Booking = () => {
                                               )}
                                             </div>
                                           </div>
-                                          <div className="col-span-1 flex justify-center items-center">
+                                          <div
+                                            onClick={() =>
+                                              console.log(
+                                                "Screen:",
+                                                screenIndex + 1,
+                                                items
+                                              )
+                                            }
+                                            className="col-span-1 flex justify-center items-center cursor-pointer"
+                                          >
                                             <MdOutlineModeEditOutline
                                               size={26}
-                                              className="text-[#6425FE]"
+                                              className="text-[#6425FE] hover:text-[#3b1694]"
                                             />
                                           </div>
                                         </div>
@@ -1267,7 +1350,7 @@ const Create_Booking = () => {
           </div>
 
           {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen overflow-y-auto relative">
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
             <div className="flex justify-center items-center mt-5">
               <div className="font-poppins text-5xl text-[#2F3847] font-bold">
                 Add Screens For Booking
@@ -1580,25 +1663,17 @@ const Create_Booking = () => {
                       <tr key={row.id}>
                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                           <div className="flex items-center">
-                            <label className="inline-flex items-center space-x-2">
-                              <input
-                                type="checkbox"
-                                className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                                checked={checkboxes[row.id] || false} // Set default value to false if row.id is not present
-                                onChange={() => toggleCheckboxAddScreen(row.id)}
-                              />
-                              <span
-                                className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                                  checkboxes[row.id] ? "bg-white" : ""
-                                }`}
-                              >
+                            <input
+                              type="checkbox"
+                              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                              checked={checkboxes[row.id] || false}
+                              onChange={() => toggleCheckboxAddScreen(row.id)}
+                            />
+                            <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
+                              {checkboxes[row.id] && (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
-                                  className={`h-6 w-6 text-white ${
-                                    checkboxes[row.id]
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  } transition-opacity duration-300 ease-in-out`}
+                                  className="h-6 w-6 text-white"
                                   fill="none"
                                   viewBox="0 0 24 24"
                                   stroke="#6425FE"
@@ -1610,16 +1685,16 @@ const Create_Booking = () => {
                                     d="M5 13l4 4L19 7"
                                   />
                                 </svg>
-                              </span>
-                            </label>
+                              )}
+                            </span>
                           </div>
                         </td>
                         <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
-                          <div className="flex">
+                          <div className="flex items-center">
                             <div className="font-poppins text-xl font-bold">
                               {row.name}
                             </div>
-                            <div className="bg-[#00C32B] w-[5px] h-[5px] mt-2 ml-1 rounded-xl"></div>
+                            <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
                           </div>
                         </td>
                         <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
@@ -1640,8 +1715,8 @@ const Create_Booking = () => {
                             {row.tag.map((items, index) => (
                               <div
                                 key={index}
-                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                                style={{ flexBasis: "calc(20% - 8px)" }} // Adjust the width to fit 5 items per row
+                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1 px-2 py-1"
+                                style={{ flexBasis: "calc(20% - 8px)" }}
                               >
                                 <div className="font-poppins text-xs font-bold">
                                   {items}
@@ -1650,7 +1725,6 @@ const Create_Booking = () => {
                             ))}
                           </div>
                         </td>
-
                         <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                           <div className="space-x-2">
                             <button
@@ -1674,6 +1748,407 @@ const Create_Booking = () => {
                 className="w-[20%] bg-[#6425FE] text-white text-xl py-2 rounded-lg font-bold font-poppins "
               >
                 Add Screen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showPublishScreen && (
+        <a
+          onClick={() => setShowPublishScreen(!showPublishScreen)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {showPublishScreen && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-10 top-14 lg:top-7 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setShowPublishScreen(!showPublishScreen)}>
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md relative">
+            <div className="flex justify-center items-center mt-5">
+              <div className="font-poppins text-5xl text-[#2F3847] font-bold">
+                Publish to Screens
+              </div>
+            </div>
+            <div className="mt-1">
+              <div className="flex justify-center items-center col-span-3">
+                <div className="font-poppins text-xs lg:text-sm text-[#7C7B7B]">
+                  {selectPublihsScreen.length} out of {screens.length} Screens
+                  Selected
+                </div>
+              </div>
+            </div>
+            {/* Search Box */}
+            <div className="p-1 mt-1">
+              <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
+                <div className="flex">
+                  <NavButton
+                    customFunc={search}
+                    title="Search"
+                    color="grey"
+                    icon={<IoIosSearch />}
+                  />
+                  <input
+                    className=" w-full h-[46px] rounded relative border-gray-500  transition font-poppins"
+                    type="text"
+                    name="name"
+                    placeholder="Search..."
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Search Box */}
+            {/* Select */}
+            <div className="mt-1">
+              <div className="relative flex flex-col  max-w-0  w-full border-b-4 border-gray-600">
+                <div className="rounded-lg h-[50px] flex items-center shadow-md">
+                  <div className="flex flex-col lg:flex-row">
+                    <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="sector"
+                          id="sector"
+                          onClick={toggleSectorSelect}
+                          onChange={handleStatusPublishScreenChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Sector">Sector</option>
+                          <option value="Portrait">Portrait</option>
+                          <option value="Landscape">Landscape</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isSectorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="region"
+                          id="region"
+                          onClick={toggleRegionSelect}
+                          onChange={handleStatusPublishScreenChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Region">Region</option>
+                          <option value="North">North</option>
+                          <option value="West">West</option>
+                          <option value="East">East</option>
+                          <option value="South">South</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                          {isRegionOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="store_cluster"
+                          id="store_cluster"
+                          onClick={toggleClustorSelect}
+                          onChange={handleStatusPublishScreenChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Store Cluster">Store Cluster</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isClustorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="branch"
+                          id="branch"
+                          onClick={toggleBranchAddViewSelect}
+                          onChange={handleStatusPublishScreenChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Branch">Branch</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isBranchAddViewOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="department"
+                          id="department"
+                          onClick={toggleDepartmentAddViewSelect}
+                          onChange={handleStatusPublishScreenChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Department">Department</option>
+                          <option value="Beauty">Beauty</option>
+                          <option value="Toy">Toy</option>
+                          <option value="Electronics">Electronics</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isDepartmentAddViewOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="floor"
+                          id="floor"
+                          onClick={toggleFloorSelect}
+                          onChange={handleStatusPublishScreenChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Floor">Floor</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isFloorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="location"
+                          id="location"
+                          onClick={toggleLocationSelect}
+                          onChange={handleStatusPublishScreenChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="location">Location</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isLocationOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Select */}
+            {/* Filter */}
+            <div className="mt-1">
+              <div className="flex">
+                <div className="basis-12/12 ml-4">
+                  {filter_publish_screen &&
+                    filter_publish_screen.map((items) => (
+                      <button onClick={() => removePublishCreenFilter(items)}>
+                        <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
+                          <div className="grid grid-cols-4">
+                            <div className="col-span-1 mt-[6px]">
+                              <div className="flex justify-end items-center">
+                                <IoIosClose size="27" color="#6425FE" />
+                              </div>
+                            </div>
+                            <div className="col-span-3 mt-[8px]">
+                              <div className="flex justify-center items-center">
+                                <div className="font-poppins text-sm">
+                                  {items}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  {filter_publish_screen.length > 0 && (
+                    <button onClick={() => clearPublishScreenFilter()}>
+                      <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+                        <div className="grid grid-cols-12">
+                          <div className="col-span-1 mt-[6px]">
+                            <div className="flex justify-end items-center">
+                              <IoIosClose size="27" color="#6425FE" />
+                            </div>
+                          </div>
+                          <div className="col-span-11 mt-[8px]">
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins text-sm text-white">
+                                Clear All
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+            {/* Filter */}
+
+            <div className="mt-5 p-6">
+              <div className="font-poppins">
+                *Search result displays only screens available in your booking
+              </div>
+            </div>
+            <div className="p-4">
+              <div className="w-auto h-[350px] overflow-y-auto">
+                <table className="min-w-full border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        <label className="inline-flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                            checked={selectAllPubishScreen}
+                            onChange={toggleAllCheckboxesPublishScreen}
+                          />
+                          <span
+                            className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                              selectAllPubishScreen ? "bg-white" : ""
+                            }`}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className={`h-6 w-6 text-white ${
+                                selectAllPubishScreen
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              } transition-opacity duration-300 ease-in-out`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="#6425FE"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </span>
+                        </label>
+                      </th>
+                      <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Screen Name
+                      </th>
+                      <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Media Rule
+                      </th>
+                      <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Tag
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {screens.map((row) => (
+                      <tr key={row.id}>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                              checked={checkboxPublishScreen[row.id] || false}
+                              onChange={() =>
+                                toggleCheckboxPublishScreen(row.id)
+                              }
+                            />
+                            <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
+                              {checkboxPublishScreen[row.id] && (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6 text-white"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="#6425FE"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="3"
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                              )}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="px-2 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="flex items-center">
+                            <div className="font-poppins text-xl font-bold">
+                              {row.name}
+                            </div>
+                            <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                          </div>
+                        </td>
+                        <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="font-poppins text-sm text-[#59606C] font-bold">
+                            {row.location}
+                          </div>
+                          <div className="font-poppins text-sm font-bold">
+                            {row.province}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="font-poppins font-bold">
+                            {row.media_rule}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="flex flex-wrap">
+                            {row.tag.map((items, index) => (
+                              <div
+                                key={index}
+                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1 px-2 py-1"
+                                style={{ flexBasis: "calc(20% - 8px)" }}
+                              >
+                                <div className="font-poppins text-xs font-bold">
+                                  {items}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="mt-3 mb-2 flex items-center justify-center">
+              <button
+                onClick={() => alert("Publish")}
+                className="w-[30%] bg-[#6425FE] text-white text-lg py-2 rounded-lg font-bold font-poppins "
+              >
+                Publish to Selected Screens
               </button>
             </div>
           </div>
@@ -1711,6 +2186,7 @@ const Create_Booking = () => {
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
+
       {openConfirmBookingModal && (
         <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[970px] items-center justify-center z-20">
           {/* First div (circle) */}
