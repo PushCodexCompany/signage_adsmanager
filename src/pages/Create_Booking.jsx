@@ -10,6 +10,9 @@ import {
   IoIosInformationCircleOutline,
   IoMdTrash,
   IoIosSearch,
+  IoIosCloseCircle,
+  IoIosAddCircle,
+  IoIosRemoveCircle,
 } from "react-icons/io";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PiMonitor, PiWarningCircleFill } from "react-icons/pi";
@@ -18,6 +21,9 @@ import { format } from "date-fns";
 import useCheckPermission from "../libs/useCheckPermission";
 import Screen_Info from "../components/Screen_Info";
 import New_Screen from "../components/New_Screen";
+
+import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
 
 import { screenMockup, screens } from "../data/mockup";
 
@@ -89,6 +95,24 @@ const Create_Booking = () => {
   const [isConfirmed, setIsComfirmed] = useState(false);
 
   const [booking_col, setBookingCol] = useState();
+
+  const [screen_select, setScreenSelect] = useState({
+    screen: null,
+    value: {},
+  });
+
+  const [openAdsAllocationModal, setOpenAdsAllocationModal] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState([]);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const [datePickers, setDatePickers] = useState([
+    { startDate: null, endDate: null },
+  ]);
 
   useEffect(() => {
     if (location.state.isConfirmed) {
@@ -510,6 +534,54 @@ const Create_Booking = () => {
     navigate(`/booking/booking_pricing_summary`, {
       state: { data: booking_obj },
     });
+  };
+
+  const handleSelectScreenAddmedia = (screen, obj) => {
+    setScreenSelect({ screen, value: obj });
+    setOpenAdsAllocationModal(!openAdsAllocationModal);
+  };
+
+  const handleToggleDropdownApplyToScreen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleSelectOptionApplyToScreen = (option) => {
+    if (!selectedData.includes(option)) {
+      const newData = [...selectedData, option].sort();
+      setSelectedData(newData);
+      setIsOpen(false);
+    }
+  };
+
+  const handleDeleteScreenAdsAllocation = (index) => {
+    const newData = [...selectedData];
+    newData.splice(index, 1);
+    setSelectedData(newData);
+  };
+
+  const handleStartDateChange = (index, date) => {
+    const newDatePickers = [...datePickers];
+    newDatePickers[index].startDate = date;
+    setDatePickers(newDatePickers);
+  };
+
+  const handleEndDateChange = (index, date) => {
+    const newDatePickers = [...datePickers];
+    newDatePickers[index].endDate = date;
+    setDatePickers(newDatePickers);
+  };
+
+  const handleAddDatePicker = () => {
+    setDatePickers([
+      ...datePickers,
+      { startDate: new Date(), endDate: new Date() },
+    ]);
+  };
+
+  const handleRemoveDatePicker = (index) => {
+    const newDatePickers = [...datePickers];
+    newDatePickers.splice(index, 1);
+    setDatePickers(newDatePickers);
   };
 
   return (
@@ -1079,8 +1151,7 @@ const Create_Booking = () => {
                                           </div>
                                           <div
                                             onClick={() =>
-                                              console.log(
-                                                "Screen:",
+                                              handleSelectScreenAddmedia(
                                                 screenIndex + 1,
                                                 items
                                               )
@@ -2239,6 +2310,313 @@ const Create_Booking = () => {
                     Cancel
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openAdsAllocationModal && (
+        <a
+          onClick={() => setOpenAdsAllocationModal(!openAdsAllocationModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openAdsAllocationModal && (
+        <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[970px] items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() =>
+                  setOpenAdsAllocationModal(!openAdsAllocationModal)
+                }
+              >
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="p-3">
+              <div className="grid grid-cols-12 space-x-1">
+                {/* col 1 */}
+                <div className="col-span-6">
+                  <div className="mt-10">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-[#2F3847] text-[44px] font-bold">
+                        Ads Allocation
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-[#2F3847] text-[14px] text-center">
+                        Define when and where your advertisements will be <br />
+                        displayed for maximum impact.
+                      </div>
+                    </div>
+                    <div className="mt-10">
+                      {/* Booking Period */}
+                      <div className="grid grid-cols-10">
+                        <div className="col-span-2" />
+                        <div className="col-span-2">
+                          <div className="font-poppins font-bold">
+                            Booking Period :
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                        <div className="col-span-4">
+                          <div className="font-poppins font-medium  text-lg">
+                            {` ${format(
+                              booking_date[0],
+                              "EEE dd MMM yyyy"
+                            )} - ${format(
+                              booking_date[booking_date.length - 1],
+                              "EEE dd MMM yyyy"
+                            )}`}
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                      </div>
+                      {/* Booking Period */}
+
+                      {/* Apply To Screens */}
+                      <div className="grid grid-cols-10 mt-2">
+                        <div className="col-span-2" />
+                        <div className="col-span-2 mt-2">
+                          <div className="font-poppins font-bold">
+                            Apply to Screens :
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                        <div className="col-span-4 border border-[#D9D9D9] rounded-md">
+                          <div className="p-2">
+                            <div className="grid grid-cols-5">
+                              <div className="col-span-4">
+                                <div className="flex flex-wrap">
+                                  {selectedData.map((screen, index) => (
+                                    <div
+                                      key={index}
+                                      className="border border-gray-300 rounded-sm bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1 px-2 py-1"
+                                      style={{ flexBasis: "calc(50% - 8px)" }}
+                                    >
+                                      <div className="font-poppins text-xs font-bold">
+                                        {screen}
+                                      </div>
+
+                                      <IoIosClose
+                                        size={20}
+                                        className="cursor-pointer text-[#6425FE]"
+                                        onClick={() =>
+                                          handleDeleteScreenAdsAllocation(index)
+                                        }
+                                      />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="col-span-1">
+                                <div className="flex">
+                                  {selectedData.length > 0 && (
+                                    <IoIosCloseCircle
+                                      onClick={() => setSelectedData([])}
+                                      size={24}
+                                      className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
+                                    />
+                                  )}
+
+                                  <div className="relative">
+                                    <IoIosArrowDown
+                                      size={24}
+                                      className="mt-1 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                      onClick={
+                                        handleToggleDropdownApplyToScreen
+                                      }
+                                    />
+                                    {isOpen && (
+                                      <div className="absolute z-10 right-0 mt-2 w-40 bg-white border border-gray-300 rounded-md shadow-lg">
+                                        <div className="py-1">
+                                          {screens.map((items, index) => (
+                                            <div
+                                              className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                                              onClick={() =>
+                                                handleSelectOptionApplyToScreen(
+                                                  items.name
+                                                )
+                                              }
+                                            >
+                                              {items.name}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                      </div>
+                      {/* Apply To Screens */}
+
+                      {/* Apply To Periods */}
+                      <div className="grid grid-cols-10 mt-5">
+                        <div className="col-span-2" />
+                        <div className="col-span-2">
+                          <div className="font-poppins font-bold">
+                            Apply to Period :
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                        <div className="col-span-4 space-y-1 ">
+                          {datePickers.map((datePicker, index) => (
+                            <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
+                              <div className="col-span-2 p-2 flex justify-center items-center">
+                                <div className="font-poppins">
+                                  <DatePicker
+                                    selected={datePicker.startDate}
+                                    selectsStart
+                                    startDate={datePicker.startDate}
+                                    endDate={datePicker.endDate}
+                                    dateFormat="dd/MM/yyyy"
+                                    onChange={(date) =>
+                                      handleStartDateChange(index, date)
+                                    }
+                                    className="p-2 rounded-lg shadow-md w-full"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-span-2 p-2">
+                                <div className="font-poppins">
+                                  <DatePicker
+                                    selected={datePicker.endDate}
+                                    selectsEnd
+                                    startDate={datePicker.startDate}
+                                    endDate={datePicker.endDate}
+                                    minDate={datePicker.startDate}
+                                    dateFormat="dd/MM/yyyy"
+                                    onChange={(date) =>
+                                      handleEndDateChange(index, date)
+                                    }
+                                    className=" p-2 rounded-lg shadow-md w-full"
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-span-1 p-2 flex justify-center items-center">
+                                <IoIosRemoveCircle
+                                  size={24}
+                                  className="mt-1 ml-2 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                  onClick={() => handleRemoveDatePicker(index)}
+                                />
+                              </div>
+                            </div>
+                          ))}
+
+                          <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
+                            <div className="col-span-4">
+                              <div className="p-2">
+                                <div className="flex flex-wrap">
+                                  <div className="font-poppins text-[#AFAFAF]">
+                                    Add Period
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-span-1">
+                              <div className="p-2">
+                                <div className="flex justify-center items-center">
+                                  <IoIosAddCircle
+                                    size={24}
+                                    onClick={handleAddDatePicker}
+                                    className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                      </div>
+                      {/* Apply To Periods */}
+
+                      {/* Screen Resolution */}
+                      <div className="grid grid-cols-10 mt-10">
+                        <div className="col-span-2" />
+                        <div className="col-span-2">
+                          <div className="font-poppins font-bold">
+                            Screen Resolution :
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                        <div className="col-span-4">
+                          <div className="font-poppins font-medium text-lg">
+                            {screen_select.value.resolutions} px
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                      </div>
+                      {/* Screen Resolution */}
+
+                      {/* Media Rule */}
+                      <div className="grid grid-cols-10 mt-3">
+                        <div className="col-span-2" />
+                        <div className="col-span-2">
+                          <div className="font-poppins font-bold">
+                            Media Rule :
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                        <div className="col-span-4">
+                          <div className="h-[40px] bg-[#FD6822] rounded-md">
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins font-medium text-lg text-white text-center mt-2">
+                                Resolution : {screen_select.value.resolutions}{" "}
+                                px
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                      </div>
+                      {/* Media Rule */}
+
+                      {/* Note */}
+                      <div className="grid grid-cols-10 mt-40">
+                        <div className="col-span-2" />
+                        <div className="col-span-7">
+                          <div className="flex">
+                            <div className="font-poppins">
+                              <b>Note :</b> Modifications made will only affect
+                              the screens and periods within the booked
+                              timeframe.
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                      </div>
+                      {/* Note */}
+
+                      <div className="flex justify-center items-center space-x-2 mt-3">
+                        <button className="w-[250px] h-[48px] bg-[#6425FE] rounded-md text-white font-poppins font-bold">
+                          Confirm
+                        </button>
+                        <button className="w-[250px] h-[48px] border border-[#6425FE] rounded-md text-[#6425FE] font-poppins font-bold">
+                          Clear Slot
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* col 1 */}
+
+                {/* col 2 */}
+                <div className="col-span-3 bg-green-500">2</div>
+                {/* col 2 */}
+
+                {/* col 3 */}
+                <div className="col-span-3 bg-purple-500">3</div>
+                {/* col 3 */}
               </div>
             </div>
           </div>

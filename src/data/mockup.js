@@ -2152,6 +2152,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: true,
@@ -2187,6 +2188,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: true,
@@ -2222,6 +2224,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: true,
@@ -2257,6 +2260,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: null,
@@ -2292,6 +2296,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: null,
@@ -2535,6 +2540,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2570,6 +2576,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2605,6 +2612,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2640,6 +2648,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2675,6 +2684,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2731,6 +2741,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2766,6 +2777,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2801,6 +2813,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2836,6 +2849,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2871,6 +2885,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2927,6 +2942,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2962,6 +2978,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -2997,6 +3014,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3032,6 +3050,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3067,6 +3086,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3123,6 +3143,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3158,6 +3179,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3193,6 +3215,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3228,6 +3251,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3263,6 +3287,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3319,6 +3344,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3354,6 +3380,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3389,6 +3416,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3424,6 +3452,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3459,6 +3488,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: null,
@@ -3545,6 +3575,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3580,6 +3611,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3615,6 +3647,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3650,6 +3683,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3685,6 +3719,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3732,6 +3767,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3767,6 +3803,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3802,6 +3839,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3837,6 +3875,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3872,6 +3911,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -3928,6 +3968,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -3963,6 +4004,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -3998,6 +4040,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4033,6 +4076,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4068,6 +4112,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4124,6 +4169,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4159,6 +4205,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4194,6 +4241,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4229,6 +4277,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4264,6 +4313,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4350,6 +4400,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4385,6 +4436,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4420,6 +4472,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4455,6 +4508,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4490,6 +4544,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4537,6 +4592,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4572,6 +4628,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4607,6 +4664,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4642,6 +4700,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4677,6 +4736,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -4733,6 +4793,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4768,6 +4829,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4803,6 +4865,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4838,6 +4901,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4873,6 +4937,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4929,6 +4994,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4964,6 +5030,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -4999,6 +5066,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5034,6 +5102,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5069,6 +5138,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5125,6 +5195,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5160,6 +5231,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5195,6 +5267,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5230,6 +5303,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5265,6 +5339,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5321,6 +5396,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5356,6 +5432,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5391,6 +5468,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5426,6 +5504,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5461,6 +5540,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5547,6 +5627,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5582,6 +5663,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5617,6 +5699,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5652,6 +5735,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5687,6 +5771,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5734,6 +5819,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5769,6 +5855,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5804,6 +5891,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5839,6 +5927,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5874,6 +5963,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -5930,6 +6020,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -5965,6 +6056,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6000,6 +6092,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6035,6 +6128,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6070,6 +6164,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6126,6 +6221,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6161,6 +6257,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6196,6 +6293,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6231,6 +6329,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6266,6 +6365,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6322,6 +6422,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6357,6 +6458,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6392,6 +6494,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6427,6 +6530,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6462,6 +6566,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6518,6 +6623,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6553,6 +6659,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6588,6 +6695,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6623,6 +6731,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6658,6 +6767,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6714,6 +6824,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6749,6 +6860,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6784,6 +6896,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6819,6 +6932,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6854,6 +6968,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -6940,6 +7055,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -6975,6 +7091,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7010,6 +7127,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7045,6 +7163,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7080,6 +7199,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7128,6 +7248,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7163,6 +7284,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7198,6 +7320,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7233,6 +7356,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7268,6 +7392,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1920x1080",
             media_list: [
               {
                 media: "",
@@ -7324,6 +7449,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7359,6 +7485,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7394,6 +7521,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7429,6 +7557,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7464,6 +7593,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7520,6 +7650,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7555,6 +7686,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7590,6 +7722,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7625,6 +7758,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7660,6 +7794,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7716,6 +7851,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7751,6 +7887,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7786,6 +7923,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7821,6 +7959,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7856,6 +7995,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7912,6 +8052,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7947,6 +8088,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -7982,6 +8124,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -8017,6 +8160,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -8052,6 +8196,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -8108,6 +8253,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -8143,6 +8289,7 @@ export const bookingData = [
           },
           {
             id: 2,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -8178,6 +8325,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -8213,6 +8361,7 @@ export const bookingData = [
           },
           {
             id: 4,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
@@ -8248,6 +8397,7 @@ export const bookingData = [
           },
           {
             id: 5,
+            resolutions: "1080x1920",
             media_list: [
               {
                 media: "",
