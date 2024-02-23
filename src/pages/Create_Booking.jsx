@@ -14,8 +14,11 @@ import {
   IoIosAddCircle,
   IoIosRemoveCircle,
 } from "react-icons/io";
-import { MdOutlineModeEditOutline } from "react-icons/md";
+import { FiImage, FiVideo } from "react-icons/fi";
+import { AiOutlineClose, AiOutlineCloudUpload } from "react-icons/ai";
+import { MdOutlineModeEditOutline, MdDragHandle } from "react-icons/md";
 import { PiMonitor, PiWarningCircleFill } from "react-icons/pi";
+import { BsCheckCircle } from "react-icons/bs";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { format } from "date-fns";
 import useCheckPermission from "../libs/useCheckPermission";
@@ -26,6 +29,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 
 import { screenMockup, screens } from "../data/mockup";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Create_Booking = () => {
   const navigate = useNavigate();
@@ -110,9 +114,11 @@ const Create_Booking = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const [datePickers, setDatePickers] = useState([
-    { startDate: null, endDate: null },
-  ]);
+  const [openModalUploadNewMedia, setOpenModalUploadMedia] = useState(false);
+
+  const [datePickers, setDatePickers] = useState([]);
+
+  const [uploads, setUploads] = useState({});
 
   useEffect(() => {
     if (location.state.isConfirmed) {
@@ -582,6 +588,42 @@ const Create_Booking = () => {
     const newDatePickers = [...datePickers];
     newDatePickers.splice(index, 1);
     setDatePickers(newDatePickers);
+  };
+
+  const uploadFile = (uploadKey) => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".mp4, .m3u8, .jpg, .png";
+    fileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setUploads((prevUploads) => ({
+            ...prevUploads,
+
+            content: e.target.result,
+            name: file.name,
+          }));
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    fileInput.click();
+  };
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+    const items = Array.from(screen_select.value.media_list);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setScreenSelect({
+      ...screen_select,
+      value: {
+        ...screen_select.value,
+        media_list: items,
+      },
+    });
   };
 
   return (
@@ -1133,12 +1175,12 @@ const Create_Booking = () => {
                                                   >
                                                     <div
                                                       className={`w-[36px] h-[36px] ${
-                                                        item.media
+                                                        item.media_id
                                                           ? "bg-white border border-[#D9D9D9]"
                                                           : "bg-[#D9D9D9] "
                                                       } flex justify-center items-center`}
                                                     >
-                                                      {item.media ? (
+                                                      {item.media_id ? (
                                                         <IoIosPlayCircle color="#6425FE" />
                                                       ) : (
                                                         ""
@@ -2341,7 +2383,7 @@ const Create_Booking = () => {
             <div className="p-3">
               <div className="grid grid-cols-12 space-x-1">
                 {/* col 1 */}
-                <div className="col-span-6">
+                <div className="col-span-6 border border-gray-300 rounded-md">
                   <div className="mt-10">
                     <div className="flex justify-center items-center">
                       <div className="font-poppins text-[#2F3847] text-[44px] font-bold">
@@ -2611,12 +2653,238 @@ const Create_Booking = () => {
                 {/* col 1 */}
 
                 {/* col 2 */}
-                <div className="col-span-3 bg-green-500">2</div>
+                <div className="col-span-3 border border-gray-300 rounded-md">
+                  <div className="p-2">
+                    <div className="flex items-center justify-center">
+                      <div className="font-poppins text-[32px] font-bold">
+                        Media Playlist
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <DragDropContext onDragEnd={handleOnDragEnd}>
+                        <Droppable droppableId="media-list">
+                          {(provided) => (
+                            <div
+                              className="grid grid-cols-11 space-x-1 h-[700px] space-y-2 overflow-y-auto pr-1"
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                            >
+                              {screen_select.value.media_list.map(
+                                (items, index) => (
+                                  <Draggable
+                                    key={`placeholder-${index}`}
+                                    draggableId={`placeholder-${index}`}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        className="col-span-11"
+                                      >
+                                        {items.media_id ? (
+                                          <div className="flex items-center">
+                                            <IoIosRemoveCircle
+                                              size={24}
+                                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                            />
+                                            <div className="flex-1">
+                                              <div className="grid grid-cols-11 h-[80px] border border-gray-300">
+                                                <div className="col-span-2 flex justify-center items-center">
+                                                  {items.media_type ===
+                                                  "video" ? (
+                                                    <FiVideo
+                                                      size={30}
+                                                      className="text-[#6425FE]"
+                                                    />
+                                                  ) : (
+                                                    <FiImage
+                                                      size={30}
+                                                      className="text-[#6425FE]"
+                                                    />
+                                                  )}
+                                                </div>
+                                                <div className="col-span-8">
+                                                  <div className="flex justify-start items-center mt-2">
+                                                    <div className="font-poppins text-[15px]">
+                                                      {items.media_name}
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex justify-start items-center ">
+                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                      File Size :{" "}
+                                                      {items.media_size}
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex justify-start items-center ">
+                                                    {items.media_duration && (
+                                                      <div className="font-poppins text-[15px]">
+                                                        Duration :{" "}
+                                                        {items.media_duration}{" "}
+                                                        sec
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                                <div className="col-span-1 flex justify-start items-center">
+                                                  <MdDragHandle
+                                                    size={26}
+                                                    className="text-[#6425FE]"
+                                                  />
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          <div
+                                            onClick={() => {
+                                              setOpenModalUploadMedia(
+                                                !openModalUploadNewMedia
+                                              );
+                                              setOpenAdsAllocationModal(
+                                                !openAdsAllocationModal
+                                              );
+                                            }}
+                                            className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer"
+                                          >
+                                            <div className="col-span-2 flex justify-center items-center">
+                                              <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
+                                                {index + 1}
+                                              </div>
+                                            </div>
+                                            <div className="col-span-8 flex justify-start items-center">
+                                              <div className="font-poppins text-[#2F3847] text-[16px]">
+                                                Drag Media From Library or Click
+                                                for Upload New Media
+                                              </div>
+                                            </div>
+                                            <div className="col-span-1" />
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                )
+                              )}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
+                    </div>
+                  </div>
+                </div>
                 {/* col 2 */}
 
                 {/* col 3 */}
                 <div className="col-span-3 bg-purple-500">3</div>
                 {/* col 3 */}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openModalUploadNewMedia && (
+        <a
+          onClick={() => {
+            setOpenModalUploadMedia(!openModalUploadNewMedia);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openModalUploadNewMedia && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-14 lg:top-12 lg:right-[350px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => {
+                  setOpenModalUploadMedia(!openModalUploadNewMedia);
+                  setOpenAdsAllocationModal(!openAdsAllocationModal);
+                  setUploads({});
+                }}
+              >
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-3/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">New Media</div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
+              </div>
+            </div>
+
+            <div className="flex justify-center items-center mt-2 p-5">
+              <div className="col-span-1 border-dashed border-gray-300 border-1">
+                <div className="p-4">
+                  <div className="flex items-center justify-center mt-2">
+                    <div className="font-poppins text-3xl font-bold">
+                      Rule Set 1
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center mt-7">
+                    {!uploads.content ? (
+                      <div>
+                        <button onClick={() => uploadFile()}>
+                          <AiOutlineCloudUpload size={100} color={"#D9D9D9"} />
+                        </button>
+                        {uploads.content && (
+                          <div>
+                            <p>File Uploaded:</p>
+                            <img src={uploads} alt="Uploaded File" />
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <BsCheckCircle size={100} color={"#00CB45"} />
+                    )}
+                  </div>
+                  <div className="flex items-center justify-center mt-14">
+                    <div className="font-poppins text-xl font-bold">
+                      {uploads.name}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center mt-5">
+                    <div className="font-poppins text-xl font-bold">
+                      Requirements *
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center ">
+                    <div className="font-poppins text-xl font-bold">
+                      Resolution : 1920 x 1080
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center mb-16">
+                    <div className="font-poppins text-xl font-bold">
+                      {`Size : <100Mb`}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center items-center mt-1">
+              <button
+                onClick={() => console.log(uploads)}
+                className="bg-[#6425FE] w-72 h-10 text-white font-poppins"
+              >
+                Submit
+              </button>
+            </div>
+            <div className="flex justify-center items-center mt-3 mb-3">
+              <div className="text-sm font-poppins">
+                Ensure compliance with predefined media rules for each screen.
+                Your ads must adhere to specific guidelines for seamless display
               </div>
             </div>
           </div>
