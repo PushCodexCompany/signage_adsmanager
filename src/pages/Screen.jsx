@@ -10,7 +10,7 @@ import Screen_Info from "../components/Screen_Info";
 import Pair_Screen from "../components/Pair_Screen";
 import { Navbar } from "../components";
 
-import { screenMockup } from "../data/mockup";
+import { screens } from "../data/mockup";
 
 const Event = () => {
   const [showRightPanel, setShowRightPanel] = useState(false);
@@ -89,7 +89,7 @@ const Event = () => {
     const newSelectAll = !selectAll;
 
     // Set all checkboxes to the new state
-    screenMockup.forEach((row) => {
+    screens.forEach((row) => {
       newCheckboxes[row.id] = newSelectAll;
     });
 
@@ -97,7 +97,7 @@ const Event = () => {
     setSelectAll(newSelectAll);
 
     // Do something with the checkedRowIds array (e.g., store it in state)
-    const checkedRowIds = newSelectAll ? screenMockup.map((row) => row.id) : [];
+    const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
     setSelectedScreenItems(checkedRowIds);
   };
 
@@ -393,7 +393,7 @@ const Event = () => {
                 </tr>
               </thead>
               <tbody>
-                {screenMockup.map((row, key) => (
+                {screens.map((row, key) => (
                   <tr key={row.id}>
                     <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="flex items-center">
@@ -529,7 +529,7 @@ const Event = () => {
       {openPairScreenModal && (
         <Pair_Screen
           setOpenPairScreenModal={setOpenPairScreenModal}
-          screen={screenMockup}
+          screen={screens}
         />
       )}
     </>

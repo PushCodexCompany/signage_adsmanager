@@ -28,7 +28,7 @@ import New_Screen from "../components/New_Screen";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 
-import { screenMockup, screens } from "../data/mockup";
+import { screens } from "../data/mockup";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Create_Booking = () => {
@@ -172,7 +172,7 @@ const Create_Booking = () => {
   };
 
   const getAllScreen = () => {
-    setAllScreenData(screenMockup);
+    setAllScreenData(screens);
   };
 
   const toggleSlotSelect = () => {
@@ -626,6 +626,12 @@ const Create_Booking = () => {
     });
   };
 
+  const handleScreenInfo = (screen_id) => {
+    const screen = screens.find((a) => a.id === screen_id);
+    setSelectInfoScren(screen);
+    setOpenInfoScreenModal(!openInfoScreenModal);
+  };
+
   return (
     <>
       <Navbar />
@@ -891,10 +897,10 @@ const Create_Booking = () => {
                             </div>
                             <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
                               <IoIosInformationCircleOutline
-                                // onClick={() => handleSelectInfoScreen(items)}
+                                onClick={() => handleScreenInfo(items.id)}
                                 color={"#6425FE"}
                                 size={22}
-                                // className="cursor-pointer"
+                                className="cursor-pointer"
                               />
                             </div>
                           </div>
@@ -1035,7 +1041,6 @@ const Create_Booking = () => {
               </div>
             </div>
           )}
-
           {/* Left Panel */}
 
           {/* Right Panel */}
@@ -1155,8 +1160,12 @@ const Create_Booking = () => {
                                     </div>
                                     <div className="col-span-2 flex justify-center items-center">
                                       <IoIosInformationCircleOutline
+                                        onClick={() =>
+                                          handleScreenInfo(items.id)
+                                        }
                                         size={22}
                                         color={"#6425FE"}
+                                        className="cursor-pointer"
                                       />
                                     </div>
                                   </div>
@@ -1317,14 +1326,18 @@ const Create_Booking = () => {
                                       </div>
                                       <div className="flex justify-start items-center">
                                         <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
-                                          Media Rule : {items.rule}
+                                          Media Rule : {items.media_rule}
                                         </div>
                                       </div>
                                     </div>
                                     <div className="col-span-2 flex justify-center items-center">
                                       <IoIosInformationCircleOutline
+                                        onClick={() =>
+                                          handleSelectInfoScreen(items)
+                                        }
                                         color={"#6425FE"}
                                         size={22}
+                                        className="cursor-pointer"
                                       />
                                     </div>
                                   </div>
