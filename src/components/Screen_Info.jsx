@@ -417,7 +417,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                             selectMediaScreen.slot
                           ? "bg-[#018C41] opacity-40"
                           : "bg-[#018C41]"
-                      } min-w-[130px] h-[130px] flex justify-center items-center cursor-pointer `}
+                      } min-w-[130px] h-[130px] flex justify-center items-center`}
                     >
                       <div className="font-poppins text-white text-[36px]">
                         {selectMediaScreen.booking}/{selectMediaScreen.slot}
@@ -461,69 +461,63 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   </div>
 
                   <DragDropContext onDragEnd={handleOnDragEnd}>
-                    <Droppable droppableId="selectMediaScreen">
+                    <Droppable droppableId="mediaSchedule">
                       {(provided) => (
-                        <ul
-                          className="selectMediaScreen"
+                        <div
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                         >
                           {selectMediaScreen.mediaSchedule.map(
-                            (items, index) => {
-                              return (
-                                <Draggable
-                                  key={index}
-                                  draggableId={items.id}
-                                  index={index}
-                                >
-                                  {(provided) => (
-                                    <li
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                    >
-                                      <div className="grid grid-cols-12 mt-5 ">
-                                        <div className="col-span-1">
-                                          <div className="font-poppins font-semibold">
-                                            {index + 1}
-                                          </div>
-                                        </div>
-                                        <div className="col-span-4">
-                                          <div className="font-poppins font-semibold">
-                                            {items.name}
-                                          </div>
-                                        </div>
-                                        <div className="col-span-2">
-                                          <div className="font-poppins font-semibold">
-                                            {items.merchandise}
-                                          </div>
-                                        </div>
-                                        <div className="col-span-2">
-                                          <div className="font-poppins font-semibold">
-                                            {items.screen}
-                                          </div>
-                                        </div>
-                                        <div className="col-span-2">
-                                          <div className="font-poppins font-semibold">
-                                            {formatTime(items.duration)}
-                                          </div>
-                                        </div>
-                                        <div className="col-span-1">
-                                          <div
-                                            {...provided.dragHandleProps}
-                                            className="font-poppins font-semibold "
-                                          >
-                                            <MdDragHandle color={"#6425FE"} />
-                                          </div>
-                                        </div>
+                            (items, index) => (
+                              <Draggable
+                                key={items.id}
+                                draggableId={items.id}
+                                index={index}
+                              >
+                                {(provided) => (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className="grid grid-cols-12 mt-5"
+                                  >
+                                    <div className="col-span-1">
+                                      <div className="font-poppins font-semibold">
+                                        {index + 1}
                                       </div>
-                                    </li>
-                                  )}
-                                </Draggable>
-                              );
-                            }
+                                    </div>
+                                    <div className="col-span-4">
+                                      <div className="font-poppins font-semibold">
+                                        {items.name}
+                                      </div>
+                                    </div>
+                                    <div className="col-span-2">
+                                      <div className="font-poppins font-semibold">
+                                        {items.merchandise}
+                                      </div>
+                                    </div>
+                                    <div className="col-span-2">
+                                      <div className="font-poppins font-semibold">
+                                        {items.screen}
+                                      </div>
+                                    </div>
+                                    <div className="col-span-2">
+                                      <div className="font-poppins font-semibold">
+                                        {formatTime(items.duration)}
+                                      </div>
+                                    </div>
+                                    <div className="col-span-1">
+                                      <div className="font-poppins font-semibold ">
+                                        <MdDragHandle color={"#6425FE"} />
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </Draggable>
+                            )
                           )}
                           {provided.placeholder}
-                        </ul>
+                        </div>
                       )}
                     </Droppable>
                   </DragDropContext>
