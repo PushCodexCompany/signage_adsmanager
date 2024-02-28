@@ -14,9 +14,14 @@ import {
   IoIosAddCircle,
   IoIosAdd,
   IoIosRemoveCircle,
+  IoMdFolderOpen,
 } from "react-icons/io";
 import { FiImage, FiVideo } from "react-icons/fi";
-import { AiOutlineClose, AiOutlineCloudUpload } from "react-icons/ai";
+import {
+  AiOutlineClose,
+  AiOutlineCloudUpload,
+  AiOutlineSearch,
+} from "react-icons/ai";
 import { MdOutlineModeEditOutline, MdDragHandle } from "react-icons/md";
 import { PiMonitor, PiWarningCircleFill } from "react-icons/pi";
 import { BsCheckCircle } from "react-icons/bs";
@@ -29,7 +34,7 @@ import New_Screen from "../components/New_Screen";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 
-import { screens } from "../data/mockup";
+import { screens, mediaMockup } from "../data/mockup";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Create_Booking = () => {
@@ -117,6 +122,10 @@ const Create_Booking = () => {
   const [datePickers, setDatePickers] = useState([]);
 
   const [uploads, setUploads] = useState({});
+
+  const [mediaAdsAllocationTab, setMediaAdsAllocationTab] = useState("All");
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     if (location.state.isConfirmed) {
@@ -627,6 +636,16 @@ const Create_Booking = () => {
     const screen = screens.find((a) => a.id === screen_id);
     setSelectInfoScren(screen);
     setOpenInfoScreenModal(!openInfoScreenModal);
+  };
+
+  const openMediaAdsAllocationTab = (tabName) => {
+    setMediaAdsAllocationTab(tabName);
+  };
+
+  const searchMediaByName = () => {
+    return mediaMockup.filter((item) =>
+      item.media_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   };
 
   return (
@@ -2785,7 +2804,287 @@ const Create_Booking = () => {
                 {/* col 2 */}
 
                 {/* col 3 */}
-                <div className="col-span-3 bg-purple-500">3</div>
+                <div className="col-span-3">
+                  <div className="grid grid-cols-3 gap-4">
+                    <button
+                      className={`tablink flex items-center justify-center ${
+                        mediaAdsAllocationTab === "All" ? "active" : ""
+                      }`}
+                      onClick={() => openMediaAdsAllocationTab("All")}
+                    >
+                      <IoMdFolderOpen
+                        size={24}
+                        className={`mr-2 ${
+                          mediaAdsAllocationTab === "All"
+                            ? "text-purple-600"
+                            : "text-black"
+                        }`}
+                      />
+                      <div
+                        className={`font-poppins text-[14px] ${
+                          mediaAdsAllocationTab === "All"
+                            ? "text-purple-600"
+                            : "text-black"
+                        } flex items-center`}
+                      >
+                        <span className="ml-1">All</span>
+                      </div>
+                    </button>
+                    <button
+                      className={`tablink flex items-center justify-center ${
+                        mediaAdsAllocationTab === "Video" ? "active" : ""
+                      }`}
+                      onClick={() => openMediaAdsAllocationTab("Video")}
+                    >
+                      <FiVideo
+                        size={24}
+                        className={`mr-2 ${
+                          mediaAdsAllocationTab === "Video"
+                            ? "text-purple-600"
+                            : "text-black"
+                        }`}
+                      />
+                      <div
+                        className={`font-poppins text-[14px] ${
+                          mediaAdsAllocationTab === "Video"
+                            ? "text-purple-600"
+                            : "text-black"
+                        } flex items-center`}
+                      >
+                        Video
+                      </div>
+                    </button>
+                    <button
+                      className={`tablink flex items-center justify-center ${
+                        mediaAdsAllocationTab === "Image" ? "active" : ""
+                      }`}
+                      onClick={() => openMediaAdsAllocationTab("Image")}
+                    >
+                      <FiImage
+                        size={24}
+                        className={`mr-2 ${
+                          mediaAdsAllocationTab === "Image"
+                            ? "text-purple-600"
+                            : "text-black"
+                        }`}
+                      />
+                      <div
+                        className={`font-poppins text-[14px] ${
+                          mediaAdsAllocationTab === "Image"
+                            ? "text-purple-600"
+                            : "text-black"
+                        } flex items-center`}
+                      >
+                        Image
+                      </div>
+                    </button>
+                  </div>
+
+                  <div className="tabcontent mt-3">
+                    {mediaAdsAllocationTab === "All" && (
+                      <div className="p-2">
+                        <div className="grid grid-cols-10">
+                          <div className="col-span-1">
+                            <div className="flex items-center justify-start">
+                              <AiOutlineSearch size={24} />
+                            </div>
+                          </div>
+                          <div className="col-span-9">
+                            <input
+                              type="text"
+                              placeholder="Search"
+                              className="font-poppins pl-2 rounded-md w-full h-full"
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-5">
+                          <div className="h-[680px] overflow-y-auto space-y-2">
+                            {searchMediaByName().map((items, index) => (
+                              <div className="grid grid-cols-11 h-[80px] border border-gray-300">
+                                <div className="col-span-2 flex justify-center items-center">
+                                  {items.media_type === "video" ? (
+                                    <FiVideo
+                                      size={30}
+                                      className="text-[#6425FE]"
+                                    />
+                                  ) : (
+                                    <FiImage
+                                      size={30}
+                                      className="text-[#6425FE]"
+                                    />
+                                  )}
+                                </div>
+                                <div className="col-span-8">
+                                  <div className="flex justify-start items-center mt-2">
+                                    <div className="font-poppins text-[15px]">
+                                      {items.media_name}
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-start items-center ">
+                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                      File Size : {items.media_size}
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-start items-center ">
+                                    {items.media_duration > 0 && (
+                                      <div className="font-poppins text-[15px]">
+                                        Duration : {items.media_duration} sec
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="col-span-1 flex justify-start items-center">
+                                  <IoIosPlayCircle
+                                    size={26}
+                                    className="text-[#6425FE]"
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {mediaAdsAllocationTab === "Video" && (
+                      <div className="p-2">
+                        <div className="grid grid-cols-10">
+                          <div className="col-span-1">
+                            <div className="flex items-center justify-start">
+                              <AiOutlineSearch size={24} />
+                            </div>
+                          </div>
+                          <div className="col-span-9">
+                            <input
+                              type="text"
+                              placeholder="Search"
+                              className="font-poppins pl-2 rounded-md w-full h-full"
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-5">
+                          <div className="h-[680px] overflow-y-auto space-y-2">
+                            {searchMediaByName()
+                              .filter((item) => item.media_type === "video")
+                              .map((items, index) => (
+                                <div className="grid grid-cols-11 h-[80px] border border-gray-300">
+                                  <div className="col-span-2 flex justify-center items-center">
+                                    {items.media_type === "video" ? (
+                                      <FiVideo
+                                        size={30}
+                                        className="text-[#6425FE]"
+                                      />
+                                    ) : (
+                                      <FiImage
+                                        size={30}
+                                        className="text-[#6425FE]"
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="col-span-8">
+                                    <div className="flex justify-start items-center mt-2">
+                                      <div className="font-poppins text-[15px]">
+                                        {items.media_name}
+                                      </div>
+                                    </div>
+                                    <div className="flex justify-start items-center ">
+                                      <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                        File Size : {items.media_size}
+                                      </div>
+                                    </div>
+                                    <div className="flex justify-start items-center ">
+                                      {items.media_duration > 0 && (
+                                        <div className="font-poppins text-[15px]">
+                                          Duration : {items.media_duration} sec
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="col-span-1 flex justify-start items-center">
+                                    <IoIosPlayCircle
+                                      size={26}
+                                      className="text-[#6425FE]"
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {mediaAdsAllocationTab === "Image" && (
+                      <div className="p-2">
+                        <div className="grid grid-cols-10">
+                          <div className="col-span-1">
+                            <div className="flex items-center justify-start">
+                              <AiOutlineSearch size={24} />
+                            </div>
+                          </div>
+                          <div className="col-span-9">
+                            <input
+                              type="text"
+                              placeholder="Search"
+                              className="font-poppins pl-2 rounded-md w-full h-full"
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-5">
+                          <div className="h-[680px] overflow-y-auto space-y-2">
+                            {searchMediaByName()
+                              .filter((item) => item.media_type === "image")
+                              .map((items, index) => (
+                                <div className="grid grid-cols-11 h-[80px] border border-gray-300">
+                                  <div className="col-span-2 flex justify-center items-center">
+                                    {items.media_type === "video" ? (
+                                      <FiVideo
+                                        size={30}
+                                        className="text-[#6425FE]"
+                                      />
+                                    ) : (
+                                      <FiImage
+                                        size={30}
+                                        className="text-[#6425FE]"
+                                      />
+                                    )}
+                                  </div>
+                                  <div className="col-span-8">
+                                    <div className="flex justify-start items-center mt-2">
+                                      <div className="font-poppins text-[15px]">
+                                        {items.media_name}
+                                      </div>
+                                    </div>
+                                    <div className="flex justify-start items-center ">
+                                      <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                        File Size : {items.media_size}
+                                      </div>
+                                    </div>
+                                    <div className="flex justify-start items-center ">
+                                      {items.media_duration > 0 && (
+                                        <div className="font-poppins text-[15px]">
+                                          Duration : {items.media_duration} sec
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="col-span-1 flex justify-start items-center">
+                                    <IoIosPlayCircle
+                                      size={26}
+                                      className="text-[#6425FE]"
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
                 {/* col 3 */}
               </div>
             </div>

@@ -1,6 +1,11 @@
 import screen from "../assets/img/location/screen1.png";
 import location from "../assets/img/location/location.png";
 
+import mockup_img from "../assets/img/mockup_img.jpg";
+import mockup_img2 from "../assets/img/mockup_img2.jpg";
+import mockup_video from "../assets/img/mock_video.mp4";
+import mockup_video2 from "../assets/img/mock_video2.mp4";
+
 export const screens = [
   {
     id: 1,
@@ -9720,5 +9725,40 @@ export const bookingData = [
     booking_slot: 10,
     booking_status: 4,
     content: 2,
+  },
+];
+
+export const mediaMockup = [
+  {
+    media_id: 1,
+    media_name: "Image Sample 01.png",
+    media_type: "image",
+    media_size: "437KB",
+    media_duration: 0,
+    media: mockup_img,
+  },
+  {
+    media_id: 2,
+    media_name: "Image Sample 02.png",
+    media_type: "image",
+    media_size: "437KB",
+    media_duration: 0,
+    media: mockup_img2,
+  },
+  {
+    media_id: 3,
+    media_name: "Video Sample 01.png",
+    media_type: "video",
+    media_size: "437KB",
+    media_duration: 30,
+    media: mockup_video,
+  },
+  {
+    media_id: 4,
+    media_name: "Video Sample 02.png",
+    media_type: "video",
+    media_size: "437KB",
+    media_duration: 30,
+    media: mockup_video2,
   },
 ];
