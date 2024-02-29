@@ -127,6 +127,8 @@ const Create_Booking = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [media_list, setMediaList] = useState(mediaMockup);
+
   useEffect(() => {
     if (location.state.isConfirmed) {
       setConfirmBookingData();
@@ -557,6 +559,7 @@ const Create_Booking = () => {
 
   const handleSelectScreenAddmedia = (screen, obj) => {
     setScreenSelect({ screen, value: obj });
+    setItemsPanel1({ screen, value: obj });
     setOpenAdsAllocationModal(!openAdsAllocationModal);
   };
 
@@ -618,19 +621,22 @@ const Create_Booking = () => {
     fileInput.click();
   };
 
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return;
-    const items = Array.from(screen_select.value.media_list);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-    setScreenSelect({
-      ...screen_select,
-      value: {
-        ...screen_select.value,
-        media_list: items,
-      },
-    });
-  };
+  // const handleOnDragEnd = (result) => {
+  //   if (!result.destination) {
+  //     return;
+  //   }
+
+  //   const items = Array.from(screen_select.value.media_list);
+  //   const [reorderedItem] = items.splice(result.source.index, 1);
+  //   items.splice(result.destination.index, 0, reorderedItem);
+
+  //   setScreenSelect({
+  //     value: {
+  //       ...screen_select.value,
+  //       media_list: items,
+  //     },
+  //   });
+  // };
 
   const handleScreenInfo = (screen_id) => {
     const screen = screens.find((a) => a.id === screen_id);
@@ -642,10 +648,100 @@ const Create_Booking = () => {
     setMediaAdsAllocationTab(tabName);
   };
 
-  const searchMediaByName = () => {
-    return mediaMockup.filter((item) =>
-      item.media_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const searchMediaByName = (value) => {
+    setSearchTerm(value);
+
+    const results = mediaMockup.filter((item) =>
+      item.media_name.toLowerCase().includes(value.toLowerCase())
     );
+
+    setMediaList(results);
+  };
+
+  // Test zone
+
+  const [itemsPanel1, setItemsPanel1] = useState();
+  const [itemsPanel2, setItemsPanel2] = useState(media_list);
+
+  // const handleOnDragEnd = (result) => {
+  //   if (!result.destination) return;
+
+  //   const sourceDroppableId = result.source.droppableId;
+  //   const destinationDroppableId = result.destination.droppableId;
+
+  //   if (sourceDroppableId === "media-all" && destinationDroppableId === "media-list") {
+  //     // If dragging from "media-all" to "media-list"
+  //     const draggedItem = screen_select.value.media_list[result.source.index];
+  //     const updatedMediaList = [...screen_select.value.media_list];
+  //     updatedMediaList.splice(result.destination.index, 0, draggedItem);
+
+  //     setScreenSelect({
+  //       ...screen_select,
+  //       value: {
+  //         ...screen_select.value,
+  //         media_list: updatedMediaList,
+  //       },
+  //     });
+  //   } else {
+  //     // Handle other cases if needed
+  //   }
+  // };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    // If the drag is within the same panel
+    if (source.droppableId === destination.droppableId) {
+      const draggedItem = itemsPanel1.value.media_list[result.source.index];
+      const updatedMediaList = [...itemsPanel1.value.media_list];
+      updatedMediaList.splice(result.source.index, 1); // Remove item from original position
+      updatedMediaList.splice(destination.index, 0, draggedItem); // Insert item at destination index
+      if (source.droppableId === "panel-1") {
+        setItemsPanel1({
+          ...itemsPanel1,
+          value: {
+            media_list: updatedMediaList,
+          },
+        });
+      }
+    } else {
+      // If the drag is between different panels
+      const sourceItems =
+        source.droppableId === "panel-1"
+          ? itemsPanel1.value.media_list
+          : itemsPanel2;
+      const destinationItems =
+        destination.droppableId === "panel-1"
+          ? itemsPanel1.value.media_list
+          : itemsPanel2;
+      console.log("sourceItems", sourceItems);
+      // console.log("destinationItems", destinationItems);
+      // If the destination content is null, update it with the dragged item
+      if (
+        destination.droppableId === "panel-1" &&
+        destinationItems[destination.index].media_id === null
+      ) {
+        // const draggedItem = sourceItems.find(
+        //   (item) => item.media_id === result.draggableId
+        // );
+        const draggedItem = sourceItems.find(
+          (item) =>
+            item.media_id === parseInt(result.draggableId.split("-")[1]) + 1
+        );
+        destinationItems[destination.index] = { ...draggedItem };
+        console.log("destinationItems", destinationItems);
+      }
+      // Update state
+      if (source.droppableId === "panel-1") {
+        setItemsPanel1({
+          ...itemsPanel1,
+          value: {
+            media_list: destinationItems,
+          },
+        });
+      }
+    }
   };
 
   return (
@@ -2671,140 +2767,110 @@ const Create_Booking = () => {
                 {/* col 1 */}
 
                 {/* col 2 */}
-                <div className="col-span-3 border border-gray-300 rounded-md">
-                  <div className="p-2">
-                    <div className="flex items-center justify-center">
-                      <div className="font-poppins text-[32px] font-bold">
-                        Media Playlist
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <DragDropContext onDragEnd={handleOnDragEnd}>
-                        <Droppable droppableId="media-list">
-                          {(provided) => (
-                            <div
-                              className="grid grid-cols-11 space-x-1 h-[700px] space-y-2 overflow-y-auto pr-1"
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                            >
-                              {screen_select.value.media_list.map(
-                                (items, index) => (
-                                  <Draggable
-                                    key={`placeholder-${index}`}
-                                    draggableId={`placeholder-${index}`}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        className="col-span-11"
+                <div className="col-span-6 border border-gray-300 rounded-md">
+                  <div className="grid grid-cols-6 space-x-2">
+                    <DragDropContext onDragEnd={onDragEnd}>
+                      <div className="col-span-3">
+                        <div className="p-2">
+                          <div className="flex items-center justify-center">
+                            <div className="font-poppins text-[32px] font-bold">
+                              Media Playlist
+                            </div>
+                          </div>
+
+                          <div style={{ display: "flex" }}>
+                            {/* Panel 1 */}
+                            <Droppable droppableId="panel-1">
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.droppableProps}
+                                  className="m-[8px] p-[8px] w-[400px] min-h-[400px] bg-gray-300"
+                                >
+                                  {itemsPanel1.value.media_list.map(
+                                    (item, index) => (
+                                      <Draggable
+                                        key={`panel1-${index}`}
+                                        draggableId={`panel1-${index}`}
+                                        index={index}
                                       >
-                                        {items.media_id ? (
-                                          <div className="flex items-center">
-                                            <IoIosRemoveCircle
-                                              size={24}
-                                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                            />
-                                            <div className="flex-1">
-                                              <div className="grid grid-cols-11 h-[80px] border border-gray-300">
-                                                <div className="col-span-2 flex justify-center items-center">
-                                                  {items.media_type ===
-                                                  "video" ? (
-                                                    <FiVideo
-                                                      size={30}
-                                                      className="text-[#6425FE]"
-                                                    />
-                                                  ) : (
-                                                    <FiImage
-                                                      size={30}
-                                                      className="text-[#6425FE]"
-                                                    />
-                                                  )}
-                                                </div>
-                                                <div className="col-span-8">
-                                                  <div className="flex justify-start items-center mt-2">
-                                                    <div className="font-poppins text-[15px]">
-                                                      {items.media_name}
-                                                    </div>
-                                                  </div>
-                                                  <div className="flex justify-start items-center ">
-                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                      File Size :{" "}
-                                                      {items.media_size}
-                                                    </div>
-                                                  </div>
-                                                  <div className="flex justify-start items-center ">
-                                                    {items.media_duration && (
-                                                      <div className="font-poppins text-[15px]">
-                                                        Duration :{" "}
-                                                        {items.media_duration}{" "}
-                                                        sec
-                                                      </div>
-                                                    )}
-                                                  </div>
-                                                </div>
-                                                <div className="col-span-1 flex justify-start items-center">
-                                                  <MdDragHandle
-                                                    size={26}
-                                                    className="text-[#6425FE]"
-                                                  />
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        ) : (
-                                          <div className="flex items-center">
-                                            <IoIosRemoveCircle
-                                              size={24}
-                                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
-                                            />
-                                            <div className="flex-1">
-                                              <div
-                                                onClick={() => {
-                                                  setOpenModalUploadMedia(
-                                                    !openModalUploadNewMedia
-                                                  );
-                                                  setOpenAdsAllocationModal(
-                                                    !openAdsAllocationModal
-                                                  );
-                                                }}
-                                                className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer"
-                                              >
-                                                <div className="col-span-2 flex justify-center items-center">
-                                                  <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
-                                                    {index + 1}
-                                                  </div>
-                                                </div>
-                                                <div className="col-span-8 flex justify-start items-center">
-                                                  <div className="font-poppins text-[#2F3847] text-[16px]">
-                                                    Drag Media From Library or
-                                                    Click for Upload New Media
-                                                  </div>
-                                                </div>
-                                                <div className="col-span-1" />
-                                              </div>
-                                            </div>
+                                        {(provided) => (
+                                          <div
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            className="select-none p-4 m-0 mb-2 min-h-50 bg-white"
+                                            style={{
+                                              margin: "0 0 8px 0",
+                                              ...provided.draggableProps.style,
+                                            }}
+                                          >
+                                            {item.media_name ||
+                                              `panel1-${index}`}
                                           </div>
                                         )}
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                )
+                                      </Draggable>
+                                    )
+                                  )}
+                                  {provided.placeholder}
+                                </div>
                               )}
+                            </Droppable>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-3">
+                        {/* Panel 2 */}
+                        <Droppable droppableId="panel-2">
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                              style={{
+                                margin: 8,
+                                padding: 8,
+                                width: 200,
+                                minHeight: 400,
+                                backgroundColor: "lightgrey",
+                              }}
+                            >
+                              {itemsPanel2.map((item, index) => (
+                                <Draggable
+                                  key={`panel2-${index}`}
+                                  draggableId={`panel2-${index}`}
+                                  index={index}
+                                >
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: "none",
+                                        padding: 16,
+                                        margin: "0 0 8px 0",
+                                        minHeight: "50px",
+                                        backgroundColor: "white",
+                                        ...provided.draggableProps.style,
+                                      }}
+                                    >
+                                      {item.media_name}
+                                    </div>
+                                  )}
+                                </Draggable>
+                              ))}
                               {provided.placeholder}
                             </div>
                           )}
                         </Droppable>
-                      </DragDropContext>
-                    </div>
+                      </div>
+                    </DragDropContext>
                   </div>
                 </div>
                 {/* col 2 */}
 
                 {/* col 3 */}
-                <div className="col-span-3">
+                {/* <div className="col-span-3">
                   <div className="grid grid-cols-3 gap-4">
                     <button
                       className={`tablink flex items-center justify-center ${
@@ -2895,13 +2961,15 @@ const Create_Booking = () => {
                               placeholder="Search"
                               className="font-poppins pl-2 rounded-md w-full h-full"
                               value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
+                              onChange={(e) =>
+                                searchMediaByName(e.target.value)
+                              }
                             />
                           </div>
                         </div>
                         <div className="mt-5">
                           <div className="h-[680px] overflow-y-auto space-y-2">
-                            {searchMediaByName().map((items, index) => (
+                            {media_list.map((items, index) => (
                               <div className="grid grid-cols-11 h-[80px] border border-gray-300">
                                 <div className="col-span-2 flex justify-center items-center">
                                   {items.media_type === "video" ? (
@@ -2967,7 +3035,7 @@ const Create_Booking = () => {
                         </div>
                         <div className="mt-5">
                           <div className="h-[680px] overflow-y-auto space-y-2">
-                            {searchMediaByName()
+                            {media_list
                               .filter((item) => item.media_type === "video")
                               .map((items, index) => (
                                 <div className="grid grid-cols-11 h-[80px] border border-gray-300">
@@ -3035,7 +3103,7 @@ const Create_Booking = () => {
                         </div>
                         <div className="mt-5">
                           <div className="h-[680px] overflow-y-auto space-y-2">
-                            {searchMediaByName()
+                            {media_list
                               .filter((item) => item.media_type === "image")
                               .map((items, index) => (
                                 <div className="grid grid-cols-11 h-[80px] border border-gray-300">
@@ -3084,7 +3152,7 @@ const Create_Booking = () => {
                       </div>
                     )}
                   </div>
-                </div>
+                </div> */}
                 {/* col 3 */}
               </div>
             </div>
