@@ -244,7 +244,7 @@ const Content_type = () => {
       setIsChecked(!isChecked);
     };
     return (
-      <div class="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
+      <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
         {/* Header */}
         <div className="p-2 flex shadow-lg">
           {/* CheckBox */}
@@ -288,7 +288,7 @@ const Content_type = () => {
           </div>
           {/* Items Amount */}
           <div className="ml-2">
-            <span class="ml-2 font-bold">5 Items</span>
+            <span className="ml-2 font-bold">5 Items</span>
           </div>
           {/* Action */}
           <div className="ml-auto mr-3 font-bold">
@@ -336,7 +336,9 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            <span
+              className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+            >
               STW Promotion
             </span>
           </div>
@@ -396,7 +398,9 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            <span
+              className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+            >
               Credit Card
             </span>
           </div>
@@ -456,7 +460,9 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            <span
+              className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+            >
               Category
             </span>
           </div>
@@ -516,7 +522,9 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            <span
+              className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+            >
               Brands
             </span>
           </div>
@@ -576,7 +584,9 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+            <span
+              className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+            >
               Other
             </span>
           </div>
@@ -608,7 +618,7 @@ const Content_type = () => {
       setIsChecked(!isChecked);
     };
     return (
-      <div class="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
+      <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
         <div className="p-2 flex shadow-lg">
           {/* CheckBox */}
           <div className="ml-2">
@@ -651,12 +661,12 @@ const Content_type = () => {
           </div>
           {/* Items Amount */}
           <div className="ml-2">
-            <span class="ml-2 font-bold">5 Items</span>
+            <span className="ml-2 font-bold">5 Items</span>
           </div>
 
           {/* Percent and Action */}
           <div className="ml-auto mr-3 font-bold space-x-2 lg:space-x-24">
-            <span class="ml-2 font-bold">Percent</span>
+            <span className="ml-2 font-bold">Percent</span>
             <span>Action</span>
           </div>
         </div>
@@ -697,7 +707,7 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class="ml-2 font-bold">STW Promotion</span>
+            <span className="ml-2 font-bold">STW Promotion</span>
           </div>
 
           {/* Delete */}
@@ -744,7 +754,7 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class="ml-2 font-bold">Credit Card</span>
+            <span className="ml-2 font-bold">Credit Card</span>
           </div>
 
           {/* Delete */}
@@ -791,7 +801,7 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class="ml-2 font-bold">Category</span>
+            <span className="ml-2 font-bold">Category</span>
           </div>
 
           {/* Delete */}
@@ -838,7 +848,7 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class="ml-2 font-bold">Brands</span>
+            <span className="ml-2 font-bold">Brands</span>
           </div>
 
           {/* Delete */}
@@ -885,7 +895,7 @@ const Content_type = () => {
           </div>
           {/* Type */}
           <div className="ml-2">
-            <span class="ml-2 font-bold">Other</span>
+            <span className="ml-2 font-bold">Other</span>
           </div>
 
           {/* Delete */}
@@ -912,14 +922,14 @@ const Content_type = () => {
         <div className="container mx-auto mt-10">
           {/* <Bar type="color" /> */}
           <TagSlider />
-          <div class="flex flex-col lg:flex-row justify-center lg:text-left">
+          <div className="flex flex-col lg:flex-row justify-center lg:text-left">
             {/* Left Panal */}
             <LeftPanel is_disable={true} />
 
             {/* Middle Button */}
             <a
               onClick={() => alert("click")}
-              class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
+              className="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
             >
               <div className="p-2 justify-center flex mt-1">
                 <svg

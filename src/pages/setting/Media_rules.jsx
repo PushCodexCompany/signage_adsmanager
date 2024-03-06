@@ -13,8 +13,8 @@ const Media_rules = () => {
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
-        <div class="grid grid-cols-5 gap-4 mt-10">
-          <div class="col-span-4">
+        <div className="grid grid-cols-5 gap-4 mt-10">
+          <div className="col-span-4">
             <div className="font-poppins font-semibold text-2xl">
               <text>Media Rule</text>
             </div>

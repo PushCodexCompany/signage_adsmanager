@@ -77,7 +77,7 @@ const Main_Dashboard = () => {
         industry.
       </div>
 
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
         {mock_data.map((items) => (
           <div>
             <img

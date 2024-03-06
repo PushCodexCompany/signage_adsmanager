@@ -90,48 +90,48 @@ const Bar = ({ type = "none" }) => {
   return (
     <>
       {type === "color" ? (
-        <div class="h-14 w-full flex justify-center mt-8 ">
+        <div className="h-14 w-full flex justify-center mt-8 ">
           <div
-            class="flex-grow bg-[#6427FE] rounded-l-lg"
+            className="flex-grow bg-[#6427FE] rounded-l-lg"
             style={{ width: "60%" }}
           >
-            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+            <div className="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
               <div>STW Promotion</div>
               <div>60%</div>
             </div>
           </div>
-          <div class="flex-grow bg-[#00CB45]" style={{ width: "10%" }}>
-            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+          <div className="flex-grow bg-[#00CB45]" style={{ width: "10%" }}>
+            <div className="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
               <div>Credit Card</div>
               <div>10%</div>
             </div>
           </div>
-          <div class="flex-grow bg-[#FE8D25]" style={{ width: "10%" }}>
-            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+          <div className="flex-grow bg-[#FE8D25]" style={{ width: "10%" }}>
+            <div className="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
               <div>Category</div>
               <div>10%</div>
             </div>
           </div>
-          <div class="flex-grow bg-[#E02020]" style={{ width: "10%" }}>
-            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+          <div className="flex-grow bg-[#E02020]" style={{ width: "10%" }}>
+            <div className="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
               <div>Brands</div>
               <div>10%</div>
             </div>
           </div>
           <div
-            class="flex-grow bg-[#B6B3B3] rounded-r-lg"
+            className="flex-grow bg-[#B6B3B3] rounded-r-lg"
             style={{ width: "10%" }}
           >
-            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+            <div className="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
               <div>Other</div>
               <div>10%</div>
             </div>
           </div>
         </div>
       ) : (
-        <div class="h-14 w-full flex justify-center mt-8 ">
-          <div class="flex-grow bg-[#444444] rounded-xl">
-            <div class="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
+        <div className="h-14 w-full flex justify-center mt-8 ">
+          <div className="flex-grow bg-[#444444] rounded-xl">
+            <div className="flex flex-col justify-center items-center h-full text-white text-sm font-bold">
               <div>N/A</div>
               <div>100%</div>
             </div>
@@ -309,7 +309,7 @@ const LeftPanel = ({ is_disable }) => {
     setIsChecked(!isChecked);
   };
   return (
-    <div class="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
+    <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
       {/* Header */}
       <div className="p-2 flex shadow-lg">
         {/* CheckBox */}
@@ -353,7 +353,7 @@ const LeftPanel = ({ is_disable }) => {
         </div>
         {/* Items Amount */}
         <div className="ml-2">
-          <span class="ml-2 font-bold">5 Items</span>
+          <span className="ml-2 font-bold">5 Items</span>
         </div>
         {/* Action */}
         <div className="ml-auto mr-3 font-bold">
@@ -401,7 +401,9 @@ const LeftPanel = ({ is_disable }) => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+          <span
+            className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+          >
             STW Promotion
           </span>
         </div>
@@ -461,7 +463,9 @@ const LeftPanel = ({ is_disable }) => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+          <span
+            className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+          >
             Credit Card
           </span>
         </div>
@@ -521,7 +525,9 @@ const LeftPanel = ({ is_disable }) => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+          <span
+            className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+          >
             Category
           </span>
         </div>
@@ -581,7 +587,9 @@ const LeftPanel = ({ is_disable }) => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+          <span
+            className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+          >
             Brands
           </span>
         </div>
@@ -641,7 +649,9 @@ const LeftPanel = ({ is_disable }) => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}>
+          <span
+            className={`ml-2 font-bold ${is_disable ? "text-gray-300" : ""}`}
+          >
             Other
           </span>
         </div>
@@ -673,7 +683,7 @@ const RightPanel = () => {
     setIsChecked(!isChecked);
   };
   return (
-    <div class="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
+    <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
       <div className="p-2 flex shadow-lg">
         {/* CheckBox */}
         <div className="ml-2">
@@ -716,12 +726,12 @@ const RightPanel = () => {
         </div>
         {/* Items Amount */}
         <div className="ml-2">
-          <span class="ml-2 font-bold">5 Items</span>
+          <span className="ml-2 font-bold">5 Items</span>
         </div>
 
         {/* Percent and Action */}
         <div className="ml-auto mr-3 font-bold space-x-2 lg:space-x-24">
-          <span class="ml-2 font-bold">Percent</span>
+          <span className="ml-2 font-bold">Percent</span>
           <span>Action</span>
         </div>
       </div>
@@ -762,7 +772,7 @@ const RightPanel = () => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class="ml-2 font-bold">STW Promotion</span>
+          <span className="ml-2 font-bold">STW Promotion</span>
         </div>
 
         {/* Delete */}
@@ -809,7 +819,7 @@ const RightPanel = () => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class="ml-2 font-bold">Credit Card</span>
+          <span className="ml-2 font-bold">Credit Card</span>
         </div>
 
         {/* Delete */}
@@ -856,7 +866,7 @@ const RightPanel = () => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class="ml-2 font-bold">Category</span>
+          <span className="ml-2 font-bold">Category</span>
         </div>
 
         {/* Delete */}
@@ -903,7 +913,7 @@ const RightPanel = () => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class="ml-2 font-bold">Brands</span>
+          <span className="ml-2 font-bold">Brands</span>
         </div>
 
         {/* Delete */}
@@ -950,7 +960,7 @@ const RightPanel = () => {
         </div>
         {/* Type */}
         <div className="ml-2">
-          <span class="ml-2 font-bold">Other</span>
+          <span className="ml-2 font-bold">Other</span>
         </div>
 
         {/* Delete */}
@@ -1013,9 +1023,9 @@ const Tabs = () => {
     <>
       <div className="flex flex-wrap">
         <div className="w-full">
-          <div class="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-            <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-center items-center">
+          <div className="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-3/4 flex justify-center items-center">
                 {/* User Manager */}
                 <div>
                   <a
@@ -1080,22 +1090,22 @@ const Tabs = () => {
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
             <div className={openTab === 1 ? "block" : "hidden"} id="link1">
               {/* Select Menu */}
-              <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-                <div class="flex flex-col lg:flex-row">
-                  <div class="w-full lg:w-3/4 flex justify-center items-center">
-                    <div class="relative w-full lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+              <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+                <div className="flex flex-col lg:flex-row">
+                  <div className="w-full lg:w-3/4 flex justify-center items-center">
+                    <div className="relative w-full lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
                       <select
                         name="sort"
                         id="sort"
                         onClick={toggleSortSelect}
-                        class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                       >
                         <option value="0">Sort</option>
                         <option value="...">...</option>
                         <option value="...">...</option>
                         <option value="...">...</option>
                       </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         {isSortOpen ? (
                           <IoIosArrowUp size={18} color="#6425FE" />
                         ) : (
@@ -1103,19 +1113,19 @@ const Tabs = () => {
                         )}
                       </div>
                     </div>
-                    <div class="relative w-[300px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                    <div className="relative w-[300px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
                       <select
                         name="status"
                         id="status"
                         onClick={toggleStatusSelect}
                         onChange={handleStatusChange}
-                        class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                       >
                         <option value="0">Status</option>
                         <option value="Active">Active</option>
                         <option value="Deactive">Deactive</option>
                       </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
                         {isStatusOpen ? (
                           <IoIosArrowUp size={18} color="#6425FE" />
                         ) : (
@@ -1123,19 +1133,19 @@ const Tabs = () => {
                         )}
                       </div>
                     </div>
-                    <div class="relative w-full lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                    <div className="relative w-full lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
                       <select
                         name="role"
                         id="role"
                         onClick={toggleRoleSelect}
                         onChange={handleStatusChange}
-                        class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                       >
                         <option value="0">Role</option>
                         <option value="Admin">Admin</option>
                         <option value="User">User</option>
                       </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         {isRoleOpen ? (
                           <IoIosArrowUp size={18} color="#6425FE" />
                         ) : (
@@ -1148,9 +1158,9 @@ const Tabs = () => {
               </div>
 
               {/* Filter */}
-              <div class=" h-[50px] flex items-center mt-3  lg:ml-10 ">
-                <div class="flex flex-col lg:flex-row">
-                  <div class="w-full lg:w-3/4 flex justify-center items-center">
+              <div className=" h-[50px] flex items-center mt-3  lg:ml-10 ">
+                <div className="flex flex-col lg:flex-row">
+                  <div className="w-full lg:w-3/4 flex justify-center items-center">
                     {/* filter active */}
 
                     {filter &&
@@ -1223,14 +1233,14 @@ const Tabs = () => {
             <div className={openTab === 2 ? "block" : "hidden"} id="link2">
               {/* Content Type */}
               <Bar />
-              <div class="flex flex-col lg:flex-row justify-center lg:text-left">
+              <div className="flex flex-col lg:flex-row justify-center lg:text-left">
                 {/* Left Panal */}
                 <LeftPanel is_disable={false} />
 
                 {/* Middle Button */}
                 <a
                   onClick={() => alert("click")}
-                  class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
+                  className="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
                 >
                   <div className="p-2 justify-center flex mt-1">
                     <svg
@@ -1257,14 +1267,14 @@ const Tabs = () => {
               <div className="container mx-auto mt-10">
                 {/* <Bar type="color" /> */}
                 <TagSlider />
-                <div class="flex flex-col lg:flex-row justify-center lg:text-left">
+                <div className="flex flex-col lg:flex-row justify-center lg:text-left">
                   {/* Left Panal */}
                   <LeftPanel is_disable={true} />
 
                   {/* Middle Button */}
                   <a
                     onClick={() => alert("click")}
-                    class="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
+                    className="w-[60px] h-[60px] mt-10 lg:mt-52 mx-auto lg:ml-5 bg-[#6425FE] align-middle aspect-w-1 aspect-h-1"
                   >
                     <div className="p-2 justify-center flex mt-1">
                       <svg

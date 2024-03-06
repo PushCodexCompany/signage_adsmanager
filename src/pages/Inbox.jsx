@@ -15,9 +15,9 @@ const Tabs = () => {
     <>
       <div className="flex flex-wrap">
         <div className="w-full">
-          <div class="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-            <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-center items-center">
+          <div className="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-3/4 flex justify-center items-center">
                 {/* User Manager */}
                 <div>
                   <a
@@ -82,14 +82,14 @@ const Tabs = () => {
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
             <div className={openTab === 1 ? "block" : "hidden"} id="link1">
               <div className="p-4 mt-10 shadow-md">
-                <div class="flex flex-row ">
-                  <div class="basis-[50px] font-poppins text-xl text-[#59606C]">
+                <div className="flex flex-row ">
+                  <div className="basis-[50px] font-poppins text-xl text-[#59606C]">
                     ID
                   </div>
-                  <div class="basis-11/12  font-poppins text-xl text-[#59606C]">
+                  <div className="basis-11/12  font-poppins text-xl text-[#59606C]">
                     Subject
                   </div>
-                  <div class="basis-1/12  flex justify-end items-end font-poppins text-xl text-[#59606C]">
+                  <div className="basis-1/12  flex justify-end items-end font-poppins text-xl text-[#59606C]">
                     Action
                   </div>
                 </div>
@@ -97,11 +97,11 @@ const Tabs = () => {
 
               {/* Example 1 */}
               <div className="p-4 shadow-md">
-                <div class="flex flex-row ">
-                  <div class="basis-[50px] font-poppins text-md font-bold">
+                <div className="flex flex-row ">
+                  <div className="basis-[50px] font-poppins text-md font-bold">
                     1
                   </div>
-                  <div class="flex basis-11/12  ">
+                  <div className="flex basis-11/12  ">
                     <span className="font-poppins text-md font-bold">
                       Booking Name 1 : Awaiting admin approval: A booking
                       request has been submitted. <br />{" "}
@@ -110,7 +110,7 @@ const Tabs = () => {
                       </span>
                     </span>
                   </div>
-                  <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                  <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                     <div className="">
                       <button
                         className="w-full text-left p-2 focus:outline-none"
@@ -141,11 +141,11 @@ const Tabs = () => {
               </div>
               {/* Example 2 */}
               <div className="p-4 shadow-md">
-                <div class="flex flex-row ">
-                  <div class="basis-[50px] font-poppins text-md font-bold">
+                <div className="flex flex-row ">
+                  <div className="basis-[50px] font-poppins text-md font-bold">
                     2
                   </div>
-                  <div class="flex basis-11/12  ">
+                  <div className="flex basis-11/12  ">
                     <span className="font-poppins text-md font-bold">
                       #BookingID014 : Awaiting admin approval: A booking request
                       has been submitted. <br />{" "}
@@ -154,7 +154,7 @@ const Tabs = () => {
                       </span>
                     </span>
                   </div>
-                  <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                  <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                     <div className="">
                       <button
                         className="w-full text-left p-2 focus:outline-none"
@@ -185,11 +185,11 @@ const Tabs = () => {
               </div>
               {/* Example 3 */}
               <div className="p-4 shadow-md">
-                <div class="flex flex-row ">
-                  <div class="basis-[50px] font-poppins text-md font-bold">
+                <div className="flex flex-row ">
+                  <div className="basis-[50px] font-poppins text-md font-bold">
                     3
                   </div>
-                  <div class="flex basis-11/12  ">
+                  <div className="flex basis-11/12  ">
                     <span className="font-poppins text-md font-bold">
                       #BookingID013 : Awaiting admin approval: A media upload
                       request has been submitted.
@@ -199,7 +199,7 @@ const Tabs = () => {
                       </span>
                     </span>
                   </div>
-                  <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                  <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                     <div className="">
                       <button
                         className="w-full text-left p-2 focus:outline-none"
@@ -230,11 +230,11 @@ const Tabs = () => {
               </div>
               {/* Example 4 */}
               <div className="p-4 shadow-md">
-                <div class="flex flex-row ">
-                  <div class="basis-[50px] font-poppins text-md font-bold">
+                <div className="flex flex-row ">
+                  <div className="basis-[50px] font-poppins text-md font-bold">
                     4
                   </div>
-                  <div class="flex basis-11/12  ">
+                  <div className="flex basis-11/12  ">
                     <span className="font-poppins text-md font-bold">
                       #BookingID07 : Awaiting admin approval: A media upload
                       request has been submitted.
@@ -244,7 +244,7 @@ const Tabs = () => {
                       </span>
                     </span>
                   </div>
-                  <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+                  <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                     <div className="">
                       <button
                         className="w-full text-left p-2 focus:outline-none"

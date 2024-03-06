@@ -65,7 +65,7 @@ const Header = ({ title, subtitle }) => {
             const to = `/${pathname.slice(0, index + 1).join(`/`)}`;
             const last = index === pathname.length - 1;
             return last ? (
-              <li aria-current="page">
+              <li key={index} aria-current="page">
                 <div className="flex items-center">
                   <IoIosArrowForward />
                   <div className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400 font-poppins">
@@ -76,12 +76,13 @@ const Header = ({ title, subtitle }) => {
                 </div>
               </li>
             ) : (
-              <li>
+              <li key={index}>
                 <div className="flex items-center">
                   <IoIosArrowForward />
                   <div
                     onClick={() => navigate(to)}
                     // href={to}
+
                     className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins hover:cursor-pointer"
                   >
                     {(items.charAt(0).toUpperCase() + items.slice(1))

@@ -330,8 +330,8 @@ const User_Management = () => {
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
-        <div class="grid grid-cols-5 gap-4 mt-10">
-          <div class="col-span-4">
+        <div className="grid grid-cols-5 gap-4 mt-10">
+          <div className="col-span-4">
             <div className="font-poppins font-semibold text-2xl">
               <text>User</text>
             </div>
@@ -351,21 +351,21 @@ const User_Management = () => {
 
         <div className="relative flex flex-col min-w-0  w-full mb-6 ">
           {/* Select Menu */}
-          <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-            <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-between items-center">
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+          <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-3/4 flex justify-between items-center">
+                <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
                   <select
                     name="status"
                     id="status"
                     onClick={toggleStatusSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isStatusOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -373,18 +373,18 @@ const User_Management = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
                   <select
                     name="role"
                     id="role"
                     onClick={toggleRoleSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Admin">Admin</option>
                     <option value="User">User</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
                     {isRoleOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -394,7 +394,7 @@ const User_Management = () => {
                 </div>
               </div>
             </div>
-            {/* <div class="relative w-full lg:w-full h-[40px] flex items-center justify-end font-bold text-sm lg:text-base ml-3 mb-3">
+            {/* <div className="relative w-full lg:w-full h-[40px] flex items-center justify-end font-bold text-sm lg:text-base ml-3 mb-3">
               <button
                 onClick={() => showAllFilter()}
                 className=" text-[#6425FE]text-sm font-poppins w-full lg:w-[50px] lg:h-[45px] rounded-md"
@@ -481,8 +481,8 @@ const User_Management = () => {
 
           {/* Sort */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">
                   Sort <br />
                   <span
@@ -494,7 +494,7 @@ const User_Management = () => {
                   </span>
                 </span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -510,11 +510,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -522,13 +522,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -538,11 +538,11 @@ const User_Management = () => {
           </div>
           {/* Sector */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Sector</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -558,11 +558,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -570,13 +570,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -586,11 +586,11 @@ const User_Management = () => {
           </div>
           {/* Region */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Region</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -606,11 +606,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -618,13 +618,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -634,11 +634,11 @@ const User_Management = () => {
           </div>
           {/* Store Cluster */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Store Cluster</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -654,11 +654,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -666,13 +666,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -682,11 +682,11 @@ const User_Management = () => {
           </div>
           {/* Branch */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Branch</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -702,11 +702,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -714,13 +714,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -730,11 +730,11 @@ const User_Management = () => {
           </div>
           {/* Department */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Department</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -750,11 +750,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -762,13 +762,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -778,11 +778,11 @@ const User_Management = () => {
           </div>
           {/* Floor */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Floor</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -798,11 +798,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-sm ">G Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <span className="font-poppins text-sm mr-1">12</span>
                     <label className="inline-flex items-center space-x-2">
@@ -838,11 +838,11 @@ const User_Management = () => {
                   </div>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-sm ">1 Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <span className="font-poppins text-sm mr-1">5</span>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -876,11 +876,11 @@ const User_Management = () => {
                   </label>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-sm ">2 Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <span className="font-poppins text-sm mr-1">4</span>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -914,11 +914,11 @@ const User_Management = () => {
                   </label>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-sm ">3 Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <span className="font-poppins text-sm mr-1">10</span>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -956,11 +956,11 @@ const User_Management = () => {
           </div>
           {/* Location */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Location</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -976,11 +976,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -988,13 +988,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -1004,11 +1004,11 @@ const User_Management = () => {
           </div>
           {/* Orientation */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Orientation</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -1024,11 +1024,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -1036,13 +1036,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -1052,11 +1052,11 @@ const User_Management = () => {
           </div>
           {/* Size */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Size</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -1072,11 +1072,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -1084,13 +1084,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -1100,11 +1100,11 @@ const User_Management = () => {
           </div>
           {/* File Type */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">File Type</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -1120,11 +1120,11 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -1132,13 +1132,13 @@ const User_Management = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>

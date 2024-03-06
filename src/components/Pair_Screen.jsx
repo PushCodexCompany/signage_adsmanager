@@ -81,13 +81,13 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                         Screen Name:
                       </div>
                       <div className="mt-5">
-                        <div class="relative w-full h-[50px] flex justify-center lg:text-base ml-3 ">
+                        <div className="relative w-full h-[50px] flex justify-center lg:text-base ml-3 ">
                           <select
                             name="sector"
                             id="sector"
                             onClick={toggleScreenSelect}
                             onChange={handleStatusChange}
-                            class="block appearance-none w-full bg-[#f2f2f2]font-poppins text-[#2F3847] text-[22px] font-medium  border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                            className="block appearance-none w-full bg-[#f2f2f2]font-poppins text-[#2F3847] text-[22px] font-medium  border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                           >
                             <option value="" disabled selected hidden>
                               Select Screen
@@ -102,7 +102,7 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                                 </option>
                               ))}
                           </select>
-                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             {isScreenOpen ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (

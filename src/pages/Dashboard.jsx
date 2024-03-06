@@ -125,24 +125,24 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex mt-5">
-            <div class="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
+            <div className="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
               574
             </div>
-            <div class="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
+            <div className="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
               1245
             </div>
-            <div class="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
+            <div className="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
               148
             </div>
           </div>
           <div className="flex mb-5">
-            <div class="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
+            <div className="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
               Total Screen
             </div>
-            <div class="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
+            <div className="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
               Total Content
             </div>
-            <div class="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
+            <div className="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
               Total Booking
             </div>
           </div>
@@ -151,7 +151,7 @@ const Dashboard = () => {
     };
 
     return (
-      <div class="col-span-2 row-span-4 mt-12">
+      <div className="col-span-2 row-span-4 mt-12">
         {/* Top */}
         <div className="border border-gray-200 rounded-lg">
           <TotalSection />
@@ -830,13 +830,13 @@ const Dashboard = () => {
               name="year"
               id="year"
               onClick={toggleYearSelect}
-              class="block appearance-none w-full bg-[#f2f2f2] font-bold text-lg font-poppins rounded p-1"
+              className="block appearance-none w-full bg-[#f2f2f2] font-bold text-lg font-poppins rounded p-1"
             >
               <option value="2023">2023</option>
               <option value="2022">2022</option>
               <option value="2021">2021</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               {isYearOpen ? (
                 <MdCalendarToday size={28} color={"#6425FE"} />
               ) : (

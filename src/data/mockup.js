@@ -2037,26 +2037,26 @@ export const bookingData = [
             resolutions: "1920x1080",
             media_list: [
               {
-                media_id: 1,
+                media_id: 5,
                 media_name: "Promo Video 2023.mp4",
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
               },
               {
-                media_id: 2,
+                media_id: 1,
                 media_name: "Image Sample 01.png",
                 media_type: "img",
                 media_size: "437KB",
               },
               {
-                media_id: 3,
+                media_id: 1,
                 media_name: "Image Sample 01.png",
                 media_type: "img",
                 media_size: "437KB",
               },
               {
-                media_id: 4,
+                media_id: 5,
                 media_name: "Promo Video 2023.mp4",
                 media_type: "video",
                 media_size: "437KB",

@@ -22,8 +22,8 @@ const Side_search = () => {
           </div>
 
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">
                   Sort <br />
                   <div
@@ -35,7 +35,7 @@ const Side_search = () => {
                   </div>
                 </div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -51,11 +51,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -63,13 +63,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -78,11 +78,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Sector</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -98,11 +98,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -110,13 +110,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -125,11 +125,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Region</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -145,11 +145,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -157,13 +157,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -172,11 +172,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Store Cluster</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -192,11 +192,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -204,13 +204,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -219,11 +219,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Branch</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -239,11 +239,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -251,13 +251,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -266,11 +266,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Department</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -286,11 +286,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -298,13 +298,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -313,11 +313,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Floor</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -333,11 +333,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-sm ">G Floor</div>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <div className="font-poppins text-sm mr-1">12</div>
                     <label className="inline-flex items-center space-x-2">
@@ -373,11 +373,11 @@ const Side_search = () => {
                   </div>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-sm ">1 Floor</div>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div className="font-poppins text-sm mr-1">5</div>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -411,11 +411,11 @@ const Side_search = () => {
                   </label>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-sm ">2 Floor</div>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div className="font-poppins text-sm mr-1">4</div>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -449,11 +449,11 @@ const Side_search = () => {
                   </label>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-sm ">3 Floor</div>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div className="font-poppins text-sm mr-1">10</div>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -490,11 +490,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Location</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -510,11 +510,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -522,13 +522,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -537,11 +537,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Orientation</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -557,11 +557,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -569,13 +569,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -584,11 +584,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">Size</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -604,11 +604,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -616,13 +616,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -631,11 +631,11 @@ const Side_search = () => {
             </div>
           </div>
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <div className="font-poppins text-md ">File Type</div>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -651,11 +651,11 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <div className="font-poppins text-xs ">Best match</div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -663,13 +663,13 @@ const Side_search = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <div className="font-poppins text-xs ">
                     Price: low to high
                   </div>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>

@@ -115,13 +115,13 @@ const Screen = () => {
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
-        <div class="grid grid-cols-5 gap-4 mt-10">
-          <div class="col-span-4">
+        <div className="grid grid-cols-5 gap-4 mt-10">
+          <div className="col-span-4">
             <div className="font-poppins font-semibold text-2xl">
               <text>Screen (Only available up to last 15 days)</text>
             </div>
           </div>
-          <div class="col-span-1">
+          <div className="col-span-1">
             <button
               onClick={() =>
                 (window.location.href = "/setting/media_rule/create")
@@ -135,22 +135,22 @@ const Screen = () => {
 
         <div className="relative flex flex-col max-w-0  w-full mb-6">
           {/* Select Menu */}
-          <div class="rounded-lg h-[50px] flex items-center shadow-md">
-            <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-center items-center">
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+          <div className="rounded-lg h-[50px] flex items-center shadow-md">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-3/4 flex justify-center items-center">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="sector"
                     id="sector"
                     onClick={toggleSectorSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Sector">Sector</option>
                     <option value="Portrait">Portrait</option>
                     <option value="Landscape">Landscape</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isSectorOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -158,13 +158,13 @@ const Screen = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="region"
                     id="region"
                     onClick={toggleRegionSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Region">Region</option>
                     <option value="North">North</option>
@@ -172,7 +172,7 @@ const Screen = () => {
                     <option value="East">East</option>
                     <option value="South">South</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
                     {isRegionOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -180,20 +180,20 @@ const Screen = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="store_cluster"
                     id="store_cluster"
                     onClick={toggleClustorSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Store Cluster">Store Cluster</option>
                     <option value="...">...</option>
                     <option value="...">...</option>
                     <option value="...">...</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isClustorOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -201,20 +201,20 @@ const Screen = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="branch"
                     id="branch"
                     onClick={toggleBranchSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Branch">Branch</option>
                     <option value="...">...</option>
                     <option value="...">...</option>
                     <option value="...">...</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isBranchOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -222,20 +222,20 @@ const Screen = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="department"
                     id="department"
                     onClick={toggleDepartmentSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Department">Department</option>
                     <option value="Beauty">Beauty</option>
                     <option value="Toy">Toy</option>
                     <option value="Electronics">Electronics</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isDepartmentOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -243,15 +243,15 @@ const Screen = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[300px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[300px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <button
                     onClick={() => showAllFilter()}
                     name="role"
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm text-left border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm text-left border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     All filter
                   </button>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     <PiSlidersHorizontalFill size={18} color="#6425FE" />
                   </div>
                 </div>
@@ -264,7 +264,7 @@ const Screen = () => {
 
         {/* Filter */}
         <div className="flex">
-          <div class="basis-11/12">
+          <div className="basis-11/12">
             {filter &&
               filter.map((items) => (
                 <button onClick={() => removeFilter(items)}>
@@ -308,7 +308,7 @@ const Screen = () => {
             )}
           </div>
 
-          <div class="basis-1/12">
+          <div className="basis-1/12">
             <div className="flex flex-row">
               {view ? (
                 <div className="flex basis-1/2 justify-end align-middle">
@@ -352,8 +352,8 @@ const Screen = () => {
 
           {/* Sort */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">
                   Sort <br />
                   <span
@@ -365,7 +365,7 @@ const Screen = () => {
                   </span>
                 </span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -381,11 +381,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -393,13 +393,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -409,11 +409,11 @@ const Screen = () => {
           </div>
           {/* Sector */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Sector</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -429,11 +429,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -441,13 +441,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -457,11 +457,11 @@ const Screen = () => {
           </div>
           {/* Region */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Region</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -477,11 +477,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -489,13 +489,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -505,11 +505,11 @@ const Screen = () => {
           </div>
           {/* Store Cluster */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Store Cluster</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -525,11 +525,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -537,13 +537,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -553,11 +553,11 @@ const Screen = () => {
           </div>
           {/* Branch */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Branch</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -573,11 +573,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -585,13 +585,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -601,11 +601,11 @@ const Screen = () => {
           </div>
           {/* Department */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Department</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -621,11 +621,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -633,13 +633,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -649,11 +649,11 @@ const Screen = () => {
           </div>
           {/* Floor */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Floor</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -669,11 +669,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-sm ">G Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <span className="font-poppins text-sm mr-1">12</span>
                     <label className="inline-flex items-center space-x-2">
@@ -709,11 +709,11 @@ const Screen = () => {
                   </div>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-sm ">1 Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <span className="font-poppins text-sm mr-1">5</span>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -747,11 +747,11 @@ const Screen = () => {
                   </label>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-sm ">2 Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <span className="font-poppins text-sm mr-1">4</span>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -785,11 +785,11 @@ const Screen = () => {
                   </label>
                 </div>
               </div>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-sm ">3 Floor</span>
                 </div>
-                <div class="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
                   <span className="font-poppins text-sm mr-1">10</span>
                   <label className="inline-flex items-center space-x-2">
                     <input
@@ -827,11 +827,11 @@ const Screen = () => {
           </div>
           {/* Location */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Location</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -847,11 +847,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -859,13 +859,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -875,11 +875,11 @@ const Screen = () => {
           </div>
           {/* Orientation */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Orientation</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -895,11 +895,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -907,13 +907,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -923,11 +923,11 @@ const Screen = () => {
           </div>
           {/* Size */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">Size</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -943,11 +943,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -955,13 +955,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>
@@ -971,11 +971,11 @@ const Screen = () => {
           </div>
           {/* File Type */}
           <div className="p-6 border-b-2 border-gray-300">
-            <div class="flex flex-row ">
-              <div class="flex basis-11/12  ">
+            <div className="flex flex-row ">
+              <div className="flex basis-11/12  ">
                 <span className="font-poppins text-md ">File Type</span>
               </div>
-              <div class="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
+              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
                 <div>
                   <button
                     className="w-full text-left p-2 focus:outline-none"
@@ -991,11 +991,11 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-6">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-6">
                   <span className="font-poppins text-xs ">Best match</span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="1" name="sort" value="1" checked />
                   </div>
@@ -1003,13 +1003,13 @@ const Screen = () => {
               </div>
             </div>
             <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div class="flex flex-row ">
-                <div class="flex basis-11/12  mt-3">
+              <div className="flex flex-row ">
+                <div className="flex basis-11/12  mt-3">
                   <span className="font-poppins text-xs ">
                     Price: low to high
                   </span>
                 </div>
-                <div class="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
+                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
                   <div>
                     <input type="radio" id="2" name="sort" value="2" checked />
                   </div>

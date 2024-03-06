@@ -674,6 +674,16 @@ const Create_Booking = () => {
           ? itemsPanel1.value.media_list
           : itemsPanel2;
 
+      const value = destinationItems;
+
+      let lastIndexWithData = -1;
+
+      for (let i = 0; i < value.length; i++) {
+        if (value[i].media_id !== null) {
+          lastIndexWithData = i;
+        }
+      }
+
       // If the destination content is null, update it with the dragged item
       if (destinationItems[destination.index] !== undefined) {
         if (
@@ -684,7 +694,8 @@ const Create_Booking = () => {
             (item) =>
               item.media_id === parseInt(result.draggableId.split("-")[1]) + 1
           );
-          destinationItems[destination.index] = { ...draggedItem };
+          destinationItems[lastIndexWithData + 1] = { ...draggedItem };
+          // destinationItems[destination.index] = { ...draggedItem };
         }
         // Update state
         if (source.droppableId === "panel-1") {
@@ -709,13 +720,42 @@ const Create_Booking = () => {
       media_duration: null,
     }; // Define a nullified media item
     updatedMediaList[index] = nullifiedMediaItem; // Update the media item in the list
+
+    const output_data = updatedMediaList.reduce((acc, item) => {
+      if (item.media_id !== null) {
+        acc.push(item);
+      }
+      return acc;
+    }, []);
+
+    const nullItems = updatedMediaList.filter((item) => item.media_id === null);
+    nullItems.forEach((item) => output_data.push(item));
+
     setItemsPanel1((prevState) => ({
       ...prevState,
       value: {
         ...prevState.value,
-        media_list: updatedMediaList,
+        media_list: output_data,
       },
     })); // Update the state with the modified media list
+  };
+
+  const handleAddMediaPlaylistItem = (index) => {
+    const updatedMediaList = [...itemsPanel1.value.media_list];
+
+    const newDataMedia = [
+      ...updatedMediaList.slice(0, index + 1),
+      updatedMediaList[index],
+      ...updatedMediaList.slice(index + 1, updatedMediaList.length - 1),
+    ];
+
+    setItemsPanel1((prevState) => ({
+      ...prevState,
+      value: {
+        ...prevState.value,
+        media_list: newDataMedia,
+      },
+    }));
   };
 
   return (
@@ -765,20 +805,20 @@ const Create_Booking = () => {
         </div>
         {/* Select Menu */}
         <div className="relative flex flex-col max-w-0  w-full mb-6 mt-4">
-          <div class="rounded-lg h-[50px] flex items-center shadow-md">
-            <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-center items-center">
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+          <div className="rounded-lg h-[50px] flex items-center shadow-md">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-3/4 flex justify-center items-center">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="slot"
                     id="slot"
                     onClick={toggleSlotSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Avaliable Slot">Avaliable Slot</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isSlotOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -786,17 +826,17 @@ const Create_Booking = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="date"
                     id="date"
                     onClick={toggleDateSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Date">Date</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
                     {isDateOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -804,17 +844,17 @@ const Create_Booking = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="condition"
                     id="condition"
                     onClick={toggleConditionSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Store Cluster">{`Low The < 5`}</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isConditionOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -822,20 +862,20 @@ const Create_Booking = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="branch"
                     id="branch"
                     onClick={toggleBranchSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Branch">Branch</option>
                     <option value="...">...</option>
                     <option value="...">...</option>
                     <option value="...">...</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isBranchOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -843,20 +883,20 @@ const Create_Booking = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
                   <select
                     name="department"
                     id="department"
                     onClick={toggleDepartmentSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Department">Department</option>
                     <option value="Beauty">Beauty</option>
                     <option value="Toy">Toy</option>
                     <option value="Electronics">Electronics</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isDepartmentOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -872,10 +912,10 @@ const Create_Booking = () => {
 
         {/* Filter */}
         <div className="flex">
-          <div class="basis-8/12">
+          <div className="basis-8/12">
             {filter &&
-              filter.map((items) => (
-                <button onClick={() => removeFilter(items)}>
+              filter.map((items, index) => (
+                <button key={index} onClick={() => removeFilter(items)}>
                   <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
                     <div className="grid grid-cols-4">
                       <div className="col-span-1 mt-[6px]">
@@ -1257,7 +1297,7 @@ const Create_Booking = () => {
                                   </div>
 
                                   {items.booking.map((items, index) => (
-                                    <div className="mt-2">
+                                    <div key={index} className="mt-2">
                                       <div className="p-2">
                                         <div className="grid grid-cols-6 space-x-1">
                                           <div className="col-span-5">
@@ -2182,8 +2222,11 @@ const Create_Booking = () => {
               <div className="flex">
                 <div className="basis-12/12 ml-4">
                   {filter_publish_screen &&
-                    filter_publish_screen.map((items) => (
-                      <button onClick={() => removePublishCreenFilter(items)}>
+                    filter_publish_screen.map((items, index) => (
+                      <button
+                        key={index}
+                        onClick={() => removePublishCreenFilter(items)}
+                      >
                         <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
                           <div className="grid grid-cols-4">
                             <div className="col-span-1 mt-[6px]">
@@ -2601,7 +2644,10 @@ const Create_Booking = () => {
                         <div className="col-span-1" />
                         <div className="col-span-4 space-y-1 ">
                           {datePickers.map((datePicker, index) => (
-                            <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
+                            <div
+                              key={index}
+                              className="grid grid-cols-5 border border-[#D9D9D9] rounded-md"
+                            >
                               <div className="col-span-2 p-2 flex justify-center items-center">
                                 <div className="font-poppins">
                                   <DatePicker
@@ -2728,7 +2774,12 @@ const Create_Booking = () => {
                       {/* Note */}
 
                       <div className="flex justify-center items-center space-x-2 mt-3 mb-2">
-                        <button className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold">
+                        <button
+                          onClick={() =>
+                            console.log("item", itemsPanel1.value.media_list)
+                          }
+                          className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold"
+                        >
                           Confirm
                         </button>
                         <button className="w-[250px] h-[48px] border border-[#6425FE] rounded-md text-[#6425FE] font-poppins font-bold">
@@ -2759,123 +2810,182 @@ const Create_Booking = () => {
                                 <div
                                   ref={provided.innerRef}
                                   {...provided.droppableProps}
-                                  className="grid grid-cols-11 space-x-1 h-[700px] space-y-2 overflow-y-auto pr-1"
+                                  className="h-[680px] overflow-y-auto space-y-2"
                                 >
                                   {itemsPanel1.value.media_list.map(
-                                    (items, index) => (
-                                      <Draggable
-                                        key={`panel1-${index}`}
-                                        draggableId={`panel1-${index}`}
-                                        index={index}
-                                      >
-                                        {(provided) => (
-                                          <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            className="col-span-11"
-                                          >
-                                            {items.media_id ? (
-                                              <div className="flex items-center">
-                                                <IoIosRemoveCircle
-                                                  size={24}
-                                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                  onClick={() =>
-                                                    handleRemoveMediaPlaylistItem(
-                                                      index
-                                                    )
-                                                  }
-                                                />
-                                                <div className="flex-1">
-                                                  <div className="grid grid-cols-11 h-[80px] border border-gray-300">
-                                                    <div className="col-span-2 flex justify-center items-center">
-                                                      {items.media_type ===
-                                                      "video" ? (
-                                                        <FiVideo
-                                                          size={30}
-                                                          className="text-[#6425FE]"
-                                                        />
-                                                      ) : (
-                                                        <FiImage
-                                                          size={30}
-                                                          className="text-[#6425FE]"
-                                                        />
-                                                      )}
-                                                    </div>
-                                                    <div className="col-span-8">
-                                                      <div className="flex justify-start items-center mt-2">
-                                                        <div className="font-poppins text-[15px]">
-                                                          {items.media_name}
-                                                        </div>
-                                                      </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                          File Size :{" "}
-                                                          {items.media_size}
-                                                        </div>
-                                                      </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        {items.media_duration >
-                                                          0 && (
-                                                          <div className="font-poppins text-[15px]">
-                                                            Duration :{" "}
-                                                            {
-                                                              items.media_duration
-                                                            }{" "}
-                                                            sec
-                                                          </div>
+                                    (items, index) => {
+                                      const prevItem =
+                                        index > 0
+                                          ? itemsPanel1.value.media_list[
+                                              index - 1
+                                            ]
+                                          : null;
+                                      const nextItem =
+                                        index <
+                                        itemsPanel1.value.media_list.length - 1
+                                          ? itemsPanel1.value.media_list[
+                                              index + 1
+                                            ]
+                                          : null;
+                                      return (
+                                        <Draggable
+                                          key={`panel1-${index}`}
+                                          draggableId={`panel1-${index}`}
+                                          index={index}
+                                        >
+                                          {(provided) => (
+                                            <div
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              className={`col-span-11`}
+                                            >
+                                              {items.media_id ? (
+                                                <div className="flex items-center mr-1">
+                                                  <div>
+                                                    {prevItem?.media_id ===
+                                                    items?.media_id ? (
+                                                      <></>
+                                                    ) : items?.media_id ===
+                                                      nextItem?.media_id ? (
+                                                      <IoIosAddCircle
+                                                        size={24}
+                                                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                        onClick={() =>
+                                                          handleAddMediaPlaylistItem(
+                                                            index
+                                                          )
+                                                        }
+                                                      />
+                                                    ) : (
+                                                      <IoIosAddCircle
+                                                        size={24}
+                                                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                        onClick={() =>
+                                                          handleAddMediaPlaylistItem(
+                                                            index
+                                                          )
+                                                        }
+                                                      />
+                                                    )}
+
+                                                    <IoIosRemoveCircle
+                                                      size={24}
+                                                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                      onClick={() =>
+                                                        handleRemoveMediaPlaylistItem(
+                                                          index
+                                                        )
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div className="flex-1">
+                                                    <div
+                                                      className={`grid grid-cols-11 h-[80px]  ${
+                                                        prevItem?.media_id ===
+                                                          items?.media_id &&
+                                                        items?.media_id ===
+                                                          nextItem?.media_id
+                                                          ? "border-  border-l border-r border-gray-300"
+                                                          : prevItem?.media_id ===
+                                                            items?.media_id
+                                                          ? "border-b  border-l border-r border-gray-300"
+                                                          : items?.media_id ===
+                                                            nextItem?.media_id
+                                                          ? "border-t  border-l border-r border-gray-300"
+                                                          : " border border-gray-300"
+                                                      }`}
+                                                    >
+                                                      <div className="col-span-2 flex justify-center items-center">
+                                                        {items.media_type ===
+                                                        "video" ? (
+                                                          <FiVideo
+                                                            size={30}
+                                                            className="text-[#6425FE]"
+                                                          />
+                                                        ) : (
+                                                          <FiImage
+                                                            size={30}
+                                                            className="text-[#6425FE]"
+                                                          />
                                                         )}
                                                       </div>
-                                                    </div>
-                                                    <div className="col-span-1 flex justify-start items-center">
-                                                      <MdDragHandle
-                                                        size={26}
-                                                        className="text-[#6425FE]"
-                                                      />
+                                                      <div className="col-span-8">
+                                                        <div className="flex justify-start items-center mt-2">
+                                                          <div className="font-poppins text-[15px]">
+                                                            {items.media_name}
+                                                          </div>
+                                                        </div>
+                                                        <div className="flex justify-start items-center ">
+                                                          <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                            File Size :{" "}
+                                                            {items.media_size}
+                                                          </div>
+                                                        </div>
+                                                        <div className="flex justify-start items-center ">
+                                                          {items.media_duration >
+                                                            0 && (
+                                                            <div className="font-poppins text-[15px]">
+                                                              Duration :{" "}
+                                                              {
+                                                                items.media_duration
+                                                              }{" "}
+                                                              sec
+                                                            </div>
+                                                          )}
+                                                        </div>
+                                                      </div>
+                                                      <div className="col-span-1 flex justify-start items-center">
+                                                        <MdDragHandle
+                                                          size={26}
+                                                          className="text-[#6425FE]"
+                                                        />
+                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
-                                              </div>
-                                            ) : (
-                                              <div className="flex items-center">
-                                                <IoIosRemoveCircle
-                                                  size={24}
-                                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
-                                                />
-                                                <div className="flex-1">
-                                                  <div
-                                                    onClick={() => {
-                                                      setOpenModalUploadMedia(
-                                                        !openModalUploadNewMedia
-                                                      );
-                                                      setOpenAdsAllocationModal(
-                                                        !openAdsAllocationModal
-                                                      );
-                                                    }}
-                                                    className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer"
-                                                  >
-                                                    <div className="col-span-2 flex justify-center items-center">
-                                                      <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
-                                                        {index + 1}
+                                              ) : (
+                                                <div className="flex items-center">
+                                                  <IoIosRemoveCircle
+                                                    size={24}
+                                                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
+                                                  />
+                                                  <div className="flex-1">
+                                                    <div
+                                                      onClick={() => {
+                                                        setOpenModalUploadMedia(
+                                                          !openModalUploadNewMedia
+                                                        );
+                                                        setOpenAdsAllocationModal(
+                                                          !openAdsAllocationModal
+                                                        );
+                                                      }}
+                                                      className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer"
+                                                    >
+                                                      <div className="col-span-2 flex justify-center items-center">
+                                                        <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
+                                                          {index + 1}
+                                                        </div>
                                                       </div>
-                                                    </div>
-                                                    <div className="col-span-8 flex justify-start items-center">
-                                                      <div className="font-poppins text-[#2F3847] text-[16px]">
-                                                        Drag Media From Library
-                                                        or Click for Upload New
-                                                        Media
+                                                      <div className="col-span-8 flex justify-start items-center">
+                                                        <div className="font-poppins text-[#2F3847] text-[16px]">
+                                                          Drag Media From
+                                                          Library or Click for
+                                                          Upload New Media
+                                                        </div>
                                                       </div>
+                                                      <div className="col-span-1" />
                                                     </div>
-                                                    <div className="col-span-1" />
                                                   </div>
                                                 </div>
-                                              </div>
-                                            )}
-                                          </div>
-                                        )}
-                                      </Draggable>
-                                    )
+                                              )}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      );
+                                    }
                                   )}
+
                                   {provided.placeholder}
                                 </div>
                               )}
@@ -3640,8 +3750,8 @@ const Create_Booking = () => {
               <div className="flex">
                 <div className="basis-12/12 ml-4">
                   {filter_add_screen &&
-                    filter_add_screen.map((items) => (
-                      <button onClick={() => removeFilter(items)}>
+                    filter_add_screen.map((items, index) => (
+                      <button key={index} onClick={() => removeFilter(items)}>
                         <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
                           <div className="grid grid-cols-4">
                             <div className="col-span-1 mt-[6px]">

@@ -238,21 +238,21 @@ const User = () => {
         </div>
         {/* Select Menu */}
         <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-          <div class="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-            <div class="flex flex-col lg:flex-row">
-              <div class="w-full lg:w-3/4 flex justify-between items-center">
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+          <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-3/4 flex justify-between items-center">
+                <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
                   <select
                     name="status"
                     id="status"
                     onClick={toggleStatusSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none font-poppins w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none font-poppins w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isStatusOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
@@ -260,18 +260,18 @@ const User = () => {
                     )}
                   </div>
                 </div>
-                <div class="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
+                <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
                   <select
                     name="role"
                     id="role"
                     onClick={toggleRoleSelect}
                     onChange={handleStatusChange}
-                    class="block appearance-none w-full font-poppins bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                    className="block appearance-none w-full font-poppins bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
                     <option value="Admin">Admin</option>
                     <option value="User">User</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
                     {isRoleOpen ? (
                       <IoIosArrowUp size={18} color="#6425FE" />
                     ) : (
