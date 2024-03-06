@@ -748,7 +748,6 @@ const Create_Booking = () => {
       updatedMediaList[index],
       ...updatedMediaList.slice(index + 1, updatedMediaList.length - 1),
     ];
-
     setItemsPanel1((prevState) => ({
       ...prevState,
       value: {
@@ -2843,30 +2842,39 @@ const Create_Booking = () => {
                                               {items.media_id ? (
                                                 <div className="flex items-center mr-1">
                                                   <div>
-                                                    {prevItem?.media_id ===
-                                                    items?.media_id ? (
-                                                      <></>
-                                                    ) : items?.media_id ===
-                                                      nextItem?.media_id ? (
-                                                      <IoIosAddCircle
-                                                        size={24}
-                                                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                        onClick={() =>
-                                                          handleAddMediaPlaylistItem(
-                                                            index
-                                                          )
-                                                        }
-                                                      />
-                                                    ) : (
-                                                      <IoIosAddCircle
-                                                        size={24}
-                                                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                        onClick={() =>
-                                                          handleAddMediaPlaylistItem(
-                                                            index
-                                                          )
-                                                        }
-                                                      />
+                                                    {itemsPanel1.value.media_list.filter(
+                                                      (item) =>
+                                                        item.media_id === null
+                                                    ).length > 0 && (
+                                                      <>
+                                                        {prevItem?.media_id ===
+                                                        items?.media_id ? (
+                                                          <></>
+                                                        ) : items?.media_id ===
+                                                          nextItem?.media_id ? (
+                                                          <>
+                                                            <IoIosAddCircle
+                                                              size={24}
+                                                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                              onClick={() =>
+                                                                handleAddMediaPlaylistItem(
+                                                                  index
+                                                                )
+                                                              }
+                                                            />
+                                                          </>
+                                                        ) : (
+                                                          <IoIosAddCircle
+                                                            size={24}
+                                                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                            onClick={() =>
+                                                              handleAddMediaPlaylistItem(
+                                                                index
+                                                              )
+                                                            }
+                                                          />
+                                                        )}
+                                                      </>
                                                     )}
 
                                                     <IoIosRemoveCircle
@@ -2894,7 +2902,7 @@ const Create_Booking = () => {
                                                             nextItem?.media_id
                                                           ? "border-t  border-l border-r border-gray-300"
                                                           : " border border-gray-300"
-                                                      }`}
+                                                      } w-[337px]`}
                                                     >
                                                       <div className="col-span-2 flex justify-center items-center">
                                                         {items.media_type ===
