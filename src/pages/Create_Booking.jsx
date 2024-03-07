@@ -737,11 +737,7 @@ const Create_Booking = () => {
             item.media_id === parseInt(result.draggableId.split("-")[1]) + 1
         );
 
-        console.log("destinationItems " + JSON.stringify(destinationItems))
-
-        console.log("inserting at index " + destination.index)
         newDestinationItems = insert(destinationItems, destination.index, { ...draggedItem, slot_size: 1 })
-        console.log("newDestinationItems " + JSON.stringify(newDestinationItems))
         // destinationItems[lastIndexWithData + 1] = { ...draggedItem };
         // destinationItems[destination.index] = { ...draggedItem };
       }
@@ -749,7 +745,6 @@ const Create_Booking = () => {
       // *** Here must be destination not source
       if (destination.droppableId === "panel-1") {
 
-        console.log("setting new medialist " + JSON.stringify(newDestinationItems.map((i) => i.media_id)))
         setItemsPanel1({
           ...itemsPanel1,
           value: {
@@ -887,7 +882,6 @@ const Create_Booking = () => {
       target.slot_size = 2
     }
 
-    console.log("updatedMediaList " + JSON.stringify(updatedMediaList))
     setItemsPanel1((prevState) => ({
       ...prevState,
       value: {
@@ -933,9 +927,6 @@ const Create_Booking = () => {
 
     const emptySlots = [];
 
-    console.log("media_list : " + JSON.stringify(media_list))
-    console.log("mediaSize : " + mediaSize)
-    console.log("bookingSize : " + bookingSize)
     for (var i = mediaSize; i < bookingSize; i++) {
       emptySlots.push({ "media_id": null, "media_name": null, "media_type": null, "media_size": null, "media_duration": null, "slot_size": 1, "slot_num": i + 1 })
     }
