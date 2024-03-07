@@ -1119,6 +1119,47 @@ const Create_Booking = () => {
     });
   };
 
+  const renderMediaListBox = (items) => {
+    const nullFreeList = items.media_list.filter((it) => it.media_id !== null);
+
+    const mediaSize = nullFreeList.length;
+
+    const emptySlots = [];
+
+    for (var i = mediaSize; i < items.slots; i++) {
+      emptySlots.push({
+        media_id: null,
+        media_name: null,
+        media_type: null,
+        media_size: null,
+        media_duration: null,
+        slot_size: 1,
+        slot_num: i + 1,
+      });
+    }
+
+    const processedMediaList = [...nullFreeList, ...emptySlots];
+
+    console.log("processedMediaList", processedMediaList);
+
+    return (
+      <>
+        {processedMediaList.map((item, index2) => (
+          <div key={index2} className="w-[20%] p-1">
+            <div
+              className={`w-[36px] h-[36px] ${
+                item.media_id
+                  ? "bg-white border border-[#D9D9D9]"
+                  : "bg-[#D9D9D9]"
+              } flex justify-center items-center`}
+            >
+              {item.media_id ? <IoIosPlayCircle color="#6425FE" /> : ""}
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  };
   return (
     <>
       <Navbar />
@@ -1663,29 +1704,7 @@ const Create_Booking = () => {
                                         <div className="grid grid-cols-6 space-x-1">
                                           <div className="col-span-5">
                                             <div className="flex flex-wrap">
-                                              {console.log(items.media_list)}
-                                              {items.media_list.map(
-                                                (item, index2) => (
-                                                  <div
-                                                    key={index2}
-                                                    className="w-[20%] p-1"
-                                                  >
-                                                    <div
-                                                      className={`w-[36px] h-[36px] ${
-                                                        item.media_id
-                                                          ? "bg-white border border-[#D9D9D9]"
-                                                          : "bg-[#D9D9D9] "
-                                                      } flex justify-center items-center`}
-                                                    >
-                                                      {item.media_id ? (
-                                                        <IoIosPlayCircle color="#6425FE" />
-                                                      ) : (
-                                                        ""
-                                                      )}
-                                                    </div>
-                                                  </div>
-                                                )
-                                              )}
+                                              {renderMediaListBox(items)}
                                             </div>
                                           </div>
                                           <div

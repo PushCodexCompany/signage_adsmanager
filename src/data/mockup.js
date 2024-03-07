@@ -2072,6 +2072,7 @@ export const bookingData = [
           {
             id: 2,
             resolutions: "1920x1080",
+            slots: 10,
             media_list: [
               {
                 media_id: 1,
@@ -2092,6 +2093,7 @@ export const bookingData = [
           {
             id: 3,
             resolutions: "1920x1080",
+            slots: 10,
             media_list: [
               {
                 media_id: 1,
@@ -2111,11 +2113,13 @@ export const bookingData = [
           },
           {
             id: 4,
+            slots: 10,
             resolutions: "1920x1080",
             media_list: [],
           },
           {
             id: 5,
+            slots: 10,
             resolutions: "1920x1080",
             media_list: [],
           },
@@ -2133,6 +2137,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            slots: 10,
             media_list: [
               {
                 media_id: 1,
@@ -2140,6 +2145,55 @@ export const bookingData = [
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
+                slot_size: 1,
+              },
+              {
+                media_id: 1,
+                media_name: "Promo Video 2023.mp4",
+                media_type: "video",
+                media_size: "437KB",
+                media_duration: 30,
+                slot_size: 1,
+              },
+              {
+                media_id: 1,
+                media_name: "Promo Video 2023.mp4",
+                media_type: "video",
+                media_size: "437KB",
+                media_duration: 30,
+                slot_size: 1,
+              },
+              {
+                media_id: 1,
+                media_name: "Promo Video 2023.mp4",
+                media_type: "video",
+                media_size: "437KB",
+                media_duration: 30,
+                slot_size: 1,
+              },
+              {
+                media_id: 1,
+                media_name: "Promo Video 2023.mp4",
+                media_type: "video",
+                media_size: "437KB",
+                media_duration: 30,
+                slot_size: 1,
+              },
+              {
+                media_id: 1,
+                media_name: "Promo Video 2023.mp4",
+                media_type: "video",
+                media_size: "437KB",
+                media_duration: 30,
+                slot_size: 1,
+              },
+              {
+                media_id: 1,
+                media_name: "Promo Video 2023.mp4",
+                media_type: "video",
+                media_size: "437KB",
+                media_duration: 30,
+                slot_size: 1,
               },
               {
                 media_id: 1,
@@ -2154,6 +2208,7 @@ export const bookingData = [
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
+                slot_size: 1,
               },
               {
                 media_id: 1,
@@ -2161,53 +2216,13 @@ export const bookingData = [
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
-              },
-              {
-                media_id: 1,
-                media_name: "Promo Video 2023.mp4",
-                media_type: "video",
-                media_size: "437KB",
-                media_duration: 30,
-              },
-              {
-                media_id: 1,
-                media_name: "Promo Video 2023.mp4",
-                media_type: "video",
-                media_size: "437KB",
-                media_duration: 30,
-              },
-              {
-                media_id: 1,
-                media_name: "Promo Video 2023.mp4",
-                media_type: "video",
-                media_size: "437KB",
-                media_duration: 30,
-              },
-              {
-                media_id: 1,
-                media_name: "Promo Video 2023.mp4",
-                media_type: "video",
-                media_size: "437KB",
-                media_duration: 30,
-              },
-              {
-                media_id: 1,
-                media_name: "Promo Video 2023.mp4",
-                media_type: "video",
-                media_size: "437KB",
-                media_duration: 30,
-              },
-              {
-                media_id: 1,
-                media_name: "Promo Video 2023.mp4",
-                media_type: "video",
-                media_size: "437KB",
-                media_duration: 30,
+                slot_size: 1,
               },
             ],
           },
           {
             id: 2,
+            slots: 10,
             media_list: [
               {
                 media_id: 1,
@@ -2283,6 +2298,7 @@ export const bookingData = [
           },
           {
             id: 3,
+            slots: 10,
             media_list: [
               {
                 media_id: 1,
@@ -2358,10 +2374,12 @@ export const bookingData = [
           },
           {
             id: 4,
+            slots: 10,
             media_list: [],
           },
           {
             id: 5,
+            slots: 10,
             media_list: [],
           },
         ],
@@ -2388,26 +2406,31 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
         ],
@@ -2434,26 +2457,31 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
         ],
@@ -2480,26 +2508,31 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
         ],
@@ -2526,26 +2559,31 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
         ],
@@ -2572,26 +2610,31 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
+            slots: 10,
             media_list: [],
           },
         ],
