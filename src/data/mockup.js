@@ -2034,6 +2034,7 @@ export const bookingData = [
         booking: [
           {
             id: 1,
+            slots: 10,
             resolutions: "1920x1080",
             media_list: [
               {
@@ -2042,18 +2043,21 @@ export const bookingData = [
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
+                slot_size: 1
               },
               {
                 media_id: 1,
                 media_name: "Image Sample 01.png",
                 media_type: "img",
                 media_size: "437KB",
+                slot_size: 1
               },
               {
                 media_id: 1,
                 media_name: "Image Sample 01.png",
                 media_type: "img",
                 media_size: "437KB",
+                slot_size: 2
               },
               {
                 media_id: 5,
@@ -2061,49 +2065,14 @@ export const bookingData = [
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
+                slot_size: 1
               },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
             ],
           },
           {
@@ -2124,62 +2093,14 @@ export const bookingData = [
                 media_size: "437KB",
                 media_duration: 30,
               },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
             ],
           },
           {
@@ -2200,214 +2121,46 @@ export const bookingData = [
                 media_size: "437KB",
                 media_duration: 30,
               },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 4,
             resolutions: "1920x1080",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 5,
             resolutions: "1920x1080",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
         ],
@@ -2650,151 +2403,31 @@ export const bookingData = [
           {
             id: 4,
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 5,
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
         ],
@@ -2822,380 +2455,80 @@ export const bookingData = [
             id: 1,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 2,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 3,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 4,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 5,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
         ],
@@ -3223,380 +2556,80 @@ export const bookingData = [
             id: 1,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 2,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 3,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 4,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 5,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
         ],
@@ -3624,380 +2657,80 @@ export const bookingData = [
             id: 1,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 2,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 3,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 4,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 5,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
         ],
@@ -4025,380 +2758,80 @@ export const bookingData = [
             id: 1,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 2,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 3,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 4,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 5,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
         ],
@@ -4426,380 +2859,80 @@ export const bookingData = [
             id: 1,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 2,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 3,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 4,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
           {
             id: 5,
             resolutions: "1080x1920",
             media_list: [
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
-              {
-                media_id: null,
-                media_name: null,
-                media_type: null,
-                media_size: null,
-                media_duration: null,
-              },
+
+
+
+
+
+
+
+
+
+
             ],
           },
         ],
