@@ -2043,21 +2043,21 @@ export const bookingData = [
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
-                slot_size: 1
+                slot_size: 1,
               },
               {
                 media_id: 1,
                 media_name: "Image Sample 01.png",
                 media_type: "img",
                 media_size: "437KB",
-                slot_size: 1
+                slot_size: 1,
               },
               {
                 media_id: 1,
                 media_name: "Image Sample 01.png",
                 media_type: "img",
                 media_size: "437KB",
-                slot_size: 2
+                slot_size: 2,
               },
               {
                 media_id: 5,
@@ -2065,14 +2065,8 @@ export const bookingData = [
                 media_type: "video",
                 media_size: "437KB",
                 media_duration: 30,
-                slot_size: 1
+                slot_size: 1,
               },
-
-
-
-
-
-
             ],
           },
           {
@@ -2093,14 +2087,6 @@ export const bookingData = [
                 media_size: "437KB",
                 media_duration: 30,
               },
-
-
-
-
-
-
-
-
             ],
           },
           {
@@ -2121,47 +2107,17 @@ export const bookingData = [
                 media_size: "437KB",
                 media_duration: 30,
               },
-
-
-
-
-
-
-
-
             ],
           },
           {
             id: 4,
             resolutions: "1920x1080",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 5,
             resolutions: "1920x1080",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
         ],
         price: 500,
@@ -2402,33 +2358,11 @@ export const bookingData = [
           },
           {
             id: 4,
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 5,
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
         ],
         price: 500,
@@ -2454,82 +2388,27 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
         ],
         price: 500,
@@ -2555,82 +2434,27 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
         ],
         price: 500,
@@ -2656,82 +2480,27 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
         ],
         price: 500,
@@ -2757,82 +2526,27 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
         ],
         price: 500,
@@ -2858,82 +2572,27 @@ export const bookingData = [
           {
             id: 1,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 2,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 3,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 4,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
           {
             id: 5,
             resolutions: "1080x1920",
-            media_list: [
-
-
-
-
-
-
-
-
-
-
-            ],
+            media_list: [],
           },
         ],
         price: 500,
