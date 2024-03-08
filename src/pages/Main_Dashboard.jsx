@@ -81,7 +81,7 @@ const Main_Dashboard = () => {
         {mock_data.map((items) => (
           <div>
             <img
-              className="block ml-auto mr-auto mt-30px w-3/5 rounded-3xl "
+              className="block ml-auto mr-auto mt-30px w-3/5 rounded-3xl object-cover"
               src={items.img}
             />
             <div className="font-bold text-[20px] m-auto w-[50%] text-center mt-[10px]">

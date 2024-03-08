@@ -170,13 +170,13 @@ const New_screen = ({ setOpenAddNewScreenModal }) => {
                           {selectedImage ? (
                             <img
                               src={selectedImage}
-                              className="flex items-center justify-center w-[250px] h-[250px]"
+                              className="flex items-center justify-center w-[250px] h-[250px] object-cover"
                             />
                           ) : (
                             <div className=" flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
                               <img
                                 src={empty_img}
-                                className="flex items-center justify-center"
+                                className="flex items-center justify-center object"
                               />
                             </div>
                           )}

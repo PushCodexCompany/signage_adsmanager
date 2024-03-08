@@ -112,7 +112,7 @@ const Dashboard = () => {
       return (
         <>
           <div className="flex items-center justify-center mt-2">
-            <img className="w-2/5 rounded-md" src={central_img} />
+            <img className="w-2/5 rounded-md object-cover" src={central_img} />
           </div>
           <div className="flex items-center justify-center">
             <div className="font-poppins text-sm lg:text-2xl font-bold">

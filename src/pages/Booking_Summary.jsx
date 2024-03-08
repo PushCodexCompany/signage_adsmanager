@@ -57,7 +57,7 @@ const Booking_Summary = () => {
                 <div className="grid grid-cols-5 space-x-3">
                   <div className="col-span-1">
                     <img
-                      className={`block mx-auto mt-30px w-[75px] h-[75px] rounded-lg `}
+                      className={`block mx-auto mt-30px w-[75px] h-[75px] rounded-lg object-cover`}
                       src={merchandise.AdvertiserLogo}
                       alt={merchandise.AdvertiserName}
                     />
@@ -187,7 +187,7 @@ const Booking_Summary = () => {
                   </div>
                   <div className="col-span-4 flex justify-start items-center">
                     <img
-                      className={`block mt-30px w-[56px] h-[56px] rounded-lg `}
+                      className={`block mt-30px w-[56px] h-[56px] rounded-lg object-cover`}
                       src={merchandise.AdvertiserLogo}
                       alt={merchandise.AdvertiserName}
                     />

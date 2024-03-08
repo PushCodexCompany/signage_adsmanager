@@ -253,8 +253,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   };
 
   const handleNextStep = (currentStep) => {
-    const nextStepIndex = currentStep + 1
-    const step = `${nextStepIndex}`
+    const nextStepIndex = currentStep + 1;
+    const step = `${nextStepIndex}`;
 
     switch (step) {
       case "2":
@@ -296,9 +296,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   };
 
   const handleBackStep = (currentStep) => {
-
-    const prevStepIndex = currentStep - 1
-    const step = `${prevStepIndex}`
+    const prevStepIndex = currentStep - 1;
+    const step = `${prevStepIndex}`;
     setStep(step);
   };
 
@@ -325,288 +324,211 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const STEP_OPTIONS = [
     {
       stepIndex: 1,
-      label: "Select Merchandise"
+      label: "Select Merchandise",
     },
     {
       stepIndex: 2,
-      label: "Booking Period"
+      label: "Booking Period",
     },
     {
       stepIndex: 3,
-      label: "Enter Booking Name"
+      label: "Enter Booking Name",
     },
     {
       stepIndex: 4,
-      label: "Booking is Created"
-    }
-  ]
+      label: "Booking is Created",
+    },
+  ];
 
   const renderStepContent = (stepID) => {
     switch (`${stepID}`) {
       case "1":
-        return <>
-          <div className="flex items-center justify-center mt-5">
-            <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
-              Booking For
-            </div>
-          </div>
-          <div className="flex items-center justify-center mt-2">
-            <div className="text-sm font-poppins  text-[#2F3847]">
-              Name your booking, select merchandise, and content type to
-              create a New booking. Personalize your campaign for maximum
-              impact.
-            </div>
-          </div>
-          <div className="h-[450px] mt-8 overflow-y-auto">
-            <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2 mt-7">
-              <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
-                <button
-                  onClick={() => setShowCreateMerchandise(true)}
-                  className="flex flex-col items-center"
-                >
-                  <div className="h-60 flex items-center justify-center">
-                    <FaPlus size={100} color="#6425FE" />
-                  </div>
-                  <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                    Add New Merchandise
-                  </div>
-                </button>
+        return (
+          <>
+            <div className="flex items-center justify-center mt-5">
+              <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
+                Booking For
               </div>
-
-              {merchandise.length > 0 &&
-                merchandise.map((items, key) => (
-                  <div
-                    key={key}
-                    className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
-                    onClick={() => setSelectMerchandise(items)}
-                  >
-                    <div className="relative mb-4">
-                      <img
-                        className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer ${select_merchandise?.AdvertiserID ===
-                          items?.AdvertiserID
-                          ? "border-4 border-[#6425FE] "
-                          : ""
-                          } `}
-                        src={items.AdvertiserLogo || empty_img}
-                        alt={items.AdvertiserName}
-                      />
-                    </div>
-                    <button className="w-full">
-                      <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                        {items.AdvertiserName}
-                      </div>
-                      <div className="text-[14px] text-slate-500 font-poppins">
-                        {items.ContactName}
-                      </div>
-                    </button>
-                  </div>
-                ))}
             </div>
-          </div>
-        </>
+            <div className="flex items-center justify-center mt-2">
+              <div className="text-sm font-poppins  text-[#2F3847]">
+                Name your booking, select merchandise, and content type to
+                create a New booking. Personalize your campaign for maximum
+                impact.
+              </div>
+            </div>
+            <div className="h-[450px] mt-8 overflow-y-auto">
+              <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2 mt-7">
+                <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
+                  <button
+                    onClick={() => setShowCreateMerchandise(true)}
+                    className="flex flex-col items-center"
+                  >
+                    <div className="h-60 flex items-center justify-center">
+                      <FaPlus size={100} color="#6425FE" />
+                    </div>
+                    <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+                      Add New Merchandise
+                    </div>
+                  </button>
+                </div>
+
+                {merchandise.length > 0 &&
+                  merchandise.map((items, key) => (
+                    <div
+                      key={key}
+                      className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
+                      onClick={() => setSelectMerchandise(items)}
+                    >
+                      <div className="relative mb-4">
+                        <img
+                          className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer ${
+                            select_merchandise?.AdvertiserID ===
+                            items?.AdvertiserID
+                              ? "border-4 border-[#6425FE] "
+                              : ""
+                          } object-cover `}
+                          src={items.AdvertiserLogo || empty_img}
+                          alt={items.AdvertiserName}
+                        />
+                      </div>
+                      <button className="w-full">
+                        <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+                          {items.AdvertiserName}
+                        </div>
+                        <div className="text-[14px] text-slate-500 font-poppins">
+                          {items.ContactName}
+                        </div>
+                      </button>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </>
+        );
         break;
 
       case "2":
-        return <>
-          <div className="flex items-center justify-center mt-5">
-            <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
-              Booking Period
-            </div>
-          </div>
-          <div className="flex items-center justify-center mt-2">
-            <div className="text-sm font-poppins  text-[#2F3847]">
-              Name your booking, select merchandise, and content type to
-              create a new booking. Personalize your campaign for maximum
-              impact.
-            </div>
-          </div>
-          <div className="flex items-center justify-center mt-5">
-            <div className="flex flex-row">
-              <div className="basis-1/2">
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date) => handleDateChange(date)}
-                  selectsStart
-                  startDate={startDate}
-                  endDate={endDate}
-                  placeholderText="Start Date"
-                  dateFormat="dd/MM/yyyy"
-                  minDate={currentDate}
-                  showYearDropdown
-                  showMonthDropdown
-                  dropdownMode="select"
-                  className="font-poppins text-[#6425FE] placeholder:text-[#6425FE] text-bold text-xl  pl-2 w-auto h-8 text-right"
-                />
-              </div>
-              <div className="basis-1/4 ml-2 font-poppins text-2xl text-bold flex justify-center items-center text-[#6425FE] ">
-                -
-              </div>
-              <div className="basis-1/2">
-                <DatePicker
-                  selected={endDate}
-                  onChange={(date) => handleDateChange(date)}
-                  selectsEnd
-                  startDate={startDate}
-                  endDate={endDate}
-                  placeholderText="End Date"
-                  dateFormat="dd/MM/yyyy"
-                  minDate={startDate || currentDate}
-                  showYearDropdown
-                  showMonthDropdown
-                  dropdownMode="select"
-                  className="font-poppins text-[#6425FE] placeholder:text-[#6425FE] text-bold text-xl  pl-2 w-auto h-8 text-left"
-                />
+        return (
+          <>
+            <div className="flex items-center justify-center mt-5">
+              <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
+                Booking Period
               </div>
             </div>
-          </div>
-
-          <div className="mt-5 w-[70%] mx-auto ">
-            <div className="flex items-center justify-center">
-              <div className="flex items-center justify-evenly gap-6 sm:gap-12">
-                <FaAngleLeft
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={getPrevMonth}
-                />
-                {monthsToDisplay.map((index) => {
-                  const monthToShow = add(firstDayOfMonth, { months: index });
-                  const isCurrentMonth =
-                    differenceInMonths(monthToShow, firstDayOfMonth) === 0;
-                  const textStyle = isCurrentMonth
-                    ? "text-[#000000]"
-                    : "text-[#AAAAAA]";
-
-                  return (
-                    <p
-                      key={index}
-                      className={`font-poppins text-2xl ${textStyle}`}
-                    >
-                      {format(monthToShow, "MMM yy")}
-                    </p>
-                  );
-                })}
-                <FaAngleRight
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={getNextMonth}
-                />
+            <div className="flex items-center justify-center mt-2">
+              <div className="text-sm font-poppins  text-[#2F3847]">
+                Name your booking, select merchandise, and content type to
+                create a new booking. Personalize your campaign for maximum
+                impact.
               </div>
             </div>
-            <div className="grid grid-cols-7 gap-4 sm:gap-3 place-items-center mt-4">
-              {days.map((day, idx) => (
-                <div key={idx} className="font-poppins text-sm">
-                  {capitalizeFirstLetter(day)}
+            <div className="flex items-center justify-center mt-5">
+              <div className="flex flex-row">
+                <div className="basis-1/2">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => handleDateChange(date)}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    placeholderText="Start Date"
+                    dateFormat="dd/MM/yyyy"
+                    minDate={currentDate}
+                    showYearDropdown
+                    showMonthDropdown
+                    dropdownMode="select"
+                    className="font-poppins text-[#6425FE] placeholder:text-[#6425FE] text-bold text-xl  pl-2 w-auto h-8 text-right"
+                  />
                 </div>
-              ))}
+                <div className="basis-1/4 ml-2 font-poppins text-2xl text-bold flex justify-center items-center text-[#6425FE] ">
+                  -
+                </div>
+                <div className="basis-1/2">
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => handleDateChange(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    placeholderText="End Date"
+                    dateFormat="dd/MM/yyyy"
+                    minDate={startDate || currentDate}
+                    showYearDropdown
+                    showMonthDropdown
+                    dropdownMode="select"
+                    className="font-poppins text-[#6425FE] placeholder:text-[#6425FE] text-bold text-xl  pl-2 w-auto h-8 text-left"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="grid grid-cols-7 gap-4 sm:gap-3 mt-6 place-items-center">
-              {daysInMonth.map((day, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => handleDateClick(day)}
-                  className={colStartClasses[getDay(day)]}
-                >
-                  <p
-                    className={`cursor-pointer border-1 border-gray-300 hover:border-[#6425FE] flex items-center rounded-md justify-center font-poppins h-8 w-32 hover:text-[#6425FE] ${isSameMonth(day, today)
-                      ? "text-gray-900"
-                      : "text-gray-400"
-                      }  ${selected_dates.length > 0
-                        ? ""
-                        : isToday(day) && "bg-red-500 text-white"
-                      } ${selected_dates.some((date) => isSameDay(date, day))
-                        ? "bg-[#6425FE] border-3 border-[#6425FE] text-white"
-                        : ""
-                      }`}
+
+            <div className="mt-5 w-[70%] mx-auto ">
+              <div className="flex items-center justify-center">
+                <div className="flex items-center justify-evenly gap-6 sm:gap-12">
+                  <FaAngleLeft
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={getPrevMonth}
+                  />
+                  {monthsToDisplay.map((index) => {
+                    const monthToShow = add(firstDayOfMonth, { months: index });
+                    const isCurrentMonth =
+                      differenceInMonths(monthToShow, firstDayOfMonth) === 0;
+                    const textStyle = isCurrentMonth
+                      ? "text-[#000000]"
+                      : "text-[#AAAAAA]";
+
+                    return (
+                      <p
+                        key={index}
+                        className={`font-poppins text-2xl ${textStyle}`}
+                      >
+                        {format(monthToShow, "MMM yy")}
+                      </p>
+                    );
+                  })}
+                  <FaAngleRight
+                    className="w-6 h-6 cursor-pointer"
+                    onClick={getNextMonth}
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-7 gap-4 sm:gap-3 place-items-center mt-4">
+                {days.map((day, idx) => (
+                  <div key={idx} className="font-poppins text-sm">
+                    {capitalizeFirstLetter(day)}
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-7 gap-4 sm:gap-3 mt-6 place-items-center">
+                {daysInMonth.map((day, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => handleDateClick(day)}
+                    className={colStartClasses[getDay(day)]}
                   >
-                    {format(day, "d")}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 flex justify-center items-center">
-              {selected_dates.length > 0 ? (
-                <div className="font-poppins text-[#7C7B7B]">
-                  {`Your Booking Period :  ${format(
-                    selected_dates[0],
-                    "EEE dd MMM yyyy"
-                  )} - ${format(
-                    selected_dates[selected_dates.length - 1],
-                    "EEE dd MMM yyyy"
-                  )}`}
-                </div>
-              ) : (
-                ""
-              )}
-            </div>
-          </div>
-        </>
-        break;
-
-      case "3":
-        return <>
-          <div className="flex items-center justify-center mt-5">
-            <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
-              Enter Booking Detail
-            </div>
-          </div>
-          <div className="flex items-center justify-center mt-2">
-            <div className="text-sm font-poppins  text-[#2F3847]">
-              Name your booking, select merchandise, and content type to
-              create a new booking. Personalize your campaign for maximum
-              impact.
-            </div>
-          </div>
-          <div className="mt-20">
-            <div className="grid grid-cols-6 w-[70%] mx-auto space-x-1">
-              <div className="col-span-2">
-                <div>
-                  <img
-                    className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl `}
-                    src={select_merchandise.AdvertiserLogo}
-                    alt={select_merchandise.AdvertiserName}
-                  />
-                </div>
-                <div className="mt-2">
-                  <div className="flex justify-center items-center">
-                    <div className="font-poppins text-xl font-bold text-[#2F3847]">
-                      {select_merchandise.AdvertiserName}
-                    </div>
+                    <p
+                      className={`cursor-pointer border-1 border-gray-300 hover:border-[#6425FE] flex items-center rounded-md justify-center font-poppins h-8 w-32 hover:text-[#6425FE] ${
+                        isSameMonth(day, today)
+                          ? "text-gray-900"
+                          : "text-gray-400"
+                      }  ${
+                        selected_dates.length > 0
+                          ? ""
+                          : isToday(day) && "bg-red-500 text-white"
+                      } ${
+                        selected_dates.some((date) => isSameDay(date, day))
+                          ? "bg-[#6425FE] border-3 border-[#6425FE] text-white"
+                          : ""
+                      }`}
+                    >
+                      {format(day, "d")}
+                    </p>
                   </div>
-                  <div className="flex justify-center items-center">
-                    <div className="font-poppins text-sm text-[#6F6F6F]">
-                      {select_merchandise.AccountCode}
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
-              <div className="col-span-4 p-2">
-                <div>
-                  <div className="font-poppins font-bold">Booking Name :</div>
-                </div>
-                <div className="mt-3">
-                  <input
-                    onChange={(e) => setBookingName(e.target.value)}
-                    value={booking_name}
-                    className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
-                    placeholder="Enter Booking Name"
-                  />
-                </div>
-                <div className="mt-10">
-                  <div className="font-poppins font-bold">Slot Per Day</div>
-                </div>
-                <div className="mt-3">
-                  <input
-                    onChange={(e) => setBookingSlot(e.target.value)}
-                    value={booking_slot}
-                    type="number"
-                    className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
-                    placeholder="Enter Slot Per Day"
-                  />
-                </div>
-                <div className="mt-10">
-                  <div className="font-poppins font-bold">
-                    Booking Period :
-                  </div>
-                </div>
-                <div className="mt-3 flex justify-center items-center">
+              <div className="mt-8 flex justify-center items-center">
+                {selected_dates.length > 0 ? (
                   <div className="font-poppins text-[#7C7B7B]">
                     {`Your Booking Period :  ${format(
                       selected_dates[0],
@@ -616,104 +538,193 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       "EEE dd MMM yyyy"
                     )}`}
                   </div>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          </>
+        );
+        break;
+
+      case "3":
+        return (
+          <>
+            <div className="flex items-center justify-center mt-5">
+              <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
+                Enter Booking Detail
+              </div>
+            </div>
+            <div className="flex items-center justify-center mt-2">
+              <div className="text-sm font-poppins  text-[#2F3847]">
+                Name your booking, select merchandise, and content type to
+                create a new booking. Personalize your campaign for maximum
+                impact.
+              </div>
+            </div>
+            <div className="mt-20">
+              <div className="grid grid-cols-6 w-[70%] mx-auto space-x-1">
+                <div className="col-span-2">
+                  <div>
+                    <img
+                      className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
+                      src={select_merchandise.AdvertiserLogo}
+                      alt={select_merchandise.AdvertiserName}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold text-[#2F3847]">
+                        {select_merchandise.AdvertiserName}
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-sm text-[#6F6F6F]">
+                        {select_merchandise.AccountCode}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-4 p-2">
+                  <div>
+                    <div className="font-poppins font-bold">Booking Name :</div>
+                  </div>
+                  <div className="mt-3">
+                    <input
+                      onChange={(e) => setBookingName(e.target.value)}
+                      value={booking_name}
+                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
+                      placeholder="Enter Booking Name"
+                    />
+                  </div>
+                  <div className="mt-10">
+                    <div className="font-poppins font-bold">Slot Per Day</div>
+                  </div>
+                  <div className="mt-3">
+                    <input
+                      onChange={(e) => setBookingSlot(e.target.value)}
+                      value={booking_slot}
+                      type="number"
+                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
+                      placeholder="Enter Slot Per Day"
+                    />
+                  </div>
+                  <div className="mt-10">
+                    <div className="font-poppins font-bold">
+                      Booking Period :
+                    </div>
+                  </div>
+                  <div className="mt-3 flex justify-center items-center">
+                    <div className="font-poppins text-[#7C7B7B]">
+                      {`Your Booking Period :  ${format(
+                        selected_dates[0],
+                        "EEE dd MMM yyyy"
+                      )} - ${format(
+                        selected_dates[selected_dates.length - 1],
+                        "EEE dd MMM yyyy"
+                      )}`}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </>
+          </>
+        );
         break;
       case "4":
-        return <>
-          <div className="flex items-center justify-center mt-5">
-            <div className="text-[56px] font-poppins font-bold text-[#2F3847]">
-              Booking is Created
+        return (
+          <>
+            <div className="flex items-center justify-center mt-5">
+              <div className="text-[56px] font-poppins font-bold text-[#2F3847]">
+                Booking is Created
+              </div>
             </div>
-          </div>
-          <div className="flex items-center justify-center mt-2">
-            <div className="text-sm font-poppins  text-[#2F3847]">
-              Name your booking, select merchandise, and content type to
-              create a new booking. Personalize your campaign for maximum
-              impact.
+            <div className="flex items-center justify-center mt-2">
+              <div className="text-sm font-poppins  text-[#2F3847]">
+                Name your booking, select merchandise, and content type to
+                create a new booking. Personalize your campaign for maximum
+                impact.
+              </div>
             </div>
-          </div>
-          <div className="mt-20">
-            <div className=" grid grid-cols-6 w-[50%] mx-auto space-x-[-10%]">
-              <div className="col-span-3">
-                <div>
-                  <img
-                    className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl `}
-                    src={select_merchandise.AdvertiserLogo}
-                    alt={select_merchandise.AdvertiserName}
-                  />
-                </div>
-                <div className="mt-2">
-                  <div className="flex justify-center items-center">
-                    <div className="font-poppins text-xl font-bold text-[#2F3847]">
-                      {select_merchandise.AdvertiserName}
+            <div className="mt-20">
+              <div className=" grid grid-cols-6 w-[50%] mx-auto space-x-[-10%]">
+                <div className="col-span-3">
+                  <div>
+                    <img
+                      className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
+                      src={select_merchandise.AdvertiserLogo}
+                      alt={select_merchandise.AdvertiserName}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold text-[#2F3847]">
+                        {select_merchandise.AdvertiserName}
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-sm text-[#6F6F6F]">
+                        {select_merchandise.AccountCode}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex justify-center items-center">
-                    <div className="font-poppins text-sm text-[#6F6F6F]">
-                      {select_merchandise.AccountCode}
+                </div>
+                <div className="col-span-3 p-2">
+                  <div>
+                    <div className="font-poppins font-bold text-4xl underline">
+                      Booking Name
+                    </div>
+                  </div>
+                  <div className="mt-5">
+                    <div className="font-poppins font-bold text-2xl">
+                      {booking_name}
+                    </div>
+                  </div>
+                  <div className="mt-5">
+                    <div className="font-poppins font-bold text-2xl">
+                      {booking_slot} Slot Per Day
+                    </div>
+                  </div>
+                  <div className="mt-5 flex">
+                    <div className="font-poppins font-bold text-2xl">
+                      {`${format(
+                        selected_dates[0],
+                        "EEE dd MMM yyyy"
+                      )} - ${format(
+                        selected_dates[selected_dates.length - 1],
+                        "EEE dd MMM yyyy"
+                      )}`}
+                    </div>
+                  </div>
+                  <div className="mt-5">
+                    <div className="font-poppins font-bold text-4xl">
+                      is Created
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="col-span-3 p-2">
-                <div>
-                  <div className="font-poppins font-bold text-4xl underline">
-                    Booking Name
-                  </div>
-                </div>
-                <div className="mt-5">
-                  <div className="font-poppins font-bold text-2xl">
-                    {booking_name}
-                  </div>
-                </div>
-                <div className="mt-5">
-                  <div className="font-poppins font-bold text-2xl">
-                    {booking_slot} Slot Per Day
-                  </div>
-                </div>
-                <div className="mt-5 flex">
-                  <div className="font-poppins font-bold text-2xl">
-                    {`${format(
-                      selected_dates[0],
-                      "EEE dd MMM yyyy"
-                    )} - ${format(
-                      selected_dates[selected_dates.length - 1],
-                      "EEE dd MMM yyyy"
-                    )}`}
-                  </div>
-                </div>
-                <div className="mt-5">
-                  <div className="font-poppins font-bold text-4xl">
-                    is Created
-                  </div>
-                </div>
+            </div>
+            <div className="mt-16 flex justify-center items-center space-x-6">
+              <div
+                onClick={() => handleSaveBooking()}
+                className="border-2 border-[#6425FE] bg-[#6425FE] w-48 h-10 flex items-center justify-center cursor-pointer"
+              >
+                <button className="text-white font-poppins">OK</button>
               </div>
             </div>
-          </div>
-          <div className="mt-16 flex justify-center items-center space-x-6">
-            <div
-              onClick={() => handleSaveBooking()}
-              className="border-2 border-[#6425FE] bg-[#6425FE] w-48 h-10 flex items-center justify-center cursor-pointer"
-            >
-              <button className="text-white font-poppins">OK</button>
+            <div className="mt-2 flex justify-center items-center">
+              <div className="flex items-center justify-center cursor-pointer">
+                <button className="font-poppins text-xs">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="mt-2 flex justify-center items-center">
-            <div className="flex items-center justify-center cursor-pointer">
-              <button className="font-poppins text-xs">
-                Lorem Ipsum is simply dummy text of the printing and
-                typesetting industry.
-              </button>
-            </div>
-          </div>
-        </>
+          </>
+        );
         break;
     }
-  }
+  };
 
   return (
     <>
@@ -728,10 +739,15 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         </div>
         {/* Second div (gray background) */}
 
-        <New_Booking_Steps_Modal options={STEP_OPTIONS} currentStep={parseInt(step)} handleNextStep={handleNextStep} handleBackStep={handleBackStep} setStep={setStep}>
+        <New_Booking_Steps_Modal
+          options={STEP_OPTIONS}
+          currentStep={parseInt(step)}
+          handleNextStep={handleNextStep}
+          handleBackStep={handleBackStep}
+          setStep={setStep}
+        >
           {renderStepContent(step)}
         </New_Booking_Steps_Modal>
-
       </div>
 
       {showCreateMerchandise && (

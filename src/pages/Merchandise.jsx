@@ -143,7 +143,7 @@ const Merchandise = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer"
+                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
                     src={items.AdvertiserLogo || empty_img}
                     alt={items.AdvertiserName}
                   />

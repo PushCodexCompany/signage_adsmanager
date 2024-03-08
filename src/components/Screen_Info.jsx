@@ -115,7 +115,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                           <img
                             src={selectInfoScreen.img}
                             className="object-cover w-full h-full"
-                            alt="Image"
+                            alt="placeImage"
                           />
                         </div>
                       </div>
@@ -124,7 +124,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                           <img
                             src={selectInfoScreen.latitudeImg}
                             className="object-cover w-full h-full"
-                            alt="Image"
+                            alt="latImage"
                           />
                         </div>
                       </div>
