@@ -641,7 +641,7 @@ const Create_Booking = () => {
       item.media_name.toLowerCase().includes(value.toLowerCase())
     );
 
-    setMediaList(results);
+    setItemsPanel2(results);
   };
 
   const [itemsPanel1, setItemsPanel1] = useState([]);
@@ -662,6 +662,7 @@ const Create_Booking = () => {
         setItemsPanel1({
           ...itemsPanel1,
           value: {
+            ...itemsPanel1.value,
             media_list: updatedMediaList,
           },
         });
@@ -714,13 +715,12 @@ const Create_Booking = () => {
       // *** Doesn'y have to only be at the end of the list to be able to insert dragged item
       // *** New media must be able to be inserted between existing media
 
-
       const insert = (arr, index, newItem) => [
         ...arr.slice(0, index),
 
         newItem,
 
-        ...arr.slice(index)
+        ...arr.slice(index),
       ];
 
       //ToDo
@@ -729,30 +729,40 @@ const Create_Booking = () => {
       // 3. Check dropped index to determine where to insert new media
 
       var newDestinationItems = [...destinationItems];
-      if (
-        destination.droppableId === "panel-1"
-      ) {
+      if (destination.droppableId === "panel-1") {
         const draggedItem = sourceItems.find(
           (item) =>
             item.media_id === parseInt(result.draggableId.split("-")[1]) + 1
         );
 
-        newDestinationItems = insert(destinationItems, destination.index, { ...draggedItem, slot_size: 1 })
+        // console.log("destinationItems " + JSON.stringify(destinationItems));
+
+        // console.log("inserting at index " + destination.index);
+        newDestinationItems = insert(destinationItems, destination.index, {
+          ...draggedItem,
+          slot_size: 1,
+        });
+        // console.log(
+        //   "newDestinationItems " + JSON.stringify(newDestinationItems)
+        // );
         // destinationItems[lastIndexWithData + 1] = { ...draggedItem };
         // destinationItems[destination.index] = { ...draggedItem };
       }
       // Update state
       // *** Here must be destination not source
       if (destination.droppableId === "panel-1") {
-
+        // console.log(
+        //   "setting new medialist " +
+        //     JSON.stringify(newDestinationItems.map((i) => i.media_id))
+        // );
         setItemsPanel1({
           ...itemsPanel1,
           value: {
+            ...itemsPanel1.value,
             media_list: newDestinationItems,
           },
         });
       }
-
     }
   };
 
@@ -789,15 +799,13 @@ const Create_Booking = () => {
   const handleRemoveMediaPlaylistItem = (index) => {
     const updatedMediaList = [...itemsPanel1.value.media_list]; // Access the media_list array inside value object
 
-
-    const target = { ...updatedMediaList[index] }
+    const target = { ...updatedMediaList[index] };
 
     //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
-      target.slot_size = target.slot_size - 1
-    }
-    else {
-      target.slot_size = 0
+      target.slot_size = target.slot_size - 1;
+    } else {
+      target.slot_size = 0;
     }
 
     //remove if size = 0
@@ -826,10 +834,12 @@ const Create_Booking = () => {
             return acc;
           }, []);
 
-          const nullItems = updatedMediaList.filter((item) => item.media_id === null);
+          const nullItems = updatedMediaList.filter(
+            (item) => item.media_id === null
+          );
           nullItems.forEach((item) => output_data.push(item));
 
-          console.log("output_data " + JSON.stringify(output_data))
+          // console.log("output_data " + JSON.stringify(output_data));
           setItemsPanel1((prevState) => ({
             ...prevState,
             value: {
@@ -838,13 +848,8 @@ const Create_Booking = () => {
             },
           }));
         }
-
-      })
-
-
-
-    }
-    else {
+      });
+    } else {
       updatedMediaList[index] = { ...target };
       const output_data = updatedMediaList.reduce((acc, item) => {
         if (item.media_id !== null) {
@@ -853,10 +858,12 @@ const Create_Booking = () => {
         return acc;
       }, []);
 
-      const nullItems = updatedMediaList.filter((item) => item.media_id === null);
+      const nullItems = updatedMediaList.filter(
+        (item) => item.media_id === null
+      );
       nullItems.forEach((item) => output_data.push(item));
 
-      console.log("output_data " + JSON.stringify(output_data))
+      // console.log("output_data " + JSON.stringify(output_data));
       setItemsPanel1((prevState) => ({
         ...prevState,
         value: {
@@ -872,16 +879,16 @@ const Create_Booking = () => {
   const handleAddMediaPlaylistItem = (index) => {
     const updatedMediaList = [...itemsPanel1.value.media_list];
 
-    const target = updatedMediaList[index]
+    const target = updatedMediaList[index];
 
     //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
-      target.slot_size = target.slot_size + 1
-    }
-    else {
-      target.slot_size = 2
+      target.slot_size = target.slot_size + 1;
+    } else {
+      target.slot_size = 2;
     }
 
+    // console.log("updatedMediaList " + JSON.stringify(updatedMediaList));
     setItemsPanel1((prevState) => ({
       ...prevState,
       value: {
@@ -908,85 +915,86 @@ const Create_Booking = () => {
   //   }));
   // };
 
-  const renderMediaList = (media_list) => {
-
-    const nullFreeList = media_list.filter((it) => (it.media_id !== null));
+  const renderMediaList = (slots, media_list) => {
+    const nullFreeList = media_list.filter((it) => it.media_id !== null);
     var currentIndex = 0;
     var accumulatecSlotSize = 1;
 
     // *** Need to get the actual booking size
-    const bookingSize = 15;
+    // const slots = 15;
+
     const mediaSize = nullFreeList.reduce((acc, b) => {
-
       var slotSizeB = 1;
-      if ("slot_size" in b)
-        slotSizeB = b.slot_size;
+      if ("slot_size" in b) slotSizeB = b.slot_size;
 
-      return acc + slotSizeB
-    }, 0)
+      return acc + slotSizeB;
+    }, 0);
 
     const emptySlots = [];
 
-    for (var i = mediaSize; i < bookingSize; i++) {
-      emptySlots.push({ "media_id": null, "media_name": null, "media_type": null, "media_size": null, "media_duration": null, "slot_size": 1, "slot_num": i + 1 })
+    // console.log("media_list : " + JSON.stringify(media_list));
+    // console.log("mediaSize : " + mediaSize);
+    // console.log("bookingSize : " + bookingSize);
+    for (var i = mediaSize; i < slots; i++) {
+      emptySlots.push({
+        media_id: null,
+        media_name: null,
+        media_type: null,
+        media_size: null,
+        media_duration: null,
+        slot_size: 1,
+        slot_num: i + 1,
+      });
     }
 
-    const processedMediaList = [...nullFreeList, ...emptySlots]
+    const processedMediaList = [...nullFreeList, ...emptySlots];
 
-    return (
-      processedMediaList.map(
-        (items, index) => {
-          // const prevItem =
-          //   index > 0
-          //     ? media_list[
-          //     index - 1
-          //     ]
-          //     : null;
-          // const nextItem =
-          //   index <
-          //     media_list.length - 1
-          //     ? media_list[
-          //     index + 1
-          //     ]
-          //     : null;
+    return processedMediaList.map((items, index) => {
+      // const prevItem =
+      //   index > 0
+      //     ? media_list[
+      //     index - 1
+      //     ]
+      //     : null;
+      // const nextItem =
+      //   index <
+      //     media_list.length - 1
+      //     ? media_list[
+      //     index + 1
+      //     ]
+      //     : null;
 
-          const slotSize = ("slot_size" in items) ? items.slot_size : 1;
-          // *** use dynamic height depending on slot_size
-          const itemHeight = 80 * slotSize;
+      const slotSize = "slot_size" in items ? items.slot_size : 1;
+      // *** use dynamic height depending on slot_size
+      const itemHeight = 80 * slotSize;
 
-          console.log("media_id itemHeight : " + items.media_id + " " + itemHeight)
-          return (
-            <Draggable
-              key={`panel1-${index}`}
-              draggableId={`panel1-${index}`}
-              index={index}
+      // console.log("media_id itemHeight : " + items.media_id + " " + itemHeight);
+      return (
+        <Draggable
+          key={`panel1-${index}`}
+          draggableId={`panel1-${index}`}
+          index={index}
+        >
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              className={`col-span-11`}
             >
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                  className={`col-span-11`}
-                >
-                  {items.media_id ? (
-                    <div className="flex items-center mr-1">
-                      <div>
-                        {processedMediaList.filter(
-                          (item) =>
-                            item.media_id === null
-                        ).length > 0 && (
-                            <>
-                              <IoIosAddCircle
-                                size={24}
-                                className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                onClick={() =>
-                                  handleAddMediaPlaylistItem(
-                                    index
-                                  )
-                                }
-                              />
+              {items.media_id ? (
+                <div className="flex items-center mr-1">
+                  <div>
+                    {processedMediaList.filter((item) => item.media_id === null)
+                      .length > 0 && (
+                        <>
+                          <IoIosAddCircle
+                            size={24}
+                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                            onClick={() => handleAddMediaPlaylistItem(index)}
+                          />
 
-                              {/* {prevItem?.media_id ===
+                          {/* {prevItem?.media_id ===
                                 items?.media_id ? (
                                 <></>
                               ) : items?.media_id ===
@@ -1013,132 +1021,144 @@ const Create_Booking = () => {
                                   }
                                 />
                               )} */}
-                            </>
-                          )}
+                        </>
+                      )}
 
-                        <IoIosRemoveCircle
-                          size={24}
-                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                          onClick={() =>
-                            handleRemoveMediaPlaylistItem(
-                              index
-                            )
-                          }
-                        />
+                    <IoIosRemoveCircle
+                      size={24}
+                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      onClick={() => handleRemoveMediaPlaylistItem(index)}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <div
+                      className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[337px]`}
+                      style={{ height: `${itemHeight}px` }}
+                    // className={`grid grid-cols-11 h-[80px]  ${
+                    //   prevItem?.media_id ===
+                    //     items?.media_id &&
+                    //   items?.media_id ===
+                    //     nextItem?.media_id
+                    //     ? "border-  border-l border-r border-gray-300"
+                    //     : prevItem?.media_id ===
+                    //       items?.media_id
+                    //     ? "border-b  border-l border-r border-gray-300"
+                    //     : items?.media_id ===
+                    //       nextItem?.media_id
+                    //     ? "border-t  border-l border-r border-gray-300"
+                    //     : " border border-gray-300"
+                    // } w-[337px]`}
+                    >
+                      <div className="col-span-2 flex justify-center items-center">
+                        {items.media_type === "video" ? (
+                          <FiVideo size={30} className="text-[#6425FE]" />
+                        ) : (
+                          <FiImage size={30} className="text-[#6425FE]" />
+                        )}
                       </div>
-                      <div className="flex-1">
-                        <div
-                          className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[337px]`} style={{ height: `${itemHeight}px` }}
-                        // className={`grid grid-cols-11 h-[80px]  ${
-                        //   prevItem?.media_id ===
-                        //     items?.media_id &&
-                        //   items?.media_id ===
-                        //     nextItem?.media_id
-                        //     ? "border-  border-l border-r border-gray-300"
-                        //     : prevItem?.media_id ===
-                        //       items?.media_id
-                        //     ? "border-b  border-l border-r border-gray-300"
-                        //     : items?.media_id ===
-                        //       nextItem?.media_id
-                        //     ? "border-t  border-l border-r border-gray-300"
-                        //     : " border border-gray-300"
-                        // } w-[337px]`}
-                        >
-                          <div className="col-span-2 flex justify-center items-center">
-                            {items.media_type ===
-                              "video" ? (
-                              <FiVideo
-                                size={30}
-                                className="text-[#6425FE]"
-                              />
-                            ) : (
-                              <FiImage
-                                size={30}
-                                className="text-[#6425FE]"
-                              />
+                      <div className="col-span-8 flex justify-start items-center">
+                        <div>
+                          <div className="flex justify-start items-center">
+                            <div className="font-poppins text-[15px]">
+                              {items.media_name}
+                            </div>
+                          </div>
+                          <div className="flex justify-start items-center ">
+                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                              File Size : {items.media_size}
+                            </div>
+                          </div>
+                          <div className="flex justify-start items-center ">
+                            {items.media_duration > 0 && (
+                              <div className="font-poppins text-[15px]">
+                                Duration : {items.media_duration} sec
+                              </div>
                             )}
                           </div>
-                          <div className="col-span-8 flex justify-start items-center">
-                            <div >
-                              <div className="flex justify-start items-center">
-                                <div className="font-poppins text-[15px]">
-                                  {items.media_name}
-                                </div>
-                              </div>
-                              <div className="flex justify-start items-center ">
-                                <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                  File Size :{" "}
-                                  {items.media_size}
-                                </div>
-                              </div>
-                              <div className="flex justify-start items-center ">
-                                {items.media_duration >
-                                  0 && (
-                                    <div className="font-poppins text-[15px]">
-                                      Duration :{" "}
-                                      {
-                                        items.media_duration
-                                      }{" "}
-                                      sec
-                                    </div>
-                                  )}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-span-1 flex justify-start items-center">
-                            <MdDragHandle
-                              size={26}
-                              className="text-[#6425FE]"
-                            />
-                          </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="flex items-center" key={`empty${currentIndex}`}>
-                      <IoIosRemoveCircle
-                        size={24}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
-                      />
-                      <div className="flex-1">
-                        <div
-                          onClick={() => {
-                            setOpenModalUploadMedia(
-                              !openModalUploadNewMedia
-                            );
-                            setOpenAdsAllocationModal(
-                              !openAdsAllocationModal
-                            );
-                          }}
-                          className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer"
-                        >
-                          <div className="col-span-2 flex justify-center items-center">
-                            <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
-                              {items.slot_num}
-                            </div>
-                          </div>
-                          <div className="col-span-8 flex justify-start items-center">
-                            <div className="font-poppins text-[#2F3847] text-[16px]">
-                              Drag Media From
-                              Library or Click for
-                              Upload New Media
-                            </div>
-                          </div>
-                          <div className="col-span-1" />
-                        </div>
+                      <div className="col-span-1 flex justify-start items-center">
+                        <MdDragHandle size={26} className="text-[#6425FE]" />
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
-              )
-              }
-            </Draggable>
-          );
-        }
-      )
-    )
-  }
+              ) : (
+                <div className="flex items-center" key={`empty${currentIndex}`}>
+                  <IoIosRemoveCircle
+                    size={24}
+                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
+                  />
+                  <div className="flex-1">
+                    <div
+                      onClick={() => {
+                        setOpenModalUploadMedia(!openModalUploadNewMedia);
+                        setOpenAdsAllocationModal(!openAdsAllocationModal);
+                      }}
+                      className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer"
+                    >
+                      <div className="col-span-2 flex justify-center items-center">
+                        <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
+                          {items.slot_num}
+                        </div>
+                      </div>
+                      <div className="col-span-8 flex justify-start items-center">
+                        <div className="font-poppins text-[#2F3847] text-[16px]">
+                          Drag Media From Library or Click for Upload New Media
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </Draggable>
+      );
+    });
+  };
 
+  const renderMediaListBox = (items) => {
+    const nullFreeList = items.media_list.filter((it) => it.media_id !== null);
+
+    const mediaSize = nullFreeList.length;
+
+    const emptySlots = [];
+
+    for (var i = mediaSize; i < items.slots; i++) {
+      emptySlots.push({
+        media_id: null,
+        media_name: null,
+        media_type: null,
+        media_size: null,
+        media_duration: null,
+        slot_size: 1,
+        slot_num: i + 1,
+      });
+    }
+
+    const processedMediaList = [...nullFreeList, ...emptySlots];
+
+    console.log("processedMediaList", processedMediaList);
+
+    return (
+      <>
+        {processedMediaList.map((item, index2) => (
+          <div key={index2} className="w-[20%] p-1">
+            <div
+              className={`w-[36px] h-[36px] ${item.media_id
+                  ? "bg-white border border-[#D9D9D9]"
+                  : "bg-[#D9D9D9]"
+                } flex justify-center items-center`}
+            >
+              {item.media_id ? <IoIosPlayCircle color="#6425FE" /> : ""}
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  };
   return (
     <>
       <Navbar />
@@ -1345,7 +1365,7 @@ const Create_Booking = () => {
             <div className="col-span-2">
               <div>
                 <img
-                  className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl `}
+                  className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
                   src={merchandise.AdvertiserLogo}
                   alt={merchandise.AdvertiserName}
                 />
@@ -1452,8 +1472,8 @@ const Create_Booking = () => {
                       >
                         <div
                           className={`border border-gray-300 rounded-lg w-[80%] h-[75px] ${screenData.some((screen) => screen.id === items.id)
-                            ? "bg-[#FFBD49]"
-                            : ""
+                              ? "bg-[#FFBD49]"
+                              : ""
                             }`}
                           onClick={() => toggleScreenFromAllScreen(items.id)}
                         >
@@ -1589,7 +1609,7 @@ const Create_Booking = () => {
                     <div className="col-span-1">
                       <div className="min-w-[100%]">
                         <div
-                          onClick={() => console.log("Clear Selection")}
+                          // onClick={() => console.log("Clear Selection")}
                           className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
                         >
                           <div className="text-xs font-poppins text-white">
@@ -1681,27 +1701,7 @@ const Create_Booking = () => {
                                         <div className="grid grid-cols-6 space-x-1">
                                           <div className="col-span-5">
                                             <div className="flex flex-wrap">
-                                              {items.media_list.map(
-                                                (item, index2) => (
-                                                  <div
-                                                    key={index2}
-                                                    className="w-[20%] p-1"
-                                                  >
-                                                    <div
-                                                      className={`w-[36px] h-[36px] ${item.media_id
-                                                        ? "bg-white border border-[#D9D9D9]"
-                                                        : "bg-[#D9D9D9] "
-                                                        } flex justify-center items-center`}
-                                                    >
-                                                      {item.media_id ? (
-                                                        <IoIosPlayCircle color="#6425FE" />
-                                                      ) : (
-                                                        ""
-                                                      )}
-                                                    </div>
-                                                  </div>
-                                                )
-                                              )}
+                                              {renderMediaListBox(items)}
                                             </div>
                                           </div>
                                           <div
@@ -1771,9 +1771,9 @@ const Create_Booking = () => {
                     <div className="col-span-1">
                       <div className="min-w-[100%]">
                         <div
-                          onClick={() =>
-                            console.log("Select all", booking_date)
-                          }
+                          // onClick={() =>
+                          //   console.log("Select all", booking_date)
+                          // }
                           className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
                         >
                           <div className="text-xs font-poppins text-white">
@@ -1868,19 +1868,19 @@ const Create_Booking = () => {
                                               dateIndex &&
                                               bookingItem.status === true
                                           )
-                                            ? "bg-[#FD6822] cursor-pointer"
-                                            : bookingSelect.some(
-                                              (bookingItem) =>
-                                                bookingItem.screenIndex ===
-                                                screenIndex &&
-                                                bookingItem.dateIndex ===
-                                                dateIndex
-                                            )
-                                              ? "bg-[#FFBD49] cursor-pointer"
-                                              : items2.slot - items2.booking >=
-                                                booking_slot
-                                                ? "bg-[#018C41] cursor-pointer"
-                                                : "bg-[#5C5C5C] pointer-events-none"
+                                              ? "bg-[#FD6822] cursor-pointer"
+                                              : bookingSelect.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                  dateIndex
+                                              )
+                                                ? "bg-[#FFBD49] cursor-pointer"
+                                                : items2.slot - items2.booking >=
+                                                  booking_slot
+                                                  ? "bg-[#018C41] cursor-pointer"
+                                                  : "bg-[#5C5C5C] pointer-events-none"
                                             } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
                                         >
                                           <div
@@ -1892,20 +1892,20 @@ const Create_Booking = () => {
                                                 dateIndex &&
                                                 bookingItem.status === true
                                             )
-                                              ? "text-white"
-                                              : bookingSelect.some(
-                                                (bookingItem) =>
-                                                  bookingItem.screenIndex ===
-                                                  screenIndex &&
-                                                  bookingItem.dateIndex ===
-                                                  dateIndex
-                                              )
-                                                ? "text-[#4A4A4A]"
-                                                : items2.slot -
-                                                  items2.booking >=
-                                                  booking_slot
-                                                  ? "text-white"
-                                                  : "text-white"
+                                                ? "text-white"
+                                                : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                    dateIndex
+                                                )
+                                                  ? "text-[#4A4A4A]"
+                                                  : items2.slot -
+                                                    items2.booking >=
+                                                    booking_slot
+                                                    ? "text-white"
+                                                    : "text-white"
                                               }`}
                                           >
                                             {bookingSelect.some(
@@ -2667,8 +2667,8 @@ const Create_Booking = () => {
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               className={`h-6 w-6 text-white ${selectAllPubishScreen
-                                ? "opacity-100"
-                                : "opacity-0"
+                                  ? "opacity-100"
+                                  : "opacity-0"
                                 } transition-opacity duration-300 ease-in-out`}
                               fill="none"
                               viewBox="0 0 24 24"
@@ -3145,9 +3145,7 @@ const Create_Booking = () => {
 
                       <div className="flex justify-center items-center space-x-2 mt-3 mb-2">
                         <button
-                          onClick={() =>
-                            console.log("item", media_list)
-                          }
+                          onClick={() => console.log("item", media_list)}
                           className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold"
                         >
                           Confirm
@@ -3182,7 +3180,10 @@ const Create_Booking = () => {
                                   {...provided.droppableProps}
                                   className="h-[680px] overflow-y-auto space-y-2"
                                 >
-                                  {renderMediaList(itemsPanel1.value.media_list)}
+                                  {renderMediaList(
+                                    itemsPanel1.value.slots,
+                                    itemsPanel1.value.media_list
+                                  )}
 
                                   {provided.placeholder}
                                 </div>
@@ -3202,14 +3203,14 @@ const Create_Booking = () => {
                               <IoMdFolderOpen
                                 size={24}
                                 className={`mr-2 ${mediaAdsAllocationTab === "All"
-                                  ? "text-purple-600"
-                                  : "text-black"
+                                    ? "text-purple-600"
+                                    : "text-black"
                                   }`}
                               />
                               <div
                                 className={`font-poppins text-[14px] ${mediaAdsAllocationTab === "All"
-                                  ? "text-purple-600"
-                                  : "text-black"
+                                    ? "text-purple-600"
+                                    : "text-black"
                                   } flex items-center`}
                               >
                                 <span className="ml-1">All</span>
@@ -3217,22 +3218,22 @@ const Create_Booking = () => {
                             </button>
                             <button
                               className={`tablink flex items-center justify-center ${mediaAdsAllocationTab === "Video"
-                                ? "active"
-                                : ""
+                                  ? "active"
+                                  : ""
                                 }`}
                               onClick={() => openMediaAdsAllocationTab("Video")}
                             >
                               <FiVideo
                                 size={24}
                                 className={`mr-2 ${mediaAdsAllocationTab === "Video"
-                                  ? "text-purple-600"
-                                  : "text-black"
+                                    ? "text-purple-600"
+                                    : "text-black"
                                   }`}
                               />
                               <div
                                 className={`font-poppins text-[14px] ${mediaAdsAllocationTab === "Video"
-                                  ? "text-purple-600"
-                                  : "text-black"
+                                    ? "text-purple-600"
+                                    : "text-black"
                                   } flex items-center`}
                               >
                                 Video
@@ -3240,22 +3241,22 @@ const Create_Booking = () => {
                             </button>
                             <button
                               className={`tablink flex items-center justify-center ${mediaAdsAllocationTab === "Image"
-                                ? "active"
-                                : ""
+                                  ? "active"
+                                  : ""
                                 }`}
                               onClick={() => openMediaAdsAllocationTab("Image")}
                             >
                               <FiImage
                                 size={24}
                                 className={`mr-2 ${mediaAdsAllocationTab === "Image"
-                                  ? "text-purple-600"
-                                  : "text-black"
+                                    ? "text-purple-600"
+                                    : "text-black"
                                   }`}
                               />
                               <div
                                 className={`font-poppins text-[14px] ${mediaAdsAllocationTab === "Image"
-                                  ? "text-purple-600"
-                                  : "text-black"
+                                    ? "text-purple-600"
+                                    : "text-black"
                                   } flex items-center`}
                               >
                                 Image
@@ -3593,472 +3594,465 @@ const Create_Booking = () => {
                 </div>
                 {/* col 2 */}
               </div>
-            </div >
-          </div >
-        </div >
+            </div>
+          </div>
+        </div>
       )}
 
-      {
-        openModalUploadNewMedia && (
-          <a
-            onClick={() => {
-              setOpenModalUploadMedia(!openModalUploadNewMedia);
-              setOpenAdsAllocationModal(!openAdsAllocationModal);
-            }}
-            className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-          />
-        )
-      }
+      {openModalUploadNewMedia && (
+        <a
+          onClick={() => {
+            setOpenModalUploadMedia(!openModalUploadNewMedia);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
 
-      {
-        openModalUploadNewMedia && (
-          <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-            {/* First div (circle) */}
-            <div className="absolute right-12 top-14 lg:top-12 lg:right-[350px] m-4 z-30">
-              <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-                <button
-                  onClick={() => {
-                    setOpenModalUploadMedia(!openModalUploadNewMedia);
-                    setOpenAdsAllocationModal(!openAdsAllocationModal);
-                    setUploads({});
-                  }}
-                >
-                  <AiOutlineClose size={25} color={"#6425FE"} />
-                </button>
+      {openModalUploadNewMedia && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-14 lg:top-12 lg:right-[350px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => {
+                  setOpenModalUploadMedia(!openModalUploadNewMedia);
+                  setOpenAdsAllocationModal(!openAdsAllocationModal);
+                  setUploads({});
+                }}
+              >
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-3/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">New Media</div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
               </div>
             </div>
-            {/* Second div (gray background) */}
-            <div className="bg-[#FFFFFF] w-4/5 lg:w-3/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-              <div className="flex justify-center items-center mt-8">
-                <div className="font-poppins text-5xl font-bold">New Media</div>
-              </div>
-              <div className="flex justify-center items-center mt-2">
-                <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                  Lorem Ipsum is simply dummy text of the printing and typesetting
-                  industry.
-                </div>
-              </div>
 
-              <div className="flex justify-center items-center mt-2 p-5">
-                <div className="col-span-1 border-dashed border-gray-300 border-1">
-                  <div className="p-4">
-                    <div className="flex items-center justify-center mt-2">
-                      <div className="font-poppins text-3xl font-bold">
-                        Rule Set 1
-                      </div>
+            <div className="flex justify-center items-center mt-2 p-5">
+              <div className="col-span-1 border-dashed border-gray-300 border-1">
+                <div className="p-4">
+                  <div className="flex items-center justify-center mt-2">
+                    <div className="font-poppins text-3xl font-bold">
+                      Rule Set 1
                     </div>
-                    <div className="flex items-center justify-center mt-7">
-                      {!uploads.content ? (
-                        <div>
-                          <button onClick={() => uploadFile()}>
-                            <AiOutlineCloudUpload size={100} color={"#D9D9D9"} />
-                          </button>
-                          {uploads.content && (
-                            <div>
-                              <p>File Uploaded:</p>
-                              <img src={uploads} alt="Uploaded File" />
-                            </div>
-                          )}
-                        </div>
-                      ) : (
-                        <BsCheckCircle size={100} color={"#00CB45"} />
-                      )}
-                    </div>
-                    <div className="flex items-center justify-center mt-14">
-                      <div className="font-poppins text-xl font-bold">
-                        {uploads.name}
+                  </div>
+                  <div className="flex items-center justify-center mt-7">
+                    {!uploads.content ? (
+                      <div>
+                        <button onClick={() => uploadFile()}>
+                          <AiOutlineCloudUpload size={100} color={"#D9D9D9"} />
+                        </button>
+                        {uploads.content && (
+                          <div>
+                            <p>File Uploaded:</p>
+                            <img src={uploads} alt="Uploaded File" />
+                          </div>
+                        )}
                       </div>
+                    ) : (
+                      <BsCheckCircle size={100} color={"#00CB45"} />
+                    )}
+                  </div>
+                  <div className="flex items-center justify-center mt-14">
+                    <div className="font-poppins text-xl font-bold">
+                      {uploads.name}
                     </div>
-                    <div className="flex items-center justify-center mt-5">
-                      <div className="font-poppins text-xl font-bold">
-                        Requirements *
-                      </div>
+                  </div>
+                  <div className="flex items-center justify-center mt-5">
+                    <div className="font-poppins text-xl font-bold">
+                      Requirements *
                     </div>
-                    <div className="flex items-center justify-center ">
-                      <div className="font-poppins text-xl font-bold">
-                        Resolution : 1920 x 1080
-                      </div>
+                  </div>
+                  <div className="flex items-center justify-center ">
+                    <div className="font-poppins text-xl font-bold">
+                      Resolution : 1920 x 1080
                     </div>
-                    <div className="flex items-center justify-center mb-16">
-                      <div className="font-poppins text-xl font-bold">
-                        {`Size : <100Mb`}
-                      </div>
+                  </div>
+                  <div className="flex items-center justify-center mb-16">
+                    <div className="font-poppins text-xl font-bold">
+                      {`Size : <100Mb`}
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="flex justify-center items-center mt-1">
-                <button
-                  onClick={() => console.log(uploads)}
-                  className="bg-[#6425FE] w-72 h-10 text-white font-poppins"
-                >
-                  Submit
-                </button>
-              </div>
-              <div className="flex justify-center items-center mt-3 mb-3">
-                <div className="text-sm font-poppins">
-                  Ensure compliance with predefined media rules for each screen.
-                  Your ads must adhere to specific guidelines for seamless display
-                </div>
+            <div className="flex justify-center items-center mt-1">
+              <button
+                onClick={() => console.log(uploads)}
+                className="bg-[#6425FE] w-72 h-10 text-white font-poppins"
+              >
+                Submit
+              </button>
+            </div>
+            <div className="flex justify-center items-center mt-3 mb-3">
+              <div className="text-sm font-poppins">
+                Ensure compliance with predefined media rules for each screen.
+                Your ads must adhere to specific guidelines for seamless display
               </div>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
 
-      {
-        isAddScreenOpen && (
-          <a
-            onClick={() => {
-              setIsAddScreenOpen(!isAddScreenOpen);
-              setOpenAdsAllocationModal(!openAdsAllocationModal);
-            }}
-            className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-          />
-        )
-      }
+      {isAddScreenOpen && (
+        <a
+          onClick={() => {
+            setIsAddScreenOpen(!isAddScreenOpen);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
 
-      {
-        isAddScreenOpen && (
-          <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-            {/* First div (circle) */}
-            <div className="absolute right-10 top-14 lg:top-5 lg:right-[160px] m-4 z-30">
-              <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-                <button
-                  onClick={() => {
-                    setIsAddScreenOpen(!isAddScreenOpen);
-                    setOpenAdsAllocationModal(!openAdsAllocationModal);
-                    setSelectedData([]);
-                  }}
-                >
-                  <IoIosClose size={25} color={"#6425FE"} />
-                </button>
+      {isAddScreenOpen && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-10 top-14 lg:top-5 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => {
+                  setIsAddScreenOpen(!isAddScreenOpen);
+                  setOpenAdsAllocationModal(!openAdsAllocationModal);
+                  setSelectedData([]);
+                }}
+              >
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
+            <div className="flex justify-center items-center mt-5">
+              <div className="font-poppins text-5xl font-bold">
+                Select Screens
               </div>
             </div>
-            {/* Second div (gray background) */}
-            <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
-              <div className="flex justify-center items-center mt-5">
-                <div className="font-poppins text-5xl font-bold">
-                  Select Screens
-                </div>
-              </div>
-              <div className="mt-1">
-                <div className="grid grid-cols-4">
-                  <div className="flex justify-end items-center col-span-3">
-                    <div className="font-poppins text-xs lg:text-xl text-[#2F3847] mr-28">
-                      {`You Booking Period : ${format(
-                        booking_date[0],
-                        "EEE dd MMM yyyy"
-                      )} - ${format(
-                        booking_date[booking_date.length - 1],
-                        "EEE dd MMM yyyy"
-                      )}`}
-                    </div>
-                  </div>
-                  <div className="flex justify-end items-center col-span-1 ">
-                    <button
-                      onClick={() =>
-                        setOpenAddNewScreenModal(!openAddNewScreenModal)
-                      }
-                      className="bg-[#6425FE] w-[200px] h-[45px] rounded-lg text-white font-poppins mr-10"
-                    >
-                      New Screen
-                    </button>
+            <div className="mt-1">
+              <div className="grid grid-cols-4">
+                <div className="flex justify-end items-center col-span-3">
+                  <div className="font-poppins text-xs lg:text-xl text-[#2F3847] mr-28">
+                    {`You Booking Period : ${format(
+                      booking_date[0],
+                      "EEE dd MMM yyyy"
+                    )} - ${format(
+                      booking_date[booking_date.length - 1],
+                      "EEE dd MMM yyyy"
+                    )}`}
                   </div>
                 </div>
-              </div>
-              {/* Search Box */}
-              <div className="p-1 mt-1">
-                <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
-                  <div className="flex">
-                    <NavButton
-                      customFunc={search}
-                      title="Search"
-                      color="grey"
-                      icon={<IoIosSearch />}
-                    />
-                    <input
-                      className=" w-full h-[46px] rounded relative border-gray-500  transition font-poppins"
-                      type="text"
-                      name="name"
-                      placeholder="Search..."
-                    />
-                  </div>
+                <div className="flex justify-end items-center col-span-1 ">
+                  <button
+                    onClick={() =>
+                      setOpenAddNewScreenModal(!openAddNewScreenModal)
+                    }
+                    className="bg-[#6425FE] w-[200px] h-[45px] rounded-lg text-white font-poppins mr-10"
+                  >
+                    New Screen
+                  </button>
                 </div>
               </div>
-              {/* Search Box */}
-              {/* Select */}
-              <div className="mt-1">
-                <div className="relative flex flex-col  max-w-0  w-full border-b-4 border-gray-600">
-                  <div className="rounded-lg h-[50px] flex items-center shadow-md">
-                    <div className="flex flex-col lg:flex-row">
-                      <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
-                        <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                          <select
-                            name="sector"
-                            id="sector"
-                            onClick={toggleSectorSelect}
-                            onChange={handleStatusChange}
-                            className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                          >
-                            <option value="Sector">Sector</option>
-                            <option value="Portrait">Portrait</option>
-                            <option value="Landscape">Landscape</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isSectorOpen ? (
-                              <IoIosArrowUp size={18} color="#6425FE" />
-                            ) : (
-                              <IoIosArrowDown size={18} color="#6425FE" />
-                            )}
-                          </div>
+            </div>
+            {/* Search Box */}
+            <div className="p-1 mt-1">
+              <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
+                <div className="flex">
+                  <NavButton
+                    customFunc={search}
+                    title="Search"
+                    color="grey"
+                    icon={<IoIosSearch />}
+                  />
+                  <input
+                    className=" w-full h-[46px] rounded relative border-gray-500  transition font-poppins"
+                    type="text"
+                    name="name"
+                    placeholder="Search..."
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Search Box */}
+            {/* Select */}
+            <div className="mt-1">
+              <div className="relative flex flex-col  max-w-0  w-full border-b-4 border-gray-600">
+                <div className="rounded-lg h-[50px] flex items-center shadow-md">
+                  <div className="flex flex-col lg:flex-row">
+                    <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="sector"
+                          id="sector"
+                          onClick={toggleSectorSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Sector">Sector</option>
+                          <option value="Portrait">Portrait</option>
+                          <option value="Landscape">Landscape</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isSectorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
                         </div>
-                        <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                          <select
-                            name="region"
-                            id="region"
-                            onClick={toggleRegionSelect}
-                            onChange={handleStatusChange}
-                            className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                          >
-                            <option value="Region">Region</option>
-                            <option value="North">North</option>
-                            <option value="West">West</option>
-                            <option value="East">East</option>
-                            <option value="South">South</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                            {isRegionOpen ? (
-                              <IoIosArrowUp size={18} color="#6425FE" />
-                            ) : (
-                              <IoIosArrowDown size={18} color="#6425FE" />
-                            )}
-                          </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="region"
+                          id="region"
+                          onClick={toggleRegionSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Region">Region</option>
+                          <option value="North">North</option>
+                          <option value="West">West</option>
+                          <option value="East">East</option>
+                          <option value="South">South</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
+                          {isRegionOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
                         </div>
-                        <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                          <select
-                            name="store_cluster"
-                            id="store_cluster"
-                            onClick={toggleClustorSelect}
-                            onChange={handleStatusChange}
-                            className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                          >
-                            <option value="Store Cluster">Store Cluster</option>
-                            <option value="...">...</option>
-                            <option value="...">...</option>
-                            <option value="...">...</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isClustorOpen ? (
-                              <IoIosArrowUp size={18} color="#6425FE" />
-                            ) : (
-                              <IoIosArrowDown size={18} color="#6425FE" />
-                            )}
-                          </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="store_cluster"
+                          id="store_cluster"
+                          onClick={toggleClustorSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Store Cluster">Store Cluster</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isClustorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
                         </div>
-                        <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                          <select
-                            name="branch"
-                            id="branch"
-                            onClick={toggleBranchAddViewSelect}
-                            onChange={handleStatusChange}
-                            className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                          >
-                            <option value="Branch">Branch</option>
-                            <option value="...">...</option>
-                            <option value="...">...</option>
-                            <option value="...">...</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isBranchAddViewOpen ? (
-                              <IoIosArrowUp size={18} color="#6425FE" />
-                            ) : (
-                              <IoIosArrowDown size={18} color="#6425FE" />
-                            )}
-                          </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="branch"
+                          id="branch"
+                          onClick={toggleBranchAddViewSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Branch">Branch</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                          <option value="...">...</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isBranchAddViewOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
                         </div>
-                        <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                          <select
-                            name="department"
-                            id="department"
-                            onClick={toggleDepartmentAddViewSelect}
-                            onChange={handleStatusChange}
-                            className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                          >
-                            <option value="Department">Department</option>
-                            <option value="Beauty">Beauty</option>
-                            <option value="Toy">Toy</option>
-                            <option value="Electronics">Electronics</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isDepartmentAddViewOpen ? (
-                              <IoIosArrowUp size={18} color="#6425FE" />
-                            ) : (
-                              <IoIosArrowDown size={18} color="#6425FE" />
-                            )}
-                          </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="department"
+                          id="department"
+                          onClick={toggleDepartmentAddViewSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Department">Department</option>
+                          <option value="Beauty">Beauty</option>
+                          <option value="Toy">Toy</option>
+                          <option value="Electronics">Electronics</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isDepartmentAddViewOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
                         </div>
-                        <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                          <select
-                            name="floor"
-                            id="floor"
-                            onClick={toggleFloorSelect}
-                            onChange={handleStatusChange}
-                            className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                          >
-                            <option value="Floor">Floor</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isFloorOpen ? (
-                              <IoIosArrowUp size={18} color="#6425FE" />
-                            ) : (
-                              <IoIosArrowDown size={18} color="#6425FE" />
-                            )}
-                          </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="floor"
+                          id="floor"
+                          onClick={toggleFloorSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="Floor">Floor</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isFloorOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
                         </div>
-                        <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                          <select
-                            name="location"
-                            id="location"
-                            onClick={toggleLocationSelect}
-                            onChange={handleStatusChange}
-                            className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                          >
-                            <option value="location">Location</option>
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isLocationOpen ? (
-                              <IoIosArrowUp size={18} color="#6425FE" />
-                            ) : (
-                              <IoIosArrowDown size={18} color="#6425FE" />
-                            )}
-                          </div>
+                      </div>
+                      <div className="relative w-[80px] lg:w-[180px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
+                        <select
+                          name="location"
+                          id="location"
+                          onClick={toggleLocationSelect}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        >
+                          <option value="location">Location</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          {isLocationOpen ? (
+                            <IoIosArrowUp size={18} color="#6425FE" />
+                          ) : (
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              {/* Select */}
-              {/* Filter */}
-              <div className="mt-1">
-                <div className="flex">
-                  <div className="basis-12/12 ml-4">
-                    {filter_add_screen &&
-                      filter_add_screen.map((items, index) => (
-                        <button key={index} onClick={() => removeFilter(items)}>
-                          <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
-                            <div className="grid grid-cols-4">
-                              <div className="col-span-1 mt-[6px]">
-                                <div className="flex justify-end items-center">
-                                  <IoIosClose size="27" color="#6425FE" />
-                                </div>
-                              </div>
-                              <div className="col-span-3 mt-[8px]">
-                                <div className="flex justify-center items-center">
-                                  <div className="font-poppins text-sm">
-                                    {items}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </button>
-                      ))}
-                    {filter.length > 0 && (
-                      <button onClick={() => clearFilter()}>
-                        <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
-                          <div className="grid grid-cols-12">
+            </div>
+            {/* Select */}
+            {/* Filter */}
+            <div className="mt-1">
+              <div className="flex">
+                <div className="basis-12/12 ml-4">
+                  {filter_add_screen &&
+                    filter_add_screen.map((items, index) => (
+                      <button key={index} onClick={() => removeFilter(items)}>
+                        <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
+                          <div className="grid grid-cols-4">
                             <div className="col-span-1 mt-[6px]">
                               <div className="flex justify-end items-center">
                                 <IoIosClose size="27" color="#6425FE" />
                               </div>
                             </div>
-                            <div className="col-span-11 mt-[8px]">
+                            <div className="col-span-3 mt-[8px]">
                               <div className="flex justify-center items-center">
-                                <div className="font-poppins text-sm text-white">
-                                  Clear All
+                                <div className="font-poppins text-sm">
+                                  {items}
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </button>
-                    )}
-                  </div>
+                    ))}
+                  {filter.length > 0 && (
+                    <button onClick={() => clearFilter()}>
+                      <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+                        <div className="grid grid-cols-12">
+                          <div className="col-span-1 mt-[6px]">
+                            <div className="flex justify-end items-center">
+                              <IoIosClose size="27" color="#6425FE" />
+                            </div>
+                          </div>
+                          <div className="col-span-11 mt-[8px]">
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins text-sm text-white">
+                                Clear All
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  )}
                 </div>
               </div>
-              {/* Filter */}
-              <div className="mt-5 p-6">
-                <div className="font-poppins">
-                  *Search result displays only screens available in your booking
-                </div>
+            </div>
+            {/* Filter */}
+            <div className="mt-5 p-6">
+              <div className="font-poppins">
+                *Search result displays only screens available in your booking
               </div>
-              <div className="p-4">
-                <div className="w-auto h-[350px] overflow-y-auto">
-                  <table className="min-w-full border border-gray-300">
-                    <thead>
-                      <tr>
-                        <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                          <label className="inline-flex items-center space-x-2">
+            </div>
+            <div className="p-4">
+              <div className="w-auto h-[350px] overflow-y-auto">
+                <table className="min-w-full border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        <label className="inline-flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                            checked={selectAll}
+                            onChange={toggleAllCheckboxes}
+                          />
+                          <span
+                            className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${selectAll ? "bg-white" : ""
+                              }`}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className={`h-6 w-6 text-white ${selectAll ? "opacity-100" : "opacity-0"
+                                } transition-opacity duration-300 ease-in-out`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="#6425FE"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </span>
+                        </label>
+                      </th>
+                      <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Screen Name
+                      </th>
+                      <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Media Rule
+                      </th>
+                      <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Tag
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {screens.map((row, key) => (
+                      <tr key={row.id}>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="flex items-center">
                             <input
                               type="checkbox"
-                              className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                              checked={selectAll}
-                              onChange={toggleAllCheckboxes}
+                              className=" h-5 w-5 cursor-pointer"
+                              checked={checkboxes[row.id] || false}
+                              onChange={() => toggleCheckboxAddScreen(row.id)}
                             />
-                            <span
-                              className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${selectAll ? "bg-white" : ""
-                                }`}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className={`h-6 w-6 text-white ${selectAll ? "opacity-100" : "opacity-0"
-                                  } transition-opacity duration-300 ease-in-out`}
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="#6425FE"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="3"
-                                  d="M5 13l4 4L19 7"
-                                />
-                              </svg>
-                            </span>
-                          </label>
-                        </th>
-                        <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                          Screen Name
-                        </th>
-                        <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                          Location
-                        </th>
-                        <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                          Media Rule
-                        </th>
-                        <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                          Tag
-                        </th>
-                        <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {screens.map((row, key) => (
-                        <tr key={row.id}>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            <div className="flex items-center">
-                              <input
-                                type="checkbox"
-                                className=" h-5 w-5 cursor-pointer"
-                                checked={checkboxes[row.id] || false}
-                                onChange={() => toggleCheckboxAddScreen(row.id)}
-                              />
-                              {/* <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
+                            {/* <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
                               {checkboxes[row.id] && (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -4076,147 +4070,142 @@ const Create_Booking = () => {
                                 </svg>
                               )}
                             </span> */}
+                          </div>
+                        </td>
+                        <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="flex items-center">
+                            <div className="font-poppins text-xl font-bold">
+                              {row.name}
                             </div>
-                          </td>
-                          <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
-                            <div className="flex items-center">
-                              <div className="font-poppins text-xl font-bold">
-                                {row.name}
-                              </div>
-                              <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
-                            </div>
-                          </td>
-                          <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
-                            <div className="font-poppins text-sm text-[#59606C] font-bold">
-                              {row.location}
-                            </div>
-                            <div className="font-poppins text-sm font-bold">
-                              {row.province}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                            <div className="font-poppins font-bold">
-                              {row.media_rule}
-                            </div>
-                          </td>
-                          <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
-                            <div className="flex flex-wrap">
-                              {row.tag.map((items, index) => (
-                                <div
-                                  key={index}
-                                  className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1 px-2 py-1"
-                                  style={{ flexBasis: "calc(20% - 8px)" }}
-                                >
-                                  <div className="font-poppins text-xs font-bold">
-                                    {items}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                            <div className="space-x-2">
-                              <button
-                                className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
-                                onClick={() => alert(key)}
+                            <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                          </div>
+                        </td>
+                        <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="font-poppins text-sm text-[#59606C] font-bold">
+                            {row.location}
+                          </div>
+                          <div className="font-poppins text-sm font-bold">
+                            {row.province}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="font-poppins font-bold">
+                            {row.media_rule}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="flex flex-wrap">
+                            {row.tag.map((items, index) => (
+                              <div
+                                key={index}
+                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1 px-2 py-1"
+                                style={{ flexBasis: "calc(20% - 8px)" }}
                               >
-                                View Detail
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                                <div className="font-poppins text-xs font-bold">
+                                  {items}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                          <div className="space-x-2">
+                            <button
+                              className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
+                              onClick={() => alert(key)}
+                            >
+                              View Detail
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
+            </div>
 
-              <div className="mt-1 mb-3 flex items-center justify-center">
-                <button
-                  onClick={() => handleAddScreenAllocation()}
-                  className="w-[20%] bg-[#6425FE] text-white text-xl py-2 rounded-lg font-bold font-poppins "
-                >
-                  Add Screen
-                </button>
-              </div>
+            <div className="mt-1 mb-3 flex items-center justify-center">
+              <button
+                onClick={() => handleAddScreenAllocation()}
+                className="w-[20%] bg-[#6425FE] text-white text-xl py-2 rounded-lg font-bold font-poppins "
+              >
+                Add Screen
+              </button>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
 
-      {
-        modalPlayerOpen && (
-          <a
-            onClick={() => {
-              setModalPlayerOpen(!modalPlayerOpen);
-              setOpenAdsAllocationModal(!openAdsAllocationModal);
-            }}
-            className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-          />
-        )
-      }
+      {modalPlayerOpen && (
+        <a
+          onClick={() => {
+            setModalPlayerOpen(!modalPlayerOpen);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
 
-      {
-        modalPlayerOpen && (
-          <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-            {/* First div (circle) */}
-            <div
-              className={`absolute right-10 top-14  ${mediaDisplay.media_type === "image" ? " lg:top-24" : "lg:top-10"
-                }  lg:right-[160px] m-4 z-30`}
-            >
-              <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-                <button
-                  onClick={() => {
-                    setModalPlayerOpen(!modalPlayerOpen);
-                    setOpenAdsAllocationModal(!openAdsAllocationModal);
-                    setMediaDisplay([]);
-                  }}
-                >
-                  <IoIosClose size={25} color={"#6425FE"} />
-                </button>
+      {modalPlayerOpen && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div
+            className={`absolute right-10 top-14  ${mediaDisplay.media_type === "image" ? " lg:top-24" : "lg:top-10"
+              }  lg:right-[160px] m-4 z-30`}
+          >
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => {
+                  setModalPlayerOpen(!modalPlayerOpen);
+                  setOpenAdsAllocationModal(!openAdsAllocationModal);
+                  setMediaDisplay([]);
+                }}
+              >
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
+            <div className="flex justify-center items-center mt-5">
+              <div className="font-poppins text-5xl font-bold">
+                Media : {mediaDisplay.media_name}
               </div>
             </div>
-            {/* Second div (gray background) */}
-            <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
-              <div className="flex justify-center items-center mt-5">
-                <div className="font-poppins text-5xl font-bold">
-                  Media : {mediaDisplay.media_name}
-                </div>
+            <div className="mt-10">
+              <div className="flex justify-center items-center">
+                {mediaDisplay.media_type === "image" ? (
+                  <img
+                    className={`block mx-auto mt-30px w-[890px] h-[500px] rounded-3xl `}
+                    src={mediaDisplay.media}
+                    alt={mediaDisplay.media_name}
+                  />
+                ) : (
+                  <ReactPlayer
+                    className="react-player"
+                    url={mediaDisplay.media}
+                    muted
+                    autoplay
+                    loop
+                    playing
+                    width="70%"
+                    height="70%"
+                    controls={true}
+                  />
+                )}
               </div>
-              <div className="mt-10">
+              <div className="mt-5 mb-5">
                 <div className="flex justify-center items-center">
-                  {mediaDisplay.media_type === "image" ? (
-                    <img
-                      className={`block mx-auto mt-30px w-[890px] h-[500px] rounded-3xl `}
-                      src={mediaDisplay.media}
-                      alt={mediaDisplay.media_name}
-                    />
-                  ) : (
-                    <ReactPlayer
-                      className="react-player"
-                      url={mediaDisplay.media}
-                      muted
-                      autoplay
-                      loop
-                      playing
-                      width="70%"
-                      height="70%"
-                      controls={true}
-                    />
-                  )}
-                </div>
-                <div className="mt-5 mb-5">
-                  <div className="flex justify-center items-center">
-                    <div className="font-poppins text-2xl">
-                      <b>Media Size :</b> {mediaDisplay.media_size}
-                    </div>
+                  <div className="font-poppins text-2xl">
+                    <b>Media Size :</b> {mediaDisplay.media_size}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )
-      }
+        </div>
+      )}
     </>
   );
 };
