@@ -495,7 +495,7 @@ const User = () => {
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Sign Up To Unleash The Power Of Digital Advertising
+                Select Brands To Unleash The Power Of Digital Advertising
               </div>
             </div>
             <div className="mt-2 p-2">
@@ -760,7 +760,7 @@ const User = () => {
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Sign Up to unleash the power of digital advertising
+                Select Merchandise to unleash the power of digital advertising
               </div>
             </div>
             <div className="mt-2 p-2">

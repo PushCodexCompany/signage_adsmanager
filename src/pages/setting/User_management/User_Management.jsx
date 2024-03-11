@@ -1470,11 +1470,11 @@ const User_Management = () => {
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Sign Up to unleash the power of digital advertising
+                Select Merchandise to unleash the power of digital advertising
               </div>
             </div>
             <div className="mt-2 p-2">
-              <div className="h-[350px]  mt-8 overflow-y-auto">
+              <div className="h-[550px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {mockup_merchandise.map((item, index) => (
