@@ -30,7 +30,7 @@ const New_screen = () => {
   const [inDoorOutdoot, setIndoorOutDoor] = useState();
   const [openTime, setOpenTime] = useState();
   const [closeTime, setCloseTime] = useState();
-  const [pricing, setPricing] = useState();
+  const [slotPerDay, setSlotPerDay] = useState();
   const [IsMaintenanceSwitchOn, setIsMaintenanceSwitchOn] = useState(false);
   const [notificationDelay, setNotificationDelay] = useState();
 
@@ -52,7 +52,7 @@ const New_screen = () => {
       direction,
       position,
       officeHours,
-      price,
+      slotPerDay,
       maintenanceNoti,
     } = location.state.screen;
 
@@ -69,7 +69,7 @@ const New_screen = () => {
     setIndoorOutDoor(position);
     setOpenTime(officeHours[0]);
     setCloseTime(officeHours[1]);
-    setPricing(price);
+    setSlotPerDay(slotPerDay);
     setIsMaintenanceSwitchOn(maintenanceNoti);
     // setNotificationDelay()
   };
@@ -111,14 +111,47 @@ const New_screen = () => {
         <div className="grid grid-cols-12">
           <div className="col-span-6">
             <div className="p-1">
-              <div className="flex items-center">
-                <input
-                  placeholder="Screen Name"
-                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  value={screenName}
-                  onChange={(e) => setScreenName(e.target.value)}
-                />
+              <div className="grid grid-cols-5">
+                <div className="col-span-1">
+                  <div className="flex justify-start items-center h-full">
+                    <div className="font-poppins text-lg font-bold">
+                      Screen Name:
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-4">
+                  <div className="flex items-center">
+                    <input
+                      placeholder="Screen Name"
+                      className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                      value={screenName}
+                      onChange={(e) => setScreenName(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
+              <div className="mt-2">
+                <div className="grid grid-cols-5">
+                  <div className="col-span-1">
+                    <div className="flex justify-start items-center h-full">
+                      <div className="font-poppins text-lg font-bold">
+                        Slot Per Day:
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-4">
+                    <div className="flex items-center">
+                      <input
+                        placeholder="Slot Per Day"
+                        className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                        value={slotPerDay}
+                        onChange={(e) => setSlotPerDay(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="mt-2">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                   <select
@@ -207,10 +240,10 @@ const New_screen = () => {
                       {selectedImage ? (
                         <img
                           src={selectedImage}
-                          className="flex items-center justify-center w-[250px] h-[250px]"
+                          className="flex items-center justify-center w-[315px] h-[315px] object-cover"
                         />
                       ) : (
-                        <div className=" flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
+                        <div className=" flex items-center justify-center mt-3 w-[250px] h-[250px] rounded-lg">
                           <img
                             src={empty_img}
                             className="flex items-center justify-center"
@@ -538,15 +571,15 @@ const New_screen = () => {
                     </div>
                   </div>
                   <div className="col-span-3">
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                    {/* <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
                       <input
-                        onChange={(e) => setPricing(e.target.value)}
-                        value={pricing}
+                        onChange={(e) => setSlotPerDay(e.target.value)}
+                        value={slotPerDay}
                         type="number"
-                        placeholder="Pricing Per Day"
+                        placeholder="Slot Per Day"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

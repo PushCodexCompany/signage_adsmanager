@@ -42,12 +42,6 @@ const Brands = () => {
     }
 
     fetchData();
-
-    // user.brand = [1, 9];
-    // setBrand(user.brand);
-    // if (select_merchandise) {
-    //   window.location.href = "/dashboard";
-    // }
   }, []);
 
   const fetchData = async () => {
