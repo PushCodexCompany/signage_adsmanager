@@ -236,7 +236,7 @@ const Event = () => {
                     </td>
                     <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
                       <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                        {row.loopDuration}
+                        {row.loopDuration} Second
                       </div>
                     </td>
                     <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">

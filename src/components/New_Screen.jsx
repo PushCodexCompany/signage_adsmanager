@@ -57,7 +57,7 @@ const New_screen = ({ setOpenAddNewScreenModal }) => {
     <>
       <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[970px] items-center justify-center z-20">
         {/* First div (circle) */}
-        <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+        <div className="absolute right-12 top-12 lg:top-12 lg:right-[165px] m-4 z-30">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
             <button onClick={() => setOpenAddNewScreenModal(false)}>
               <AiOutlineClose size={25} color={"#6425FE"} />
@@ -74,13 +74,24 @@ const New_screen = ({ setOpenAddNewScreenModal }) => {
             <div className="grid grid-cols-12">
               <div className="col-span-6">
                 <div className="p-1">
-                  <div className="flex items-center">
-                    <input
-                      placeholder="Screen Name"
-                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                      value={screenName}
-                      onChange={(e) => setScreenName(e.target.value)}
-                    />
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-1">
+                      <div className="flex justify-start items-center h-full">
+                        <div className="font-poppins text-lg font-bold">
+                          Screen Name:
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-4">
+                      <div className="flex items-center">
+                        <input
+                          placeholder="Screen Name"
+                          className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                          value={screenName}
+                          onChange={(e) => setScreenName(e.target.value)}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-2">
                     <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
@@ -503,7 +514,7 @@ const New_screen = ({ setOpenAddNewScreenModal }) => {
                         </div>
                       </div>
                       <div className="col-span-3">
-                        <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                        {/* <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
                           <input
                             onChange={(e) => setPricing(e.target.value)}
                             value={pricing}
@@ -511,7 +522,7 @@ const New_screen = ({ setOpenAddNewScreenModal }) => {
                             placeholder="Pricing Per Day"
                             className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

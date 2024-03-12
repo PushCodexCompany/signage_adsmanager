@@ -130,7 +130,7 @@ const New_screen = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-2">
+              {/* <div className="mt-2">
                 <div className="grid grid-cols-5">
                   <div className="col-span-1">
                     <div className="flex justify-start items-center h-full">
@@ -150,7 +150,7 @@ const New_screen = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className="mt-2">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
