@@ -18,8 +18,11 @@ const User_Management = () => {
   const [merchandise, setMerchandise] = useState([]);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
-  const [filter, setFilter] = useState(["Active", "Admin"]);
+  const [filterActive, setFilterActive] = useState([]);
+  const [filterRole, setFilterRole] = useState([]);
+
   const [user_lists, setUserLists] = useState([]);
+  const [default_user_lists, set_default_user_lists] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
   const [modalNewUser, setModalNewUser] = useState(false);
   const [showBrandModal, setShowBrandModal] = useState(false);
@@ -44,8 +47,43 @@ const User_Management = () => {
     getBrandAndMerch();
   }, []);
 
+  useEffect(() => {
+    if (filterActive.length > 0 || filterRole.length > 0) {
+      filterList();
+    } else {
+      fetchUsersList();
+    }
+  }, [filterActive, filterRole]);
+
+  const filterList = () => {
+    const mapFilterValues = (value) => {
+      if (value === "Deactive") return 0;
+      if (value === "Active") return 1;
+      return value;
+    };
+
+    const filter = {
+      Actived: filterActive.map(mapFilterValues),
+      RoleName: filterRole,
+    };
+
+    const filterLists = default_user_lists.filter((user) => {
+      const mappedActivated = mapFilterValues(user.Activated);
+
+      const filterActived =
+        filter.Actived.length === 0 || filter.Actived.includes(mappedActivated);
+      const filterRoleName =
+        filter.RoleName.length === 0 || filter.RoleName.includes(user.RoleName);
+
+      return filterActived && filterRoleName;
+    });
+
+    setUserLists(filterLists);
+  };
+
   const fetchUsersList = async () => {
     const lists = await User.getUsersList(token);
+    set_default_user_lists(lists);
     setUserLists(lists);
   };
 
@@ -102,29 +140,49 @@ const User_Management = () => {
     setIsRoleOpen((prevIsOpen) => !prevIsOpen);
   };
 
-  const handleStatusChange = (event) => {
+  const handleStatusChange = (event, type) => {
     const selectedValue = event.target.value;
     if (selectedValue === "0") {
       alert("Please select a valid status.");
     } else {
-      setFilter((prevFilter) => {
-        if (prevFilter.includes(selectedValue)) {
-          return prevFilter; // Already selected, no change
-        } else {
-          return [...prevFilter, selectedValue]; // Add the selected value to the filter state
-        }
-      });
+      if (type === "Actived") {
+        setFilterActive((prevFilter) => {
+          if (prevFilter.includes(selectedValue)) {
+            return prevFilter; // Already selected, no change
+          } else {
+            return [...prevFilter, selectedValue]; // Add the selected value to the filter state
+          }
+        });
+      } else if (type === "RoleName") {
+        setFilterRole((prevFilter) => {
+          if (prevFilter.includes(selectedValue)) {
+            return prevFilter; // Already selected, no change
+          } else {
+            return [...prevFilter, selectedValue]; // Add the selected value to the filter state
+          }
+        });
+      }
     }
   };
 
-  const removeFilter = (event) => {
+  const removeFilter = (event, type) => {
     const selectedValue = event;
-    const updatedFilter = filter.filter((value) => value !== selectedValue);
-    setFilter(updatedFilter);
+    if (type === "Actived") {
+      const updatedFilter = filterActive.filter(
+        (value) => value !== selectedValue
+      );
+      setFilterActive(updatedFilter);
+    } else if (type === "RoleName") {
+      const updatedFilter = filterRole.filter(
+        (value) => value !== selectedValue
+      );
+      setFilterRole(updatedFilter);
+    }
   };
 
   const clearFilter = () => {
-    setFilter([]);
+    setFilterActive([]);
+    setFilterRole([]);
   };
 
   const findBrandImg = (id) => {
@@ -276,14 +334,17 @@ const User_Management = () => {
               <div className="w-full lg:w-3/4 flex justify-between items-center">
                 <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
                   <select
-                    name="status"
-                    id="status"
+                    name="actived"
+                    id="actived"
                     onClick={toggleStatusSelect}
-                    onChange={handleStatusChange}
+                    onChange={(e) => handleStatusChange(e, "Actived")}
                     className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
+                    <option value="" disabled selected hidden>
+                      Status
+                    </option>
                     <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                    <option value="Deactive">Deactive</option>
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                     {isStatusOpen ? (
@@ -298,9 +359,12 @@ const User_Management = () => {
                     name="role"
                     id="role"
                     onClick={toggleRoleSelect}
-                    onChange={handleStatusChange}
+                    onChange={(e) => handleStatusChange(e, "RoleName")}
                     className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                   >
+                    <option value="" disabled selected hidden>
+                      Role
+                    </option>
                     <option value="Admin">Admin</option>
                     <option value="User">User</option>
                   </select>
@@ -329,9 +393,9 @@ const User_Management = () => {
 
         <div className="flex flex-row mt-4">
           <div className="basis-11/12">
-            {filter &&
-              filter.map((items) => (
-                <button onClick={() => removeFilter(items)}>
+            {filterActive &&
+              filterActive.map((items) => (
+                <button onClick={() => removeFilter(items, "Actived")}>
                   <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
                     <div className="grid grid-cols-4">
                       <div className="col-span-1 mt-[6px]">
@@ -348,7 +412,26 @@ const User_Management = () => {
                   </div>
                 </button>
               ))}
-            {filter.length > 0 && (
+            {filterRole &&
+              filterRole.map((items) => (
+                <button onClick={() => removeFilter(items, "RoleName")}>
+                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
+                    <div className="grid grid-cols-4">
+                      <div className="col-span-1 mt-[6px]">
+                        <div className="flex justify-end items-center">
+                          <IoIosClose size="27" color="#6425FE" />
+                        </div>
+                      </div>
+                      <div className="col-span-3 mt-[8px]">
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-sm">{items}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            {filterRole.length > 0 || filterActive.length > 0 ? (
               <button onClick={() => clearFilter()}>
                 <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE]  hover:bg-[#3b1694] border-gray-300 rounded-full">
                   <div className="grid grid-cols-12">
@@ -367,6 +450,8 @@ const User_Management = () => {
                   </div>
                 </div>
               </button>
+            ) : (
+              <></>
             )}
           </div>
         </div>

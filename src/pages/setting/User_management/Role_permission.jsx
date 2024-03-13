@@ -7,46 +7,7 @@ import useCheckPermission from "../../../libs/useCheckPermission";
 import Encryption from "../../../libs/encryption";
 import User from "../../../libs/admin";
 import Swal from "sweetalert2";
-const mock_data = [
-  {
-    RoleID: 5,
-    RoleName: "Admin",
-    permissions: {
-      brand: 2,
-      branch: 2,
-      screen: 2,
-      playlist: 2,
-      media: 2,
-      user: 2,
-      role: 2,
-      booking: 2,
-    },
-    other_permission: {
-      assign_booking: 0,
-      assign_screen: 1,
-      publish: 1,
-    },
-  },
-  {
-    RoleID: 6,
-    RoleName: "Publisher",
-    permissions: {
-      brand: 30,
-      branch: 30,
-      screen: 30,
-      playlist: 30,
-      media: 30,
-      user: 30,
-      role: 30,
-      booking: 30,
-    },
-    other_permission: {
-      assign_booking: 1,
-      assign_screen: 1,
-      publish: 0,
-    },
-  },
-];
+
 const Role_permission = () => {
   useCheckPermission();
   const [default_permissions, setDefaultPermission] = useState([]);
