@@ -100,30 +100,30 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Check Login & Register
-  const [isLogin, setIsLogin] = useState(1);
+  const [is_login, set_is_login] = useState(1);
 
   // Login
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [username, set_username] = useState(null);
+  const [password, set_password] = useState(null);
 
   //Register
 
-  const [reg_email, setRegEmail] = useState();
-  const [reg_password, setRegPassword] = useState();
-  const [reg_re_password, setRegRePassword] = useState();
-  const [reg_brand, setRegBrand] = useState([]);
-  const [reg_merchandise, setRegMerchandise] = useState([]);
+  const [reg_email, set_reg_email] = useState();
+  const [reg_password, set_reg_password] = useState();
+  const [reg_re_password, set_reg_re_password] = useState();
+  const [reg_brand, set_reg_brand] = useState([]);
+  const [reg_merchandise, set_reg_merchandise] = useState([]);
 
-  const [showBrandModal, setShowBrandModal] = useState(false);
-  const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
+  const [show_brand_modal, set_show_brand_modal] = useState(false);
+  const [show_merchandise_modal, set_show_merchandise_modal] = useState(false);
 
-  const [isSectorOpen, setIsSectorOpen] = useState(false);
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
-  const [isClustorOpen, setIsClustorOpen] = useState(false);
-  const [isBranchOpen, setIsBranchOpen] = useState(false);
-  const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
+  const [is_sector_open, set_is_sector_open] = useState(false);
+  const [is_region_open, set_is_region_open] = useState(false);
+  const [is_clustor_open, set_is_clustor_open] = useState(false);
+  const [is_branch_open, set_is_branch_open] = useState(false);
+  const [is_department_open, set_is_department_open] = useState(false);
 
-  const [filter, setFilter] = useState([
+  const [filter, set_filter] = useState([
     "North",
     "Flagship",
     "Beauty",
@@ -165,27 +165,27 @@ const Login = () => {
   // const removeFilter = (event) => {
   //   const selectedValue = event;
   //   const updatedFilter = filter.filter((value) => value !== selectedValue);
-  //   setFilter(updatedFilter);
+  //   set_filter(updatedFilter);
   // };
 
   // const clearFilter = () => {
-  //   setFilter([]);
+  //   set_filter([]);
   // };
 
   // const toggleSectorSelect = () => {
-  //   setIsSectorOpen((prevIsOpen) => !prevIsOpen);
+  //   set_is_sector_open((prevIsOpen) => !prevIsOpen);
   // };
   // const toggleRegionSelect = () => {
-  //   setIsRegionOpen((prevIsOpen) => !prevIsOpen);
+  //   set_is_region_open((prevIsOpen) => !prevIsOpen);
   // };
   // const toggleClustorSelect = () => {
-  //   setIsClustorOpen((prevIsOpen) => !prevIsOpen);
+  //   set_is_clustor_open((prevIsOpen) => !prevIsOpen);
   // };
   // const toggleBranchSelect = () => {
-  //   setIsBranchOpen((prevIsOpen) => !prevIsOpen);
+  //   set_is_branch_open((prevIsOpen) => !prevIsOpen);
   // };
   // const toggleDepartmentSelect = () => {
-  //   setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
+  //   set_is_department_open((prevIsOpen) => !prevIsOpen);
   // };
 
   // const showAllFilter = () => {
@@ -197,7 +197,7 @@ const Login = () => {
   //   if (selectedValue === "0") {
   //     alert("Please select a valid status.");
   //   } else {
-  //     setFilter((prevFilter) => {
+  //     set_filter((prevFilter) => {
   //       if (prevFilter.includes(selectedValue)) {
   //         return prevFilter; // Already selected, no change
   //       } else {
@@ -265,7 +265,7 @@ const Login = () => {
   //     } else {
   //       newCheckedItems.push(id);
   //     }
-  //     setRegBrand(newCheckedItems);
+  //     set_reg_brand(newCheckedItems);
   //   } else if (type === "merchandise") {
   //     const newCheckedItems = [...reg_merchandise];
   //     if (newCheckedItems.includes(id)) {
@@ -274,7 +274,7 @@ const Login = () => {
   //     } else {
   //       newCheckedItems.push(id);
   //     }
-  //     setRegMerchandise(newCheckedItems);
+  //     set_reg_merchandise(newCheckedItems);
   //   }
   // };
 
@@ -290,14 +290,14 @@ const Login = () => {
 
   // const saveBrandReg = () => {
   //   const sortBrand = reg_brand.slice().sort((a, b) => a - b);
-  //   setRegBrand(sortBrand);
-  //   setShowBrandModal(!showBrandModal);
+  //   set_reg_brand(sortBrand);
+  //   set_show_brand_modal(!show_brand_modal);
   // };
 
   // const saveBrandMerchandise = () => {
   //   const sortMerch = reg_merchandise.slice().sort((a, b) => a - b);
-  //   setRegMerchandise(sortMerch);
-  //   setShowMerchandiseModal(!showMerchandiseModal);
+  //   set_reg_merchandise(sortMerch);
+  //   set_show_merchandise_modal(!show_merchandise_modal);
   // };
 
   const registerNewUser = () => {
@@ -308,7 +308,7 @@ const Login = () => {
       // console.log("brand", reg_brand);
       // console.log("merchandise", reg_merchandise);
 
-      setIsLogin(3);
+      set_is_login(3);
     } else {
       Swal.fire({
         icon: "error",
@@ -332,7 +332,7 @@ const Login = () => {
 
         {/* Right panel */}
         <div className="w-full md:w-1/2 mt-36 xl:mt-0 bg-white flex flex-col justify-center items-center p-6 md:p-12">
-          {isLogin === 1 ? (
+          {is_login === 1 ? (
             <>
               <div className="w-full  max-w-lg">
                 <h1 className="text-gray-800 font-[700] text-4xl mb-4 text-center font-poppins">
@@ -346,7 +346,7 @@ const Login = () => {
                 <div className="mb-4">
                   <input
                     className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => set_username(e.target.value)}
                     type="text"
                     placeholder="Your Email"
                     value={username === null ? "" : username}
@@ -360,7 +360,7 @@ const Login = () => {
                     className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     type="password"
                     value={password === null ? "" : password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => set_password(e.target.value)}
                     required
                     minLength={6}
                     placeholder="Your Password"
@@ -379,7 +379,7 @@ const Login = () => {
                 {/* <div className="text-center">
                   <button
                     type="submit"
-                    onClick={() => setIsLogin(2)}
+                    onClick={() => set_is_login(2)}
                     className="w-full  py-2 rounded-sm text-[#6425FE] hover:text-[#b29bec]  mb-2 font-poppins"
                   >
                     "Don't have an account yet? Sign Up"
@@ -387,7 +387,7 @@ const Login = () => {
                 </div> */}
               </div>
             </>
-          ) : isLogin === 2 ? (
+          ) : is_login === 2 ? (
             <>
               <div className="w-full  max-w-lg">
                 <h1 className="text-gray-800 font-[700] text-4xl mb-4 text-center font-poppins">
@@ -399,7 +399,7 @@ const Login = () => {
                 <div className="mb-4">
                   <input
                     className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => setRegEmail(e.target.value)}
+                    onChange={(e) => set_reg_email(e.target.value)}
                     type="text"
                     placeholder="Your Email"
                     value={reg_email === null ? "" : reg_email}
@@ -411,7 +411,7 @@ const Login = () => {
                 <div className="mb-4">
                   <input
                     className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => setRegPassword(e.target.value)}
+                    onChange={(e) => set_reg_password(e.target.value)}
                     type="password"
                     placeholder="Your Password"
                     value={reg_password === null ? "" : reg_password}
@@ -423,7 +423,7 @@ const Login = () => {
                 <div className="mb-4">
                   <input
                     className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => setRegRePassword(e.target.value)}
+                    onChange={(e) => set_reg_re_password(e.target.value)}
                     type="password"
                     placeholder="Confirm Password"
                     value={reg_re_password === null ? "" : reg_re_password}
@@ -435,7 +435,7 @@ const Login = () => {
                 <div className="mb-4">
                   <div className="relative w-full  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
                     <button
-                      onClick={() => setShowBrandModal(true)}
+                      onClick={() => set_show_brand_modal(true)}
                       name="brand"
                       className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                     >
@@ -463,7 +463,7 @@ const Login = () => {
                 <div className="mb-4">
                   <div className="relative w-full  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
                     <button
-                      onClick={() => setShowMerchandiseModal(true)}
+                      onClick={() => set_show_merchandise_modal(true)}
                       name="merchandise"
                       className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                     >
@@ -499,7 +499,7 @@ const Login = () => {
                 <div className="text-center">
                   <button
                     type="submit"
-                    onClick={() => setIsLogin(1)}
+                    onClick={() => set_is_login(1)}
                     className="w-full  py-2 rounded-sm text-[#6425FE] hover:text-[#b29bec]  mb-2 font-poppins"
                   >
                     "Already have an account? Sign In"
@@ -518,7 +518,7 @@ const Login = () => {
                 </div>
                 <div className="text-center">
                   <button
-                    onClick={() => setIsLogin(1)}
+                    onClick={() => set_is_login(1)}
                     className="w-full lg:w-[300px]  py-2 rounded-sm bg-[#6425FE] text-white hover:text-[#b29bec]  mb-2 font-poppins"
                   >
                     OK
@@ -534,18 +534,18 @@ const Login = () => {
           )}
         </div>
 
-        {/* {showBrandModal && (
+        {/* {show_brand_modal && (
           <a
-            onClick={() => setShowBrandModal(!showBrandModal)}
+            onClick={() => set_show_brand_modal(!show_brand_modal)}
             className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
           />
         )} */}
 
-        {/* {showBrandModal && (
+        {/* {show_brand_modal && (
           <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
             <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
               <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-                <button onClick={() => setShowBrandModal(!showBrandModal)}>
+                <button onClick={() => set_show_brand_modal(!show_brand_modal)}>
                   <AiOutlineClose size={25} color={"#6425FE"} />
                 </button>
               </div>
@@ -591,7 +591,7 @@ const Login = () => {
                             <option value="Landscape">Landscape</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isSectorOpen ? (
+                            {is_sector_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -613,7 +613,7 @@ const Login = () => {
                             <option value="South">South</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                            {isRegionOpen ? (
+                            {is_region_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -634,7 +634,7 @@ const Login = () => {
                             <option value="...">...</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isClustorOpen ? (
+                            {is_clustor_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -655,7 +655,7 @@ const Login = () => {
                             <option value="...">...</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isBranchOpen ? (
+                            {is_branch_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -676,7 +676,7 @@ const Login = () => {
                             <option value="Electronics">Electronics</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isDepartmentOpen ? (
+                            {is_department_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -803,19 +803,19 @@ const Login = () => {
           </div>
         )} */}
 
-        {/* {showMerchandiseModal && (
+        {/* {show_merchandise_modal && (
           <a
-            onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
+            onClick={() => set_show_merchandise_modal(!show_merchandise_modal)}
             className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
           />
         )} */}
 
-        {/* {showMerchandiseModal && (
+        {/* {show_merchandise_modal && (
           <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
             <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
               <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
                 <button
-                  onClick={() => showMerchandiseModal(!showMerchandiseModal)}
+                  onClick={() => show_merchandise_modal(!show_merchandise_modal)}
                 >
                   <AiOutlineClose size={25} color={"#6425FE"} />
                 </button>
@@ -863,7 +863,7 @@ const Login = () => {
                             <option value="Landscape">Landscape</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isSectorOpen ? (
+                            {is_sector_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -885,7 +885,7 @@ const Login = () => {
                             <option value="South">South</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                            {isRegionOpen ? (
+                            {is_region_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -906,7 +906,7 @@ const Login = () => {
                             <option value="...">...</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isClustorOpen ? (
+                            {is_clustor_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -927,7 +927,7 @@ const Login = () => {
                             <option value="...">...</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isBranchOpen ? (
+                            {is_branch_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
@@ -948,7 +948,7 @@ const Login = () => {
                             <option value="Electronics">Electronics</option>
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            {isDepartmentOpen ? (
+                            {is_department_open ? (
                               <IoIosArrowUp size={18} color="#6425FE" />
                             ) : (
                               <IoIosArrowDown size={18} color="#6425FE" />
