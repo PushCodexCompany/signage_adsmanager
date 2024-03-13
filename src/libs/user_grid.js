@@ -1,13 +1,4 @@
 import { useState, useEffect } from "react";
-import topImg from "../assets/img/merchandise/tops.png";
-import matsumotoImg from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
-import supersportImg from "../assets/img/merchandise/Super_Sports.png";
-import powerbuyImg from "../assets/img/merchandise/Power_Buy.png";
-
-import central_logo from "../assets/img/central.jpeg";
-import robinson_logo from "../assets/img/robinson.png";
-
-import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { PiCaretUpDown } from "react-icons/pi";
@@ -15,118 +6,7 @@ import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 
-const getImg = (id) => {
-  let img;
-  if (id === 1) {
-    img = topImg;
-  } else if (id === 2) {
-    img = matsumotoImg;
-  } else if (id === 3) {
-    img = supersportImg;
-  } else if (id === 4) {
-    img = powerbuyImg;
-  }
-
-  return img;
-};
-
-const getImgBrand = (id) => {
-  let img;
-  if (id === 1) {
-    img = central_logo;
-  } else if (id === 9) {
-    img = robinson_logo;
-  }
-
-  return img;
-};
-
-const onClickDelete = async (id, name) => {
-  Swal.fire({
-    title: "คุณต้องการลบผู้ใช้งาน?",
-    text: `คุณต้องการลบผู้ใช้งาน : ${name}?`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "ยืนยัน!",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      const { token } = User.getCookieData();
-      const obj = {
-        userid: id,
-      };
-      const encrypted = await Encryption.encryption(obj, "delete_user", false);
-      const data = await User.deleteUser(encrypted, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          title: "ลบผู้ใช้งาน!",
-          text: `ลบผู้ใช้งาน ${name} สำเร็จ!`,
-        }).then((result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            window.location.reload();
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
-      }
-    }
-  });
-};
-
-const dashboardData = [
-  {
-    id: 1,
-    username_email: ["User0123", "useradmin@mail.com"],
-    brand: [1],
-    merchandise: [1, 2, 3, 4],
-    status: 1,
-    role: 0,
-  },
-  {
-    id: 2,
-    username_email: ["Admin01", "teerachai_14@mail.com"],
-    brand: [9],
-    merchandise: [3, 4],
-    status: 1,
-    role: 0,
-  },
-  {
-    id: 3,
-    username_email: ["CDS_Admin", "cdspro_a@mail.com"],
-    brand: [1, 9],
-    merchandise: [4],
-    status: 1,
-    role: 0,
-  },
-  {
-    id: 4,
-    username_email: ["CDS_Sale01", "cds_sale41@mail.com"],
-    brand: [9],
-    merchandise: [2],
-    status: 1,
-    role: 0,
-  },
-  {
-    id: 5,
-    username_email: ["Marketing_22", "cds_marketing_cc@mail.com"],
-    brand: [1],
-    merchandise: [1, 2],
-    status: 1,
-    role: 0,
-  },
-];
-
-export const GridTable = ({ user_lists, page_permission }) => {
-  const [list_data, setListData] = useState([]);
-
+export const GridTable = ({ user_lists, page_permission, brand }) => {
   const [modal_edit, setModalEdit] = useState(false);
   const [default_brand, setDefaultBrand] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
@@ -156,11 +36,6 @@ export const GridTable = ({ user_lists, page_permission }) => {
     setDefaultRoles(roles);
   };
 
-  const findBrandImg = (id) => {
-    const brand = default_brand.find((item) => item.BrandID === id);
-    return brand ? brand.BrandLogo : null;
-  };
-
   const onSelectEdit = (id) => {
     const {
       UserID,
@@ -171,13 +46,10 @@ export const GridTable = ({ user_lists, page_permission }) => {
       RoleID,
       AccessContent,
     } = user_lists.find((item) => item.UserID === id);
+
     setEditId(UserID);
     setEditUsername(Username);
-    setRegBrand(
-      AccessContent?.brands
-        ? AccessContent.brands.map((brand) => brand.BrandID)
-        : []
-    );
+    setRegBrand(AccessContent?.brands ? AccessContent.brands.map(Number) : []);
     setEditEmail(Email);
     setEditActivate(Activated);
     setEditRolename(RoleID);
@@ -268,6 +140,55 @@ export const GridTable = ({ user_lists, page_permission }) => {
     setShowBrandModal(!showBrandModal);
   };
 
+  const getImgBrand = (id) => {
+    const brand_img = brand.find((item) => item.BrandID === parseInt(id));
+    return brand_img ? brand_img.BrandLogo : null;
+  };
+
+  const onClickDelete = async (id, name) => {
+    Swal.fire({
+      title: "คุณต้องการลบผู้ใช้งาน?",
+      text: `คุณต้องการลบผู้ใช้งาน : ${name}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { token } = User.getCookieData();
+        const obj = {
+          userid: id,
+        };
+        const encrypted = await Encryption.encryption(
+          obj,
+          "delete_user",
+          false
+        );
+        const data = await User.deleteUser(encrypted, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            title: "ลบผู้ใช้งาน!",
+            text: `ลบผู้ใช้งาน ${name} สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      }
+    });
+  };
+
   return (
     <>
       <div className="w-auto h-[600px] overflow-auto">
@@ -329,7 +250,7 @@ export const GridTable = ({ user_lists, page_permission }) => {
                         row.AccessContent.brands.map((items) => (
                           <img
                             className="w-[50px] h-[50px] rounded-md"
-                            src={items.BrandLogo}
+                            src={getImgBrand(items)}
                           />
                         ))}
                     </div>
@@ -546,7 +467,7 @@ export const GridTable = ({ user_lists, page_permission }) => {
                         <div key={index} className="flex">
                           <img
                             className="block ml-auto mr-auto w-12 h-12 rounded-lg"
-                            src={findBrandImg(item)}
+                            src={getImgBrand(item)}
                             alt={item.name}
                           />
                         </div>
@@ -609,6 +530,8 @@ export const GridTable = ({ user_lists, page_permission }) => {
                   <div className="grid grid-cols-4 gap-8">
                     {default_brand.map((item, index) => (
                       <div key={index}>
+                        {console.log("reg_brand", reg_brand)}
+                        {console.log("item.BrandID", item.BrandID)}
                         <div className="h-64 w-64 relative">
                           <input
                             type="checkbox"

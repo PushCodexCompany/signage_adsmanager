@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import User from "../libs/admin";
 import { useNavigate } from "react-router-dom";
-import { IoAddCircleSharp } from "react-icons/io5";
 import { TbDots } from "react-icons/tb";
 import { FaPlus } from "react-icons/fa";
 import cookie from "react-cookies";
@@ -14,7 +13,6 @@ import { Navbar } from "../components";
 const Brands = () => {
   const { user } = User.getCookieData();
   const select_campaign = User.getCampaign();
-  const select_merchandise = User.getMerchandise();
   const select_account = User.getAccount();
 
   const [showModalAddNewBrand, setShowModalAddNewBrand] = useState(false);

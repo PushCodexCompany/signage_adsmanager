@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/media_logs_grid";
 import { Navbar } from "../../components";
@@ -7,15 +7,6 @@ import Filter from "../../components/Filter";
 
 const Media_Log = () => {
   useCheckPermission();
-  const ListComponent = () => {
-    return (
-      <>
-        <div className="w-auto  h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable />
-        </div>
-      </>
-    );
-  };
 
   return (
     <>
@@ -46,7 +37,9 @@ const Media_Log = () => {
       </div>
 
       <div className="m-1 md:m-5 p-2 md:p-5 bg-white rounded-3xl">
-        <ListComponent />
+        <div className="w-auto  h-[600px] border border-[#DBDBDB] rounded-lg">
+          <GridTable />
+        </div>
       </div>
     </>
   );

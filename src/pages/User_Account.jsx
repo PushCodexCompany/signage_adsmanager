@@ -9,38 +9,7 @@ import { TbDots } from "react-icons/tb";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 
-const getRandomColor = () => {
-  const letters = "0123456789ABCDEF";
-  let color = "";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
-
-const mock_data = {
-  1: {
-    name: "TEST",
-    lastname: "ONE",
-    img: `https://ui-avatars.com/api/?name=${"Test"}+${"One"}&background=${getRandomColor()}&color=fff`,
-    des: "A1 Description",
-  },
-  2: {
-    name: "TEST",
-    lastname: "TWO",
-    img: `https://ui-avatars.com/api/?name=${"Test"}+${"Two"}&background=${getRandomColor()}&color=fff`,
-    des: "A2 Description",
-  },
-  3: {
-    name: "TEST",
-    lastname: "THREE",
-    img: `https://ui-avatars.com/api/?name=${"Test"}+${"Three"}&background=${getRandomColor()}&color=fff`,
-    des: "A3 Description",
-  },
-};
-
 const User_Account = () => {
-  const { user } = User.getCookieData();
   const navigate = useNavigate();
   const select_campaign = User.getCampaign();
   const select_account = User.getAccount();

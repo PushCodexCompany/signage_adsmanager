@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/media_libraly_grid";
 import { AiOutlineClose, AiOutlineCloudUpload } from "react-icons/ai";
-import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { BsCheckCircle } from "react-icons/bs";
 import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
@@ -11,12 +10,6 @@ import Filter from "../../components/Filter";
 const Media_Libraly = () => {
   useCheckPermission();
   const [showModal, setShowModal] = useState(false);
-
-  const [isSectorOpen, setIsSectorOpen] = useState(false);
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
-  const [isClustorOpen, setIsClustorOpen] = useState(false);
-  const [isBranchOpen, setIsBranchOpen] = useState(false);
-  const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
 
   const [uploads, setUploads] = useState({
     upload1: {
@@ -35,13 +28,6 @@ const Media_Libraly = () => {
       progress: 0, // Add progress property
     },
   });
-
-  const [filter, setFilter] = useState([
-    "Flagship",
-    "5 Floor",
-    "Beauty",
-    "Portrait",
-  ]);
 
   const createNewMedia = () => {
     setShowModal(!showModal);
@@ -86,47 +72,6 @@ const Media_Libraly = () => {
         name: null,
       },
     });
-  };
-
-  const toggleSectorSelect = () => {
-    setIsSectorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleRegionSelect = () => {
-    setIsRegionOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleClustorSelect = () => {
-    setIsClustorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleBranchSelect = () => {
-    setIsBranchOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleDepartmentSelect = () => {
-    setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
-  };
-
-  const handleStatusChange = (event) => {
-    const selectedValue = event.target.value;
-    if (selectedValue === "0") {
-      alert("Please select a valid status.");
-    } else {
-      setFilter((prevFilter) => {
-        if (prevFilter.includes(selectedValue)) {
-          return prevFilter; // Already selected, no change
-        } else {
-          return [...prevFilter, selectedValue]; // Add the selected value to the filter state
-        }
-      });
-    }
-  };
-
-  const removeFilter = (event) => {
-    const selectedValue = event;
-    const updatedFilter = filter.filter((value) => value !== selectedValue);
-    setFilter(updatedFilter);
-  };
-
-  const clearFilter = () => {
-    setFilter([]);
   };
 
   return (

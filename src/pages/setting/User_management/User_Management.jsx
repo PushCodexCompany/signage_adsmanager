@@ -4,103 +4,20 @@ import { Header } from "../../../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { AiOutlineClose } from "react-icons/ai";
 import { Navbar } from "../../../components";
-import {
-  PiSlidersHorizontalFill,
-  PiGridFourFill,
-  PiListDashesFill,
-  PiCaretUpDown,
-} from "react-icons/pi";
+import { PiCaretUpDown } from "react-icons/pi";
 import User from "../../../libs/admin";
 
 import { GridTable } from "../../../libs/user_grid";
 import useCheckPermission from "../../../libs/useCheckPermission";
-
-import centralImg from "../../../assets/img/central.png";
-import robinsonImg from "../../../assets/img/robinson.png";
-
-import top_img from "../../../assets/img/merchandise/tops.png";
-import matsumoto_img from "../../../assets/img/merchandise/Matsumoto_KiYoshi.png";
-import supersport_img from "../../../assets/img/merchandise/Super_Sports.png";
-import powerbuy_img from "../../../assets/img/merchandise/Power_Buy.png";
-import evisu_img from "../../../assets/img/merchandise/Evisu.png";
-import fila_img from "../../../assets/img/merchandise/Fila.png";
-import alice_img from "../../../assets/img/merchandise/Alice.png";
-import kfc_img from "../../../assets/img/merchandise/kfc.png";
 import Encryption from "../../../libs/encryption";
 import Swal from "sweetalert2";
 
-const mock_data_brands = [
-  {
-    id: 1,
-    name: "CDS",
-    img: centralImg,
-    des: "Central Department Store",
-  },
-  {
-    id: 2,
-    name: "Robinson",
-    img: robinsonImg,
-    des: "Robinson Department Store",
-  },
-];
-
-const mockup_merchandise = [
-  {
-    id: 1,
-    name: "Tops",
-    img: top_img,
-    des: "Tops Supermarkety",
-  },
-  {
-    id: 2,
-    name: "Matsumoto KiYoshi",
-    img: matsumoto_img,
-    des: "Matsumoto KiYoshi",
-  },
-  {
-    id: 3,
-    name: "Super Sports",
-    img: supersport_img,
-    des: "Super Sports",
-  },
-  {
-    id: 4,
-    name: "Power Buy",
-    img: powerbuy_img,
-    des: "Power Buy",
-  },
-  {
-    id: 5,
-    name: "Evisu",
-    img: evisu_img,
-    des: "Evisu",
-  },
-  {
-    id: 6,
-    name: "Fila",
-    img: fila_img,
-    des: "Fila",
-  },
-  {
-    id: 7,
-    name: "Alice And Olivia",
-    img: alice_img,
-    des: "Alice And Olivia",
-  },
-  {
-    id: 8,
-    name: "KFC",
-    img: kfc_img,
-    des: "KFC",
-  },
-];
-
 const User_Management = () => {
   useCheckPermission();
+  const [brand, setBrand] = useState([]);
+  const [merchandise, setMerchandise] = useState([]);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
-  const [showRightPanel, setShowRightPanel] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const [filter, setFilter] = useState(["Active", "Admin"]);
   const [user_lists, setUserLists] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
@@ -124,6 +41,7 @@ const User_Management = () => {
     fetchRoleData();
     fetchUsersList();
     setPermission();
+    getBrandAndMerch();
   }, []);
 
   const fetchUsersList = async () => {
@@ -141,6 +59,13 @@ const User_Management = () => {
     const { permissions } = convertPermissionValuesToBoolean([user]);
 
     setPagePermission(permissions.user);
+  };
+
+  const getBrandAndMerch = async () => {
+    const brand = await User.getBrand(token);
+    const merchandise = await User.getMerchandiseList(token);
+    setBrand(brand);
+    setMerchandise(merchandise);
   };
 
   const convertPermissionValuesToBoolean = (data) => {
@@ -192,19 +117,6 @@ const User_Management = () => {
     }
   };
 
-  const showAllFilter = () => {
-    setShowRightPanel(!showRightPanel);
-  };
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const [isChecked, setIsChecked] = useState(false);
-  const toggleCheckbox = () => {
-    setIsChecked(!isChecked);
-  };
-
   const removeFilter = (event) => {
     const selectedValue = event;
     const updatedFilter = filter.filter((value) => value !== selectedValue);
@@ -216,13 +128,15 @@ const User_Management = () => {
   };
 
   const findBrandImg = (id) => {
-    const brand = mock_data_brands.find((item) => item.id === id);
-    return brand ? brand.img : null;
+    const brand_img = brand.find((item) => item.BrandID === id);
+    return brand_img ? brand_img.BrandLogo : null;
   };
 
   const findMerchImg = (id) => {
-    const merchandise = mockup_merchandise.find((item) => item.id === id);
-    return merchandise ? merchandise.img : null;
+    const merchandise_img = merchandise.find(
+      (item) => item.AdvertiserID === id
+    );
+    return merchandise_img ? merchandise_img.AdvertiserLogo : null;
   };
 
   const registerNewUser = async () => {
@@ -456,698 +370,11 @@ const User_Management = () => {
             <GridTable
               user_lists={user_lists}
               page_permission={page_permission}
+              brand={brand}
             />
           )}
         </div>
       </div>
-
-      {showRightPanel && (
-        <a
-          onClick={() => setShowRightPanel(!showRightPanel)}
-          className="fixed top-0 lg:right-52 w-screen h-screen opacity-50 bg-black z-50 backdrop-blur"
-        />
-      )}
-
-      {showRightPanel && (
-        <div className="fixed right-0 top-0 h-screen w-1/4 bg-[#E8E8E8] z-50 rounded-md max-h- overflow-y-auto">
-          <div className="flex justify-between items-center p-2 mt-3 border-b-2 border-gray-300">
-            <span className="text-center text-sm flex-grow font-poppins">
-              Filter and sort
-            </span>
-            <button onClick={() => setShowRightPanel(!showRightPanel)}>
-              <IoIosClose size="42" color="#6425FE" />
-            </button>
-          </div>
-
-          {/* Sort */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">
-                  Sort <br />
-                  <span
-                    className={`font-poppins text-xs  text-[#59606C] ${
-                      !isCollapsed ? "hidden" : ""
-                    }`}
-                  >
-                    Best match
-                  </span>
-                </span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Sector */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Sector</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Region */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Region</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Store Cluster */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Store Cluster</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Branch */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Branch</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Department */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Department</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Floor */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Floor</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-sm ">G Floor</span>
-                </div>
-                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <span className="font-poppins text-sm mr-1">12</span>
-                    <label className="inline-flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                        checked={isChecked}
-                        onChange={toggleCheckbox}
-                      />
-                      <span
-                        className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                          isChecked ? "bg-white" : ""
-                        }`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className={`h-3 w-3 text-white ${
-                            isChecked ? "opacity-100" : "opacity-0"
-                          } transition-opacity duration-300 ease-in-out`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="#6425FE"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-sm ">1 Floor</span>
-                </div>
-                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <span className="font-poppins text-sm mr-1">5</span>
-                  <label className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                      checked={isChecked}
-                      onChange={toggleCheckbox}
-                    />
-                    <span
-                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                        isChecked ? "bg-white" : ""
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-3 w-3 text-white ${
-                          isChecked ? "opacity-100" : "opacity-0"
-                        } transition-opacity duration-300 ease-in-out`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-sm ">2 Floor</span>
-                </div>
-                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <span className="font-poppins text-sm mr-1">4</span>
-                  <label className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                      checked={isChecked}
-                      onChange={toggleCheckbox}
-                    />
-                    <span
-                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                        isChecked ? "bg-white" : ""
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-3 w-3 text-white ${
-                          isChecked ? "opacity-100" : "opacity-0"
-                        } transition-opacity duration-300 ease-in-out`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                </div>
-              </div>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-sm ">3 Floor</span>
-                </div>
-                <div className="basis-2/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <span className="font-poppins text-sm mr-1">10</span>
-                  <label className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      className="opacity-0 absolute h-4 w-4 cursor-pointer"
-                      checked={isChecked}
-                      onChange={toggleCheckbox}
-                    />
-                    <span
-                      className={`h-4 w-4 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                        isChecked ? "bg-white" : ""
-                      }`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className={`h-3 w-3 text-white ${
-                          isChecked ? "opacity-100" : "opacity-0"
-                        } transition-opacity duration-300 ease-in-out`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Location */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Location</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Orientation */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Orientation</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Size */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">Size</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* File Type */}
-          <div className="p-6 border-b-2 border-gray-300">
-            <div className="flex flex-row ">
-              <div className="flex basis-11/12  ">
-                <span className="font-poppins text-md ">File Type</span>
-              </div>
-              <div className="basis-1/12  flex justify-end items-center font-poppins text-md text-[#59606C]">
-                <div>
-                  <button
-                    className="w-full text-left p-2 focus:outline-none"
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? (
-                      <IoIosArrowDown size={28} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowUp size={28} color="#6425FE" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-6">
-                  <span className="font-poppins text-xs ">Best match</span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="1" name="sort" value="1" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${isCollapsed ? "hidden" : ""}`}>
-              <div className="flex flex-row ">
-                <div className="flex basis-11/12  mt-3">
-                  <span className="font-poppins text-xs ">
-                    Price: low to high
-                  </span>
-                </div>
-                <div className="basis-1/12  flex justify-end items-end font-poppins text-md mr-3">
-                  <div>
-                    <input type="radio" id="2" name="sort" value="2" checked />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {modalNewUser && (
         <a
@@ -1394,41 +621,42 @@ const User_Management = () => {
               </div>
             </div>
             <div className="mt-2 p-2">
-              <div className="h-[350px]  mt-8 overflow-y-auto">
+              <div className="h-[550px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
-                  <div className="grid grid-cols-2 gap-8">
-                    {mock_data_brands.map((item, index) => (
-                      <div key={index}>
-                        <div className="h-64 w-64 relative">
-                          <input
-                            type="checkbox"
-                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
-                            onChange={() =>
-                              handleCheckboxChange(item.id, "brand")
-                            }
-                            checked={reg_brand.includes(item.id)}
-                          />
-
-                          <div className="w-full h-full flex items-center justify-center">
-                            <img
-                              className="block ml-auto mr-auto w-auto h-auto rounded-3xl"
-                              src={item.img}
-                              alt={item.name}
+                  <div className="grid grid-cols-3 gap-8">
+                    {brand.length > 0 &&
+                      brand.map((item, index) => (
+                        <div key={index}>
+                          <div className="h-64 w-64 relative">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                              onChange={() =>
+                                handleCheckboxChange(item.BrandID, "brand")
+                              }
+                              checked={reg_brand.includes(item.BrandID)}
                             />
+
+                            <div className="w-full h-full flex items-center justify-center">
+                              <img
+                                className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover"
+                                src={item.BrandLogo}
+                                alt={item.BrandName}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-xl font-bold">
+                              {item.BrandName}
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-[#6F6F6F] text-sm">
+                              {item.BrandDesc}
+                            </div>
                           </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-xl font-bold">
-                            {item.name}
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-[#6F6F6F] text-sm">
-                            {item.des}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               </div>
@@ -1477,38 +705,44 @@ const User_Management = () => {
               <div className="h-[550px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
-                    {mockup_merchandise.map((item, index) => (
-                      <div key={index}>
-                        <div className="h-64 w-64 relative">
-                          <input
-                            type="checkbox"
-                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
-                            onChange={() =>
-                              handleCheckboxChange(item.id, "merchandise")
-                            }
-                            checked={reg_merchandise.includes(item.id)}
-                          />
-
-                          <div className="w-full h-full flex items-center justify-center">
-                            <img
-                              className="block ml-auto mr-auto w-auto h-auto rounded-3xl"
-                              src={item.img}
-                              alt={item.name}
+                    {merchandise.length > 0 &&
+                      merchandise.map((item, index) => (
+                        <div key={index}>
+                          <div className="h-64 w-64 relative">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.AdvertiserID,
+                                  "merchandise"
+                                )
+                              }
+                              checked={reg_merchandise.includes(
+                                item.AdvertiserID
+                              )}
                             />
+
+                            <div className="w-full h-full flex items-center justify-center">
+                              <img
+                                className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover"
+                                src={item.AdvertiserLogo}
+                                alt={item.AdvertiserName}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-xl font-bold">
+                              {item.AdvertiserName}
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-[#6F6F6F] text-sm">
+                              {item.Department}
+                            </div>
                           </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-xl font-bold">
-                            {item.name}
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-[#6F6F6F] text-sm">
-                            {item.des}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               </div>
