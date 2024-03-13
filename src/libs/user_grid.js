@@ -530,8 +530,6 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                   <div className="grid grid-cols-4 gap-8">
                     {default_brand.map((item, index) => (
                       <div key={index}>
-                        {console.log("reg_brand", reg_brand)}
-                        {console.log("item.BrandID", item.BrandID)}
                         <div className="h-64 w-64 relative">
                           <input
                             type="checkbox"

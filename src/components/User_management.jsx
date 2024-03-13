@@ -1,101 +1,24 @@
 import React, { useState, useEffect } from "react";
 
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-import { PiCaretUpDown, PiSlidersHorizontalFill } from "react-icons/pi";
-import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
+import { PiCaretUpDown } from "react-icons/pi";
+import { AiOutlineClose } from "react-icons/ai";
 import { GridTable } from "../libs/user_grid";
 import Swal from "sweetalert2";
 
-import centralImg from "../assets/img/central.png";
-import robinsonImg from "../assets/img/robinson.png";
-
-import top_img from "../assets/img/merchandise/tops.png";
-import matsumoto_img from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
-import supersport_img from "../assets/img/merchandise/Super_Sports.png";
-import powerbuy_img from "../assets/img/merchandise/Power_Buy.png";
-import evisu_img from "../assets/img/merchandise/Evisu.png";
-import fila_img from "../assets/img/merchandise/Fila.png";
-import alice_img from "../assets/img/merchandise/Alice.png";
-import kfc_img from "../assets/img/merchandise/kfc.png";
-import { Navbar } from "../components";
 import Encryption from "../libs/encryption";
 import User from "../libs/admin";
-const mock_data_brands = [
-  {
-    id: 1,
-    name: "CDS",
-    img: centralImg,
-    des: "Central Department Store",
-  },
-  {
-    id: 2,
-    name: "Robinson",
-    img: robinsonImg,
-    des: "Robinson Department Store",
-  },
-];
-
-const mockup_merchandise = [
-  {
-    id: 1,
-    name: "Tops",
-    img: top_img,
-    des: "Tops Supermarkety",
-  },
-  {
-    id: 2,
-    name: "Matsumoto KiYoshi",
-    img: matsumoto_img,
-    des: "Matsumoto KiYoshi",
-  },
-  {
-    id: 3,
-    name: "Super Sports",
-    img: supersport_img,
-    des: "Super Sports",
-  },
-  {
-    id: 4,
-    name: "Power Buy",
-    img: powerbuy_img,
-    des: "Power Buy",
-  },
-  {
-    id: 5,
-    name: "Evisu",
-    img: evisu_img,
-    des: "Evisu",
-  },
-  {
-    id: 6,
-    name: "Fila",
-    img: fila_img,
-    des: "Fila",
-  },
-  {
-    id: 7,
-    name: "Alice And Olivia",
-    img: alice_img,
-    des: "Alice And Olivia",
-  },
-  {
-    id: 8,
-    name: "KFC",
-    img: kfc_img,
-    des: "KFC",
-  },
-];
 
 const User_Management = ({ setShowModal }) => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
-  const [showRightPanel, setShowRightPanel] = useState(false);
   const [filter, setFilter] = useState(["Active", "Admin"]);
 
   const [user_lists, setUserLists] = useState([]);
   const [default_account, setDefaultAccount] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
   const [default_brand, setDefaultBrand] = useState([]);
+  const [default_merchandise, setDefaultMerchandise] = useState([]);
 
   //   const [showModal, setShowModal] = useState(false);
 
@@ -109,12 +32,6 @@ const User_Management = ({ setShowModal }) => {
   const [reg_brand, setRegBrand] = useState([]);
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
-  const [isSectorOpen, setIsSectorOpen] = useState(false);
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
-  const [isClustorOpen, setIsClustorOpen] = useState(false);
-  const [isBranchOpen, setIsBranchOpen] = useState(false);
-  const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
-
   const [showRegister, setShowRegister] = useState(false);
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
@@ -125,7 +42,7 @@ const User_Management = ({ setShowModal }) => {
   const { token } = User.getCookieData();
 
   useEffect(() => {
-    fetchBrand();
+    fetchBrandAndMerchandise();
     fetchRoleData();
     fetchAccount();
     setPermission();
@@ -134,18 +51,19 @@ const User_Management = ({ setShowModal }) => {
   const fetchUsersList = async (brand) => {
     const lists = await User.getUsersList(token);
 
-    const updatedData = lists.map((item) => {
-      if (item.AccessContent.brands && item.AccessContent.brands.length > 0) {
-        const brandID = item.AccessContent.brands;
-        const foundBrand = findBrandByID(brandID.map(Number), brand);
-        if (foundBrand) {
-          item.AccessContent.brands = foundBrand;
-        }
-      }
-      return item;
-    });
+    // const updatedData = lists.map((item) => {
+    //   if (item.AccessContent.brands && item.AccessContent.brands.length > 0) {
+    //     const brandID = item.AccessContent.brands;
+    //     const foundBrand = findBrandByID(brandID.map(Number), brand);
+    //     if (foundBrand) {
+    //       item.AccessContent.brands = foundBrand;
+    //     }
+    //   }
+    //   return item;
+    // });
 
-    setUserLists(updatedData);
+    // setUserLists(updatedData);
+    setUserLists(lists);
   };
 
   const findBrandByID = (brandID, brand) => {
@@ -163,9 +81,11 @@ const User_Management = ({ setShowModal }) => {
     setDefaultRoles(roles);
   };
 
-  const fetchBrand = async () => {
+  const fetchBrandAndMerchandise = async () => {
     const brand = await User.getBrand(token);
+    const merchandise = await User.getMerchandiseList(token);
     setDefaultBrand(brand);
+    setDefaultMerchandise(merchandise);
     fetchUsersList(brand);
   };
 
@@ -212,10 +132,6 @@ const User_Management = ({ setShowModal }) => {
     setIsRoleOpen((prevIsOpen) => !prevIsOpen);
   };
 
-  const showAllFilter = () => {
-    setShowRightPanel(!showRightPanel);
-  };
-
   const handleStatusChange = (event) => {
     const selectedValue = event.target.value;
     if (selectedValue === "0") {
@@ -239,22 +155,6 @@ const User_Management = ({ setShowModal }) => {
 
   const clearFilter = () => {
     setFilter([]);
-  };
-
-  const toggleSectorSelect = () => {
-    setIsSectorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleRegionSelect = () => {
-    setIsRegionOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleClustorSelect = () => {
-    setIsClustorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleBranchSelect = () => {
-    setIsBranchOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleDepartmentSelect = () => {
-    setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
   };
 
   const handleCheckboxChange = (id, type) => {
@@ -297,7 +197,7 @@ const User_Management = ({ setShowModal }) => {
   };
 
   const findMerchImg = (id) => {
-    const merchandise = mockup_merchandise.find((item) => item.id === id);
+    const merchandise = default_merchandise.find((item) => item.id === id);
     return merchandise ? merchandise.img : null;
   };
 
@@ -315,15 +215,13 @@ const User_Management = ({ setShowModal }) => {
         username: reg_username,
         email: reg_email,
         password: reg_password,
-        role: reg_role,
+        roleid: reg_role,
         accountcode: reg_account,
         accesscontent: {
           brands: reg_brand.map(String),
           merchandise: reg_merchandise,
         },
       };
-
-      console.log(value);
 
       const { token } = User.getCookieData();
       const encrypted = await Encryption.encryption(
@@ -332,29 +230,26 @@ const User_Management = ({ setShowModal }) => {
         false
       );
 
-      console.log(encrypted);
-      // console.log(encrypted);
-
-      // const data = await User.createUser(encrypted, token);
-      // if (data.code !== 404) {
-      //   Swal.fire({
-      //     title: "สร้างผู้ใช้งานสำเร็จ!",
-      //     text: `สร้างผู้ใช้งานสำเร็จ!`,
-      //   }).then((result) => {
-      //     if (
-      //       result.isConfirmed ||
-      //       result.dismiss === Swal.DismissReason.backdrop
-      //     ) {
-      //       window.location.reload();
-      //     }
-      //   });
-      // } else {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "เกิดข้อผิดพลาด!",
-      //     text: data.message,
-      //   });
-      // }
+      const data = await User.createUser(encrypted, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          title: "สร้างผู้ใช้งานสำเร็จ!",
+          text: `สร้างผู้ใช้งานสำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            window.location.reload();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
     } else {
       Swal.fire({
         icon: "error",
@@ -491,6 +386,7 @@ const User_Management = ({ setShowModal }) => {
               <GridTable
                 user_lists={user_lists}
                 page_permission={page_permission}
+                brand={default_brand}
               />
             )}
           </div>
@@ -627,7 +523,7 @@ const User_Management = ({ setShowModal }) => {
                       id="account"
                       onClick={toggleStatusSelect}
                       onChange={(e) => setRegAccount(e.target.value)}
-                      value={reg_role}
+                      value={reg_account}
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     >
                       <option value={null}>-- Please Select Account ---</option>
@@ -791,7 +687,7 @@ const User_Management = ({ setShowModal }) => {
 
                           <div className="w-full h-full flex items-center justify-center">
                             <img
-                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl" // Adjust the size as needed
+                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-cover" // Adjust the size as needed
                               src={item.BrandLogo}
                               alt={item.BrandName}
                             />
@@ -869,38 +765,44 @@ const User_Management = ({ setShowModal }) => {
               <div className="h-[550px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
-                    {mockup_merchandise.map((item, index) => (
-                      <div key={index}>
-                        <div className="h-64 w-64 relative">
-                          <input
-                            type="checkbox"
-                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
-                            onChange={() =>
-                              handleCheckboxChange(item.id, "merchandise")
-                            }
-                            checked={reg_merchandise.includes(item.id)}
-                          />
-
-                          <div className="w-full h-full flex items-center justify-center">
-                            <img
-                              className="block ml-auto mr-auto w-auto h-auto rounded-3xl"
-                              src={item.img}
-                              alt={item.name}
+                    {default_merchandise.length > 0 &&
+                      default_merchandise.map((item, index) => (
+                        <div key={index}>
+                          <div className="h-64 w-64 relative">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.AdvertiserID,
+                                  "merchandise"
+                                )
+                              }
+                              checked={reg_merchandise.includes(
+                                item.AdvertiserID
+                              )}
                             />
+
+                            <div className="w-full h-full flex items-center justify-center">
+                              <img
+                                className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover"
+                                src={item.AdvertiserLogo}
+                                alt={item.AdvertiserName}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-xl font-bold">
+                              {item.AdvertiserName}
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-[#6F6F6F] text-sm">
+                              {item.Department}
+                            </div>
                           </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-xl font-bold">
-                            {item.name}
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-[#6F6F6F] text-sm">
-                            {item.des}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               </div>

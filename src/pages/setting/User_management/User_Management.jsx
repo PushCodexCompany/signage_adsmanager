@@ -150,12 +150,18 @@ const User_Management = () => {
 
     if (reg_password === reg_re_password) {
       if (reg_role) {
+        //  const { user } = User.getCookieData();
+
         const value = {
           username: reg_username,
           email: reg_email,
           password: reg_password,
-          role: reg_role,
+          roleid: reg_role,
           accountcode: "huUpa8dN4i",
+          accesscontent: {
+            brands: reg_brand.map(String),
+            merchandise: reg_merchandise,
+          },
         };
 
         const { token } = User.getCookieData();
@@ -623,7 +629,7 @@ const User_Management = () => {
             <div className="mt-2 p-2">
               <div className="h-[550px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
-                  <div className="grid grid-cols-3 gap-8">
+                  <div className="grid grid-cols-4 gap-8">
                     {brand.length > 0 &&
                       brand.map((item, index) => (
                         <div key={index}>
@@ -639,7 +645,7 @@ const User_Management = () => {
 
                             <div className="w-full h-full flex items-center justify-center">
                               <img
-                                className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover"
+                                className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-cover" // Adjust the size as needed
                                 src={item.BrandLogo}
                                 alt={item.BrandName}
                               />
