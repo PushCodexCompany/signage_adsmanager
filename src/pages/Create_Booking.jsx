@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  IoIosArrowDown,
   IoIosClose,
-  IoIosArrowUp,
   IoIosPlayCircle,
   IoIosCalendar,
   IoIosInformationCircleOutline,
@@ -51,6 +49,7 @@ const Create_Booking = () => {
   const [booking_date, setBookingDate] = useState([]);
   const [booking_slot, setBookingSlot] = useState();
   const [filter, setFilter] = useState(["Available", "Low < 5"]);
+
   const [filter_publish_screen, setFilterPublishCreen] = useState([
     "Flagship",
     "5 Floor",
@@ -64,24 +63,8 @@ const Create_Booking = () => {
     "Portrait",
   ]);
 
-  const [isSlotOpen, setIsSlotOpen] = useState(false);
-  const [isDateOpen, setIsDateOpen] = useState(false);
-  const [isConditionOpen, setIsConditionOpen] = useState(false);
-  const [isBranchOpen, setIsBranchOpen] = useState(false);
-  const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
-
   const [showAddScreen, setShowAddScreen] = useState(false);
   const [showPublishScreen, setShowPublishScreen] = useState(false);
-
-  //Add Screen Filter
-
-  const [isSectorOpen, setIsSectorOpen] = useState(false);
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
-  const [isClustorOpen, setIsClustorOpen] = useState(false);
-  const [isBranchAddViewOpen, setIsBranchAddViewOpen] = useState(false);
-  const [isDepartmentAddViewOpen, setIsDepartmentAddViewOpen] = useState(false);
-  const [isFloorOpen, setIsFloorOpen] = useState(false);
-  const [isLocationOpen, setIsLocationOpen] = useState(false);
 
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
   const [screenData, setScreenData] = useState([]);
@@ -167,8 +150,6 @@ const Create_Booking = () => {
     calculateSize(screen);
   };
 
-  //*** Should not assign fixed length to media_list, instead keep it mutable and constantly check if it reaches the booking limit
-
   const calculateSize = (screen) => {
     let maxLength = 0;
     screen.forEach((screen) => {
@@ -188,98 +169,8 @@ const Create_Booking = () => {
     setAllScreenData(screens);
   };
 
-  const toggleSlotSelect = () => {
-    setIsSlotOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleDateSelect = () => {
-    setIsDateOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleConditionSelect = () => {
-    setIsConditionOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleBranchSelect = () => {
-    setIsBranchOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleDepartmentSelect = () => {
-    setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
-  };
-
-  const handleStatusChange = (event) => {
-    const selectedValue = event.target.value;
-    if (selectedValue === "0") {
-      alert("Please select a valid status.");
-    } else {
-      setFilter((prevFilter) => {
-        if (prevFilter.includes(selectedValue)) {
-          return prevFilter; // Already selected, no change
-        } else {
-          return [...prevFilter, selectedValue]; // Add the selected value to the filter state
-        }
-      });
-    }
-  };
-
-  const handleStatusPublishScreenChange = (event) => {
-    const selectedValue = event.target.value;
-    if (selectedValue === "0") {
-      alert("Please select a valid status.");
-    } else {
-      setFilterPublishCreen((prevFilter) => {
-        if (prevFilter.includes(selectedValue)) {
-          return prevFilter; // Already selected, no change
-        } else {
-          return [...prevFilter, selectedValue]; // Add the selected value to the filter state
-        }
-      });
-    }
-  };
-
-  const removeFilter = (event) => {
-    const selectedValue = event;
-    const updatedFilter = filter.filter((value) => value !== selectedValue);
-    setFilter(updatedFilter);
-  };
-
-  const clearFilter = () => {
-    setFilter([]);
-  };
-
-  const removePublishCreenFilter = (event) => {
-    const selectedValue = event;
-    const updatedFilter = filter_publish_screen.filter(
-      (value) => value !== selectedValue
-    );
-    setFilterPublishCreen(updatedFilter);
-  };
-
-  const clearPublishScreenFilter = () => {
-    setFilterPublishCreen([]);
-  };
-
   const search = () => {
     alert("search");
-  };
-
-  const toggleSectorSelect = () => {
-    setIsSectorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleRegionSelect = () => {
-    setIsRegionOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleClustorSelect = () => {
-    setIsClustorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleBranchAddViewSelect = () => {
-    setIsBranchAddViewOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleDepartmentAddViewSelect = () => {
-    setIsDepartmentAddViewOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleFloorSelect = () => {
-    setIsFloorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleLocationSelect = () => {
-    setIsLocationOpen((prevIsOpen) => !prevIsOpen);
   };
 
   const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -364,7 +255,6 @@ const Create_Booking = () => {
     const newCheckboxes = {};
     const newSelectAll = !selectAll;
 
-    // Set all checkboxes to the new state
     screens.forEach((row) => {
       newCheckboxes[row.id] = newSelectAll;
     });
@@ -372,7 +262,6 @@ const Create_Booking = () => {
     setCheckboxes(newCheckboxes);
     setSelectAll(newSelectAll);
 
-    // Do something with the checkedRowIds array (e.g., store it in state)
     const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
     setSelectedScreenItems(checkedRowIds);
   };
@@ -381,7 +270,6 @@ const Create_Booking = () => {
     const newCheckboxes = {};
     const newSelectAll = !selectAllPubishScreen;
 
-    // Set all checkboxes to the new state
     screens.forEach((row) => {
       newCheckboxes[row.id] = newSelectAll;
     });
@@ -389,14 +277,12 @@ const Create_Booking = () => {
     setCheckboxPublishScreen(newCheckboxes);
     setSelectAllPublishScreen(newSelectAll);
 
-    // Do something with the checkedRowIds array (e.g., store it in state)
     const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
     setSelectPublishScreen(checkedRowIds);
   };
 
   const handleCloseAddScreen = () => {
     setShowAddScreen(!showAddScreen);
-    // setSelectedScreenItems([]);
   };
 
   const handleAddScreen = () => {
@@ -468,22 +354,18 @@ const Create_Booking = () => {
   };
 
   const handleSelectScreen = (screenIndex, dateIndex) => {
-    // Check if the selection already exists in bookingSelect
     const isDuplicate = bookingSelect.some(
       (selected) =>
         selected.screenIndex === screenIndex && selected.dateIndex === dateIndex
     );
 
     if (!isDuplicate) {
-      // If not a duplicate, add the selection to bookingSelect
       const newBookingSelect = [
         ...bookingSelect,
         { screenIndex, dateIndex, id: screenIndex + 1 },
       ];
       setBookingSelect(newBookingSelect);
     } else {
-      // If it's a duplicate, you may choose to remove it or handle it accordingly
-      // For this example, I'm removing the duplicate
       const filteredBookingSelect = bookingSelect.filter(
         (selected) =>
           !(
@@ -523,7 +405,6 @@ const Create_Booking = () => {
       return acc;
     }, {});
 
-    // Convert the grouped data into an array of objects
     const result = Object.keys(groupedData).map((id) => ({
       id: parseInt(id), // Convert id to integer
       screen_booking_amount: groupedData[id],
@@ -689,33 +570,6 @@ const Create_Booking = () => {
         }
       }
 
-      // If the destination content is null, update it with the dragged item
-      // if (destinationItems[destination.index] !== undefined) {
-      //   if (
-      //     destination.droppableId === "panel-1" &&
-      //     destinationItems[destination.index].media_id === null
-      //   ) {
-      //     const draggedItem = sourceItems.find(
-      //       (item) =>
-      //         item.media_id === parseInt(result.draggableId.split("-")[1]) + 1
-      //     );
-      //     destinationItems[lastIndexWithData + 1] = { ...draggedItem };
-      //     // destinationItems[destination.index] = { ...draggedItem };
-      //   }
-      //   // Update state
-      //   if (source.droppableId === "panel-1") {
-      //     setItemsPanel1({
-      //       ...itemsPanel1,
-      //       value: {
-      //         media_list: destinationItems,
-      //       },
-      //     });
-      //   }
-      // }
-
-      // *** Doesn'y have to only be at the end of the list to be able to insert dragged item
-      // *** New media must be able to be inserted between existing media
-
       const insert = (arr, index, newItem) => [
         ...arr.slice(0, index),
 
@@ -736,26 +590,13 @@ const Create_Booking = () => {
             item.media_id === parseInt(result.draggableId.split("-")[1]) + 1
         );
 
-        // console.log("destinationItems " + JSON.stringify(destinationItems));
-
-        // console.log("inserting at index " + destination.index);
         newDestinationItems = insert(destinationItems, destination.index, {
           ...draggedItem,
           slot_size: 1,
         });
-        // console.log(
-        //   "newDestinationItems " + JSON.stringify(newDestinationItems)
-        // );
-        // destinationItems[lastIndexWithData + 1] = { ...draggedItem };
-        // destinationItems[destination.index] = { ...draggedItem };
       }
-      // Update state
-      // *** Here must be destination not source
+
       if (destination.droppableId === "panel-1") {
-        // console.log(
-        //   "setting new medialist " +
-        //     JSON.stringify(newDestinationItems.map((i) => i.media_id))
-        // );
         setItemsPanel1({
           ...itemsPanel1,
           value: {
@@ -766,36 +607,6 @@ const Create_Booking = () => {
       }
     }
   };
-
-  // const handleRemoveMediaPlaylistItem = (index) => {
-  //   const updatedMediaList = [...itemsPanel1.value.media_list]; // Access the media_list array inside value object
-  //   const nullifiedMediaItem = {
-  //     media_id: null,
-  //     media_name: null,
-  //     media_type: null,
-  //     media_size: null,
-  //     media_duration: null,
-  //   }; // Define a nullified media item
-  //   updatedMediaList[index] = nullifiedMediaItem; // Update the media item in the list
-
-  //   const output_data = updatedMediaList.reduce((acc, item) => {
-  //     if (item.media_id !== null) {
-  //       acc.push(item);
-  //     }
-  //     return acc;
-  //   }, []);
-
-  //   const nullItems = updatedMediaList.filter((item) => item.media_id === null);
-  //   nullItems.forEach((item) => output_data.push(item));
-
-  //   setItemsPanel1((prevState) => ({
-  //     ...prevState,
-  //     value: {
-  //       ...prevState.value,
-  //       media_list: output_data,
-  //     },
-  //   })); // Update the state with the modified media list
-  // };
 
   const handleRemoveMediaPlaylistItem = (index) => {
     const updatedMediaList = [...itemsPanel1.value.media_list]; // Access the media_list array inside value object
@@ -899,23 +710,6 @@ const Create_Booking = () => {
     }));
   };
 
-  // const handleAddMediaPlaylistItem = (index) => {
-  //   const updatedMediaList = [...itemsPanel1.value.media_list];
-
-  //   const newDataMedia = [
-  //     ...updatedMediaList.slice(0, index + 1),
-  //     updatedMediaList[index],
-  //     ...updatedMediaList.slice(index + 1, updatedMediaList.length - 1),
-  //   ];
-  //   setItemsPanel1((prevState) => ({
-  //     ...prevState,
-  //     value: {
-  //       ...prevState.value,
-  //       media_list: newDataMedia,
-  //     },
-  //   }));
-  // };
-
   const renderMediaList = (slots, media_list) => {
     const nullFreeList = media_list.filter((it) => it.media_id !== null);
     var currentIndex = 0;
@@ -933,9 +727,6 @@ const Create_Booking = () => {
 
     const emptySlots = [];
 
-    // console.log("media_list : " + JSON.stringify(media_list));
-    // console.log("mediaSize : " + mediaSize);
-    // console.log("bookingSize : " + bookingSize);
     for (var i = mediaSize; i < slots; i++) {
       emptySlots.push({
         media_id: null,
@@ -951,25 +742,10 @@ const Create_Booking = () => {
     const processedMediaList = [...nullFreeList, ...emptySlots];
 
     return processedMediaList.map((items, index) => {
-      // const prevItem =
-      //   index > 0
-      //     ? media_list[
-      //     index - 1
-      //     ]
-      //     : null;
-      // const nextItem =
-      //   index <
-      //     media_list.length - 1
-      //     ? media_list[
-      //     index + 1
-      //     ]
-      //     : null;
-
       const slotSize = "slot_size" in items ? items.slot_size : 1;
       // *** use dynamic height depending on slot_size
       const itemHeight = 80 * slotSize;
 
-      // console.log("media_id itemHeight : " + items.media_id + " " + itemHeight);
       return (
         <Draggable
           key={`panel1-${index}`}
@@ -994,34 +770,6 @@ const Create_Booking = () => {
                           className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                           onClick={() => handleAddMediaPlaylistItem(index)}
                         />
-
-                        {/* {prevItem?.media_id ===
-                                items?.media_id ? (
-                                <></>
-                              ) : items?.media_id ===
-                                nextItem?.media_id ? (
-                                <>
-                                  <IoIosAddCircle
-                                    size={24}
-                                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                    onClick={() =>
-                                      handleAddMediaPlaylistItem(
-                                        index
-                                      )
-                                    }
-                                  />
-                                </>
-                              ) : (
-                                <IoIosAddCircle
-                                  size={24}
-                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                  onClick={() =>
-                                    handleAddMediaPlaylistItem(
-                                      index
-                                    )
-                                  }
-                                />
-                              )} */}
                       </>
                     )}
 
@@ -1035,20 +783,6 @@ const Create_Booking = () => {
                     <div
                       className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[337px]`}
                       style={{ height: `${itemHeight}px` }}
-                      // className={`grid grid-cols-11 h-[80px]  ${
-                      //   prevItem?.media_id ===
-                      //     items?.media_id &&
-                      //   items?.media_id ===
-                      //     nextItem?.media_id
-                      //     ? "border-  border-l border-r border-gray-300"
-                      //     : prevItem?.media_id ===
-                      //       items?.media_id
-                      //     ? "border-b  border-l border-r border-gray-300"
-                      //     : items?.media_id ===
-                      //       nextItem?.media_id
-                      //     ? "border-t  border-l border-r border-gray-300"
-                      //     : " border border-gray-300"
-                      // } w-[337px]`}
                     >
                       <div className="col-span-2 flex justify-center items-center">
                         {items.media_type === "video" ? (
@@ -1206,160 +940,8 @@ const Create_Booking = () => {
             </div>
           </div>
         </div>
-        {/* Select Menu */}
-        <div className="relative flex flex-col max-w-0  w-full mb-6 mt-4">
-          <div className="rounded-lg h-[50px] flex items-center shadow-md">
-            <div className="flex flex-col lg:flex-row">
-              <div className="w-full lg:w-3/4 flex justify-center items-center">
-                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                  <select
-                    name="slot"
-                    id="slot"
-                    onClick={toggleSlotSelect}
-                    onChange={handleStatusChange}
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="Avaliable Slot">Avaliable Slot</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isSlotOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
-                  </div>
-                </div>
-                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                  <select
-                    name="date"
-                    id="date"
-                    onClick={toggleDateSelect}
-                    onChange={handleStatusChange}
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="Date">Date</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                    {isDateOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
-                  </div>
-                </div>
-                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                  <select
-                    name="condition"
-                    id="condition"
-                    onClick={toggleConditionSelect}
-                    onChange={handleStatusChange}
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="Store Cluster">{`Low The < 5`}</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isConditionOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
-                  </div>
-                </div>
-                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                  <select
-                    name="branch"
-                    id="branch"
-                    onClick={toggleBranchSelect}
-                    onChange={handleStatusChange}
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="Branch">Branch</option>
-                    <option value="...">...</option>
-                    <option value="...">...</option>
-                    <option value="...">...</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isBranchOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
-                  </div>
-                </div>
-                <div className="relative w-full lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
-                  <select
-                    name="department"
-                    id="department"
-                    onClick={toggleDepartmentSelect}
-                    onChange={handleStatusChange}
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="Department">Department</option>
-                    <option value="Beauty">Beauty</option>
-                    <option value="Toy">Toy</option>
-                    <option value="Electronics">Electronics</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isDepartmentOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* Select Menu */}
 
-        {/* Filter */}
-        <div className="flex">
-          <div className="basis-8/12">
-            {filter &&
-              filter.map((items, index) => (
-                <button key={index} onClick={() => removeFilter(items)}>
-                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
-                    <div className="grid grid-cols-4">
-                      <div className="col-span-1 mt-[6px]">
-                        <div className="flex justify-end items-center">
-                          <IoIosClose size="27" color="#6425FE" />
-                        </div>
-                      </div>
-                      <div className="col-span-3 mt-[8px]">
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-sm font-bold">
-                            {items}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            {filter.length > 0 && (
-              <button onClick={() => clearFilter()}>
-                <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
-                  <div className="grid grid-cols-12">
-                    <div className="col-span-1 mt-[6px]">
-                      <div className="flex justify-end items-center">
-                        <IoIosClose size="27" color="#6425FE" />
-                      </div>
-                    </div>
-                    <div className="col-span-11 mt-[8px]">
-                      <div className="flex justify-center items-center">
-                        <div className="font-poppins text-sm text-white">
-                          Clear All
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            )}
-          </div>
-        </div>
-        {/* Filter */}
+        <Filter />
 
         <div className="mt-7 grid grid-cols-8 ">
           {/* Left Panel */}
