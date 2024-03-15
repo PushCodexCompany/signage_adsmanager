@@ -138,7 +138,7 @@ const UserProfile = ({ user }) => {
           <div className="mt-5">
             <button
               onClick={() => handleLogout()}
-              className="text-white bg-[#6425FE] rounded-[10px] w-full h-[50px] font-poppins"
+              className="text-white bg-[#6425FE] hover:bg-[#3b1694] rounded-[10px] w-full h-[50px] font-poppins"
             >
               Logout
             </button>

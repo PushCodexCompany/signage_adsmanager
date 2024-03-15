@@ -80,7 +80,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   <div className="mt-2">
                     <div className="grid grid-cols-6 space-x-2">
                       <div className="col-span-1">
-                        <button className="w-[130px] h-[35px] rounded-lg text-[18px] font-poppins bg-[#6425FE] text-white">
+                        <button className="w-[130px] h-[35px] rounded-lg text-[18px] font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white">
                           New Tag+
                         </button>
                       </div>
@@ -339,7 +339,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       </div>
                       <div className="mt-8">
                         <div className="flex justify-center items-center">
-                          <button className="font-poppins text-[15px] w-[315px] h-[48px] rounded-lg bg-[#6425FE] text-white font-bold">
+                          <button className="font-poppins text-[15px] w-[315px] h-[48px] rounded-lg bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold">
                             Start Booking
                           </button>
                         </div>
@@ -523,7 +523,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   </DragDropContext>
 
                   <div className="flex justify-center items-center mt-10 mb-10">
-                    <button className="bg-[#6425FE] text-white h-[35px] w-[255px] rounded-lg font-poppins">
+                    <button className="bg-[#6425FE] hover:bg-[#3b1694] text-white h-[35px] w-[255px] rounded-lg font-poppins">
                       Save
                     </button>
                   </div>

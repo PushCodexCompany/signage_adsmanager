@@ -679,7 +679,7 @@ const User_Management = () => {
               <button
                 type="submit"
                 onClick={() => registerNewUser()}
-                className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
+                className="w-full lg:w-[300px] bg-[#2f3847] hover:bg-[#445066] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
               >
                 Sign Up
               </button>
@@ -756,7 +756,7 @@ const User_Management = () => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={() => saveBrandReg()}
-                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
                   >
                     Save
                   </button>
@@ -842,7 +842,7 @@ const User_Management = () => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={() => saveBrandMerchandise()}
-                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
                   >
                     Save
                   </button>

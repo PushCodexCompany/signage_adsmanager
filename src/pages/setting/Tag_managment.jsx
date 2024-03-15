@@ -146,12 +146,15 @@ const Tag_managment = () => {
                     <div className="col-span-2">
                       <div className="flex justify-center items-center mt-3 space-x-4">
                         <button onClick={() => selectCategory(items)}>
-                          <RiEditLine size={20} className="text-[#6425FE]" />
+                          <RiEditLine
+                            size={20}
+                            className="text-[#6425FE] hover:text-[#3b1694]"
+                          />
                         </button>
                         <button>
                           <RiDeleteBin5Line
                             size={20}
-                            className="text-[#6425FE]"
+                            className="text-[#6425FE] hover:text-[#3b1694]"
                           />
                         </button>
                       </div>
@@ -195,7 +198,10 @@ const Tag_managment = () => {
                       <button onClick={() => removeTag(items)}>
                         <div className="relative w-[100px] lg:w-[160px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
                           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
-                            <IoIosClose size="22" color="#6425FE" />
+                            <IoIosClose
+                              size="22"
+                              className="text-[#6425FE] hover:text-[#3b1694]"
+                            />
                           </div>
                           <div className="text-sm font-poppins">{items}</div>
                         </div>

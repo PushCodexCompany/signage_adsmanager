@@ -432,7 +432,7 @@ const Create_Booking = () => {
                   </button>
                   <button
                     onClick={() => handleConfirmbooking()}
-                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] font-poppins"
+                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
                   >
                     Confirm Booking
                   </button>
@@ -510,9 +510,8 @@ const Create_Booking = () => {
                             <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
                               <IoIosInformationCircleOutline
                                 onClick={() => handleScreenInfo(items.id)}
-                                color={"#6425FE"}
                                 size={22}
-                                className="cursor-pointer"
+                                className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                               />
                             </div>
                           </div>
@@ -592,9 +591,8 @@ const Create_Booking = () => {
                             <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
                               <IoIosInformationCircleOutline
                                 onClick={() => handleSelectInfoScreen(items)}
-                                color={"#6425FE"}
                                 size={22}
-                                className="cursor-pointer"
+                                className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                               />
                               {screenData.some(
                                 (screen) => screen.id === items.id
@@ -618,7 +616,7 @@ const Create_Booking = () => {
                                         </p>
                                         <div className="flex justify-center items-center">
                                           <button
-                                            className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
+                                            className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
                                             onClick={(e) => {
                                               e.stopPropagation();
                                               handleConfirmDelete(
@@ -630,7 +628,7 @@ const Create_Booking = () => {
                                             Yes
                                           </button>
                                           <button
-                                            className="bg-[#6425FE] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
+                                            className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
                                             onClick={(e) => {
                                               e.stopPropagation();
                                               handleCancelDelete(index);
@@ -776,8 +774,7 @@ const Create_Booking = () => {
                                           handleScreenInfo(items.id)
                                         }
                                         size={22}
-                                        color={"#6425FE"}
-                                        className="cursor-pointer"
+                                        className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                                       />
                                     </div>
                                   </div>
@@ -926,9 +923,8 @@ const Create_Booking = () => {
                                         onClick={() =>
                                           handleSelectInfoScreen(items)
                                         }
-                                        color={"#6425FE"}
                                         size={22}
-                                        className="cursor-pointer"
+                                        className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                                       />
                                     </div>
                                   </div>

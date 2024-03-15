@@ -299,7 +299,10 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
                     {page_permission.update ? (
                       <button onClick={() => onSelectEdit(row.UserID)}>
-                        <RiEditLine size={20} className="text-[#6425FE]" />
+                        <RiEditLine
+                          size={20}
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                        />
                       </button>
                     ) : (
                       <></>
@@ -310,7 +313,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                       >
                         <RiDeleteBin5Line
                           size={20}
-                          className="text-[#6425FE]"
+                          className="text-[#6425FE] hover:text-[#3b1694]"
                         />
                       </button>
                     ) : (
@@ -481,7 +484,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
               <button
                 type="submit"
                 onClick={() => handleSaveEdit(edit_id)}
-                className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
+                className="w-full lg:w-[300px] bg-[#2f3847] hover:bg-[#445066] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
               >
                 Save
               </button>
@@ -568,7 +571,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={() => saveBrandReg()}
-                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
                   >
                     Save
                   </button>

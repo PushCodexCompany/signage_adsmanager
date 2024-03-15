@@ -105,7 +105,7 @@ const New_screen = () => {
         <Header category="Page" title="Home" />
         <div className="flex items-center justify-between mt-10 mb-5 ">
           <div className="font-poppins font-semibold text-2xl">
-            Create New Screens
+            {id !== "new" ? "Edit Screens" : "Create New Screens"}
           </div>
         </div>
         <div className="grid grid-cols-12">
@@ -192,7 +192,7 @@ const New_screen = () => {
               <div className="mt-5">
                 <div className="grid grid-cols-6 space-x-2">
                   <div className="col-span-1">
-                    <button className="w-[130px] h-[35px] rounded-lg  font-poppins bg-[#6425FE] text-white">
+                    <button className="w-[130px] h-[35px] rounded-lg  font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white">
                       New Tag+
                     </button>
                   </div>
@@ -254,7 +254,7 @@ const New_screen = () => {
                     <div className="mt-2 flex justify-center items-center">
                       <button
                         onClick={() => handleImageChange()}
-                        className="bg-[#6425FE] text-white font-poppins w-[315px] h-[48px] rounded-lg"
+                        className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins w-[315px] h-[48px] rounded-lg"
                       >
                         Upload Image
                       </button>
@@ -639,7 +639,7 @@ const New_screen = () => {
               </div>
               <div className="mt-16">
                 <div className="flex justify-center items-center">
-                  <button className="w-[315px] h-[48px] bg-[#6425FE] text-white font-poppins rounded-lg">
+                  <button className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins rounded-lg">
                     Create Screen
                   </button>
                 </div>

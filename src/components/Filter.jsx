@@ -346,7 +346,7 @@ const Filter = () => {
                 <div className="grid grid-cols-4">
                   <div className="col-span-1 mt-[6px]">
                     <div className="flex justify-end items-center">
-                      <IoIosClose size="27" color="#6425FE" />
+                      <IoIosClose size="27" className="text-[#6425FE] hover:text-[#3b1694]" />
                     </div>
                   </div>
                   <div className="col-span-3 mt-[8px]">

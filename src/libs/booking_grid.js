@@ -108,7 +108,10 @@ export const GridTable = () => {
                 <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
                     <button onClick={() => onClickEdit(row)}>
-                      <RiEditLine size={20} className="text-[#6425FE]" />
+                      <RiEditLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
                     </button>
                   </div>
                 </td>

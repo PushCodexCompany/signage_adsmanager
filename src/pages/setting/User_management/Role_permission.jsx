@@ -399,7 +399,7 @@ const Role_permission = () => {
                         onChange={() => toggleCheckbox(item)}
                       />
                       <span
-                        className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                        className={`h-5 w-5 border-2 border-[#6425FE] hover:border-[#3b1694] rounded-sm cursor-pointer flex items-center justify-center ${
                           checkboxes[item] ? "bg-white" : ""
                         }`}
                       >
@@ -471,7 +471,7 @@ const Role_permission = () => {
                           onChange={() => toggleCheckbox(item)}
                         />
                         <span
-                          className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                          className={`h-5 w-5 border-2 border-[#6425FE] hover:border-[#3b1694]  rounded-sm cursor-pointer flex items-center justify-center ${
                             checkboxes[item] ? "bg-white" : ""
                           }`}
                         >
@@ -780,7 +780,10 @@ const Role_permission = () => {
                       <div className="flex justify-center items-center mt-3 space-x-4">
                         {page_permission.update ? (
                           <button onClick={() => handleEditRoleName()}>
-                            <RiEditLine size={20} className="text-[#6425FE]" />
+                            <RiEditLine
+                              size={20}
+                              className="text-[#6425FE] hover:text-[#3b1694]"
+                            />
                           </button>
                         ) : (
                           ""
@@ -790,7 +793,7 @@ const Role_permission = () => {
                           <button onClick={() => handleDeleteRoleName(key)}>
                             <RiDeleteBin5Line
                               size={20}
-                              className="text-[#6425FE]"
+                              className="text-[#6425FE] hover:text-[#3b1694]"
                             />
                           </button>
                         ) : (
@@ -897,7 +900,7 @@ const Role_permission = () => {
               <div className="flex justify-center items-center -mt-3">
                 <button
                   onClick={() => handleSaveNewRole()}
-                  className="bg-[#6425FE] text-white w-36 h-10 font-poppins rounded-lg"
+                  className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg"
                 >
                   Save
                 </button>

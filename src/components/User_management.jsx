@@ -324,7 +324,7 @@ const User_Management = ({ setShowModal }) => {
                 <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
                   <button
                     onClick={() => setShowRegister(true)}
-                    className="bg-[#6425FE] text-white text-sm font-poppins w-[200px] lg:w-[300px] lg:h-[45px] rounded-md mr-1"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[200px] lg:w-[300px] lg:h-[45px] rounded-md mr-1"
                   >
                     New User +
                   </button>
@@ -360,7 +360,7 @@ const User_Management = ({ setShowModal }) => {
                 ))}
               {filter.length > 0 && (
                 <button onClick={() => clearFilter()}>
-                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] border-gray-300 rounded-full">
+                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] hover:bg-[#3b1694] border-gray-300 rounded-full">
                     <div className="grid grid-cols-12">
                       <div className="col-span-1 mt-[6px]">
                         <div className="flex justify-end items-center">
@@ -626,7 +626,7 @@ const User_Management = ({ setShowModal }) => {
               <button
                 type="submit"
                 onClick={() => registerNewUser()}
-                className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
+                className="w-full lg:w-[300px] bg-[#2f3847] hover:bg-[#445066] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
               >
                 Sign Up
               </button>
@@ -713,7 +713,7 @@ const User_Management = ({ setShowModal }) => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={() => saveBrandReg()}
-                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
                   >
                     Save
                   </button>
@@ -811,7 +811,7 @@ const User_Management = ({ setShowModal }) => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={() => saveBrandMerchandise()}
-                    className="w-52 h-10 bg-[#6425FE] rounded-lg text-white font-poppins"
+                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
                   >
                     Save
                   </button>

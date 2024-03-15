@@ -707,7 +707,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
             <div className="mt-16 flex justify-center items-center space-x-6">
               <div
                 onClick={() => handleSaveBooking()}
-                className="border-2 border-[#6425FE] bg-[#6425FE] w-48 h-10 flex items-center justify-center cursor-pointer"
+                className="border-2 border-[#6425FE] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg w-48 h-10 flex items-center justify-center cursor-pointer"
               >
                 <button className="text-white font-poppins">OK</button>
               </div>
@@ -845,7 +845,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="mt-4 flex items-center justify-center">
                   <button
                     onClick={() => handleButtonClick()}
-                    className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg font-poppins"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold w-[300px] h-[45px] rounded-lg font-poppins"
                   >
                     Upload New Image
                   </button>
@@ -919,7 +919,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="mt-4 flex items-center justify-center">
                   <button
                     onClick={() => handleSave()}
-                    className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
                   >
                     Create
                   </button>

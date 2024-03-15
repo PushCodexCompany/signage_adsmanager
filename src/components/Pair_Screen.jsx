@@ -127,9 +127,15 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                             onClick={togglePasswordVisibility}
                           >
                             {passwordVisible ? (
-                              <IoIosEye size={26} color="#6425FE" />
+                              <IoIosEye
+                                size={26}
+                                className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                              />
                             ) : (
-                              <IoIosEyeOff size={26} color="#6425FE" />
+                              <IoIosEyeOff
+                                size={26}
+                                className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                              />
                             )}
                           </div>
                         </div>
@@ -148,7 +154,7 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                       <div className="col-span-3">
                         <button
                           onClick={() => handlePairScreen()}
-                          className="w-[300px] h-[48px] bg-[#6425FE] text-white font-poppins font-semibold text-[24px] rounded-lg"
+                          className="w-[300px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins font-semibold text-[24px] rounded-lg"
                         >
                           Pair
                         </button>

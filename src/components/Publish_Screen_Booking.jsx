@@ -215,7 +215,7 @@ const Publish_Screen_Booking = ({
         <div className="mt-3 mb-2 flex items-center justify-center">
           <button
             onClick={() => alert("Publish")}
-            className="w-[30%] bg-[#6425FE] text-white text-lg py-2 rounded-lg font-bold font-poppins "
+            className="w-[30%] bg-[#6425FE] hover:bg-[#3b1694] text-white text-lg py-2 rounded-lg font-bold font-poppins "
           >
             Publish to Selected Screens
           </button>

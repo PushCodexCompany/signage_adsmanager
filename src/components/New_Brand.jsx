@@ -324,7 +324,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={() => handleImageChange()}
-                    className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
                   >
                     Upload New Image
                   </button>
@@ -522,7 +522,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
             <div className="flex justify-center items-center mt-10">
               <button
                 onClick={() => handleSaveNewBrand()}
-                className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
               >
                 Create
               </button>

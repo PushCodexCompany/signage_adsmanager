@@ -96,7 +96,7 @@ const Confirm_Booking = ({
             <div className="flex justify-center items-center text-center mt-5">
               <button
                 onClick={() => handleConfirmBookingScreen()}
-                className="bg-[#6425FE] w-[300px] h-[48px] rounded-lg text-white font-poppins font-bold"
+                className="bg-[#6425FE] hover:bg-[#3b1694] w-[300px] h-[48px] rounded-lg text-white font-poppins font-bold"
               >
                 OK
               </button>
@@ -106,7 +106,7 @@ const Confirm_Booking = ({
                 onClick={() =>
                   setOpenConfirmBookingModal(!openConfirmBookingModal)
                 }
-                className="border-2 border-[#6425FE] w-[300px] h-[48px] rounded-lg text-[#6425FE] font-poppins font-bold"
+                className="border-2 border-[#6425FE]  w-[300px] h-[48px] rounded-lg text-[#6425FE] font-poppins font-bold"
               >
                 Cancel
               </button>

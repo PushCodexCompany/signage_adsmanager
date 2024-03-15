@@ -218,16 +218,25 @@ export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
                   <div className="space-x-2">
                     {row.isPair ? (
                       <button>
-                        <BiLinkAlt size={20} className="text-[#6425FE]" />
+                        <BiLinkAlt
+                          size={20}
+                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                        />
                       </button>
                     ) : (
                       <></>
                     )}
                     <button onClick={() => handleEditScreen(row)}>
-                      <RiEditLine size={20} className="text-[#6425FE]" />
+                      <RiEditLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
                     </button>
                     <button onClick={() => alert(`delete : ${row.id}`)}>
-                      <RiDeleteBin5Line size={20} className="text-[#6425FE]" />
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
                     </button>
                   </div>
                 </td>
