@@ -244,9 +244,7 @@ const Tag_managment = () => {
                           <div className={`font-poppins text-2xl`}>
                             {items.TagCategoryName}
                           </div>
-                          <div className="text-xs">
-                            {`${items.TagCategoryName} Description`}
-                          </div>
+                          <div className="text-xs">{items.TagDesc}</div>
                         </div>
 
                         <div className="col-span-2">
