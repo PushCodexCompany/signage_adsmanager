@@ -562,4 +562,138 @@ export default {
 
     return data;
   },
+
+  getTagCatagory: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_tagcategories`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  createTagCategory: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/create_tagcategory?tagcategoryname=${hash.tagcategoryname}`;
+
+    if (hash.tagcategorydesc !== null && hash.tagcategorydesc !== undefined) {
+      urlString += `&tagcategorydesc=${hash.tagcategorydesc}`;
+    }
+
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
+  updateTagCategory: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/update_tagcategory?tagcategoryid=${hash.tagcategoryid}&tagcategoryname=${hash.tagcategoryname}`;
+
+    if (hash.tagcategorydesc !== null && hash.tagcategorydesc !== undefined) {
+      urlString += `&tagcategorydesc=${hash.tagcategorydesc}`;
+    }
+
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
+  deleteTagCategory: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/delete_tagcategory?tagcategoryid=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  getTag: async function (id, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_tags?tagcategoryid=${id}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  createTag: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/create_tag?tagname=${hash.tagname}&tagcategoryid=${hash.tagcategoryid}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  updateTag: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/update_tag?tagid=${hash.TagID}&tagname=${hash.TagName}&tagcategoryid=${hash.TagCategoryID}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  deleteTag: async function (tagId, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/delete_tag?tagid=${tagId}`,
+      "",
+      config
+    );
+
+    return data;
+  },
 };

@@ -1,88 +1,205 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../../components";
 
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { IoIosClose } from "react-icons/io";
 import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
-
-const category = [
-  {
-    id: 1,
-    name: "Technology",
-    description: "Technology Description Text",
-    tag: ["CTW"],
-  },
-  {
-    id: 2,
-    name: "Fashion",
-    description: "Fashion Description Text",
-    tag: ["CTW", "Digital Screen", "North", "Flagship", "Beauty", "Portrait"],
-  },
-  {
-    id: 3,
-    name: "Restaurant",
-    description: "Restaurant Description Text",
-    tag: ["CTW", "Digital Screen"],
-  },
-  {
-    id: 4,
-    name: "Service",
-    description: "Service Description Text",
-    tag: ["Flagship", "Beauty", "Portrait"],
-  },
-  {
-    id: 5,
-    name: "Shopping",
-    description: "Shopping Description Text",
-    tag: ["Beauty", "Portrait"],
-  },
-  {
-    id: 6,
-    name: "Financial",
-    description: "Financial Description Text",
-    tag: ["Portrait"],
-  },
-];
+import User from "../../libs/admin";
+import Permission from "../../libs/permission";
+import Create_Tag_Category from "../../components/Create_Tag_Category";
+import Swal from "sweetalert2";
+import { AiOutlineClose } from "react-icons/ai";
 
 const Tag_managment = () => {
   useCheckPermission();
-  const [checkboxes, setCheckboxes] = useState(
-    Array(category.length).fill(false)
-  );
-  const [select_cat, setSelectCat] = useState(category[0]);
-  const [new_tag, setNewTag] = useState();
 
-  const toggleCheckbox = (index) => {
-    const newCheckboxes = [...checkboxes];
-    newCheckboxes[index] = !newCheckboxes[index];
-    setCheckboxes(newCheckboxes);
+  const [page_permission, setPagePermission] = useState([]);
+  const [select_cat, setSelectCat] = useState([]);
+  const [category_data, setCategoryData] = useState([]);
+  const [tag_data, setTagData] = useState([]);
+  const [new_tag, setNewTag] = useState(null);
+  const [modalCreateNewCategory, setModalCreateNewCategory] = useState(false);
+  const [modalEditTag, setModalEditTag] = useState(false);
+  const [select_tag, setSelectTag] = useState([]);
+
+  const { token } = User.getCookieData();
+
+  // Setup Data
+  useEffect(async () => {
+    getCategoryTag();
+    setPermissionPage();
+  }, []);
+
+  const getCategoryTag = async () => {
+    const tag_category = await User.getTagCatagory(token);
+    tag_category.sort((a, b) =>
+      a.TagCategoryName.localeCompare(b.TagCategoryName)
+    );
+    setCategoryData(tag_category);
+    setSelectCat(tag_category[0]);
+    getTagData(tag_category[0]);
   };
 
-  const addTag = () => {
-    if (new_tag && new_tag.trim() !== "") {
-      const updatedTag = [...select_cat.tag, new_tag];
-      const updatedSelectCat = { ...select_cat, tag: updatedTag };
-      setSelectCat(updatedSelectCat);
-      setNewTag(""); // Clear the input field after adding the tag
+  const getTagData = async (tag_category) => {
+    const tag = await User.getTag(tag_category.TagCategoryID, token);
+
+    setTagData(tag);
+  };
+
+  const setPermissionPage = async () => {
+    const { user } = User.getCookieData();
+    // const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    const mock_tag_permission = {
+      create: true,
+      delete: true,
+      update: true,
+      view: true,
+    };
+    setPagePermission(mock_tag_permission);
+  };
+
+  //Category function
+
+  const handleNewTagCategory = () => {
+    setModalCreateNewCategory(!modalCreateNewCategory);
+    setSelectCat("new");
+  };
+
+  const handleSelectTagCategory = async (items) => {
+    setSelectCat(items);
+    const tag = await User.getTag(items.TagCategoryID, token);
+    setTagData(tag);
+  };
+
+  const handleDeleteCategoryTag = async (items) => {
+    try {
+      const data = await User.deleteTagCategory(items.TagCategoryID, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "Delete Tag Category Success ...",
+          text: `ลบ Tag Category ${items.TagCategoryName} สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            window.location.reload();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
-  const removeTag = (event) => {
-    const selectedValue = event;
+  // Tag Function
 
-    const updatedTag = select_cat.tag.filter(
-      (value) => value !== selectedValue
-    );
-    const updatedSelectCat = {
-      ...select_cat,
-      tag: updatedTag,
-    };
-    setSelectCat(updatedSelectCat);
+  const addNewTag = async () => {
+    if (new_tag) {
+      const obj = {
+        tagname: new_tag,
+        tagcategoryid: select_cat.TagCategoryID,
+      };
+      try {
+        const data = await User.createTag(obj, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Add Tag Success ...",
+            text: `เพิ่ม Tag สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              getTagData(select_cat);
+              setNewTag([]);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
   };
 
-  const selectCategory = (items) => {
-    setSelectCat(items);
+  const removeTag = async (items) => {
+    try {
+      const data = await User.deleteTag(items.TagID, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "Delete Tag Success ...",
+          text: `ลบ Tag สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            getTagData(select_cat);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const handleEditTag = (items) => {
+    setModalEditTag(!modalEditTag);
+    setSelectTag(items);
+  };
+
+  const handleEditTagName = async () => {
+    if (select_tag) {
+      try {
+        const data = await User.updateTag(select_tag, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Edit Tag Success ...",
+            text: `แก้ไข Tag สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              setSelectTag([]);
+              getTagData(select_tag);
+              setModalEditTag(!modalEditTag);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -100,68 +217,65 @@ const Tag_managment = () => {
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">Category</div>
               <div className="w-[40%] h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins flex justify-center items-center rounded-lg">
-                <button>New Category +</button>
+                {page_permission.create ? (
+                  <button onClick={() => handleNewTagCategory()}>
+                    New Category +
+                  </button>
+                ) : (
+                  ""
+                )}
               </div>
-
-              {category.map((items, key) => (
-                <>
-                  <div key={key} className="grid grid-cols-7 gap-2 mt-5">
-                    {/* <div className="col-span-1">
-                    <label className="inline-flex mt-3 ml-1 items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        className="opacity-0 absolute h-6 w-6 cursor-pointer"
-                        checked={checkboxes[key]}
-                        onChange={() => toggleCheckbox(key)}
-                      />
-                      <span
-                        className={`h-6 w-6 border border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                          checkboxes[key] ? "bg-white" : ""
-                        }`}
+              <div className="h-[700px] overflow-y-auto">
+                {category_data.length > 0 &&
+                  category_data.map((items, key) => (
+                    <>
+                      <div
+                        key={key}
+                        className={`grid grid-cols-7 gap-2 mt-5 
+                  ${
+                    items.TagCategoryID === select_cat.TagCategoryID
+                      ? "text-[#6425FE]"
+                      : ""
+                  } 
+                  cursor-pointer`}
+                        onClick={() => handleSelectTagCategory(items)}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className={`h-3 w-3 text-white ${
-                            checkboxes[key] ? "opacity-100" : "opacity-0"
-                          } transition-opacity duration-300 ease-in-out`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="#6425FE"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </span>
-                    </label>
-                  </div> */}
-                    <div className="col-span-5 ml-2">
-                      <div className="font-poppins text-2xl">{items.name}</div>
-                      <div className="text-xs">{items.description}</div>
-                    </div>
+                        <div className="col-span-5 ml-2">
+                          <div className={`font-poppins text-2xl`}>
+                            {items.TagCategoryName}
+                          </div>
+                          <div className="text-xs">
+                            {`${items.TagCategoryName} Description`}
+                          </div>
+                        </div>
 
-                    <div className="col-span-2">
-                      <div className="flex justify-center items-center mt-3 space-x-4">
-                        <button onClick={() => selectCategory(items)}>
-                          <RiEditLine
-                            size={20}
-                            className="text-[#6425FE] hover:text-[#3b1694]"
-                          />
-                        </button>
-                        <button>
-                          <RiDeleteBin5Line
-                            size={20}
-                            className="text-[#6425FE] hover:text-[#3b1694]"
-                          />
-                        </button>
+                        <div className="col-span-2">
+                          <div className="flex justify-center items-center mt-3 space-x-4">
+                            <button
+                              onClick={() =>
+                                setModalCreateNewCategory(
+                                  !modalCreateNewCategory
+                                )
+                              }
+                            >
+                              <RiEditLine
+                                size={20}
+                                className="text-[#6425FE] hover:text-[#3b1694]"
+                              />
+                            </button>
+                            <button>
+                              <RiDeleteBin5Line
+                                onClick={() => handleDeleteCategoryTag(items)}
+                                size={20}
+                                className="text-[#6425FE] hover:text-[#3b1694]"
+                              />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </>
-              ))}
+                    </>
+                  ))}
+              </div>
             </div>
           </div>
           {/* Left Panel */}
@@ -169,7 +283,7 @@ const Tag_managment = () => {
           <div className="col-span-5 bg-[#FAFAFA] w-full">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">
-                Tag : {select_cat.name}
+                Tag : {select_cat.TagCategoryName}
               </div>
 
               <div className="grid grid-cols-7 gap-2 mt-5">
@@ -178,41 +292,122 @@ const Tag_managment = () => {
                     type="text"
                     className="w-[100%] h-[100%] border border-gray-300 rounded-md pl-4 placeholder-ml-2"
                     placeholder="Enter Tag"
+                    value={new_tag}
                     onChange={(e) => setNewTag(e.target.value)}
                   />
                 </div>
                 <div className="col-span-1 h-12">
                   <button
-                    onClick={() => addTag()}
+                    onClick={() => addNewTag()}
                     className="w-[100%] h-[100%] rounded-lg bg-[#6425FE]  hover:bg-[#3b1694] font-poppins text-white"
                   >
                     Add +
                   </button>
                 </div>
               </div>
-
-              <div className="grid grid-cols-6 gap-1 mt-5 space-y-1">
-                {select_cat.tag &&
-                  select_cat.tag.map((items, index) => (
-                    <div key={items}>
-                      <button onClick={() => removeTag(items)}>
-                        <div className="relative w-[100px] lg:w-[160px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 border border-gray-300 rounded-full">
-                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2 ">
+              {tag_data.length > 0 ? (
+                <div className="grid grid-cols-5 gap-2 mt-5">
+                  {tag_data.map((items, index) => (
+                    <div key={items.TagID}>
+                      <div className="relative w-[100px] lg:w-[180px] h-[40px] flex items-center justify-center  ml-3 border border-gray-300 hover:border-[#6425FE] rounded-full">
+                        <div className=" absolute inset-y-0 left-0 flex items-center pl-2 ">
+                          <button onClick={() => removeTag(items)}>
                             <IoIosClose
                               size="22"
-                              className="text-[#6425FE] hover:text-[#3b1694]"
+                              className="text-[#6425FE] hover:text-[#504f53] cursor-pointer"
                             />
-                          </div>
-                          <div className="text-sm font-poppins">{items}</div>
+                          </button>
                         </div>
-                      </button>
+                        <div
+                          onClick={() => handleEditTag(items)}
+                          className="text-sm text-bold font-poppins cursor-pointer"
+                        >
+                          {items.TagName}
+                        </div>
+                      </div>
                     </div>
                   ))}
-              </div>
+                </div>
+              ) : (
+                <div className="p-4">
+                  <div className="flex justify-center items-center h-[650px]">
+                    <span className="text-gray-300 text-4xl">No Tag(s)</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {modalCreateNewCategory && (
+        <a
+          onClick={() => setModalCreateNewCategory(!modalCreateNewCategory)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {modalCreateNewCategory && (
+        <Create_Tag_Category
+          setModalCreateNewCategory={setModalCreateNewCategory}
+          modalCreateNewCategory={modalCreateNewCategory}
+          select_cat={select_cat}
+        />
+      )}
+
+      {modalEditTag && (
+        <a
+          onClick={() => setModalEditTag(!modalEditTag)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {modalEditTag && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-14 lg:top-72 lg:right-[250px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setModalEditTag(!modalEditTag)}>
+                <AiOutlineClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-[60%] lg:w-[70%] h-[40%] lg:h-[30%] rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">Edit Tag</div>
+            </div>
+            <div className="flex justify-center items-center mt-10">
+              <div className="grid grid-cols-6 gap-2">
+                <div className="col-span-3 flex items-center justify-start">
+                  <div className="font-poppins">Tag Name:</div>
+                </div>
+                <div className="col-span-3">
+                  <input
+                    type="text"
+                    value={select_tag.TagName}
+                    onChange={(e) =>
+                      setSelectTag({
+                        ...select_tag,
+                        TagName: e.target.value,
+                      })
+                    }
+                    className="w-full p-2  border rounded"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-10">
+              <button
+                onClick={() => handleEditTagName()}
+                className="bg-[#6425FE] hover:bg-[#3b1694] w-[20%] h-[40px] text-white font-poppins flex justify-center items-center rounded-lg"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
