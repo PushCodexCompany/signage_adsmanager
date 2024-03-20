@@ -14,8 +14,8 @@ const Create_Media_Rule = () => {
 
   const [media_rule_id, setMediaRuleId] = useState(null);
   const [media_rule_name, setMediaRuleName] = useState(null);
-  const [media_rule_height, setMediaRuleHeight] = useState(0);
-  const [media_rule_width, setMediaRuleWidth] = useState(0);
+  const [media_rule_height, setMediaRuleHeight] = useState(1);
+  const [media_rule_width, setMediaRuleWidth] = useState(1);
   const [media_rule_adsCapacity, setMediaRuleAdsCapacity] = useState(null);
 
   const [toggle_disable, setToggleDisable] = useState(true);
@@ -49,17 +49,17 @@ const Create_Media_Rule = () => {
     const ratioWidth = width / divisor;
     const ratioHeight = height / divisor;
 
-    const h_percentage = ((100 - ratioHeight) / 100) * 550;
     const w_percentage = ((100 - ratioWidth) / 100) * 550;
+    const h_percentage = ((100 - ratioHeight) / 100) * 550;
 
     return (
       <>
         <div className="w-[550px] h-[550px] bg-gray-200 flex justify-center items-center">
           <div
-            className={`w-[${w_percentage}px]  h-[${h_percentage}px]  bg-black text-white p-4`}
+            className={`w-[${h_percentage}px]  h-[${w_percentage}px]  bg-black text-white p-4`}
             style={{
-              width: `${w_percentage}px`,
-              height: `${h_percentage}px`,
+              width: `${h_percentage}px`,
+              height: `${w_percentage}px`,
               backgroundColor: "black",
             }}
           ></div>
@@ -277,13 +277,25 @@ const Create_Media_Rule = () => {
               </div>
               <div className="col-span-2">
                 <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold border border-gray-300 rounded-md">
+                  <>wid</>
                   <input
                     className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
                       toggle_disable ? "text-black" : "text-gray-500"
                     }`}
                     type="number"
                     placeholder="Width"
-                    onChange={(e) => setMediaRuleWidth(e.target.value)}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (newValue > 0) {
+                        setMediaRuleWidth(newValue);
+                      } else {
+                        Swal.fire({
+                          icon: "error",
+                          title: "เกิดข้อผิดพลาด!",
+                          text: "ต้องมีค่ามากกว่า 0",
+                        });
+                      }
+                    }}
                     value={media_rule_width}
                     disabled={!toggle_disable}
                   />
@@ -348,13 +360,25 @@ const Create_Media_Rule = () => {
               </div>
               <div className="col-span-2">
                 <div className="relative flex flex-col justify-center items-center h-[40px] border border-gray-300 rounded-md">
+                  <>hi</>
                   <input
                     className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
                       toggle_disable ? "text-black" : "text-gray-500"
                     }`}
                     placeholder="Height"
                     type="number"
-                    onChange={(e) => setMediaRuleHeight(e.target.value)}
+                    onChange={(e) => {
+                      const newValue = e.target.value;
+                      if (newValue > 0) {
+                        setMediaRuleHeight(newValue);
+                      } else {
+                        Swal.fire({
+                          icon: "error",
+                          title: "เกิดข้อผิดพลาด!",
+                          text: "ต้องมีค่ามากกว่า 0",
+                        });
+                      }
+                    }}
                     value={media_rule_height}
                     disabled={!toggle_disable}
                   />
