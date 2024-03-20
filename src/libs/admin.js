@@ -696,4 +696,67 @@ export default {
 
     return data;
   },
+
+  getMediaRules: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_mediarules`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  createMediaRule: async function (hash, token, isToggle) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/create_mediarule?mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}`;
+
+    if (isToggle) {
+      urlString += `&width=${hash.width}&height=${hash.height}`;
+    }
+
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
+  updateMediaRule: async function (hash, token, isToggle) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/update_mediarule?mediaruleid=${hash.mediaruleid}&mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&width=${hash.width}&height=${hash.height}`;
+
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
+  deleteTag: async function (mediaruleid, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/delete_mediarule?mediaruleid=${mediaruleid}`,
+      "",
+      config
+    );
+
+    return data;
+  },
 };

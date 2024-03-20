@@ -1,41 +1,56 @@
 import { useNavigate } from "react-router-dom";
-import topImg from "../assets/img/merchandise/tops.png";
-import matsumotoImg from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
-import supersportImg from "../assets/img/merchandise/Super_Sports.png";
-import powerbuyImg from "../assets/img/merchandise/Power_Buy.png";
-
-import { IoIosArrowDown } from "react-icons/io";
 import { RiDeleteBin5Line, RiEditLine, RiShareBoxLine } from "react-icons/ri";
+import User from "../libs/admin";
+import Swal from "sweetalert2";
 
-const dashboardData = [
-  {
-    id: 1,
-    name: "1080x1920",
-    rule_properties: ["Resolution: 1080x1920", "Ads Capacity:5"],
-    screen: 7,
-  },
-  {
-    id: 2,
-    name: "1920x1080",
-    rule_properties: ["Resolution: 1920x1080", "Ads Capacity:10"],
-    screen: 4,
-  },
-];
-
-export const GridTable = () => {
+export const GridTable = ({ media_rules }) => {
   const navigate = useNavigate();
 
-  const onClickEdit = (id) => {
-    navigate("/setting/media_rule/create", { state: { id: id } });
+  const onClickEdit = (data) => {
+    if (data.Height === "") {
+      data.Height = 0;
+    } else {
+      data.Height = parseFloat(data.Height);
+    }
+
+    if (data.Width === "") {
+      data.Width = 0;
+    } else {
+      data.Width = parseFloat(data.Width);
+    }
+
+    navigate("/setting/media_rule/create", { state: { data: data } });
   };
 
-  const onClickDelete = (id) => {
-    alert(`delete : ${id}`);
+  const onClickDelete = async (MediaRuleID) => {
+    const { token } = User.getCookieData();
+    const data = await User.deleteTag(MediaRuleID, token);
+    console.log("data", data);
+    if (data.code !== 404) {
+      Swal.fire({
+        icon: "success",
+        title: "Delete Media Rule Success ...",
+        text: `ลบ Media Rule สำเร็จ!`,
+      }).then((result) => {
+        if (
+          result.isConfirmed ||
+          result.dismiss === Swal.DismissReason.backdrop
+        ) {
+          navigate("/setting/media_rule");
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: data.message,
+      });
+    }
   };
 
-  const onClickView = (id) => {
-    alert(`View : ${id}`);
-  };
+  // const onClickView = (data) => {
+  //   alert(`View : ${data}`);
+  // };
 
   return (
     <>
@@ -52,55 +67,77 @@ export const GridTable = () => {
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Rule Properties
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              {/* <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Screen
-              </th>
+              </th> */}
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-            {dashboardData.map((row) => (
-              <tr key={row.id}>
+            {media_rules.map((row) => (
+              <tr key={row.MediaRuleID}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md">{row.id}</div>
+                  <div className="font-poppins text-md">{row.MediaRuleID}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md text-[#59606C]">
-                    {row.name}
+                  <div
+                    onClick={() => onClickEdit(row)}
+                    className="font-poppins text-md text-[#59606C] hover:text-[#6425FE] cursor-pointer"
+                  >
+                    {row.MediaRuleName}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="flex flex-wrap">
-                    {row.rule_properties.map((items, index) => (
-                      <div
-                        key={index}
-                        className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
-                        style={{ flexBasis: "calc(30% - 8px)" }}
-                      >
-                        <div className="font-poppins text-sm text-[#6425FE] ">
-                          {items}
-                        </div>
+                    <div
+                      className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
+                      style={{ flexBasis: "calc(30% - 8px)" }}
+                    >
+                      <div className="font-poppins text-sm text-[#6425FE] ">
+                        Resolution :
+                        {row.Width && row.Height
+                          ? `${parseFloat(row.Width).toString()}x${parseFloat(
+                              row.Height
+                            ).toString()}`
+                          : "Not Set"}
                       </div>
-                    ))}
+                    </div>
+                    <div
+                      className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
+                      style={{ flexBasis: "calc(30% - 8px)" }}
+                    >
+                      <div className="font-poppins text-sm text-[#6425FE] ">
+                        Ads Capacity : {row.AdsCapacity}
+                      </div>
+                    </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                {/* <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md ">{row.screen}</div>
-                </td>
+                </td> */}
 
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
-                    <button onClick={() => onClickEdit(row.id)}>
-                      <RiEditLine size={20} className="text-gray-400" />
+                    <button onClick={() => onClickEdit(row)}>
+                      <RiEditLine
+                        size={20}
+                        className="text-gray-400 hover:text-[#6425FE]"
+                      />
                     </button>
-                    <button onClick={() => onClickDelete(row.id)}>
-                      <RiDeleteBin5Line size={20} className="text-gray-400" />
+                    <button onClick={() => onClickDelete(row.MediaRuleID)}>
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="text-gray-400 hover:text-[#6425FE]"
+                      />
                     </button>
-                    <button onClick={() => onClickView(row.id)}>
-                      <RiShareBoxLine size={20} className="text-gray-400" />
-                    </button>
+                    {/* <button onClick={() => onClickView(row)}>
+                      <RiShareBoxLine
+                        size={20}
+                        className="text-gray-400 hover:text-[#6425FE]"
+                      />
+                    </button> */}
                   </div>
                 </td>
               </tr>

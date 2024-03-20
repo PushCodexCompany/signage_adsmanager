@@ -1,12 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/media_rule_grid";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
+import User from "../../libs/admin";
+
 const Media_rules = () => {
   const navigate = useNavigate();
   useCheckPermission();
+
+  const [media_rules, setMediaRulesData] = useState([]);
+
+  useEffect(() => {
+    getMediaRulesData();
+  }, []);
+
+  const getMediaRulesData = async () => {
+    const { token } = User.getCookieData();
+    const media_rules = await User.getMediaRules(token);
+    setMediaRulesData(media_rules);
+  };
 
   return (
     <>
@@ -28,7 +42,11 @@ const Media_rules = () => {
           </button>
         </div>
         <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable />
+          {media_rules.length > 0 ? (
+            <GridTable media_rules={media_rules} />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </>
