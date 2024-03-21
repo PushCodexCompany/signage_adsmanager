@@ -14,11 +14,11 @@ const Create_Media_Rule = () => {
 
   const [media_rule_id, setMediaRuleId] = useState(null);
   const [media_rule_name, setMediaRuleName] = useState(null);
-  const [media_rule_height, setMediaRuleHeight] = useState(1);
-  const [media_rule_width, setMediaRuleWidth] = useState(1);
+  const [media_rule_height, setMediaRuleHeight] = useState(null);
+  const [media_rule_width, setMediaRuleWidth] = useState(null);
   const [media_rule_adsCapacity, setMediaRuleAdsCapacity] = useState(null);
 
-  const [toggle_disable, setToggleDisable] = useState(true);
+  const [toggle_disable, setToggleDisable] = useState(false);
 
   useEffect(() => {
     if (location.state) {
@@ -29,14 +29,21 @@ const Create_Media_Rule = () => {
   const fetchData = () => {
     //fetch data
 
-    const { MediaRuleID, MediaRuleName, Height, Width, AdsCapacity } =
-      location.state.data;
+    const {
+      MediaRuleID,
+      MediaRuleName,
+      Height,
+      Width,
+      AdsCapacity,
+      ActiveResolution,
+    } = location.state.data;
 
     setMediaRuleId(MediaRuleID);
     setMediaRuleName(MediaRuleName);
     setMediaRuleHeight(Height);
     setMediaRuleWidth(Width);
     setMediaRuleAdsCapacity(AdsCapacity);
+    setToggleDisable(ActiveResolution);
   };
 
   const RatioDisplay = ({ width, height }) => {
@@ -78,7 +85,7 @@ const Create_Media_Rule = () => {
           height: media_rule_height,
           activeresolution: toggle_disable,
         };
-
+        console.log(obj);
         const data = await User.createMediaRule(obj, token, toggle_disable);
         if (data.code !== 404) {
           Swal.fire({
@@ -220,10 +227,10 @@ const Create_Media_Rule = () => {
                     } p-1 rounded-full border border-gray-500 transition duration-300`}
                   >
                     <div
-                      className={`w-5 h-5  bg-white rounded-full shadow-md transform ${
+                      className={`w-5 h-5 rounded-full shadow-md transform ${
                         toggle_disable
-                          ? "translate-x-1 bg-purple-700 "
-                          : "translate-x-0 border border-gray-500"
+                          ? "translate-x-1 bg-[#6425FE] "
+                          : "translate-x-0 border bg-white border-gray-500"
                       } duration-300 ease-in-out`}
                     />
                   </div>
@@ -277,7 +284,6 @@ const Create_Media_Rule = () => {
               </div>
               <div className="col-span-2">
                 <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold border border-gray-300 rounded-md">
-                  <>wid</>
                   <input
                     className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
                       toggle_disable ? "text-black" : "text-gray-500"
@@ -360,7 +366,6 @@ const Create_Media_Rule = () => {
               </div>
               <div className="col-span-2">
                 <div className="relative flex flex-col justify-center items-center h-[40px] border border-gray-300 rounded-md">
-                  <>hi</>
                   <input
                     className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
                       toggle_disable ? "text-black" : "text-gray-500"

@@ -719,11 +719,7 @@ export default {
       },
     };
 
-    let urlString = `api/v1/create_mediarule?mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}`;
-
-    if (isToggle) {
-      urlString += `&width=${hash.width}&height=${hash.height}`;
-    }
+    let urlString = `api/v1/create_mediarule?mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&activeresolution=${hash.activeresolution}&width=${hash.width}&height=${hash.height}`;
 
     const { data } = await this._post(urlString, "", config);
 
@@ -737,7 +733,7 @@ export default {
       },
     };
 
-    let urlString = `api/v1/update_mediarule?mediaruleid=${hash.mediaruleid}&mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&width=${hash.width}&height=${hash.height}`;
+    let urlString = `api/v1/update_mediarule?mediaruleid=${hash.mediaruleid}&mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&width=${hash.width}&height=${hash.height}&activeresolution=${hash.activeresolution}`;
 
     const { data } = await this._post(urlString, "", config);
 
