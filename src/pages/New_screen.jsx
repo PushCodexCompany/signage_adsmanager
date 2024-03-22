@@ -8,14 +8,15 @@ import location_img from "../assets/img/location.png";
 import { HiOutlineClock } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
+import User from "../libs/admin";
+import New_Tag from "../components/New_Tag";
 
 const New_screen = () => {
   const { id } = useParams();
   const location = useLocation();
+  const { token } = User.getCookieData();
 
   const fileInputRef = useRef(null);
-
-  const [isStatusOpen, setIsStatusOpen] = useState(false);
 
   const [screenName, setScreenName] = useState();
   const [mediaRule, setMediaRule] = useState();
@@ -30,52 +31,78 @@ const New_screen = () => {
   const [inDoorOutdoot, setIndoorOutDoor] = useState();
   const [openTime, setOpenTime] = useState();
   const [closeTime, setCloseTime] = useState();
-  const [slotPerDay, setSlotPerDay] = useState();
   const [IsMaintenanceSwitchOn, setIsMaintenanceSwitchOn] = useState(false);
   const [notificationDelay, setNotificationDelay] = useState();
+
+  const [media_rules_dd, setMediaRulesDD] = useState([]);
+  const [screen_resolution_dd, setScreenResolutionDD] = useState([]);
+  const [screen_physical_size_dd, setScreenPhysicalSize] = useState([]);
+
+  // New Tag
+
+  const [openModalNewTag, setOpenModalNewTag] = useState(false);
 
   useEffect(() => {
     if (id !== "new") {
       fetchScreen();
     }
+
+    getMediaRules();
+    getScreenOption();
   }, [id]);
 
   const fetchScreen = () => {
-    // //set edit
     const {
-      name,
-      rule,
-      tag,
-      img,
-      latitude,
-      resolutions,
-      direction,
-      position,
-      officeHours,
-      slotPerDay,
-      maintenanceNoti,
+      ScreenName,
+      ScreenRule,
+      ScreenTag,
+      ScreenPhoto,
+      ScreenLocation,
+      ScreenDesc,
+      ScreenResolutionID,
+      ScreenPhySizeID,
+      ScreenOrientation,
+      ScreenPlacement,
+      ScreenOpenTime,
+      ScreenCloseTime,
+      MANotifyDelay,
     } = location.state.screen;
 
-    setScreenName(name);
-    setMediaRule(rule);
-    setScreenTag(tag);
-    setLocationImg(img);
-    setSelectedImage(img);
-    setLatLong({ lat: latitude[0], long: latitude[1] });
-    setScreenDescription(null);
-    setScreenResolution(resolutions);
-    // setScreenPhysical();
-    setOrientation(direction);
-    setIndoorOutDoor(position);
-    setOpenTime(officeHours[0]);
-    setCloseTime(officeHours[1]);
-    setSlotPerDay(slotPerDay);
-    setIsMaintenanceSwitchOn(maintenanceNoti);
-    // setNotificationDelay()
+    setScreenName(ScreenName);
+    setMediaRule(ScreenRule[0].MediaRuleID);
+    setScreenTag(ScreenTag);
+    setSelectedImage(ScreenPhoto);
+    setLatLong({
+      lat: ScreenLocation.split(",")[0],
+      long: ScreenLocation.split(",")[1],
+    });
+
+    // Location บน google map
+    setLocationImg(ScreenPhoto);
+    setScreenDescription(ScreenDesc);
+    setScreenResolution(ScreenResolutionID);
+    setScreenPhysical(ScreenPhySizeID);
+    setOrientation(ScreenOrientation);
+    setIndoorOutDoor(ScreenPlacement);
+    setOpenTime(ScreenOpenTime);
+    setCloseTime(ScreenCloseTime);
+    if (MANotifyDelay) {
+      setIsMaintenanceSwitchOn(true);
+    } else {
+      setIsMaintenanceSwitchOn(false);
+    }
+    setNotificationDelay(MANotifyDelay);
   };
 
-  const toggleStatusSelect = () => {
-    setIsStatusOpen((prevIsOpen) => !prevIsOpen);
+  const getMediaRules = async () => {
+    const media_rules = await User.getMediaRules(token);
+    setMediaRulesDD(media_rules);
+  };
+
+  const getScreenOption = async () => {
+    const screen_option = await User.getScreensOptions(token);
+    setScreenResolutionDD(screen_option.screenresolution);
+    setScreenPhysicalSize(screen_option.screenphysicalsize);
   };
 
   const handleImageChange = () => {
@@ -98,6 +125,62 @@ const New_screen = () => {
   const toggleMaintenanceSwitch = () => {
     setIsMaintenanceSwitchOn(!IsMaintenanceSwitchOn);
   };
+
+  const generateTime = (time) => {
+    let inputTime = time;
+    // Remove non-numeric characters
+    inputTime = inputTime.replace(/\D/g, "");
+    // Format to HH:MM:SS format
+    if (inputTime.length >= 4) {
+      inputTime = inputTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3");
+    }
+
+    return inputTime;
+  };
+
+  const handleDeleteTagInSelectTag = (id) => {
+    const tag = screenTag.filter((tag) => tag.TagID !== id);
+    setScreenTag(tag);
+  };
+
+  const handleCreateScreen = () => {
+    const obj = {
+      screenname: screenName,
+      mediaruleid: mediaRule,
+      tagids: screenTag.map((item) => String(item.TagID)),
+      screenlocation: [latLong.lat, latLong.long],
+      screendesc: screenDescription,
+      screenresolutionid: screenResolution,
+      screenphysizeid: screenPhysical,
+      screenorientation: orientation,
+      screenplacement: inDoorOutdoot,
+      screenopentime: openTime,
+      screenclosetime: closeTime,
+      manotifydelay: notificationDelay,
+    };
+
+    console.log("obj", obj);
+  };
+
+  const handleEditScreen = () => {
+    const obj = {
+      screenname: screenName,
+      mediaruleid: mediaRule,
+      tagids: screenTag,
+      screenlocation: [latLong.lat, latLong.long],
+      screendesc: screenDescription,
+      screenresolutionid: screenResolution,
+      screenphysizeid: screenPhysical,
+      screenorientation: orientation,
+      screenplacement: inDoorOutdoot,
+      screenopentime: openTime,
+      screenclosetime: closeTime,
+      manotifydelay: notificationDelay,
+    };
+
+    console.log("obj", obj);
+  };
+
   return (
     <>
       <Navbar />
@@ -130,45 +213,24 @@ const New_screen = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="mt-2">
-                <div className="grid grid-cols-5">
-                  <div className="col-span-1">
-                    <div className="flex justify-start items-center h-full">
-                      <div className="font-poppins text-lg font-bold">
-                        Slot Per Day:
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-span-4">
-                    <div className="flex items-center">
-                      <input
-                        placeholder="Slot Per Day"
-                        className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                        value={slotPerDay}
-                        onChange={(e) => setSlotPerDay(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-
               <div className="mt-2">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                   <select
                     name="mediaRule"
                     id="mediaRule"
                     className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    onClick={toggleStatusSelect}
                     onChange={(e) => setMediaRule(e.target.value)}
                     value={mediaRule}
                   >
                     <option value="" disabled selected hidden>
                       Media Rule
                     </option>
-
-                    <option value="Media Rule 1">Media Rule 1</option>
-                    <option value="Media Rule 2">Media Rule 2</option>
-                    <option value="Media Rule 3">Media Rule 3</option>
+                    {media_rules_dd.length > 0 &&
+                      media_rules_dd.map((items) => (
+                        <option value={items.MediaRuleID}>
+                          {items.MediaRuleName}
+                        </option>
+                      ))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                     <svg
@@ -192,41 +254,49 @@ const New_screen = () => {
               <div className="mt-5">
                 <div className="grid grid-cols-6 space-x-2">
                   <div className="col-span-1">
-                    <button className="w-[130px] h-[35px] rounded-lg  font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white">
+                    <button
+                      onClick={() => setOpenModalNewTag(!openModalNewTag)}
+                      className="w-[130px] h-[35px] rounded-lg  font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white"
+                    >
                       New Tag+
                     </button>
                   </div>
                   <div className="col-span-5">
-                    <div className="flex flex-wrap space-x-1 space-y-1">
-                      {screenTag.length > 0 ? (
-                        screenTag.map((items, index) => (
-                          <div
-                            key={index}
-                            className="w-1/5 border border-[#DBDBDB] p-1 rounded-lg flex justify-center items-center space-x-1"
-                            style={{ minWidth: "20%" }}
-                          >
-                            <div className="flex justify-center items-center">
-                              <AiOutlineClose className="text-[#6425FE]" />
+                    <div className="flex flex-wrap">
+                      {screenTag.length > 0
+                        ? screenTag.map((item, index) => (
+                            <div
+                              key={index}
+                              className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                              style={{
+                                flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
+                              }}
+                            >
+                              <div className="flex justify-center items-center mr-1 ml-1">
+                                <AiOutlineClose
+                                  onClick={() =>
+                                    handleDeleteTagInSelectTag(item.TagID)
+                                  }
+                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                />
+                              </div>
+                              <div className="flex-grow text-sm font-poppins flex justify-center">
+                                {item.TagName}
+                              </div>
+                              <div className="flex justify-center items-center ml-1 mr-1">
+                                <BsInfoCircle
+                                  onClick={() => alert(index)}
+                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                />
+                              </div>
                             </div>
-                            <div className="flex-grow  font-poppins">
-                              {items}
-                            </div>
-                            <div className="flex justify-center items-center">
-                              <BsInfoCircle className="text-[#6425FE]" />
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <></>
-                      )}
+                          ))
+                        : null}
                     </div>
                   </div>
                 </div>
-                {/* <button className="bg-[#6425FE] text-white w-32 h-9 font-poppins rounded-lg">
-                  New Tag+
-                </button> */}
               </div>
-              <div className="mt-2 flex justify-center">
+              <div className="mt-5 flex justify-center">
                 <div className=" items-center grid grid-cols-6 space-x-1">
                   <div className="col-span-3">
                     <div className="flex justify-center items-center w-[315px] h-[315px] border border-gray-300 rounded-lg">
@@ -246,7 +316,7 @@ const New_screen = () => {
                         <div className=" flex items-center justify-center mt-3 w-[250px] h-[250px] rounded-lg">
                           <img
                             src={empty_img}
-                            className="flex items-center justify-center"
+                            className="flex items-center justify-center object-cover"
                           />
                         </div>
                       )}
@@ -274,7 +344,7 @@ const New_screen = () => {
                           <input
                             value={latLong.lat}
                             onChange={(e) =>
-                              setLatLong({ lat: e.target.value })
+                              setLatLong({ ...latLong, lat: e.target.value })
                             }
                             type="text"
                             placeholder="Lat"
@@ -285,7 +355,7 @@ const New_screen = () => {
                           <input
                             value={latLong.long}
                             onChange={(e) =>
-                              setLatLong({ long: e.target.value })
+                              setLatLong({ ...latLong, long: e.target.value })
                             }
                             type="text"
                             placeholder="Long"
@@ -334,15 +404,18 @@ const New_screen = () => {
                         name="screenResolution"
                         id="screenResolution"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onClick={toggleStatusSelect}
                         onChange={(e) => setScreenResolution(e.target.value)}
                         value={screenResolution}
                       >
                         <option value="" disabled selected hidden>
                           Screen Resolution
                         </option>
-                        <option value="1920x1080">1920x1080</option>
-                        <option value="1080x1920">1080x1920</option>
+                        {screen_resolution_dd.length > 0 &&
+                          screen_resolution_dd.map((items) => (
+                            <option value={items.ScreenResolutionID}>
+                              {items.Resolution}
+                            </option>
+                          ))}
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -369,15 +442,18 @@ const New_screen = () => {
                         name="screenPhysical"
                         id="screenPhysical"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onClick={toggleStatusSelect}
                         onChange={(e) => setScreenPhysical(e.target.value)}
                         value={screenPhysical}
                       >
                         <option value="" disabled selected hidden>
                           Screen Physical Size
                         </option>
-                        <option value="1">.</option>
-                        <option value="2">.</option>
+                        {screen_physical_size_dd.length > 0 &&
+                          screen_physical_size_dd.map((items) => (
+                            <option value={items.ScreenPhySizeID}>
+                              {items.PhysicalSize}
+                            </option>
+                          ))}
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -408,15 +484,14 @@ const New_screen = () => {
                         name="orientation"
                         id="orientation"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onClick={toggleStatusSelect}
                         onChange={(e) => setOrientation(e.target.value)}
                         value={orientation}
                       >
                         <option value="" disabled selected hidden>
                           Orientation
                         </option>
-                        <option value="Portrait">Portrait</option>
-                        <option value="Landscape">Landscape</option>
+                        <option value="portrait">Portrait</option>
+                        <option value="landscape">Landscape</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -443,15 +518,14 @@ const New_screen = () => {
                         name="IndoorOutdoor"
                         id="IndoorOutdoor"
                         className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onClick={toggleStatusSelect}
                         onChange={(e) => setIndoorOutDoor(e.target.value)}
                         value={inDoorOutdoot}
                       >
                         <option value="" disabled selected hidden>
-                          Indoor / Outdoor
+                          Placement
                         </option>
-                        <option value="Indoor">Indoor</option>
-                        <option value="Outdoor">Outdoor</option>
+                        <option value="indoor">Indoor</option>
+                        <option value="outdoor">Outdoor</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                         <svg
@@ -480,11 +554,19 @@ const New_screen = () => {
                     <div className="grid grid-cols-12">
                       <div className="col-span-5">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
-                          <select
+                          <input
+                            value={openTime}
+                            onChange={(e) => {
+                              const time_value = generateTime(e.target.value);
+                              setOpenTime(time_value);
+                            }}
+                            placeholder="Open Time"
+                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                          />
+                          {/* <select
                             name="open_time"
                             id="open_time"
                             className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            onClick={toggleStatusSelect}
                             onChange={(e) => setOpenTime(e.target.value)}
                             value={openTime}
                           >
@@ -515,7 +597,7 @@ const New_screen = () => {
                             <option value="21">21:00</option>
                             <option value="22">22:00</option>
                             <option value="23">23:00</option>
-                          </select>
+                          </select> */}
                         </div>
                       </div>
                       <div className="col-span-1">
@@ -525,11 +607,10 @@ const New_screen = () => {
                       </div>
                       <div className="col-span-5">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
-                          <select
+                          {/* <select
                             name="close_time"
                             id="close_time"
                             className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            onClick={toggleStatusSelect}
                             onChange={(e) => setCloseTime(e.target.value)}
                             value={closeTime}
                           >
@@ -560,7 +641,16 @@ const New_screen = () => {
                             <option value="21">21:00</option>
                             <option value="22">22:00</option>
                             <option value="23">23:00</option>
-                          </select>
+                          </select> */}
+                          <input
+                            value={closeTime}
+                            onChange={(e) => {
+                              const time_value = generateTime(e.target.value);
+                              setCloseTime(time_value);
+                            }}
+                            placeholder="Close Time"
+                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                          />
                         </div>
                       </div>
                       <div className="col-span-1">
@@ -639,9 +729,21 @@ const New_screen = () => {
               </div>
               <div className="mt-16">
                 <div className="flex justify-center items-center">
-                  <button className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins rounded-lg">
-                    Create Screen
-                  </button>
+                  {id === "new" ? (
+                    <button
+                      onClick={() => handleCreateScreen()}
+                      className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins rounded-lg"
+                    >
+                      Create Screen
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleEditScreen()}
+                      className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins rounded-lg"
+                    >
+                      Edit Screen
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="mt-4">
@@ -657,6 +759,22 @@ const New_screen = () => {
           </div>
         </div>
       </div>
+
+      {openModalNewTag && (
+        <a
+          onClick={() => setOpenModalNewTag(!openModalNewTag)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openModalNewTag && (
+        <New_Tag
+          setOpenModalNewTag={setOpenModalNewTag}
+          openModalNewTag={openModalNewTag}
+          screenTag={screenTag}
+          setScreenTag={setScreenTag}
+        />
+      )}
     </>
   );
 };

@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { screens } from "../data/mockup";
 
 import { BiLinkAlt } from "react-icons/bi";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 
-export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
+export const GridTable = ({
+  setSelectedScreenItems,
+  setSelectInfoScren,
+  screens_data,
+  screens_options_data,
+}) => {
   const navigate = useNavigate();
 
   const [selectAll, setSelectAll] = useState(false);
@@ -17,15 +21,17 @@ export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
     const newSelectAll = !selectAll;
 
     // Set all checkboxes to the new state
-    screens.forEach((row) => {
-      newCheckboxes[row.id] = newSelectAll;
+    screens_data.forEach((row) => {
+      newCheckboxes[row.ScreenID] = newSelectAll;
     });
 
     setCheckboxes(newCheckboxes);
     setSelectAll(newSelectAll);
 
     // Do something with the checkedRowIds array (e.g., store it in state)
-    const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
+    const checkedRowIds = newSelectAll
+      ? screens_data.map((row) => row.ScreenID)
+      : [];
     setSelectedScreenItems(checkedRowIds);
   };
 
@@ -53,9 +59,16 @@ export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
   };
 
   const handleEditScreen = (screen) => {
-    navigate(`/screen/create/${screen.id}`, {
+    navigate(`/screen/create/${screen.ScreenID}`, {
       state: { screen: screen },
     });
+  };
+
+  const findScreenResolutionID = (id) => {
+    const resolution = screens_options_data.find(
+      (item) => item.ScreenResolutionID === id
+    );
+    return resolution ? resolution.Resolution : "No Resolution";
   };
 
   return (
@@ -123,26 +136,28 @@ export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
             </tr>
           </thead>
           <tbody>
-            {screens.map((row, key) => (
-              <tr key={row.id}>
+            {screens_data.map((row, key) => (
+              <tr key={row.ScreenID}>
                 <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
                   <div className="flex items-center">
                     <label className="inline-flex items-center space-x-2">
                       <input
                         type="checkbox"
                         className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                        checked={checkboxes[row.id] || false} // Set default value to false if row.id is not present
-                        onChange={() => toggleCheckboxAddScreen(row.id)}
+                        checked={checkboxes[row.ScreenID] || false} // Set default value to false if row.ScreenID is not present
+                        onChange={() => toggleCheckboxAddScreen(row.ScreenID)}
                       />
                       <span
                         className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                          checkboxes[row.id] ? "bg-white" : ""
+                          checkboxes[row.ScreenID] ? "bg-white" : ""
                         }`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className={`h-6 w-6 text-white ${
-                            checkboxes[row.id] ? "opacity-100" : "opacity-0"
+                            checkboxes[row.ScreenID]
+                              ? "opacity-100"
+                              : "opacity-0"
                           } transition-opacity duration-300 ease-in-out`}
                           fill="none"
                           viewBox="0 0 24 24"
@@ -162,7 +177,7 @@ export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
                 <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="flex">
                     <div className="font-poppins text-xl font-bold">
-                      {row.id}
+                      {key + 1}
                     </div>
                   </div>
                 </td>
@@ -172,46 +187,63 @@ export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
                       onClick={() => handleSelectInfoScreen(row)}
                       className="font-poppins text-xl font-bold cursor-pointer"
                     >
-                      {row.name}
+                      {row.ScreenName}
                     </div>
                   </div>
                 </td>
                 <td className="px-4 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-sm text-[#59606C] font-bold">
-                    {row.location}
+                    {row.ScreenLocation || "No Data"}
                   </div>
                   <div className="font-poppins text-sm font-bold">
-                    {row.province}
+                    {row.province || "No Data"}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins font-bold">
-                    {row.resolutions}
+                    {findScreenResolutionID(row.ScreenResolutionID)}
                   </div>
                 </td>
                 <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
                   <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                    {row.slotPerDay}
+                    {row.slotPerDay || "No Data"}
                   </div>
                 </td>
                 <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
                   <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                    {row.loopDuration} Second
+                    {row.loopDuration
+                      ? `${row.loopDuration} Second`
+                      : "No Data"}
                   </div>
                 </td>
                 <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
                   <div className="flex flex-wrap">
-                    {row.tag.map((items, index) => (
+                    {row.ScreenTag.length > 0 ? (
+                      row.ScreenTag.map((items, index) => (
+                        <div
+                          key={index}
+                          className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                          style={{
+                            flexBasis: `calc(${
+                              100 / row.ScreenTag.length
+                            }% - 8px)`,
+                          }}
+                        >
+                          <div className="font-poppins text-xs font-bold">
+                            {items.TagName}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
                       <div
-                        key={index}
                         className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                        style={{ flexBasis: "calc(20% - 8px)" }} // Adjust the width to fit 5 items per row
+                        style={{ flexBasis: "calc(100% - 8px)" }}
                       >
                         <div className="font-poppins text-xs font-bold">
-                          {items}
+                          No Tag
                         </div>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </td>
                 <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
@@ -232,7 +264,7 @@ export const GridTable = ({ setSelectedScreenItems, setSelectInfoScren }) => {
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
                     </button>
-                    <button onClick={() => alert(`delete : ${row.id}`)}>
+                    <button onClick={() => alert(`delete : ${row.ScreenID}`)}>
                       <RiDeleteBin5Line
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components";
 
@@ -9,6 +9,7 @@ import { Navbar } from "../components";
 import Filter from "../components/Filter";
 import { GridTable } from "../libs/screens_grid";
 import { screens } from "../data/mockup";
+import User from "../libs/admin";
 
 const Event = () => {
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
@@ -16,7 +17,27 @@ const Event = () => {
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openPairScreenModal, setOpenPairScreenModal] = useState(false);
 
+  const [screens_data, setScreensData] = useState([]);
+  const [screens_options_data, setScreensOptionsData] = useState([]);
+
   const navigate = useNavigate();
+
+  const { token } = User.getCookieData();
+
+  useEffect(() => {
+    fetchScreenData();
+    fetchScreenOptionsData();
+  }, []);
+
+  const fetchScreenData = async () => {
+    const screens = await User.getScreens(token);
+    setScreensData(screens);
+  };
+
+  const fetchScreenOptionsData = async () => {
+    const screens_option = await User.getScreensOptions(token);
+    setScreensOptionsData(screens_option.screenresolution);
+  };
 
   return (
     <>
@@ -46,12 +67,17 @@ const Event = () => {
         </div>
 
         <Filter />
-
         <div className="mt-5">
-          <GridTable
-            setSelectedScreenItems={setSelectedScreenItems}
-            setSelectInfoScren={setSelectInfoScren}
-          />
+          {screens_data.length > 0 && screens_options_data.length > 0 ? (
+            <GridTable
+              setSelectedScreenItems={setSelectedScreenItems}
+              setSelectInfoScren={setSelectInfoScren}
+              screens_data={screens_data}
+              screens_options_data={screens_options_data}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 
