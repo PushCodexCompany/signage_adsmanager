@@ -10,6 +10,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import User from "../libs/admin";
 import New_Tag from "../components/New_Tag";
+import Swal from "sweetalert2";
 
 const New_screen = () => {
   const { id } = useParams();
@@ -23,6 +24,7 @@ const New_screen = () => {
   const [screenTag, setScreenTag] = useState([]);
   const [locationImg, setLocationImg] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [preview_img, setPreviewImg] = useState(null);
   const [latLong, setLatLong] = useState([]);
   const [screenDescription, setScreenDescription] = useState();
   const [screenResolution, setScreenResolution] = useState();
@@ -71,6 +73,7 @@ const New_screen = () => {
     setScreenName(ScreenName);
     setMediaRule(ScreenRule[0].MediaRuleID);
     setScreenTag(ScreenTag);
+    setPreviewImg(ScreenPhoto);
     setSelectedImage(ScreenPhoto);
     setLatLong({
       lat: ScreenLocation.split(",")[0],
@@ -112,11 +115,11 @@ const New_screen = () => {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    setLocationImg(file);
+    setSelectedImage(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(reader.result);
+        setPreviewImg(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -143,23 +146,67 @@ const New_screen = () => {
     setScreenTag(tag);
   };
 
-  const handleCreateScreen = () => {
+  const handleCreateScreen = async () => {
     const obj = {
       screenname: screenName,
-      mediaruleid: mediaRule,
+      mediaruleid: mediaRule || "",
       tagids: screenTag.map((item) => String(item.TagID)),
       screenlocation: [latLong.lat, latLong.long],
-      screendesc: screenDescription,
-      screenresolutionid: screenResolution,
-      screenphysizeid: screenPhysical,
-      screenorientation: orientation,
-      screenplacement: inDoorOutdoot,
-      screenopentime: openTime,
-      screenclosetime: closeTime,
-      manotifydelay: notificationDelay,
+      screendesc: screenDescription || "",
+      screenresolutionid: screenResolution || "",
+      screenphysizeid: screenPhysical || "",
+      screenorientation: orientation || "",
+      screenplacement: inDoorOutdoot || "",
+      screenopentime: openTime || "",
+      screenclosetime: closeTime || "",
+      manotifydelay: notificationDelay || "",
     };
 
-    console.log("obj", obj);
+    if (obj.screenname) {
+      try {
+        const data = await User.createNewScreen(obj, token);
+        if (data.code !== 404) {
+          const form = new FormData();
+          form.append("target", "screenphoto");
+          form.append("screenid", data.screenid);
+          form.append("logo", selectedImage);
+          const data_img = await User.saveImgAccountScreens(form, token);
+          if (data_img.code !== 404) {
+            Swal.fire({
+              title: "สร้าง Screen สำเร็จ!",
+              text: `สร้าง Screen สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data_img.message,
+            });
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Screen Name",
+      });
+    }
   };
 
   const handleEditScreen = () => {
@@ -307,9 +354,9 @@ const New_screen = () => {
                         ref={fileInputRef}
                         style={{ display: "none" }}
                       />
-                      {selectedImage ? (
+                      {preview_img ? (
                         <img
-                          src={selectedImage}
+                          src={preview_img}
                           className="flex items-center justify-center w-[315px] h-[315px] object-cover"
                         />
                       ) : (
