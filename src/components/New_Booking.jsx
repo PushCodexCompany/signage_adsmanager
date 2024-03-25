@@ -223,6 +223,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         const data_img = await User.saveImgMerchandise(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
+            icon: "success",
             title: "สร้าง Merchandise สำเร็จ!",
             text: `สร้าง Merchandise สำเร็จ!`,
           }).then((result) => {

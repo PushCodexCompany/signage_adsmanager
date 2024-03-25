@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Header } from "../components";
 import { Navbar } from "../components";
 import empty_img from "../assets/img/empty_location.png";
@@ -16,9 +16,11 @@ const New_screen = () => {
   const { id } = useParams();
   const location = useLocation();
   const { token } = User.getCookieData();
+  const navigate = useNavigate();
 
   const fileInputRef = useRef(null);
 
+  const [screenId, setScreenId] = useState();
   const [screenName, setScreenName] = useState();
   const [mediaRule, setMediaRule] = useState();
   const [screenTag, setScreenTag] = useState([]);
@@ -55,6 +57,7 @@ const New_screen = () => {
 
   const fetchScreen = () => {
     const {
+      ScreenID,
       ScreenName,
       ScreenRule,
       ScreenTag,
@@ -70,11 +73,12 @@ const New_screen = () => {
       MANotifyDelay,
     } = location.state.screen;
 
+    setScreenId(ScreenID);
     setScreenName(ScreenName);
-    setMediaRule(ScreenRule[0].MediaRuleID);
+    setMediaRule(ScreenRule[0]?.MediaRuleID);
     setScreenTag(ScreenTag);
     setPreviewImg(ScreenPhoto);
-    setSelectedImage(ScreenPhoto);
+    // setSelectedImage(ScreenPhoto);
     setLatLong({
       lat: ScreenLocation.split(",")[0],
       long: ScreenLocation.split(",")[1],
@@ -173,6 +177,7 @@ const New_screen = () => {
           const data_img = await User.saveImgAccountScreens(form, token);
           if (data_img.code !== 404) {
             Swal.fire({
+              icon: "success",
               title: "สร้าง Screen สำเร็จ!",
               text: `สร้าง Screen สำเร็จ!`,
             }).then((result) => {
@@ -180,7 +185,7 @@ const New_screen = () => {
                 result.isConfirmed ||
                 result.dismiss === Swal.DismissReason.backdrop
               ) {
-                window.location.reload();
+                navigate(`/screen`);
               }
             });
           } else {
@@ -209,23 +214,76 @@ const New_screen = () => {
     }
   };
 
-  const handleEditScreen = () => {
+  const handleEditScreen = async () => {
     const obj = {
+      screenid: screenId,
       screenname: screenName,
-      mediaruleid: mediaRule,
-      tagids: screenTag,
+      mediaruleid: mediaRule || "",
+      tagids: screenTag.map((item) => String(item.TagID)),
       screenlocation: [latLong.lat, latLong.long],
-      screendesc: screenDescription,
-      screenresolutionid: screenResolution,
-      screenphysizeid: screenPhysical,
-      screenorientation: orientation,
-      screenplacement: inDoorOutdoot,
-      screenopentime: openTime,
-      screenclosetime: closeTime,
-      manotifydelay: notificationDelay,
+      screendesc: screenDescription || "",
+      screenresolutionid: screenResolution || "",
+      screenphysizeid: screenPhysical || "",
+      screenorientation: orientation || "",
+      screenplacement: inDoorOutdoot || "",
+      screenopentime: openTime || "",
+      screenclosetime: closeTime || "",
+      manotifydelay: notificationDelay || "",
     };
 
     console.log("obj", obj);
+
+    if (selectedImage) {
+      const form = new FormData();
+      form.append("target", "screenphoto");
+      form.append("screenid", screenId);
+      form.append("logo", selectedImage);
+      const data_img = await User.saveImgUserAccount(form, token);
+      if (data_img.code !== 200) {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data_img.message,
+        });
+      } else {
+        alert("sucess");
+      }
+    }
+
+    if (obj.screenname) {
+      try {
+        const data = await User.editScreen(obj, token);
+        console.log("data", data);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "แก้ไข Screen สำเร็จ!",
+            text: `แก้ไข Screen สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              navigate(`/screen`);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Screen Name",
+      });
+    }
   };
 
   return (
@@ -371,7 +429,7 @@ const New_screen = () => {
                     <div className="mt-2 flex justify-center items-center">
                       <button
                         onClick={() => handleImageChange()}
-                        className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins w-[315px] h-[48px] rounded-lg"
+                        className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins w-[315px] h-[48px] rounded-lg"
                       >
                         Upload Image
                       </button>
@@ -733,6 +791,7 @@ const New_screen = () => {
                         <div className="flex justify-center items-center">
                           <div
                             className="relative items-center inline-block w-12 h-6 border-2 border-[#6425FE] rounded-full p-1 cursor-pointer"
+                            value={IsMaintenanceSwitchOn}
                             onClick={toggleMaintenanceSwitch}
                           >
                             <div
@@ -753,7 +812,11 @@ const New_screen = () => {
                     <div className="grid grid-cols-5 ml-2">
                       <div className="col-span-3">
                         <div className="flex items-center">
-                          <div className="font-poppins font-bold">
+                          <div
+                            className={` ${
+                              !IsMaintenanceSwitchOn ? "text-gray-300" : ""
+                            } font-poppins font-bold`}
+                          >
                             Notification Delay (sec)
                           </div>
                         </div>
@@ -767,6 +830,7 @@ const New_screen = () => {
                             onChange={(e) =>
                               setNotificationDelay(e.target.value)
                             }
+                            disabled={!IsMaintenanceSwitchOn}
                           />
                         </div>
                       </div>
@@ -779,14 +843,14 @@ const New_screen = () => {
                   {id === "new" ? (
                     <button
                       onClick={() => handleCreateScreen()}
-                      className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins rounded-lg"
+                      className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins rounded-lg"
                     >
                       Create Screen
                     </button>
                   ) : (
                     <button
                       onClick={() => handleEditScreen()}
-                      className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins rounded-lg"
+                      className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins rounded-lg"
                     >
                       Edit Screen
                     </button>

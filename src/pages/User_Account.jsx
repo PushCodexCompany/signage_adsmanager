@@ -96,6 +96,7 @@ const User_Account = () => {
           const data = await User.deleteUserAccount(encrypted, token);
           if (data.code !== 404) {
             Swal.fire({
+              icon: "success",
               title: "ลบ User Account สำเร็จ!",
               text: `ลบ User Account สำเร็จ!`,
             }).then((result) => {

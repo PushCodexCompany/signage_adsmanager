@@ -78,6 +78,7 @@ const Merchandise = () => {
           const data = await User.deleteMerchandise(encrypted, token);
           if (data.code !== 404) {
             Swal.fire({
+              icon: "success",
               title: "ลบ Merchandise สำเร็จ!",
               text: `ลบ Merchandise สำเร็จ!`,
             }).then((result) => {

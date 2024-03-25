@@ -97,6 +97,7 @@ const Brands = () => {
           const data = await User.deleteBrand(encrypted, token);
           if (data.code !== 404) {
             Swal.fire({
+              icon: "success",
               title: "ลบ Brand สำเร็จ!",
               text: `ลบ Brand สำเร็จ!`,
             }).then((result) => {

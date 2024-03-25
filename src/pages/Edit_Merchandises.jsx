@@ -114,6 +114,7 @@ const Edit_Merchandises = () => {
         const data_img = await User.saveImgMerchandise(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
+            icon: "success",
             title: "สร้าง Merchandise สำเร็จ!",
             text: `สร้าง Merchandise สำเร็จ!`,
           }).then((result) => {
@@ -170,6 +171,7 @@ const Edit_Merchandises = () => {
         const data_img = await User.saveImgMerchandise(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
+            icon: "success",
             title: "แก้ไข Merchandise สำเร็จ!",
             text: `แก้ไข Merchandise สำเร็จ!`,
           }).then((result) => {
@@ -191,6 +193,7 @@ const Edit_Merchandises = () => {
         const data = await User.editMerchandise(encrypted, token);
         if (data.code !== 404) {
           Swal.fire({
+            icon: "success",
             title: "แก้ไข Merchandise สำเร็จ!",
             text: `แก้ไข Merchandise สำเร็จ!`,
           }).then((result) => {
@@ -220,6 +223,7 @@ const Edit_Merchandises = () => {
           const data_img = await User.saveImgMerchandise(form, token);
           if (data_img.code !== 404) {
             Swal.fire({
+              icon: "success",
               title: "แก้ไข Merchandise สำเร็จ!",
               text: `แก้ไข Merchandise สำเร็จ!`,
             }).then((result) => {
@@ -238,8 +242,8 @@ const Edit_Merchandises = () => {
             });
           }
         } else {
-          console.log("nopic", data);
           Swal.fire({
+            icon: "success",
             title: "แก้ไข Merchandise สำเร็จ!",
             text: `แก้ไข Merchandise สำเร็จ!`,
           }).then((result) => {

@@ -233,6 +233,7 @@ const User_Management = () => {
           const data = await User.createUser(encrypted, token);
           if (data.code !== 404) {
             Swal.fire({
+              icon: "success",
               title: "สร้างผู้ใช้งานสำเร็จ!",
               text: `สร้างผู้ใช้งานสำเร็จ!`,
             }).then((result) => {

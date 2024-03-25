@@ -83,6 +83,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
 
         if (data.code !== 404) {
           Swal.fire({
+            icon: "success",
             title: "แก้ไขผู้ใช้งานสำเร็จ!",
             text: `แก้ไขผู้ใช้งานสำเร็จ!`,
           }).then((result) => {
@@ -168,6 +169,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
         const data = await User.deleteUser(encrypted, token);
         if (data.code !== 404) {
           Swal.fire({
+            icon: "success",
             title: "ลบผู้ใช้งาน!",
             text: `ลบผู้ใช้งาน ${name} สำเร็จ!`,
           }).then((result) => {

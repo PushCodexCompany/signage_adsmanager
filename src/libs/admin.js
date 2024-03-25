@@ -58,21 +58,7 @@ export default {
   // login
   login: async function (hash) {
     const { data } = await this._post(`api/v1/login?hash=${hash}`);
-
-    // const data = {
-    //   token:
-    //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJQVVNIQ09ERVggQ09NUEFOWSBMSU1JVEVEIiwiYXVkIjoiZDQxZDhjZDk4ZjAwYjIwNGU5ODAwOTk4ZWNmODQyN2UiLCJhdXRoIjoiYzRjYTQyMzhhMGI5MjM4MjBkY2M1MDlhNmY3NTg0OWIifQ.loVz8S_JNKD4Smkuan3TSrrcjX568OOSxZcw96xrOP0",
-    //   user: {
-    //     userid: 1,
-    //     username: "spaads",
-    //     firstname: "Push Codex",
-    //     lastname: "Administrator",
-    //     contactnumber: null,
-    //     role: "Super Admin",
-    //     permission: 1,
-    //     lastseen: "2023-11-08 16:33:01",
-    //   },
-    // };
+    console.log("data", data);
     if (data.token) {
       this.saveCookie(data);
       return true;
@@ -799,6 +785,19 @@ export default {
     return data;
   },
 
+  editScreen: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/update_screen?screenid=${hash.screenid}&screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}`;
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
   saveImgAccountScreens: async function (obj, token) {
     const config = {
       headers: {
@@ -812,6 +811,22 @@ export default {
       obj,
       config
     );
+    return data;
+  },
+
+  deleteScreen: async function (screenid, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/delete_screen?screenid=${screenid}`,
+      "",
+      config
+    );
+
     return data;
   },
 };

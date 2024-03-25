@@ -95,6 +95,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
 
           if (data_img.code !== 404) {
             Swal.fire({
+              icon: "success",
               title: "สร้าง User Account สำเร็จ!",
               text: `สร้าง User Account สำเร็จ!`,
             }).then((result) => {
@@ -146,6 +147,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
         const data_img = await User.saveImgUserAccount(form, token);
         if (data_img.code !== 404) {
           Swal.fire({
+            icon: "success",
             title: "แก้ไข User Account สำเร็จ!",
             text: `แก้ไข User Account สำเร็จ!`,
           }).then((result) => {
@@ -175,6 +177,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
             const data_img = await User.saveImgUserAccount(form, token);
             if (data_img.code !== 404) {
               Swal.fire({
+                icon: "success",
                 title: "แก้ไข User Account สำเร็จ!",
                 text: `แก้ไข User Account สำเร็จ!`,
               }).then((result) => {
@@ -194,6 +197,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
             }
           } else {
             Swal.fire({
+              icon: "success",
               title: "แก้ไข User Account สำเร็จ!",
               text: `แก้ไข User Account สำเร็จ!`,
             }).then((result) => {

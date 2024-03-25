@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { BiLinkAlt } from "react-icons/bi";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
+import User from "../libs/admin";
+import Swal from "sweetalert2";
 
 export const GridTable = ({
   setSelectedScreenItems,
@@ -64,6 +66,31 @@ export const GridTable = ({
     });
   };
 
+  const handleDeleteScreen = async (screen_id) => {
+    const { token } = User.getCookieData();
+    const data = await User.deleteScreen(screen_id, token);
+    if (data.code !== 404) {
+      Swal.fire({
+        icon: "success",
+        title: "Delete Screen Success ...",
+        text: `ลบ Screen สำเร็จ!`,
+      }).then((result) => {
+        if (
+          result.isConfirmed ||
+          result.dismiss === Swal.DismissReason.backdrop
+        ) {
+          navigate("/screen");
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: data.message,
+      });
+    }
+  };
+
   const findScreenResolutionID = (id) => {
     const resolution = screens_options_data.find(
       (item) => item.ScreenResolutionID === id
@@ -77,7 +104,7 @@ export const GridTable = ({
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
-              <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              {/* <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 <label className="inline-flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -108,8 +135,8 @@ export const GridTable = ({
                     </svg>
                   </span>
                 </label>
-              </th>
-              <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
+              </th> */}
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
                 No
               </th>
               <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
@@ -138,7 +165,7 @@ export const GridTable = ({
           <tbody>
             {screens_data.map((row, key) => (
               <tr key={row.ScreenID}>
-                <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
                   <div className="flex items-center">
                     <label className="inline-flex items-center space-x-2">
                       <input
@@ -173,7 +200,7 @@ export const GridTable = ({
                       </span>
                     </label>
                   </div>
-                </td>
+                </td> */}
                 <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="flex">
                     <div className="font-poppins text-xl font-bold">
@@ -206,7 +233,7 @@ export const GridTable = ({
                 </td>
                 <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
                   <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                    {row.slotPerDay || "No Data"}
+                    {row.ScreenRule[0]?.AdsCapacity || "No Data"}
                   </div>
                 </td>
                 <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
@@ -264,7 +291,7 @@ export const GridTable = ({
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
                     </button>
-                    <button onClick={() => alert(`delete : ${row.ScreenID}`)}>
+                    <button onClick={() => handleDeleteScreen(row.ScreenID)}>
                       <RiDeleteBin5Line
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
