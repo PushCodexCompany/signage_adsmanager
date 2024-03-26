@@ -1,79 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
+import User from "../libs/admin";
 
-const Filter = () => {
-  const [isSectorOpen, setIsSectorOpen] = useState(false);
-  const [isRegionOpen, setIsRegionOpen] = useState(false);
-  const [isClustorOpen, setIsClustorOpen] = useState(false);
-  const [isBranchOpen, setIsBranchOpen] = useState(false);
-  const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
-  const [isFloorOpen, setIsFloorOpen] = useState(false);
-  const [isLocationOpen, setIsLocationOpen] = useState(false);
-  const [isAngleOpen, setIsAngleOpen] = useState(false);
-  const [isSizeOpen, setIsSizeOpen] = useState(false);
-  const [isFileTypeOpen, setIsFileTypeOpen] = useState(false);
+const Filter = ({ filter_screen, setFilterScreen }) => {
+  const { token } = User.getCookieData();
+  const [filter, setFilter] = useState([]);
+  const [all_filter_data, SetAllFilterData] = useState([]);
 
-  const [filter, setFilter] = useState([
-    "Flagship",
-    "5 Floor",
-    "Beauty",
-    "Portrait",
-  ]);
+  useEffect(() => {
+    getFilter();
+  }, []);
 
-  const toggleSectorSelect = () => {
-    setIsSectorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleRegionSelect = () => {
-    setIsRegionOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleClustorSelect = () => {
-    setIsClustorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleBranchSelect = () => {
-    setIsBranchOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleDepartmentSelect = () => {
-    setIsDepartmentOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleFloorSelect = () => {
-    setIsFloorOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleLocatioSelect = () => {
-    setIsLocationOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleAngleSelect = () => {
-    setIsAngleOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleSizeSelect = () => {
-    setIsSizeOpen((prevIsOpen) => !prevIsOpen);
-  };
-  const toggleFileTypeSelect = () => {
-    setIsFileTypeOpen((prevIsOpen) => !prevIsOpen);
+  const getFilter = async () => {
+    const data = await User.getCategorytags(token);
+    SetAllFilterData(data);
   };
 
   const handleStatusChange = (event) => {
     const selectedValue = event.target.value;
+    const [tagID, tagName] = selectedValue.split("-");
     if (selectedValue === "0") {
       alert("Please select a valid status.");
     } else {
       setFilter((prevFilter) => {
-        if (prevFilter.includes(selectedValue)) {
+        if (prevFilter.includes(tagName)) {
           return prevFilter; // Already selected, no change
         } else {
-          return [...prevFilter, selectedValue]; // Add the selected value to the filter state
+          return [...prevFilter, tagName]; // Add the selected value to the filter state
+        }
+      });
+      setFilterScreen((prevFilter) => {
+        if (prevFilter.includes(tagID)) {
+          return prevFilter; // Already selected, no change
+        } else {
+          return [...prevFilter, tagID]; // Add the selected value to the filter state
         }
       });
     }
   };
 
-  const removeFilter = (event) => {
-    const selectedValue = event;
-    const updatedFilter = filter.filter((value) => value !== selectedValue);
-    setFilter(updatedFilter);
+  const removeFilter = (event, index) => {
+    const selectedValue = `${filter_screen[index]}-${event}`;
+    const [tagID, tagName] = selectedValue.split("-");
+
+    const updatedFilterOutSide = filter_screen.filter(
+      (value) => value !== tagID
+    );
+    const updatedFilterInside = filter.filter((value) => value !== tagName);
+
+    setFilter(updatedFilterInside);
+    setFilterScreen(updatedFilterOutSide);
   };
 
   const clearFilter = () => {
     setFilter([]);
+    setFilterScreen([]);
   };
 
   return (
@@ -85,7 +66,33 @@ const Filter = () => {
             <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
               <div className="flex flex-col lg:flex-row">
                 <div className="w-5/6 flex justify-between items-center ">
-                  <div className="relative w-[100px] lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+                  {all_filter_data.length > 0 &&
+                    all_filter_data.map((items, index) => (
+                      <div
+                        key={index}
+                        className="relative w-[100px] lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 "
+                      >
+                        <select
+                          name={items.TagCategoryName}
+                          id={items.TagCategoryName}
+                          onChange={handleStatusChange}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                        >
+                          <option value="" disabled selected hidden>
+                            {items.TagCategoryName}
+                          </option>
+                          {items.tags.map((items) => (
+                            <option value={`${items.TagID}-${items.TagName}`}>
+                              {items.TagName}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <IoIosArrowDown size={18} color="#6425FE" />
+                        </div>
+                      </div>
+                    ))}
+                  {/* <div className="relative w-[100px] lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
                     <select
                       name="sector"
                       id="sector"
@@ -328,7 +335,7 @@ const Filter = () => {
                         <IoIosArrowDown size={18} color="#6425FE" />
                       )}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -340,13 +347,16 @@ const Filter = () => {
       {/* Filter */}
       <div className="flex">
         {filter &&
-          filter.map((items) => (
-            <button onClick={() => removeFilter(items)}>
+          filter.map((items, index) => (
+            <button onClick={() => removeFilter(items, index)}>
               <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-2 rounded-full">
                 <div className="grid grid-cols-4">
                   <div className="col-span-1 mt-[6px]">
                     <div className="flex justify-end items-center">
-                      <IoIosClose size="27" className="text-[#6425FE] hover:text-[#3b1694]" />
+                      <IoIosClose
+                        size="27"
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
                     </div>
                   </div>
                   <div className="col-span-3 mt-[8px]">

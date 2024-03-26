@@ -616,6 +616,21 @@ export default {
     return data;
   },
 
+  getCategorytags: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_categorytags`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
   getTag: async function (id, token) {
     const config = {
       headers: {
@@ -750,6 +765,25 @@ export default {
     };
 
     const { data } = await this._get(`api/v1/get_screens`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  getScreensWithAdsCapacity: async function (slot, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_screens?adscapacity=${slot}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {

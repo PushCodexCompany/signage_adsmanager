@@ -231,8 +231,6 @@ const New_screen = () => {
       manotifydelay: notificationDelay || "",
     };
 
-    console.log("obj", obj);
-
     if (selectedImage) {
       const form = new FormData();
       form.append("target", "screenphoto");
@@ -245,8 +243,6 @@ const New_screen = () => {
           title: "เกิดข้อผิดพลาด!",
           text: data_img.message,
         });
-      } else {
-        alert("sucess");
       }
     }
 

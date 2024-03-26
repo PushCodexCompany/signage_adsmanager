@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosClose, IoIosSearch } from "react-icons/io";
 import Filter from "../components/Filter";
 import { format } from "date-fns";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+import User from "../libs/admin";
 
 const Add_Screen_Booking = ({
   showAddScreen,
@@ -12,11 +13,37 @@ const Add_Screen_Booking = ({
   setOpenAddNewScreenModal,
   selectAll,
   toggleAllCheckboxes,
-  screens,
+  allScreenData,
   checkboxes,
   toggleCheckboxAddScreen,
   handleAddScreen,
+  booking_slot,
 }) => {
+  const { token } = User.getCookieData();
+  const [screen, setScreens] = useState([]);
+  const [screens_options_data, setScreenOptionsData] = useState([]);
+
+  const [filter_screen, setFilterScreen] = useState([]);
+
+  useEffect(() => {
+    getScreenData();
+    getScreenOption();
+  }, []);
+
+  useEffect(() => {
+    console.log("filter_screen", filter_screen);
+  }, [filter_screen]);
+
+  const getScreenData = async () => {
+    const data = allScreenData;
+    setScreens(data);
+  };
+
+  const getScreenOption = async () => {
+    const data = await User.getScreensOptions(token);
+    setScreenOptionsData(data.screenresolution);
+  };
+
   const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
     <TooltipComponent content={title} position="BottomCenter">
       <button
@@ -40,6 +67,14 @@ const Add_Screen_Booking = ({
 
   const search = () => {
     alert("search");
+  };
+
+  const findScreenResolutionID = (id) => {
+    const resolution = screens_options_data.find(
+      (item) => item.ScreenResolutionID === id
+    );
+
+    return resolution ? resolution.Resolution : "No Resolution";
   };
 
   return (
@@ -103,7 +138,10 @@ const Add_Screen_Booking = ({
           </div>
         </div>
         {/* Search Box */}
-        <Filter />
+        <Filter
+          filter_screen={filter_screen}
+          setFilterScreen={setFilterScreen}
+        />
 
         <div className="mt-5 p-6">
           <div className="font-poppins">
@@ -166,15 +204,15 @@ const Add_Screen_Booking = ({
                 </tr>
               </thead>
               <tbody>
-                {screens.map((row, key) => (
+                {screen.map((row, key) => (
                   <tr key={row.id}>
                     <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="flex items-center">
                         <input
                           type="checkbox"
                           className=" h-5 w-5 cursor-pointer"
-                          checked={checkboxes[row.id] || false}
-                          onChange={() => toggleCheckboxAddScreen(row.id)}
+                          checked={checkboxes[row.ScreenID] || false}
+                          onChange={() => toggleCheckboxAddScreen(row.ScreenID)}
                         />
                         {/* <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
                         {checkboxes[row.id] && (
@@ -199,37 +237,52 @@ const Add_Screen_Booking = ({
                     <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
                       <div className="flex items-center">
                         <div className="font-poppins text-xl font-bold">
-                          {row.name}
+                          {row.ScreenName}
                         </div>
                         <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
                       </div>
                     </td>
                     <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
                       <div className="font-poppins text-sm text-[#59606C] font-bold">
-                        {row.location}
+                        {row.ScreenLocation || "No Data"}
                       </div>
                       <div className="font-poppins text-sm font-bold">
-                        {row.province}
+                        {row.province || "No Data"}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                       <div className="font-poppins font-bold">
-                        {row.media_rule}
+                        {findScreenResolutionID(row.ScreenResolutionID)}
                       </div>
                     </td>
                     <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
                       <div className="flex flex-wrap">
-                        {row.tag.map((items, index) => (
+                        {row.ScreenTag.length > 0 ? (
+                          row.ScreenTag.map((items, index) => (
+                            <div
+                              key={index}
+                              className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                              style={{
+                                flexBasis: `calc(${
+                                  100 / row.ScreenTag.length
+                                }% - 8px)`,
+                              }}
+                            >
+                              <div className="font-poppins text-xs font-bold">
+                                {items.TagName}
+                              </div>
+                            </div>
+                          ))
+                        ) : (
                           <div
-                            key={index}
-                            className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1 px-2 py-1"
-                            style={{ flexBasis: "calc(20% - 8px)" }}
+                            className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                            style={{ flexBasis: "calc(100% - 8px)" }}
                           >
                             <div className="font-poppins text-xs font-bold">
-                              {items}
+                              No Tag
                             </div>
                           </div>
-                        ))}
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">

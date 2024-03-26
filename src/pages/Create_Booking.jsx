@@ -17,7 +17,9 @@ import Screen_Info from "../components/Screen_Info";
 import New_Screen from "../components/New_Screen";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { screens, mediaMockup } from "../data/mockup";
+import { mediaMockup } from "../data/mockup";
+
+import User from "../libs/admin";
 
 import Filter from "../components/Filter";
 import Add_Screen_Booking from "../components/Add_Screen_Booking";
@@ -31,6 +33,8 @@ import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Scre
 const Create_Booking = () => {
   const location = useLocation();
   useCheckPermission();
+
+  const { token } = User.getCookieData();
 
   const [bookingName, setBookingName] = useState("");
   const [bookingCode, setBookingCode] = useState("CDS-BT-230101-004");
@@ -143,8 +147,10 @@ const Create_Booking = () => {
     setBookingCol(col_booking);
   };
 
-  const getAllScreen = () => {
-    setAllScreenData(screens);
+  const getAllScreen = async () => {
+    const { booking_slot } = location.state.data;
+    const data = await User.getScreensWithAdsCapacity(booking_slot, token);
+    setAllScreenData(data);
   };
 
   const toggleCheckboxAddScreen = (rowId) => {
@@ -188,7 +194,6 @@ const Create_Booking = () => {
       // มีจอแล้ว
     } else {
       //ยังไม่มีจอ
-
       const new_select_screen = [...selectedScreenItems];
       new_select_screen.push(id);
       setSelectedScreenItems(new_select_screen);
@@ -201,9 +206,20 @@ const Create_Booking = () => {
         return updatedCheckboxes;
       });
 
-      const screensToReturn = screens.filter((screen) =>
-        new_select_screen.includes(screen.id)
+      const screensToReturn = allScreenData.filter((screen) =>
+        new_select_screen.includes(screen.ScreenID)
       );
+
+      // Logic for test set booking
+      screensToReturn.forEach((screen) => {
+        screen.booking = [];
+        for (let i = 0; i < booking_date.length; i++) {
+          screen.booking.push({
+            slot: parseInt(screen.ScreenRule[0].AdsCapacity),
+            booking: 0,
+          });
+        }
+      });
       setScreenData(screensToReturn);
     }
   };
@@ -212,14 +228,16 @@ const Create_Booking = () => {
     const newCheckboxes = {};
     const newSelectAll = !selectAll;
 
-    screens.forEach((row) => {
-      newCheckboxes[row.id] = newSelectAll;
+    allScreenData.forEach((row) => {
+      newCheckboxes[row.ScreenID] = newSelectAll;
     });
 
     setCheckboxes(newCheckboxes);
     setSelectAll(newSelectAll);
 
-    const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
+    const checkedRowIds = newSelectAll
+      ? allScreenData.map((row) => row.ScreenID)
+      : [];
     setSelectedScreenItems(checkedRowIds);
   };
 
@@ -227,20 +245,22 @@ const Create_Booking = () => {
     const newCheckboxes = {};
     const newSelectAll = !selectAllPubishScreen;
 
-    screens.forEach((row) => {
-      newCheckboxes[row.id] = newSelectAll;
+    allScreenData.forEach((row) => {
+      newCheckboxes[row.ScreenID] = newSelectAll;
     });
 
     setCheckboxPublishScreen(newCheckboxes);
     setSelectAllPublishScreen(newSelectAll);
 
-    const checkedRowIds = newSelectAll ? screens.map((row) => row.id) : [];
+    const checkedRowIds = newSelectAll
+      ? allScreenData.map((row) => row.ScreenID)
+      : [];
     setSelectPublishScreen(checkedRowIds);
   };
 
   const handleAddScreen = () => {
-    const screensToReturn = screens.filter((screen) =>
-      selectedScreenItems.includes(screen.id)
+    const screensToReturn = allScreenData.filter((screen) =>
+      selectedScreenItems.includes(screen.ScreenID)
     );
     setScreenData(screensToReturn);
     setShowAddScreen(!showAddScreen);
@@ -271,8 +291,8 @@ const Create_Booking = () => {
       return updatedCheckboxes;
     });
 
-    const screensToReturn = screens.filter((screen) =>
-      new_select_screen.includes(screen.id)
+    const screensToReturn = allScreenData.filter((screen) =>
+      new_select_screen.includes(screen.ScreenID)
     );
     setScreenData(screensToReturn);
 
@@ -297,7 +317,7 @@ const Create_Booking = () => {
     });
   };
 
-  const handleSelectScreen = (screenIndex, dateIndex) => {
+  const handleSelectScreen = (screenIndex, dateIndex, items) => {
     const isDuplicate = bookingSelect.some(
       (selected) =>
         selected.screenIndex === screenIndex && selected.dateIndex === dateIndex
@@ -306,7 +326,7 @@ const Create_Booking = () => {
     if (!isDuplicate) {
       const newBookingSelect = [
         ...bookingSelect,
-        { screenIndex, dateIndex, id: screenIndex + 1 },
+        { screenIndex, dateIndex, ScreenID: items.ScreenID },
       ];
       setBookingSelect(newBookingSelect);
     } else {
@@ -349,7 +369,7 @@ const Create_Booking = () => {
   };
 
   const handleScreenInfo = (screen_id) => {
-    const screen = screens.find((a) => a.id === screen_id);
+    const screen = allScreenData.find((a) => a.ScreenID === screen_id);
     setSelectInfoScren(screen);
     setOpenInfoScreenModal(!openInfoScreenModal);
   };
@@ -509,7 +529,7 @@ const Create_Booking = () => {
                             </div>
                             <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
                               <IoIosInformationCircleOutline
-                                onClick={() => handleScreenInfo(items.id)}
+                                onClick={() => handleScreenInfo(items.ScreenID)}
                                 size={22}
                                 className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                               />
@@ -556,11 +576,15 @@ const Create_Booking = () => {
                       >
                         <div
                           className={`border border-gray-300 rounded-lg w-[80%] h-[75px] ${
-                            screenData.some((screen) => screen.id === items.id)
+                            screenData.some(
+                              (screen) => screen.ScreenID === items.ScreenID
+                            )
                               ? "bg-[#FFBD49]"
                               : ""
                           }`}
-                          onClick={() => toggleScreenFromAllScreen(items.id)}
+                          onClick={() =>
+                            toggleScreenFromAllScreen(items.ScreenID)
+                          }
                         >
                           <div className="grid grid-cols-10">
                             <div className="col-span-2 flex justify-center items-center">
@@ -569,12 +593,12 @@ const Create_Booking = () => {
                             <div className="col-span-6">
                               <div className="flex justify-start items-center">
                                 <div className="font-poppins text-xl font-bold">
-                                  {items.name}
+                                  {items.ScreenName}
                                 </div>
                               </div>
                               <div className="flex justify-start items-center">
                                 <div className="font-poppins text-sm">
-                                  {items.location}
+                                  {items.ScreenLocation}
                                 </div>
                               </div>
                               <div className="flex justify-start items-center">
@@ -595,7 +619,7 @@ const Create_Booking = () => {
                                 className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                               />
                               {screenData.some(
-                                (screen) => screen.id === items.id
+                                (screen) => screen.ScreenID === items.ScreenID
                               ) && (
                                 <>
                                   <IoMdTrash
@@ -621,7 +645,7 @@ const Create_Booking = () => {
                                               e.stopPropagation();
                                               handleConfirmDelete(
                                                 index,
-                                                items.id
+                                                items.ScreenID
                                               );
                                             }}
                                           >
@@ -771,7 +795,7 @@ const Create_Booking = () => {
                                     <div className="col-span-2 flex justify-center items-center">
                                       <IoIosInformationCircleOutline
                                         onClick={() =>
-                                          handleScreenInfo(items.id)
+                                          handleScreenInfo(items.ScreenID)
                                         }
                                         size={22}
                                         className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
@@ -855,10 +879,8 @@ const Create_Booking = () => {
                     <div className="col-span-1">
                       <div className="min-w-[100%]">
                         <div
-                          // onClick={() =>
-                          //   console.log("Select all", booking_date)
-                          // }
-                          className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
+                          onClick={() => console.log("Select all", screenData)}
+                          className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
                         >
                           <div className="text-xs font-poppins text-white">
                             Select all
@@ -904,17 +926,32 @@ const Create_Booking = () => {
                                     <div className="col-span-6">
                                       <div className="flex justify-start items-center">
                                         <div className="font-poppins text-xl font-bold">
-                                          {items.name}
+                                          {items.ScreenName}
                                         </div>
                                       </div>
                                       <div className="flex justify-start items-center">
                                         <div className="font-poppins text-sm">
-                                          Max Capacity {items.capacity}/Day
+                                          Max Capacity{" "}
+                                          {items.ScreenRule[0]?.AdsCapacity}/Day
                                         </div>
                                       </div>
                                       <div className="flex justify-start items-center">
                                         <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
-                                          Media Rule : {items.media_rule}
+                                          Media Rule :{" "}
+                                          {items.ScreenRule[0]?.Width &&
+                                          items.ScreenRule[0]?.Height ? (
+                                            <>
+                                              {parseInt(
+                                                items.ScreenRule[0]?.Width
+                                              ).toString()}
+                                              x
+                                              {parseInt(
+                                                items.ScreenRule[0]?.Height
+                                              ).toString()}
+                                            </>
+                                          ) : (
+                                            "Not Set"
+                                          )}
                                         </div>
                                       </div>
                                     </div>
@@ -939,7 +976,8 @@ const Create_Booking = () => {
                                             items2.slot - items2.booking > 0
                                               ? handleSelectScreen(
                                                   screenIndex,
-                                                  dateIndex
+                                                  dateIndex,
+                                                  items
                                                 )
                                               : null
                                           }
@@ -1039,7 +1077,6 @@ const Create_Booking = () => {
               </div>
             </div>
           )}
-
           {/* Right Panel */}
         </div>
       </div>
@@ -1060,10 +1097,11 @@ const Create_Booking = () => {
           setOpenAddNewScreenModal={setOpenAddNewScreenModal}
           selectAll={selectAll}
           toggleAllCheckboxes={toggleAllCheckboxes}
-          screens={screens}
+          allScreenData={allScreenData}
           checkboxes={checkboxes}
           toggleCheckboxAddScreen={toggleCheckboxAddScreen}
           handleAddScreen={handleAddScreen}
+          booking_slot={booking_slot}
         />
       )}
 
@@ -1079,7 +1117,7 @@ const Create_Booking = () => {
           setShowPublishScreen={setShowPublishScreen}
           showPublishScreen={showPublishScreen}
           selectPublihsScreen={selectPublihsScreen}
-          screens={screens}
+          allScreenData={allScreenData}
           selectAllPubishScreen={selectAllPubishScreen}
           toggleAllCheckboxesPublishScreen={toggleAllCheckboxesPublishScreen}
           toggleCheckboxPublishScreen={toggleCheckboxPublishScreen}
@@ -1124,7 +1162,7 @@ const Create_Booking = () => {
           setOpenConfirmBookingModal={setOpenConfirmBookingModal}
           openConfirmBookingModal={openConfirmBookingModal}
           bookingName={bookingName}
-          screens={screens}
+          allScreenData={allScreenData}
           selectedScreenItems={selectedScreenItems}
           bookingSelect={bookingSelect}
           merchandise={merchandise}
@@ -1211,7 +1249,7 @@ const Create_Booking = () => {
           openAddNewScreenModal={openAddNewScreenModal}
           selectAll={selectAll}
           toggleAllCheckboxes={toggleAllCheckboxes}
-          screens={screens}
+          allScreenData={allScreenData}
           checkboxes={checkboxes}
           toggleCheckboxAddScreen={toggleCheckboxAddScreen}
           selectedScreenItems={selectedScreenItems}

@@ -39,6 +39,17 @@ const Booking_Summary = () => {
     setTotalSlot(total_slot);
   };
 
+  const handleConfirmBooking = () => {
+    const obj = {
+      screen: screen,
+      booking_name: booking_name,
+      period: period,
+      slotPerDays: slotPerDays,
+      merchandise: merchandise,
+      total_slot: total_slot,
+    };
+  };
+
   return (
     <>
       <Navbar />
@@ -73,6 +84,7 @@ const Booking_Summary = () => {
                 </div>
               </div>
               <div className="h-[550px] overflow-y-auto mt-5">
+                {console.log("screen", screen)}
                 {screen.length > 0 &&
                   screen.map((items, index) => (
                     <div
@@ -89,12 +101,12 @@ const Booking_Summary = () => {
                           <div className="col-span-6">
                             <div className="flex justify-start items-center">
                               <div className="font-poppins text-2xl font-bold">
-                                {items.name}
+                                {items.ScreenName}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
                               <div className="font-poppins text-sm text-[#8A8A8A]">
-                                {items.location}
+                                {items.ScreenLocation}
                               </div>
                             </div>
                             <div className="flex justify-start items-center space-x-1">
@@ -211,13 +223,13 @@ const Booking_Summary = () => {
               </div>
               <div className="flex justify-center items-center space-x-3 mt-10">
                 <button
-                  onClick={() => alert("back")}
+                  onClick={() => navigate(-1)}
                   className="border border-[#6425FE] w-[187px] h-[48px] rounded-lg font-poppins font-bold text-[#6425FE]"
                 >
                   Back
                 </button>
                 <button
-                  onClick={() => alert("Comfirm")}
+                  onClick={() => handleConfirmBooking()}
                   className="bg-[#6425FE] w-[187px] h-[48px] rounded-lg font-poppins font-bold text-white"
                 >
                   Confirm

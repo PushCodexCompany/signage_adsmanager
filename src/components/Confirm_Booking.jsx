@@ -2,12 +2,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import { PiWarningCircleFill } from "react-icons/pi";
+import _ from "lodash";
 
 const Confirm_Booking = ({
   setOpenConfirmBookingModal,
   openConfirmBookingModal,
   bookingName,
-  screens,
+  allScreenData,
   selectedScreenItems,
   bookingSelect,
   merchandise,
@@ -17,23 +18,28 @@ const Confirm_Booking = ({
   const navigate = useNavigate();
 
   const handleConfirmBookingScreen = () => {
-    const screen = screens.filter((_, index) =>
-      selectedScreenItems.includes(index + 1)
+    const screen = allScreenData.filter((screen) =>
+      selectedScreenItems.includes(screen.ScreenID)
     );
 
+    const screen_with_booking_value = setBookingValue(bookingSelect, screen);
     const group_data = GroupedData(bookingSelect);
 
-    group_data.forEach((booking) => {
-      let screen_result = screen.find((screen) => screen.id === booking.id);
-      if (screen_result) {
-        screen_result.screen_booking_amount = booking.screen_booking_amount;
+    screen_with_booking_value.forEach((screen) => {
+      const matchingGroupData = group_data.find(
+        (group) => group.ScreenID === screen.ScreenID
+      );
+      if (matchingGroupData) {
+        screen.screen_booking_amount = matchingGroupData.screen_booking_amount;
+      } else {
+        screen.screen_booking_amount = 0;
       }
     });
 
     const total_slot = bookingSelect.length * booking_slot;
 
     const booking_obj = {
-      screen,
+      screen: screen_with_booking_value,
       booking_name: bookingName,
       period: booking_date,
       slot_per_days: booking_slot,
@@ -46,16 +52,30 @@ const Confirm_Booking = ({
     });
   };
 
+  const setBookingValue = (booking_data, screen_data) => {
+    const screen_clone = _.cloneDeep(screen_data);
+
+    booking_data.forEach((update) => {
+      screen_clone.forEach((items2) => {
+        if (update.ScreenID === items2.ScreenID) {
+          items2.booking[update.dateIndex].booking = booking_slot;
+        }
+      });
+    });
+
+    return screen_clone;
+  };
+
   const GroupedData = (data) => {
     const groupedData = data.reduce((acc, curr) => {
-      const id = curr.id;
+      const id = curr.ScreenID;
       acc[id] = acc[id] ? acc[id] + 1 : 1;
       return acc;
     }, {});
 
     const result = Object.keys(groupedData).map((id) => ({
-      id: parseInt(id), // Convert id to integer
-      screen_booking_amount: groupedData[id],
+      ScreenID: parseInt(id), // Convert id to integer
+      screen_booking_amount: groupedData[id] * booking_slot,
     }));
 
     return result;
