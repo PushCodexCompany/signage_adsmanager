@@ -791,6 +791,25 @@ export default {
     }
   },
 
+  getScreensWithAdsCapacityAndTag: async function (slot, tags, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
   getScreensOptions: async function (token) {
     const config = {
       headers: {

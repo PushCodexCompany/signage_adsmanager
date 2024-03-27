@@ -31,11 +31,20 @@ const Add_Screen_Booking = ({
   }, []);
 
   useEffect(() => {
-    console.log("filter_screen", filter_screen);
+    getScreenData(filter_screen);
   }, [filter_screen]);
 
-  const getScreenData = async () => {
-    const data = allScreenData;
+  const getScreenData = async (filter) => {
+    let data;
+    if (filter && filter.length > 0) {
+      data = await User.getScreensWithAdsCapacityAndTag(
+        booking_slot,
+        filter,
+        token
+      );
+    } else {
+      data = allScreenData;
+    }
     setScreens(data);
   };
 
