@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
-import { FiToggleRight } from "react-icons/fi";
-import { BiToggleLeft } from "react-icons/bi";
+import { BiToggleLeft, BiToggleRight } from "react-icons/bi";
 import { LuClock4 } from "react-icons/lu";
 import { MdDragHandle } from "react-icons/md";
 import { format } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import User from "../libs/admin";
 
 const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
   const [openMediaScheduleModal, setOpenMediaScheduleModal] = useState(false);
   const [selectMediaScreen, setSelectMediaScreen] = useState();
-
   const [hideOldModal, setHideOldModal] = useState(true);
+
+  const [screen_resolution, setScreenResolution] = useState([]);
+  const [screen_physical_size, setScreenPhysicalSize] = useState([]);
+
+  useEffect(() => {
+    getScreenData();
+  }, []);
+
+  const getScreenData = async () => {
+    const { token } = User.getCookieData();
+    const screens_option = await User.getScreensOptions(token);
+    setScreenResolution(screens_option.screenresolution);
+    setScreenPhysicalSize(screens_option.screenphysicalsize);
+  };
 
   const handleSelectMedia = (items) => {
     setHideOldModal(!hideOldModal);
@@ -44,6 +57,20 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
     });
   };
 
+  const findScreenResolutionID = (id) => {
+    const resolution = screen_resolution.find(
+      (item) => item.ScreenResolutionID === id
+    );
+    return resolution ? resolution.Resolution : "No Resolution";
+  };
+
+  const findPhysicalSizeID = (id) => {
+    const resolution = screen_physical_size.find(
+      (item) => item.ScreenPhySizeID === id
+    );
+    return resolution ? resolution.PhysicalSize : "No Physical Size";
+  };
+
   return (
     <>
       {hideOldModal && (
@@ -56,16 +83,16 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
               </button>
             </div>
           </div>
-
+          {console.log("selectInfoScreen", selectInfoScreen)}
           <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
             <div className="grid grid-cols-6">
               <div className="col-span-3">
                 <div className="p-4">
                   <div className="font-poppins text-[30px] font-bold">
-                    {selectInfoScreen.name}
+                    {selectInfoScreen.ScreenName}
                   </div>
                   <div className="font-poppins text-[18px]  text-[#8A8A8A]">
-                    {selectInfoScreen.location}
+                    {selectInfoScreen.ScreenLocation}
                   </div>
                   <div className="flex items-center space-x-1 ">
                     {selectInfoScreen.status === 0 ? (
@@ -79,27 +106,31 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   </div>
                   <div className="mt-2">
                     <div className="grid grid-cols-6 space-x-2">
-                      <div className="col-span-1">
+                      <div className="col-span-1 flex justify-end">
+                        {/* Adjusted to flex and justified to end */}
                         <button className="w-[130px] h-[35px] rounded-lg text-[18px] font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white">
                           New Tag+
                         </button>
                       </div>
                       <div className="col-span-5">
-                        <div className="flex flex-wrap space-x-1 space-y-1">
-                          {selectInfoScreen.tag.map((items, index) => (
+                        {/* Kept as it is */}
+                        <div className="flex flex-wrap justify-start">
+                          {selectInfoScreen.ScreenTag.map((items, index) => (
                             <div
                               key={index}
-                              className="w-1/5 border border-[#DBDBDB] p-1 rounded-lg flex justify-center items-center space-x-1"
-                              style={{ minWidth: "20%" }}
+                              className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
+                              style={{
+                                flexBasis: `calc(30% - 5px)`,
+                              }}
                             >
-                              <div className="flex justify-center items-center">
-                                <AiOutlineClose className="text-[#6425FE]" />
+                              <div className="flex justify-center items-center mr-1 ml-1">
+                                <AiOutlineClose className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
                               </div>
-                              <div className="flex-grow  font-poppins">
-                                {items}
+                              <div className="flex-grow text-sm font-poppins flex justify-center">
+                                {items.TagName}
                               </div>
-                              <div className="flex justify-center items-center">
-                                <BsInfoCircle className="text-[#6425FE]" />
+                              <div className="flex justify-center items-center ml-1 mr-1">
+                                <BsInfoCircle className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
                               </div>
                             </div>
                           ))}
@@ -109,11 +140,11 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   </div>
 
                   <div className="mt-2">
-                    <div className="grid grid-cols-6 space-x-1">
+                    <div className="grid grid-cols-6 space-x-2">
                       <div className="col-span-3">
                         <div className="flex justify-center items-center h-full">
                           <img
-                            src={selectInfoScreen.img}
+                            src={selectInfoScreen.ScreenPhoto}
                             className="object-cover w-full h-full"
                             alt="placeImage"
                           />
@@ -121,8 +152,9 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       </div>
                       <div className="col-span-3">
                         <div className="flex justify-center items-center h-full">
+                          {/* Temporay Use screen photo wait replace location */}
                           <img
-                            src={selectInfoScreen.latitudeImg}
+                            src={selectInfoScreen.ScreenPhoto}
                             className="object-cover w-full h-full"
                             alt="latImage"
                           />
@@ -135,14 +167,14 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.location}
+                            {selectInfoScreen.ScreenLocation}
                           </div>
                         </div>
                       </div>
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center ">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.latitude}
+                            {selectInfoScreen.ScreenLocation}
                           </div>
                         </div>
                       </div>
@@ -153,15 +185,23 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center">
                           <div className="font-poppins font-bold">
-                            Open Time :
-                            {`${selectInfoScreen.officeHours[0]} - ${selectInfoScreen.officeHours[1]}`}
+                            Open Time :{" "}
+                            {`${selectInfoScreen.ScreenOpenTime?.split(":")
+                              .slice(0, 2)
+                              .join(
+                                ":"
+                              )} - ${selectInfoScreen.ScreenCloseTime?.split(
+                              ":"
+                            )
+                              .slice(0, 2)
+                              .join(":")}`}
                           </div>
                         </div>
                       </div>
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center ">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.rule}
+                            {selectInfoScreen.ScreenRule[0]?.MediaRuleName}
                           </div>
                         </div>
                       </div>
@@ -172,14 +212,18 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.detailed}
+                            {findPhysicalSizeID(
+                              selectInfoScreen.ScreenPhySizeID
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center ">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.resolutions}
+                            {findScreenResolutionID(
+                              selectInfoScreen.ScreenResolutionID
+                            )}
                           </div>
                         </div>
                       </div>
@@ -190,14 +234,20 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.direction}
+                            {selectInfoScreen.ScreenOrientation.charAt(
+                              0
+                            ).toUpperCase() +
+                              selectInfoScreen.ScreenOrientation.slice(1)}
                           </div>
                         </div>
                       </div>
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center ">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.position}
+                            {selectInfoScreen.ScreenPlacement.charAt(
+                              0
+                            ).toUpperCase() +
+                              selectInfoScreen.ScreenPlacement.slice(1)}
                           </div>
                         </div>
                       </div>
@@ -208,7 +258,10 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="col-span-3">
                         <div className="border h-[150%] border-[#DBDBDB] flex justify-center items-center">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.price} Bath per Dat
+                            {selectInfoScreen.price
+                              ? selectInfoScreen.price
+                              : "-"}{" "}
+                            Bath per Dat
                           </div>
                         </div>
                       </div>
@@ -226,7 +279,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                     <div className="w-[760px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD]">
                       <div className="mt-3">
                         <div className="flex space-x-2">
-                          {selectInfoScreen.schedule.map((items, index) => (
+                          {selectInfoScreen.schedule?.map((items, index) => (
                             <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
                               <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
                                 {format(items.date, "EEE")}
@@ -243,7 +296,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       </div>
                       <div className="mt-4 mb-2">
                         <div className="w-[760px] flex space-x-2">
-                          {selectInfoScreen.schedule.map((items, index) => (
+                          {selectInfoScreen.schedule?.map((items, index) => (
                             <div
                               onClick={() => handleSelectMedia(items)}
                               className={`${
@@ -270,7 +323,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="w-[760px] bg-[#D9D9D9] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD]">
                         <div className="mt-2 mb-2">
                           <div className="flex items-end">
-                            {selectInfoScreen.health.map((height, index) => (
+                            {selectInfoScreen.health?.map((height, index) => (
                               <div
                                 key={index}
                                 className={`h-[${height}px] bg-[#2F8B5A] w-4 m-[1px]`}
@@ -282,7 +335,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       </div>
                       <div className="mt-2">
                         <div className="font-poppins text-[18px] font-bold">
-                          {`Up Time ${selectInfoScreen.uptime} %`}
+                          {`Up Time ${selectInfoScreen.uptime || " "} %`}
                         </div>
                       </div>
                       <div className="mt-6">
@@ -296,13 +349,16 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                               </div>
                               <div className="col-span-1">
                                 <div className="flex justify-end">
-                                  {selectInfoScreen.maintenanceNoti ? (
-                                    <BiToggleLeft
+                                  {selectInfoScreen.MANotifyDelay ? (
+                                    <BiToggleRight
                                       size={32}
                                       className="text-[#6425FE]"
                                     />
                                   ) : (
-                                    <FiToggleRight size={32} />
+                                    <BiToggleLeft
+                                      size={32}
+                                      className="text-[#6425FE]"
+                                    />
                                   )}
                                 </div>
                               </div>
@@ -318,7 +374,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                               <div className="col-span-1">
                                 <div className="flex justify-end items-center space-x-2">
                                   <div className="text-[#A9A9A9] text-[15px] font-poppins">
-                                    {selectInfoScreen.offlineNotification}
+                                    {selectInfoScreen.MANotifyDelay}
                                   </div>
                                   <LuClock4
                                     size={24}
