@@ -440,19 +440,19 @@ const Create_Booking = () => {
                 <>
                   <button
                     onClick={() => setShowAddScreen(true)}
-                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
                   >
                     Add Screen+
                   </button>
                   <button
                     onClick={() => handleSaveScreen()}
-                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
                   >
                     Save Booking
                   </button>
                   <button
                     onClick={() => handleConfirmbooking()}
-                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
                   >
                     Confirm Booking
                   </button>
@@ -464,30 +464,30 @@ const Create_Booking = () => {
 
         <Filter />
 
-        <div className="mt-7 grid grid-cols-8 ">
+        <div className="mt-7 grid grid-cols-8 md:space-x-2">
           {/* Left Panel */}
           {isConfirmed ? (
             <div className="col-span-2">
               <div>
                 <img
-                  className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
+                  className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover`}
                   src={merchandise.AdvertiserLogo}
                   alt={merchandise.AdvertiserName}
                 />
               </div>
               <div className="mt-2">
                 <div className="flex justify-center items-center">
-                  <div className="font-poppins text-xl font-bold text-[#2F3847]">
+                  <div className="font-poppins lg:text-xl md:text-md font-bold text-[#2F3847]">
                     {merchandise.AdvertiserName}
                   </div>
                 </div>
                 <div className="flex justify-center items-center">
-                  <div className="font-poppins text-sm text-[#6F6F6F]">
+                  <div className="font-poppins lg:text-sm md:text-xs text-[#6F6F6F]">
                     {merchandise.AccountCode}
                   </div>
                 </div>
                 <div className="flex justify-center items-center mt-5">
-                  <div className="font-poppins font-bold text-xl text-[#59606C]">
+                  <div className="font-poppins font-bold lg:text-xl md:text-md text-[#59606C]">
                     {bookingCode}
                   </div>
                 </div>
@@ -499,7 +499,7 @@ const Create_Booking = () => {
                         className="flex justify-center items-center mt-3 "
                       >
                         <div
-                          className={`border border-gray-300 rounded-lg w-[80%] h-[75px] `}
+                          className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px] `}
                         >
                           <div className="grid grid-cols-10">
                             <div className="col-span-2 flex justify-center items-center">
@@ -507,12 +507,12 @@ const Create_Booking = () => {
                             </div>
                             <div className="col-span-6">
                               <div className="flex justify-start items-center">
-                                <div className="font-poppins text-xl font-bold">
+                                <div className="font-poppins lg:text-xl md:text-md font-bold">
                                   {items.name}
                                 </div>
                               </div>
                               <div className="flex justify-start items-center">
-                                <div className="font-poppins text-sm">
+                                <div className="font-poppins text-sm md:text-xs">
                                   {items.location}
                                 </div>
                               </div>
@@ -545,24 +545,24 @@ const Create_Booking = () => {
             <div className="col-span-2">
               <div>
                 <img
-                  className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
+                  className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover`}
                   src={merchandise.AdvertiserLogo}
                   alt={merchandise.AdvertiserName}
                 />
               </div>
               <div className="mt-2">
                 <div className="flex justify-center items-center">
-                  <div className="font-poppins text-xl font-bold text-[#2F3847]">
+                  <div className="font-poppins lg:text-xl md:text-md font-bold text-[#2F3847]">
                     {merchandise.AdvertiserName}
                   </div>
                 </div>
                 <div className="flex justify-center items-center">
-                  <div className="font-poppins text-sm text-[#6F6F6F]">
+                  <div className="font-poppins lg:text-sm md:text-xs text-[#6F6F6F]">
                     {merchandise.AccountCode}
                   </div>
                 </div>
                 <div className="flex justify-center items-center mt-5">
-                  <div className="font-poppins font-bold text-xl text-[#59606C]">
+                  <div className="font-poppins font-bold lg:text-xl md:text-md text-[#59606C]">
                     {bookingCode}
                   </div>
                 </div>
@@ -575,7 +575,7 @@ const Create_Booking = () => {
                         className="flex justify-center items-center mt-3 cursor-pointer"
                       >
                         <div
-                          className={`border border-gray-300 rounded-lg w-[80%] h-[75px] ${
+                          className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px] ${
                             screenData.some(
                               (screen) => screen.ScreenID === items.ScreenID
                             )
@@ -586,18 +586,18 @@ const Create_Booking = () => {
                             toggleScreenFromAllScreen(items.ScreenID)
                           }
                         >
-                          <div className="grid grid-cols-10">
+                          <div className="grid grid-cols-10 md:space-x-1">
                             <div className="col-span-2 flex justify-center items-center">
                               <PiMonitor size={40} color={"#59606C"} />
                             </div>
                             <div className="col-span-6">
                               <div className="flex justify-start items-center">
-                                <div className="font-poppins text-xl font-bold">
+                                <div className="font-poppins lg:text-xl md:text-md font-bold">
                                   {items.ScreenName}
                                 </div>
                               </div>
                               <div className="flex justify-start items-center">
-                                <div className="font-poppins text-sm">
+                                <div className="font-poppins lg:text-sm md:text-xs">
                                   {items.ScreenLocation}
                                 </div>
                               </div>
@@ -631,7 +631,7 @@ const Create_Booking = () => {
                                     className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                                   />
                                   {deleteModalIndex[index] && (
-                                    <div className="absolute left-[680px] top-[800px] flex items-center">
+                                    <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
                                       <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
                                         <p className="font-poppins text-xs text-white">
                                           Do You Want to Delete This Screen.
@@ -689,10 +689,10 @@ const Create_Booking = () => {
                     />
                     <div>
                       <div className="flex justify-center items-center space-x-2">
-                        <div className="font-poppins text-xl font-bold">
+                        <div className="font-poppins lg:text-xl text-md font-bold">
                           Booking Period :
                         </div>
-                        <div className="font-poppins text-2xl ">
+                        <div className="font-poppins lg:text-2xl text-md">
                           {booking_date.length > 0 && (
                             <div>{` ${format(
                               booking_date[0],
@@ -712,13 +712,13 @@ const Create_Booking = () => {
                   </div>
                 </div>
 
-                <div className="w-[1140px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
+                <div className="lg:w-[1140px] w-[520px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
                   <div className="grid grid-cols-12 space-x-1 mt-3">
-                    <div className="col-span-1">
+                    <div className="col-span-3 lg:col-span-1">
                       <div className="min-w-[100%]">
                         <div
                           // onClick={() => console.log("Clear Selection")}
-                          className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
+                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
                         >
                           <div className="text-xs font-poppins text-white">
                             Clear
@@ -732,7 +732,7 @@ const Create_Booking = () => {
                             booking_date.map((items, index) => (
                               <div key={index} className="mt-3 space-x-2">
                                 <div
-                                  className={`min-w-[20px]  
+                                  className={`lg:min-w-[20px] min-w-[100px] 
                                   ${
                                     booking_col === 1
                                       ? "h-[80px]"
@@ -761,7 +761,7 @@ const Create_Booking = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-11">
+                    <div className="col-span-9 lg:col-span-11">
                       <div className="grid grid-cols-6 ">
                         <div className="flex space-x-2">
                           {screenData.length > 0 &&
@@ -851,10 +851,10 @@ const Create_Booking = () => {
                     />
                     <div>
                       <div className="flex justify-center items-center space-x-2">
-                        <div className="font-poppins text-xl font-bold">
+                        <div className="font-poppins lg:text-xl text-md font-bold">
                           Booking Period :
                         </div>
-                        <div className="font-poppins text-2xl ">
+                        <div className="font-poppins lg:text-2xl text-xl  ">
                           {booking_date.length > 0 && (
                             <div>{` ${format(
                               booking_date[0],
@@ -874,13 +874,13 @@ const Create_Booking = () => {
                   </div>
                 </div>
 
-                <div className="w-[1140px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
+                <div className="lg:w-[1140px] w-[520px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
                   <div className="grid grid-cols-12 space-x-1 mt-3">
-                    <div className="col-span-1">
+                    <div className="col-span-3 lg:col-span-1">
                       <div className="min-w-[100%]">
                         <div
                           onClick={() => console.log("Select all", screenData)}
-                          className="min-w-[20px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
                         >
                           <div className="text-xs font-poppins text-white">
                             Select all
@@ -893,7 +893,7 @@ const Create_Booking = () => {
                           {booking_date.length > 0 &&
                             booking_date.map((items, index) => (
                               <div key={index} className="mt-3 space-x-2">
-                                <div className="min-w-[20px] h-[70px] bg-[#59606C] rounded-lg">
+                                <div className="lg:min-w-[20px]  min-w-[100px] h-[70px] bg-[#59606C] rounded-lg">
                                   <div className="flex items-center justify-center text-xs font-poppins text-white">
                                     {format(items, "EEE")}
                                   </div>
@@ -909,7 +909,7 @@ const Create_Booking = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-11">
+                    <div className="col-span-9 lg:col-span-11">
                       <div className="grid grid-cols-6 ">
                         <div className="flex space-x-2">
                           {screenData.length > 0 &&

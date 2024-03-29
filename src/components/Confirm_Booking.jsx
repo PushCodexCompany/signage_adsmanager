@@ -93,7 +93,7 @@ const Confirm_Booking = ({
           </button>
         </div>
       </div>
-      <div className="bg-[#FFFFFF] w-2/5 lg:w-2/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+      <div className="bg-[#FFFFFF] w-4/5 lg:w-2/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
         <div className="mt-28">
           <div className="p-2">
             <div className="flex justify-center items-center">

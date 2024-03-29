@@ -34,12 +34,11 @@ const New_Booking_Steps_Modal = (props) => {
           return (
             <div
               key={`step_${index}`}
-              className="flex-1 flex  items-center justify-center"
+              className={`flex-1 flex  items-center justify-center ${
+                step.stepIndex < currentStep ? "pointer" : "default"
+              }`}
               onClick={() => {
                 handleStepClicked(step.stepIndex);
-              }}
-              style={{
-                cursor: step.stepIndex < currentStep ? "pointer" : "default",
               }}
             >
               <div
@@ -58,7 +57,9 @@ const New_Booking_Steps_Modal = (props) => {
                 </p>
               </div>
               <div className="flex items-center justify-center">
-                <div className="font-poppins text-2xl ">{step.label}</div>
+                <div className="font-poppins lg:text-2xl md:text-sm">
+                  {step.label}
+                </div>
               </div>
               <div className="flex flex-1 items-center justify-center">
                 {index < options.length - 1 ? (
@@ -74,7 +75,7 @@ const New_Booking_Steps_Modal = (props) => {
         {HAS_PREV && HAS_NEXT && (
           <div
             onClick={() => handleBackStep(currentStep)}
-            className="border-2 border-[#6425FE] w-48 h-10 flex items-center justify-center cursor-pointer"
+            className="border-2 border-[#6425FE] w-48 h-10 flex rounded-lg items-center justify-center cursor-pointer"
           >
             <button className="text-[#6425FE] font-poppins ">Back</button>
           </div>

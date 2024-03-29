@@ -351,24 +351,21 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Booking For
               </div>
             </div>
-            <div className="flex items-center justify-center mt-2">
-              <div className="text-sm font-poppins  text-[#2F3847]">
+            <div className="flex items-center justify-center mt-2 text-center">
+              <div className="text-sm font-poppins text-[#2F3847]">
                 Name your booking, select merchandise, and content type to
                 create a New booking. Personalize your campaign for maximum
                 impact.
               </div>
             </div>
-            <div className="h-[450px] mt-8 overflow-y-auto">
-              <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2 mt-7">
-                <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
-                  <button
-                    onClick={() => setShowCreateMerchandise(true)}
-                    className="flex flex-col items-center"
-                  >
+            <div className="h-[380px] mt-8 overflow-y-auto">
+              <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
+                <div className="sm:w-1/2 lg:w-[27%] h-[400px] p-2 flex flex-col items-center">
+                  <button onClick={() => setShowCreateMerchandise(true)}>
                     <div className="h-60 flex items-center justify-center">
                       <FaPlus size={100} color="#6425FE" />
                     </div>
-                    <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+                    <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
                       Add New Merchandise
                     </div>
                   </button>
@@ -378,8 +375,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   merchandise.map((items, key) => (
                     <div
                       key={key}
-                      className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
                       onClick={() => setSelectMerchandise(items)}
+                      className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
                     >
                       <div className="relative mb-4">
                         <img
@@ -389,8 +386,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                               ? "border-4 border-[#6425FE] "
                               : ""
                           } object-cover `}
-                          src={items.AdvertiserLogo || empty_img}
-                          alt={items.AdvertiserName}
+                          src={
+                            items.AdvertiserLogo
+                              ? items.AdvertiserLogo
+                              : `https://ui-avatars.com/api/?name=${
+                                  items.AdvertiserName
+                                }&background=${"000000"}&color=fff`
+                          }
+                          alt={items.AccountName}
                         />
                       </div>
                       <button className="w-full">
@@ -408,7 +411,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           </>
         );
         break;
-
       case "2":
         return (
           <>
@@ -417,8 +419,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Booking Period
               </div>
             </div>
-            <div className="flex items-center justify-center mt-2">
-              <div className="text-sm font-poppins  text-[#2F3847]">
+            <div className="flex items-center justify-center mt-2 text-center">
+              <div className="text-sm font-poppins text-[#2F3847]">
                 Name your booking, select merchandise, and content type to
                 create a new booking. Personalize your campaign for maximum
                 impact.
@@ -482,7 +484,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     return (
                       <p
                         key={index}
-                        className={`font-poppins text-2xl ${textStyle}`}
+                        className={`font-poppins lg:text-2xl md:text-xl ${textStyle}`}
                       >
                         {format(monthToShow, "MMM yy")}
                       </p>
@@ -494,9 +496,9 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-7 gap-4 sm:gap-3 place-items-center mt-4">
+              <div className="grid grid-cols-7 gap-4 md:gap-3 place-items-center mt-4">
                 {days.map((day, idx) => (
-                  <div key={idx} className="font-poppins text-sm">
+                  <div key={idx} className="font-poppins lg:text-sm md:text-xs">
                     {capitalizeFirstLetter(day)}
                   </div>
                 ))}
@@ -509,7 +511,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     className={colStartClasses[getDay(day)]}
                   >
                     <p
-                      className={`cursor-pointer border-1 border-gray-300 hover:border-[#6425FE] flex items-center rounded-md justify-center font-poppins h-8 w-32 hover:text-[#6425FE] ${
+                      className={`cursor-pointer border-1 border-gray-300 hover:border-[#6425FE] flex items-center rounded-md justify-center font-poppins md:h-5 md:w-16 lg:h-8 lg:w-32 hover:text-[#6425FE] ${
                         isSameMonth(day, today)
                           ? "text-gray-900"
                           : "text-gray-400"
@@ -523,7 +525,9 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                           : ""
                       }`}
                     >
-                      {format(day, "d")}
+                      <div className="font-poppins lg:text-lg md:text-xs">
+                        {format(day, "d")}
+                      </div>
                     </p>
                   </div>
                 ))}
@@ -547,7 +551,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           </>
         );
         break;
-
       case "3":
         return (
           <>
@@ -556,16 +559,16 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Enter Booking Detail
               </div>
             </div>
-            <div className="flex items-center justify-center mt-2">
-              <div className="text-sm font-poppins  text-[#2F3847]">
+            <div className="flex items-center justify-center mt-2 text-center">
+              <div className="text-sm font-poppins text-[#2F3847]">
                 Name your booking, select merchandise, and content type to
                 create a new booking. Personalize your campaign for maximum
                 impact.
               </div>
             </div>
-            <div className="mt-20">
-              <div className="grid grid-cols-6 w-[70%] mx-auto space-x-1">
-                <div className="col-span-2">
+            <div className="mt-6 h-[350px] overflow-y-auto">
+              <div className="flex flex-row lg:flex-row">
+                <div className="w-full lg:w-1/3 p-4">
                   <div>
                     <img
                       className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
@@ -586,7 +589,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                 </div>
-                <div className="col-span-4 p-2">
+                <div className="w-full lg:w-2/3 p-4 lg:pl-8 border border-gray-300">
                   <div>
                     <div className="font-poppins font-bold">Booking Name :</div>
                   </div>
@@ -640,16 +643,16 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Booking is Created
               </div>
             </div>
-            <div className="flex items-center justify-center mt-2">
-              <div className="text-sm font-poppins  text-[#2F3847]">
+            <div className="flex items-center justify-center mt-2 text-center">
+              <div className="text-sm font-poppins text-[#2F3847]">
                 Name your booking, select merchandise, and content type to
                 create a new booking. Personalize your campaign for maximum
                 impact.
               </div>
             </div>
-            <div className="mt-20">
-              <div className=" grid grid-cols-6 w-[50%] mx-auto space-x-[-10%]">
-                <div className="col-span-3">
+            <div className="mt-6 h-[350px] overflow-y-auto">
+              <div className="flex flex-row lg:flex-row  justify-center items-center">
+                <div className="w-full lg:w-1/3 p-4">
                   <div>
                     <img
                       className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
@@ -670,7 +673,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                 </div>
-                <div className="col-span-3 p-2">
+                <div className="w-full lg:w-1/3 p-4 border border-gray-300">
                   <div>
                     <div className="font-poppins font-bold text-4xl underline">
                       Booking Name
@@ -765,7 +768,9 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
             <div className="p-4 flex space-x-3">
               <div className="flex items-center justify-center">
-                <div className="font-poppins text-2xl ">Create Merchandise</div>
+                <div className="font-poppins text-2xl font-bold ">
+                  Create Merchandise
+                </div>
               </div>
             </div>
             <div className="flex flex-col lg:flex-row">

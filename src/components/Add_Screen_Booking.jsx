@@ -89,7 +89,7 @@ const Add_Screen_Booking = ({
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
       {/* First div (circle) */}
-      <div className="absolute right-10 top-14 lg:top-5 lg:right-[160px] m-4 z-30">
+      <div className="absolute right-10 top-[150px] lg:top-[30px] lg:right-[160px] m-4 z-30">
         <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
           <button onClick={() => handleCloseAddScreen()}>
             <IoIosClose size={25} color={"#6425FE"} />

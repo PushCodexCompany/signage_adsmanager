@@ -62,18 +62,18 @@ const Booking_Summary = () => {
         </div>
         <div className="mt-7 grid grid-cols-8 space-x-1">
           {/* Left Panel */}
-          <div className="col-span-2 border border-[#CDCDCD] rounded-lg">
+          <div className="col-span-3 lg:col-span-2 border border-[#CDCDCD] rounded-lg">
             <div className="p-4">
               <div className="flex justify-center items-center">
                 <div className="grid grid-cols-5 space-x-3">
-                  <div className="col-span-1">
+                  <div className="col-span-2">
                     <img
-                      className={`block mx-auto mt-30px w-[75px] h-[75px] rounded-lg object-cover`}
+                      className={`block mx-auto mt-30px w-[100px] h-[100px] lg:w-[75px] lg:h-[75px] rounded-lg object-cover`}
                       src={merchandise.AdvertiserLogo}
                       alt={merchandise.AdvertiserName}
                     />
                   </div>
-                  <div className="col-span-4 mt-3">
+                  <div className="col-span-3 mt-3">
                     <div className="font-poppins text-[18px] font-bold">
                       {booking_name}
                     </div>
@@ -84,7 +84,6 @@ const Booking_Summary = () => {
                 </div>
               </div>
               <div className="h-[550px] overflow-y-auto mt-5">
-                {console.log("screen", screen)}
                 {screen.length > 0 &&
                   screen.map((items, index) => (
                     <div
@@ -100,7 +99,7 @@ const Booking_Summary = () => {
                           </div>
                           <div className="col-span-6">
                             <div className="flex justify-start items-center">
-                              <div className="font-poppins text-2xl font-bold">
+                              <div className="font-poppins md:text-lg lg:text-2xl font-bold">
                                 {items.ScreenName}
                               </div>
                             </div>
@@ -139,14 +138,14 @@ const Booking_Summary = () => {
           {/* Left Panel */}
 
           {/* Right Panel */}
-          <div className="col-span-6 border border-[#CDCDCD] rounded-lg">
+          <div className="col-span-5 lg:col-span-6 border border-[#CDCDCD] rounded-lg">
             <div className="p-4">
               <div className="flex justify-center items-center mt-20">
                 <div className="font-poppins text-[48px] font-bold">
                   {booking_name} Summary
                 </div>
               </div>
-              <div className="flex justify-center items-center">
+              <div className="flex justify-center items-center text-center">
                 <div className="font-poppins text-[#8A8A8A] text-[18px] ">
                   Review an Estimated Advertising Costs for Your Booking
                 </div>
@@ -155,12 +154,12 @@ const Booking_Summary = () => {
                 <div className="grid grid-cols-8 space-x-3 w-full">
                   <div className="col-span-2" />
                   <div className="col-span-2 flex justify-start items-center">
-                    <div className="font-poppins text-[24px] font-bold ">
+                    <div className="font-poppins text-[18px] lg:text-[24px] font-bold ">
                       Period:
                     </div>
                   </div>
                   <div className="col-span-4 flex justify-start items-center">
-                    <div className="font-poppins text-[24px] font-bold">
+                    <div className="font-poppins text-[18px] lg:text-[24px] font-bold">
                       {period.length > 0 && (
                         <div>{` ${format(
                           period[0],
@@ -176,14 +175,14 @@ const Booking_Summary = () => {
               </div>
               <div className="flex justify-center items-center mt-5">
                 <div className="grid grid-cols-8 space-x-3 w-full">
-                  <div className="col-span-2" />
-                  <div className="col-span-2 flex justify-start items-center">
-                    <div className="font-poppins text-[24px] font-bold ">
+                  <div className="col-span-1 lg:col-span-2" />
+                  <div className="col-span-3 lg:col-span-2 flex justify-start items-center">
+                    <div className="font-poppins text-[18px] lg:text-[24px] font-bold ">
                       Slot Per Day:
                     </div>
                   </div>
                   <div className="col-span-4 flex justify-start items-center">
-                    <div className="font-poppins text-[24px] font-bold">
+                    <div className="font-poppins text-[18px] lg:text-[24px] font-bold">
                       {slotPerDays}
                     </div>
                   </div>
@@ -191,9 +190,9 @@ const Booking_Summary = () => {
               </div>
               <div className="flex justify-center items-center mt-5">
                 <div className="grid grid-cols-8 space-x-3 w-full">
-                  <div className="col-span-2" />
-                  <div className="col-span-2 flex justify-start items-center">
-                    <div className="font-poppins text-[24px] font-bold ">
+                  <div className="col-span-1 lg:col-span-2" />
+                  <div className="col-span-3 lg:col-span-2 flex justify-start items-center">
+                    <div className="font-poppins text-[18px] lg:text-[24px] font-bold ">
                       Merchandise:
                     </div>
                   </div>
@@ -210,12 +209,12 @@ const Booking_Summary = () => {
                 <div className="grid grid-cols-8 space-x-3 w-full">
                   <div className="col-span-2" />
                   <div className="col-span-2 flex justify-start items-center">
-                    <div className="font-poppins text-[24px] font-bold ">
+                    <div className="font-poppins text-[18px] lg:text-[24px] font-bold ">
                       Total Slot:
                     </div>
                   </div>
                   <div className="col-span-4 flex justify-start items-center">
-                    <div className="font-poppins text-[24px] font-bold">
+                    <div className="font-poppins text-[18px] lg:text-[24px] font-bold">
                       {total_slot}
                     </div>
                   </div>

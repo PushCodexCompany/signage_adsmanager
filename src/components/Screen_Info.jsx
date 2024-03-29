@@ -83,10 +83,9 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
               </button>
             </div>
           </div>
-          {console.log("selectInfoScreen", selectInfoScreen)}
           <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-            <div className="grid grid-cols-6">
-              <div className="col-span-3">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-1/3 p-4">
                 <div className="p-4">
                   <div className="font-poppins text-[30px] font-bold">
                     {selectInfoScreen.ScreenName}
@@ -270,10 +269,10 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-3">
-                <div className="p-4">
+              <div className="w-full lg:w-2/3 p-4 lg:pl-8 ">
+                <div className="p-4 border border-gray-300">
                   <div className="mt-[90px]">
-                    <div className="font-poppins text-[30px] font-bold">
+                    <div className="font-poppins text-[30px] font-bold ">
                       Schedule
                     </div>
                     <div className="w-[760px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD]">
