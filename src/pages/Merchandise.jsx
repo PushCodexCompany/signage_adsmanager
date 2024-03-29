@@ -121,16 +121,13 @@ const Merchandise = () => {
           industry.
         </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2">
-          <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
-            <button
-              onClick={() => handleNewMerchandise()}
-              className="flex flex-col items-center"
-            >
+        <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
+          <div className="sm:w-1/2 lg:w-[27%] h-[400px] p-2 flex flex-col items-center">
+            <button onClick={() => handleNewMerchandise()}>
               <div className="h-60 flex items-center justify-center">
                 <FaPlus size={100} color="#6425FE" />
               </div>
-              <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+              <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add New Merchandise
               </div>
             </button>
@@ -140,15 +137,20 @@ const Merchandise = () => {
             merchandise.map((items, key) => (
               <div
                 key={key}
-                className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
+                className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
               >
                 <div className="relative mb-4">
                   <img
-                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
-                    src={items.AdvertiserLogo || empty_img}
-                    alt={items.AdvertiserName}
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
+                    src={
+                      items.AdvertiserLogo
+                        ? items.AdvertiserLogo
+                        : `https://ui-avatars.com/api/?name=${
+                            items.AdvertiserName
+                          }&background=${"000000"}&color=fff`
+                    }
+                    alt={items.AccountName}
                   />
-                  {/* Add icon inside img */}
                   <div
                     onClick={() => toggleDropdown(items.AdvertiserID)}
                     className="absolute top-2 right-2 cursor-pointer"
@@ -165,9 +167,8 @@ const Merchandise = () => {
                           setEditMerchandise(items);
                           handleEditMerchandise(items);
                           toggleDropdown(items.AdvertiserID);
-                          // setShowModalAddNewBrand(true);
                         }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
                       >
                         Edit
                       </button>
@@ -177,9 +178,8 @@ const Merchandise = () => {
                             items.AdvertiserID,
                             items.AdvertiserName
                           );
-                          toggleDropdown(items.AdvertiserID);
                         }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
                       >
                         Delete
                       </button>

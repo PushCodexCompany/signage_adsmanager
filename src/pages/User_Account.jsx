@@ -180,7 +180,7 @@ const User_Account = () => {
                           setEditAccount(items);
                           setShowModalAddNewAccount(true);
                         }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
                       >
                         Edit
                       </button>
@@ -189,7 +189,7 @@ const User_Account = () => {
                           handleDeleteAccount(items.AccountID);
                           toggleDropdown(items.AccountID);
                         }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
                       >
                         Delete
                       </button>

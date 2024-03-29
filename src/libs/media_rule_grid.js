@@ -84,7 +84,7 @@ export const GridTable = ({ media_rules }) => {
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div
                     onClick={() => onClickEdit(row)}
-                    className="font-poppins text-md text-[#59606C] hover:text-[#6425FE] cursor-pointer"
+                    className="font-poppins text-lg text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                   >
                     {row.MediaRuleName}
                   </div>
@@ -114,30 +114,20 @@ export const GridTable = ({ media_rules }) => {
                     </div>
                   </div>
                 </td>
-                {/* <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md ">{row.screen}</div>
-                </td> */}
-
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
                     <button onClick={() => onClickEdit(row)}>
                       <RiEditLine
                         size={20}
-                        className="text-gray-400 hover:text-[#6425FE]"
+                        className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                     </button>
                     <button onClick={() => onClickDelete(row.MediaRuleID)}>
                       <RiDeleteBin5Line
                         size={20}
-                        className="text-gray-400 hover:text-[#6425FE]"
+                        className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                     </button>
-                    {/* <button onClick={() => onClickView(row)}>
-                      <RiShareBoxLine
-                        size={20}
-                        className="text-gray-400 hover:text-[#6425FE]"
-                      />
-                    </button> */}
                   </div>
                 </td>
               </tr>

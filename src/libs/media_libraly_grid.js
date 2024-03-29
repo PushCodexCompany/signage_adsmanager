@@ -81,7 +81,7 @@ const dashboardData = [
 export const GridTable = () => {
   return (
     <>
-      <div className="w-auto h-[600px] overflow-auto">
+      <div className="w-auto h-[580px] overflow-auto">
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
@@ -134,13 +134,22 @@ export const GridTable = () => {
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
                     <button onClick={() => onClickPlay(row.id)}>
-                      <RiPlayCircleLine size={24} color={"#6324FF"} />
+                      <RiPlayCircleLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
                     </button>
                     <button onClick={() => onClickDownload(row.id)}>
-                      <RiDownloadCloud2Line size={24} color={"#6324FF"} />
+                      <RiDownloadCloud2Line
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
                     </button>
                     <button onClick={() => onClickDelete(row.id)}>
-                      <RiDeleteBin5Line size={24} color={"#6324FF"} />
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
                     </button>
                   </div>
                 </td>

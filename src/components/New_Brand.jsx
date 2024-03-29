@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Empty_Img from "../assets/img/empty_img.png";
-
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
@@ -250,7 +249,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
               Let's Get To Know Your Brand
             </div>
           </div>
-          <div className="p-10">
+          <div className="p-4">
             <div className="grid grid-cols-8">
               <div className="col-span-8">
                 <div className="text-2xl font-poppins font-bold text-[#2F3847]">
@@ -258,8 +257,9 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-8 mt-4 space-x-4">
-              <div className="col-span-3 space-y-4">
+
+            <div className="flex flex-col lg:flex-row h-[500px] overflow-y-auto">
+              <div className="w-full lg:w-1/2 p-4">
                 {/* brand name */}
                 <div className="h-10 relative">
                   <input
@@ -281,7 +281,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                 {/* brand name */}
 
                 {/* brand description */}
-                <div className="h-10 relative">
+                <div className="h-10 relative mt-2">
                   <input
                     className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
                     type="text"
@@ -300,6 +300,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                   />
                 </div>
                 {/* brand description */}
+
                 {/* brand logo */}
                 <div className="flex items-center justify-center">
                   <div className="flex items-center justify-center  mt-3  rounded-lg">
@@ -313,221 +314,147 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                     {selectedImage ? (
                       <img
                         src={selectedImage}
-                        className="flex items-center justify-center"
+                        className="flex items-center justify-center object-cover w-[250px] h-[250px]"
                       />
                     ) : (
-                      <div className=" flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
+                      <div className="flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
                         <img
                           src={Empty_Img}
-                          className="flex items-center justify-center"
+                          className="flex items-center justify-center object-cover"
                         />
                       </div>
                     )}
                   </div>
                 </div>
-
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center mt-2">
                   <button
                     onClick={() => handleImageChange()}
-                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] h-[45px] rounded-md mr-1"
                   >
                     Upload New Image
                   </button>
                 </div>
                 {/* brand logo */}
               </div>
-              <div className="col-span-5 border border-[#DBDBDB] rounded-lg">
-                <div className="p-4">
-                  <div className="font-poppins text-2xl text-[#2F3847] font-semibold">
-                    Contact Person
-                  </div>
-
-                  <div className="h-10 relative mt-3">
-                    <input
-                      className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                      type="text"
-                      placeholder="Contact Person Name"
-                      value={contact_person_name}
-                      onChange={(e) => setContactPersonName(e.target.value)}
-                      required
-                      autoFocus
-                      autoComplete="brand"
-                    />
-                    <HiOutlinePencil
-                      size={26}
-                      color={"#6425FE"}
-                      className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
-                      d
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 space-x-2">
-                    <div className="col-span-2 ">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Department"
-                          value={department_contact}
-                          onChange={(e) => setDepartmentContact(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="department"
-                        />
-                        <HiOutlinePencil
-                          size={26}
-                          color={"#6425FE"}
-                          className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
-                          d
-                        />
-                      </div>
-                    </div>
-                    <div className="col-span-2 ">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Position"
-                          value={position_contact}
-                          onChange={(e) => setPositionContact(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="position"
-                        />
-                        <HiOutlinePencil
-                          size={26}
-                          color={"#6425FE"}
-                          className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
-                          d
-                        />
-                      </div>
+              <div className="w-full lg:w-1/2 p-4 lg:pl-8 border border-gray-300">
+                <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
+                  <text>Contact Person</text>
+                </div>
+                <div className="h-10 relative mt-3">
+                  <input
+                    className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                    type="text"
+                    placeholder="Contact Person Name"
+                    value={contact_person_name}
+                    onChange={(e) => setContactPersonName(e.target.value)}
+                    required
+                    autoFocus
+                    autoComplete="brand"
+                  />
+                  <HiOutlinePencil
+                    size={26}
+                    color={"#6425FE"}
+                    className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
+                    d
+                  />
+                </div>
+                <div className="grid grid-cols-4 space-x-2">
+                  <div className="col-span-2 ">
+                    <div className="h-10 relative mt-3">
+                      <input
+                        className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                        type="text"
+                        placeholder="Department"
+                        value={department_contact}
+                        onChange={(e) => setDepartmentContact(e.target.value)}
+                        required
+                        autoFocus
+                        autoComplete="department"
+                      />
+                      <HiOutlinePencil
+                        size={26}
+                        color={"#6425FE"}
+                        className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
+                        d
+                      />
                     </div>
                   </div>
-                  <div className="grid grid-cols-4 space-x-2">
-                    <div className="col-span-2 ">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Email"
-                          value={email_contact}
-                          onChange={(e) => setEmailContact(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="email"
-                        />
-                        <HiOutlinePencil
-                          size={26}
-                          color={"#6425FE"}
-                          className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
-                          d
-                        />
-                      </div>
-                    </div>
-                    <div className="col-span-2 ">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Remark"
-                          value={remark_contact}
-                          onChange={(e) => setRemarkContact(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="remark"
-                        />
-                      </div>
+                  <div className="col-span-2 ">
+                    <div className="h-10 relative mt-3">
+                      <input
+                        className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                        type="text"
+                        placeholder="Position"
+                        value={position_contact}
+                        onChange={(e) => setPositionContact(e.target.value)}
+                        required
+                        autoFocus
+                        autoComplete="position"
+                      />
+                      <HiOutlinePencil
+                        size={26}
+                        color={"#6425FE"}
+                        className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
+                        d
+                      />
                     </div>
                   </div>
-                  {/* <div className="h-10 relative mt-10">
-                    <input
-                      className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                      type="text"
-                      placeholder="Full Name"
-                      value={fullname}
-                      onChange={(e) => setFullName(e.target.value)}
-                      required
-                      autoFocus
-                      autoComplete="fullname"
-                    />
-                  </div>
-                  <div className="grid grid-cols-4 space-x-2">
-                    <div className="col-span-2 ">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Department"
-                          value={department}
-                          onChange={(e) => setDepartment(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="department"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-span-2">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Position"
-                          value={position}
-                          onChange={(e) => setPosition(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="position"
-                        />
-                      </div>
+                </div>
+                <div className="grid grid-cols-4 space-x-2">
+                  <div className="col-span-2 ">
+                    <div className="h-10 relative mt-3">
+                      <input
+                        className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                        type="text"
+                        placeholder="Email"
+                        value={email_contact}
+                        onChange={(e) => setEmailContact(e.target.value)}
+                        required
+                        autoFocus
+                        autoComplete="email"
+                      />
+                      <HiOutlinePencil
+                        size={26}
+                        color={"#6425FE"}
+                        className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
+                        d
+                      />
                     </div>
                   </div>
-                  <div className="grid grid-cols-4 space-x-2">
-                    <div className="col-span-2 ">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="email"
-                        />
-                      </div>
+                  <div className="col-span-2 ">
+                    <div className="h-10 relative mt-3">
+                      <input
+                        className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                        type="text"
+                        placeholder="Remark"
+                        value={remark_contact}
+                        onChange={(e) => setRemarkContact(e.target.value)}
+                        required
+                        autoFocus
+                        autoComplete="remark"
+                      />
                     </div>
-                    <div className="col-span-2">
-                      <div className="h-10 relative mt-3">
-                        <input
-                          className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
-                          type="text"
-                          placeholder="Remark"
-                          value={remark}
-                          onChange={(e) => setRemark(e.target.value)}
-                          required
-                          autoFocus
-                          autoComplete="remark"
-                        />
-                      </div>
-                    </div>
-                  </div> */}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Button */}
           {edit_brand.BrandID ? (
-            <div className="flex justify-center items-center mt-10">
+            <div className="flex justify-center items-center mt-2">
               <button
                 onClick={() => handleEditBrand()}
-                className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                className="bg-[#6425FE] text-white  font-poppins w-[200px] lg:w-[250px] h-[45px] rounded-md mr-1"
               >
                 Edit
               </button>
             </div>
           ) : (
-            <div className="flex justify-center items-center mt-10">
+            <div className="flex justify-center items-center mt-2">
               <button
                 onClick={() => handleSaveNewBrand()}
-                className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] h-[45px] rounded-md mr-1"
               >
                 Create
               </button>

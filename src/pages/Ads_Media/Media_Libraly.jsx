@@ -91,7 +91,7 @@ const Media_Libraly = () => {
             <div className="flex justify-end space-x-1">
               <button
                 onClick={() => createNewMedia()}
-                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white  font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white  font-poppins w-full lg:w-[300px] h-[45px] rounded-md"
               >
                 New Media
               </button>

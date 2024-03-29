@@ -318,9 +318,9 @@ const Login = () => {
 
   return (
     <>
-      <div className="md:flex h-screen">
+      <div className="flex h-screen">
         {/* Left panel */}
-        <div className="md:w-1/2 hidden md:block">
+        <div className="md:w-2/5 hidden md:block">
           <img
             src={Login_Bg}
             alt="Background"
@@ -329,21 +329,20 @@ const Login = () => {
         </div>
 
         {/* Right panel */}
-        <div className="w-full md:w-1/2 mt-36 xl:mt-0 bg-white flex flex-col justify-center items-center p-6 md:p-12">
+        <div className="w-full md:w-3/5 bg-white flex flex-col justify-center items-center p-8 md:p-12">
           {is_login === 1 ? (
-            <>
-              <div className="w-full  max-w-lg">
-                <h1 className="text-gray-800 font-[700] text-4xl mb-4 text-center font-poppins">
-                  Elevate Your Advertising Game with Our Digital Signage
-                  Solutions
-                </h1>
-                <p className="text-lg font-[300] text-gray-600 mb-8 md:mb-12 text-center font-poppins">
-                  Sign in to unleash the power of digital advertising
-                </p>
-
-                <div className="mb-4">
+            <div className="w-full">
+              <h1 className="text-[#2F3847] font-bold text-[64px] md:text-5xl mb-4 text-center font-poppins w-full">
+                Elevate Your Advertising <br /> Game with Our Digital <br />
+                Signage Solutions
+              </h1>
+              <p className="text-[#2F3847] font-light text-lg md:text-xl mb-8 md:mb-12 text-center font-poppins">
+                Sign In To Unleash The Power Of Digital Advertising
+              </p>
+              <div className="max-w-lg flex flex-col justify-center items-center mx-auto">
+                <div className="mb-6 w-full">
                   <input
-                    className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins"
                     onChange={(e) => set_username(e.target.value)}
                     type="text"
                     placeholder="Your Email"
@@ -353,9 +352,9 @@ const Login = () => {
                     autoComplete="email"
                   />
                 </div>
-                <div className="mb-4">
+                <div className="mb-6 w-full">
                   <input
-                    className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins"
                     type="password"
                     value={password === null ? "" : password}
                     onChange={(e) => set_password(e.target.value)}
@@ -365,170 +364,23 @@ const Login = () => {
                     autoComplete="password"
                   />
                 </div>
-                <div className="text-center">
+                <div className="text-center mb-8 w-full">
                   <button
                     type="submit"
                     onClick={() => handleSubmit()}
-                    className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins hover:bg-[#232a36]"
+                    className="w-full lg:w-[300px] h-[45px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold font-poppins hover:bg-[#232a36]"
                   >
                     Login
                   </button>
                 </div>
-                {/* <div className="text-center">
-                  <button
-                    type="submit"
-                    onClick={() => set_is_login(2)}
-                    className="w-full  py-2 rounded-sm text-[#6425FE] hover:text-[#b29bec]  mb-2 font-poppins"
-                  >
-                    "Don't have an account yet? Sign Up"
-                  </button>
-                </div> */}
               </div>
-            </>
+            </div>
           ) : is_login === 2 ? (
-            <>
-              <div className="w-full  max-w-lg">
-                <h1 className="text-gray-800 font-[700] text-4xl mb-4 text-center font-poppins">
-                  Sign Up
-                </h1>
-                <p className="text-lg font-[300] text-gray-600 mb-8 md:mb-12 text-center font-poppins">
-                  Sign Up to unleash the power of digital advertising
-                </p>
-                <div className="mb-4">
-                  <input
-                    className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => set_reg_email(e.target.value)}
-                    type="text"
-                    placeholder="Your Email"
-                    value={reg_email === null ? "" : reg_email}
-                    required
-                    autoFocus
-                    autoComplete="email"
-                  />
-                </div>
-                <div className="mb-4">
-                  <input
-                    className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => set_reg_password(e.target.value)}
-                    type="password"
-                    placeholder="Your Password"
-                    value={reg_password === null ? "" : reg_password}
-                    required
-                    autoFocus
-                    autoComplete="password"
-                  />
-                </div>
-                <div className="mb-4">
-                  <input
-                    className={`w-full py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => set_reg_re_password(e.target.value)}
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={reg_re_password === null ? "" : reg_re_password}
-                    required
-                    autoFocus
-                    autoComplete="password"
-                  />
-                </div>
-                <div className="mb-4">
-                  <div className="relative w-full  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
-                    <button
-                      onClick={() => set_show_brand_modal(true)}
-                      name="brand"
-                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
-                    >
-                      Select Brand
-                    </button>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <PiCaretUpDown size={20} color="#6425FE" />
-                    </div>
-                  </div>
-                </div>
-                {reg_brand.length > 0 && (
-                  <div className="flex space-x-4 mb-4">
-                    {reg_brand.map((item, index) => (
-                      <div key={index} className="flex items-center">
-                        <img
-                          className="block ml-auto mr-auto w-12 h-12 rounded-lg"
-                          src={findBrandImg(item)}
-                          alt={item.name}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="mb-4">
-                  <div className="relative w-full  py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
-                    <button
-                      onClick={() => set_show_merchandise_modal(true)}
-                      name="merchandise"
-                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
-                    >
-                      Select Merchandise
-                    </button>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <PiCaretUpDown size={20} color="#6425FE" />
-                    </div>
-                  </div>
-                </div>
-                {reg_merchandise.length > 0 && (
-                  <div className="flex space-x-4 mb-4">
-                    {reg_merchandise.map((item, index) => (
-                      <div key={index} className="flex items-center">
-                        <img
-                          className="block ml-auto mr-auto w-12 h-12 rounded-lg"
-                          src={findMerchImg(item)}
-                          alt={item.name}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    onClick={() => registerNewUser()}
-                    className="w-full lg:w-[300px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
-                  >
-                    Sign Up
-                  </button>
-                </div>
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    onClick={() => set_is_login(1)}
-                    className="w-full  py-2 rounded-sm text-[#6425FE] hover:text-[#b29bec]  mb-2 font-poppins"
-                  >
-                    "Already have an account? Sign In"
-                  </button>
-                </div>
-              </div>
-            </>
+            <div className="w-full max-w-lg">{/* Your Sign Up Form */}</div>
           ) : (
-            <>
-              <div className="w-full">
-                <h1 className="mb-4 flex justify-center text-center font-poppins">
-                  <IoIosCheckmarkCircleOutline size={300} color="#2F3847" />
-                </h1>
-                <div className="text-3xl font-bold text-gray-600 mb-8 md:mb-12 text-center font-poppins">
-                  Registration Completed Successfully
-                </div>
-                <div className="text-center">
-                  <button
-                    onClick={() => set_is_login(1)}
-                    className="w-full lg:w-[300px]  py-2 rounded-sm bg-[#6425FE] text-white hover:text-[#b29bec]  mb-2 font-poppins"
-                  >
-                    OK
-                  </button>
-                </div>
-                <div className="mt-4 text-center">
-                  <div className="font-poppins text-sm">
-                    "Please continue to login"
-                  </div>
-                </div>
-              </div>
-            </>
+            <div className="w-full">
+              {/* Your Registration Completed Successfully Section */}
+            </div>
           )}
         </div>
 

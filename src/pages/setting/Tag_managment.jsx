@@ -217,7 +217,7 @@ const Tag_managment = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">Category</div>
-              <div className="w-[40%] h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins flex justify-center items-center rounded-lg">
+              <div className="w-[150px] h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins flex justify-center items-center rounded-lg">
                 {page_permission.create ? (
                   <button onClick={() => handleNewTagCategory()}>
                     New Category +
@@ -278,7 +278,7 @@ const Tag_managment = () => {
             </div>
           </div>
           {/* Left Panel */}
-
+          {/* Right Panel */}
           <div className="col-span-5 bg-[#FAFAFA] w-full">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">
@@ -304,11 +304,39 @@ const Tag_managment = () => {
                   </button>
                 </div>
               </div>
-              {tag_data.length > 0 ? (
+              <div className="col-span-5 mt-5 h-[600px] overflow-y-auto">
+                <div className="flex flex-wrap">
+                  {tag_data.length > 0
+                    ? tag_data.map((items, index) => (
+                        <div
+                          key={index}
+                          className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
+                          style={{
+                            flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
+                          }}
+                        >
+                          <div className="flex justify-center items-center mr-1 ml-1">
+                            <AiOutlineClose
+                              onClick={() => removeTag(items)}
+                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                            />
+                          </div>
+                          <div
+                            onClick={() => handleEditTag(items)}
+                            className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center cursor-pointer"
+                          >
+                            {items.TagName}
+                          </div>
+                        </div>
+                      ))
+                    : null}
+                </div>
+              </div>
+              {/* {tag_data.length > 0 ? (
                 <div className="grid grid-cols-5 gap-2 mt-5">
                   {tag_data.map((items, index) => (
                     <div key={items.TagID}>
-                      <div className="relative w-[100px] lg:w-[180px] h-[40px] flex items-center justify-center  ml-3 border border-gray-300 hover:border-[#6425FE] rounded-full">
+                      <div className="relative w-[150px] lg:w-[180px] h-[40px] flex items-center justify-center  ml-3 border border-gray-300 hover:border-[#6425FE] rounded-full">
                         <div className=" absolute inset-y-0 left-0 flex items-center pl-2 ">
                           <button onClick={() => removeTag(items)}>
                             <IoIosClose
@@ -319,7 +347,7 @@ const Tag_managment = () => {
                         </div>
                         <div
                           onClick={() => handleEditTag(items)}
-                          className="text-sm text-bold font-poppins cursor-pointer"
+                          className="text-sm md:text-xs text-bold font-poppins cursor-pointer "
                         >
                           {items.TagName}
                         </div>
@@ -333,9 +361,10 @@ const Tag_managment = () => {
                     <span className="text-gray-300 text-4xl">No Tag(s)</span>
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
+          {/* Right Panel */}
         </div>
       </div>
 
@@ -364,7 +393,7 @@ const Tag_managment = () => {
       {modalEditTag && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
           {/* First div (circle) */}
-          <div className="absolute right-12 top-14 lg:top-72 lg:right-[250px] m-4 z-30">
+          <div className="absolute right-12 md:top-[320px] md:right-[140px] lg:top-72 lg:right-[250px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setModalEditTag(!modalEditTag)}>
                 <AiOutlineClose size={25} color={"#6425FE"} />

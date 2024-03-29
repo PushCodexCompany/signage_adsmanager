@@ -135,16 +135,13 @@ const Brands = () => {
           bookings.
         </div>
 
-        <div className="flex flex-wrap justify-center items-center gap-4 lg:gap-2">
-          <div className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex justify-center items-center">
-            <button
-              onClick={() => handleNewBrand()}
-              className="flex flex-col items-center"
-            >
+        <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
+          <div className="sm:w-1/2 lg:w-[27%] h-[400px] p-2 flex flex-col items-center">
+            <button onClick={() => handleNewBrand()}>
               <div className="h-60 flex items-center justify-center">
                 <FaPlus size={100} color="#6425FE" />
               </div>
-              <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+              <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
                 Add new Brand
               </div>
             </button>
@@ -154,16 +151,21 @@ const Brands = () => {
             brand.map((items, key) => (
               <div
                 key={key}
-                className="sm:w-1/2 lg:w-[20%] h-[400px] p-2 flex flex-col items-center"
+                className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
               >
                 <div className="relative mb-4">
                   <img
-                    className="block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer"
-                    src={items.BrandLogo}
-                    alt={items.BrandName}
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
+                    src={
+                      items.BrandLogo
+                        ? items.BrandLogo
+                        : `https://ui-avatars.com/api/?name=${
+                            items.BrandName
+                          }&background=${"000000"}&color=fff`
+                    }
+                    alt={items.AccountName}
                     onClick={() => selectCampaign(items.BrandID)}
                   />
-                  {/* Add icon inside img */}
                   <div
                     onClick={() => toggleDropdown(items.BrandID)}
                     className="absolute top-2 right-2 cursor-pointer"
@@ -181,7 +183,7 @@ const Brands = () => {
                           setEditBrand(items);
                           setShowModalAddNewBrand(true);
                         }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
                       >
                         Edit
                       </button>
@@ -190,7 +192,7 @@ const Brands = () => {
                           handleDeleteBrand(items.BrandID);
                           toggleDropdown(items.BrandID);
                         }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-2"
+                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
                       >
                         Delete
                       </button>

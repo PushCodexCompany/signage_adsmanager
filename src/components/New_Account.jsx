@@ -254,7 +254,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
               </div>
             </div>
             <div className="grid grid-cols-8 mt-4 space-x-4">
-              <div className="col-span-3 space-y-4">
+              <div className="col-span-8 space-y-4">
                 <div className="h-10 relative">
                   {edit_account.AccountID ? (
                     <input
@@ -507,7 +507,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
             <div className="flex justify-center items-center mt-10">
               <button
                 onClick={() => handleEditAccount()}
-                className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] h-[45px] rounded-md mr-1"
               >
                 Edit
               </button>
@@ -516,7 +516,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
             <div className="flex justify-center items-center mt-10">
               <button
                 onClick={() => handleSaveNewAccount()}
-                className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] lg:h-[45px] rounded-md mr-1"
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white  font-poppins w-[200px] lg:w-[250px] h-[45px] rounded-md mr-1"
               >
                 Create
               </button>

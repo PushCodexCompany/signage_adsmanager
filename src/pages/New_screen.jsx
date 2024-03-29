@@ -292,193 +292,188 @@ const New_screen = () => {
             {id !== "new" ? "Edit Screens" : "Create New Screens"}
           </div>
         </div>
-        <div className="grid grid-cols-12">
-          <div className="col-span-6">
-            <div className="p-1">
-              <div className="grid grid-cols-5">
-                <div className="col-span-1">
-                  <div className="flex justify-start items-center h-full">
-                    <div className="font-poppins text-lg font-bold">
-                      Screen Name:
-                    </div>
+        <div className="flex flex-col lg:flex-row">
+          <div className="w-full lg:w-1/2 p-4">
+            <div className="relative">
+              <div className="flex items-center">
+                <div className="flex justify-start items-center h-full whitespace-nowrap">
+                  <div className="font-poppins text-lg font-bold">
+                    Screen Name:
                   </div>
                 </div>
-                <div className="col-span-4">
-                  <div className="flex items-center">
-                    <input
-                      placeholder="Screen Name"
-                      className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                      value={screenName}
-                      onChange={(e) => setScreenName(e.target.value)}
-                    />
-                  </div>
-                </div>
+
+                <input
+                  placeholder="Screen Name"
+                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  value={screenName}
+                  onChange={(e) => setScreenName(e.target.value)}
+                />
               </div>
-              <div className="mt-2">
-                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                  <select
-                    name="mediaRule"
-                    id="mediaRule"
-                    className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    onChange={(e) => setMediaRule(e.target.value)}
-                    value={mediaRule}
+            </div>
+            <div className="mt-2">
+              <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                <select
+                  name="mediaRule"
+                  id="mediaRule"
+                  className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                  onChange={(e) => setMediaRule(e.target.value)}
+                  value={mediaRule}
+                >
+                  <option value="" disabled selected hidden>
+                    Media Rule
+                  </option>
+                  {media_rules_dd.length > 0 &&
+                    media_rules_dd.map((items) => (
+                      <option value={items.MediaRuleID}>
+                        {items.MediaRuleName}
+                      </option>
+                    ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                  <svg
+                    width="13"
+                    height="15"
+                    viewBox="0 0 13 21"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <option value="" disabled selected hidden>
-                      Media Rule
-                    </option>
-                    {media_rules_dd.length > 0 &&
-                      media_rules_dd.map((items) => (
-                        <option value={items.MediaRuleID}>
-                          {items.MediaRuleName}
-                        </option>
-                      ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                    <path
+                      d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
+                      stroke="#6425FE"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div className="mt-5">
+              <div className="grid grid-cols-6 space-x-1">
+                <div className="col-span-1 flex justify-start">
+                  <button
+                    onClick={() => setOpenModalNewTag(!openModalNewTag)}
+                    className="w-[150px] h-[45px] rounded-lg  font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white"
+                  >
+                    New Tag+
+                  </button>
+                </div>
+                <div className="col-span-5">
+                  <div className="flex flex-wrap">
+                    {screenTag.length > 0
+                      ? screenTag.map((item, index) => (
+                          <div
+                            key={index}
+                            className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
+                            style={{
+                              flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
+                            }}
+                          >
+                            <div className="flex justify-center items-center mr-1 ml-1">
+                              <AiOutlineClose
+                                onClick={() =>
+                                  handleDeleteTagInSelectTag(item.TagID)
+                                }
+                                className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                              />
+                            </div>
+                            <div className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center">
+                              {item.TagName}
+                            </div>
+                            <div className="flex justify-center items-center ml-1 mr-1">
+                              <BsInfoCircle
+                                onClick={() => alert(index)}
+                                className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                              />
+                            </div>
+                          </div>
+                        ))
+                      : null}
                   </div>
                 </div>
               </div>
-              <div className="mt-5">
-                <div className="grid grid-cols-6 space-x-2">
-                  <div className="col-span-1 flex justify-end">
+            </div>
+            <div className="mt-5 flex justify-center">
+              <div className=" items-center grid grid-cols-6 space-x-1">
+                <div className="col-span-3">
+                  <div className="flex justify-center items-center w-[315px] h-[315px] border border-gray-300 rounded-lg">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileInputChange}
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                    />
+                    {preview_img ? (
+                      <img
+                        src={preview_img}
+                        className="flex items-center justify-center w-[315px] h-[315px] object-cover"
+                      />
+                    ) : (
+                      <div className=" flex items-center justify-center mt-3 w-[250px] h-[250px] rounded-lg">
+                        <img
+                          src={empty_img}
+                          className="flex items-center justify-center object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-2 flex justify-center items-center">
                     <button
-                      onClick={() => setOpenModalNewTag(!openModalNewTag)}
-                      className="w-[130px] h-[35px] rounded-lg  font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white"
+                      onClick={() => handleImageChange()}
+                      className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins w-[315px] h-[48px] rounded-lg"
                     >
-                      New Tag+
+                      Upload Image
                     </button>
                   </div>
-                  <div className="col-span-5">
-                    <div className="flex flex-wrap">
-                      {screenTag.length > 0
-                        ? screenTag.map((item, index) => (
-                            <div
-                              key={index}
-                              className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
-                              style={{
-                                flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
-                              }}
-                            >
-                              <div className="flex justify-center items-center mr-1 ml-1">
-                                <AiOutlineClose
-                                  onClick={() =>
-                                    handleDeleteTagInSelectTag(item.TagID)
-                                  }
-                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                />
-                              </div>
-                              <div className="flex-grow text-sm font-poppins flex justify-center">
-                                {item.TagName}
-                              </div>
-                              <div className="flex justify-center items-center ml-1 mr-1">
-                                <BsInfoCircle
-                                  onClick={() => alert(index)}
-                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                />
-                              </div>
-                            </div>
-                          ))
-                        : null}
-                    </div>
-                  </div>
                 </div>
-              </div>
-              <div className="mt-5 flex justify-center">
-                <div className=" items-center grid grid-cols-6 space-x-1">
-                  <div className="col-span-3">
-                    <div className="flex justify-center items-center w-[315px] h-[315px] border border-gray-300 rounded-lg">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileInputChange}
-                        ref={fileInputRef}
-                        style={{ display: "none" }}
-                      />
-                      {preview_img ? (
-                        <img
-                          src={preview_img}
-                          className="flex items-center justify-center w-[315px] h-[315px] object-cover"
-                        />
-                      ) : (
-                        <div className=" flex items-center justify-center mt-3 w-[250px] h-[250px] rounded-lg">
-                          <img
-                            src={empty_img}
-                            className="flex items-center justify-center object-cover"
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-2 flex justify-center items-center">
-                      <button
-                        onClick={() => handleImageChange()}
-                        className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins w-[315px] h-[48px] rounded-lg"
-                      >
-                        Upload Image
-                      </button>
-                    </div>
+                <div className="col-span-3">
+                  <div className="flex justify-center items-center w-[315px] h-[315px] border border-gray-300 rounded-lg">
+                    <img
+                      src={location_img}
+                      className="object-cover w-[112px] h-[90px]"
+                      alt="Image"
+                    />
                   </div>
-                  <div className="col-span-3">
-                    <div className="flex justify-center items-center w-[315px] h-[315px] border border-gray-300 rounded-lg">
-                      <img
-                        src={location_img}
-                        className="object-cover w-[112px] h-[90px]"
-                        alt="Image"
-                      />
-                    </div>
-                    <div className="mt-2 flex justify-center items-center">
-                      <div className="grid grid-cols-4 space-x-1">
-                        <div className="col-span-2">
-                          <input
-                            value={latLong.lat}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, lat: e.target.value })
-                            }
-                            type="text"
-                            placeholder="Lat"
-                            className="w-[157px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
-                          />
-                        </div>
-                        <div className="col-span-2">
-                          <input
-                            value={latLong.long}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, long: e.target.value })
-                            }
-                            type="text"
-                            placeholder="Long"
-                            className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
-                          />
-                        </div>
+                  <div className="mt-2 flex justify-center items-center">
+                    <div className="grid grid-cols-4 space-x-1">
+                      <div className="col-span-2">
+                        <input
+                          value={latLong.lat}
+                          onChange={(e) =>
+                            setLatLong({ ...latLong, lat: e.target.value })
+                          }
+                          type="text"
+                          placeholder="Lat"
+                          className="w-[157px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
+                        />
+                      </div>
+                      <div className="col-span-2">
+                        <input
+                          value={latLong.long}
+                          onChange={(e) =>
+                            setLatLong({ ...latLong, long: e.target.value })
+                          }
+                          type="text"
+                          placeholder="Long"
+                          className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="mt-2">
-                <div className="p-2 flex items-center justify-center text-center">
-                  <div className="font-poppins text-[15px]">
-                    Select and upload images of your screen. Choose a screen
-                    location on the map to target your audience effectively.
-                  </div>
+            </div>
+            <div className="mt-2">
+              <div className="p-2 flex items-center justify-center text-center">
+                <div className="font-poppins text-[15px]">
+                  Select and upload images of your screen. Choose a screen
+                  location on the map to target your audience effectively.
                 </div>
               </div>
             </div>
           </div>
-          <div className="col-span-6">
+          <div className="w-full lg:w-1/2 p-4 lg:pl-8 border border-gray-300">
             <div className="p-1 mt-5">
               <div className="font-poppins font-semibold text-2xl">
                 Screen Detail
@@ -664,41 +659,6 @@ const New_screen = () => {
                             placeholder="Open Time"
                             className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                           />
-                          {/* <select
-                            name="open_time"
-                            id="open_time"
-                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            onChange={(e) => setOpenTime(e.target.value)}
-                            value={openTime}
-                          >
-                            <option value="" disabled selected hidden>
-                              Open Time
-                            </option>
-                            <option value="0">00:00</option>
-                            <option value="1">01:00</option>
-                            <option value="2">02:00</option>
-                            <option value="3">03:00</option>
-                            <option value="4">04:00</option>
-                            <option value="5">05:00</option>
-                            <option value="6">06:00</option>
-                            <option value="7">07:00</option>
-                            <option value="8">08:00</option>
-                            <option value="9">09:00</option>
-                            <option value="10">10:00</option>
-                            <option value="11">11:00</option>
-                            <option value="12">12:00</option>
-                            <option value="13">13:00</option>
-                            <option value="14">14:00</option>
-                            <option value="15">15:00</option>
-                            <option value="16">16:00</option>
-                            <option value="17">17:00</option>
-                            <option value="18">18:00</option>
-                            <option value="19">19:00</option>
-                            <option value="20">20:00</option>
-                            <option value="21">21:00</option>
-                            <option value="22">22:00</option>
-                            <option value="23">23:00</option>
-                          </select> */}
                         </div>
                       </div>
                       <div className="col-span-1">
@@ -708,41 +668,6 @@ const New_screen = () => {
                       </div>
                       <div className="col-span-5">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
-                          {/* <select
-                            name="close_time"
-                            id="close_time"
-                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            onChange={(e) => setCloseTime(e.target.value)}
-                            value={closeTime}
-                          >
-                            <option value="" disabled selected hidden>
-                              Close Time
-                            </option>
-                            <option value="0">00:00</option>
-                            <option value="1">01:00</option>
-                            <option value="2">02:00</option>
-                            <option value="3">03:00</option>
-                            <option value="4">04:00</option>
-                            <option value="5">05:00</option>
-                            <option value="6">06:00</option>
-                            <option value="7">07:00</option>
-                            <option value="8">08:00</option>
-                            <option value="9">09:00</option>
-                            <option value="10">10:00</option>
-                            <option value="11">11:00</option>
-                            <option value="12">12:00</option>
-                            <option value="13">13:00</option>
-                            <option value="14">14:00</option>
-                            <option value="15">15:00</option>
-                            <option value="16">16:00</option>
-                            <option value="17">17:00</option>
-                            <option value="18">18:00</option>
-                            <option value="19">19:00</option>
-                            <option value="20">20:00</option>
-                            <option value="21">21:00</option>
-                            <option value="22">22:00</option>
-                            <option value="23">23:00</option>
-                          </select> */}
                           <input
                             value={closeTime}
                             onChange={(e) => {

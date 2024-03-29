@@ -350,12 +350,15 @@ const Edit_Merchandises = () => {
             </div>
             <div className="relative mt-20 flex items-center justify-center">
               {preview_img ? (
-                <img src={preview_img} className="w-1/2 rounded-xl" />
+                <img
+                  src={preview_img}
+                  className="w-[250px] h-[250px] rounded-xl object-cover"
+                />
               ) : (
                 <div className="flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
                   <img
                     src={Empty_Img}
-                    className="flex items-center justify-center"
+                    className="flex items-center justify-center object-cover"
                   />
                 </div>
               )}

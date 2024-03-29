@@ -99,12 +99,12 @@ export const links = [
         icon: <IoDocumentTextOutline size={27} />,
         notification: { is_notification: false, amount: 0 },
       },
-      {
-        name: "Analytics",
-        link: "analytic",
-        icon: <SlChart size={27} />,
-        notification: { is_notification: false, amount: 0 },
-      },
+      // {
+      //   name: "Analytics",
+      //   link: "analytic",
+      //   icon: <SlChart size={27} />,
+      //   notification: { is_notification: false, amount: 0 },
+      // },
     ],
   },
   {
@@ -142,11 +142,11 @@ export const links = [
             link: "setting/media_rule",
             icon: <IoShieldOutline size={27} />,
           },
-          {
-            name: "Content Type",
-            link: "setting/content_type",
-            icon: <BiShapeSquare size={27} />,
-          },
+          // {
+          //   name: "Content Type",
+          //   link: "setting/content_type",
+          //   icon: <BiShapeSquare size={27} />,
+          // },
           {
             name: "Tag Management",
             link: "setting/tag_management",

@@ -60,10 +60,10 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                 </button>
               </div>
             </div>
-            <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-              <div className="p-4">
+            <div className="bg-[#FFFFFF] md:w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+              <div className="p-5">
                 <div className="flex justify-center items-center">
-                  <div className="font-poppins text-[#2F3847] text-[64px] font-bold">
+                  <div className="font-poppins text-[#2F3847] text-[50px] font-bold">
                     New Pairing Screen
                   </div>
                 </div>
@@ -143,7 +143,7 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                     </div>
                   </div>
                 </div>
-                <div className="lg:mt-60 mt-36">
+                <div className="lg:mt-60 mt-28">
                   <div className="flex justify-center items-center">
                     <div className="grid grid-cols-6 space-x-2">
                       <div className="col-span-3">

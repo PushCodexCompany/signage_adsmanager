@@ -387,7 +387,7 @@ const Role_permission = () => {
               </div>
               {items.map((item, index) => (
                 <div
-                  className="grid grid-cols-4 space-x-3 lg:space-x-2"
+                  className="grid grid-cols-4 space-x-4 lg:space-x-2"
                   key={index}
                 >
                   <div className="col-span-1">
@@ -423,7 +423,7 @@ const Role_permission = () => {
                     </label>
                   </div>
                   <div className="col-span-3">
-                    <div className="font-poppins">
+                    <div className="font-poppins md:text-xs md:mt-[2px] lg:mt-0 lg:text-base">
                       {item[0].toUpperCase() + item.slice(1)}
                     </div>
                   </div>
@@ -818,7 +818,7 @@ const Role_permission = () => {
             )}
             <div className="p-4">
               <button
-                className="w-40 h-11 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins"
+                className="w-40 h-11 bg-[#6425FE]  hover:bg-[#3b1694] rounded-md text-white font-poppins"
                 onClick={() => handleSave(child_permissions[select_role])}
               >
                 Save

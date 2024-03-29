@@ -83,7 +83,7 @@ const Navbar = () => {
               <NavButton
                 title="Menu"
                 customFunc={handleActiveMenu}
-                color={currentColor}
+                color={"#6425FE"}
                 icon={<AiOutlineMenu />}
               />
             )}
