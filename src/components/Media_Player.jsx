@@ -14,9 +14,11 @@ const Media_Player = ({
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
       {/* First div (circle) */}
       <div
-        className={`absolute right-10 top-14  ${
-          mediaDisplay.media_type === "image" ? " lg:top-24" : "lg:top-10"
-        }  lg:right-[160px] m-4 z-30`}
+        className={`absolute ${
+          mediaDisplay.media_type === "image"
+            ? "lg:top-24 lg:right-[160px] right-10 top-60"
+            : "lg:top-1 lg:right-[160px] right-10 top-72"
+        } m-4 z-30`}
       >
         <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
           <button
@@ -32,7 +34,7 @@ const Media_Player = ({
       </div>
       {/* Second div (gray background) */}
       <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
-        <div className="flex justify-center items-center mt-5">
+        <div className="flex justify-center items-center text-center mt-5">
           <div className="font-poppins text-5xl font-bold">
             Media : {mediaDisplay.media_name}
           </div>
@@ -41,7 +43,7 @@ const Media_Player = ({
           <div className="flex justify-center items-center">
             {mediaDisplay.media_type === "image" ? (
               <img
-                className={`block mx-auto mt-30px w-[890px] h-[500px] rounded-3xl `}
+                className={`block mx-auto mt-30px w-[600px] h-[400px] lg:w-[890px] lg:h-[500px] object-cover rounded-3xl `}
                 src={mediaDisplay.media}
                 alt={mediaDisplay.media_name}
               />
@@ -53,8 +55,8 @@ const Media_Player = ({
                 autoplay
                 loop
                 playing
-                width="70%"
-                height="70%"
+                width="80%"
+                height="80%"
                 controls={true}
               />
             )}

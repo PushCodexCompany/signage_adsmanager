@@ -237,7 +237,7 @@ const Ads_Allocation_Booking = ({
                   </div>
                   <div className="flex-1">
                     <div
-                      className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[337px]`}
+                      className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[265px] lg:w-[320px]`}
                       style={{ height: `${itemHeight}px` }}
                     >
                       <div className="col-span-2 flex justify-center items-center">
@@ -286,7 +286,7 @@ const Ads_Allocation_Booking = ({
                         setOpenModalUploadMedia(!openModalUploadNewMedia);
                         setOpenAdsAllocationModal(!openAdsAllocationModal);
                       }}
-                      className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer"
+                      className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer w-[265px] lg:w-[320px]"
                     >
                       <div className="col-span-2 flex justify-center items-center">
                         <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
@@ -423,7 +423,7 @@ const Ads_Allocation_Booking = ({
   };
 
   return (
-    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[970px] items-center justify-center z-20">
+    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
       {/* First div (circle) */}
       <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
         <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
@@ -436,9 +436,8 @@ const Ads_Allocation_Booking = ({
       </div>
       <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
         <div className="p-3">
-          <div className="grid grid-cols-12 space-x-1">
-            {/* col 1 */}
-            <div className="col-span-6 border border-gray-300 rounded-md">
+          <div className="flex flex-col lg:flex-row">
+            <div className="w-full lg:w-1/2 p-1">
               <div className="mt-10">
                 <div className="flex justify-center items-center">
                   <div className="font-poppins text-[#2F3847] text-[44px] font-bold">
@@ -452,7 +451,6 @@ const Ads_Allocation_Booking = ({
                   </div>
                 </div>
                 <div className="mt-10">
-                  {/* Booking Period */}
                   <div className="grid grid-cols-10">
                     <div className="col-span-2" />
                     <div className="col-span-2">
@@ -474,9 +472,7 @@ const Ads_Allocation_Booking = ({
                     </div>
                     <div className="col-span-1" />
                   </div>
-                  {/* Booking Period */}
 
-                  {/* Apply To Screens */}
                   <div className="grid grid-cols-10 mt-2">
                     <div className="col-span-2" />
                     <div className="col-span-2 mt-2">
@@ -490,29 +486,33 @@ const Ads_Allocation_Booking = ({
                         <div className="grid grid-cols-5">
                           <div className="col-span-4">
                             <div className="flex flex-wrap">
-                              {console.log(screenAdsAllocation)}
-                              {screenAdsAllocation.map((screen, index) => (
-                                <div
-                                  key={index}
-                                  className="border border-gray-300 rounded-sm bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1 px-2 py-1"
-                                  style={{ flexBasis: "calc(50% - 8px)" }}
-                                >
-                                  <div className="font-poppins text-xs font-bold">
-                                    {screen.name}
-                                  </div>
+                              {console.log(
+                                "screenAdsAllocations",
+                                screenAdsAllocation
+                              )}
+                              {screenAdsAllocation.length > 0 &&
+                                screenAdsAllocation.map((screen, index) => (
+                                  <div
+                                    key={index}
+                                    className="border border-gray-300 rounded-sm bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1 px-2 py-1"
+                                    style={{ flexBasis: "calc(50% - 8px)" }}
+                                  >
+                                    <div className="font-poppins text-xs font-bold">
+                                      {screen.ScreenName}
+                                    </div>
 
-                                  <IoIosClose
-                                    size={20}
-                                    className="cursor-pointer text-[#6425FE]"
-                                    onClick={() =>
-                                      handleDeleteScreenAdsAllocation(
-                                        index,
-                                        screen.id
-                                      )
-                                    }
-                                  />
-                                </div>
-                              ))}
+                                    <IoIosClose
+                                      size={20}
+                                      className="cursor-pointer text-[#6425FE]"
+                                      onClick={() =>
+                                        handleDeleteScreenAdsAllocation(
+                                          index,
+                                          screen.ScreenID
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                ))}
                             </div>
                           </div>
                           <div className="col-span-1">
@@ -539,9 +539,7 @@ const Ads_Allocation_Booking = ({
                     </div>
                     <div className="col-span-1" />
                   </div>
-                  {/* Apply To Screens */}
 
-                  {/* Apply To Periods */}
                   <div className="grid grid-cols-10 mt-5">
                     <div className="col-span-2" />
                     <div className="col-span-2">
@@ -554,7 +552,7 @@ const Ads_Allocation_Booking = ({
                       {datePickers.map((datePicker, index) => (
                         <div
                           key={index}
-                          className="grid grid-cols-5 border border-[#D9D9D9] rounded-md"
+                          className="grid grid-cols-6 border border-[#D9D9D9] rounded-md"
                         >
                           <div className="col-span-2 p-2 flex justify-center items-center">
                             <div className="font-poppins">
@@ -567,9 +565,12 @@ const Ads_Allocation_Booking = ({
                                 onChange={(date) =>
                                   handleStartDateChange(index, date)
                                 }
-                                className="p-2 rounded-lg shadow-md w-full"
+                                className="p-2 rounded-lg shadow-md w-full text-xs"
                               />
                             </div>
+                          </div>
+                          <div className="col-span-1 p-2 flex justify-center items-center">
+                            -
                           </div>
                           <div className="col-span-2 p-2">
                             <div className="font-poppins">
@@ -583,7 +584,7 @@ const Ads_Allocation_Booking = ({
                                 onChange={(date) =>
                                   handleEndDateChange(index, date)
                                 }
-                                className=" p-2 rounded-lg shadow-md w-full"
+                                className=" p-2 rounded-lg shadow-md w-full text-xs"
                               />
                             </div>
                           </div>
@@ -596,7 +597,6 @@ const Ads_Allocation_Booking = ({
                           </div>
                         </div>
                       ))}
-
                       <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
                         <div className="col-span-4">
                           <div className="p-2">
@@ -622,9 +622,7 @@ const Ads_Allocation_Booking = ({
                     </div>
                     <div className="col-span-1" />
                   </div>
-                  {/* Apply To Periods */}
 
-                  {/* Screen Resolution */}
                   <div className="grid grid-cols-10 mt-10">
                     <div className="col-span-2" />
                     <div className="col-span-2">
@@ -640,9 +638,7 @@ const Ads_Allocation_Booking = ({
                     </div>
                     <div className="col-span-1" />
                   </div>
-                  {/* Screen Resolution */}
 
-                  {/* Media Rule */}
                   <div className="grid grid-cols-10 mt-3">
                     <div className="col-span-2" />
                     <div className="col-span-2">
@@ -660,10 +656,8 @@ const Ads_Allocation_Booking = ({
                     </div>
                     <div className="col-span-1" />
                   </div>
-                  {/* Media Rule */}
 
-                  {/* Note */}
-                  <div className="grid grid-cols-10 mt-40">
+                  <div className="grid grid-cols-10 mt-16 lg:mt-36">
                     <div className="col-span-2" />
                     <div className="col-span-7">
                       <div className="flex">
@@ -675,9 +669,7 @@ const Ads_Allocation_Booking = ({
                     </div>
                     <div className="col-span-1" />
                   </div>
-                  {/* Note */}
-
-                  <div className="flex justify-center items-center space-x-2 mt-3 mb-2">
+                  <div className="flex justify-center items-center space-x-2 mt-3">
                     <button
                       onClick={() => console.log("item", media_list)}
                       className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold"
@@ -691,10 +683,7 @@ const Ads_Allocation_Booking = ({
                 </div>
               </div>
             </div>
-            {/* col 1 */}
-
-            {/* col 2 */}
-            <div className="col-span-6">
+            <div className="w-full lg:w-1/2 p-1 lg:pl-8">
               <div className="grid grid-cols-6 space-x-2">
                 <DragDropContext onDragEnd={onDragEnd}>
                   <div className="col-span-3 border border-gray-300 rounded-md">
@@ -706,7 +695,6 @@ const Ads_Allocation_Booking = ({
                       </div>
 
                       <div style={{ display: "flex" }}>
-                        {/* Panel 1 */}
                         <Droppable droppableId="panel-1">
                           {(provided) => (
                             <div
@@ -1121,7 +1109,6 @@ const Ads_Allocation_Booking = ({
                 </DragDropContext>
               </div>
             </div>
-            {/* col 2 */}
           </div>
         </div>
       </div>
