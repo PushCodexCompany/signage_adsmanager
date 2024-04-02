@@ -882,4 +882,38 @@ export default {
 
     return data;
   },
+
+  getBooking: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(`api/v1/get_bookings`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  getBookingById: async function (token, booking_id) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_bookingcontent?bookingid=${booking_id}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
 };

@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../components";
 import { GridTable } from "../libs/booking_grid";
 import { Navbar } from "../components";
 import useCheckPermission from "../libs/useCheckPermission";
 import New_Booking from "../components/New_Booking";
 import Filter from "../components/Filter";
+import User from "../libs/admin";
 
 const Booking = () => {
   useCheckPermission();
+  const { token } = User.getCookieData();
   const [showModalAddNewBooking, setShowModalAddNewBooking] = useState(false);
+  const [booking_data, setBookingData] = useState([]);
+
+  useEffect(() => {
+    getBookingData();
+  }, []);
+
+  const getBookingData = async () => {
+    const data = await User.getBooking(token);
+    data.sort((a, b) => a.BookingID - b.BookingID);
+    setBookingData(data);
+  };
 
   return (
     <>
@@ -35,7 +48,7 @@ const Booking = () => {
         </div>
         <Filter />
         <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable />
+          {booking_data.length > 0 && <GridTable booking_data={booking_data} />}
         </div>
       </div>
 

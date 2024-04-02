@@ -68,7 +68,7 @@ const Create_Booking = () => {
 
   const [openConfirmBookingModal, setOpenConfirmBookingModal] = useState(false);
 
-  const [isConfirmed, setIsComfirmed] = useState(false);
+  const [isEdited, setIsEdited] = useState(false);
 
   const [booking_col, setBookingCol] = useState();
 
@@ -98,38 +98,140 @@ const Create_Booking = () => {
   const [mediaDisplay, setMediaDisplay] = useState([]);
 
   useEffect(() => {
-    if (location.state.isConfirmed) {
-      setConfirmBookingData();
-      setIsComfirmed(true);
+    if (location.state.isEdited) {
+      setEditedBookingData();
+      setIsEdited(true);
     } else {
-      setBookingData();
-      setIsComfirmed(false);
+      setCreateBookingData();
+      setIsEdited(false);
     }
 
     getAllScreen();
   }, []);
 
-  const setBookingData = () => {
-    const { booking_name, merchandise, booking_slot, booking_date } =
-      location.state.data;
+  const findAccountCode = async (merchandise_name) => {
+    const advertiser = await User.getMerchandiseList(token);
+    const foundEntry = advertiser.find(
+      (entry) => entry.AdvertiserName === merchandise_name
+    );
 
-    setBookingName(booking_name);
-    setMerchandise(merchandise);
-    setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
-    setBookingSlot(parseInt(booking_slot));
+    if (foundEntry) {
+      return foundEntry.AccountCode;
+    } else {
+      return "No Data";
+    }
   };
 
-  const setConfirmBookingData = () => {
-    const { booking_name, merchandise, booking_slot, booking_date, screen } =
-      location.state.data;
+  const setCreateBookingData = async () => {
+    const {
+      AdvertiserLogo,
+      AdvertiserName,
+      BookingName,
+      SlotPerDay,
+      booking_date,
+    } = location.state.data;
 
-    setBookingName(booking_name[0]);
-    setBookingCode(booking_name[1]);
-    setMerchandise(merchandise);
-    setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
-    setBookingSlot(booking_slot);
-    setScreenData(screen);
-    calculateSize(screen);
+    setBookingName(BookingName);
+    setMerchandise({
+      AdvertiserLogo,
+      AdvertiserName,
+      AccountCode: await findAccountCode(AdvertiserName),
+    });
+    setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
+    setBookingSlot(parseInt(SlotPerDay));
+  };
+
+  const setEditedBookingData = async () => {
+    const {
+      AdvertiserLogo,
+      AdvertiserName,
+      BookingID,
+      BookingName,
+      BookingStatus,
+      SlotPerDay,
+    } = location.state.data;
+
+    setBookingName(BookingName);
+    setMerchandise({
+      AdvertiserLogo,
+      AdvertiserName,
+      AccountCode: await findAccountCode(AdvertiserName),
+    });
+
+    const booking_data = await User.getBookingById(token, BookingID);
+    const booking_date = [
+      ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
+    ];
+    setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
+    setBookingSlot(parseInt(SlotPerDay));
+
+    const all_screens_data = await User.getScreens(token);
+
+    const groupedByScreenID = booking_data.reduce((acc, curr) => {
+      const screenID = curr.ScreenID;
+      const existing = acc.find((item) => item.ScreenID === screenID);
+      const filter_screen = all_screens_data.find(
+        (items) => items.ScreenID === screenID
+      );
+
+      if (existing) {
+        existing.booking.push({
+          UsedSlot: curr.UsedSlot,
+          OtherUseSlot: curr.OtherUseSlot,
+          UsedTotal: curr.UsedTotal,
+          MaxSlot: curr.MaxSlot,
+          AvailableSlot: curr.AvailableSlot,
+        });
+      } else {
+        acc.push({
+          ScreenID: screenID,
+          ScreenName: curr.ScreenName,
+          Media_Rules:
+            filter_screen.ScreenRule[0]?.Width &&
+            filter_screen.ScreenRule[0]?.Height
+              ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
+                "x" +
+                parseInt(filter_screen.ScreenRule[0]?.Height).toString()
+              : "Not Set",
+          MaxSlot: parseInt(curr.MaxSlot),
+          booking: [
+            {
+              UsedSlot: curr.UsedSlot,
+              OtherUseSlot: curr.OtherUseSlot,
+              UsedTotal: curr.UsedTotal,
+              MaxSlot: curr.MaxSlot,
+              AvailableSlot: curr.AvailableSlot,
+            },
+          ],
+        });
+      }
+      return acc;
+    }, []);
+    setScreenData(groupedByScreenID);
+  };
+
+  // Test Data
+  // const setBookingData = async () => {
+  // const { booking_name, merchandise, booking_slot, booking_date } =
+  //   location.state.data;
+  // setBookingName(booking_name);
+  // setMerchandise(merchandise);
+  // setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
+  // setBookingSlot(parseInt(booking_slot));
+  // };
+
+  const setConfirmBookingData = () => {
+    // Test Data
+    // const { booking_name, merchandise, booking_slot, booking_date, screen } =
+    //   location.state.data;
+    // setBookingName(BookingName);
+    // setBookingName(booking_name[0]);
+    // setBookingCode(booking_name[1]);
+    // setMerchandise(merchandise);
+    // setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
+    // setBookingSlot(booking_slot);
+    // setScreenData(screen);
+    // calculateSize(screen);
   };
 
   const calculateSize = (screen) => {
@@ -148,8 +250,8 @@ const Create_Booking = () => {
   };
 
   const getAllScreen = async () => {
-    const { booking_slot } = location.state.data;
-    const data = await User.getScreensWithAdsCapacity(booking_slot, token);
+    const { SlotPerDay } = location.state.data;
+    const data = await User.getScreensWithAdsCapacity(SlotPerDay, token);
     setAllScreenData(data);
   };
 
@@ -215,8 +317,11 @@ const Create_Booking = () => {
         screen.booking = [];
         for (let i = 0; i < booking_date.length; i++) {
           screen.booking.push({
-            slot: parseInt(screen.ScreenRule[0].AdsCapacity),
-            booking: 0,
+            UsedSlot: "0",
+            OtherUseSlot: "0",
+            UsedTotal: "0",
+            AvailableSlot: "10",
+            MaxSlot: parseInt(screen.ScreenRule[0].AdsCapacity),
           });
         }
       });
@@ -429,13 +534,56 @@ const Create_Booking = () => {
           </div>
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
-              {isConfirmed ? (
+              {/* {isEdited ? (
                 <button
                   onClick={() => setShowPublishScreen(true)}
                   className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
                 >
                   Publish
                 </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setShowAddScreen(true)}
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Add Screen+
+                  </button>
+                  <button
+                    onClick={() => handleSaveScreen()}
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Save Booking
+                  </button>
+                  <button
+                    onClick={() => handleConfirmbooking()}
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Confirm Booking
+                  </button>
+                </>
+              )} */}
+              {isEdited ? (
+                <>
+                  <button
+                    onClick={() => setShowAddScreen(true)}
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Add Screen+
+                  </button>
+                  <button
+                    onClick={() => handleSaveScreen()}
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Save Booking
+                  </button>
+                  <button
+                    onClick={() => handleConfirmbooking()}
+                    className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Confirm Booking
+                  </button>
+                </>
               ) : (
                 <>
                   <button
@@ -466,7 +614,7 @@ const Create_Booking = () => {
 
         <div className="mt-7 grid grid-cols-8 md:space-x-2">
           {/* Left Panel */}
-          {isConfirmed ? (
+          {/* {isEdited ? (
             <div className="col-span-2">
               <div>
                 <img
@@ -674,11 +822,278 @@ const Create_Booking = () => {
                 </div>
               </div>
             </div>
+          )} */}
+          {isEdited ? (
+            <div className="col-span-2">
+              <div>
+                <img
+                  className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover`}
+                  src={merchandise.AdvertiserLogo}
+                  alt={merchandise.AdvertiserName}
+                />
+              </div>
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins lg:text-xl md:text-md font-bold text-[#2F3847]">
+                    {merchandise.AdvertiserName}
+                  </div>
+                </div>
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins lg:text-sm md:text-xs text-[#6F6F6F]">
+                    {merchandise.AccountCode}
+                  </div>
+                </div>
+                <div className="flex justify-center items-center mt-5">
+                  <div className="font-poppins font-bold lg:text-xl md:text-md text-[#59606C]">
+                    {bookingCode}
+                  </div>
+                </div>
+
+                <div className="h-[350px] overflow-y-auto mt-5">
+                  {allScreenData.length > 0 &&
+                    allScreenData.map((items, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-center items-center mt-3 cursor-pointer"
+                      >
+                        <div
+                          className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px] ${
+                            screenData.some(
+                              (screen) => screen.ScreenID === items.ScreenID
+                            )
+                              ? "bg-[#FFBD49]"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            toggleScreenFromAllScreen(items.ScreenID)
+                          }
+                        >
+                          <div className="grid grid-cols-10 md:space-x-1">
+                            <div className="col-span-2 flex justify-center items-center">
+                              <PiMonitor size={40} color={"#59606C"} />
+                            </div>
+                            <div className="col-span-6">
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins lg:text-xl md:text-md font-bold">
+                                  {items.ScreenName}
+                                </div>
+                              </div>
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins lg:text-sm md:text-xs">
+                                  {items.ScreenLocation}
+                                </div>
+                              </div>
+                              <div className="flex justify-start items-center">
+                                {items.status === 0 ? (
+                                  <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
+                                ) : (
+                                  <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
+                                )}
+                                <div className="font-poppins text-xs p-[2px]">
+                                  {items.status === 0 ? "Offline" : "Online"}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
+                              <IoIosInformationCircleOutline
+                                onClick={() => handleSelectInfoScreen(items)}
+                                size={22}
+                                className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                              />
+                              {screenData.some(
+                                (screen) => screen.ScreenID === items.ScreenID
+                              ) && (
+                                <>
+                                  <IoMdTrash
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteClick(index);
+                                    }}
+                                    size={22}
+                                    className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                  />
+                                  {deleteModalIndex[index] && (
+                                    <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
+                                      <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
+                                        <p className="font-poppins text-xs text-white">
+                                          Do You Want to Delete This Screen.
+                                          Lorem Ipsum is simply dummy text of
+                                          the printing and typesetting industry.
+                                        </p>
+                                        <div className="flex justify-center items-center">
+                                          <button
+                                            className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleConfirmDelete(
+                                                index,
+                                                items.ScreenID
+                                              );
+                                            }}
+                                          >
+                                            Yes
+                                          </button>
+                                          <button
+                                            className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleCancelDelete(index);
+                                            }}
+                                          >
+                                            No
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="col-span-2">
+              <div>
+                <img
+                  className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover`}
+                  src={merchandise.AdvertiserLogo}
+                  alt={merchandise.AdvertiserName}
+                />
+              </div>
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins lg:text-xl md:text-md font-bold text-[#2F3847]">
+                    {merchandise.AdvertiserName}
+                  </div>
+                </div>
+                <div className="flex justify-center items-center">
+                  <div className="font-poppins lg:text-sm md:text-xs text-[#6F6F6F]">
+                    {merchandise.AccountCode}
+                  </div>
+                </div>
+                <div className="flex justify-center items-center mt-5">
+                  <div className="font-poppins font-bold lg:text-xl md:text-md text-[#59606C]">
+                    {bookingCode}
+                  </div>
+                </div>
+
+                <div className="h-[350px] overflow-y-auto mt-5">
+                  {allScreenData.length > 0 &&
+                    allScreenData.map((items, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-center items-center mt-3 cursor-pointer"
+                      >
+                        <div
+                          className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px] ${
+                            screenData.some(
+                              (screen) => screen.ScreenID === items.ScreenID
+                            )
+                              ? "bg-[#FFBD49]"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            toggleScreenFromAllScreen(items.ScreenID)
+                          }
+                        >
+                          <div className="grid grid-cols-10 md:space-x-1">
+                            <div className="col-span-2 flex justify-center items-center">
+                              <PiMonitor size={40} color={"#59606C"} />
+                            </div>
+                            <div className="col-span-6">
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins lg:text-xl md:text-md font-bold">
+                                  {items.ScreenName}
+                                </div>
+                              </div>
+                              <div className="flex justify-start items-center">
+                                <div className="font-poppins lg:text-sm md:text-xs">
+                                  {items.ScreenLocation}
+                                </div>
+                              </div>
+                              <div className="flex justify-start items-center">
+                                {items.status === 0 ? (
+                                  <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
+                                ) : (
+                                  <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
+                                )}
+                                <div className="font-poppins text-xs p-[2px]">
+                                  {items.status === 0 ? "Offline" : "Online"}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-span-2 flex flex-col justify-center items-center space-y-2">
+                              <IoIosInformationCircleOutline
+                                onClick={() => handleSelectInfoScreen(items)}
+                                size={22}
+                                className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                              />
+                              {screenData.some(
+                                (screen) => screen.ScreenID === items.ScreenID
+                              ) && (
+                                <>
+                                  <IoMdTrash
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteClick(index);
+                                    }}
+                                    size={22}
+                                    className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                  />
+                                  {deleteModalIndex[index] && (
+                                    <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
+                                      <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
+                                        <p className="font-poppins text-xs text-white">
+                                          Do You Want to Delete This Screen.
+                                          Lorem Ipsum is simply dummy text of
+                                          the printing and typesetting industry.
+                                        </p>
+                                        <div className="flex justify-center items-center">
+                                          <button
+                                            className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleConfirmDelete(
+                                                index,
+                                                items.ScreenID
+                                              );
+                                            }}
+                                          >
+                                            Yes
+                                          </button>
+                                          <button
+                                            className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              handleCancelDelete(index);
+                                            }}
+                                          >
+                                            No
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
           )}
           {/* Left Panel */}
 
           {/* Right Panel */}
-          {isConfirmed ? (
+          {/* {isEdited ? (
             <div className="col-span-6 border-1 border-gray-300">
               <div className="p-3">
                 <div className="flex items-center space-x-2">
@@ -930,9 +1345,469 @@ const Create_Booking = () => {
                                         </div>
                                       </div>
                                       <div className="flex justify-start items-center">
-                                        <div className="font-poppins text-sm">
-                                          Max Capacity{" "}
-                                          {items.ScreenRule[0]?.AdsCapacity}/Day
+                                        <div className="font-poppins text-xs">
+                                          Max Capacity {items.MaxSlot}/Day
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                          Media Rule : {items.Media_Rules}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <IoIosInformationCircleOutline
+                                        onClick={() =>
+                                          handleSelectInfoScreen(items)
+                                        }
+                                        size={22}
+                                        className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mt-3 space-y-3">
+                                    {items.booking
+                                      .slice(0, booking_date.length)
+                                      .map((items2, dateIndex) => (
+                                        <div
+                                          key={dateIndex}
+                                          // onClick={() =>
+                                          //   items2.slot - items2.booking > 0
+                                          //     ? handleSelectScreen(
+                                          //         screenIndex,
+                                          //         dateIndex,
+                                          //         items
+                                          //       )
+                                          //     : null
+                                          // }
+                                          className={`${
+                                            bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex &&
+                                                bookingItem.status === true
+                                            )
+                                              ? "bg-[#FD6822] cursor-pointer"
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
+                                              ? "bg-[#FFBD49] cursor-pointer"
+                                              : items2.MaxSlot -
+                                                  items2.UsedSlot >=
+                                                booking_slot
+                                              ? "bg-[#018C41] cursor-pointer"
+                                              : "bg-[#5C5C5C] pointer-events-none"
+                                          } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
+                                        >
+                                          <div
+                                            className={`font-poppins ${
+                                              bookingSelect.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                    dateIndex &&
+                                                  bookingItem.status === true
+                                              )
+                                                ? "text-white"
+                                                : bookingSelect.some(
+                                                    (bookingItem) =>
+                                                      bookingItem.screenIndex ===
+                                                        screenIndex &&
+                                                      bookingItem.dateIndex ===
+                                                        dateIndex
+                                                  )
+                                                ? "text-[#4A4A4A]"
+                                                : items2.MaxSlot -
+                                                    items2.UsedSlot >=
+                                                  booking_slot
+                                                ? "text-white"
+                                                : "text-white"
+                                            }`}
+                                          >
+                                            {bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex &&
+                                                bookingItem.status === true
+                                            )
+                                              ? `Booked ${
+                                                  items2.UsedSlot + booking_slot
+                                                }/${items2.MaxSlot}`
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
+                                              ? `Selected ${
+                                                  items2.UsedSlot + booking_slot
+                                                }/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  items2.UsedSlot >=
+                                                booking_slot
+                                              ? `Available ${items2.UsedSlot}/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  items2.UsedSlot ===
+                                                0
+                                              ? `Full ${items2.UsedSlot}/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  items2.UsedSlot <=
+                                                booking_slot
+                                              ? `Not Available ${items2.UsedSlot}/${items2.MaxSlot}`
+                                              : ""}
+                                          </div>
+                                        </div>
+                                      ))}
+                                  </div>
+                                </div>
+                              </>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )} */}
+          {isEdited ? (
+            <div className="col-span-6 border-1 border-gray-300">
+              <div className="p-3">
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2">
+                    <IoIosCalendar
+                      size={20}
+                      className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
+                    />
+                    <div>
+                      <div className="flex justify-center items-center space-x-2">
+                        <div className="font-poppins lg:text-xl text-md font-bold">
+                          Booking Period :
+                        </div>
+                        <div className="font-poppins lg:text-2xl text-xl  ">
+                          {booking_date.length > 0 && (
+                            <div>{` ${format(
+                              booking_date[0],
+                              "EEE dd MMM yyyy"
+                            )} - ${format(
+                              booking_date[booking_date.length - 1],
+                              "EEE dd MMM yyyy"
+                            )}`}</div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="font-poppins text-xs">
+                        {`You Select ${booking_slot} Slot(s) Per Day`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:w-[1140px] w-[520px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
+                  <div className="grid grid-cols-12 space-x-1 mt-3">
+                    <div className="col-span-3 lg:col-span-1">
+                      <div className="min-w-[100%]">
+                        <div
+                          onClick={() => console.log("Select all", screenData)}
+                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                        >
+                          <div className="text-xs font-poppins text-white">
+                            Select all
+                          </div>
+                          <div className="text-xs font-poppins text-white">
+                            available
+                          </div>
+                        </div>
+                        <div>
+                          {booking_date.length > 0 &&
+                            booking_date.map((items, index) => (
+                              <div key={index} className="mt-3 space-x-2">
+                                <div className="lg:min-w-[20px]  min-w-[100px] h-[70px] bg-[#59606C] rounded-lg">
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "EEE")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-3xl font-poppins text-white">
+                                    {format(items, "dd")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "MMM yyyy")}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-9 lg:col-span-11">
+                      <div className="grid grid-cols-6 ">
+                        <div className="flex space-x-2">
+                          {screenData.length > 0 &&
+                            screenData.map((items, screenIndex) => (
+                              <>
+                                <div
+                                  key={screenIndex}
+                                  className="h-[70px] min-w-[250px] rounded-lg"
+                                >
+                                  <div className="grid grid-cols-10">
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <PiMonitor size={40} color={"#59606C"} />
+                                    </div>
+                                    <div className="col-span-6">
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xl font-bold">
+                                          {items.ScreenName}
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xs">
+                                          Max Capacity {items.MaxSlot}/Day
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                          Media Rule : {items.Media_Rules}
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <IoIosInformationCircleOutline
+                                        onClick={() =>
+                                          handleSelectInfoScreen(items)
+                                        }
+                                        size={22}
+                                        className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mt-3 space-y-3">
+                                    {items.booking
+                                      .slice(0, booking_date.length)
+                                      .map((items2, dateIndex) => (
+                                        <div
+                                          key={dateIndex}
+                                          onClick={() =>
+                                            items2.MaxSlot -
+                                              parseInt(items2.UsedTotal) >
+                                            0
+                                              ? handleSelectScreen(
+                                                  screenIndex,
+                                                  dateIndex,
+                                                  items
+                                                )
+                                              : null
+                                          }
+                                          className={`${
+                                            bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex &&
+                                                bookingItem.status === true
+                                            )
+                                              ? "bg-[#FD6822] cursor-pointer"
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
+                                              ? "bg-[#FFBD49] cursor-pointer"
+                                              : items2.MaxSlot -
+                                                  parseInt(items2.UsedTotal) >=
+                                                booking_slot
+                                              ? "bg-[#018C41] cursor-pointer"
+                                              : "bg-[#5C5C5C] pointer-events-none"
+                                          } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
+                                        >
+                                          <div
+                                            className={`font-poppins ${
+                                              bookingSelect.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                    dateIndex &&
+                                                  bookingItem.status === true
+                                              )
+                                                ? "text-white"
+                                                : bookingSelect.some(
+                                                    (bookingItem) =>
+                                                      bookingItem.screenIndex ===
+                                                        screenIndex &&
+                                                      bookingItem.dateIndex ===
+                                                        dateIndex
+                                                  )
+                                                ? "text-[#4A4A4A]"
+                                                : items2.MaxSlot -
+                                                    parseInt(
+                                                      items2.UsedTotal
+                                                    ) >=
+                                                  booking_slot
+                                                ? "text-white"
+                                                : "text-white"
+                                            }`}
+                                          >
+                                            {bookingSelect.some(
+                                              (bookingItem) =>
+                                                bookingItem.screenIndex ===
+                                                  screenIndex &&
+                                                bookingItem.dateIndex ===
+                                                  dateIndex &&
+                                                bookingItem.status === true
+                                            )
+                                              ? `Booked ${
+                                                  parseInt(items2.UsedTotal) +
+                                                  booking_slot
+                                                }/${items2.MaxSlot}`
+                                              : bookingSelect.some(
+                                                  (bookingItem) =>
+                                                    bookingItem.screenIndex ===
+                                                      screenIndex &&
+                                                    bookingItem.dateIndex ===
+                                                      dateIndex
+                                                )
+                                              ? `Selected ${
+                                                  parseInt(items2.UsedTotal) +
+                                                  booking_slot
+                                                }/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  parseInt(items2.UsedTotal) >=
+                                                booking_slot
+                                              ? `Available ${parseInt(
+                                                  items2.UsedTotal
+                                                )}/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  parseInt(items2.UsedTotal) ===
+                                                0
+                                              ? `Full ${parseInt(
+                                                  items2.UsedTotal
+                                                )}/${items2.MaxSlot}`
+                                              : parseInt(items2.MaxSlot) -
+                                                  parseInt(items2.UsedTotal) <=
+                                                booking_slot
+                                              ? `Not Available ${parseInt(
+                                                  items2.UsedTotal
+                                                )}/${items2.MaxSlot}`
+                                              : ""}
+                                          </div>
+                                        </div>
+                                      ))}
+                                  </div>
+                                </div>
+                              </>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="col-span-6 border-1 border-gray-300">
+              <div className="p-3">
+                <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2">
+                    <IoIosCalendar
+                      size={20}
+                      className="bg-[#59606C] text-[#FFFFFF] w-10 h-10 rounded-lg"
+                    />
+                    <div>
+                      <div className="flex justify-center items-center space-x-2">
+                        <div className="font-poppins lg:text-xl text-md font-bold">
+                          Booking Period :
+                        </div>
+                        <div className="font-poppins lg:text-2xl text-xl  ">
+                          {booking_date.length > 0 && (
+                            <div>{` ${format(
+                              booking_date[0],
+                              "EEE dd MMM yyyy"
+                            )} - ${format(
+                              booking_date[booking_date.length - 1],
+                              "EEE dd MMM yyyy"
+                            )}`}</div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="font-poppins text-xs">
+                        {`You Select ${booking_slot} Slot(s) Per Day`}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:w-[1140px] w-[520px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
+                  <div className="grid grid-cols-12 space-x-1 mt-3">
+                    <div className="col-span-3 lg:col-span-1">
+                      <div className="min-w-[100%]">
+                        <div
+                          onClick={() => console.log("Select all", screenData)}
+                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                        >
+                          <div className="text-xs font-poppins text-white">
+                            Select all
+                          </div>
+                          <div className="text-xs font-poppins text-white">
+                            available
+                          </div>
+                        </div>
+                        <div>
+                          {booking_date.length > 0 &&
+                            booking_date.map((items, index) => (
+                              <div key={index} className="mt-3 space-x-2">
+                                <div className="lg:min-w-[20px]  min-w-[100px] h-[70px] bg-[#59606C] rounded-lg">
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "EEE")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-3xl font-poppins text-white">
+                                    {format(items, "dd")}
+                                  </div>
+                                  <div className="flex items-center justify-center text-xs font-poppins text-white">
+                                    {format(items, "MMM yyyy")}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-span-9 lg:col-span-11">
+                      <div className="grid grid-cols-6 ">
+                        <div className="flex space-x-2">
+                          {screenData.length > 0 &&
+                            screenData.map((items, screenIndex) => (
+                              <>
+                                <div
+                                  key={screenIndex}
+                                  className="h-[70px] min-w-[250px] rounded-lg"
+                                >
+                                  <div className="grid grid-cols-10">
+                                    <div className="col-span-2 flex justify-center items-center">
+                                      <PiMonitor size={40} color={"#59606C"} />
+                                    </div>
+                                    <div className="col-span-6">
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xl font-bold">
+                                          {items.ScreenName}
+                                        </div>
+                                      </div>
+                                      <div className="flex justify-start items-center">
+                                        <div className="font-poppins text-xs">
+                                          Max Capacity {items.MaxSlot}/Day
                                         </div>
                                       </div>
                                       <div className="flex justify-start items-center">
@@ -965,7 +1840,6 @@ const Create_Booking = () => {
                                       />
                                     </div>
                                   </div>
-
                                   <div className="mt-3 space-y-3">
                                     {items.booking
                                       .slice(0, booking_date.length)
@@ -973,7 +1847,9 @@ const Create_Booking = () => {
                                         <div
                                           key={dateIndex}
                                           onClick={() =>
-                                            items2.slot - items2.booking > 0
+                                            items2.MaxSlot -
+                                              parseInt(items2.UsedTotal) >
+                                            0
                                               ? handleSelectScreen(
                                                   screenIndex,
                                                   dateIndex,
@@ -999,7 +1875,8 @@ const Create_Booking = () => {
                                                       dateIndex
                                                 )
                                               ? "bg-[#FFBD49] cursor-pointer"
-                                              : items2.slot - items2.booking >=
+                                              : items2.MaxSlot -
+                                                  parseInt(items2.UsedSlot) >=
                                                 booking_slot
                                               ? "bg-[#018C41] cursor-pointer"
                                               : "bg-[#5C5C5C] pointer-events-none"
@@ -1024,8 +1901,8 @@ const Create_Booking = () => {
                                                         dateIndex
                                                   )
                                                 ? "text-[#4A4A4A]"
-                                                : items2.slot -
-                                                    items2.booking >=
+                                                : items2.MaxSlot -
+                                                    parseInt(items2.UsedSlot) >=
                                                   booking_slot
                                                 ? "text-white"
                                                 : "text-white"
@@ -1040,8 +1917,9 @@ const Create_Booking = () => {
                                                 bookingItem.status === true
                                             )
                                               ? `Booked ${
-                                                  items2.booking + booking_slot
-                                                }/${items2.slot}`
+                                                  parseInt(items2.UsedSlot) +
+                                                  booking_slot
+                                                }/${items2.MaxSlot}`
                                               : bookingSelect.some(
                                                   (bookingItem) =>
                                                     bookingItem.screenIndex ===
@@ -1050,17 +1928,27 @@ const Create_Booking = () => {
                                                       dateIndex
                                                 )
                                               ? `Selected ${
-                                                  items2.booking + booking_slot
-                                                }/${items2.slot}`
-                                              : items2.slot - items2.booking >=
+                                                  parseInt(items2.UsedSlot) +
+                                                  booking_slot
+                                                }/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  parseInt(items2.UsedTotal) >=
                                                 booking_slot
-                                              ? `Available ${items2.booking}/${items2.slot}`
-                                              : items2.slot - items2.booking ===
+                                              ? `Available ${parseInt(
+                                                  items2.UsedTotal
+                                                )}/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  parseInt(items2.UsedSlot) ===
                                                 0
-                                              ? `Full ${items2.booking}/${items2.slot}`
-                                              : items2.slot - items2.booking <=
+                                              ? `Full ${parseInt(
+                                                  items2.UsedSlot
+                                                )}/${items2.MaxSlot}`
+                                              : items2.MaxSlot -
+                                                  parseInt(items2.UsedSlot) <=
                                                 booking_slot
-                                              ? `Not Available ${items2.booking}/${items2.slot}`
+                                              ? `Not Available ${parseInt(
+                                                  items2.UsedSlot
+                                                )}/${items2.MaxSlot}`
                                               : ""}
                                           </div>
                                         </div>

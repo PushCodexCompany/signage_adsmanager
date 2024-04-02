@@ -231,6 +231,8 @@ const New_screen = () => {
       manotifydelay: notificationDelay || "",
     };
 
+    console.log("obj", obj);
+
     if (selectedImage) {
       const form = new FormData();
       form.append("target", "screenphoto");
@@ -249,7 +251,6 @@ const New_screen = () => {
     if (obj.screenname) {
       try {
         const data = await User.editScreen(obj, token);
-        console.log("data", data);
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",

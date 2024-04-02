@@ -23,12 +23,12 @@ const getImg = (id) => {
   return img;
 };
 
-export const GridTable = () => {
+export const GridTable = ({ booking_data }) => {
   const navigate = useNavigate();
 
   const onClickEdit = (obj) => {
-    navigate(`/booking/${obj.booking_name[0]}`, {
-      state: { data: obj, isConfirmed: true },
+    navigate(`/booking/${obj.BookingName}`, {
+      state: { data: obj, isEdited: true },
     });
   };
 
@@ -44,9 +44,9 @@ export const GridTable = () => {
               <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Booking Name
               </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider ">
+              {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider ">
                 Content Type
-              </th>
+              </th> */}
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Merchandise
               </th>
@@ -68,7 +68,7 @@ export const GridTable = () => {
             </tr>
           </thead>
           <tbody>
-            {bookingData.map((row) => (
+            {/* {bookingData.map((row) => (
               <tr key={row.id}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md">{row.id}</div>
@@ -103,6 +103,50 @@ export const GridTable = () => {
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-xl flex justify-center items-center">
                     {row.booking_slot}
+                  </div>
+                </td>
+                <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                  <div className="space-x-2">
+                    <button onClick={() => onClickEdit(row)}>
+                      <RiEditLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))} */}
+            {booking_data.map((row) => (
+              <tr key={row.BookingID}>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="font-poppins text-md">{row.BookingID}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+                  <div className="font-poppins text-xl  text-[#6425FE]">
+                    {row.BookingName}
+                  </div>
+                  <div className="font-poppins text-sm text-gray-500">
+                    {row.AdvertiserName}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="flex items-center justify-center">
+                    <img
+                      className="w-[60px] h-[60px] rounded-md object-cover"
+                      src={row.AdvertiserLogo}
+                      alt={row.AdvertiserName}
+                    />
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="font-poppins text-xl flex justify-center items-center">
+                    {row.TotalScreen}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="font-poppins text-xl flex justify-center items-center">
+                    {row.SlotPerDay}
                   </div>
                 </td>
                 <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">

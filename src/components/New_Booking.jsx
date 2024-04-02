@@ -312,13 +312,15 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     );
 
     const obj = {
-      merchandise: select_merchandise,
-      booking_date: booking_date,
-      booking_name: booking_name,
-      booking_slot: booking_slot,
+      AdvertiserLogo: select_merchandise.AdvertiserLogo,
+      AdvertiserName: select_merchandise.AdvertiserName,
+      BookingName: booking_name,
+      SlotPerDay: booking_slot,
+      booking_date,
     };
-    navigate(`/booking/${obj.booking_name}`, {
-      state: { data: obj, isConfirmed: false },
+
+    navigate(`/booking/${obj.BookingName}`, {
+      state: { data: obj, isEdited: false },
     });
   };
 
