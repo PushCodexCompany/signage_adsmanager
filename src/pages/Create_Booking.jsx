@@ -173,40 +173,43 @@ const Create_Booking = () => {
       const filter_screen = all_screens_data.find(
         (items) => items.ScreenID === screenID
       );
-
-      if (existing) {
-        existing.booking.push({
-          UsedSlot: curr.UsedSlot,
-          OtherUseSlot: curr.OtherUseSlot,
-          UsedTotal: curr.UsedTotal,
-          MaxSlot: curr.MaxSlot,
-          AvailableSlot: curr.AvailableSlot,
-        });
-      } else {
-        acc.push({
-          ScreenID: screenID,
-          ScreenName: curr.ScreenName,
-          Media_Rules:
-            filter_screen.ScreenRule[0]?.Width &&
-            filter_screen.ScreenRule[0]?.Height
-              ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
-                "x" +
-                parseInt(filter_screen.ScreenRule[0]?.Height).toString()
-              : "Not Set",
-          MaxSlot: parseInt(curr.MaxSlot),
-          booking: [
-            {
-              UsedSlot: curr.UsedSlot,
-              OtherUseSlot: curr.OtherUseSlot,
-              UsedTotal: curr.UsedTotal,
-              MaxSlot: curr.MaxSlot,
-              AvailableSlot: curr.AvailableSlot,
-            },
-          ],
-        });
+      if (filter_screen) {
+        if (existing) {
+          existing.booking.push({
+            UsedSlot: curr.UsedSlot,
+            OtherUseSlot: curr.OtherUseSlot,
+            UsedTotal: curr.UsedTotal,
+            MaxSlot: curr.MaxSlot,
+            AvailableSlot: curr.AvailableSlot,
+          });
+        } else {
+          acc.push({
+            ScreenID: screenID,
+            ScreenName: curr.ScreenName,
+            Media_Rules:
+              filter_screen.ScreenRule[0]?.Width &&
+              filter_screen.ScreenRule[0]?.Height
+                ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
+                  "x" +
+                  parseInt(filter_screen.ScreenRule[0]?.Height).toString()
+                : "Not Set",
+            MaxSlot: parseInt(curr.MaxSlot),
+            booking: [
+              {
+                UsedSlot: curr.UsedSlot,
+                OtherUseSlot: curr.OtherUseSlot,
+                UsedTotal: curr.UsedTotal,
+                MaxSlot: curr.MaxSlot,
+                AvailableSlot: curr.AvailableSlot,
+              },
+            ],
+          });
+        }
       }
+
       return acc;
     }, []);
+
     setScreenData(groupedByScreenID);
   };
 

@@ -916,4 +916,17 @@ export default {
       return false;
     }
   },
+
+  createBooking: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/create_booking?bookingname=${hash.bookingname}&advertiserid=${hash.advertiserid}&slotperday=${hash.slotperday}&bookingperoids=${hash.bookingperoids}`;
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
 };

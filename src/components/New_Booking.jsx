@@ -29,6 +29,7 @@ import {
   isSameDay,
   isBefore,
   isToday,
+  parseISO,
 } from "date-fns";
 import New_Booking_Steps_Modal from "./New_Booking_Steps_Modal";
 
@@ -104,7 +105,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       const updatedDates = isDateSelected
         ? prevSelectedDates.filter((date) => !isSameDay(date, clickedDate))
         : [...prevSelectedDates, clickedDate];
-
       const sortIndex = updatedDates.sort((a, b) => a - b);
       setStartDate(sortIndex[0]);
       setEndDate(sortIndex[sortIndex.length - 1]);
@@ -197,7 +197,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     }
   };
 
-  const handleSave = async () => {
+  const handleSaveMerchandise = async () => {
     const obj = {
       advertisername: merchandise_name,
       contactname: contact_person_name,
@@ -306,22 +306,54 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     return query.charAt(0).toUpperCase() + query.substring(1);
   };
 
-  const handleSaveBooking = () => {
-    const booking_date = selected_dates.map(
-      (selected_dates) => +new Date(selected_dates)
+  const handleSaveBooking = async () => {
+    const { token } = User.getCookieData();
+    const booking_date = selected_dates.map((timestamp) =>
+      format(timestamp, "yyyy-MM-dd")
     );
 
-    const obj = {
-      AdvertiserLogo: select_merchandise.AdvertiserLogo,
-      AdvertiserName: select_merchandise.AdvertiserName,
-      BookingName: booking_name,
-      SlotPerDay: booking_slot,
-      booking_date,
+    const obj_save_booking = {
+      bookingname: booking_name,
+      advertiserid: select_merchandise.AdvertiserID,
+      slotperday: booking_slot,
+      bookingperoids: booking_date,
     };
 
-    navigate(`/booking/${obj.BookingName}`, {
-      state: { data: obj, isEdited: false },
-    });
+    try {
+      const data_booking = await User.createBooking(obj_save_booking, token);
+      if (data_booking.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "สร้าง Booking สำเร็จ!",
+          text: `สร้าง Booking สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            const obj = {
+              AdvertiserLogo: select_merchandise.AdvertiserLogo,
+              AdvertiserName: select_merchandise.AdvertiserName,
+              BookingName: booking_name,
+              SlotPerDay: booking_slot,
+              booking_date,
+            };
+
+            navigate(`/booking/${obj.BookingName}`, {
+              state: { data: obj, isEdited: false },
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data_booking.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const STEP_OPTIONS = [
@@ -926,7 +958,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 </div>
                 <div className="mt-4 flex items-center justify-center">
                   <button
-                    onClick={() => handleSave()}
+                    onClick={() => handleSaveMerchandise()}
                     className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
                   >
                     Create

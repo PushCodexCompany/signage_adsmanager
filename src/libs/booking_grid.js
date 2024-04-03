@@ -141,12 +141,12 @@ export const GridTable = ({ booking_data }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-xl flex justify-center items-center">
-                    {row.TotalScreen}
+                    {row.TotalScreen ? row.TotalScreen : 0}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-xl flex justify-center items-center">
-                    {row.SlotPerDay}
+                    {row.SlotPerDay ? row.SlotPerDay : 0}
                   </div>
                 </td>
                 <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">

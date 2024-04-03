@@ -33,7 +33,12 @@ const Booking_Summary = () => {
 
     setScreen(screen);
     setBookingName(booking_name);
-    setPeriod(period);
+
+    const booking_date = period.map((timestamp) =>
+      format(timestamp, "yyyy-MM-dd")
+    );
+
+    setPeriod(booking_date);
     setSlotPerDays(slot_per_days);
     setMerchandise(merchandise);
     setTotalSlot(total_slot);
@@ -48,6 +53,8 @@ const Booking_Summary = () => {
       merchandise: merchandise,
       total_slot: total_slot,
     };
+
+    console.log("obj", obj);
   };
 
   return (
