@@ -70,13 +70,13 @@ const Filter = ({ filter_screen, setFilterScreen }) => {
                     all_filter_data.map((items, index) => (
                       <div
                         key={index}
-                        className="relative w-[100px] lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 "
+                        className="relative w-[95px] lg:w-[200px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 "
                       >
                         <select
                           name={items.TagCategoryName}
                           id={items.TagCategoryName}
                           onChange={handleStatusChange}
-                          className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                          className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                         >
                           <option value="" disabled selected hidden>
                             {items.TagCategoryName}

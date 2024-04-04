@@ -332,6 +332,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
             result.dismiss === Swal.DismissReason.backdrop
           ) {
             const obj = {
+              BookingID: data_booking.bookingid,
               AdvertiserLogo: select_merchandise.AdvertiserLogo,
               AdvertiserName: select_merchandise.AdvertiserName,
               BookingName: booking_name,

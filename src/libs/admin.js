@@ -772,15 +772,14 @@ export default {
     }
   },
 
-  getScreensWithAdsCapacity: async function (slot, token) {
+  getScreensWithAdsCapacity: async function (bookingid, slot, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await this._get(
-      `api/v1/get_screens?adscapacity=${slot}`,
+      `api/v1/get_screens?adscapacity=${slot}&bookingid=${bookingid}`,
       "",
       config
     );
@@ -791,7 +790,12 @@ export default {
     }
   },
 
-  getScreensWithAdsCapacityAndTag: async function (slot, tags, token) {
+  getScreensWithAdsCapacityAndTag: async function (
+    bookingid,
+    slot,
+    tags,
+    token
+  ) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -799,7 +803,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}`,
+      `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}&bookingid=${bookingid}`,
       "",
       config
     );
@@ -925,6 +929,19 @@ export default {
     };
 
     let urlString = `api/v1/create_booking?bookingname=${hash.bookingname}&advertiserid=${hash.advertiserid}&slotperday=${hash.slotperday}&bookingperoids=${hash.bookingperoids}`;
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
+  selectScreenBooking: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/create_bookingscreen?bookingid=${hash.bookingid}&screenids=${hash.screenids}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;

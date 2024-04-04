@@ -29,6 +29,7 @@ import Ads_Allocation_Booking from "../components/Ads_Allocation_Booking";
 import Booking_Upload_Media from "../components/Booking_Upload_Media";
 import Media_Player from "../components/Media_Player";
 import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
+import Swal from "sweetalert2";
 
 const Create_Booking = () => {
   const location = useLocation();
@@ -36,6 +37,7 @@ const Create_Booking = () => {
 
   const { token } = User.getCookieData();
 
+  const [bookingId, setBookingId] = useState();
   const [bookingName, setBookingName] = useState("");
   const [bookingCode, setBookingCode] = useState("CDS-BT-230101-004");
   const [merchandise, setMerchandise] = useState([]);
@@ -129,8 +131,10 @@ const Create_Booking = () => {
       BookingName,
       SlotPerDay,
       booking_date,
+      BookingID,
     } = location.state.data;
 
+    setBookingId(BookingID);
     setBookingName(BookingName);
     setMerchandise({
       AdvertiserLogo,
@@ -147,7 +151,6 @@ const Create_Booking = () => {
       AdvertiserName,
       BookingID,
       BookingName,
-      BookingStatus,
       SlotPerDay,
     } = location.state.data;
 
@@ -157,6 +160,7 @@ const Create_Booking = () => {
       AdvertiserName,
       AccountCode: await findAccountCode(AdvertiserName),
     });
+    setBookingId(BookingID);
 
     const booking_data = await User.getBookingById(token, BookingID);
     const booking_date = [
@@ -211,6 +215,12 @@ const Create_Booking = () => {
     }, []);
 
     setScreenData(groupedByScreenID);
+
+    const output = {};
+    groupedByScreenID.forEach((item) => {
+      output[item.ScreenID] = true;
+    });
+    setCheckboxes(output);
   };
 
   // Test Data
@@ -223,19 +233,19 @@ const Create_Booking = () => {
   // setBookingSlot(parseInt(booking_slot));
   // };
 
-  const setConfirmBookingData = () => {
-    // Test Data
-    // const { booking_name, merchandise, booking_slot, booking_date, screen } =
-    //   location.state.data;
-    // setBookingName(BookingName);
-    // setBookingName(booking_name[0]);
-    // setBookingCode(booking_name[1]);
-    // setMerchandise(merchandise);
-    // setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
-    // setBookingSlot(booking_slot);
-    // setScreenData(screen);
-    // calculateSize(screen);
-  };
+  // const setConfirmBookingData = () => {
+  //   Test Data
+  //   const { booking_name, merchandise, booking_slot, booking_date, screen } =
+  //     location.state.data;
+  //   setBookingName(BookingName);
+  //   setBookingName(booking_name[0]);
+  //   setBookingCode(booking_name[1]);
+  //   setMerchandise(merchandise);
+  //   setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
+  //   setBookingSlot(booking_slot);
+  //   setScreenData(screen);
+  //   calculateSize(screen);
+  // };
 
   const calculateSize = (screen) => {
     let maxLength = 0;
@@ -254,7 +264,7 @@ const Create_Booking = () => {
 
   const getAllScreen = async () => {
     const { SlotPerDay } = location.state.data;
-    const data = await User.getScreensWithAdsCapacity(SlotPerDay, token);
+    const data = await User.getScreensWithAdsCapacity(null, SlotPerDay, token);
     setAllScreenData(data);
   };
 
@@ -294,41 +304,60 @@ const Create_Booking = () => {
     });
   };
 
-  const toggleScreenFromAllScreen = (id) => {
-    if (selectedScreenItems.some((screen) => screen === id)) {
-      // มีจอแล้ว
-    } else {
-      //ยังไม่มีจอ
-      const new_select_screen = [...selectedScreenItems];
-      new_select_screen.push(id);
-      setSelectedScreenItems(new_select_screen);
-      setCheckboxes((prevCheckboxes) => {
-        const updatedCheckboxes = {
-          ...prevCheckboxes,
-          [id]: !prevCheckboxes[id],
-        };
-
-        return updatedCheckboxes;
+  const toggleScreenFromAllScreen = async (items) => {
+    items.booking = [];
+    for (let i = 0; i < booking_date.length; i++) {
+      items.booking.push({
+        UsedSlot: "0",
+        OtherUseSlot: "0",
+        UsedTotal: "0",
+        AvailableSlot: "10",
+        MaxSlot: items.ScreenRule[0].AdsCapacity,
       });
+    }
 
-      const screensToReturn = allScreenData.filter((screen) =>
-        new_select_screen.includes(screen.ScreenID)
-      );
+    const obj = {
+      MaxSlot: parseInt(items.ScreenRule[0].AdsCapacity),
+      Media_Rules:
+        items.ScreenRule[0].Width && items.ScreenRule[0].Height
+          ? items.ScreenRule[0].Width + "x" + items.ScreenRule[0].Height
+          : "Not Set",
+      ScreenID: items.ScreenID,
+      ScreenName: items.ScreenName,
+      booking: items.booking,
+    };
 
-      // Logic for test set booking
-      screensToReturn.forEach((screen) => {
-        screen.booking = [];
-        for (let i = 0; i < booking_date.length; i++) {
-          screen.booking.push({
-            UsedSlot: "0",
-            OtherUseSlot: "0",
-            UsedTotal: "0",
-            AvailableSlot: "10",
-            MaxSlot: parseInt(screen.ScreenRule[0].AdsCapacity),
-          });
-        }
-      });
-      setScreenData(screensToReturn);
+    const obj_to_save = {
+      bookingid: bookingId,
+      screenids: items.ScreenID,
+    };
+
+    try {
+      const data = await User.selectScreenBooking(obj_to_save, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "เลือก Screen สำเร็จ!",
+          text: `เลือก Screen สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            screenData.push(obj);
+            setScreenData(screenData);
+            setBookingData();
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
     }
   };
 
@@ -366,12 +395,93 @@ const Create_Booking = () => {
     setSelectPublishScreen(checkedRowIds);
   };
 
-  const handleAddScreen = () => {
+  const setBookingData = async () => {
+    const booking_data = await User.getBookingById(token, bookingId);
+    const all_screens_data = await User.getScreens(token);
+    const groupedByScreenID = booking_data.reduce((acc, curr) => {
+      const screenID = curr.ScreenID;
+      const existing = acc.find((item) => item.ScreenID === screenID);
+      const filter_screen = all_screens_data.find(
+        (items) => items.ScreenID === screenID
+      );
+      if (filter_screen) {
+        if (existing) {
+          existing.booking.push({
+            UsedSlot: curr.UsedSlot,
+            OtherUseSlot: curr.OtherUseSlot,
+            UsedTotal: curr.UsedTotal,
+            MaxSlot: curr.MaxSlot,
+            AvailableSlot: curr.AvailableSlot,
+          });
+        } else {
+          acc.push({
+            ScreenID: screenID,
+            ScreenName: curr.ScreenName,
+            Media_Rules:
+              filter_screen.ScreenRule[0]?.Width &&
+              filter_screen.ScreenRule[0]?.Height
+                ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
+                  "x" +
+                  parseInt(filter_screen.ScreenRule[0]?.Height).toString()
+                : "Not Set",
+            MaxSlot: parseInt(curr.MaxSlot),
+            booking: [
+              {
+                UsedSlot: curr.UsedSlot,
+                OtherUseSlot: curr.OtherUseSlot,
+                UsedTotal: curr.UsedTotal,
+                MaxSlot: curr.MaxSlot,
+                AvailableSlot: curr.AvailableSlot,
+              },
+            ],
+          });
+        }
+      }
+
+      return acc;
+    }, []);
+
+    setScreenData(groupedByScreenID);
+  };
+
+  const handleAddScreen = async () => {
     const screensToReturn = allScreenData.filter((screen) =>
       selectedScreenItems.includes(screen.ScreenID)
     );
-    setScreenData(screensToReturn);
-    setShowAddScreen(!showAddScreen);
+
+    const screenIDs = screensToReturn.map((item) => item.ScreenID.toString());
+
+    const obj = {
+      bookingid: bookingId,
+      screenids: screenIDs,
+    };
+    try {
+      const data = await User.selectScreenBooking(obj, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "เลือก Screen สำเร็จ!",
+          text: `เลือก Screen สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            setScreenData(screensToReturn);
+            setBookingData();
+            setShowAddScreen(!showAddScreen);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   const handleDeleteClick = (index) => {
@@ -457,7 +567,11 @@ const Create_Booking = () => {
 
       setBookingSelect(updatedData);
     } else {
-      alert("No select screen");
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกหน้าจอที่ต้องการจอง ...",
+      });
     }
   };
 
@@ -867,9 +981,7 @@ const Create_Booking = () => {
                               ? "bg-[#FFBD49]"
                               : ""
                           }`}
-                          onClick={() =>
-                            toggleScreenFromAllScreen(items.ScreenID)
-                          }
+                          onClick={() => toggleScreenFromAllScreen(items)}
                         >
                           <div className="grid grid-cols-10 md:space-x-1">
                             <div className="col-span-2 flex justify-center items-center">
@@ -1000,9 +1112,7 @@ const Create_Booking = () => {
                               ? "bg-[#FFBD49]"
                               : ""
                           }`}
-                          onClick={() =>
-                            toggleScreenFromAllScreen(items.ScreenID)
-                          }
+                          onClick={() => toggleScreenFromAllScreen(items)}
                         >
                           <div className="grid grid-cols-10 md:space-x-1">
                             <div className="col-span-2 flex justify-center items-center">
@@ -1594,50 +1704,25 @@ const Create_Booking = () => {
                                     </div>
                                   </div>
                                   <div className="mt-3 space-y-3">
-                                    {items.booking
-                                      .slice(0, booking_date.length)
-                                      .map((items2, dateIndex) => (
-                                        <div
-                                          key={dateIndex}
-                                          onClick={() =>
-                                            items2.MaxSlot -
-                                              parseInt(items2.UsedTotal) >
-                                            0
-                                              ? handleSelectScreen(
-                                                  screenIndex,
-                                                  dateIndex,
-                                                  items
-                                                )
-                                              : null
-                                          }
-                                          className={`${
-                                            bookingSelect.some(
-                                              (bookingItem) =>
-                                                bookingItem.screenIndex ===
-                                                  screenIndex &&
-                                                bookingItem.dateIndex ===
-                                                  dateIndex &&
-                                                bookingItem.status === true
-                                            )
-                                              ? "bg-[#FD6822] cursor-pointer"
-                                              : bookingSelect.some(
-                                                  (bookingItem) =>
-                                                    bookingItem.screenIndex ===
-                                                      screenIndex &&
-                                                    bookingItem.dateIndex ===
-                                                      dateIndex
-                                                )
-                                              ? "bg-[#FFBD49] cursor-pointer"
-                                              : items2.MaxSlot -
-                                                  parseInt(items2.UsedTotal) >=
-                                                booking_slot
-                                              ? "bg-[#018C41] cursor-pointer"
-                                              : "bg-[#5C5C5C] pointer-events-none"
-                                          } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
-                                        >
+                                    {items.booking !== undefined &&
+                                      items.booking
+                                        .slice(0, booking_date.length)
+                                        .map((items2, dateIndex) => (
                                           <div
-                                            className={`font-poppins ${
-                                              bookingSelect.some(
+                                            key={dateIndex}
+                                            onClick={() =>
+                                              items2.MaxSlot -
+                                                parseInt(items2.UsedTotal) >
+                                              0
+                                                ? handleSelectScreen(
+                                                    screenIndex,
+                                                    dateIndex,
+                                                    items
+                                                  )
+                                                : null
+                                            }
+                                            className={`${
+                                              bookingSelect?.some(
                                                 (bookingItem) =>
                                                   bookingItem.screenIndex ===
                                                     screenIndex &&
@@ -1645,69 +1730,103 @@ const Create_Booking = () => {
                                                     dateIndex &&
                                                   bookingItem.status === true
                                               )
-                                                ? "text-white"
-                                                : bookingSelect.some(
+                                                ? "bg-[#FD6822] cursor-pointer"
+                                                : bookingSelect?.some(
                                                     (bookingItem) =>
                                                       bookingItem.screenIndex ===
                                                         screenIndex &&
                                                       bookingItem.dateIndex ===
                                                         dateIndex
                                                   )
-                                                ? "text-[#4A4A4A]"
+                                                ? "bg-[#FFBD49] cursor-pointer"
                                                 : items2.MaxSlot -
                                                     parseInt(
                                                       items2.UsedTotal
                                                     ) >=
                                                   booking_slot
-                                                ? "text-white"
-                                                : "text-white"
-                                            }`}
+                                                ? "bg-[#018C41] cursor-pointer"
+                                                : "bg-[#5C5C5C] pointer-events-none"
+                                            } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
                                           >
-                                            {bookingSelect.some(
-                                              (bookingItem) =>
-                                                bookingItem.screenIndex ===
-                                                  screenIndex &&
-                                                bookingItem.dateIndex ===
-                                                  dateIndex &&
-                                                bookingItem.status === true
-                                            )
-                                              ? `Booked ${
-                                                  parseInt(items2.UsedTotal) +
-                                                  booking_slot
-                                                }/${items2.MaxSlot}`
-                                              : bookingSelect.some(
+                                            <div
+                                              className={`font-poppins ${
+                                                bookingSelect?.some(
                                                   (bookingItem) =>
                                                     bookingItem.screenIndex ===
                                                       screenIndex &&
                                                     bookingItem.dateIndex ===
-                                                      dateIndex
+                                                      dateIndex &&
+                                                    bookingItem.status === true
                                                 )
-                                              ? `Selected ${
-                                                  parseInt(items2.UsedTotal) +
+                                                  ? "text-white"
+                                                  : bookingSelect?.some(
+                                                      (bookingItem) =>
+                                                        bookingItem.screenIndex ===
+                                                          screenIndex &&
+                                                        bookingItem.dateIndex ===
+                                                          dateIndex
+                                                    )
+                                                  ? "text-[#4A4A4A]"
+                                                  : items2.MaxSlot -
+                                                      parseInt(
+                                                        items2.UsedTotal
+                                                      ) >=
+                                                    booking_slot
+                                                  ? "text-white"
+                                                  : "text-white"
+                                              }`}
+                                            >
+                                              {bookingSelect?.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                    dateIndex &&
+                                                  bookingItem.status === true
+                                              )
+                                                ? `Booked ${
+                                                    parseInt(items2.UsedTotal) +
+                                                    booking_slot
+                                                  }/${items2.MaxSlot}`
+                                                : bookingSelect?.some(
+                                                    (bookingItem) =>
+                                                      bookingItem.screenIndex ===
+                                                        screenIndex &&
+                                                      bookingItem.dateIndex ===
+                                                        dateIndex
+                                                  )
+                                                ? `Selected ${
+                                                    parseInt(items2.UsedTotal) +
+                                                    booking_slot
+                                                  }/${items2.MaxSlot}`
+                                                : items2.MaxSlot -
+                                                    parseInt(
+                                                      items2.UsedTotal
+                                                    ) >=
                                                   booking_slot
-                                                }/${items2.MaxSlot}`
-                                              : items2.MaxSlot -
-                                                  parseInt(items2.UsedTotal) >=
-                                                booking_slot
-                                              ? `Available ${parseInt(
-                                                  items2.UsedTotal
-                                                )}/${items2.MaxSlot}`
-                                              : items2.MaxSlot -
-                                                  parseInt(items2.UsedTotal) ===
-                                                0
-                                              ? `Full ${parseInt(
-                                                  items2.UsedTotal
-                                                )}/${items2.MaxSlot}`
-                                              : parseInt(items2.MaxSlot) -
-                                                  parseInt(items2.UsedTotal) <=
-                                                booking_slot
-                                              ? `Not Available ${parseInt(
-                                                  items2.UsedTotal
-                                                )}/${items2.MaxSlot}`
-                                              : ""}
+                                                ? `Available ${parseInt(
+                                                    items2.UsedTotal
+                                                  )}/${items2.MaxSlot}`
+                                                : items2.MaxSlot -
+                                                    parseInt(
+                                                      items2.UsedTotal
+                                                    ) ===
+                                                  0
+                                                ? `Full ${parseInt(
+                                                    items2.UsedTotal
+                                                  )}/${items2.MaxSlot}`
+                                                : parseInt(items2.MaxSlot) -
+                                                    parseInt(
+                                                      items2.UsedTotal
+                                                    ) <=
+                                                  booking_slot
+                                                ? `Not Available ${parseInt(
+                                                    items2.UsedTotal
+                                                  )}/${items2.MaxSlot}`
+                                                : ""}
+                                            </div>
                                           </div>
-                                        </div>
-                                      ))}
+                                        ))}
                                   </div>
                                 </div>
                               </>
@@ -1816,20 +1935,9 @@ const Create_Booking = () => {
                                       <div className="flex justify-start items-center">
                                         <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
                                           Media Rule :{" "}
-                                          {items.ScreenRule[0]?.Width &&
-                                          items.ScreenRule[0]?.Height ? (
-                                            <>
-                                              {parseInt(
-                                                items.ScreenRule[0]?.Width
-                                              ).toString()}
-                                              x
-                                              {parseInt(
-                                                items.ScreenRule[0]?.Height
-                                              ).toString()}
-                                            </>
-                                          ) : (
-                                            "Not Set"
-                                          )}
+                                          {items.Media_Rules
+                                            ? items.Media_Rules
+                                            : "Not Set"}
                                         </div>
                                       </div>
                                     </div>
@@ -1844,49 +1952,24 @@ const Create_Booking = () => {
                                     </div>
                                   </div>
                                   <div className="mt-3 space-y-3">
-                                    {items.booking
-                                      .slice(0, booking_date.length)
-                                      .map((items2, dateIndex) => (
-                                        <div
-                                          key={dateIndex}
-                                          onClick={() =>
-                                            items2.MaxSlot -
-                                              parseInt(items2.UsedTotal) >
-                                            0
-                                              ? handleSelectScreen(
-                                                  screenIndex,
-                                                  dateIndex,
-                                                  items
-                                                )
-                                              : null
-                                          }
-                                          className={`${
-                                            bookingSelect.some(
-                                              (bookingItem) =>
-                                                bookingItem.screenIndex ===
-                                                  screenIndex &&
-                                                bookingItem.dateIndex ===
-                                                  dateIndex &&
-                                                bookingItem.status === true
-                                            )
-                                              ? "bg-[#FD6822] cursor-pointer"
-                                              : bookingSelect.some(
-                                                  (bookingItem) =>
-                                                    bookingItem.screenIndex ===
-                                                      screenIndex &&
-                                                    bookingItem.dateIndex ===
-                                                      dateIndex
-                                                )
-                                              ? "bg-[#FFBD49] cursor-pointer"
-                                              : items2.MaxSlot -
-                                                  parseInt(items2.UsedSlot) >=
-                                                booking_slot
-                                              ? "bg-[#018C41] cursor-pointer"
-                                              : "bg-[#5C5C5C] pointer-events-none"
-                                          } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
-                                        >
+                                    {items.booking !== undefined &&
+                                      items.booking
+                                        .slice(0, booking_date.length)
+                                        .map((items2, dateIndex) => (
                                           <div
-                                            className={`font-poppins ${
+                                            key={dateIndex}
+                                            onClick={() =>
+                                              items2.MaxSlot -
+                                                parseInt(items2.UsedTotal) >
+                                              0
+                                                ? handleSelectScreen(
+                                                    screenIndex,
+                                                    dateIndex,
+                                                    items
+                                                  )
+                                                : null
+                                            }
+                                            className={`${
                                               bookingSelect.some(
                                                 (bookingItem) =>
                                                   bookingItem.screenIndex ===
@@ -1895,7 +1978,7 @@ const Create_Booking = () => {
                                                     dateIndex &&
                                                   bookingItem.status === true
                                               )
-                                                ? "text-white"
+                                                ? "bg-[#FD6822] cursor-pointer"
                                                 : bookingSelect.some(
                                                     (bookingItem) =>
                                                       bookingItem.screenIndex ===
@@ -1903,59 +1986,91 @@ const Create_Booking = () => {
                                                       bookingItem.dateIndex ===
                                                         dateIndex
                                                   )
-                                                ? "text-[#4A4A4A]"
+                                                ? "bg-[#FFBD49] cursor-pointer"
                                                 : items2.MaxSlot -
                                                     parseInt(items2.UsedSlot) >=
                                                   booking_slot
-                                                ? "text-white"
-                                                : "text-white"
-                                            }`}
+                                                ? "bg-[#018C41] cursor-pointer"
+                                                : "bg-[#5C5C5C] pointer-events-none"
+                                            } h-[70px] min-w-[250px] rounded-lg flex justify-center items-center`}
                                           >
-                                            {bookingSelect.some(
-                                              (bookingItem) =>
-                                                bookingItem.screenIndex ===
-                                                  screenIndex &&
-                                                bookingItem.dateIndex ===
-                                                  dateIndex &&
-                                                bookingItem.status === true
-                                            )
-                                              ? `Booked ${
-                                                  parseInt(items2.UsedSlot) +
-                                                  booking_slot
-                                                }/${items2.MaxSlot}`
-                                              : bookingSelect.some(
+                                            <div
+                                              className={`font-poppins ${
+                                                bookingSelect.some(
                                                   (bookingItem) =>
                                                     bookingItem.screenIndex ===
                                                       screenIndex &&
                                                     bookingItem.dateIndex ===
-                                                      dateIndex
+                                                      dateIndex &&
+                                                    bookingItem.status === true
                                                 )
-                                              ? `Selected ${
-                                                  parseInt(items2.UsedSlot) +
+                                                  ? "text-white"
+                                                  : bookingSelect.some(
+                                                      (bookingItem) =>
+                                                        bookingItem.screenIndex ===
+                                                          screenIndex &&
+                                                        bookingItem.dateIndex ===
+                                                          dateIndex
+                                                    )
+                                                  ? "text-[#4A4A4A]"
+                                                  : items2.MaxSlot -
+                                                      parseInt(
+                                                        items2.UsedSlot
+                                                      ) >=
+                                                    booking_slot
+                                                  ? "text-white"
+                                                  : "text-white"
+                                              }`}
+                                            >
+                                              {bookingSelect.some(
+                                                (bookingItem) =>
+                                                  bookingItem.screenIndex ===
+                                                    screenIndex &&
+                                                  bookingItem.dateIndex ===
+                                                    dateIndex &&
+                                                  bookingItem.status === true
+                                              )
+                                                ? `Booked ${
+                                                    parseInt(items2.UsedSlot) +
+                                                    booking_slot
+                                                  }/${items2.MaxSlot}`
+                                                : bookingSelect.some(
+                                                    (bookingItem) =>
+                                                      bookingItem.screenIndex ===
+                                                        screenIndex &&
+                                                      bookingItem.dateIndex ===
+                                                        dateIndex
+                                                  )
+                                                ? `Selected ${
+                                                    parseInt(items2.UsedSlot) +
+                                                    booking_slot
+                                                  }/${items2.MaxSlot}`
+                                                : items2.MaxSlot -
+                                                    parseInt(
+                                                      items2.UsedTotal
+                                                    ) >=
                                                   booking_slot
-                                                }/${items2.MaxSlot}`
-                                              : items2.MaxSlot -
-                                                  parseInt(items2.UsedTotal) >=
-                                                booking_slot
-                                              ? `Available ${parseInt(
-                                                  items2.UsedTotal
-                                                )}/${items2.MaxSlot}`
-                                              : items2.MaxSlot -
-                                                  parseInt(items2.UsedSlot) ===
-                                                0
-                                              ? `Full ${parseInt(
-                                                  items2.UsedSlot
-                                                )}/${items2.MaxSlot}`
-                                              : items2.MaxSlot -
-                                                  parseInt(items2.UsedSlot) <=
-                                                booking_slot
-                                              ? `Not Available ${parseInt(
-                                                  items2.UsedSlot
-                                                )}/${items2.MaxSlot}`
-                                              : ""}
+                                                ? `Available ${parseInt(
+                                                    items2.UsedTotal
+                                                  )}/${items2.MaxSlot}`
+                                                : items2.MaxSlot -
+                                                    parseInt(
+                                                      items2.UsedSlot
+                                                    ) ===
+                                                  0
+                                                ? `Full ${parseInt(
+                                                    items2.UsedSlot
+                                                  )}/${items2.MaxSlot}`
+                                                : items2.MaxSlot -
+                                                    parseInt(items2.UsedSlot) <=
+                                                  booking_slot
+                                                ? `Not Available ${parseInt(
+                                                    items2.UsedSlot
+                                                  )}/${items2.MaxSlot}`
+                                                : ""}
+                                            </div>
                                           </div>
-                                        </div>
-                                      ))}
+                                        ))}
                                   </div>
                                 </div>
                               </>
@@ -1993,6 +2108,7 @@ const Create_Booking = () => {
           toggleCheckboxAddScreen={toggleCheckboxAddScreen}
           handleAddScreen={handleAddScreen}
           booking_slot={booking_slot}
+          bookingId={bookingId}
         />
       )}
 

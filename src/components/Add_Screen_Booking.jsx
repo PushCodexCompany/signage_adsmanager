@@ -18,6 +18,7 @@ const Add_Screen_Booking = ({
   toggleCheckboxAddScreen,
   handleAddScreen,
   booking_slot,
+  bookingId,
 }) => {
   const { token } = User.getCookieData();
   const [screen, setScreens] = useState([]);
@@ -38,12 +39,17 @@ const Add_Screen_Booking = ({
     let data;
     if (filter && filter.length > 0) {
       data = await User.getScreensWithAdsCapacityAndTag(
+        bookingId,
         booking_slot,
         filter,
         token
       );
     } else {
-      data = allScreenData;
+      data = await User.getScreensWithAdsCapacity(
+        bookingId,
+        booking_slot,
+        token
+      );
     }
     setScreens(data);
   };
@@ -213,17 +219,20 @@ const Add_Screen_Booking = ({
                 </tr>
               </thead>
               <tbody>
-                {screen.map((row, key) => (
-                  <tr key={row.id}>
-                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className=" h-5 w-5 cursor-pointer"
-                          checked={checkboxes[row.ScreenID] || false}
-                          onChange={() => toggleCheckboxAddScreen(row.ScreenID)}
-                        />
-                        {/* <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
+                {screen.length > 0 ? (
+                  screen.map((row, key) => (
+                    <tr key={row.id}>
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            className=" h-5 w-5 cursor-pointer"
+                            checked={checkboxes[row.ScreenID] || false}
+                            onChange={() =>
+                              toggleCheckboxAddScreen(row.ScreenID)
+                            }
+                          />
+                          {/* <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
                         {checkboxes[row.id] && (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -241,71 +250,82 @@ const Add_Screen_Booking = ({
                           </svg>
                         )}
                       </span> */}
-                      </div>
-                    </td>
-                    <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
-                      <div className="flex items-center">
-                        <div className="font-poppins text-xl font-bold">
-                          {row.ScreenName}
                         </div>
-                        <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
-                      </div>
-                    </td>
-                    <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
-                      <div className="font-poppins text-sm text-[#59606C] font-bold">
-                        {row.ScreenLocation || "No Data"}
-                      </div>
-                      <div className="font-poppins text-sm font-bold">
-                        {row.province || "No Data"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                      <div className="font-poppins font-bold">
-                        {findScreenResolutionID(row.ScreenResolutionID)}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="flex flex-wrap">
-                        {row.ScreenTag.length > 0 ? (
-                          row.ScreenTag.map((items, index) => (
+                      </td>
+                      <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                        <div className="flex items-center">
+                          <div className="font-poppins text-xl font-bold">
+                            {row.ScreenName}
+                          </div>
+                          <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                        </div>
+                      </td>
+                      <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
+                        <div className="font-poppins text-sm text-[#59606C] font-bold">
+                          {row.ScreenLocation || "No Data"}
+                        </div>
+                        <div className="font-poppins text-sm font-bold">
+                          {row.province || "No Data"}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                        <div className="font-poppins font-bold">
+                          {findScreenResolutionID(row.ScreenResolutionID)}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="flex flex-wrap">
+                          {row.ScreenTag.length > 0 ? (
+                            row.ScreenTag.map((items, index) => (
+                              <div
+                                key={index}
+                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                                style={{
+                                  flexBasis: `calc(${
+                                    100 / row.ScreenTag.length
+                                  }% - 8px)`,
+                                }}
+                              >
+                                <div className="font-poppins text-xs font-bold">
+                                  {items.TagName}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
                             <div
-                              key={index}
                               className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                              style={{
-                                flexBasis: `calc(${
-                                  100 / row.ScreenTag.length
-                                }% - 8px)`,
-                              }}
+                              style={{ flexBasis: "calc(100% - 8px)" }}
                             >
                               <div className="font-poppins text-xs font-bold">
-                                {items.TagName}
+                                No Tag
                               </div>
                             </div>
-                          ))
-                        ) : (
-                          <div
-                            className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                            style={{ flexBasis: "calc(100% - 8px)" }}
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                        <div className="space-x-2">
+                          <button
+                            className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
+                            onClick={() => alert(key)}
                           >
-                            <div className="font-poppins text-xs font-bold">
-                              No Tag
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                      <div className="space-x-2">
-                        <button
-                          className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
-                          onClick={() => alert(key)}
-                        >
-                          View Detail
-                        </button>
+                            View Detail
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="p-4">
+                      <div className="flex justify-center items-center">
+                        <span className="text-gray-300 text-4xl">
+                          No Screen(s)
+                        </span>
                       </div>
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
