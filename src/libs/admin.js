@@ -946,4 +946,17 @@ export default {
 
     return data;
   },
+
+  deleteScreenBooking: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/delete_bookingscreen?bookingid=${hash.bookingid}&screenid=${hash.screenid}`;
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
 };

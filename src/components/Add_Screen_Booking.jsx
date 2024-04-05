@@ -13,7 +13,6 @@ const Add_Screen_Booking = ({
   setOpenAddNewScreenModal,
   selectAll,
   toggleAllCheckboxes,
-  allScreenData,
   checkboxes,
   toggleCheckboxAddScreen,
   handleAddScreen,
