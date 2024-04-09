@@ -902,7 +902,7 @@ export default {
     }
   },
 
-  getBookingById: async function (token, booking_id) {
+  getBookingById: async function (booking_id, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -956,6 +956,32 @@ export default {
 
     let urlString = `api/v1/delete_bookingscreen?bookingid=${hash.bookingid}&screenid=${hash.screenid}`;
     const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
+  updateBookingName: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/update_booking?bookingid=${hash.bookingid}&bookingname=${hash.bookingname}`;
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
+
+  updateBookingContent: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/update_bookingcontent?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&bookingcontent=${hash.bookingcontent}`;
+    const { data } = await this._post(urlString, hash, config);
 
     return data;
   },

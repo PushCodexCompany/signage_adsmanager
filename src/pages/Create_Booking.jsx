@@ -8,6 +8,8 @@ import {
   IoMdTrash,
 } from "react-icons/io";
 
+import { RiEditLine } from "react-icons/ri";
+
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PiMonitor } from "react-icons/pi";
 
@@ -162,7 +164,7 @@ const Create_Booking = () => {
     });
     setBookingId(BookingID);
 
-    const booking_data = await User.getBookingById(token, BookingID);
+    const booking_data = await User.getBookingById(BookingID, token);
     const booking_date = [
       ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
     ];
@@ -180,6 +182,7 @@ const Create_Booking = () => {
       if (filter_screen) {
         if (existing) {
           existing.booking.push({
+            BookingDateID: curr.BookingDateID,
             UsedSlot: curr.UsedSlot,
             OtherUseSlot: curr.OtherUseSlot,
             UsedTotal: curr.UsedTotal,
@@ -200,6 +203,7 @@ const Create_Booking = () => {
             MaxSlot: parseInt(curr.MaxSlot),
             booking: [
               {
+                BookingDateID: curr.BookingDateID,
                 UsedSlot: curr.UsedSlot,
                 OtherUseSlot: curr.OtherUseSlot,
                 UsedTotal: curr.UsedTotal,
@@ -224,7 +228,7 @@ const Create_Booking = () => {
   };
 
   const setBookingData = async () => {
-    const booking_data = await User.getBookingById(token, bookingId);
+    const booking_data = await User.getBookingById(bookingId, token);
     const all_screens_data = await User.getScreens(token);
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
@@ -235,6 +239,7 @@ const Create_Booking = () => {
       if (filter_screen) {
         if (existing) {
           existing.booking.push({
+            BookingDateID: curr.BookingDateID,
             UsedSlot: curr.UsedSlot,
             OtherUseSlot: curr.OtherUseSlot,
             UsedTotal: curr.UsedTotal,
@@ -255,6 +260,7 @@ const Create_Booking = () => {
             MaxSlot: parseInt(curr.MaxSlot),
             booking: [
               {
+                BookingDateID: curr.BookingDateID,
                 UsedSlot: curr.UsedSlot,
                 OtherUseSlot: curr.OtherUseSlot,
                 UsedTotal: curr.UsedTotal,
@@ -354,28 +360,6 @@ const Create_Booking = () => {
   };
 
   const toggleScreenFromAllScreen = async (items) => {
-    items.booking = [];
-    for (let i = 0; i < booking_date.length; i++) {
-      items.booking.push({
-        UsedSlot: "0",
-        OtherUseSlot: "0",
-        UsedTotal: "0",
-        AvailableSlot: "10",
-        MaxSlot: items.ScreenRule[0].AdsCapacity,
-      });
-    }
-
-    const obj = {
-      MaxSlot: parseInt(items.ScreenRule[0].AdsCapacity),
-      Media_Rules:
-        items.ScreenRule[0].Width && items.ScreenRule[0].Height
-          ? items.ScreenRule[0].Width + "x" + items.ScreenRule[0].Height
-          : "Not Set",
-      ScreenID: items.ScreenID,
-      ScreenName: items.ScreenName,
-      booking: items.booking,
-    };
-
     const obj_to_save = {
       bookingid: bookingId,
       screenids: items.ScreenID,
@@ -388,11 +372,25 @@ const Create_Booking = () => {
           icon: "success",
           title: "เลือก Screen สำเร็จ!",
           text: `เลือก Screen สำเร็จ!`,
-        }).then((result) => {
+        }).then(async (result) => {
           if (
             result.isConfirmed ||
             result.dismiss === Swal.DismissReason.backdrop
           ) {
+            const data = await User.getBookingById(bookingId, token);
+            const filteredData = data.filter(
+              (item) => item.ScreenID === items.ScreenID
+            );
+            const obj = {
+              MaxSlot: parseInt(items.ScreenRule[0].AdsCapacity),
+              Media_Rules:
+                items.ScreenRule[0].Width && items.ScreenRule[0].Height
+                  ? items.ScreenRule[0].Width + "x" + items.ScreenRule[0].Height
+                  : "Not Set",
+              ScreenID: items.ScreenID,
+              ScreenName: items.ScreenName,
+              booking: filteredData,
+            };
             screenData.push(obj);
             setScreenData(screenData);
             setBookingData();
@@ -565,7 +563,12 @@ const Create_Booking = () => {
     if (!isDuplicate) {
       const newBookingSelect = [
         ...bookingSelect,
-        { screenIndex, dateIndex, ScreenID: items.ScreenID },
+        {
+          screenIndex,
+          dateIndex,
+          ScreenID: items.ScreenID,
+          BookingDateID: items.booking[dateIndex].BookingDateID,
+        },
       ];
       setBookingSelect(newBookingSelect);
     } else {
@@ -580,13 +583,60 @@ const Create_Booking = () => {
     }
   };
 
-  const handleSaveScreen = () => {
+  const handleSaveScreen = async () => {
     if (bookingSelect.length > 0) {
-      const updatedData = bookingSelect.map((item) => {
-        return { ...item, status: true };
+      const obj = {
+        bookingid: bookingId,
+        bookingaction: "saved",
+        bookingcontent: [],
+      };
+      screenData.forEach((screen) => {
+        screen.booking.forEach((booking) => {
+          const matchingBooking = bookingSelect.find(
+            (select) =>
+              select.ScreenID === screen.ScreenID &&
+              select.BookingDateID === booking.BookingDateID
+          );
+          const sbdstatus = matchingBooking ? "saved" : "none";
+          obj.bookingcontent.push({
+            bookingdateid: booking.BookingDateID,
+            screenid: screen.ScreenID,
+            sbdstatus,
+          });
+        });
       });
 
-      setBookingSelect(updatedData);
+      try {
+        console.log("obj", obj);
+        const data = await User.updateBookingContent(obj, token);
+        console.log("data", data);
+
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "บันทึกสำเร็จ!",
+            text: `บันทึกสำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              const updatedData = bookingSelect.map((item) => {
+                return { ...item, status: true };
+              });
+              setBookingSelect(updatedData);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       Swal.fire({
         icon: "error",
@@ -674,6 +724,138 @@ const Create_Booking = () => {
       </>
     );
   };
+
+  const EditableText = ({ initialValue }) => {
+    const [editing, setEditing] = useState(false);
+    const [value, setValue] = useState(initialValue);
+
+    const handleClick = () => {
+      setEditing(true);
+    };
+
+    const handleChange = (e) => {
+      setValue(e.target.value);
+    };
+
+    const handleKeyPress = async (e) => {
+      if (e.key === "Enter") {
+        const result = await Swal.fire({
+          title: `Do you want to change booking name ?`,
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+        });
+
+        if (result.isConfirmed) {
+          const obj = {
+            bookingid: bookingId,
+            bookingname: value,
+          };
+
+          try {
+            const data = await User.updateBookingName(obj, token);
+
+            if (data.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "แก้ไขชื่อ Booking name สำเร็จ!",
+                text: `แก้ไขชื่อ Booking name สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  setEditing(false);
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
+            }
+          } catch (error) {
+            console.log("error", error);
+          }
+        }
+      }
+    };
+
+    const handleBlur = async () => {
+      const result = await Swal.fire({
+        title: `Do you want to change booking name ?`,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+      });
+
+      if (result.isConfirmed) {
+        const obj = {
+          bookingid: bookingId,
+          bookingname: value,
+        };
+
+        try {
+          const data = await User.updateBookingName(obj, token);
+
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "แก้ไขชื่อ Booking name สำเร็จ!",
+              text: `แก้ไขชื่อ Booking name สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                setEditing(false);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          console.log("error", error);
+        }
+      }
+    };
+
+    return (
+      <div className="grid grid-cols-6">
+        <div className="col-span-3">
+          <div className="flex">
+            {editing ? (
+              <input
+                type="text"
+                value={value}
+                onChange={handleChange}
+                onKeyPress={handleKeyPress}
+                onBlur={handleBlur}
+                autoFocus
+                className="font-poppins font-semibold text-2xl w-[95%] pl-2"
+              />
+            ) : (
+              <div className="font-poppins font-semibold text-2xl w-[95%] pl-2">
+                {value}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="col-span-3">
+          <div className="flex justify-start items-center">
+            <RiEditLine
+              className="text-[26px] text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+              onClick={handleClick}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <Navbar />
@@ -681,9 +863,9 @@ const Create_Booking = () => {
         <Header category="Page" title="Home" />
         <div className="grid grid-cols-10 mt-5">
           <div className="col-span-6">
-            <div className="font-poppins font-semibold text-2xl w-[95%] pl-2">
-              {bookingName}
-            </div>
+            {/* <div className="font-poppins font-semibold text-2xl w-[95%] pl-2"> */}
+            <EditableText initialValue={bookingName} />
+            {/* </div> */}
           </div>
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
@@ -996,11 +1178,11 @@ const Create_Booking = () => {
                     {merchandise.AccountCode}
                   </div>
                 </div>
-                <div className="flex justify-center items-center mt-5">
+                {/* <div className="flex justify-center items-center mt-5">
                   <div className="font-poppins font-bold lg:text-xl md:text-md text-[#59606C]">
                     {bookingCode}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="h-[350px] overflow-y-auto mt-5">
                   {allScreenData.length > 0 &&
@@ -1131,11 +1313,11 @@ const Create_Booking = () => {
                     {merchandise.AccountCode}
                   </div>
                 </div>
-                <div className="flex justify-center items-center mt-5">
+                {/* <div className="flex justify-center items-center mt-5">
                   <div className="font-poppins font-bold lg:text-xl md:text-md text-[#59606C]">
                     {bookingCode}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="h-[350px] overflow-y-auto mt-5">
                   {allScreenData.length > 0 &&
