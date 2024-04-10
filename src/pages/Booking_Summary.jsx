@@ -4,18 +4,21 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useCheckPermission from "../libs/useCheckPermission";
 import { PiMonitor } from "react-icons/pi";
 import { format } from "date-fns";
+import User from "../libs/admin";
+import Swal from "sweetalert2";
 
 const Booking_Summary = () => {
   useCheckPermission();
   const location = useLocation();
   const navigate = useNavigate();
-
+  const { token } = User.getCookieData();
   const [screen, setScreen] = useState([]);
   const [booking_name, setBookingName] = useState(null);
   const [period, setPeriod] = useState([]);
   const [slotPerDays, setSlotPerDays] = useState(null);
   const [merchandise, setMerchandise] = useState([]);
   const [total_slot, setTotalSlot] = useState(null);
+  const [publish_data, setPublishData] = useState([]);
 
   useEffect(() => {
     setBookingData();
@@ -29,6 +32,7 @@ const Booking_Summary = () => {
       slot_per_days,
       merchandise,
       total_slot,
+      publish_data,
     } = location.state.data;
     setScreen(screen);
     setBookingName(booking_name);
@@ -41,19 +45,37 @@ const Booking_Summary = () => {
     setSlotPerDays(slot_per_days);
     setMerchandise(merchandise);
     setTotalSlot(total_slot);
+    setPublishData(publish_data);
   };
 
-  const handleConfirmBooking = () => {
-    const obj = {
-      screen: screen,
-      booking_name: booking_name,
-      period: period,
-      slotPerDays: slotPerDays,
-      merchandise: merchandise,
-      total_slot: total_slot,
-    };
-
-    console.log("obj", obj);
+  const handleConfirmBooking = async () => {
+    if (publish_data) {
+      try {
+        const data = await User.updateBookingContent(publish_data, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "บันทึกสำเร็จ!",
+            text: `บันทึกสำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              navigate(`/booking`);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (

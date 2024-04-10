@@ -9,8 +9,6 @@ import {
 } from "react-icons/io";
 
 import { RiEditLine } from "react-icons/ri";
-
-import { MdOutlineModeEditOutline } from "react-icons/md";
 import { PiMonitor } from "react-icons/pi";
 
 import { format } from "date-fns";
@@ -1866,6 +1864,7 @@ const Create_Booking = () => {
           booking_slot={booking_slot}
           booking_date={booking_date}
           screenData={screenData}
+          booking_id={bookingId}
         />
       )}
 

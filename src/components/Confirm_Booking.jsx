@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import { PiWarningCircleFill } from "react-icons/pi";
 import _ from "lodash";
+import Swal from "sweetalert2";
 
 const Confirm_Booking = ({
   setOpenConfirmBookingModal,
@@ -13,38 +14,71 @@ const Confirm_Booking = ({
   booking_slot,
   booking_date,
   screenData,
+  booking_id,
 }) => {
   const navigate = useNavigate();
 
   const handleConfirmBookingScreen = () => {
-    const screen_with_booking_value = [...screenData];
-    const group_data = GroupedData(bookingSelect);
+    if (bookingSelect.length > 0) {
+      const screen_with_booking_value = [...screenData];
+      const group_data = GroupedData(bookingSelect);
 
-    screen_with_booking_value.forEach((screen) => {
-      const matchingGroupData = group_data.find(
-        (group) => group.ScreenID === screen.ScreenID
-      );
-      if (matchingGroupData) {
-        screen.screen_booking_amount = matchingGroupData.screen_booking_amount;
-      } else {
-        screen.screen_booking_amount = 0;
-      }
-    });
+      screen_with_booking_value.forEach((screen) => {
+        const matchingGroupData = group_data.find(
+          (group) => group.ScreenID === screen.ScreenID
+        );
+        if (matchingGroupData) {
+          screen.screen_booking_amount =
+            matchingGroupData.screen_booking_amount;
+        } else {
+          screen.screen_booking_amount = 0;
+        }
+      });
 
-    const total_slot = bookingSelect.length * booking_slot;
+      const total_slot = bookingSelect.length * booking_slot;
 
-    const booking_obj = {
-      screen: screen_with_booking_value,
-      booking_name: bookingName,
-      period: booking_date,
-      slot_per_days: booking_slot,
-      merchandise,
-      total_slot,
-    };
+      const obj = {
+        bookingid: booking_id,
+        bookingaction: "publish",
+        bookingcontent: [],
+      };
 
-    navigate(`/booking/booking_pricing_summary`, {
-      state: { data: booking_obj },
-    });
+      screenData.forEach((screen) => {
+        screen.booking.forEach((booking) => {
+          const matchingBooking = bookingSelect.find(
+            (select) =>
+              select.ScreenID === screen.ScreenID &&
+              select.BookingDateID === booking.BookingDateID
+          );
+          const sbdstatus = matchingBooking ? "saved" : "none";
+          obj.bookingcontent.push({
+            bookingdateid: booking.BookingDateID,
+            screenid: screen.ScreenID,
+            sbdstatus,
+          });
+        });
+      });
+
+      const booking_obj = {
+        screen: screen_with_booking_value,
+        booking_name: bookingName,
+        period: booking_date,
+        slot_per_days: booking_slot,
+        merchandise,
+        total_slot,
+        publish_data: obj,
+      };
+
+      navigate(`/booking/booking_pricing_summary`, {
+        state: { data: booking_obj },
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกหน้าจอที่ต้องการจอง ...",
+      });
+    }
   };
 
   const GroupedData = (data) => {
