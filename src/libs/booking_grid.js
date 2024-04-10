@@ -28,7 +28,13 @@ export const GridTable = ({ booking_data }) => {
 
   const onClickEdit = (obj) => {
     navigate(`/booking/${obj.BookingName}`, {
-      state: { data: obj, isEdited: true },
+      state: { data: obj },
+    });
+  };
+
+  const handleSelectBooking = (obj) => {
+    navigate(`/booking/select/${obj.BookingName}`, {
+      state: { data: obj },
     });
   };
 
@@ -123,7 +129,10 @@ export const GridTable = ({ booking_data }) => {
                   <div className="font-poppins text-md">{row.BookingID}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
-                  <div className="font-poppins text-xl  text-[#6425FE]">
+                  <div
+                    onClick={() => handleSelectBooking(row)}
+                    className="font-poppins text-xl  text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                  >
                     {row.BookingName}
                   </div>
                   <div className="font-poppins text-sm text-gray-500">

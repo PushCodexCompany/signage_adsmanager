@@ -30,7 +30,6 @@ const Booking_Summary = () => {
       merchandise,
       total_slot,
     } = location.state.data;
-
     setScreen(screen);
     setBookingName(booking_name);
 

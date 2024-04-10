@@ -8,21 +8,16 @@ const Confirm_Booking = ({
   setOpenConfirmBookingModal,
   openConfirmBookingModal,
   bookingName,
-  allScreenData,
-  selectedScreenItems,
   bookingSelect,
   merchandise,
   booking_slot,
   booking_date,
+  screenData,
 }) => {
   const navigate = useNavigate();
 
   const handleConfirmBookingScreen = () => {
-    const screen = allScreenData.filter((screen) =>
-      selectedScreenItems.includes(screen.ScreenID)
-    );
-
-    const screen_with_booking_value = setBookingValue(bookingSelect, screen);
+    const screen_with_booking_value = [...screenData];
     const group_data = GroupedData(bookingSelect);
 
     screen_with_booking_value.forEach((screen) => {
@@ -50,20 +45,6 @@ const Confirm_Booking = ({
     navigate(`/booking/booking_pricing_summary`, {
       state: { data: booking_obj },
     });
-  };
-
-  const setBookingValue = (booking_data, screen_data) => {
-    const screen_clone = _.cloneDeep(screen_data);
-
-    booking_data.forEach((update) => {
-      screen_clone.forEach((items2) => {
-        if (update.ScreenID === items2.ScreenID) {
-          items2.booking[update.dateIndex].booking = booking_slot;
-        }
-      });
-    });
-
-    return screen_clone;
   };
 
   const GroupedData = (data) => {
@@ -95,7 +76,7 @@ const Confirm_Booking = ({
       </div>
       <div className="bg-[#FFFFFF] w-4/5 lg:w-2/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
         <div className="mt-28">
-          <div className="p-2">
+          <div className="p-3">
             <div className="flex justify-center items-center">
               <PiWarningCircleFill size={200} color="#2F3847" />
             </div>
