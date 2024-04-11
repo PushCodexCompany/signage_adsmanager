@@ -6,7 +6,12 @@ import { bookingData } from "../data/mockup";
 import { useNavigate } from "react-router-dom";
 
 import { IoIosArrowDown } from "react-icons/io";
-import { RiDeleteBin5Line, RiEditLine, RiShareBoxLine } from "react-icons/ri";
+import {
+  RiDeleteBin5Line,
+  RiEditLine,
+  RiShareBoxLine,
+  RiVideoAddLine,
+} from "react-icons/ri";
 
 const getImg = (id) => {
   let img;
@@ -158,16 +163,29 @@ export const GridTable = ({ booking_data }) => {
                     {row.SlotPerDay ? row.SlotPerDay : 0}
                   </div>
                 </td>
-                <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                  <div className="space-x-2">
-                    <button onClick={() => onClickEdit(row)}>
-                      <RiEditLine
-                        size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
-                      />
-                    </button>
-                  </div>
-                </td>
+                {row.BookingStatus === 1 ? (
+                  <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                    <div className="space-x-2">
+                      <button onClick={() => onClickEdit(row)}>
+                        <RiEditLine
+                          size={20}
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                        />
+                      </button>
+                    </div>
+                  </td>
+                ) : (
+                  <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                    <div className="space-x-2">
+                      <button onClick={() => handleSelectBooking(row)}>
+                        <RiVideoAddLine
+                          size={20}
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                        />
+                      </button>
+                    </div>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

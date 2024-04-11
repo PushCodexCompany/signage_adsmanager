@@ -910,7 +910,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_bookingcontent?bookingid=${booking_id}`,
+      `api/v1/get_bookingslots?bookingid=${booking_id}`,
       "",
       config
     );
@@ -980,7 +980,7 @@ export default {
       },
     };
 
-    let urlString = `api/v1/update_bookingcontent?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&bookingcontent=${hash.bookingcontent}`;
+    let urlString = `api/v1/update_bookingslots?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&bookingcontent=${hash.bookingcontent}`;
     const { data } = await this._post(urlString, hash, config);
 
     return data;

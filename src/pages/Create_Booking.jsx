@@ -488,6 +488,23 @@ const Create_Booking = () => {
     });
   };
 
+  // const findScreenData = (screen_data, type) => {
+  //   let return_data;
+  //   const find_screen = allScreenData.find(
+  //     (items) => items.ScreenID === screen_data.ScreenID
+  //   );
+
+  //   if (type === "name") {
+  //     return_data = find_screen.ScreenName;
+  //   } else if (type === "location") {
+  //     return_data = find_screen.ScreenLocation;
+  //   } else if (type === "info") {
+  //     return_data = find_screen;
+  //   }
+
+  //   return return_data;
+  // };
+
   const handleConfirmDelete = async (index, id) => {
     // ลบจอที่เลือก
     const obj = {
@@ -576,6 +593,51 @@ const Create_Booking = () => {
       );
       setBookingSelect(filteredBookingSelect);
     }
+  };
+
+  const handleSelectAllAvilable = () => {
+    const output = [];
+
+    screenData.forEach((screen, screenIndex) => {
+      screen.booking.forEach((booking, dateIndex) => {
+        if (parseInt(booking.AvailableSlot) > booking_slot) {
+          output.push({
+            screenIndex,
+            dateIndex,
+            ScreenID: screen.ScreenID,
+            BookingDateID: booking.BookingDateID,
+          });
+        }
+      });
+    });
+
+    setBookingSelect(output);
+
+    // if (!isDuplicate) {
+    //   const newBookingSelect = [
+    //     ...bookingSelect,
+    //     {
+    //       screenIndex,
+    //       dateIndex,
+    //       ScreenID: items.ScreenID,
+    //       BookingDateID: items.booking[dateIndex].BookingDateID,
+    //     },
+    //   ];
+    //   setBookingSelect(newBookingSelect);
+    // } else {
+    //   const filteredBookingSelect = bookingSelect.filter(
+    //     (selected) =>
+    //       !(
+    //         selected.screenIndex === screenIndex &&
+    //         selected.dateIndex === dateIndex
+    //       )
+    //   );
+    //   setBookingSelect(filteredBookingSelect);
+    // }
+  };
+
+  const handleDeselectAllAvilable = () => {
+    setBookingSelect([]);
   };
 
   const handleRemoveScreen = (screenIndex, dateIndex, items) => {
@@ -1034,8 +1096,8 @@ const Create_Booking = () => {
                   </div>
                 </div> */}
 
-              <div className="h-[350px] overflow-y-auto mt-5">
-                {allScreenData.length > 0 &&
+              <div className="h-[400px] overflow-y-auto mt-5">
+                {screenData.length > 0 ? (
                   allScreenData.map((items, index) => (
                     <div
                       key={index}
@@ -1058,11 +1120,13 @@ const Create_Booking = () => {
                           <div className="col-span-6">
                             <div className="flex justify-start items-center">
                               <div className="font-poppins lg:text-xl md:text-md font-bold">
+                                {/* {findScreenData(items, "name")} */}
                                 {items.ScreenName}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
                               <div className="font-poppins lg:text-sm md:text-xs">
+                                {/* {findScreenData(items, "location")} */}
                                 {items.ScreenLocation}
                               </div>
                             </div>
@@ -1082,6 +1146,8 @@ const Create_Booking = () => {
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleSelectInfoScreen(items, "left");
+                                // const data = findScreenData(items, "info");
+                                // handleSelectInfoScreen(data, "left");
                               }}
                               size={22}
                               className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
@@ -1139,7 +1205,12 @@ const Create_Booking = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
+                  ))
+                ) : (
+                  <div className="h-[400px] border border-gray-300 flex justify-center items-center text-gray-500 text-2xl">
+                    No Screen(s) Selected
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1570,17 +1641,29 @@ const Create_Booking = () => {
                 <div className="grid grid-cols-12 space-x-1 mt-3">
                   <div className="col-span-3 lg:col-span-1">
                     <div className="min-w-[100%]">
-                      <div
-                        onClick={() => console.log("Select all", screenData)}
-                        className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
-                      >
-                        <div className="text-xs font-poppins text-white">
-                          Select all
+                      {bookingSelect.length <= 0 ? (
+                        <div
+                          onClick={() => handleSelectAllAvilable()}
+                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                        >
+                          <div className="text-xs font-poppins text-white">
+                            Select all
+                          </div>
+                          <div className="text-xs font-poppins text-white">
+                            available
+                          </div>
                         </div>
-                        <div className="text-xs font-poppins text-white">
-                          available
+                      ) : (
+                        <div
+                          onClick={() => handleDeselectAllAvilable()}
+                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                        >
+                          <div className="text-xs font-poppins text-white">
+                            Deselect All
+                          </div>
                         </div>
-                      </div>
+                      )}
+
                       <div>
                         {booking_date.length > 0 &&
                           booking_date.map((items, index) => (

@@ -39,7 +39,7 @@ const Confirm_Booking = ({
 
       const obj = {
         bookingid: booking_id,
-        bookingaction: "publish",
+        bookingaction: "confirmed",
         bookingcontent: [],
       };
 
