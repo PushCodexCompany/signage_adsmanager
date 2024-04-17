@@ -985,4 +985,23 @@ export default {
 
     return data;
   },
+
+  getBookingContent: async function (booking_id, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_bookingcontent?bookingid=${booking_id}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
 };

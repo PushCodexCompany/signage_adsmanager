@@ -135,8 +135,8 @@ export const GridTable = ({ booking_data }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
                   <div
-                    onClick={() => handleSelectBooking(row)}
-                    className="font-poppins text-xl  text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                    // onClick={() => handleSelectBooking(row)}
+                    className="font-poppins text-xl  text-[#6425FE]"
                   >
                     {row.BookingName}
                   </div>

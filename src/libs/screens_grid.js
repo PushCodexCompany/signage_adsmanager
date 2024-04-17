@@ -222,9 +222,9 @@ export const GridTable = ({
                   <div className="font-poppins text-sm text-[#59606C] font-bold">
                     {row.ScreenLocation || "No Data"}
                   </div>
-                  <div className="font-poppins text-sm font-bold">
+                  {/* <div className="font-poppins text-sm font-bold">
                     {row.province || "No Data"}
-                  </div>
+                  </div> */}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins font-bold">

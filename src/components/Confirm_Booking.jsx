@@ -69,8 +69,16 @@ const Confirm_Booking = ({
         publish_data: obj,
       };
 
+      const select_obj = {
+        BookingID: parseInt(booking_id),
+        BookingName: bookingName,
+        AdvertiserName: merchandise.AdvertiserName,
+        AdvertiserLogo: merchandise.AdvertiserLogo,
+        TotalScreen: screen_with_booking_value.length,
+        SlotPerDay: booking_slot.toString(),
+      };
       navigate(`/booking/booking_pricing_summary`, {
-        state: { data: booking_obj },
+        state: { data: booking_obj, select: select_obj },
       });
     } else {
       Swal.fire({
