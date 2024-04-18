@@ -166,149 +166,149 @@ const Ads_Allocation_Booking = ({
     }
   };
 
-  const renderMediaList = (slots, media_list) => {
-    const nullFreeList = media_list.filter((it) => it.media_id !== null);
-    var currentIndex = 0;
-    var accumulatecSlotSize = 1;
+  // const renderMediaList = (slots, media_list) => {
+  //   const nullFreeList = media_list.filter((it) => it.media_id !== null);
+  //   var currentIndex = 0;
+  //   var accumulatecSlotSize = 1;
 
-    // *** Need to get the actual booking size
-    // const slots = 15;
+  //   // *** Need to get the actual booking size
+  //   // const slots = 15;
 
-    const mediaSize = nullFreeList.reduce((acc, b) => {
-      var slotSizeB = 1;
-      if ("slot_size" in b) slotSizeB = b.slot_size;
+  //   const mediaSize = nullFreeList.reduce((acc, b) => {
+  //     var slotSizeB = 1;
+  //     if ("slot_size" in b) slotSizeB = b.slot_size;
 
-      return acc + slotSizeB;
-    }, 0);
+  //     return acc + slotSizeB;
+  //   }, 0);
 
-    const emptySlots = [];
+  //   const emptySlots = [];
 
-    for (var i = mediaSize; i < slots; i++) {
-      emptySlots.push({
-        media_id: null,
-        media_name: null,
-        media_type: null,
-        media_size: null,
-        media_duration: null,
-        slot_size: 1,
-        slot_num: i + 1,
-      });
-    }
+  //   for (var i = mediaSize; i < slots; i++) {
+  //     emptySlots.push({
+  //       media_id: null,
+  //       media_name: null,
+  //       media_type: null,
+  //       media_size: null,
+  //       media_duration: null,
+  //       slot_size: 1,
+  //       slot_num: i + 1,
+  //     });
+  //   }
 
-    const processedMediaList = [...nullFreeList, ...emptySlots];
+  //   const processedMediaList = [...nullFreeList, ...emptySlots];
 
-    return processedMediaList.map((items, index) => {
-      const slotSize = "slot_size" in items ? items.slot_size : 1;
-      // *** use dynamic height depending on slot_size
-      const itemHeight = 80 * slotSize;
+  //   return processedMediaList.map((items, index) => {
+  //     const slotSize = "slot_size" in items ? items.slot_size : 1;
+  //     // *** use dynamic height depending on slot_size
+  //     const itemHeight = 80 * slotSize;
 
-      return (
-        <Draggable
-          key={`panel1-${index}`}
-          draggableId={`panel1-${index}`}
-          index={index}
-        >
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              className={`col-span-11`}
-            >
-              {items.media_id ? (
-                <div className="flex items-center mr-1">
-                  <div>
-                    {processedMediaList.filter((item) => item.media_id === null)
-                      .length > 0 && (
-                      <>
-                        <IoIosAddCircle
-                          size={24}
-                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                          onClick={() => handleAddMediaPlaylistItem(index)}
-                        />
-                      </>
-                    )}
+  //     return (
+  //       <Draggable
+  //         key={`panel1-${index}`}
+  //         draggableId={`panel1-${index}`}
+  //         index={index}
+  //       >
+  //         {(provided) => (
+  //           <div
+  //             ref={provided.innerRef}
+  //             {...provided.draggableProps}
+  //             {...provided.dragHandleProps}
+  //             className={`col-span-11`}
+  //           >
+  //             {items.media_id ? (
+  //               <div className="flex items-center mr-1">
+  //                 <div>
+  //                   {processedMediaList.filter((item) => item.media_id === null)
+  //                     .length > 0 && (
+  //                     <>
+  //                       <IoIosAddCircle
+  //                         size={24}
+  //                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+  //                         onClick={() => handleAddMediaPlaylistItem(index)}
+  //                       />
+  //                     </>
+  //                   )}
 
-                    <IoIosRemoveCircle
-                      size={24}
-                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      onClick={() => handleRemoveMediaPlaylistItem(index)}
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <div
-                      className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[265px] lg:w-[320px]`}
-                      style={{ height: `${itemHeight}px` }}
-                    >
-                      <div className="col-span-2 flex justify-center items-center">
-                        {items.media_type === "video" ? (
-                          <FiVideo size={30} className="text-[#6425FE]" />
-                        ) : (
-                          <FiImage size={30} className="text-[#6425FE]" />
-                        )}
-                      </div>
-                      <div className="col-span-8 flex justify-start items-center">
-                        <div>
-                          <div className="flex justify-start items-center">
-                            <div className="font-poppins text-[15px]">
-                              {items.media_name}
-                            </div>
-                          </div>
-                          <div className="flex justify-start items-center ">
-                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                              File Size : {items.media_size}
-                            </div>
-                          </div>
-                          <div className="flex justify-start items-center ">
-                            {items.media_duration > 0 && (
-                              <div className="font-poppins text-[15px]">
-                                Duration : {items.media_duration} sec
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-span-1 flex justify-start items-center">
-                        <MdDragHandle size={26} className="text-[#6425FE]" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center" key={`empty${currentIndex}`}>
-                  <IoIosRemoveCircle
-                    size={24}
-                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
-                  />
-                  <div className="flex-1">
-                    <div
-                      onClick={() => {
-                        setOpenModalUploadMedia(!openModalUploadNewMedia);
-                        setOpenAdsAllocationModal(!openAdsAllocationModal);
-                      }}
-                      className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer w-[265px] lg:w-[320px]"
-                    >
-                      <div className="col-span-2 flex justify-center items-center">
-                        <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
-                          {items.slot_num}
-                        </div>
-                      </div>
-                      <div className="col-span-8 flex justify-start items-center">
-                        <div className="font-poppins text-[#2F3847] text-[16px]">
-                          Drag Media From Library or Click for Upload New Media
-                        </div>
-                      </div>
-                      <div className="col-span-1" />
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </Draggable>
-      );
-    });
-  };
+  //                   <IoIosRemoveCircle
+  //                     size={24}
+  //                     className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+  //                     onClick={() => handleRemoveMediaPlaylistItem(index)}
+  //                   />
+  //                 </div>
+  //                 <div className="flex-1">
+  //                   <div
+  //                     className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[265px] lg:w-[320px]`}
+  //                     style={{ height: `${itemHeight}px` }}
+  //                   >
+  //                     <div className="col-span-2 flex justify-center items-center">
+  //                       {items.media_type === "video" ? (
+  //                         <FiVideo size={30} className="text-[#6425FE]" />
+  //                       ) : (
+  //                         <FiImage size={30} className="text-[#6425FE]" />
+  //                       )}
+  //                     </div>
+  //                     <div className="col-span-8 flex justify-start items-center">
+  //                       <div>
+  //                         <div className="flex justify-start items-center">
+  //                           <div className="font-poppins text-[15px]">
+  //                             {items.media_name}
+  //                           </div>
+  //                         </div>
+  //                         <div className="flex justify-start items-center ">
+  //                           <div className="font-poppins text-[#8A8A8A] text-[12px]">
+  //                             File Size : {items.media_size}
+  //                           </div>
+  //                         </div>
+  //                         <div className="flex justify-start items-center ">
+  //                           {items.media_duration > 0 && (
+  //                             <div className="font-poppins text-[15px]">
+  //                               Duration : {items.media_duration} sec
+  //                             </div>
+  //                           )}
+  //                         </div>
+  //                       </div>
+  //                     </div>
+  //                     <div className="col-span-1 flex justify-start items-center">
+  //                       <MdDragHandle size={26} className="text-[#6425FE]" />
+  //                     </div>
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //             ) : (
+  //               <div className="flex items-center" key={`empty${currentIndex}`}>
+  //                 <IoIosRemoveCircle
+  //                   size={24}
+  //                   className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
+  //                 />
+  //                 <div className="flex-1">
+  //                   <div
+  //                     onClick={() => {
+  //                       setOpenModalUploadMedia(!openModalUploadNewMedia);
+  //                       setOpenAdsAllocationModal(!openAdsAllocationModal);
+  //                     }}
+  //                     className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer w-[265px] lg:w-[320px]"
+  //                   >
+  //                     <div className="col-span-2 flex justify-center items-center">
+  //                       <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
+  //                         {items.slot_num}
+  //                       </div>
+  //                     </div>
+  //                     <div className="col-span-8 flex justify-start items-center">
+  //                       <div className="font-poppins text-[#2F3847] text-[16px]">
+  //                         Drag Media From Library or Click for Upload New Media
+  //                       </div>
+  //                     </div>
+  //                     <div className="col-span-1" />
+  //                   </div>
+  //                 </div>
+  //               </div>
+  //             )}
+  //           </div>
+  //         )}
+  //       </Draggable>
+  //     );
+  //   });
+  // };
 
   const handleAddMediaPlaylistItem = (index) => {
     const updatedMediaList = [...itemsPanel1.value.media_list];
@@ -486,10 +486,6 @@ const Ads_Allocation_Booking = ({
                         <div className="grid grid-cols-5">
                           <div className="col-span-4">
                             <div className="flex flex-wrap">
-                              {console.log(
-                                "screenAdsAllocations",
-                                screenAdsAllocation
-                              )}
                               {screenAdsAllocation.length > 0 &&
                                 screenAdsAllocation.map((screen, index) => (
                                   <div
@@ -702,10 +698,11 @@ const Ads_Allocation_Booking = ({
                               {...provided.droppableProps}
                               className="h-[680px] overflow-y-auto space-y-2"
                             >
-                              {renderMediaList(
+                              {console.log("itemsPanel1", itemsPanel1)}
+                              {/* {renderMediaList(
                                 itemsPanel1.value.slots,
                                 itemsPanel1.value.media_list
-                              )}
+                              )} */}
 
                               {provided.placeholder}
                             </div>
