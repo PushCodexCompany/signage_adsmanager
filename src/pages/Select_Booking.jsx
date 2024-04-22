@@ -15,6 +15,9 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import Filter from "../components/Filter";
 import Publish_Screen_Booking from "../components/Publish_Screen_Booking";
 import Ads_Allocation_Booking from "../components/Ads_Allocation_Booking";
+import Booking_Upload_Media from "../components/Booking_Upload_Media";
+import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
+
 import Screen_Info from "../components/Screen_Info";
 import { format } from "date-fns";
 import { mediaMockup } from "../data/mockup";
@@ -40,6 +43,8 @@ const Select_Booking = () => {
     value: {},
   });
 
+  const [media_rules_select, setMediaRulesSelect] = useState({});
+
   const [selectInfoScreen, setSelectInfoScren] = useState([]);
   const [screenAdsAllocation, setScreennAdsAllocation] = useState([]);
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
@@ -51,6 +56,11 @@ const Select_Booking = () => {
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaDisplay, setMediaDisplay] = useState([]);
   const [checkboxes, setCheckboxes] = useState({});
+
+  const [openAddNewScreenModal, setOpenAddNewScreenModal] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedData, setSelectedData] = useState([]);
+  const [selectedScreenItems, setSelectedScreenItems] = useState([]);
 
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openAdsAllocationModal, setOpenAdsAllocationModal] = useState(false);
@@ -315,14 +325,56 @@ const Select_Booking = () => {
     );
   };
 
-  const handleSelectScreenAddmedia = (screen, obj) => {
-    setScreenSelect({ screen, value: obj });
-    setItemsPanel1({ screen, value: obj });
+  const handleSelectScreenAddmedia = (screen, obj, media_obj) => {
+    const media_rule = {
+      width: parseInt(obj.ScreenRule[0].Width),
+      height: parseInt(obj.ScreenRule[0].Height),
+    };
+
+    setMediaRulesSelect(media_rule);
+    media_obj.slots = parseInt(booking_slot);
+    setScreenSelect({ screen, value: media_obj });
+    setItemsPanel1({ screen, value: media_obj });
     setOpenAdsAllocationModal(!openAdsAllocationModal);
   };
 
   const openMediaAdsAllocationTab = (tabName) => {
     setMediaAdsAllocationTab(tabName);
+  };
+
+  const toggleAllCheckboxes = () => {
+    const newCheckboxes = {};
+    const newSelectAll = !selectAll;
+
+    allScreenData.forEach((row) => {
+      newCheckboxes[row.ScreenID] = newSelectAll;
+    });
+
+    setCheckboxes(newCheckboxes);
+    setSelectAll(newSelectAll);
+
+    const checkedRowIds = newSelectAll
+      ? allScreenData.map((row) => row.ScreenID)
+      : [];
+    setSelectedScreenItems(checkedRowIds);
+  };
+
+  const toggleCheckboxAddScreen = (rowId) => {
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [rowId]: !prevCheckboxes[rowId],
+      };
+
+      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
+        (id) => updatedCheckboxes[id]
+      );
+
+      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
+      setSelectedScreenItems(intArray);
+
+      return updatedCheckboxes;
+    });
   };
 
   return (
@@ -558,14 +610,14 @@ const Select_Booking = () => {
                                 </div>
 
                                 {items.booking_content.length > 0 &&
-                                  items.booking_content.map((items, index) => (
+                                  items.booking_content.map((items2, index) => (
                                     <div key={index} className="mt-3">
                                       <div className="p-2">
                                         <div className="grid grid-cols-6 space-x-1 bg-gray-300 rounded-lg h-[85px]">
                                           <div className="col-span-5 flex items-center">
                                             <div className="flex flex-wrap w-full">
-                                              {items.medias.length > 0 ? (
-                                                renderMediaListBox(items)
+                                              {items2.medias.length > 0 ? (
+                                                renderMediaListBox(items2)
                                               ) : (
                                                 <div className="flex items-center justify-center text-center w-full h-full">
                                                   <div className="font-poppins text-2xl text-gray-200">
@@ -579,7 +631,8 @@ const Select_Booking = () => {
                                             onClick={() =>
                                               handleSelectScreenAddmedia(
                                                 screenIndex + 1,
-                                                items
+                                                items,
+                                                items2
                                               )
                                             }
                                             className="col-span-1 flex justify-center items-center cursor-pointer"
@@ -676,6 +729,58 @@ const Select_Booking = () => {
           modalPlayerOpen={modalPlayerOpen}
           setMediaDisplay={setMediaDisplay}
           setCheckboxes={setCheckboxes}
+          media_rules_select={media_rules_select}
+        />
+      )}
+
+      {isApplyToScreen && (
+        <a
+          onClick={() => {
+            setIsApplyToScreen(!isApplyToScreen);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {isApplyToScreen && (
+        <Ads_Allocation_Apply_Screen
+          setIsApplyToScreen={setIsApplyToScreen}
+          isApplyToScreen={isApplyToScreen}
+          setOpenAdsAllocationModal={setOpenAdsAllocationModal}
+          openAdsAllocationModal={openAdsAllocationModal}
+          setSelectedData={setSelectedData}
+          booking_date={booking_date}
+          setOpenAddNewScreenModal={setOpenAddNewScreenModal}
+          openAddNewScreenModal={openAddNewScreenModal}
+          selectAll={selectAll}
+          toggleAllCheckboxes={toggleAllCheckboxes}
+          allScreenData={allScreenData}
+          checkboxes={checkboxes}
+          toggleCheckboxAddScreen={toggleCheckboxAddScreen}
+          selectedScreenItems={selectedScreenItems}
+          setScreennAdsAllocation={setScreennAdsAllocation}
+        />
+      )}
+
+      {openModalUploadNewMedia && (
+        <a
+          onClick={() => {
+            setOpenModalUploadMedia(!openModalUploadNewMedia);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openModalUploadNewMedia && (
+        <Booking_Upload_Media
+          setOpenModalUploadMedia={setOpenModalUploadMedia}
+          openModalUploadNewMedia={openModalUploadNewMedia}
+          setOpenAdsAllocationModal={setOpenAdsAllocationModal}
+          openAdsAllocationModal={openAdsAllocationModal}
+          bookingId={bookingId}
+          media_rules_select={media_rules_select}
         />
       )}
     </>

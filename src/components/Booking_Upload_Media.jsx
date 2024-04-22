@@ -1,35 +1,150 @@
 import React, { useState } from "react";
-import { AiOutlineClose, AiOutlineCloudUpload } from "react-icons/ai";
+import {
+  AiOutlineClose,
+  AiOutlineCloudUpload,
+  AiOutlineCloseCircle,
+} from "react-icons/ai";
 import { BsCheckCircle } from "react-icons/bs";
+import Swal from "sweetalert2";
+import User from "../libs/admin";
 
 const Booking_Upload_Media = ({
   setOpenModalUploadMedia,
   openModalUploadNewMedia,
   setOpenAdsAllocationModal,
   openAdsAllocationModal,
+  bookingId,
+  media_rules_select,
 }) => {
+  const { token } = User.getCookieData();
   const [uploads, setUploads] = useState({});
+  const [forms, setFormData] = useState({});
 
-  const uploadFile = (uploadKey) => {
+  const uploadFile = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = ".mp4, .m3u8, .jpg, .png";
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
+
       if (file) {
         const reader = new FileReader();
         reader.onload = (e) => {
-          setUploads((prevUploads) => ({
-            ...prevUploads,
+          let fileType;
+          let fileProperties = {};
+          if (file.type.includes("video")) {
+            fileType = file.type;
+            const video = document.createElement("video");
+            video.addEventListener("loadedmetadata", () => {
+              // Accessing video properties after it's loaded
 
-            content: e.target.result,
-            name: file.name,
-          }));
+              const duration = video.duration;
+              const width = video.videoWidth;
+              const height = video.videoHeight;
+
+              // for convert filesize
+              // const fileSize = file.size / (1024 * 1024);
+
+              fileProperties = {
+                duration: duration.toString(),
+                width: width.toString(),
+                height: height.toString(),
+              };
+
+              if (
+                media_rules_select.width === width &&
+                media_rules_select.height === height
+              ) {
+                // setUploads((prevUploads) => ({
+                //   ...prevUploads,
+                //   ...uploadInfo,
+                // }));
+
+                const form = new FormData();
+                form.append("file[]", file);
+                form.append("contenttype", fileType);
+                form.append(
+                  "contentproperties",
+                  JSON.stringify(fileProperties)
+                );
+
+                setUploads(file);
+                setFormData(form);
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: "ขนาดของ Video ไม่ตรงกับ Media Rule",
+                });
+              }
+            });
+            video.src = e.target.result;
+          } else if (file.type.includes("image")) {
+            fileType = file.type;
+            const img = new Image();
+            img.onload = () => {
+              // Accessing image properties after it's loaded
+              const width = img.width; // Width of the image in pixels
+              const height = img.height; // Height of the image in pixels
+
+              // for convert filesize
+              //const fileSize = file.size / (1024 * 1024);
+
+              // Store the file information along with width and height
+              fileProperties = {
+                width: width.toString(),
+                height: height.toString(),
+              };
+              if (
+                media_rules_select.width === width &&
+                media_rules_select.height === height
+              ) {
+                // Assuming you have a state setter function named setUploads
+                // setUploads((prevUploads) => ({
+                //   ...prevUploads,
+                //   ...uploadInfo,
+                // }));
+
+                const form = new FormData();
+                form.append("file[]", file);
+                form.append("contenttype", fileType);
+                form.append(
+                  "contentproperties",
+                  JSON.stringify(fileProperties)
+                );
+
+                setUploads(file);
+                setFormData(form);
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: "ขนาดของ Image ไม่ตรงกับ Media Rule",
+                });
+              }
+            };
+            img.src = e.target.result;
+          }
         };
         reader.readAsDataURL(file);
       }
     });
     fileInput.click();
+  };
+
+  const handleUploadMediaByBooking = async () => {
+    if (uploads.name) {
+      // try {
+      //   const data = await User.createContent(bookingId, forms, token);
+      //   console.log("data", data);
+      // } catch (error) {
+      //   console.log("error", error);
+      // }
+    }
+  };
+
+  const handleDeleteFile = () => {
+    setUploads({});
   };
 
   return (
@@ -61,7 +176,19 @@ const Booking_Upload_Media = ({
         </div>
 
         <div className="flex justify-center items-center mt-2 p-5">
-          <div className="col-span-1 border-dashed border-gray-300 border-1">
+          <div className="col-span-1 border-dashed border-gray-300 border-1 relative">
+            {uploads?.name ? (
+              <button
+                className="absolute top-0 right-0 mt-2 mr-2"
+                onClick={() => handleDeleteFile()}
+              >
+                {/* Add delete button with onClick handler */}
+                <AiOutlineCloseCircle size={24} color={"#FF0000"} />
+              </button>
+            ) : (
+              <></>
+            )}
+
             <div className="p-4">
               <div className="flex items-center justify-center mt-2">
                 <div className="font-poppins text-3xl font-bold">
@@ -69,7 +196,7 @@ const Booking_Upload_Media = ({
                 </div>
               </div>
               <div className="flex items-center justify-center mt-7">
-                {!uploads.content ? (
+                {!uploads.name ? (
                   <div>
                     <button onClick={() => uploadFile()}>
                       <AiOutlineCloudUpload size={100} color={"#D9D9D9"} />
@@ -111,7 +238,7 @@ const Booking_Upload_Media = ({
 
         <div className="flex justify-center items-center mt-1">
           <button
-            onClick={() => console.log(uploads)}
+            onClick={() => handleUploadMediaByBooking()}
             className="bg-[#6425FE] w-72 h-10 text-white font-poppins"
           >
             Submit

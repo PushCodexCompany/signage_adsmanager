@@ -1004,4 +1004,20 @@ export default {
       return false;
     }
   },
+
+  createContent: async function (id, obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/create_content?bookingid=${id}`,
+      obj,
+      config
+    );
+    return data;
+  },
 };
