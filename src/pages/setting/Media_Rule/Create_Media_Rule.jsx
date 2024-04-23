@@ -148,7 +148,7 @@ const Create_Media_Rule = () => {
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Home" />
       <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
-        <text>New Screen Media Rule</text>
+        New Screen Media Rule
       </div>
       <div className="flex flex-col lg:flex-row">
         <div className="w-full lg:w-1/2 p-4">

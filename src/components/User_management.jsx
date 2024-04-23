@@ -281,7 +281,7 @@ const User_Management = ({ setShowModal }) => {
         {/* Second div (gray background) */}
         <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
           <div className="font-poppins font-semibold text-2xl mt-10 ml-3">
-            <text>User</text>
+            User
           </div>
           {/* Select Menu */}
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">

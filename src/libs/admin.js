@@ -58,7 +58,6 @@ export default {
   // login
   login: async function (hash) {
     const { data } = await this._post(`api/v1/login?hash=${hash}`);
-    console.log("data", data);
     if (data.token) {
       this.saveCookie(data);
       return true;
@@ -386,8 +385,6 @@ export default {
       config
     );
 
-    console.log("data", data);
-
     return data;
   },
 
@@ -465,8 +462,6 @@ export default {
       config
     );
 
-    console.log("data", data);
-
     return data;
   },
 
@@ -513,8 +508,6 @@ export default {
       obj,
       config
     );
-
-    console.log("data", data);
 
     return data;
   },
@@ -995,6 +988,25 @@ export default {
 
     const { data } = await this._get(
       `api/v1/get_bookingcontent?bookingid=${booking_id}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  getMediaPlaylist: async function (booking_id, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_content?bookingid=${booking_id}`,
       "",
       config
     );

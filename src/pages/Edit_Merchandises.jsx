@@ -271,9 +271,7 @@ const Edit_Merchandises = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Setting" />
         <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
-          <text>
-            {id === "new" ? "Create Merchandise" : "Edit Merchandise"}
-          </text>
+          {id === "new" ? "Create Merchandise" : "Edit Merchandise"}
         </div>
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-1/2 p-4">
@@ -386,7 +384,7 @@ const Edit_Merchandises = () => {
           </div>
           <div className="w-full lg:w-1/2 p-4 lg:pl-8 border border-gray-300">
             <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
-              <text>Contact Person</text>
+              Contact Person
             </div>
             <div className="flex items-center">
               <input
@@ -432,7 +430,7 @@ const Edit_Merchandises = () => {
               </div>
             </div>
             {/* <div className="mt-10 mb-5 font-bold font-poppins text-2xl">
-            <text>Billing</text>
+            Billing
           </div>
           <div className="flex items-center">
             <input

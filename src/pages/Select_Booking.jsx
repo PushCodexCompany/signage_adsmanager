@@ -17,6 +17,7 @@ import Publish_Screen_Booking from "../components/Publish_Screen_Booking";
 import Ads_Allocation_Booking from "../components/Ads_Allocation_Booking";
 import Booking_Upload_Media from "../components/Booking_Upload_Media";
 import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
+import Media_Player from "../components/Media_Player";
 
 import Screen_Info from "../components/Screen_Info";
 import { format } from "date-fns";
@@ -49,8 +50,8 @@ const Select_Booking = () => {
   const [screenAdsAllocation, setScreennAdsAllocation] = useState([]);
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [datePickers, setDatePickers] = useState([]);
-  const [media_list, setMediaList] = useState(mediaMockup);
-  const [itemsPanel2, setItemsPanel2] = useState(mediaMockup);
+  const [media_list, setMediaList] = useState([]);
+  const [itemsPanel2, setItemsPanel2] = useState([]);
   const [mediaAdsAllocationTab, setMediaAdsAllocationTab] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
@@ -68,6 +69,7 @@ const Select_Booking = () => {
 
   useEffect(() => {
     getBookingData();
+    getMediaItemsData();
   }, []);
 
   const getBookingData = async () => {
@@ -121,6 +123,12 @@ const Select_Booking = () => {
       ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
     ];
     setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
+  };
+
+  const getMediaItemsData = async () => {
+    const media_item = await User.getMediaPlaylist(bookingId, token);
+    setItemsPanel2(media_item);
+    setMediaList(media_item);
   };
 
   const calculateSize = (screen) => {
@@ -287,19 +295,18 @@ const Select_Booking = () => {
   };
 
   const renderMediaListBox = (items) => {
-    const nullFreeList = items.medias.filter((it) => it.media_id !== null);
+    const nullFreeList = items.medias.filter((it) => it.ContentID !== null);
 
     const mediaSize = nullFreeList.length;
 
     const emptySlots = [];
 
-    for (var i = mediaSize; i < items.slots; i++) {
+    for (var i = mediaSize; i < booking_slot; i++) {
       emptySlots.push({
-        media_id: null,
-        media_name: null,
-        media_type: null,
-        media_size: null,
-        media_duration: null,
+        ContentID: null,
+        ContentName: null,
+        ContentTypeName: null,
+        ContentProperties: null,
         slot_size: 1,
         slot_num: i + 1,
       });
@@ -308,24 +315,25 @@ const Select_Booking = () => {
     const processedMediaList = [...nullFreeList, ...emptySlots];
     return (
       <>
-        {processedMediaList.map((item, index2) => (
-          <div key={index2} className="w-[20%] p-1">
-            <div
-              className={`w-[36px] h-[36px] ${
-                item.media_id
-                  ? "bg-white border border-[#D9D9D9]"
-                  : "bg-[#D9D9D9]"
-              } flex justify-center items-center`}
-            >
-              {item.media_id ? <IoIosPlayCircle color="#6425FE" /> : ""}
+        {processedMediaList.length > 0 &&
+          processedMediaList.map((item, index2) => (
+            <div key={index2} className="w-[20%] p-1">
+              <div
+                className={`w-[36px] h-[36px] ${
+                  item.ContentID
+                    ? "bg-white border border-[#D9D9D9]"
+                    : "bg-[#D9D9D9]"
+                } flex justify-center items-center`}
+              >
+                {item.ContentID ? <IoIosPlayCircle color="#6425FE" /> : ""}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </>
     );
   };
 
-  const handleSelectScreenAddmedia = (screen, obj, media_obj) => {
+  const handleSelectScreenAddmedia = async (screen, obj, media_obj) => {
     const media_rule = {
       width: parseInt(obj.ScreenRule[0].Width),
       height: parseInt(obj.ScreenRule[0].Height),
@@ -333,8 +341,38 @@ const Select_Booking = () => {
 
     setMediaRulesSelect(media_rule);
     media_obj.slots = parseInt(booking_slot);
+
+    // const mediaPlayList = await User.getMediaPlaylist(bookingId, token);
+    // media_obj.medias = mediaPlayList;
+
+    // ****** Test Data
+    // const test_data = {
+    //   BookingDateID: 9,
+    //   BookingDate: "2024-04-23",
+    //   ScreenID: 1,
+    //   medias: [
+    //     {
+    //       ContentID: 11,
+    //       ContentName: "rise_of_the_ronin_2024_video_game-wallpaper-1920x1080",
+    //       ContentTypeID: 1,
+    //       ContentTypeName: "Image",
+    //       ContentTypeSubID: 2,
+    //       ContentTypeSubName: "jpg",
+    //       ContentProperties:
+    //         '{"width":"1920","height":"1080","size":"0.6002120971679688"}',
+    //       ContentSource:
+    //         "https://cds.push-signage.com/adsmanager/content/guUpa8dN4h/file/1713846691_49443.jpg",
+    //       AddDate: "2024-04-23 11:31:31",
+    //       UpdateDate: "2024-04-23 11:31:31",
+    //     },
+    //   ],
+    //   slots: 5,
+    // };
+
     setScreenSelect({ screen, value: media_obj });
     setItemsPanel1({ screen, value: media_obj });
+    // setScreenSelect({ screen, value: test_data });
+    // setItemsPanel1({ screen, value: test_data });
     setOpenAdsAllocationModal(!openAdsAllocationModal);
   };
 
@@ -613,18 +651,10 @@ const Select_Booking = () => {
                                   items.booking_content.map((items2, index) => (
                                     <div key={index} className="mt-3">
                                       <div className="p-2">
-                                        <div className="grid grid-cols-6 space-x-1 bg-gray-300 rounded-lg h-[85px]">
+                                        <div className="grid grid-cols-6 space-x-1 h-[85px]">
                                           <div className="col-span-5 flex items-center">
                                             <div className="flex flex-wrap w-full">
-                                              {items2.medias.length > 0 ? (
-                                                renderMediaListBox(items2)
-                                              ) : (
-                                                <div className="flex items-center justify-center text-center w-full h-full">
-                                                  <div className="font-poppins text-2xl text-gray-200">
-                                                    No media
-                                                  </div>
-                                                </div>
-                                              )}
+                                              {renderMediaListBox(items2)}
                                             </div>
                                           </div>
                                           <div
@@ -781,6 +811,31 @@ const Select_Booking = () => {
           openAdsAllocationModal={openAdsAllocationModal}
           bookingId={bookingId}
           media_rules_select={media_rules_select}
+          setItemsPanel1={setItemsPanel1}
+          itemsPanel1={itemsPanel1}
+          setItemsPanel2={setItemsPanel2}
+          itemsPanel2={itemsPanel2}
+        />
+      )}
+
+      {modalPlayerOpen && (
+        <a
+          onClick={() => {
+            setModalPlayerOpen(!modalPlayerOpen);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {modalPlayerOpen && (
+        <Media_Player
+          mediaDisplay={mediaDisplay}
+          setModalPlayerOpen={setModalPlayerOpen}
+          modalPlayerOpen={modalPlayerOpen}
+          setOpenAdsAllocationModal={setOpenAdsAllocationModal}
+          openAdsAllocationModal={openAdsAllocationModal}
+          setMediaDisplay={setMediaDisplay}
         />
       )}
     </>

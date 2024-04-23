@@ -209,7 +209,7 @@ const Tag_managment = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div className="font-poppins font-semibold text-2xl mt-10">
-          <text>Tag Management</text>
+          Tag Management
         </div>
 
         <div className="mt-7 grid grid-cols-7 gap-2">

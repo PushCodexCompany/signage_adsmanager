@@ -338,7 +338,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
               </div>
               <div className="w-full lg:w-1/2 p-4 lg:pl-8 border border-gray-300">
                 <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
-                  <text>Contact Person</text>
+                  Contact Person
                 </div>
                 <div className="h-10 relative mt-3">
                   <input

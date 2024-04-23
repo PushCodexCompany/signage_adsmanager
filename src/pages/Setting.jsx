@@ -9,7 +9,7 @@ const Setting = () => {
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       {/* <Header category="Page" title="Setting" />
       <div className="mt-10 font-bold text-2xl">
-        <text>Create Screen</text>
+        Create Screen
       </div> */}
       <div className="grid grid-rows-4 grid-flow-col gap-4 mt-10">
         <button

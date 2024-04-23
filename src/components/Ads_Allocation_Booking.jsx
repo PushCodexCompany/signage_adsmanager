@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   IoIosClose,
   IoIosCloseCircle,
@@ -16,6 +16,7 @@ import DatePicker from "react-datepicker";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Swal from "sweetalert2";
 import { mediaMockup } from "../data/mockup";
+import User from "../libs/admin";
 
 const Ads_Allocation_Booking = ({
   setOpenAdsAllocationModal,
@@ -45,6 +46,49 @@ const Ads_Allocation_Booking = ({
   setCheckboxes,
   media_rules_select,
 }) => {
+  const [full_media_items, setFullMediasItems] = useState([]);
+
+  useEffect(() => {
+    setTempMediaList();
+    setDefaultPanel1(itemsPanel1.value.slots, itemsPanel1.value.medias);
+  }, []);
+
+  const setTempMediaList = async () => {
+    setFullMediasItems(itemsPanel2);
+  };
+
+  const setDefaultPanel1 = (slots, media_list) => {
+    const nullFreeList = media_list.filter((it) => it.ContentID !== null);
+    const mediaSize = nullFreeList.reduce((acc, b) => {
+      var slotSizeB = 1;
+      if ("slot_size" in b) slotSizeB = b.slot_size;
+
+      return acc + slotSizeB;
+    }, 0);
+
+    const emptySlots = [];
+
+    for (var i = mediaSize; i < slots; i++) {
+      emptySlots.push({
+        ContentID: null,
+        ContentName: null,
+        ContentTypeName: null,
+        ContentProperties: null,
+        slot_size: 1,
+        slot_num: i + 1,
+      });
+    }
+
+    const processedMediaList = [...nullFreeList, ...emptySlots];
+    setItemsPanel1((prevState) => ({
+      ...prevState,
+      value: {
+        ...prevState.value,
+        medias: processedMediaList,
+      },
+    }));
+  };
+
   const handleDeleteScreenAdsAllocation = (index, id) => {
     const newData = [...screenAdsAllocation];
     newData.splice(index, 1);
@@ -93,10 +137,11 @@ const Ads_Allocation_Booking = ({
   const onDragEnd = (result) => {
     if (!result.destination) return;
     const { source, destination } = result;
-    // If the drag is within the same panel
+
     if (source.droppableId === destination.droppableId) {
-      const draggedItem = itemsPanel1.value.media_list[result.source.index];
-      const updatedMediaList = [...itemsPanel1.value.media_list];
+      // If the drag is within the same panel
+      const draggedItem = itemsPanel1.value.medias[source.index];
+      const updatedMediaList = [...itemsPanel1.value.medias];
       updatedMediaList.splice(result.source.index, 1); // Remove item from original position
       updatedMediaList.splice(destination.index, 0, draggedItem); // Insert item at destination index
       if (source.droppableId === "panel-1") {
@@ -104,7 +149,7 @@ const Ads_Allocation_Booking = ({
           ...itemsPanel1,
           value: {
             ...itemsPanel1.value,
-            media_list: updatedMediaList,
+            medias: updatedMediaList,
           },
         });
       }
@@ -112,41 +157,38 @@ const Ads_Allocation_Booking = ({
       // If the drag is between different panels
       const sourceItems =
         source.droppableId === "panel-1"
-          ? itemsPanel1.value.media_list
+          ? itemsPanel1.value.medias
           : itemsPanel2;
+
       const destinationItems =
         destination.droppableId === "panel-1"
-          ? itemsPanel1.value.media_list
+          ? itemsPanel1.value.medias
           : itemsPanel2;
 
       const value = destinationItems;
-
       let lastIndexWithData = -1;
-
       for (let i = 0; i < value.length; i++) {
-        if (value[i].media_id !== null) {
+        if (value[i].ContentID !== null) {
           lastIndexWithData = i;
+        } else {
+          lastIndexWithData = 0;
         }
       }
-
       const insert = (arr, index, newItem) => [
         ...arr.slice(0, index),
-
         newItem,
-
-        ...arr.slice(index),
+        ...arr.slice(index + 1),
       ];
-
       //ToDo
       // 1. Check if droppableID is panel-1
       // 2. Check if destination still has empty slot
       // 3. Check dropped index to determine where to insert new media
-
       var newDestinationItems = [...destinationItems];
+
       if (destination.droppableId === "panel-1") {
         const draggedItem = sourceItems.find(
           (item) =>
-            item.media_id === parseInt(result.draggableId.split("-")[1]) + 1
+            item.ContentID === parseInt(result.draggableId.split("-")[1])
         );
 
         newDestinationItems = insert(destinationItems, destination.index, {
@@ -160,15 +202,110 @@ const Ads_Allocation_Booking = ({
           ...itemsPanel1,
           value: {
             ...itemsPanel1.value,
-            media_list: newDestinationItems,
+            medias: newDestinationItems,
           },
         });
       }
     }
   };
 
+  const handleAddMediaPlaylistItem = (index) => {
+    const updatedMediaList = [...itemsPanel1.value.medias];
+
+    const target = updatedMediaList[index];
+
+    //*** only needed to expand slot_size if at least one empty slot is still available
+    if ("slot_size" in target) {
+      target.slot_size = target.slot_size + 1;
+    } else {
+      target.slot_size = 2;
+    }
+    setItemsPanel1((prevState) => ({
+      ...prevState,
+      value: {
+        ...prevState.value,
+        medias: updatedMediaList,
+      },
+    }));
+  };
+
+  const handleRemoveMediaPlaylistItem = (index) => {
+    const updatedMediaList = [...itemsPanel1.value.medias]; // Access the media_list array inside value object
+
+    const target = { ...updatedMediaList[index] };
+
+    //*** only needed to expand slot_size if at least one empty slot is still available
+    if ("slot_size" in target) {
+      target.slot_size = target.slot_size - 1;
+    } else {
+      target.slot_size = 0;
+    }
+
+    //remove if size = 0
+    if (target.slot_size === 0) {
+      Swal.fire({
+        text: `คุณต้องการลบ ${target.ContentName} ออกจาก Playlist?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "ยืนยัน!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const nullifiedMediaItem = {
+            ContentID: null,
+            ContentName: null,
+            ContentTypeName: null,
+            ContentProperties: null,
+          }; // Define a nullified media item
+          updatedMediaList[index] = nullifiedMediaItem; // Update the media item in the list
+          const output_data = updatedMediaList.reduce((acc, item) => {
+            if (item.ContentID !== null) {
+              acc.push(item);
+            }
+            return acc;
+          }, []);
+
+          const nullItems = updatedMediaList.filter(
+            (item) => item.ContentID === null
+          );
+          nullItems.forEach((item) => output_data.push(item));
+          setItemsPanel1((prevState) => ({
+            ...prevState,
+            value: {
+              ...prevState.value,
+              medias: output_data,
+            },
+          }));
+        }
+      });
+    } else {
+      updatedMediaList[index] = { ...target };
+      const output_data = updatedMediaList.reduce((acc, item) => {
+        if (item.ContentID !== null) {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+
+      const nullItems = updatedMediaList.filter(
+        (item) => item.ContentID === null
+      );
+      nullItems.forEach((item) => output_data.push(item));
+      setItemsPanel1((prevState) => ({
+        ...prevState,
+        value: {
+          ...prevState.value,
+          medias: output_data,
+        },
+      }));
+    }
+
+    // Update the state with the modified media list
+  };
+
   const renderMediaList = (slots, media_list) => {
-    const nullFreeList = media_list.filter((it) => it.media_id !== null);
+    const nullFreeList = media_list.filter((it) => it.ContentID !== null);
     var currentIndex = 0;
     var accumulatecSlotSize = 1;
 
@@ -186,11 +323,10 @@ const Ads_Allocation_Booking = ({
 
     for (var i = mediaSize; i < slots; i++) {
       emptySlots.push({
-        media_id: null,
-        media_name: null,
-        media_type: null,
-        media_size: null,
-        media_duration: null,
+        ContentID: null,
+        ContentName: null,
+        ContentTypeName: null,
+        ContentProperties: null,
         slot_size: 1,
         slot_num: i + 1,
       });
@@ -216,11 +352,12 @@ const Ads_Allocation_Booking = ({
               {...provided.dragHandleProps}
               className={`col-span-11`}
             >
-              {items?.media_id ? (
+              {items?.ContentID ? (
                 <div className="flex items-center mr-1">
                   <div>
-                    {processedMediaList.filter((item) => item.media_id === null)
-                      .length > 0 && (
+                    {processedMediaList.filter(
+                      (item) => item.ContentID === null
+                    ).length > 0 && (
                       <>
                         <IoIosAddCircle
                           size={24}
@@ -242,7 +379,7 @@ const Ads_Allocation_Booking = ({
                       style={{ height: `${itemHeight}px` }}
                     >
                       <div className="col-span-2 flex justify-center items-center">
-                        {items.media_type === "video" ? (
+                        {items.ContentTypeName === "Video" ? (
                           <FiVideo size={30} className="text-[#6425FE]" />
                         ) : (
                           <FiImage size={30} className="text-[#6425FE]" />
@@ -252,18 +389,32 @@ const Ads_Allocation_Booking = ({
                         <div>
                           <div className="flex justify-start items-center">
                             <div className="font-poppins text-[15px]">
-                              {items.media_name}
+                              {items.ContentName.length > 30 ? (
+                                <span>
+                                  {items.ContentName.slice(0, 27) + "..."}
+                                </span>
+                              ) : (
+                                <span>{items.ContentName}</span>
+                              )}
                             </div>
                           </div>
                           <div className="flex justify-start items-center ">
                             <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                              File Size : {items.media_size}
+                              File Size :{" "}
+                              {parseFloat(
+                                JSON.parse(items.ContentProperties).size
+                              ).toFixed(2)}{" "}
+                              MB
                             </div>
                           </div>
                           <div className="flex justify-start items-center ">
-                            {items.media_duration > 0 && (
-                              <div className="font-poppins text-[15px]">
-                                Duration : {items.media_duration} sec
+                            {items.ContentTypeName === "Video" && (
+                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                Duration :{" "}
+                                {parseFloat(
+                                  JSON.parse(items.ContentProperties).duration
+                                ).toFixed(2)}{" "}
+                                sec
                               </div>
                             )}
                           </div>
@@ -311,116 +462,16 @@ const Ads_Allocation_Booking = ({
     });
   };
 
-  const handleAddMediaPlaylistItem = (index) => {
-    const updatedMediaList = [...itemsPanel1.value.media_list];
-
-    const target = updatedMediaList[index];
-
-    //*** only needed to expand slot_size if at least one empty slot is still available
-    if ("slot_size" in target) {
-      target.slot_size = target.slot_size + 1;
-    } else {
-      target.slot_size = 2;
-    }
-
-    // console.log("updatedMediaList " + JSON.stringify(updatedMediaList));
-    setItemsPanel1((prevState) => ({
-      ...prevState,
-      value: {
-        ...prevState.value,
-        media_list: updatedMediaList,
-      },
-    }));
-  };
-
-  const handleRemoveMediaPlaylistItem = (index) => {
-    const updatedMediaList = [...itemsPanel1.value.media_list]; // Access the media_list array inside value object
-
-    const target = { ...updatedMediaList[index] };
-
-    //*** only needed to expand slot_size if at least one empty slot is still available
-    if ("slot_size" in target) {
-      target.slot_size = target.slot_size - 1;
-    } else {
-      target.slot_size = 0;
-    }
-
-    //remove if size = 0
-    if (target.slot_size === 0) {
-      Swal.fire({
-        text: `คุณต้องการลบ ${target.media_name} ออกจาก Playlist?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "ยืนยัน!",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const nullifiedMediaItem = {
-            media_id: null,
-            media_name: null,
-            media_type: null,
-            media_size: null,
-            media_duration: null,
-          }; // Define a nullified media item
-          updatedMediaList[index] = nullifiedMediaItem; // Update the media item in the list
-          const output_data = updatedMediaList.reduce((acc, item) => {
-            if (item.media_id !== null) {
-              acc.push(item);
-            }
-            return acc;
-          }, []);
-
-          const nullItems = updatedMediaList.filter(
-            (item) => item.media_id === null
-          );
-          nullItems.forEach((item) => output_data.push(item));
-
-          // console.log("output_data " + JSON.stringify(output_data));
-          setItemsPanel1((prevState) => ({
-            ...prevState,
-            value: {
-              ...prevState.value,
-              media_list: output_data,
-            },
-          }));
-        }
-      });
-    } else {
-      updatedMediaList[index] = { ...target };
-      const output_data = updatedMediaList.reduce((acc, item) => {
-        if (item.media_id !== null) {
-          acc.push(item);
-        }
-        return acc;
-      }, []);
-
-      const nullItems = updatedMediaList.filter(
-        (item) => item.media_id === null
-      );
-      nullItems.forEach((item) => output_data.push(item));
-
-      // console.log("output_data " + JSON.stringify(output_data));
-      setItemsPanel1((prevState) => ({
-        ...prevState,
-        value: {
-          ...prevState.value,
-          media_list: output_data,
-        },
-      }));
-    }
-
-    // Update the state with the modified media list
-  };
-
   const searchMediaByName = (value) => {
     setSearchTerm(value);
-
-    const results = mediaMockup.filter((item) =>
-      item.media_name.toLowerCase().includes(value.toLowerCase())
-    );
-
-    setItemsPanel2(results);
+    if (value) {
+      const results = itemsPanel2.filter((item) =>
+        item.ContentName.toLowerCase().includes(value.toLowerCase())
+      );
+      setItemsPanel2(results);
+    } else {
+      setItemsPanel2(full_media_items);
+    }
   };
 
   return (
@@ -670,7 +721,7 @@ const Ads_Allocation_Booking = ({
                   </div>
                   <div className="flex justify-center items-center space-x-2 mt-3">
                     <button
-                      onClick={() => console.log("item", media_list)}
+                      onClick={() => console.log("item", itemsPanel1.value)}
                       className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold"
                     >
                       Confirm
@@ -818,71 +869,97 @@ const Ads_Allocation_Booking = ({
                                     {...provided.droppableProps}
                                     className="h-[680px] overflow-y-auto space-y-2"
                                   >
-                                    {itemsPanel2.map((items, index) => (
-                                      <Draggable
-                                        key={`panel2-${index}`}
-                                        draggableId={`panel2-${index}`}
-                                        index={index}
-                                      >
-                                        {(provided) => (
-                                          <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            className="grid grid-cols-11 h-[80px] border border-gray-300"
-                                          >
-                                            <div className="col-span-2 flex justify-center items-center">
-                                              {items.media_type === "video" ? (
-                                                <FiVideo
-                                                  size={30}
-                                                  className="text-[#6425FE]"
-                                                />
-                                              ) : (
-                                                <FiImage
-                                                  size={30}
-                                                  className="text-[#6425FE]"
-                                                />
-                                              )}
-                                            </div>
-                                            <div className="col-span-8">
-                                              <div className="flex justify-start items-center mt-2">
-                                                <div className="font-poppins text-[15px]">
-                                                  {items.media_name}
-                                                </div>
-                                              </div>
-                                              <div className="flex justify-start items-center ">
-                                                <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                  File Size : {items.media_size}
-                                                </div>
-                                              </div>
-                                              <div className="flex justify-start items-center ">
-                                                {items.media_duration > 0 && (
-                                                  <div className="font-poppins text-[15px]">
-                                                    Duration :{" "}
-                                                    {items.media_duration} sec
-                                                  </div>
+                                    {itemsPanel2.length > 0 &&
+                                      itemsPanel2.map((items, index) => (
+                                        <Draggable
+                                          key={`panel2-${index}`}
+                                          draggableId={`panel2-${items.ContentID}`}
+                                          index={index}
+                                        >
+                                          {(provided) => (
+                                            <div
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                            >
+                                              <div className="col-span-2 flex justify-center items-center">
+                                                {items.ContentTypeName ===
+                                                "Video" ? (
+                                                  <FiVideo
+                                                    size={30}
+                                                    className="text-[#6425FE]"
+                                                  />
+                                                ) : (
+                                                  <FiImage
+                                                    size={30}
+                                                    className="text-[#6425FE]"
+                                                  />
                                                 )}
                                               </div>
+                                              <div className="col-span-8">
+                                                <div className="flex justify-start items-center mt-2">
+                                                  <div className="font-poppins text-[15px]">
+                                                    {items.ContentName.length >
+                                                    30 ? (
+                                                      <span>
+                                                        {items.ContentName.slice(
+                                                          0,
+                                                          27
+                                                        ) + "..."}
+                                                      </span>
+                                                    ) : (
+                                                      <span>
+                                                        {items.ContentName}
+                                                      </span>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                                <div className="flex justify-start items-center ">
+                                                  <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                    File Size :{" "}
+                                                    {parseFloat(
+                                                      JSON.parse(
+                                                        items.ContentProperties
+                                                      ).size
+                                                    ).toFixed(2)}{" "}
+                                                    MB
+                                                  </div>
+                                                </div>
+                                                <div className="flex justify-start items-center ">
+                                                  {items.ContentTypeName ===
+                                                    "Video" && (
+                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                      Duration :{" "}
+                                                      {parseFloat(
+                                                        JSON.parse(
+                                                          items.ContentProperties
+                                                        ).duration
+                                                      ).toFixed(2)}{" "}
+                                                      sec
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              </div>
+                                              <div className="col-span-1 flex justify-start items-center">
+                                                <IoIosPlayCircle
+                                                  size={26}
+                                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                  onClick={() => {
+                                                    setModalPlayerOpen(
+                                                      !modalPlayerOpen
+                                                    );
+                                                    setOpenAdsAllocationModal(
+                                                      !openAdsAllocationModal
+                                                    );
+                                                    setMediaDisplay(items);
+                                                  }}
+                                                />
+                                              </div>
                                             </div>
-                                            <div className="col-span-1 flex justify-start items-center">
-                                              <IoIosPlayCircle
-                                                size={26}
-                                                className="text-[#6425FE] hover:text-[#3b1694]"
-                                                onClick={() => {
-                                                  setModalPlayerOpen(
-                                                    !modalPlayerOpen
-                                                  );
-                                                  setOpenAdsAllocationModal(
-                                                    !openAdsAllocationModal
-                                                  );
-                                                  setMediaDisplay(items);
-                                                }}
-                                              />
-                                            </div>
-                                          </div>
-                                        )}
-                                      </Draggable>
-                                    ))}
+                                          )}
+                                        </Draggable>
+                                      ))}
                                     {provided.placeholder}
                                   </div>
                                 )}
@@ -918,77 +995,102 @@ const Ads_Allocation_Booking = ({
                                     {...provided.droppableProps}
                                     className="h-[680px] overflow-y-auto space-y-2"
                                   >
-                                    {itemsPanel2
-                                      .filter(
-                                        (item) => item.media_type === "video"
-                                      )
-                                      .map((items, index) => (
-                                        <Draggable
-                                          key={`panel2-${index}`}
-                                          draggableId={`panel2-${index}`}
-                                          index={index}
-                                        >
-                                          {(provided) => (
-                                            <div
-                                              ref={provided.innerRef}
-                                              {...provided.draggableProps}
-                                              {...provided.dragHandleProps}
-                                              className="grid grid-cols-11 h-[80px] border border-gray-300"
-                                            >
-                                              <div className="col-span-2 flex justify-center items-center">
-                                                {items.media_type ===
-                                                "video" ? (
-                                                  <FiVideo
-                                                    size={30}
-                                                    className="text-[#6425FE]"
-                                                  />
-                                                ) : (
-                                                  <FiImage
-                                                    size={30}
-                                                    className="text-[#6425FE]"
-                                                  />
-                                                )}
-                                              </div>
-                                              <div className="col-span-8">
-                                                <div className="flex justify-start items-center mt-2">
-                                                  <div className="font-poppins text-[15px]">
-                                                    {items.media_name}
-                                                  </div>
-                                                </div>
-                                                <div className="flex justify-start items-center ">
-                                                  <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                    File Size :{" "}
-                                                    {items.media_size}
-                                                  </div>
-                                                </div>
-                                                <div className="flex justify-start items-center ">
-                                                  {items.media_duration > 0 && (
-                                                    <div className="font-poppins text-[15px]">
-                                                      Duration :{" "}
-                                                      {items.media_duration} sec
-                                                    </div>
+                                    {itemsPanel2.length > 0 &&
+                                      itemsPanel2
+                                        .filter(
+                                          (item) =>
+                                            item.ContentTypeName === "Video"
+                                        )
+                                        .map((items, index) => (
+                                          <Draggable
+                                            key={`panel2-${index}`}
+                                            draggableId={`panel2-${items.ContentID}`}
+                                            index={index}
+                                          >
+                                            {(provided) => (
+                                              <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                              >
+                                                <div className="col-span-2 flex justify-center items-center">
+                                                  {items.ContentTypeName ===
+                                                  "Video" ? (
+                                                    <FiVideo
+                                                      size={30}
+                                                      className="text-[#6425FE]"
+                                                    />
+                                                  ) : (
+                                                    <FiImage
+                                                      size={30}
+                                                      className="text-[#6425FE]"
+                                                    />
                                                   )}
                                                 </div>
+                                                <div className="col-span-8">
+                                                  <div className="flex justify-start items-center mt-2">
+                                                    <div className="font-poppins text-[15px]">
+                                                      {items.ContentName
+                                                        .length > 30 ? (
+                                                        <span>
+                                                          {items.ContentName.slice(
+                                                            0,
+                                                            27
+                                                          ) + "..."}
+                                                        </span>
+                                                      ) : (
+                                                        <span>
+                                                          {items.ContentName}
+                                                        </span>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex justify-start items-center ">
+                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                      File Size :{" "}
+                                                      {parseFloat(
+                                                        JSON.parse(
+                                                          items.ContentProperties
+                                                        ).size
+                                                      ).toFixed(2)}{" "}
+                                                      MB
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex justify-start items-center ">
+                                                    {items.ContentTypeName ===
+                                                      "Video" && (
+                                                      <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                        Duration :{" "}
+                                                        {parseFloat(
+                                                          JSON.parse(
+                                                            items.ContentProperties
+                                                          ).duration
+                                                        ).toFixed(2)}{" "}
+                                                        sec
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                                <div className="col-span-1 flex justify-start items-center">
+                                                  <IoIosPlayCircle
+                                                    size={26}
+                                                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                    onClick={() => {
+                                                      setModalPlayerOpen(
+                                                        !modalPlayerOpen
+                                                      );
+                                                      setOpenAdsAllocationModal(
+                                                        !openAdsAllocationModal
+                                                      );
+                                                      setMediaDisplay(items);
+                                                    }}
+                                                  />
+                                                </div>
                                               </div>
-                                              <div className="col-span-1 flex justify-start items-center">
-                                                <IoIosPlayCircle
-                                                  size={26}
-                                                  className="text-[#6425FE] hover:text-[#3b1694]"
-                                                  onClick={() => {
-                                                    setModalPlayerOpen(
-                                                      !modalPlayerOpen
-                                                    );
-                                                    setOpenAdsAllocationModal(
-                                                      !openAdsAllocationModal
-                                                    );
-                                                    setMediaDisplay(items);
-                                                  }}
-                                                />
-                                              </div>
-                                            </div>
-                                          )}
-                                        </Draggable>
-                                      ))}
+                                            )}
+                                          </Draggable>
+                                        ))}
                                     {provided.placeholder}
                                   </div>
                                 )}
@@ -1024,77 +1126,102 @@ const Ads_Allocation_Booking = ({
                                     {...provided.droppableProps}
                                     className="h-[680px] overflow-y-auto space-y-2"
                                   >
-                                    {itemsPanel2
-                                      .filter(
-                                        (item) => item.media_type === "image"
-                                      )
-                                      .map((items, index) => (
-                                        <Draggable
-                                          key={`panel2-${index}`}
-                                          draggableId={`panel2-${index}`}
-                                          index={index}
-                                        >
-                                          {(provided) => (
-                                            <div
-                                              ref={provided.innerRef}
-                                              {...provided.draggableProps}
-                                              {...provided.dragHandleProps}
-                                              className="grid grid-cols-11 h-[80px] border border-gray-300"
-                                            >
-                                              <div className="col-span-2 flex justify-center items-center">
-                                                {items.media_type ===
-                                                "video" ? (
-                                                  <FiVideo
-                                                    size={30}
-                                                    className="text-[#6425FE]"
-                                                  />
-                                                ) : (
-                                                  <FiImage
-                                                    size={30}
-                                                    className="text-[#6425FE]"
-                                                  />
-                                                )}
-                                              </div>
-                                              <div className="col-span-8">
-                                                <div className="flex justify-start items-center mt-2">
-                                                  <div className="font-poppins text-[15px]">
-                                                    {items.media_name}
-                                                  </div>
-                                                </div>
-                                                <div className="flex justify-start items-center ">
-                                                  <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                    File Size :{" "}
-                                                    {items.media_size}
-                                                  </div>
-                                                </div>
-                                                <div className="flex justify-start items-center ">
-                                                  {items.media_duration > 0 && (
-                                                    <div className="font-poppins text-[15px]">
-                                                      Duration :{" "}
-                                                      {items.media_duration} sec
-                                                    </div>
+                                    {itemsPanel2.length > 0 &&
+                                      itemsPanel2
+                                        .filter(
+                                          (item) =>
+                                            item.ContentTypeName === "Image"
+                                        )
+                                        .map((items, index) => (
+                                          <Draggable
+                                            key={`panel2-${index}`}
+                                            draggableId={`panel2-${items.ContentID}`}
+                                            index={index}
+                                          >
+                                            {(provided) => (
+                                              <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                              >
+                                                <div className="col-span-2 flex justify-center items-center">
+                                                  {items.ContentTypeName ===
+                                                  "video" ? (
+                                                    <FiVideo
+                                                      size={30}
+                                                      className="text-[#6425FE]"
+                                                    />
+                                                  ) : (
+                                                    <FiImage
+                                                      size={30}
+                                                      className="text-[#6425FE]"
+                                                    />
                                                   )}
                                                 </div>
+                                                <div className="col-span-8">
+                                                  <div className="flex justify-start items-center mt-2">
+                                                    <div className="font-poppins text-[15px]">
+                                                      {items.ContentName
+                                                        .length > 30 ? (
+                                                        <span>
+                                                          {items.ContentName.slice(
+                                                            0,
+                                                            27
+                                                          ) + "..."}
+                                                        </span>
+                                                      ) : (
+                                                        <span>
+                                                          {items.ContentName}
+                                                        </span>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex justify-start items-center ">
+                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                      File Size :{" "}
+                                                      {parseFloat(
+                                                        JSON.parse(
+                                                          items.ContentProperties
+                                                        ).size
+                                                      ).toFixed(2)}{" "}
+                                                      MB
+                                                    </div>
+                                                  </div>
+                                                  <div className="flex justify-start items-center ">
+                                                    {items.ContentTypeName ===
+                                                      "Video" && (
+                                                      <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                        Duration :{" "}
+                                                        {parseFloat(
+                                                          JSON.parse(
+                                                            items.ContentProperties
+                                                          ).duration
+                                                        ).toFixed(2)}{" "}
+                                                        sec
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                                <div className="col-span-1 flex justify-start items-center">
+                                                  <IoIosPlayCircle
+                                                    size={26}
+                                                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                    onClick={() => {
+                                                      setModalPlayerOpen(
+                                                        !modalPlayerOpen
+                                                      );
+                                                      setOpenAdsAllocationModal(
+                                                        !openAdsAllocationModal
+                                                      );
+                                                      setMediaDisplay(items);
+                                                    }}
+                                                  />
+                                                </div>
                                               </div>
-                                              <div className="col-span-1 flex justify-start items-center">
-                                                <IoIosPlayCircle
-                                                  size={26}
-                                                  className="text-[#6425FE] hover:text-[#3b1694]"
-                                                  onClick={() => {
-                                                    setModalPlayerOpen(
-                                                      !modalPlayerOpen
-                                                    );
-                                                    setOpenAdsAllocationModal(
-                                                      !openAdsAllocationModal
-                                                    );
-                                                    setMediaDisplay(items);
-                                                  }}
-                                                />
-                                              </div>
-                                            </div>
-                                          )}
-                                        </Draggable>
-                                      ))}
+                                            )}
+                                          </Draggable>
+                                        ))}
                                     {provided.placeholder}
                                   </div>
                                 )}

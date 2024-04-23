@@ -458,8 +458,8 @@ const Role_permission = () => {
           <div className="grid grid-cols-7 mt-5">
             <div className="col-span-3">
               {/* ------------------ */}
-              {Object.keys(data).map((item, key) => (
-                <div className="mb-5" key={key}>
+              {Object.keys(data).map((item, index) => (
+                <div className="mb-5" key={index}>
                   <div className="grid grid-cols-7 gap-4">
                     <div className="col-span-1 flex items-center justify-center">
                       <label className="inline-flex items-center ">
@@ -732,7 +732,7 @@ const Role_permission = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div className="font-poppins font-semibold text-2xl mt-10">
-          <text>Role And Permission</text>
+          Role And Permission
         </div>
         <div className="mt-7 grid grid-cols-7 gap-2">
           {/* Left Panel */}
@@ -749,61 +749,64 @@ const Role_permission = () => {
               ) : (
                 ""
               )}
-              {child_permissions.map((items, key) => (
-                <>
-                  <div
-                    key={key}
-                    className={`grid grid-cols-7 gap-2 mt-5 
-                  ${key === select_role ? "text-[#6425FE]" : ""} 
+              {child_permissions.length > 0 &&
+                child_permissions.map((items, index) => (
+                  <>
+                    <div
+                      key={index}
+                      className={`grid grid-cols-7 gap-2 mt-5 
+                  ${index === select_role ? "text-[#6425FE]" : ""} 
                   cursor-pointer`}
-                    onClick={() => tempOldData(key)}
-                  >
-                    <div className="col-span-5 ml-2">
-                      <div className={`font-poppins text-2xl`}>
-                        <input
-                          type="text"
-                          defaultValue={items.RoleName}
-                          disabled={editRoleName}
-                          onChange={(e) => handleSetNewRoleName(e.target.value)}
-                          onBlur={() =>
-                            handleOutFocusRoleName(newRoleName, key)
-                          }
-                          // className="w-60"
-                        />
+                      onClick={() => tempOldData(index)}
+                    >
+                      <div className="col-span-5 ml-2">
+                        <div className={`font-poppins text-2xl`}>
+                          <input
+                            type="text"
+                            defaultValue={items.RoleName}
+                            disabled={editRoleName}
+                            onChange={(e) =>
+                              handleSetNewRoleName(e.target.value)
+                            }
+                            onBlur={() =>
+                              handleOutFocusRoleName(newRoleName, index)
+                            }
+                            // className="w-60"
+                          />
+                        </div>
+                        <div className="text-xs">
+                          {`${items.RoleName} Description`}
+                        </div>
                       </div>
-                      <div className="text-xs">
-                        {`${items.RoleName} Description`}
+
+                      <div className="col-span-2">
+                        <div className="flex justify-center items-center mt-3 space-x-4">
+                          {page_permission.update ? (
+                            <button onClick={() => handleEditRoleName()}>
+                              <RiEditLine
+                                size={20}
+                                className="text-[#6425FE] hover:text-[#3b1694]"
+                              />
+                            </button>
+                          ) : (
+                            ""
+                          )}
+
+                          {page_permission.delete ? (
+                            <button onClick={() => handleDeleteRoleName(index)}>
+                              <RiDeleteBin5Line
+                                size={20}
+                                className="text-[#6425FE] hover:text-[#3b1694]"
+                              />
+                            </button>
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
                     </div>
-
-                    <div className="col-span-2">
-                      <div className="flex justify-center items-center mt-3 space-x-4">
-                        {page_permission.update ? (
-                          <button onClick={() => handleEditRoleName()}>
-                            <RiEditLine
-                              size={20}
-                              className="text-[#6425FE] hover:text-[#3b1694]"
-                            />
-                          </button>
-                        ) : (
-                          ""
-                        )}
-
-                        {page_permission.delete ? (
-                          <button onClick={() => handleDeleteRoleName(key)}>
-                            <RiDeleteBin5Line
-                              size={20}
-                              className="text-[#6425FE] hover:text-[#3b1694]"
-                            />
-                          </button>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ))}
+                  </>
+                ))}
             </div>
           </div>
           {/* Left Panel */}

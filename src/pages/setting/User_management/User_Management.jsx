@@ -316,9 +316,7 @@ const User_Management = () => {
         <Header category="Page" title="Home" />
         <div className="grid grid-cols-5 gap-4 mt-10">
           <div className="col-span-4">
-            <div className="font-poppins font-semibold text-2xl">
-              <text>User</text>
-            </div>
+            <div className="font-poppins font-semibold text-2xl">User</div>
           </div>
 
           {page_permission.create ? (

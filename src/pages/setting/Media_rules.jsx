@@ -30,7 +30,7 @@ const Media_rules = () => {
         <div className="grid grid-cols-5 gap-4 mt-10">
           <div className="col-span-4">
             <div className="font-poppins font-semibold text-2xl">
-              <text>Media Rule</text>
+              Media Rule
             </div>
           </div>
 

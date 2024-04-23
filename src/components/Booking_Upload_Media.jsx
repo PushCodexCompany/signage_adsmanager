@@ -7,6 +7,7 @@ import {
 import { BsCheckCircle } from "react-icons/bs";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
+import { values } from "lodash";
 
 const Booking_Upload_Media = ({
   setOpenModalUploadMedia,
@@ -15,6 +16,10 @@ const Booking_Upload_Media = ({
   openAdsAllocationModal,
   bookingId,
   media_rules_select,
+  setItemsPanel1,
+  itemsPanel1,
+  setItemsPanel2,
+  itemsPanel2,
 }) => {
   const { token } = User.getCookieData();
   const [uploads, setUploads] = useState({});
@@ -23,7 +28,7 @@ const Booking_Upload_Media = ({
   const uploadFile = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".mp4, .m3u8, .jpg, .png";
+    fileInput.accept = ".mp4, .jpg, .png";
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
 
@@ -43,23 +48,19 @@ const Booking_Upload_Media = ({
               const height = video.videoHeight;
 
               // for convert filesize
-              // const fileSize = file.size / (1024 * 1024);
+              const fileSize = file.size / (1024 * 1024);
 
               fileProperties = {
                 duration: duration.toString(),
                 width: width.toString(),
                 height: height.toString(),
+                size: fileSize.toString(),
               };
 
               if (
                 media_rules_select.width === width &&
                 media_rules_select.height === height
               ) {
-                // setUploads((prevUploads) => ({
-                //   ...prevUploads,
-                //   ...uploadInfo,
-                // }));
-
                 const form = new FormData();
                 form.append("file[]", file);
                 form.append("contenttype", fileType);
@@ -81,6 +82,9 @@ const Booking_Upload_Media = ({
             video.src = e.target.result;
           } else if (file.type.includes("image")) {
             fileType = file.type;
+            if (fileType === "image/jpeg") {
+              fileType = file.type.replace("jpeg", "jpg");
+            }
             const img = new Image();
             img.onload = () => {
               // Accessing image properties after it's loaded
@@ -88,23 +92,18 @@ const Booking_Upload_Media = ({
               const height = img.height; // Height of the image in pixels
 
               // for convert filesize
-              //const fileSize = file.size / (1024 * 1024);
+              const fileSize = file.size / (1024 * 1024);
 
               // Store the file information along with width and height
               fileProperties = {
                 width: width.toString(),
                 height: height.toString(),
+                size: fileSize.toString(),
               };
               if (
                 media_rules_select.width === width &&
                 media_rules_select.height === height
               ) {
-                // Assuming you have a state setter function named setUploads
-                // setUploads((prevUploads) => ({
-                //   ...prevUploads,
-                //   ...uploadInfo,
-                // }));
-
                 const form = new FormData();
                 form.append("file[]", file);
                 form.append("contenttype", fileType);
@@ -134,14 +133,54 @@ const Booking_Upload_Media = ({
 
   const handleUploadMediaByBooking = async () => {
     if (uploads.name) {
-      // try {
-      //   const data = await User.createContent(bookingId, forms, token);
-      //   console.log("data", data);
-      // } catch (error) {
-      //   console.log("error", error);
-      // }
+      try {
+        const data = await User.createContent(bookingId, forms, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "เพิ่ม media สำเร็จ!",
+            text: `เพิ่ม media สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              // setNewMediaPlayList();
+              updateMediaPlaylist();
+              setOpenModalUploadMedia(!openModalUploadNewMedia);
+              setOpenAdsAllocationModal(!openAdsAllocationModal);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
     }
   };
+
+  const updateMediaPlaylist = async () => {
+    const media_list = await User.getMediaPlaylist(bookingId, token);
+    setItemsPanel2(media_list);
+  };
+
+  // for update upload media to  Panel1
+
+  // const setNewMediaPlayList = async () => {
+  //   const media_list = await User.getMediaPlaylist(bookingId, token);
+  //   setItemsPanel1((prevState) => ({
+  //     ...prevState,
+  //     value: {
+  //       ...prevState.value,
+  //       medias: media_list,
+  //     },
+  //   }));
+  // };
 
   const handleDeleteFile = () => {
     setUploads({});
