@@ -21,17 +21,33 @@ const Ads_Allocation_Apply_Screen = ({
   toggleCheckboxAddScreen,
   selectedScreenItems,
   setScreennAdsAllocation,
+  media_rules_select,
 }) => {
   const { token } = User.getCookieData();
   const [screens_options_data, setScreenOptionsData] = useState([]);
+  const [screen_filter, setScreenFilter] = useState([]);
 
   useEffect(() => {
     getScreenOption();
+    filterByMediaRules();
   }, []);
 
   const getScreenOption = async () => {
     const data = await User.getScreensOptions(token);
     setScreenOptionsData(data.screenresolution);
+  };
+
+  const filterByMediaRules = () => {
+    const filteredScreens = allScreenData.filter((screen) => {
+      if (screen.ScreenRule.length === 0) return false; // If no ScreenRule, exclude the screen
+      const rule = screen.ScreenRule[0]; // Assuming there's only one rule per screen
+      return (
+        rule.Width === `${media_rules_select.width}.00` &&
+        rule.Height === `${media_rules_select.height}.00`
+      );
+    });
+
+    setScreenFilter(filteredScreens);
   };
 
   const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -197,8 +213,8 @@ const Ads_Allocation_Apply_Screen = ({
                 </tr>
               </thead>
               <tbody>
-                {allScreenData.length > 0 &&
-                  allScreenData.map((row, key) => (
+                {screen_filter.length > 0 ? (
+                  screen_filter.map((row, key) => (
                     <tr key={row.ScreenID}>
                       <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div className="flex items-center">
@@ -274,7 +290,18 @@ const Ads_Allocation_Apply_Screen = ({
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="p-4">
+                      <div className="flex justify-center items-center">
+                        <span className="text-gray-300 text-4xl">
+                          No Screen(s) Match with Media Rules
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

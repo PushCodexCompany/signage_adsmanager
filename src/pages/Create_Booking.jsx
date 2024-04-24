@@ -286,21 +286,6 @@ const Create_Booking = () => {
   //   calculateSize(screen);
   // };
 
-  const calculateSize = (screen) => {
-    let maxLength = 0;
-    screen.forEach((screen) => {
-      screen.booking.forEach((booking) => {
-        const bookingLength = booking.media_list.length;
-        if (bookingLength > maxLength) {
-          maxLength = bookingLength;
-        }
-      });
-    });
-
-    const col_booking = Math.ceil(maxLength / 5);
-    setBookingCol(col_booking);
-  };
-
   const getAllScreen = async () => {
     const { SlotPerDay } = location.state.data;
     const data = await User.getScreensWithAdsCapacity(null, SlotPerDay, token);
@@ -476,23 +461,6 @@ const Create_Booking = () => {
       return updatedModal;
     });
   };
-
-  // const findScreenData = (screen_data, type) => {
-  //   let return_data;
-  //   const find_screen = allScreenData.find(
-  //     (items) => items.ScreenID === screen_data.ScreenID
-  //   );
-
-  //   if (type === "name") {
-  //     return_data = find_screen.ScreenName;
-  //   } else if (type === "location") {
-  //     return_data = find_screen.ScreenLocation;
-  //   } else if (type === "info") {
-  //     return_data = find_screen;
-  //   }
-
-  //   return return_data;
-  // };
 
   const handleConfirmDelete = async (index, id) => {
     // ลบจอที่เลือก
@@ -974,7 +942,7 @@ const Create_Booking = () => {
               </div>
               <div className="h-[400px] overflow-y-auto mt-5">
                 {screenData.length > 0 ? (
-                  allScreenData.map((items, index) => (
+                  screenData.map((items, index) => (
                     <div
                       key={index}
                       className="flex justify-center items-center mt-3 cursor-pointer"

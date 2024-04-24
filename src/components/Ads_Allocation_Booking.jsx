@@ -113,12 +113,41 @@ const Ads_Allocation_Booking = ({
     const newDatePickers = [...datePickers];
     newDatePickers[index].startDate = date;
     setDatePickers(newDatePickers);
+    generateDateRange(index);
   };
 
   const handleEndDateChange = (index, date) => {
     const newDatePickers = [...datePickers];
     newDatePickers[index].endDate = date;
+
+    if (newDatePickers[index].endDate < newDatePickers[index].startDate) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่สามารถเลือกวันย้อนหลังได้",
+      });
+      return;
+    }
+
     setDatePickers(newDatePickers);
+    generateDateRange(index);
+  };
+
+  const generateDateRange = (index) => {
+    const startDate = new Date(datePickers[index].startDate);
+    const endDate = new Date(datePickers[index].endDate);
+
+    const newDateRange = [];
+    for (
+      let currentDate = startDate;
+      currentDate <= endDate;
+      currentDate.setDate(currentDate.getDate() + 1)
+    ) {
+      newDateRange.push(currentDate.toISOString().split("T")[0]);
+    }
+
+    // Replace the old dateRange with the new one
+    datePickers[index].dateRange = newDateRange;
   };
 
   const handleRemoveDatePicker = (index) => {
@@ -128,9 +157,17 @@ const Ads_Allocation_Booking = ({
   };
 
   const handleAddDatePicker = () => {
+    const booking_date_format = booking_date.map((timestamp) =>
+      format(timestamp, "yyyy-MM-dd")
+    );
+
     setDatePickers([
       ...datePickers,
-      { startDate: new Date(), endDate: new Date() },
+      {
+        startDate: new Date(booking_date[0]),
+        endDate: new Date(booking_date[booking_date.length - 1]),
+        dateRange: booking_date_format,
+      },
     ]);
   };
 
@@ -194,6 +231,7 @@ const Ads_Allocation_Booking = ({
         newDestinationItems = insert(destinationItems, destination.index, {
           ...draggedItem,
           slot_size: 1,
+          slot_duration: 15,
         });
       }
 
@@ -217,6 +255,7 @@ const Ads_Allocation_Booking = ({
     //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
       target.slot_size = target.slot_size + 1;
+      target.slot_duration = target.slot_duration + 15;
     } else {
       target.slot_size = 2;
     }
@@ -237,6 +276,7 @@ const Ads_Allocation_Booking = ({
     //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
       target.slot_size = target.slot_size - 1;
+      target.slot_duration = target.slot_duration - 15;
     } else {
       target.slot_size = 0;
     }
@@ -329,6 +369,7 @@ const Ads_Allocation_Booking = ({
         ContentProperties: null,
         slot_size: 1,
         slot_num: i + 1,
+        slot_duration: 15,
       });
     }
 
@@ -408,15 +449,9 @@ const Ads_Allocation_Booking = ({
                             </div>
                           </div>
                           <div className="flex justify-start items-center ">
-                            {items.ContentTypeName === "Video" && (
-                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                Duration :{" "}
-                                {parseFloat(
-                                  JSON.parse(items.ContentProperties).duration
-                                ).toFixed(2)}{" "}
-                                sec
-                              </div>
-                            )}
+                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                              Duration : {items.slot_duration} sec
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -474,6 +509,48 @@ const Ads_Allocation_Booking = ({
     }
   };
 
+  const handleDateRangeToString = (datePickers) => {
+    let date_range;
+    if (datePickers.length > 0) {
+      date_range = datePickers
+        .reduce((acc, curr) => {
+          curr.dateRange.forEach((date) => {
+            if (!acc.includes(date)) {
+              acc.push(date);
+            }
+          });
+          return acc;
+        }, [])
+        .join(",");
+
+      return date_range;
+    }
+  };
+
+  const handleMediaPlaylist = (itemsPanel1) => {
+    const itemsPanel1Filtered = { ...itemsPanel1 };
+
+    itemsPanel1Filtered.value.medias = itemsPanel1Filtered.value.medias.filter(
+      (media) => media.ContentID !== null
+    );
+
+    return itemsPanel1Filtered.value.medias;
+  };
+
+  const handleSaveAdsAllocation = () => {
+    const date_range = handleDateRangeToString(datePickers);
+
+    const playlist = handleMediaPlaylist(itemsPanel1);
+
+    const obj = {
+      applyScreen: screenAdsAllocation,
+      periods: date_range,
+      playlist: playlist,
+    };
+
+    console.log("obj", obj);
+  };
+
   return (
     <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
       {/* First div (circle) */}
@@ -503,15 +580,15 @@ const Ads_Allocation_Booking = ({
                   </div>
                 </div>
                 <div className="mt-10">
-                  <div className="grid grid-cols-10">
-                    <div className="col-span-2" />
-                    <div className="col-span-2">
+                  <div className="grid grid-cols-12">
+                    <div className="col-span-1" />
+                    <div className="col-span-3 flex justify-end items-center">
                       <div className="font-poppins font-bold">
                         Booking Period :
                       </div>
                     </div>
                     <div className="col-span-1" />
-                    <div className="col-span-4">
+                    <div className="col-span-6">
                       <div className="font-poppins font-medium  text-lg">
                         {` ${format(
                           booking_date[0],
@@ -525,15 +602,15 @@ const Ads_Allocation_Booking = ({
                     <div className="col-span-1" />
                   </div>
 
-                  <div className="grid grid-cols-10 mt-2">
-                    <div className="col-span-2" />
-                    <div className="col-span-2 mt-2">
+                  <div className="grid grid-cols-12 mt-2">
+                    <div className="col-span-1" />
+                    <div className="col-span-3 mt-2 flex justify-end items-center">
                       <div className="font-poppins font-bold">
                         Apply to Screens :
                       </div>
                     </div>
                     <div className="col-span-1" />
-                    <div className="col-span-4 border border-[#D9D9D9] rounded-md">
+                    <div className="col-span-6 border border-[#D9D9D9] rounded-md">
                       <div className="p-2">
                         <div className="grid grid-cols-5">
                           <div className="col-span-4">
@@ -588,16 +665,16 @@ const Ads_Allocation_Booking = ({
                     <div className="col-span-1" />
                   </div>
 
-                  <div className="grid grid-cols-10 mt-5">
-                    <div className="col-span-2" />
-                    <div className="col-span-2">
+                  <div className="grid grid-cols-12 mt-5">
+                    <div className="col-span-1" />
+                    <div className="col-span-3 flex justify-end items-center">
                       <div className="font-poppins font-bold">
                         Apply to Period :
                       </div>
                     </div>
                     <div className="col-span-1" />
-                    <div className="col-span-4 space-y-1 ">
-                      {datePickers.map((datePicker, index) => (
+                    <div className="col-span-6 space-y-1 ">
+                      {datePickers.map((items, index) => (
                         <div
                           key={index}
                           className="grid grid-cols-6 border border-[#D9D9D9] rounded-md"
@@ -605,11 +682,13 @@ const Ads_Allocation_Booking = ({
                           <div className="col-span-2 p-2 flex justify-center items-center">
                             <div className="font-poppins">
                               <DatePicker
-                                selected={datePicker.startDate}
+                                selected={items.startDate}
                                 selectsStart
-                                startDate={datePicker.startDate}
-                                endDate={datePicker.endDate}
-                                dateFormat="dd/MM/yyyy"
+                                startDate={items.startDate}
+                                endDate={items.endDate}
+                                minDate={booking_date[0]}
+                                maxDate={booking_date[booking_date.length - 1]}
+                                dateFormat="yyyy-MM-dd"
                                 onChange={(date) =>
                                   handleStartDateChange(index, date)
                                 }
@@ -623,12 +702,13 @@ const Ads_Allocation_Booking = ({
                           <div className="col-span-2 p-2">
                             <div className="font-poppins">
                               <DatePicker
-                                selected={datePicker.endDate}
+                                selected={items.endDate}
                                 selectsEnd
-                                startDate={datePicker.startDate}
-                                endDate={datePicker.endDate}
-                                minDate={datePicker.startDate}
-                                dateFormat="dd/MM/yyyy"
+                                startDate={items.startDate}
+                                endDate={items.endDate}
+                                minDate={booking_date[0]}
+                                maxDate={booking_date[booking_date.length - 1]}
+                                dateFormat="yyyy-MM-dd"
                                 onChange={(date) =>
                                   handleEndDateChange(index, date)
                                 }
@@ -671,15 +751,15 @@ const Ads_Allocation_Booking = ({
                     <div className="col-span-1" />
                   </div>
 
-                  <div className="grid grid-cols-10 mt-10">
-                    <div className="col-span-2" />
-                    <div className="col-span-2">
+                  <div className="grid grid-cols-12 mt-10">
+                    <div className="col-span-1" />
+                    <div className="col-span-3 flex justify-end items-center">
                       <div className="font-poppins font-bold">
                         Screen Resolution :
                       </div>
                     </div>
                     <div className="col-span-1" />
-                    <div className="col-span-4">
+                    <div className="col-span-6">
                       <div className="font-poppins font-medium text-lg">
                         {media_rules_select?.width}x{media_rules_select?.height}{" "}
                         px
@@ -688,13 +768,13 @@ const Ads_Allocation_Booking = ({
                     <div className="col-span-1" />
                   </div>
 
-                  <div className="grid grid-cols-10 mt-3">
-                    <div className="col-span-2" />
-                    <div className="col-span-2">
+                  <div className="grid grid-cols-12 mt-3">
+                    <div className="col-span-1" />
+                    <div className="col-span-3 flex justify-end items-center">
                       <div className="font-poppins font-bold">Media Rule :</div>
                     </div>
                     <div className="col-span-1" />
-                    <div className="col-span-4">
+                    <div className="col-span-6">
                       <div className="h-[40px] bg-[#FD6822] rounded-md">
                         <div className="flex justify-center items-center">
                           <div className="font-poppins font-medium text-lg text-white text-center mt-2">
@@ -721,7 +801,7 @@ const Ads_Allocation_Booking = ({
                   </div>
                   <div className="flex justify-center items-center space-x-2 mt-3">
                     <button
-                      onClick={() => console.log("item", itemsPanel1.value)}
+                      onClick={() => handleSaveAdsAllocation()}
                       className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold"
                     >
                       Confirm

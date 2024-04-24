@@ -296,12 +296,11 @@ const Select_Booking = () => {
 
   const renderMediaListBox = (items) => {
     const nullFreeList = items.medias.filter((it) => it.ContentID !== null);
-
     const mediaSize = nullFreeList.length;
 
     const emptySlots = [];
 
-    for (var i = mediaSize; i < booking_slot; i++) {
+    for (var i = mediaSize; i < items.DisplaySlot; i++) {
       emptySlots.push({
         ContentID: null,
         ContentName: null,
@@ -657,21 +656,25 @@ const Select_Booking = () => {
                                               {renderMediaListBox(items2)}
                                             </div>
                                           </div>
-                                          <div
-                                            onClick={() =>
-                                              handleSelectScreenAddmedia(
-                                                screenIndex + 1,
-                                                items,
-                                                items2
-                                              )
-                                            }
-                                            className="col-span-1 flex justify-center items-center cursor-pointer"
-                                          >
-                                            <MdOutlineModeEditOutline
-                                              size={26}
-                                              className="text-[#6425FE] hover:text-[#3b1694]"
-                                            />
-                                          </div>
+                                          {items2?.DisplaySlot > 0 ? (
+                                            <div
+                                              onClick={() =>
+                                                handleSelectScreenAddmedia(
+                                                  screenIndex + 1,
+                                                  items,
+                                                  items2
+                                                )
+                                              }
+                                              className="col-span-1 flex justify-center items-center cursor-pointer"
+                                            >
+                                              <MdOutlineModeEditOutline
+                                                size={26}
+                                                className="text-[#6425FE] hover:text-[#3b1694]"
+                                              />
+                                            </div>
+                                          ) : (
+                                            <></>
+                                          )}
                                         </div>
                                       </div>
                                     </div>
@@ -790,6 +793,7 @@ const Select_Booking = () => {
           toggleCheckboxAddScreen={toggleCheckboxAddScreen}
           selectedScreenItems={selectedScreenItems}
           setScreennAdsAllocation={setScreennAdsAllocation}
+          media_rules_select={media_rules_select}
         />
       )}
 
