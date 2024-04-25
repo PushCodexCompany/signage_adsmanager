@@ -45,6 +45,7 @@ const Ads_Allocation_Booking = ({
   setMediaDisplay,
   setCheckboxes,
   media_rules_select,
+  checkboxes,
 }) => {
   const [full_media_items, setFullMediasItems] = useState([]);
 
@@ -161,14 +162,42 @@ const Ads_Allocation_Booking = ({
       format(timestamp, "yyyy-MM-dd")
     );
 
-    setDatePickers([
-      ...datePickers,
-      {
-        startDate: new Date(booking_date[0]),
-        endDate: new Date(booking_date[booking_date.length - 1]),
-        dateRange: booking_date_format,
-      },
-    ]);
+    if (datePickers.length > 0) {
+      const nextStartDate = new Date(
+        datePickers[datePickers.length - 1].endDate
+      );
+      nextStartDate.setDate(nextStartDate.getDate() + 1);
+
+      if (nextStartDate > new Date(booking_date[booking_date.length - 1])) {
+        nextStartDate.setDate(nextStartDate.getDate() - 1);
+        setDatePickers([
+          ...datePickers,
+          {
+            startDate: nextStartDate,
+            endDate: new Date(booking_date[booking_date.length - 1]),
+            dateRange: booking_date_format,
+          },
+        ]);
+      } else {
+        setDatePickers([
+          ...datePickers,
+          {
+            startDate: nextStartDate,
+            endDate: new Date(booking_date[booking_date.length - 1]),
+            dateRange: booking_date_format,
+          },
+        ]);
+      }
+    } else {
+      setDatePickers([
+        ...datePickers,
+        {
+          startDate: new Date(booking_date[0]),
+          endDate: new Date(booking_date[booking_date.length - 1]),
+          dateRange: booking_date_format,
+        },
+      ]);
+    }
   };
 
   const onDragEnd = (result) => {
@@ -551,14 +580,26 @@ const Ads_Allocation_Booking = ({
     console.log("obj", obj);
   };
 
+  const handleCloseModalAdsAllocation = () => {
+    setScreennAdsAllocation([]);
+    setCheckboxes({});
+    setDatePickers([]);
+    setItemsPanel1((prevState) => ({
+      ...prevState,
+      value: {
+        ...prevState.value,
+        medias: [],
+      },
+    }));
+    setOpenAdsAllocationModal(!openAdsAllocationModal);
+  };
+
   return (
     <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
       {/* First div (circle) */}
       <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
         <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-          <button
-            onClick={() => setOpenAdsAllocationModal(!openAdsAllocationModal)}
-          >
+          <button onClick={() => handleCloseModalAdsAllocation()}>
             <IoIosClose size={25} color={"#6425FE"} />
           </button>
         </div>

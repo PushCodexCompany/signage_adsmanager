@@ -763,6 +763,7 @@ const Select_Booking = () => {
           setMediaDisplay={setMediaDisplay}
           setCheckboxes={setCheckboxes}
           media_rules_select={media_rules_select}
+          checkboxes={checkboxes}
         />
       )}
 
