@@ -764,6 +764,7 @@ const Select_Booking = () => {
           setCheckboxes={setCheckboxes}
           media_rules_select={media_rules_select}
           checkboxes={checkboxes}
+          bookingId={bookingId}
         />
       )}
 

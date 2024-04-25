@@ -46,6 +46,7 @@ const Ads_Allocation_Booking = ({
   setCheckboxes,
   media_rules_select,
   checkboxes,
+  bookingId,
 }) => {
   const [full_media_items, setFullMediasItems] = useState([]);
 
@@ -570,11 +571,20 @@ const Ads_Allocation_Booking = ({
     const date_range = handleDateRangeToString(datePickers);
 
     const playlist = handleMediaPlaylist(itemsPanel1);
+    const screenIDs = screenAdsAllocation.map((screen) => ({
+      screenid: screen.ScreenID,
+    }));
+
+    const media_list = playlist.map((media) => ({
+      contentid: media.ContentID,
+      duration: media.slot_duration,
+    }));
 
     const obj = {
-      applyScreen: screenAdsAllocation,
-      periods: date_range,
-      playlist: playlist,
+      bookingid: bookingId,
+      dates: date_range,
+      screenids: screenIDs,
+      playlist: media_list,
     };
 
     console.log("obj", obj);
