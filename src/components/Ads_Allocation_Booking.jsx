@@ -48,16 +48,28 @@ const Ads_Allocation_Booking = ({
   checkboxes,
   bookingId,
   setMediaAllocatonUploadIndex,
+  screenSelectFromEdit,
+  screen,
 }) => {
   const [full_media_items, setFullMediasItems] = useState([]);
 
   useEffect(() => {
     setTempMediaList();
+    setDefaultApplyToScreen();
     setDefaultPanel1(itemsPanel1.value.slots, itemsPanel1.value.medias);
   }, []);
 
   const setTempMediaList = async () => {
     setFullMediasItems(itemsPanel2);
+  };
+
+  const setDefaultApplyToScreen = () => {
+    if (screenAdsAllocation.length <= 0) {
+      const filteredScreen = screen.filter(
+        (screen) => screen.ScreenID === screenSelectFromEdit
+      );
+      setScreennAdsAllocation(filteredScreen);
+    }
   };
 
   const setDefaultPanel1 = (slots, media_list) => {
@@ -714,26 +726,40 @@ const Ads_Allocation_Booking = ({
                                     <div className="font-poppins text-xs font-bold">
                                       {screen.ScreenName}
                                     </div>
-
-                                    <IoIosClose
-                                      size={20}
-                                      className="cursor-pointer text-[#6425FE]"
-                                      onClick={() =>
-                                        handleDeleteScreenAdsAllocation(
-                                          index,
-                                          screen.ScreenID
-                                        )
-                                      }
-                                    />
+                                    {screenSelectFromEdit !==
+                                    screen.ScreenID ? (
+                                      <IoIosClose
+                                        size={20}
+                                        className="cursor-pointer text-[#6425FE]"
+                                        onClick={() =>
+                                          handleDeleteScreenAdsAllocation(
+                                            index,
+                                            screen.ScreenID
+                                          )
+                                        }
+                                      />
+                                    ) : (
+                                      <></>
+                                    )}
                                   </div>
                                 ))}
                             </div>
                           </div>
                           <div className="col-span-1">
                             <div className="flex">
-                              {screenAdsAllocation.length > 0 && (
+                              {screenAdsAllocation.length > 1 && (
                                 <IoIosCloseCircle
-                                  onClick={() => setScreennAdsAllocation([])}
+                                  onClick={() => {
+                                    const filteredScreen = screen.filter(
+                                      (screen) =>
+                                        screen.ScreenID === screenSelectFromEdit
+                                    );
+                                    const output = {
+                                      [screenSelectFromEdit]: true,
+                                    };
+                                    setCheckboxes(output);
+                                    setScreennAdsAllocation(filteredScreen);
+                                  }}
                                   size={24}
                                   className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
                                 />

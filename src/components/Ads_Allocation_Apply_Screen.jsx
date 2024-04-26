@@ -17,11 +17,14 @@ const Ads_Allocation_Apply_Screen = ({
   selectAll,
   toggleAllCheckboxes,
   allScreenData,
+  setCheckboxes,
   checkboxes,
   toggleCheckboxAddScreen,
   selectedScreenItems,
   setScreennAdsAllocation,
   media_rules_select,
+  screenSelectFromEdit,
+  screen,
 }) => {
   const { token } = User.getCookieData();
   const [screens_options_data, setScreenOptionsData] = useState([]);
@@ -30,6 +33,7 @@ const Ads_Allocation_Apply_Screen = ({
   useEffect(() => {
     getScreenOption();
     filterByMediaRules();
+    handleSetDefaultCheckbox();
   }, []);
 
   const getScreenOption = async () => {
@@ -38,7 +42,7 @@ const Ads_Allocation_Apply_Screen = ({
   };
 
   const filterByMediaRules = () => {
-    const filteredScreens = allScreenData.filter((screen) => {
+    const filteredScreens = screen.filter((screen) => {
       if (screen.ScreenRule.length === 0) return false; // If no ScreenRule, exclude the screen
       const rule = screen.ScreenRule[0]; // Assuming there's only one rule per screen
       return (
@@ -48,6 +52,13 @@ const Ads_Allocation_Apply_Screen = ({
     });
 
     setScreenFilter(filteredScreens);
+  };
+
+  const handleSetDefaultCheckbox = () => {
+    if (Object.keys(checkboxes).length <= 1) {
+      const output = { [screenSelectFromEdit]: true };
+      setCheckboxes(output);
+    }
   };
 
   const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -72,7 +83,7 @@ const Ads_Allocation_Apply_Screen = ({
   };
 
   const handleAddScreenAllocation = () => {
-    const screensToReturn = allScreenData.filter((screen) =>
+    const screensToReturn = screen.filter((screen) =>
       selectedScreenItems.includes(screen.ScreenID)
     );
     setScreennAdsAllocation(screensToReturn);
@@ -98,6 +109,7 @@ const Ads_Allocation_Apply_Screen = ({
               setIsApplyToScreen(!isApplyToScreen);
               setOpenAdsAllocationModal(!openAdsAllocationModal);
               setSelectedData([]);
+              setCheckboxes({});
             }}
           >
             <IoIosClose size={25} color={"#6425FE"} />
@@ -224,6 +236,11 @@ const Ads_Allocation_Apply_Screen = ({
                             checked={checkboxes[row.ScreenID] || false}
                             onChange={() =>
                               toggleCheckboxAddScreen(row.ScreenID)
+                            }
+                            disabled={
+                              row.ScreenID === screenSelectFromEdit
+                                ? true
+                                : false
                             }
                           />
                         </div>

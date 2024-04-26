@@ -63,6 +63,8 @@ const Select_Booking = () => {
   const [selectedData, setSelectedData] = useState([]);
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
 
+  const [screenSelectFromEdit, setScreenSelectFromEdit] = useState(null);
+
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openAdsAllocationModal, setOpenAdsAllocationModal] = useState(false);
   const [openModalUploadNewMedia, setOpenModalUploadMedia] = useState(false);
@@ -342,36 +344,9 @@ const Select_Booking = () => {
 
     setMediaRulesSelect(media_rule);
     media_obj.slots = parseInt(booking_slot);
-
-    // const mediaPlayList = await User.getMediaPlaylist(bookingId, token);
-    // media_obj.medias = mediaPlayList;
-
-    // ****** Test Data
-    // const test_data = {
-    //   BookingDateID: 9,
-    //   BookingDate: "2024-04-23",
-    //   ScreenID: 1,
-    //   medias: [
-    //     {
-    //       ContentID: 11,
-    //       ContentName: "rise_of_the_ronin_2024_video_game-wallpaper-1920x1080",
-    //       ContentTypeID: 1,
-    //       ContentTypeName: "Image",
-    //       ContentTypeSubID: 2,
-    //       ContentTypeSubName: "jpg",
-    //       ContentProperties:
-    //         '{"width":"1920","height":"1080","size":"0.6002120971679688"}',
-    //       ContentSource:
-    //         "https://cds.push-signage.com/adsmanager/content/guUpa8dN4h/file/1713846691_49443.jpg",
-    //       AddDate: "2024-04-23 11:31:31",
-    //       UpdateDate: "2024-04-23 11:31:31",
-    //     },
-    //   ],
-    //   slots: 5,
-    // };
-
     setScreenSelect({ screen, value: media_obj });
     setItemsPanel1({ screen, value: media_obj });
+    setScreenSelectFromEdit(obj.ScreenID);
     // setScreenSelect({ screen, value: test_data });
     // setItemsPanel1({ screen, value: test_data });
     setOpenAdsAllocationModal(!openAdsAllocationModal);
@@ -768,6 +743,8 @@ const Select_Booking = () => {
           checkboxes={checkboxes}
           bookingId={bookingId}
           setMediaAllocatonUploadIndex={setMediaAllocatonUploadIndex}
+          screenSelectFromEdit={screenSelectFromEdit}
+          screen={screen}
         />
       )}
 
@@ -794,11 +771,15 @@ const Select_Booking = () => {
           selectAll={selectAll}
           toggleAllCheckboxes={toggleAllCheckboxes}
           allScreenData={allScreenData}
+          setCheckboxes={setCheckboxes}
           checkboxes={checkboxes}
           toggleCheckboxAddScreen={toggleCheckboxAddScreen}
+          setSelectedScreenItems={setSelectedScreenItems}
           selectedScreenItems={selectedScreenItems}
           setScreennAdsAllocation={setScreennAdsAllocation}
           media_rules_select={media_rules_select}
+          screenSelectFromEdit={screenSelectFromEdit}
+          screen={screen}
         />
       )}
 
