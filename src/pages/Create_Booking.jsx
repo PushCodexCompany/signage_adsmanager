@@ -67,32 +67,10 @@ const Create_Booking = () => {
 
   const [openConfirmBookingModal, setOpenConfirmBookingModal] = useState(false);
 
-  const [booking_col, setBookingCol] = useState();
-
-  const [screen_select, setScreenSelect] = useState({
-    screen: null,
-    value: {},
-  });
-
   const [openAdsAllocationModal, setOpenAdsAllocationModal] = useState(false);
 
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
-
-  const [openModalUploadNewMedia, setOpenModalUploadMedia] = useState(false);
-
-  const [datePickers, setDatePickers] = useState([]);
-
-  const [mediaAdsAllocationTab, setMediaAdsAllocationTab] = useState("All");
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const [media_list, setMediaList] = useState(mediaMockup);
-
-  const [itemsPanel1, setItemsPanel1] = useState([]);
-  const [itemsPanel2, setItemsPanel2] = useState(mediaMockup);
-  const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
-  const [mediaDisplay, setMediaDisplay] = useState([]);
 
   useEffect(() => {
     setBooking();
@@ -261,30 +239,6 @@ const Create_Booking = () => {
 
     setScreenData(groupedByScreenID);
   };
-
-  // Test Data
-  // const setBookingData = async () => {
-  // const { booking_name, merchandise, booking_slot, booking_date } =
-  //   location.state.data;
-  // setBookingName(booking_name);
-  // setMerchandise(merchandise);
-  // setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
-  // setBookingSlot(parseInt(booking_slot));
-  // };
-
-  // const setConfirmBookingData = () => {
-  //   Test Data
-  //   const { booking_name, merchandise, booking_slot, booking_date, screen } =
-  //     location.state.data;
-  //   setBookingName(BookingName);
-  //   setBookingName(booking_name[0]);
-  //   setBookingCode(booking_name[1]);
-  //   setMerchandise(merchandise);
-  //   setBookingDate(booking_date.map((booking_date) => new Date(booking_date)));
-  //   setBookingSlot(booking_slot);
-  //   setScreenData(screen);
-  //   calculateSize(screen);
-  // };
 
   const getAllScreen = async () => {
     const { SlotPerDay } = location.state.data;
@@ -554,10 +508,9 @@ const Create_Booking = () => {
 
   const handleSelectAllAvilable = () => {
     const output = [];
-
     screenData.forEach((screen, screenIndex) => {
       screen.booking.forEach((booking, dateIndex) => {
-        if (parseInt(booking.AvailableSlot) > booking_slot) {
+        if (parseInt(booking.AvailableSlot) >= booking_slot) {
           output.push({
             screenIndex,
             dateIndex,
@@ -693,61 +646,6 @@ const Create_Booking = () => {
 
   const handleConfirmbooking = () => {
     setOpenConfirmBookingModal(!openConfirmBookingModal);
-  };
-
-  const handleSelectScreenAddmedia = (screen, obj) => {
-    setScreenSelect({ screen, value: obj });
-    setItemsPanel1({ screen, value: obj });
-    setOpenAdsAllocationModal(!openAdsAllocationModal);
-  };
-
-  const handleScreenInfo = (screen_id) => {
-    const screen = allScreenData.find((a) => a.ScreenID === screen_id);
-    setSelectInfoScren(screen);
-    setOpenInfoScreenModal(!openInfoScreenModal);
-  };
-
-  const openMediaAdsAllocationTab = (tabName) => {
-    setMediaAdsAllocationTab(tabName);
-  };
-
-  const renderMediaListBox = (items) => {
-    const nullFreeList = items.media_list.filter((it) => it.media_id !== null);
-
-    const mediaSize = nullFreeList.length;
-
-    const emptySlots = [];
-
-    for (var i = mediaSize; i < items.slots; i++) {
-      emptySlots.push({
-        media_id: null,
-        media_name: null,
-        media_type: null,
-        media_size: null,
-        media_duration: null,
-        slot_size: 1,
-        slot_num: i + 1,
-      });
-    }
-
-    const processedMediaList = [...nullFreeList, ...emptySlots];
-    return (
-      <>
-        {processedMediaList.map((item, index2) => (
-          <div key={index2} className="w-[20%] p-1">
-            <div
-              className={`w-[36px] h-[36px] ${
-                item.media_id
-                  ? "bg-white border border-[#D9D9D9]"
-                  : "bg-[#D9D9D9]"
-              } flex justify-center items-center`}
-            >
-              {item.media_id ? <IoIosPlayCircle color="#6425FE" /> : ""}
-            </div>
-          </div>
-        ))}
-      </>
-    );
   };
 
   const EditableText = ({ initialValue }) => {
@@ -989,7 +887,7 @@ const Create_Booking = () => {
                             <IoIosInformationCircleOutline
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleSelectInfoScreen(items, "left");
+                                handleSelectInfoScreen(items, "right");
                                 // const data = findScreenData(items, "info");
                                 // handleSelectInfoScreen(data, "left");
                               }}

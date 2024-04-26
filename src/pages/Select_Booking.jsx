@@ -66,6 +66,8 @@ const Select_Booking = () => {
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openAdsAllocationModal, setOpenAdsAllocationModal] = useState(false);
   const [openModalUploadNewMedia, setOpenModalUploadMedia] = useState(false);
+  const [media_allocation_upload_index, setMediaAllocatonUploadIndex] =
+    useState(null);
 
   useEffect(() => {
     getBookingData();
@@ -765,6 +767,7 @@ const Select_Booking = () => {
           media_rules_select={media_rules_select}
           checkboxes={checkboxes}
           bookingId={bookingId}
+          setMediaAllocatonUploadIndex={setMediaAllocatonUploadIndex}
         />
       )}
 
@@ -821,6 +824,7 @@ const Select_Booking = () => {
           itemsPanel1={itemsPanel1}
           setItemsPanel2={setItemsPanel2}
           itemsPanel2={itemsPanel2}
+          media_allocation_upload_index={media_allocation_upload_index}
         />
       )}
 

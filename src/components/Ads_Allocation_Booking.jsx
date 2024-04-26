@@ -47,6 +47,7 @@ const Ads_Allocation_Booking = ({
   media_rules_select,
   checkboxes,
   bookingId,
+  setMediaAllocatonUploadIndex,
 }) => {
   const [full_media_items, setFullMediasItems] = useState([]);
 
@@ -502,6 +503,7 @@ const Ads_Allocation_Booking = ({
                       onClick={() => {
                         setOpenModalUploadMedia(!openModalUploadNewMedia);
                         setOpenAdsAllocationModal(!openAdsAllocationModal);
+                        setMediaAllocatonUploadIndex(index);
                       }}
                       className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer w-[265px] lg:w-[320px]"
                     >
@@ -567,6 +569,10 @@ const Ads_Allocation_Booking = ({
     return itemsPanel1Filtered.value.medias;
   };
 
+  const handleScreenId = () => {
+    return;
+  };
+
   const handleSaveAdsAllocation = () => {
     const date_range = handleDateRangeToString(datePickers);
 
@@ -575,15 +581,47 @@ const Ads_Allocation_Booking = ({
       screenid: screen.ScreenID,
     }));
 
-    const media_list = playlist.map((media) => ({
+    const screenIdsString = screenIDs
+      .map((screen) => screen.screenid)
+      .join(",");
+
+    const media_list = playlist.map((media, index) => ({
       contentid: media.ContentID,
       duration: media.slot_duration,
+      odering: index,
     }));
+
+    if (screenIDs.length <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกจอที่ต้องการ ...",
+      });
+      return;
+    }
+
+    if (!date_range) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกช่วงเวลา ...",
+      });
+      return;
+    }
+
+    if (media_list.length <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือก Media ...",
+      });
+      return;
+    }
 
     const obj = {
       bookingid: bookingId,
       dates: date_range,
-      screenids: screenIDs,
+      screenids: screenIdsString,
       playlist: media_list,
     };
 

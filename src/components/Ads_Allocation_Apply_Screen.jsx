@@ -80,13 +80,13 @@ const Ads_Allocation_Apply_Screen = ({
     setOpenAdsAllocationModal(!openAdsAllocationModal);
   };
 
-  const findScreenResolutionID = (id) => {
-    const resolution = screens_options_data.find(
-      (item) => item.ScreenResolutionID === id
-    );
+  // const findScreenResolutionID = (id) => {
+  //   const resolution = screens_options_data.find(
+  //     (item) => item.ScreenResolutionID === id
+  //   );
 
-    return resolution ? resolution.Resolution : "No Resolution";
-  };
+  //   return resolution ? resolution.Resolution : "No Resolution";
+  // };
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
@@ -246,7 +246,12 @@ const Ads_Allocation_Apply_Screen = ({
                       </td>
                       <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                         <div className="font-poppins font-bold">
-                          {findScreenResolutionID(row.ScreenResolutionID)}
+                          {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
+                          {row.ScreenRule[0].Width && row.ScreenRule[0].Height
+                            ? parseInt(row.ScreenRule[0].Width, 10) +
+                              "x" +
+                              parseInt(row.ScreenRule[0].Height, 10)
+                            : "Not Set"}
                         </div>
                       </td>
                       <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">

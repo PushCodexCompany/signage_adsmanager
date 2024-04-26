@@ -20,6 +20,7 @@ const Booking_Upload_Media = ({
   itemsPanel1,
   setItemsPanel2,
   itemsPanel2,
+  media_allocation_upload_index,
 }) => {
   const { token } = User.getCookieData();
   const [uploads, setUploads] = useState({});
@@ -145,7 +146,7 @@ const Booking_Upload_Media = ({
               result.isConfirmed ||
               result.dismiss === Swal.DismissReason.backdrop
             ) {
-              // setNewMediaPlayList();
+              setNewMediaPlayList(data.contentids);
               updateMediaPlaylist();
               setOpenModalUploadMedia(!openModalUploadNewMedia);
               setOpenAdsAllocationModal(!openAdsAllocationModal);
@@ -171,16 +172,26 @@ const Booking_Upload_Media = ({
 
   // for update upload media to  Panel1
 
-  // const setNewMediaPlayList = async () => {
-  //   const media_list = await User.getMediaPlaylist(bookingId, token);
-  //   setItemsPanel1((prevState) => ({
-  //     ...prevState,
-  //     value: {
-  //       ...prevState.value,
-  //       medias: media_list,
-  //     },
-  //   }));
-  // };
+  const setNewMediaPlayList = async (media_id) => {
+    const media_list = await User.getMediaPlaylist(bookingId, token);
+    const media_data = media_list.find(
+      (item) => item.ContentID === parseInt(media_id[0])
+    );
+
+    const updatedMediaList = [...itemsPanel1.value.medias];
+
+    updatedMediaList[media_allocation_upload_index] = media_data;
+    updatedMediaList[media_allocation_upload_index].slot_duration = 15;
+    updatedMediaList[media_allocation_upload_index].slot_duration = 15;
+
+    setItemsPanel1((prevState) => ({
+      ...prevState,
+      value: {
+        ...prevState.value,
+        medias: updatedMediaList,
+      },
+    }));
+  };
 
   const handleDeleteFile = () => {
     setUploads({});

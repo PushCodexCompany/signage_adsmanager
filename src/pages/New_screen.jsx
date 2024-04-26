@@ -170,12 +170,33 @@ const New_screen = () => {
       try {
         const data = await User.createNewScreen(obj, token);
         if (data.code !== 404) {
-          const form = new FormData();
-          form.append("target", "screenphoto");
-          form.append("screenid", data.screenid);
-          form.append("logo", selectedImage);
-          const data_img = await User.saveImgAccountScreens(form, token);
-          if (data_img.code !== 404) {
+          if (selectedImage) {
+            const form = new FormData();
+            form.append("target", "screenphoto");
+            form.append("screenid", data.screenid);
+            form.append("logo", selectedImage);
+            const data_img = await User.saveImgAccountScreens(form, token);
+            if (data_img.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "สร้าง Screen สำเร็จ!",
+                text: `สร้าง Screen สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  navigate(`/screen`);
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data_img.message,
+              });
+            }
+          } else {
             Swal.fire({
               icon: "success",
               title: "สร้าง Screen สำเร็จ!",
@@ -187,12 +208,6 @@ const New_screen = () => {
               ) {
                 navigate(`/screen`);
               }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data_img.message,
             });
           }
         } else {
@@ -230,8 +245,6 @@ const New_screen = () => {
       screenclosetime: closeTime || "",
       manotifydelay: notificationDelay || "",
     };
-
-    console.log("obj", obj);
 
     if (selectedImage) {
       const form = new FormData();
