@@ -1032,4 +1032,39 @@ export default {
     );
     return data;
   },
+
+  getPlaylist: async function (booking_id, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_mediaplaylist?bookingid=${booking_id}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  createPlaylist: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/create_mediaplaylist?bookingid=${obj.bookingid}&playlistname=${obj.playlistname}`,
+      obj,
+      config
+    );
+    return data;
+  },
 };

@@ -7,7 +7,9 @@ import {
   IoIosAddCircle,
   IoMdFolderOpen,
   IoIosPlayCircle,
+  IoIosArrowDown,
 } from "react-icons/io";
+import { RiEditLine, RiSave3Line } from "react-icons/ri";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiImage, FiVideo } from "react-icons/fi";
 import { MdDragHandle } from "react-icons/md";
@@ -52,6 +54,7 @@ const Ads_Allocation_Booking = ({
   screen,
 }) => {
   const [full_media_items, setFullMediasItems] = useState([]);
+  const { token } = User.getCookieData();
 
   useEffect(() => {
     setTempMediaList();
@@ -514,7 +517,7 @@ const Ads_Allocation_Booking = ({
                     <div
                       onClick={() => {
                         setOpenModalUploadMedia(!openModalUploadNewMedia);
-                        setOpenAdsAllocationModal(!openAdsAllocationModal);
+                        // setOpenAdsAllocationModal(!openAdsAllocationModal);
                         setMediaAllocatonUploadIndex(index);
                       }}
                       className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer w-[265px] lg:w-[320px]"
@@ -579,10 +582,6 @@ const Ads_Allocation_Booking = ({
     );
 
     return itemsPanel1Filtered.value.medias;
-  };
-
-  const handleScreenId = () => {
-    return;
   };
 
   const handleSaveAdsAllocation = () => {
@@ -652,6 +651,80 @@ const Ads_Allocation_Booking = ({
       },
     }));
     setOpenAdsAllocationModal(!openAdsAllocationModal);
+  };
+
+  const [playlist_name, setPlaylistName] = useState(null);
+  const [temp_playlist_name, setTempPlaylistName] = useState(null);
+  const [checkCreateMediaPlaylist, setCheckCreateMediaPlaylist] =
+    useState(true);
+  const [editPlaylist, setEditPlaylist] = useState(true);
+  const [selectedOption, setSelectedOption] = useState([]);
+  const [selectPlaylist, setSelectPlaylist] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const getMediaPlaylist = async () => {
+    const data = await User.getPlaylist(bookingId, token);
+    return data;
+  };
+
+  const handleSelectToggle = async () => {
+    const data = await getMediaPlaylist();
+    setSelectedOption(data);
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleOptionClick = async (option) => {
+    setPlaylistName(option.PlaylistName);
+    setTempPlaylistName(option.PlaylistName);
+    setCheckCreateMediaPlaylist(false);
+    setIsExpanded(false);
+  };
+
+  const handleButtonClick = (event) => {
+    setPlaylistName("New Playlist");
+    setCheckCreateMediaPlaylist(true);
+    setTempPlaylistName("New Playlist");
+    setIsExpanded(!isExpanded);
+  };
+
+  const handleSavePlaylist = async () => {
+    const obj = {
+      bookingid: bookingId,
+      playlistname: playlist_name,
+    };
+
+    if (checkCreateMediaPlaylist) {
+      // Create
+      try {
+        const data = await User.createPlaylist(obj, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Create Tag Category Success ...",
+            text: "สร้าง Tag Category สำเร็จ!",
+          }).then(async (result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              const data = await getMediaPlaylist();
+              setSelectedOption(data);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // Edit
+      console.log("edit");
+    }
   };
 
   return (
@@ -933,9 +1006,97 @@ const Ads_Allocation_Booking = ({
                 <DragDropContext onDragEnd={onDragEnd}>
                   <div className="col-span-3 border border-gray-300 rounded-md">
                     <div className="p-2">
-                      <div className="flex items-center justify-center">
+                      <div className="flex items-center justify-start">
+                        <div className="w-full">
+                          <div className="relative inline-block text-sm lg:text-base w-full">
+                            <div
+                              className="flex items-center justify-between w-full h-[45px] border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins cursor-pointer"
+                              onClick={handleSelectToggle}
+                              tabIndex="0"
+                            >
+                              <div className="block text-xs lg:text-sm font-poppins text-gray-300">
+                                {temp_playlist_name
+                                  ? temp_playlist_name
+                                  : "Select Playlist"}
+                              </div>
+                              <div className="flex items-center">
+                                <IoIosArrowDown size={18} color="#6425FE" />
+                              </div>
+                            </div>
+                            {isExpanded && (
+                              <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2">
+                                <button
+                                  className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins h-[36px] w-[110px] rounded-md"
+                                  onClick={() => handleButtonClick()}
+                                >
+                                  New Playlist
+                                </button>
+                                {selectedOption.map((option, index) => (
+                                  <div
+                                    key={option.MediaPlaylistID}
+                                    className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => handleOptionClick(option)}
+                                  >
+                                    <div
+                                      className={`font-poppins ${
+                                        temp_playlist_name ===
+                                        option.PlaylistName
+                                          ? "text-[#6425FE]"
+                                          : ""
+                                      } hover:text-[#6425FE]`}
+                                    >
+                                      {option.PlaylistName}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-start">
                         <div className="font-poppins text-[32px] font-bold">
-                          Media Playlist
+                          {playlist_name ? (
+                            <div className="flex items-center">
+                              <input
+                                className={`w-[80%] text-[#2F3847] mt-2 ${
+                                  !editPlaylist
+                                    ? "border border-gray-300 pl-2"
+                                    : ""
+                                }`}
+                                placeholder="Playlist"
+                                value={playlist_name}
+                                onChange={(e) => {
+                                  const newName = e.target.value;
+                                  if (newName.length < 1) {
+                                    Swal.fire({
+                                      icon: "error",
+                                      title: "เกิดข้อผิดพลาด!",
+                                      text: "กรุณากรอกชื่อ Playlist ...",
+                                    });
+                                  } else {
+                                    setPlaylistName(newName);
+                                  }
+                                }}
+                                onBlur={() => setEditPlaylist(!editPlaylist)}
+                                disabled={editPlaylist}
+                              />
+                              <RiEditLine
+                                onClick={() => setEditPlaylist(!editPlaylist)}
+                                size={26}
+                                className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                              />
+                              <RiSave3Line
+                                onClick={() => handleSavePlaylist()}
+                                size={26}
+                                className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                              />
+                            </div>
+                          ) : (
+                            <div className="font-poppins text-[32px] font-bold text-[#B4B4B4] mt-2">
+                              Empty Playlist
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -947,9 +1108,13 @@ const Ads_Allocation_Booking = ({
                               {...provided.droppableProps}
                               className="h-[680px] overflow-y-auto space-y-2"
                             >
-                              {renderMediaList(
-                                itemsPanel1.value.slots,
-                                itemsPanel1.value.medias
+                              {playlist_name ? (
+                                renderMediaList(
+                                  itemsPanel1.value.slots,
+                                  itemsPanel1.value.medias
+                                )
+                              ) : (
+                                <></>
                               )}
 
                               {provided.placeholder}
@@ -972,14 +1137,14 @@ const Ads_Allocation_Booking = ({
                             size={24}
                             className={`mr-2 ${
                               mediaAdsAllocationTab === "All"
-                                ? "text-purple-600"
+                                ? "text-[#6425FE]"
                                 : "text-black"
                             }`}
                           />
                           <div
                             className={`font-poppins text-[14px] ${
                               mediaAdsAllocationTab === "All"
-                                ? "text-purple-600"
+                                ? "text-[#6425FE]"
                                 : "text-black"
                             } flex items-center`}
                           >
@@ -996,14 +1161,14 @@ const Ads_Allocation_Booking = ({
                             size={24}
                             className={`mr-2 ${
                               mediaAdsAllocationTab === "Video"
-                                ? "text-purple-600"
+                                ? "text-[#6425FE]"
                                 : "text-black"
                             }`}
                           />
                           <div
                             className={`font-poppins text-[14px] ${
                               mediaAdsAllocationTab === "Video"
-                                ? "text-purple-600"
+                                ? "text-[#6425FE]"
                                 : "text-black"
                             } flex items-center`}
                           >
