@@ -655,11 +655,11 @@ const Ads_Allocation_Booking = ({
 
   const [playlist_name, setPlaylistName] = useState(null);
   const [temp_playlist_name, setTempPlaylistName] = useState(null);
+  const [media_playlist_id, setMediaPlaylistId] = useState(null);
   const [checkCreateMediaPlaylist, setCheckCreateMediaPlaylist] =
     useState(true);
   const [editPlaylist, setEditPlaylist] = useState(true);
   const [selectedOption, setSelectedOption] = useState([]);
-  const [selectPlaylist, setSelectPlaylist] = useState([]);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const getMediaPlaylist = async () => {
@@ -674,6 +674,7 @@ const Ads_Allocation_Booking = ({
   };
 
   const handleOptionClick = async (option) => {
+    setMediaPlaylistId(option.MediaPlaylistID);
     setPlaylistName(option.PlaylistName);
     setTempPlaylistName(option.PlaylistName);
     setCheckCreateMediaPlaylist(false);
@@ -688,13 +689,12 @@ const Ads_Allocation_Booking = ({
   };
 
   const handleSavePlaylist = async () => {
-    const obj = {
-      bookingid: bookingId,
-      playlistname: playlist_name,
-    };
-
     if (checkCreateMediaPlaylist) {
       // Create
+      const obj = {
+        bookingid: bookingId,
+        playlistname: playlist_name,
+      };
       try {
         const data = await User.createPlaylist(obj, token);
         if (data.code !== 404) {
@@ -723,7 +723,32 @@ const Ads_Allocation_Booking = ({
       }
     } else {
       // Edit
-      console.log("edit");
+      const playlist = handleMediaPlaylist(itemsPanel1);
+      const media_list = playlist.map((media, index) => ({
+        contentid: media.ContentID,
+        duration: media.slot_duration,
+        odering: index,
+      }));
+
+      const obj = {
+        bookingid: bookingId,
+        playlistname: playlist_name,
+        mediaplaylistid: media_playlist_id,
+        medias: media_list,
+      };
+
+      try {
+        console.log("obj", obj);
+      } catch (error) {
+        console.log("error");
+      }
+
+      // if(temp_playlist_name === playlist_name){
+      //   // Edit name only
+      //   console.log("obj", obj);
+      // }else{
+
+      // }
     }
   };
 
