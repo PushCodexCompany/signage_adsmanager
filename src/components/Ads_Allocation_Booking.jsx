@@ -276,8 +276,9 @@ const Ads_Allocation_Booking = ({
 
         newDestinationItems = insert(destinationItems, destination.index, {
           ...draggedItem,
+          MediaID: 0,
           slot_size: 1,
-          slot_duration: 15,
+          duration: 15,
         });
       }
 
@@ -301,7 +302,7 @@ const Ads_Allocation_Booking = ({
     //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
       target.slot_size = target.slot_size + 1;
-      target.slot_duration = target.slot_duration + 15;
+      target.duration = target.duration + 15;
     } else {
       target.slot_size = 2;
     }
@@ -322,7 +323,7 @@ const Ads_Allocation_Booking = ({
     //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
       target.slot_size = target.slot_size - 1;
-      target.slot_duration = target.slot_duration - 15;
+      target.duration = target.duration - 15;
     } else {
       target.slot_size = 0;
     }
@@ -415,7 +416,7 @@ const Ads_Allocation_Booking = ({
         ContentProperties: null,
         slot_size: 1,
         slot_num: i + 1,
-        slot_duration: 15,
+        duration: 15,
       });
     }
 
@@ -496,7 +497,7 @@ const Ads_Allocation_Booking = ({
                           </div>
                           <div className="flex justify-start items-center ">
                             <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                              Duration : {items.slot_duration} sec
+                              Duration : {items.duration} sec
                             </div>
                           </div>
                         </div>
@@ -598,7 +599,7 @@ const Ads_Allocation_Booking = ({
 
     const media_list = playlist.map((media, index) => ({
       contentid: media.ContentID,
-      duration: media.slot_duration,
+      duration: media.duration,
       odering: index,
     }));
 
@@ -674,6 +675,7 @@ const Ads_Allocation_Booking = ({
   };
 
   const handleOptionClick = async (option) => {
+    getMediaInPlaylist(option.MediaPlaylistID);
     setMediaPlaylistId(option.MediaPlaylistID);
     setPlaylistName(option.PlaylistName);
     setTempPlaylistName(option.PlaylistName);
@@ -681,23 +683,115 @@ const Ads_Allocation_Booking = ({
     setIsExpanded(false);
   };
 
-  const handleButtonClick = (event) => {
+  const getMediaInPlaylist = async (mediaplaylistid) => {
+    const obj = {
+      bookingid: bookingId,
+      mediaplaylistid: mediaplaylistid,
+    };
+    const data = await User.getMediaPlaylistContent(obj, token);
+    if (data.length > 0) {
+      const updatedObj = data.map((item) => {
+        const duration = parseInt(item.Duration);
+
+        const newSlotSize = duration / 15;
+        return {
+          ...item,
+          slot_size: newSlotSize,
+          slot_num: item.Ordering,
+          duration: parseInt(item.Duration),
+        };
+      });
+      const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
+
+      // Calculate the total sum of slot_size values
+      const totalSlotsUsed = updatedObj.reduce(
+        (acc, obj) => acc + obj.slot_size,
+        0
+      );
+
+      // Add slots only if the total slots used is less than the total number of slots
+      if (totalSlotsUsed < clonedItemsPanel1.value.slots) {
+        const remainingSlots = clonedItemsPanel1.value.slots - totalSlotsUsed;
+
+        const mock = {
+          ContentID: null,
+          ContentName: null,
+          ContentTypeName: null,
+          ContentProperties: null,
+          slot_size: 1,
+          slot_num: updatedObj.length + 1,
+        };
+
+        for (let i = 0; i < remainingSlots; i++) {
+          updatedObj.push({ ...mock });
+          mock.slot_num++;
+        }
+      }
+
+      clonedItemsPanel1.value.medias = updatedObj;
+      setItemsPanel1(clonedItemsPanel1);
+    } else {
+      const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
+      const updatedObj = clonedItemsPanel1.value.medias.map((item, index) => {
+        return {
+          ContentID: null,
+          ContentName: null,
+          ContentTypeName: null,
+          ContentProperties: null,
+          slot_num: index + 1,
+          slot_size: 1,
+        };
+      });
+      clonedItemsPanel1.value.medias = updatedObj;
+
+      setItemsPanel1(clonedItemsPanel1);
+    }
+  };
+
+  const handleButtonNewPlaylist = (event) => {
     setPlaylistName("New Playlist");
     setCheckCreateMediaPlaylist(true);
     setTempPlaylistName("New Playlist");
     setIsExpanded(!isExpanded);
+
+    const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
+
+    const updatedObj = clonedItemsPanel1.value.medias.map((item, index) => {
+      return {
+        ContentID: null,
+        ContentName: null,
+        ContentTypeName: null,
+        ContentProperties: null,
+        slot_num: index + 1,
+        slot_size: 1,
+      };
+    });
+    clonedItemsPanel1.value.medias = updatedObj;
+
+    setItemsPanel1(clonedItemsPanel1);
   };
 
   const handleSavePlaylist = async () => {
     if (checkCreateMediaPlaylist) {
       // Create
-      const obj = {
+      const playlist = handleMediaPlaylist(itemsPanel1);
+
+      const media_list = playlist.map((media, index) => ({
+        contentid: media.ContentID,
+        duration: media.duration,
+        ordering: index + 1,
+      }));
+
+      const playlist_obj = {
         bookingid: bookingId,
         playlistname: playlist_name,
       };
       try {
-        const data = await User.createPlaylist(obj, token);
-        if (data.code !== 404) {
+        const create_return = await User.createMediaplaylist(
+          playlist_obj,
+          token
+        );
+        if (create_return.code !== 404) {
           Swal.fire({
             icon: "success",
             title: "Create Tag Category Success ...",
@@ -708,14 +802,55 @@ const Ads_Allocation_Booking = ({
               result.dismiss === Swal.DismissReason.backdrop
             ) {
               const data = await getMediaPlaylist();
+              setMediaPlaylistId(create_return.mediaplaylistid);
               setSelectedOption(data);
+              setCheckCreateMediaPlaylist(false);
+              if (media_list.length > 0) {
+                try {
+                  const media_obj = {
+                    bookingid: bookingId,
+                    mediaplaylistid: create_return.mediaplaylistid,
+                    medias: media_list,
+                  };
+                  const data = await User.createMediaPlaylistContent(
+                    media_obj,
+                    token
+                  );
+                  if (data.code !== 404) {
+                    Swal.fire({
+                      icon: "success",
+                      title: "Add Media to Playlist Success ...",
+                      text: "เพิ่ม Media to Playlist สำเร็จ!",
+                    }).then(async (result) => {
+                      if (
+                        result.isConfirmed ||
+                        result.dismiss === Swal.DismissReason.backdrop
+                      ) {
+                        const data = await getMediaPlaylist();
+                        setSelectedOption(data);
+                        setCheckCreateMediaPlaylist(false);
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: "error",
+                      title: "เกิดข้อผิดพลาด!",
+                      text: data.message,
+                    });
+                  }
+                } catch (error) {
+                  console.log("error");
+                }
+              } else {
+                return;
+              }
             }
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "เกิดข้อผิดพลาด!",
-            text: data.message,
+            text: create_return.message,
           });
         }
       } catch (error) {
@@ -723,32 +858,94 @@ const Ads_Allocation_Booking = ({
       }
     } else {
       // Edit
-      const playlist = handleMediaPlaylist(itemsPanel1);
-      const media_list = playlist.map((media, index) => ({
-        contentid: media.ContentID,
-        duration: media.slot_duration,
-        odering: index,
-      }));
 
-      const obj = {
-        bookingid: bookingId,
-        playlistname: playlist_name,
-        mediaplaylistid: media_playlist_id,
-        medias: media_list,
-      };
+      if (playlist_name !== temp_playlist_name) {
+        const playlist_obj = {
+          bookingid: bookingId,
+          mediaplaylistid: media_playlist_id,
+          playlistname: playlist_name,
+        };
 
-      try {
-        console.log("obj", obj);
-      } catch (error) {
-        console.log("error");
+        try {
+          const data = await User.updateMediaplaylist(playlist_obj, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "Edit Media to Playlist Success ...",
+              text: "แก้ไข Media to Playlist สำเร็จ!",
+            }).then(async (result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                const data = await getMediaPlaylist();
+                setSelectedOption(data);
+                setTempPlaylistName(playlist_name);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          console.log("error");
+        }
       }
 
-      // if(temp_playlist_name === playlist_name){
-      //   // Edit name only
-      //   console.log("obj", obj);
-      // }else{
+      const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
+      const isNewMediaInPlaylist = clonedItemsPanel1.value.medias.some(
+        (item) => item.MediaID === 0
+      );
 
-      // }
+      if (isNewMediaInPlaylist) {
+        const playlist = handleMediaPlaylist(clonedItemsPanel1);
+        const media_list = playlist.map((media, index) => ({
+          mediaid: media.MediaID,
+          contentid: media.ContentID,
+          duration: media.duration,
+          ordering: index + 1,
+        }));
+
+        const playlist_obj = {
+          bookingid: bookingId,
+          mediaplaylistid: media_playlist_id,
+          medias: media_list,
+        };
+
+        console.log("playlist_obj", playlist_obj);
+        try {
+          const data = await User.updateMediaPlaylistContent(
+            playlist_obj,
+            token
+          );
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "Edit Media to Playlist Success ...",
+              text: "แก้ไข Media to Playlist สำเร็จ!",
+            }).then(async (result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                const data = await getMediaPlaylist();
+                setSelectedOption(data);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          console.log("error");
+        }
+      }
     }
   };
 
@@ -1052,7 +1249,7 @@ const Ads_Allocation_Booking = ({
                               <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2">
                                 <button
                                   className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins h-[36px] w-[110px] rounded-md"
-                                  onClick={() => handleButtonClick()}
+                                  onClick={() => handleButtonNewPlaylist()}
                                 >
                                   New Playlist
                                 </button>

@@ -1052,7 +1052,7 @@ export default {
     }
   },
 
-  createPlaylist: async function (obj, token) {
+  createMediaplaylist: async function (obj, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1062,6 +1062,73 @@ export default {
 
     const { data } = await this._post(
       `api/v1/create_mediaplaylist?bookingid=${obj.bookingid}&playlistname=${obj.playlistname}`,
+      obj,
+      config
+    );
+    return data;
+  },
+
+  updateMediaplaylist: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/update_mediaplaylist?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&playlistname=${obj.playlistname}`,
+      obj,
+      config
+    );
+    return data;
+  },
+
+  getMediaPlaylistContent: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_mediaplaylistcontent?mediaplaylistid=${obj.mediaplaylistid}&bookingid=${obj.bookingid}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  createMediaPlaylistContent: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/create_mediaplaylistcontent?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&medias=${obj.medias}`,
+      obj,
+      config
+    );
+    return data;
+  },
+
+  updateMediaPlaylistContent: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/update_mediaplaylistcontent?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&medias=${obj.medias}`,
       obj,
       config
     );
