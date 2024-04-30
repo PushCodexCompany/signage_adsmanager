@@ -587,7 +587,7 @@ const Create_Booking = () => {
       });
 
       try {
-        const data = await User.updateBookingContent(obj, token);
+        const data = await User.updateBookingSlots(obj, token);
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",

@@ -585,10 +585,8 @@ const Ads_Allocation_Booking = ({
     return itemsPanel1Filtered.value.medias;
   };
 
-  const handleSaveAdsAllocation = () => {
+  const handleSaveAdsAllocation = async () => {
     const date_range = handleDateRangeToString(datePickers);
-
-    const playlist = handleMediaPlaylist(itemsPanel1);
     const screenIDs = screenAdsAllocation.map((screen) => ({
       screenid: screen.ScreenID,
     }));
@@ -596,12 +594,6 @@ const Ads_Allocation_Booking = ({
     const screenIdsString = screenIDs
       .map((screen) => screen.screenid)
       .join(",");
-
-    const media_list = playlist.map((media, index) => ({
-      contentid: media.ContentID,
-      duration: media.duration,
-      odering: index,
-    }));
 
     if (screenIDs.length <= 0) {
       Swal.fire({
@@ -621,11 +613,11 @@ const Ads_Allocation_Booking = ({
       return;
     }
 
-    if (media_list.length <= 0) {
+    if (!media_playlist_id) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
-        text: "กรุณาเลือก Media ...",
+        text: "กรุณาเลือก Media Playlist ...",
       });
       return;
     }
@@ -633,11 +625,36 @@ const Ads_Allocation_Booking = ({
     const obj = {
       bookingid: bookingId,
       dates: date_range,
-      screenids: screenIdsString,
-      playlist: media_list,
+      screenids: parseInt(screenIdsString),
+      mediaplaylistid: parseInt(media_playlist_id),
     };
 
-    console.log("obj", obj);
+    try {
+      console.log("obj", obj);
+      const data = await User.updateBookingContent(obj, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "Update Booking Content Success ...",
+          text: "แก้ไข Booking Content สำเร็จ!",
+        }).then(async (result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            console.log("data", data);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCloseModalAdsAllocation = () => {
@@ -914,8 +931,6 @@ const Ads_Allocation_Booking = ({
           mediaplaylistid: media_playlist_id,
           medias: media_list,
         };
-
-        console.log("playlist_obj", playlist_obj);
         try {
           const data = await User.updateMediaPlaylistContent(
             playlist_obj,

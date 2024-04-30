@@ -966,7 +966,7 @@ export default {
     return data;
   },
 
-  updateBookingContent: async function (hash, token) {
+  updateBookingSlots: async function (hash, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1027,6 +1027,22 @@ export default {
 
     const { data } = await this._post(
       `api/v1/create_content?bookingid=${id}`,
+      obj,
+      config
+    );
+    return data;
+  },
+
+  updateBookingContent: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/update_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&mediaplaylistid=${obj.mediaplaylistid}`,
       obj,
       config
     );

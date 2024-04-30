@@ -52,7 +52,7 @@ const Booking_Summary = () => {
     if (publish_data) {
       try {
         console.log("publish_data", publish_data);
-        const data = await User.updateBookingContent(publish_data, token);
+        const data = await User.updateBookingSlots(publish_data, token);
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",
