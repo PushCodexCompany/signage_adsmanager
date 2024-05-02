@@ -19,6 +19,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Swal from "sweetalert2";
 import { mediaMockup } from "../data/mockup";
 import User from "../libs/admin";
+import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
 
 const Ads_Allocation_Booking = ({
   setOpenAdsAllocationModal,
@@ -26,8 +27,6 @@ const Ads_Allocation_Booking = ({
   booking_date,
   screenAdsAllocation,
   setScreennAdsAllocation,
-  setIsApplyToScreen,
-  isApplyToScreen,
   datePickers,
   setDatePickers,
   screen_select,
@@ -52,11 +51,20 @@ const Ads_Allocation_Booking = ({
   setMediaAllocatonUploadIndex,
   screenSelectFromEdit,
   screen,
+  allScreenData,
 }) => {
+  const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [full_media_items, setFullMediasItems] = useState([]);
+
+  const [openAddNewScreenModal, setOpenAddNewScreenModal] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  const [selectedData, setSelectedData] = useState([]);
+  const [selectedScreenItems, setSelectedScreenItems] = useState([]);
+
   const { token } = User.getCookieData();
 
   useEffect(() => {
+    setEditData();
     setTempMediaList();
     setDefaultApplyToScreen();
     setDefaultPanel1(itemsPanel1.value.slots, itemsPanel1.value.medias);
@@ -64,6 +72,21 @@ const Ads_Allocation_Booking = ({
 
   const setTempMediaList = async () => {
     setFullMediasItems(itemsPanel2);
+  };
+
+  const setEditData = async () => {
+    console.log(screen_select);
+    const data = await User.getPlaylist(bookingId, token);
+    const screen_data = data.filter(
+      (items) => items.MediaPlaylistID === screen_select.value.mediaplaylistid
+    );
+
+    if (screen_data.length > 0) {
+      getMediaInPlaylist(screen_data[0].MediaPlaylistID);
+      setMediaPlaylistId(screen_data[0].MediaPlaylistID);
+      setPlaylistName(screen_data[0].PlaylistName);
+      setTempPlaylistName(screen_data[0].PlaylistName);
+    }
   };
 
   const setDefaultApplyToScreen = () => {
@@ -124,7 +147,7 @@ const Ads_Allocation_Booking = ({
 
   const handleToggleDropdownApplyToScreen = () => {
     setIsApplyToScreen(!isApplyToScreen);
-    setOpenAdsAllocationModal(!openAdsAllocationModal);
+    // setOpenAdsAllocationModal(!openAdsAllocationModal);
   };
 
   const handleStartDateChange = (index, date) => {
@@ -625,7 +648,7 @@ const Ads_Allocation_Booking = ({
     const obj = {
       bookingid: bookingId,
       dates: date_range,
-      screenids: parseInt(screenIdsString),
+      screenids: screenIdsString,
       mediaplaylistid: parseInt(media_playlist_id),
     };
 
@@ -964,641 +987,553 @@ const Ads_Allocation_Booking = ({
     }
   };
 
-  return (
-    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
-      {/* First div (circle) */}
-      <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
-        <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-          <button onClick={() => handleCloseModalAdsAllocation()}>
-            <IoIosClose size={25} color={"#6425FE"} />
-          </button>
-        </div>
-      </div>
-      <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-        <div className="p-3">
-          <div className="flex flex-col lg:flex-row">
-            <div className="w-full lg:w-1/2 p-1">
-              <div className="mt-10">
-                <div className="flex justify-center items-center">
-                  <div className="font-poppins text-[#2F3847] text-[44px] font-bold">
-                    Ads Allocation
-                  </div>
-                </div>
-                <div className="flex justify-center items-center">
-                  <div className="font-poppins text-[#2F3847] text-[14px] text-center">
-                    Define when and where your advertisements will be <br />
-                    displayed for maximum impact.
-                  </div>
-                </div>
-                <div className="mt-10">
-                  <div className="grid grid-cols-12">
-                    <div className="col-span-1" />
-                    <div className="col-span-3 flex justify-end items-center">
-                      <div className="font-poppins font-bold">
-                        Booking Period :
-                      </div>
-                    </div>
-                    <div className="col-span-1" />
-                    <div className="col-span-6">
-                      <div className="font-poppins font-medium  text-lg">
-                        {` ${format(
-                          booking_date[0],
-                          "EEE dd MMM yyyy"
-                        )} - ${format(
-                          booking_date[booking_date.length - 1],
-                          "EEE dd MMM yyyy"
-                        )}`}
-                      </div>
-                    </div>
-                    <div className="col-span-1" />
-                  </div>
+  const toggleAllCheckboxes = () => {
+    const newCheckboxes = {};
+    const newSelectAll = !selectAll;
 
-                  <div className="grid grid-cols-12 mt-2">
-                    <div className="col-span-1" />
-                    <div className="col-span-3 mt-2 flex justify-end items-center">
-                      <div className="font-poppins font-bold">
-                        Apply to Screens :
-                      </div>
+    allScreenData.forEach((row) => {
+      newCheckboxes[row.ScreenID] = newSelectAll;
+    });
+
+    setCheckboxes(newCheckboxes);
+    setSelectAll(newSelectAll);
+
+    const checkedRowIds = newSelectAll
+      ? allScreenData.map((row) => row.ScreenID)
+      : [];
+    setSelectedScreenItems(checkedRowIds);
+  };
+
+  const toggleCheckboxAddScreen = (rowId) => {
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [rowId]: !prevCheckboxes[rowId],
+      };
+
+      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
+        (id) => updatedCheckboxes[id]
+      );
+
+      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
+      setSelectedScreenItems(intArray);
+
+      return updatedCheckboxes;
+    });
+  };
+
+  return (
+    <>
+      <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
+        {/* First div (circle) */}
+        <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
+          <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+            <button onClick={() => handleCloseModalAdsAllocation()}>
+              <IoIosClose size={25} color={"#6425FE"} />
+            </button>
+          </div>
+        </div>
+        <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+          <div className="p-3">
+            <div className="flex flex-col lg:flex-row">
+              <div className="w-full lg:w-1/2 p-1">
+                <div className="mt-10">
+                  <div className="flex justify-center items-center">
+                    <div className="font-poppins text-[#2F3847] text-[44px] font-bold">
+                      Ads Allocation
                     </div>
-                    <div className="col-span-1" />
-                    <div className="col-span-6 border border-[#D9D9D9] rounded-md">
-                      <div className="p-2">
-                        <div className="grid grid-cols-5">
-                          <div className="col-span-4">
-                            <div className="flex flex-wrap">
-                              {screenAdsAllocation.length > 0 &&
-                                screenAdsAllocation.map((screen, index) => (
-                                  <div
-                                    key={index}
-                                    className="border border-gray-300 rounded-sm bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1 px-2 py-1"
-                                    style={{ flexBasis: "calc(50% - 8px)" }}
-                                  >
-                                    <div className="font-poppins text-xs font-bold">
-                                      {screen.ScreenName}
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <div className="font-poppins text-[#2F3847] text-[14px] text-center">
+                      Define when and where your advertisements will be <br />
+                      displayed for maximum impact.
+                    </div>
+                  </div>
+                  <div className="mt-10">
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-1" />
+                      <div className="col-span-3 flex justify-end items-center">
+                        <div className="font-poppins font-bold">
+                          Booking Period :
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                      <div className="col-span-6">
+                        <div className="font-poppins font-medium  text-lg">
+                          {` ${format(
+                            booking_date[0],
+                            "EEE dd MMM yyyy"
+                          )} - ${format(
+                            booking_date[booking_date.length - 1],
+                            "EEE dd MMM yyyy"
+                          )}`}
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                    </div>
+
+                    <div className="grid grid-cols-12 mt-2">
+                      <div className="col-span-1" />
+                      <div className="col-span-3 mt-2 flex justify-end items-center">
+                        <div className="font-poppins font-bold">
+                          Apply to Screens :
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                      <div className="col-span-6 border border-[#D9D9D9] rounded-md">
+                        <div className="p-2">
+                          <div className="grid grid-cols-5">
+                            <div className="col-span-4">
+                              <div className="flex flex-wrap">
+                                {screenAdsAllocation.length > 0 &&
+                                  screenAdsAllocation.map((screen, index) => (
+                                    <div
+                                      key={index}
+                                      className="border border-gray-300 rounded-sm bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1 px-2 py-1"
+                                      style={{ flexBasis: "calc(50% - 8px)" }}
+                                    >
+                                      <div className="font-poppins text-xs font-bold">
+                                        {screen.ScreenName}
+                                      </div>
+                                      {screenSelectFromEdit !==
+                                      screen.ScreenID ? (
+                                        <IoIosClose
+                                          size={20}
+                                          className="cursor-pointer text-[#6425FE]"
+                                          onClick={() =>
+                                            handleDeleteScreenAdsAllocation(
+                                              index,
+                                              screen.ScreenID
+                                            )
+                                          }
+                                        />
+                                      ) : (
+                                        <></>
+                                      )}
                                     </div>
-                                    {screenSelectFromEdit !==
-                                    screen.ScreenID ? (
-                                      <IoIosClose
-                                        size={20}
-                                        className="cursor-pointer text-[#6425FE]"
-                                        onClick={() =>
-                                          handleDeleteScreenAdsAllocation(
-                                            index,
-                                            screen.ScreenID
-                                          )
-                                        }
-                                      />
-                                    ) : (
-                                      <></>
-                                    )}
-                                  </div>
-                                ))}
+                                  ))}
+                              </div>
+                            </div>
+                            <div className="col-span-1">
+                              <div className="flex">
+                                {screenAdsAllocation.length > 1 && (
+                                  <IoIosCloseCircle
+                                    onClick={() => {
+                                      const filteredScreen = screen.filter(
+                                        (screen) =>
+                                          screen.ScreenID ===
+                                          screenSelectFromEdit
+                                      );
+                                      const output = {
+                                        [screenSelectFromEdit]: true,
+                                      };
+                                      setCheckboxes(output);
+                                      setScreennAdsAllocation(filteredScreen);
+                                    }}
+                                    size={24}
+                                    className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
+                                  />
+                                )}
+
+                                <div className="relative">
+                                  <IoIosAdd
+                                    size={24}
+                                    className="mt-1 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                    onClick={handleToggleDropdownApplyToScreen}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                    </div>
+
+                    <div className="grid grid-cols-12 mt-5">
+                      <div className="col-span-1" />
+                      <div className="col-span-3 flex justify-end items-center">
+                        <div className="font-poppins font-bold">
+                          Apply to Period :
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                      <div className="col-span-6 space-y-1 ">
+                        {datePickers.map((items, index) => (
+                          <div
+                            key={index}
+                            className="grid grid-cols-6 border border-[#D9D9D9] rounded-md"
+                          >
+                            <div className="col-span-2 p-2 flex justify-center items-center">
+                              <div className="font-poppins">
+                                <DatePicker
+                                  selected={items.startDate}
+                                  selectsStart
+                                  startDate={items.startDate}
+                                  endDate={items.endDate}
+                                  minDate={booking_date[0]}
+                                  maxDate={
+                                    booking_date[booking_date.length - 1]
+                                  }
+                                  dateFormat="yyyy-MM-dd"
+                                  onChange={(date) =>
+                                    handleStartDateChange(index, date)
+                                  }
+                                  className="p-2 rounded-lg shadow-md w-full text-xs"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-span-1 p-2 flex justify-center items-center">
+                              -
+                            </div>
+                            <div className="col-span-2 p-2">
+                              <div className="font-poppins">
+                                <DatePicker
+                                  selected={items.endDate}
+                                  selectsEnd
+                                  startDate={items.startDate}
+                                  endDate={items.endDate}
+                                  minDate={booking_date[0]}
+                                  maxDate={
+                                    booking_date[booking_date.length - 1]
+                                  }
+                                  dateFormat="yyyy-MM-dd"
+                                  onChange={(date) =>
+                                    handleEndDateChange(index, date)
+                                  }
+                                  className=" p-2 rounded-lg shadow-md w-full text-xs"
+                                />
+                              </div>
+                            </div>
+                            <div className="col-span-1 p-2 flex justify-center items-center">
+                              <IoIosRemoveCircle
+                                size={24}
+                                className="mt-1 ml-2 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                onClick={() => handleRemoveDatePicker(index)}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                        <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
+                          <div className="col-span-4">
+                            <div className="p-2">
+                              <div className="flex flex-wrap">
+                                <div className="font-poppins text-[#AFAFAF]">
+                                  Add Period
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <div className="col-span-1">
-                            <div className="flex">
-                              {screenAdsAllocation.length > 1 && (
-                                <IoIosCloseCircle
-                                  onClick={() => {
-                                    const filteredScreen = screen.filter(
-                                      (screen) =>
-                                        screen.ScreenID === screenSelectFromEdit
-                                    );
-                                    const output = {
-                                      [screenSelectFromEdit]: true,
-                                    };
-                                    setCheckboxes(output);
-                                    setScreennAdsAllocation(filteredScreen);
-                                  }}
+                            <div className="p-2">
+                              <div className="flex justify-center items-center">
+                                <IoIosAddCircle
                                   size={24}
+                                  onClick={handleAddDatePicker}
                                   className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
                                 />
-                              )}
-
-                              <div className="relative">
-                                <IoIosAdd
-                                  size={24}
-                                  className="mt-1 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                  onClick={handleToggleDropdownApplyToScreen}
-                                />
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div className="col-span-1" />
                     </div>
-                    <div className="col-span-1" />
-                  </div>
 
-                  <div className="grid grid-cols-12 mt-5">
-                    <div className="col-span-1" />
-                    <div className="col-span-3 flex justify-end items-center">
-                      <div className="font-poppins font-bold">
-                        Apply to Period :
+                    <div className="grid grid-cols-12 mt-10">
+                      <div className="col-span-1" />
+                      <div className="col-span-3 flex justify-end items-center">
+                        <div className="font-poppins font-bold">
+                          Screen Resolution :
+                        </div>
                       </div>
+                      <div className="col-span-1" />
+                      <div className="col-span-6">
+                        <div className="font-poppins font-medium text-lg">
+                          {media_rules_select?.width}x
+                          {media_rules_select?.height} px
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
                     </div>
-                    <div className="col-span-1" />
-                    <div className="col-span-6 space-y-1 ">
-                      {datePickers.map((items, index) => (
-                        <div
-                          key={index}
-                          className="grid grid-cols-6 border border-[#D9D9D9] rounded-md"
-                        >
-                          <div className="col-span-2 p-2 flex justify-center items-center">
-                            <div className="font-poppins">
-                              <DatePicker
-                                selected={items.startDate}
-                                selectsStart
-                                startDate={items.startDate}
-                                endDate={items.endDate}
-                                minDate={booking_date[0]}
-                                maxDate={booking_date[booking_date.length - 1]}
-                                dateFormat="yyyy-MM-dd"
-                                onChange={(date) =>
-                                  handleStartDateChange(index, date)
-                                }
-                                className="p-2 rounded-lg shadow-md w-full text-xs"
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-1 p-2 flex justify-center items-center">
-                            -
-                          </div>
-                          <div className="col-span-2 p-2">
-                            <div className="font-poppins">
-                              <DatePicker
-                                selected={items.endDate}
-                                selectsEnd
-                                startDate={items.startDate}
-                                endDate={items.endDate}
-                                minDate={booking_date[0]}
-                                maxDate={booking_date[booking_date.length - 1]}
-                                dateFormat="yyyy-MM-dd"
-                                onChange={(date) =>
-                                  handleEndDateChange(index, date)
-                                }
-                                className=" p-2 rounded-lg shadow-md w-full text-xs"
-                              />
-                            </div>
-                          </div>
-                          <div className="col-span-1 p-2 flex justify-center items-center">
-                            <IoIosRemoveCircle
-                              size={24}
-                              className="mt-1 ml-2 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                              onClick={() => handleRemoveDatePicker(index)}
-                            />
-                          </div>
+
+                    <div className="grid grid-cols-12 mt-3">
+                      <div className="col-span-1" />
+                      <div className="col-span-3 flex justify-end items-center">
+                        <div className="font-poppins font-bold">
+                          Media Rule :
                         </div>
-                      ))}
-                      <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
-                        <div className="col-span-4">
-                          <div className="p-2">
-                            <div className="flex flex-wrap">
-                              <div className="font-poppins text-[#AFAFAF]">
-                                Add Period
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-span-1">
-                          <div className="p-2">
-                            <div className="flex justify-center items-center">
-                              <IoIosAddCircle
-                                size={24}
-                                onClick={handleAddDatePicker}
-                                className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
-                              />
+                      </div>
+                      <div className="col-span-1" />
+                      <div className="col-span-6">
+                        <div className="h-[40px] bg-[#FD6822] rounded-md">
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins font-medium text-lg text-white text-center mt-2">
+                              Resolution : {media_rules_select?.width}x
+                              {media_rules_select?.height} px
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div className="col-span-1" />
                     </div>
-                    <div className="col-span-1" />
-                  </div>
 
-                  <div className="grid grid-cols-12 mt-10">
-                    <div className="col-span-1" />
-                    <div className="col-span-3 flex justify-end items-center">
-                      <div className="font-poppins font-bold">
-                        Screen Resolution :
-                      </div>
-                    </div>
-                    <div className="col-span-1" />
-                    <div className="col-span-6">
-                      <div className="font-poppins font-medium text-lg">
-                        {media_rules_select?.width}x{media_rules_select?.height}{" "}
-                        px
-                      </div>
-                    </div>
-                    <div className="col-span-1" />
-                  </div>
-
-                  <div className="grid grid-cols-12 mt-3">
-                    <div className="col-span-1" />
-                    <div className="col-span-3 flex justify-end items-center">
-                      <div className="font-poppins font-bold">Media Rule :</div>
-                    </div>
-                    <div className="col-span-1" />
-                    <div className="col-span-6">
-                      <div className="h-[40px] bg-[#FD6822] rounded-md">
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins font-medium text-lg text-white text-center mt-2">
-                            Resolution : {media_rules_select?.width}x
-                            {media_rules_select?.height} px
+                    <div className="grid grid-cols-10 mt-16 lg:mt-36">
+                      <div className="col-span-2" />
+                      <div className="col-span-7">
+                        <div className="flex">
+                          <div className="font-poppins">
+                            <b>Note :</b> Modifications made will only affect
+                            the screens and periods within the booked timeframe.
                           </div>
                         </div>
                       </div>
+                      <div className="col-span-1" />
                     </div>
-                    <div className="col-span-1" />
-                  </div>
-
-                  <div className="grid grid-cols-10 mt-16 lg:mt-36">
-                    <div className="col-span-2" />
-                    <div className="col-span-7">
-                      <div className="flex">
-                        <div className="font-poppins">
-                          <b>Note :</b> Modifications made will only affect the
-                          screens and periods within the booked timeframe.
-                        </div>
-                      </div>
+                    <div className="flex justify-center items-center space-x-2 mt-3">
+                      <button
+                        onClick={() => handleSaveAdsAllocation()}
+                        className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold"
+                      >
+                        Confirm
+                      </button>
+                      <button className="w-[250px] h-[48px] border border-[#6425FE] rounded-md text-[#6425FE] font-poppins font-bold">
+                        Clear Slot
+                      </button>
                     </div>
-                    <div className="col-span-1" />
-                  </div>
-                  <div className="flex justify-center items-center space-x-2 mt-3">
-                    <button
-                      onClick={() => handleSaveAdsAllocation()}
-                      className="w-[250px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] rounded-md text-white font-poppins font-bold"
-                    >
-                      Confirm
-                    </button>
-                    <button className="w-[250px] h-[48px] border border-[#6425FE] rounded-md text-[#6425FE] font-poppins font-bold">
-                      Clear Slot
-                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="w-full lg:w-1/2 p-1 lg:pl-8">
-              <div className="grid grid-cols-6 space-x-2">
-                <DragDropContext onDragEnd={onDragEnd}>
-                  <div className="col-span-3 border border-gray-300 rounded-md">
-                    <div className="p-2">
-                      <div className="flex items-center justify-start">
-                        <div className="w-full">
-                          <div className="relative inline-block text-sm lg:text-base w-full">
-                            <div
-                              className="flex items-center justify-between w-full h-[45px] border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins cursor-pointer"
-                              onClick={handleSelectToggle}
-                              tabIndex="0"
-                            >
-                              <div className="block text-xs lg:text-sm font-poppins text-gray-300">
-                                {temp_playlist_name
-                                  ? temp_playlist_name
-                                  : "Select Playlist"}
+              <div className="w-full lg:w-1/2 p-1 lg:pl-8">
+                <div className="grid grid-cols-6 space-x-2">
+                  <DragDropContext onDragEnd={onDragEnd}>
+                    <div className="col-span-3 border border-gray-300 rounded-md">
+                      <div className="p-2">
+                        <div className="flex items-center justify-start">
+                          <div className="w-full">
+                            <div className="relative inline-block text-sm lg:text-base w-full">
+                              <div
+                                className="flex items-center justify-between w-full h-[45px] border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins cursor-pointer"
+                                onClick={handleSelectToggle}
+                                tabIndex="0"
+                              >
+                                <div className="block text-xs lg:text-sm font-poppins text-gray-300">
+                                  {temp_playlist_name
+                                    ? temp_playlist_name
+                                    : "Select Playlist"}
+                                </div>
+                                <div className="flex items-center">
+                                  <IoIosArrowDown size={18} color="#6425FE" />
+                                </div>
                               </div>
-                              <div className="flex items-center">
-                                <IoIosArrowDown size={18} color="#6425FE" />
-                              </div>
-                            </div>
-                            {isExpanded && (
-                              <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2">
-                                <button
-                                  className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins h-[36px] w-[110px] rounded-md"
-                                  onClick={() => handleButtonNewPlaylist()}
-                                >
-                                  New Playlist
-                                </button>
-                                {selectedOption.map((option, index) => (
-                                  <div
-                                    key={option.MediaPlaylistID}
-                                    className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
-                                    onClick={() => handleOptionClick(option)}
+                              {isExpanded && (
+                                <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2">
+                                  <button
+                                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins h-[36px] w-[110px] rounded-md"
+                                    onClick={() => handleButtonNewPlaylist()}
                                   >
+                                    New Playlist
+                                  </button>
+                                  {selectedOption.map((option, index) => (
                                     <div
-                                      className={`font-poppins ${
-                                        temp_playlist_name ===
-                                        option.PlaylistName
-                                          ? "text-[#6425FE]"
-                                          : ""
-                                      } hover:text-[#6425FE]`}
+                                      key={option.MediaPlaylistID}
+                                      className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
+                                      onClick={() => handleOptionClick(option)}
                                     >
-                                      {option.PlaylistName}
+                                      <div
+                                        className={`font-poppins ${
+                                          temp_playlist_name ===
+                                          option.PlaylistName
+                                            ? "text-[#6425FE]"
+                                            : ""
+                                        } hover:text-[#6425FE]`}
+                                      >
+                                        {option.PlaylistName}
+                                      </div>
                                     </div>
-                                  </div>
-                                ))}
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-start">
+                          <div className="font-poppins text-[32px] font-bold">
+                            {playlist_name ? (
+                              <div className="flex items-center">
+                                <input
+                                  className={`w-[80%] text-[#2F3847] mt-2 ${
+                                    !editPlaylist
+                                      ? "border border-gray-300 pl-2"
+                                      : ""
+                                  }`}
+                                  placeholder="Playlist"
+                                  value={playlist_name}
+                                  onChange={(e) => {
+                                    const newName = e.target.value;
+                                    if (newName.length < 1) {
+                                      Swal.fire({
+                                        icon: "error",
+                                        title: "เกิดข้อผิดพลาด!",
+                                        text: "กรุณากรอกชื่อ Playlist ...",
+                                      });
+                                    } else {
+                                      setPlaylistName(newName);
+                                    }
+                                  }}
+                                  onBlur={() => setEditPlaylist(!editPlaylist)}
+                                  disabled={editPlaylist}
+                                />
+                                <RiEditLine
+                                  onClick={() => setEditPlaylist(!editPlaylist)}
+                                  size={26}
+                                  className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                                />
+                                <RiSave3Line
+                                  onClick={() => handleSavePlaylist()}
+                                  size={26}
+                                  className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                                />
+                              </div>
+                            ) : (
+                              <div className="font-poppins text-[32px] font-bold text-[#B4B4B4] mt-2">
+                                Empty Playlist
                               </div>
                             )}
                           </div>
                         </div>
-                      </div>
-                      <div className="flex items-center justify-start">
-                        <div className="font-poppins text-[32px] font-bold">
-                          {playlist_name ? (
-                            <div className="flex items-center">
-                              <input
-                                className={`w-[80%] text-[#2F3847] mt-2 ${
-                                  !editPlaylist
-                                    ? "border border-gray-300 pl-2"
-                                    : ""
-                                }`}
-                                placeholder="Playlist"
-                                value={playlist_name}
-                                onChange={(e) => {
-                                  const newName = e.target.value;
-                                  if (newName.length < 1) {
-                                    Swal.fire({
-                                      icon: "error",
-                                      title: "เกิดข้อผิดพลาด!",
-                                      text: "กรุณากรอกชื่อ Playlist ...",
-                                    });
-                                  } else {
-                                    setPlaylistName(newName);
-                                  }
-                                }}
-                                onBlur={() => setEditPlaylist(!editPlaylist)}
-                                disabled={editPlaylist}
-                              />
-                              <RiEditLine
-                                onClick={() => setEditPlaylist(!editPlaylist)}
-                                size={26}
-                                className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
-                              />
-                              <RiSave3Line
-                                onClick={() => handleSavePlaylist()}
-                                size={26}
-                                className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
-                              />
-                            </div>
-                          ) : (
-                            <div className="font-poppins text-[32px] font-bold text-[#B4B4B4] mt-2">
-                              Empty Playlist
-                            </div>
-                          )}
+
+                        <div className="mt-11" style={{ display: "flex" }}>
+                          <Droppable droppableId="panel-1">
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                                className="h-[680px] overflow-y-auto space-y-2"
+                              >
+                                {playlist_name ? (
+                                  renderMediaList(
+                                    itemsPanel1.value.slots,
+                                    itemsPanel1.value.medias
+                                  )
+                                ) : (
+                                  <></>
+                                )}
+
+                                {provided.placeholder}
+                              </div>
+                            )}
+                          </Droppable>
                         </div>
                       </div>
-
-                      <div className="mt-11" style={{ display: "flex" }}>
-                        <Droppable droppableId="panel-1">
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.droppableProps}
-                              className="h-[680px] overflow-y-auto space-y-2"
-                            >
-                              {playlist_name ? (
-                                renderMediaList(
-                                  itemsPanel1.value.slots,
-                                  itemsPanel1.value.medias
-                                )
-                              ) : (
-                                <></>
-                              )}
-
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
-                      </div>
                     </div>
-                  </div>
-                  <div className="col-span-3 border border-gray-300 rounded-md">
-                    <div className="p-2">
-                      <div className="grid grid-cols-3 gap-4">
-                        <button
-                          className={`tablink flex items-center justify-center ${
-                            mediaAdsAllocationTab === "All" ? "active" : ""
-                          }`}
-                          onClick={() => openMediaAdsAllocationTab("All")}
-                        >
-                          <IoMdFolderOpen
-                            size={24}
-                            className={`mr-2 ${
-                              mediaAdsAllocationTab === "All"
-                                ? "text-[#6425FE]"
-                                : "text-black"
+                    <div className="col-span-3 border border-gray-300 rounded-md">
+                      <div className="p-2">
+                        <div className="grid grid-cols-3 gap-4">
+                          <button
+                            className={`tablink flex items-center justify-center ${
+                              mediaAdsAllocationTab === "All" ? "active" : ""
                             }`}
-                          />
-                          <div
-                            className={`font-poppins text-[14px] ${
-                              mediaAdsAllocationTab === "All"
-                                ? "text-[#6425FE]"
-                                : "text-black"
-                            } flex items-center`}
+                            onClick={() => openMediaAdsAllocationTab("All")}
                           >
-                            <span className="ml-1">All</span>
-                          </div>
-                        </button>
-                        <button
-                          className={`tablink flex items-center justify-center ${
-                            mediaAdsAllocationTab === "Video" ? "active" : ""
-                          }`}
-                          onClick={() => openMediaAdsAllocationTab("Video")}
-                        >
-                          <FiVideo
-                            size={24}
-                            className={`mr-2 ${
-                              mediaAdsAllocationTab === "Video"
-                                ? "text-[#6425FE]"
-                                : "text-black"
-                            }`}
-                          />
-                          <div
-                            className={`font-poppins text-[14px] ${
-                              mediaAdsAllocationTab === "Video"
-                                ? "text-[#6425FE]"
-                                : "text-black"
-                            } flex items-center`}
-                          >
-                            Video
-                          </div>
-                        </button>
-                        <button
-                          className={`tablink flex items-center justify-center ${
-                            mediaAdsAllocationTab === "Image" ? "active" : ""
-                          }`}
-                          onClick={() => openMediaAdsAllocationTab("Image")}
-                        >
-                          <FiImage
-                            size={24}
-                            className={`mr-2 ${
-                              mediaAdsAllocationTab === "Image"
-                                ? "text-purple-600"
-                                : "text-black"
-                            }`}
-                          />
-                          <div
-                            className={`font-poppins text-[14px] ${
-                              mediaAdsAllocationTab === "Image"
-                                ? "text-purple-600"
-                                : "text-black"
-                            } flex items-center`}
-                          >
-                            Image
-                          </div>
-                        </button>
-                      </div>
-                      <div className="tabcontent mt-3">
-                        {mediaAdsAllocationTab === "All" && (
-                          <div className="p-2">
-                            <div className="grid grid-cols-10">
-                              <div className="col-span-1">
-                                <div className="flex items-center justify-start">
-                                  <AiOutlineSearch size={24} />
-                                </div>
-                              </div>
-                              <div className="col-span-9">
-                                <input
-                                  type="text"
-                                  placeholder="Search"
-                                  className="font-poppins pl-2 rounded-md w-full h-full"
-                                  value={searchTerm}
-                                  onChange={(e) =>
-                                    searchMediaByName(e.target.value)
-                                  }
-                                />
-                              </div>
+                            <IoMdFolderOpen
+                              size={24}
+                              className={`mr-2 ${
+                                mediaAdsAllocationTab === "All"
+                                  ? "text-[#6425FE]"
+                                  : "text-black"
+                              }`}
+                            />
+                            <div
+                              className={`font-poppins text-[14px] ${
+                                mediaAdsAllocationTab === "All"
+                                  ? "text-[#6425FE]"
+                                  : "text-black"
+                              } flex items-center`}
+                            >
+                              <span className="ml-1">All</span>
                             </div>
-                            <div className="mt-5">
-                              <Droppable droppableId="panel-2">
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    className="h-[680px] overflow-y-auto space-y-2"
-                                  >
-                                    {itemsPanel2.length > 0 &&
-                                      itemsPanel2.map((items, index) => (
-                                        <Draggable
-                                          key={`panel2-${index}`}
-                                          draggableId={`panel2-${items.ContentID}`}
-                                          index={index}
-                                        >
-                                          {(provided) => (
-                                            <div
-                                              ref={provided.innerRef}
-                                              {...provided.draggableProps}
-                                              {...provided.dragHandleProps}
-                                              className="grid grid-cols-11 h-[80px] border border-gray-300"
-                                            >
-                                              <div className="col-span-2 flex justify-center items-center">
-                                                {items.ContentTypeName ===
-                                                "Video" ? (
-                                                  <FiVideo
-                                                    size={30}
-                                                    className="text-[#6425FE]"
-                                                  />
-                                                ) : (
-                                                  <FiImage
-                                                    size={30}
-                                                    className="text-[#6425FE]"
-                                                  />
-                                                )}
-                                              </div>
-                                              <div className="col-span-8">
-                                                <div className="flex justify-start items-center mt-2">
-                                                  <div className="font-poppins text-[15px]">
-                                                    {items.ContentName.length >
-                                                    30 ? (
-                                                      <span>
-                                                        {items.ContentName.slice(
-                                                          0,
-                                                          27
-                                                        ) + "..."}
-                                                      </span>
-                                                    ) : (
-                                                      <span>
-                                                        {items.ContentName}
-                                                      </span>
-                                                    )}
-                                                  </div>
-                                                </div>
-                                                <div className="flex justify-start items-center ">
-                                                  <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                    File Size :{" "}
-                                                    {parseFloat(
-                                                      JSON.parse(
-                                                        items.ContentProperties
-                                                      ).size
-                                                    ).toFixed(2)}{" "}
-                                                    MB
-                                                  </div>
-                                                </div>
-                                                <div className="flex justify-start items-center ">
-                                                  {items.ContentTypeName ===
-                                                    "Video" && (
-                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                      Duration :{" "}
-                                                      {parseFloat(
-                                                        JSON.parse(
-                                                          items.ContentProperties
-                                                        ).duration
-                                                      ).toFixed(2)}{" "}
-                                                      sec
-                                                    </div>
-                                                  )}
-                                                </div>
-                                              </div>
-                                              <div className="col-span-1 flex justify-start items-center">
-                                                <IoIosPlayCircle
-                                                  size={26}
-                                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                  onClick={() => {
-                                                    setModalPlayerOpen(
-                                                      !modalPlayerOpen
-                                                    );
-                                                    setOpenAdsAllocationModal(
-                                                      !openAdsAllocationModal
-                                                    );
-                                                    setMediaDisplay(items);
-                                                  }}
-                                                />
-                                              </div>
-                                            </div>
-                                          )}
-                                        </Draggable>
-                                      ))}
-                                    {provided.placeholder}
+                          </button>
+                          <button
+                            className={`tablink flex items-center justify-center ${
+                              mediaAdsAllocationTab === "Video" ? "active" : ""
+                            }`}
+                            onClick={() => openMediaAdsAllocationTab("Video")}
+                          >
+                            <FiVideo
+                              size={24}
+                              className={`mr-2 ${
+                                mediaAdsAllocationTab === "Video"
+                                  ? "text-[#6425FE]"
+                                  : "text-black"
+                              }`}
+                            />
+                            <div
+                              className={`font-poppins text-[14px] ${
+                                mediaAdsAllocationTab === "Video"
+                                  ? "text-[#6425FE]"
+                                  : "text-black"
+                              } flex items-center`}
+                            >
+                              Video
+                            </div>
+                          </button>
+                          <button
+                            className={`tablink flex items-center justify-center ${
+                              mediaAdsAllocationTab === "Image" ? "active" : ""
+                            }`}
+                            onClick={() => openMediaAdsAllocationTab("Image")}
+                          >
+                            <FiImage
+                              size={24}
+                              className={`mr-2 ${
+                                mediaAdsAllocationTab === "Image"
+                                  ? "text-purple-600"
+                                  : "text-black"
+                              }`}
+                            />
+                            <div
+                              className={`font-poppins text-[14px] ${
+                                mediaAdsAllocationTab === "Image"
+                                  ? "text-purple-600"
+                                  : "text-black"
+                              } flex items-center`}
+                            >
+                              Image
+                            </div>
+                          </button>
+                        </div>
+                        <div className="tabcontent mt-3">
+                          {mediaAdsAllocationTab === "All" && (
+                            <div className="p-2">
+                              <div className="grid grid-cols-10">
+                                <div className="col-span-1">
+                                  <div className="flex items-center justify-start">
+                                    <AiOutlineSearch size={24} />
                                   </div>
-                                )}
-                              </Droppable>
-                            </div>
-                          </div>
-                        )}
-                        {mediaAdsAllocationTab === "Video" && (
-                          <div className="p-2">
-                            <div className="grid grid-cols-10">
-                              <div className="col-span-1">
-                                <div className="flex items-center justify-start">
-                                  <AiOutlineSearch size={24} />
+                                </div>
+                                <div className="col-span-9">
+                                  <input
+                                    type="text"
+                                    placeholder="Search"
+                                    className="font-poppins pl-2 rounded-md w-full h-full"
+                                    value={searchTerm}
+                                    onChange={(e) =>
+                                      searchMediaByName(e.target.value)
+                                    }
+                                  />
                                 </div>
                               </div>
-                              <div className="col-span-9">
-                                <input
-                                  type="text"
-                                  placeholder="Search"
-                                  className="font-poppins pl-2 rounded-md w-full h-full"
-                                  value={searchTerm}
-                                  onChange={(e) =>
-                                    setSearchTerm(e.target.value)
-                                  }
-                                />
-                              </div>
-                            </div>
-                            <div className="mt-5">
-                              <Droppable droppableId="panel-2">
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    className="h-[680px] overflow-y-auto space-y-2"
-                                  >
-                                    {itemsPanel2.length > 0 &&
-                                      itemsPanel2
-                                        .filter(
-                                          (item) =>
-                                            item.ContentTypeName === "Video"
-                                        )
-                                        .map((items, index) => (
+                              <div className="mt-5">
+                                <Droppable droppableId="panel-2">
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.droppableProps}
+                                      className="h-[680px] overflow-y-auto space-y-2"
+                                    >
+                                      {itemsPanel2.length > 0 &&
+                                        itemsPanel2.map((items, index) => (
                                           <Draggable
                                             key={`panel2-${index}`}
                                             draggableId={`panel2-${items.ContentID}`}
@@ -1688,154 +1623,311 @@ const Ads_Allocation_Booking = ({
                                             )}
                                           </Draggable>
                                         ))}
-                                    {provided.placeholder}
-                                  </div>
-                                )}
-                              </Droppable>
+                                      {provided.placeholder}
+                                    </div>
+                                  )}
+                                </Droppable>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                        {mediaAdsAllocationTab === "Image" && (
-                          <div className="p-2">
-                            <div className="grid grid-cols-10">
-                              <div className="col-span-1">
-                                <div className="flex items-center justify-start">
-                                  <AiOutlineSearch size={24} />
+                          )}
+                          {mediaAdsAllocationTab === "Video" && (
+                            <div className="p-2">
+                              <div className="grid grid-cols-10">
+                                <div className="col-span-1">
+                                  <div className="flex items-center justify-start">
+                                    <AiOutlineSearch size={24} />
+                                  </div>
+                                </div>
+                                <div className="col-span-9">
+                                  <input
+                                    type="text"
+                                    placeholder="Search"
+                                    className="font-poppins pl-2 rounded-md w-full h-full"
+                                    value={searchTerm}
+                                    onChange={(e) =>
+                                      setSearchTerm(e.target.value)
+                                    }
+                                  />
                                 </div>
                               </div>
-                              <div className="col-span-9">
-                                <input
-                                  type="text"
-                                  placeholder="Search"
-                                  className="font-poppins pl-2 rounded-md w-full h-full"
-                                  value={searchTerm}
-                                  onChange={(e) =>
-                                    setSearchTerm(e.target.value)
-                                  }
-                                />
-                              </div>
-                            </div>
-                            <div className="mt-5">
-                              <Droppable droppableId="panel-2">
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    className="h-[680px] overflow-y-auto space-y-2"
-                                  >
-                                    {itemsPanel2.length > 0 &&
-                                      itemsPanel2
-                                        .filter(
-                                          (item) =>
-                                            item.ContentTypeName === "Image"
-                                        )
-                                        .map((items, index) => (
-                                          <Draggable
-                                            key={`panel2-${index}`}
-                                            draggableId={`panel2-${items.ContentID}`}
-                                            index={index}
-                                          >
-                                            {(provided) => (
-                                              <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                className="grid grid-cols-11 h-[80px] border border-gray-300"
-                                              >
-                                                <div className="col-span-2 flex justify-center items-center">
-                                                  {items.ContentTypeName ===
-                                                  "video" ? (
-                                                    <FiVideo
-                                                      size={30}
-                                                      className="text-[#6425FE]"
-                                                    />
-                                                  ) : (
-                                                    <FiImage
-                                                      size={30}
-                                                      className="text-[#6425FE]"
-                                                    />
-                                                  )}
-                                                </div>
-                                                <div className="col-span-8">
-                                                  <div className="flex justify-start items-center mt-2">
-                                                    <div className="font-poppins text-[15px]">
-                                                      {items.ContentName
-                                                        .length > 30 ? (
-                                                        <span>
-                                                          {items.ContentName.slice(
-                                                            0,
-                                                            27
-                                                          ) + "..."}
-                                                        </span>
-                                                      ) : (
-                                                        <span>
-                                                          {items.ContentName}
-                                                        </span>
-                                                      )}
-                                                    </div>
-                                                  </div>
-                                                  <div className="flex justify-start items-center ">
-                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                      File Size :{" "}
-                                                      {parseFloat(
-                                                        JSON.parse(
-                                                          items.ContentProperties
-                                                        ).size
-                                                      ).toFixed(2)}{" "}
-                                                      MB
-                                                    </div>
-                                                  </div>
-                                                  <div className="flex justify-start items-center ">
+                              <div className="mt-5">
+                                <Droppable droppableId="panel-2">
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.droppableProps}
+                                      className="h-[680px] overflow-y-auto space-y-2"
+                                    >
+                                      {itemsPanel2.length > 0 &&
+                                        itemsPanel2
+                                          .filter(
+                                            (item) =>
+                                              item.ContentTypeName === "Video"
+                                          )
+                                          .map((items, index) => (
+                                            <Draggable
+                                              key={`panel2-${index}`}
+                                              draggableId={`panel2-${items.ContentID}`}
+                                              index={index}
+                                            >
+                                              {(provided) => (
+                                                <div
+                                                  ref={provided.innerRef}
+                                                  {...provided.draggableProps}
+                                                  {...provided.dragHandleProps}
+                                                  className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                                >
+                                                  <div className="col-span-2 flex justify-center items-center">
                                                     {items.ContentTypeName ===
-                                                      "Video" && (
+                                                    "Video" ? (
+                                                      <FiVideo
+                                                        size={30}
+                                                        className="text-[#6425FE]"
+                                                      />
+                                                    ) : (
+                                                      <FiImage
+                                                        size={30}
+                                                        className="text-[#6425FE]"
+                                                      />
+                                                    )}
+                                                  </div>
+                                                  <div className="col-span-8">
+                                                    <div className="flex justify-start items-center mt-2">
+                                                      <div className="font-poppins text-[15px]">
+                                                        {items.ContentName
+                                                          .length > 30 ? (
+                                                          <span>
+                                                            {items.ContentName.slice(
+                                                              0,
+                                                              27
+                                                            ) + "..."}
+                                                          </span>
+                                                        ) : (
+                                                          <span>
+                                                            {items.ContentName}
+                                                          </span>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                    <div className="flex justify-start items-center ">
                                                       <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                        Duration :{" "}
+                                                        File Size :{" "}
                                                         {parseFloat(
                                                           JSON.parse(
                                                             items.ContentProperties
-                                                          ).duration
+                                                          ).size
                                                         ).toFixed(2)}{" "}
-                                                        sec
+                                                        MB
                                                       </div>
-                                                    )}
+                                                    </div>
+                                                    <div className="flex justify-start items-center ">
+                                                      {items.ContentTypeName ===
+                                                        "Video" && (
+                                                        <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                          Duration :{" "}
+                                                          {parseFloat(
+                                                            JSON.parse(
+                                                              items.ContentProperties
+                                                            ).duration
+                                                          ).toFixed(2)}{" "}
+                                                          sec
+                                                        </div>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  <div className="col-span-1 flex justify-start items-center">
+                                                    <IoIosPlayCircle
+                                                      size={26}
+                                                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                      onClick={() => {
+                                                        setModalPlayerOpen(
+                                                          !modalPlayerOpen
+                                                        );
+                                                        setOpenAdsAllocationModal(
+                                                          !openAdsAllocationModal
+                                                        );
+                                                        setMediaDisplay(items);
+                                                      }}
+                                                    />
                                                   </div>
                                                 </div>
-                                                <div className="col-span-1 flex justify-start items-center">
-                                                  <IoIosPlayCircle
-                                                    size={26}
-                                                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                    onClick={() => {
-                                                      setModalPlayerOpen(
-                                                        !modalPlayerOpen
-                                                      );
-                                                      setOpenAdsAllocationModal(
-                                                        !openAdsAllocationModal
-                                                      );
-                                                      setMediaDisplay(items);
-                                                    }}
-                                                  />
-                                                </div>
-                                              </div>
-                                            )}
-                                          </Draggable>
-                                        ))}
-                                    {provided.placeholder}
-                                  </div>
-                                )}
-                              </Droppable>
+                                              )}
+                                            </Draggable>
+                                          ))}
+                                      {provided.placeholder}
+                                    </div>
+                                  )}
+                                </Droppable>
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
+                          {mediaAdsAllocationTab === "Image" && (
+                            <div className="p-2">
+                              <div className="grid grid-cols-10">
+                                <div className="col-span-1">
+                                  <div className="flex items-center justify-start">
+                                    <AiOutlineSearch size={24} />
+                                  </div>
+                                </div>
+                                <div className="col-span-9">
+                                  <input
+                                    type="text"
+                                    placeholder="Search"
+                                    className="font-poppins pl-2 rounded-md w-full h-full"
+                                    value={searchTerm}
+                                    onChange={(e) =>
+                                      setSearchTerm(e.target.value)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-5">
+                                <Droppable droppableId="panel-2">
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.droppableProps}
+                                      className="h-[680px] overflow-y-auto space-y-2"
+                                    >
+                                      {itemsPanel2.length > 0 &&
+                                        itemsPanel2
+                                          .filter(
+                                            (item) =>
+                                              item.ContentTypeName === "Image"
+                                          )
+                                          .map((items, index) => (
+                                            <Draggable
+                                              key={`panel2-${index}`}
+                                              draggableId={`panel2-${items.ContentID}`}
+                                              index={index}
+                                            >
+                                              {(provided) => (
+                                                <div
+                                                  ref={provided.innerRef}
+                                                  {...provided.draggableProps}
+                                                  {...provided.dragHandleProps}
+                                                  className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                                >
+                                                  <div className="col-span-2 flex justify-center items-center">
+                                                    {items.ContentTypeName ===
+                                                    "video" ? (
+                                                      <FiVideo
+                                                        size={30}
+                                                        className="text-[#6425FE]"
+                                                      />
+                                                    ) : (
+                                                      <FiImage
+                                                        size={30}
+                                                        className="text-[#6425FE]"
+                                                      />
+                                                    )}
+                                                  </div>
+                                                  <div className="col-span-8">
+                                                    <div className="flex justify-start items-center mt-2">
+                                                      <div className="font-poppins text-[15px]">
+                                                        {items.ContentName
+                                                          .length > 30 ? (
+                                                          <span>
+                                                            {items.ContentName.slice(
+                                                              0,
+                                                              27
+                                                            ) + "..."}
+                                                          </span>
+                                                        ) : (
+                                                          <span>
+                                                            {items.ContentName}
+                                                          </span>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                    <div className="flex justify-start items-center ">
+                                                      <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                        File Size :{" "}
+                                                        {parseFloat(
+                                                          JSON.parse(
+                                                            items.ContentProperties
+                                                          ).size
+                                                        ).toFixed(2)}{" "}
+                                                        MB
+                                                      </div>
+                                                    </div>
+                                                    <div className="flex justify-start items-center ">
+                                                      {items.ContentTypeName ===
+                                                        "Video" && (
+                                                        <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                          Duration :{" "}
+                                                          {parseFloat(
+                                                            JSON.parse(
+                                                              items.ContentProperties
+                                                            ).duration
+                                                          ).toFixed(2)}{" "}
+                                                          sec
+                                                        </div>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  <div className="col-span-1 flex justify-start items-center">
+                                                    <IoIosPlayCircle
+                                                      size={26}
+                                                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                      onClick={() => {
+                                                        setModalPlayerOpen(
+                                                          !modalPlayerOpen
+                                                        );
+                                                        setOpenAdsAllocationModal(
+                                                          !openAdsAllocationModal
+                                                        );
+                                                        setMediaDisplay(items);
+                                                      }}
+                                                    />
+                                                  </div>
+                                                </div>
+                                              )}
+                                            </Draggable>
+                                          ))}
+                                      {provided.placeholder}
+                                    </div>
+                                  )}
+                                </Droppable>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </DragDropContext>
+                  </DragDropContext>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {isApplyToScreen && (
+        <Ads_Allocation_Apply_Screen
+          setIsApplyToScreen={setIsApplyToScreen}
+          isApplyToScreen={isApplyToScreen}
+          setOpenAdsAllocationModal={setOpenAdsAllocationModal}
+          openAdsAllocationModal={openAdsAllocationModal}
+          setSelectedData={setSelectedData}
+          booking_date={booking_date}
+          setOpenAddNewScreenModal={setOpenAddNewScreenModal}
+          openAddNewScreenModal={openAddNewScreenModal}
+          selectAll={selectAll}
+          toggleAllCheckboxes={toggleAllCheckboxes}
+          allScreenData={allScreenData}
+          setCheckboxes={setCheckboxes}
+          checkboxes={checkboxes}
+          toggleCheckboxAddScreen={toggleCheckboxAddScreen}
+          setSelectedScreenItems={setSelectedScreenItems}
+          selectedScreenItems={selectedScreenItems}
+          setScreennAdsAllocation={setScreennAdsAllocation}
+          media_rules_select={media_rules_select}
+          screenSelectFromEdit={screenSelectFromEdit}
+          screen={screen}
+        />
+      )}
+    </>
   );
 };
 

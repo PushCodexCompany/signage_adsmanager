@@ -16,7 +16,6 @@ import Filter from "../components/Filter";
 import Publish_Screen_Booking from "../components/Publish_Screen_Booking";
 import Ads_Allocation_Booking from "../components/Ads_Allocation_Booking";
 import Booking_Upload_Media from "../components/Booking_Upload_Media";
-import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
 import Media_Player from "../components/Media_Player";
 
 import Screen_Info from "../components/Screen_Info";
@@ -48,7 +47,6 @@ const Select_Booking = () => {
 
   const [selectInfoScreen, setSelectInfoScren] = useState([]);
   const [screenAdsAllocation, setScreennAdsAllocation] = useState([]);
-  const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [datePickers, setDatePickers] = useState([]);
   const [media_list, setMediaList] = useState([]);
   const [itemsPanel2, setItemsPanel2] = useState([]);
@@ -57,11 +55,6 @@ const Select_Booking = () => {
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaDisplay, setMediaDisplay] = useState([]);
   const [checkboxes, setCheckboxes] = useState({});
-
-  const [openAddNewScreenModal, setOpenAddNewScreenModal] = useState(false);
-  const [selectAll, setSelectAll] = useState(false);
-  const [selectedData, setSelectedData] = useState([]);
-  const [selectedScreenItems, setSelectedScreenItems] = useState([]);
 
   const [screenSelectFromEdit, setScreenSelectFromEdit] = useState(null);
 
@@ -105,13 +98,14 @@ const Select_Booking = () => {
     const output = uniqueScreenIDs.map((screenID) => ({ ScreenID: screenID }));
     const all_screen = await User.getScreens(token);
     setAllScreenData(all_screen);
+
     const filteredOutput = all_screen.filter((screen) => {
-      return output.some((item) => item.ScreenID === screen.ScreenID);
+      return output.some((item) => parseInt(item.ScreenID) === screen.ScreenID);
     });
 
     const filteredOutputWithBooking = filteredOutput.map((screen) => {
       const booking = booking_content.filter(
-        (booking) => booking.ScreenID === screen.ScreenID
+        (booking) => parseInt(booking.ScreenID) === screen.ScreenID
       );
       return {
         ...screen,
@@ -323,12 +317,12 @@ const Select_Booking = () => {
             <div key={index2} className="w-[20%] p-1">
               <div
                 className={`w-[36px] h-[36px] ${
-                  item.ContentID
+                  item.MediaID
                     ? "bg-white border border-[#D9D9D9]"
                     : "bg-[#D9D9D9]"
                 } flex justify-center items-center`}
               >
-                {item.ContentID ? <IoIosPlayCircle color="#6425FE" /> : ""}
+                {item.MediaID ? <IoIosPlayCircle color="#6425FE" /> : ""}
               </div>
             </div>
           ))}
@@ -354,41 +348,6 @@ const Select_Booking = () => {
 
   const openMediaAdsAllocationTab = (tabName) => {
     setMediaAdsAllocationTab(tabName);
-  };
-
-  const toggleAllCheckboxes = () => {
-    const newCheckboxes = {};
-    const newSelectAll = !selectAll;
-
-    allScreenData.forEach((row) => {
-      newCheckboxes[row.ScreenID] = newSelectAll;
-    });
-
-    setCheckboxes(newCheckboxes);
-    setSelectAll(newSelectAll);
-
-    const checkedRowIds = newSelectAll
-      ? allScreenData.map((row) => row.ScreenID)
-      : [];
-    setSelectedScreenItems(checkedRowIds);
-  };
-
-  const toggleCheckboxAddScreen = (rowId) => {
-    setCheckboxes((prevCheckboxes) => {
-      const updatedCheckboxes = {
-        ...prevCheckboxes,
-        [rowId]: !prevCheckboxes[rowId],
-      };
-
-      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
-        (id) => updatedCheckboxes[id]
-      );
-
-      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
-      setSelectedScreenItems(intArray);
-
-      return updatedCheckboxes;
-    });
   };
 
   return (
@@ -542,7 +501,7 @@ const Select_Booking = () => {
                               <div
                                 className={`lg:min-w-[20px] min-w-[100px] 
                                   ${
-                                    booking_col === 1
+                                    booking_col === 2
                                       ? "h-[80px]"
                                       : booking_col === 2
                                       ? "h-[100px]"
@@ -719,8 +678,6 @@ const Select_Booking = () => {
           booking_date={booking_date}
           screenAdsAllocation={screenAdsAllocation}
           setScreennAdsAllocation={setScreennAdsAllocation}
-          setIsApplyToScreen={setIsApplyToScreen}
-          isApplyToScreen={isApplyToScreen}
           datePickers={datePickers}
           setDatePickers={setDatePickers}
           screen_select={screen_select}
@@ -745,53 +702,9 @@ const Select_Booking = () => {
           setMediaAllocatonUploadIndex={setMediaAllocatonUploadIndex}
           screenSelectFromEdit={screenSelectFromEdit}
           screen={screen}
-        />
-      )}
-
-      {isApplyToScreen && (
-        <a
-          onClick={() => {
-            setIsApplyToScreen(!isApplyToScreen);
-            setOpenAdsAllocationModal(!openAdsAllocationModal);
-          }}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )}
-
-      {isApplyToScreen && (
-        <Ads_Allocation_Apply_Screen
-          setIsApplyToScreen={setIsApplyToScreen}
-          isApplyToScreen={isApplyToScreen}
-          setOpenAdsAllocationModal={setOpenAdsAllocationModal}
-          openAdsAllocationModal={openAdsAllocationModal}
-          setSelectedData={setSelectedData}
-          booking_date={booking_date}
-          setOpenAddNewScreenModal={setOpenAddNewScreenModal}
-          openAddNewScreenModal={openAddNewScreenModal}
-          selectAll={selectAll}
-          toggleAllCheckboxes={toggleAllCheckboxes}
           allScreenData={allScreenData}
-          setCheckboxes={setCheckboxes}
-          checkboxes={checkboxes}
-          toggleCheckboxAddScreen={toggleCheckboxAddScreen}
-          setSelectedScreenItems={setSelectedScreenItems}
-          selectedScreenItems={selectedScreenItems}
-          setScreennAdsAllocation={setScreennAdsAllocation}
-          media_rules_select={media_rules_select}
-          screenSelectFromEdit={screenSelectFromEdit}
-          screen={screen}
         />
       )}
-
-      {/* {openModalUploadNewMedia && (
-        <a
-          onClick={() => {
-            setOpenModalUploadMedia(!openModalUploadNewMedia);
-            setOpenAdsAllocationModal(!openAdsAllocationModal);
-          }}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )} */}
 
       {openModalUploadNewMedia && (
         <Booking_Upload_Media
