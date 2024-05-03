@@ -17,9 +17,10 @@ import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Swal from "sweetalert2";
-import { mediaMockup } from "../data/mockup";
 import User from "../libs/admin";
 import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
+import Confirm_Allocation from "../components/Confirm_Allocation";
+import Create_New_Playlist_Allocation from "../components/Create_New_Playlist_Allocation";
 
 const Ads_Allocation_Booking = ({
   setOpenAdsAllocationModal,
@@ -60,6 +61,10 @@ const Ads_Allocation_Booking = ({
   const [selectAll, setSelectAll] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
+  const [screenUsePlaylist, setScreenUsePlaylist] = useState([]);
+
+  const [isOpenConfirmAllocation, setIsOpenConfirmAllocation] = useState(false);
+  const [isOpenCreateNewPlaylist, setIsOpenCreateNewPlaylist] = useState(false);
 
   const { token } = User.getCookieData();
 
@@ -75,7 +80,6 @@ const Ads_Allocation_Booking = ({
   };
 
   const setEditData = async () => {
-    console.log(screen_select);
     const data = await User.getPlaylist(bookingId, token);
     const screen_data = data.filter(
       (items) => items.MediaPlaylistID === screen_select.value.mediaplaylistid
@@ -455,6 +459,7 @@ const Ads_Allocation_Booking = ({
           key={`panel1-${index}`}
           draggableId={`panel1-${index}`}
           index={index}
+          // isDragDisabled={true}
         >
           {(provided) => (
             <div
@@ -505,7 +510,9 @@ const Ads_Allocation_Booking = ({
                                   {items.ContentName.slice(0, 27) + "..."}
                                 </span>
                               ) : (
-                                <span>{items.ContentName}</span>
+                                <div className="font-poppins font-bold">
+                                  {items.ContentName}
+                                </div>
                               )}
                             </div>
                           </div>
@@ -613,11 +620,9 @@ const Ads_Allocation_Booking = ({
     const screenIDs = screenAdsAllocation.map((screen) => ({
       screenid: screen.ScreenID,
     }));
-
     const screenIdsString = screenIDs
       .map((screen) => screen.screenid)
       .join(",");
-
     if (screenIDs.length <= 0) {
       Swal.fire({
         icon: "error",
@@ -626,7 +631,6 @@ const Ads_Allocation_Booking = ({
       });
       return;
     }
-
     if (!date_range) {
       Swal.fire({
         icon: "error",
@@ -635,7 +639,6 @@ const Ads_Allocation_Booking = ({
       });
       return;
     }
-
     if (!media_playlist_id) {
       Swal.fire({
         icon: "error",
@@ -644,36 +647,41 @@ const Ads_Allocation_Booking = ({
       });
       return;
     }
-
     const obj = {
       bookingid: bookingId,
       dates: date_range,
       screenids: screenIdsString,
       mediaplaylistid: parseInt(media_playlist_id),
     };
-
     try {
-      console.log("obj", obj);
-      const data = await User.updateBookingContent(obj, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "Update Booking Content Success ...",
-          text: "แก้ไข Booking Content สำเร็จ!",
-        }).then(async (result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            console.log("data", data);
-          }
-        });
+      const check_screen = await User.GetBookingContentScreen(obj, token);
+      if (check_screen.screens.length > 0) {
+        // ถ้ามีจออื่นใช้ playlist นี้ด้วย
+        setScreenUsePlaylist(check_screen.screens);
+        setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
+        // ถ้าไม่มีจออื่นใช้
+        const data = await User.updateBookingContent(obj, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Update Booking Content Success ...",
+            text: "แก้ไข Booking Content สำเร็จ!",
+          }).then(async (result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              console.log("data", data);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
       }
     } catch (error) {
       console.log(error);
@@ -728,63 +736,64 @@ const Ads_Allocation_Booking = ({
       bookingid: bookingId,
       mediaplaylistid: mediaplaylistid,
     };
-    const data = await User.getMediaPlaylistContent(obj, token);
-    if (data.length > 0) {
-      const updatedObj = data.map((item) => {
-        const duration = parseInt(item.Duration);
+    try {
+      const data = await User.getMediaPlaylistContent(obj, token);
+      if (data && data.length > 0) {
+        const updatedObj = data.map((item) => {
+          const duration = parseInt(item.Duration);
 
-        const newSlotSize = duration / 15;
-        return {
-          ...item,
-          slot_size: newSlotSize,
-          slot_num: item.Ordering,
-          duration: parseInt(item.Duration),
-        };
-      });
-      const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
+          const newSlotSize = duration / 15;
+          return {
+            ...item,
+            slot_size: newSlotSize,
+            slot_num: item.Ordering,
+            duration: parseInt(item.Duration),
+          };
+        });
+        const clonedItemsPanel1 = { ...itemsPanel1 };
+        // Calculate the total sum of slot_size values
+        const totalSlotsUsed = updatedObj.reduce(
+          (acc, obj) => acc + obj.slot_size,
+          0
+        );
+        // Add slots only if the total slots used is less than the total number of slots
+        if (totalSlotsUsed < clonedItemsPanel1.value.slots) {
+          const remainingSlots = clonedItemsPanel1.value.slots - totalSlotsUsed;
 
-      // Calculate the total sum of slot_size values
-      const totalSlotsUsed = updatedObj.reduce(
-        (acc, obj) => acc + obj.slot_size,
-        0
-      );
+          const mock = {
+            ContentID: null,
+            ContentName: null,
+            ContentTypeName: null,
+            ContentProperties: null,
+            slot_size: 1,
+            slot_num: updatedObj.length + 1,
+          };
 
-      // Add slots only if the total slots used is less than the total number of slots
-      if (totalSlotsUsed < clonedItemsPanel1.value.slots) {
-        const remainingSlots = clonedItemsPanel1.value.slots - totalSlotsUsed;
-
-        const mock = {
-          ContentID: null,
-          ContentName: null,
-          ContentTypeName: null,
-          ContentProperties: null,
-          slot_size: 1,
-          slot_num: updatedObj.length + 1,
-        };
-
-        for (let i = 0; i < remainingSlots; i++) {
-          updatedObj.push({ ...mock });
-          mock.slot_num++;
+          for (let i = 0; i < remainingSlots; i++) {
+            updatedObj.push({ ...mock });
+            mock.slot_num++;
+          }
         }
+        clonedItemsPanel1.value.medias = updatedObj;
+        setItemsPanel1(clonedItemsPanel1);
+      } else {
+        const clonedItemsPanel1 = { ...itemsPanel1 };
+        const updatedObj = clonedItemsPanel1.value.medias.map((item, index) => {
+          return {
+            ContentID: null,
+            ContentName: null,
+            ContentTypeName: null,
+            ContentProperties: null,
+            slot_num: index + 1,
+            slot_size: 1,
+          };
+        });
+        clonedItemsPanel1.value.medias = updatedObj;
+
+        setItemsPanel1(clonedItemsPanel1);
       }
-
-      clonedItemsPanel1.value.medias = updatedObj;
-      setItemsPanel1(clonedItemsPanel1);
-    } else {
-      const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
-      const updatedObj = clonedItemsPanel1.value.medias.map((item, index) => {
-        return {
-          ContentID: null,
-          ContentName: null,
-          ContentTypeName: null,
-          ContentProperties: null,
-          slot_num: index + 1,
-          slot_size: 1,
-        };
-      });
-      clonedItemsPanel1.value.medias = updatedObj;
-
-      setItemsPanel1(clonedItemsPanel1);
+    } catch (error) {
+      console.error("Error fetching media playlist content:", error);
     }
   };
 
@@ -898,7 +907,6 @@ const Ads_Allocation_Booking = ({
       }
     } else {
       // Edit
-
       if (playlist_name !== temp_playlist_name) {
         const playlist_obj = {
           bookingid: bookingId,
@@ -1024,7 +1032,13 @@ const Ads_Allocation_Booking = ({
 
   return (
     <>
-      <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
+      <div
+        className={`fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20 ${
+          isOpenConfirmAllocation || isOpenCreateNewPlaylist
+            ? "blur-[3px] opacity-70 bg-black bg-opacity-50 "
+            : ""
+        }`}
+      >
         {/* First div (circle) */}
         <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
@@ -1033,7 +1047,7 @@ const Ads_Allocation_Booking = ({
             </button>
           </div>
         </div>
-        <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+        <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative ">
           <div className="p-3">
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-1/2 p-1">
@@ -1409,7 +1423,7 @@ const Ads_Allocation_Booking = ({
                               <div
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
-                                className="h-[680px] overflow-y-auto space-y-2"
+                                className="h-[630px] overflow-y-auto space-y-2"
                               >
                                 {playlist_name ? (
                                   renderMediaList(
@@ -1538,6 +1552,7 @@ const Ads_Allocation_Booking = ({
                                             key={`panel2-${index}`}
                                             draggableId={`panel2-${items.ContentID}`}
                                             index={index}
+                                            // isDragDisabled={true}
                                           >
                                             {(provided) => (
                                               <div
@@ -1549,15 +1564,9 @@ const Ads_Allocation_Booking = ({
                                                 <div className="col-span-2 flex justify-center items-center">
                                                   {items.ContentTypeName ===
                                                   "Video" ? (
-                                                    <FiVideo
-                                                      size={30}
-                                                      className="text-[#6425FE]"
-                                                    />
+                                                    <FiVideo size={30} />
                                                   ) : (
-                                                    <FiImage
-                                                      size={30}
-                                                      className="text-[#6425FE]"
-                                                    />
+                                                    <FiImage size={30} />
                                                   )}
                                                 </div>
                                                 <div className="col-span-8">
@@ -1680,15 +1689,9 @@ const Ads_Allocation_Booking = ({
                                                   <div className="col-span-2 flex justify-center items-center">
                                                     {items.ContentTypeName ===
                                                     "Video" ? (
-                                                      <FiVideo
-                                                        size={30}
-                                                        className="text-[#6425FE]"
-                                                      />
+                                                      <FiVideo size={30} />
                                                     ) : (
-                                                      <FiImage
-                                                        size={30}
-                                                        className="text-[#6425FE]"
-                                                      />
+                                                      <FiImage size={30} />
                                                     )}
                                                   </div>
                                                   <div className="col-span-8">
@@ -1811,15 +1814,9 @@ const Ads_Allocation_Booking = ({
                                                   <div className="col-span-2 flex justify-center items-center">
                                                     {items.ContentTypeName ===
                                                     "video" ? (
-                                                      <FiVideo
-                                                        size={30}
-                                                        className="text-[#6425FE]"
-                                                      />
+                                                      <FiVideo size={30} />
                                                     ) : (
-                                                      <FiImage
-                                                        size={30}
-                                                        className="text-[#6425FE]"
-                                                      />
+                                                      <FiImage size={30} />
                                                     )}
                                                   </div>
                                                   <div className="col-span-8">
@@ -1925,6 +1922,29 @@ const Ads_Allocation_Booking = ({
           media_rules_select={media_rules_select}
           screenSelectFromEdit={screenSelectFromEdit}
           screen={screen}
+        />
+      )}
+
+      {isOpenConfirmAllocation && (
+        <Confirm_Allocation
+          setIsOpenConfirmAllocation={setIsOpenConfirmAllocation}
+          isOpenConfirmAllocation={isOpenConfirmAllocation}
+          temp_playlist_name={temp_playlist_name}
+          setIsOpenCreateNewPlaylist={setIsOpenCreateNewPlaylist}
+          isOpenCreateNewPlaylist={isOpenCreateNewPlaylist}
+          screenUsePlaylist={screenUsePlaylist}
+        />
+      )}
+
+      {isOpenCreateNewPlaylist && (
+        <Create_New_Playlist_Allocation
+          setIsOpenCreateNewPlaylist={setIsOpenCreateNewPlaylist}
+          isOpenCreateNewPlaylist={isOpenCreateNewPlaylist}
+          setIsOpenConfirmAllocation={setIsOpenConfirmAllocation}
+          isOpenConfirmAllocation={isOpenConfirmAllocation}
+          setPlaylistName={setPlaylistName}
+          setCheckCreateMediaPlaylist={setCheckCreateMediaPlaylist}
+          setTempPlaylistName={setTempPlaylistName}
         />
       )}
     </>

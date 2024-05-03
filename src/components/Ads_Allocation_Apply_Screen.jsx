@@ -90,14 +90,6 @@ const Ads_Allocation_Apply_Screen = ({
     setIsApplyToScreen(!isApplyToScreen);
   };
 
-  // const findScreenResolutionID = (id) => {
-  //   const resolution = screens_options_data.find(
-  //     (item) => item.ScreenResolutionID === id
-  //   );
-
-  //   return resolution ? resolution.Resolution : "No Resolution";
-  // };
-
   return (
     <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
       {/* First div (circle) */}

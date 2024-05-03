@@ -1150,4 +1150,20 @@ export default {
     );
     return data;
   },
+
+  GetBookingContentScreen: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_bookingcontentscreen?bookingid=${obj.bookingid}&dates=${obj.dates}&mediaplaylistid=${obj.mediaplaylistid}`,
+      obj,
+      config
+    );
+    return data;
+  },
 };

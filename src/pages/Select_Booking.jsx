@@ -124,7 +124,8 @@ const Select_Booking = () => {
   };
 
   const getMediaItemsData = async () => {
-    const media_item = await User.getMediaPlaylist(bookingId, token);
+    const { BookingID } = location.state.data;
+    const media_item = await User.getMediaPlaylist(BookingID, token);
     setItemsPanel2(media_item);
     setMediaList(media_item);
   };
