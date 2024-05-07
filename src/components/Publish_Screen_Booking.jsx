@@ -7,12 +7,8 @@ import User from "../libs/admin";
 const Publish_Screen_Booking = ({
   setShowPublishScreen,
   showPublishScreen,
-  selectPublihsScreen,
-  allScreenData,
-  toggleAllCheckboxesPublishScreen,
-  selectAllPubishScreen,
-  toggleCheckboxPublishScreen,
-  checkboxPublishScreen,
+  bookingId,
+  screen,
 }) => {
   const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
     <TooltipComponent content={title} position="BottomCenter">
@@ -32,23 +28,72 @@ const Publish_Screen_Booking = ({
   );
 
   const { token } = User.getCookieData();
-  const [screens_options_data, setScreenOptionsData] = useState([]);
+  const [filter_screen, setFilterScreen] = useState([]);
+  const [checkboxPublishScreen, setCheckboxPublishScreen] = useState({});
+  const [selectPublihsScreen, setSelectPublishScreen] = useState([]);
+  const [selectAllPubishScreen, setSelectAllPublishScreen] = useState(false);
+
+  const [screen_filter, setScreenFilter] = useState([]);
 
   useEffect(() => {
-    getScreenOption();
+    filterByMediaRules();
   }, []);
 
-  const getScreenOption = async () => {
-    const data = await User.getScreensOptions(token);
-    setScreenOptionsData(data.screenresolution);
+  const filterByMediaRules = () => {
+    setScreenFilter(screen);
   };
 
-  const findScreenResolutionID = (id) => {
-    const resolution = screens_options_data.find(
-      (item) => item.ScreenResolutionID === id
+  const toggleAllCheckboxesPublishScreen = () => {
+    const newCheckboxes = {};
+    const newSelectAll = !selectAllPubishScreen;
+
+    screen.forEach((row) => {
+      newCheckboxes[row.ScreenID] = newSelectAll;
+    });
+
+    setCheckboxPublishScreen(newCheckboxes);
+    setSelectAllPublishScreen(newSelectAll);
+
+    const checkedRowIds = newSelectAll ? screen.map((row) => row.ScreenID) : [];
+    setSelectPublishScreen(checkedRowIds);
+  };
+
+  const toggleCheckboxPublishScreen = (rowId) => {
+    setCheckboxPublishScreen((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [rowId]: !prevCheckboxes[rowId],
+      };
+
+      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
+        (id) => updatedCheckboxes[id]
+      );
+
+      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
+      setSelectPublishScreen(intArray);
+
+      return updatedCheckboxes;
+    });
+  };
+
+  const handlePublish = () => {
+    const screensToReturn = screen.filter((screen) =>
+      selectPublihsScreen.includes(screen.ScreenID)
     );
 
-    return resolution ? resolution.Resolution : "No Resolution";
+    const screenIDs = screensToReturn.map((screen) => ({
+      screenid: screen.ScreenID,
+    }));
+    const screenIdsString = screenIDs
+      .map((screen) => screen.screenid)
+      .join(",");
+
+    const obj = {
+      bookingid: bookingId,
+      screenids: screenIdsString,
+    };
+
+    console.log("obj", obj);
   };
 
   const search = () => {
@@ -56,9 +101,9 @@ const Publish_Screen_Booking = ({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
       {/* First div (circle) */}
-      <div className="absolute right-10 top-[150px] lg:top-[30px] lg:right-[160px] m-4 z-30">
+      <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
         <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
           <button onClick={() => setShowPublishScreen(!showPublishScreen)}>
             <IoIosClose size={25} color={"#6425FE"} />
@@ -67,7 +112,7 @@ const Publish_Screen_Booking = ({
       </div>
 
       {/* Second div (gray background) */}
-      <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md relative">
+      <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
         <div className="flex justify-center items-center mt-5">
           <div className="font-poppins text-5xl text-[#2F3847] font-bold">
             Publish to Screens
@@ -76,8 +121,8 @@ const Publish_Screen_Booking = ({
         <div className="mt-1">
           <div className="flex justify-center items-center col-span-3">
             <div className="font-poppins text-xs lg:text-sm text-[#7C7B7B]">
-              {selectPublihsScreen?.length} out of {allScreenData?.length}{" "}
-              Screens Selected
+              {selectPublihsScreen?.length} out of {screen?.length} Screens
+              Selected
             </div>
           </div>
         </div>
@@ -102,7 +147,10 @@ const Publish_Screen_Booking = ({
         </div>
         {/* Search Box */}
 
-        <Filter />
+        <Filter
+          filter_screen={filter_screen}
+          setFilterScreen={setFilterScreen}
+        />
 
         <div className="mt-5 p-6">
           <div className="font-poppins">
@@ -123,9 +171,9 @@ const Publish_Screen_Booking = ({
                         onChange={toggleAllCheckboxesPublishScreen}
                       />
                       <span
-                        className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                          selectAllPubishScreen ? "bg-white" : ""
-                        }`}
+                        className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center 
+                        ${selectAllPubishScreen ? "bg-white" : ""}
+                        `}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -161,98 +209,87 @@ const Publish_Screen_Booking = ({
                 </tr>
               </thead>
               <tbody>
-                {allScreenData?.map((row) => (
-                  <tr key={row.ScreenID}>
-                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className=" h-5 w-5 cursor-pointer"
-                          checked={checkboxPublishScreen[row.ScreenID] || false}
-                          onChange={() =>
-                            toggleCheckboxPublishScreen(row.ScreenID)
-                          }
-                        />
-                        {/* <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
-                              {checkboxPublishScreen[row.ScreenID] && (
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-6 w-6 text-white"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="#6425FE"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="3"
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
-                              )}
-                            </span> */}
-                      </div>
-                    </td>
-                    <td className="px-2 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="flex items-center">
-                        <div className="font-poppins text-xl font-bold">
-                          {row.ScreenName}
+                {screen_filter.length > 0 &&
+                  screen_filter.map((row) => (
+                    <tr key={row.ScreenID}>
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            className=" h-5 w-5 cursor-pointer"
+                            checked={
+                              checkboxPublishScreen[row.ScreenID] || false
+                            }
+                            onChange={() =>
+                              toggleCheckboxPublishScreen(row.ScreenID)
+                            }
+                          />
                         </div>
-                        <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
-                      </div>
-                    </td>
-                    <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="font-poppins text-sm text-[#59606C] font-bold">
-                        {row.ScreenLocation || "No Data"}
-                      </div>
-                      <div className="font-poppins text-sm font-bold">
-                        {row.province || "No Data"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="font-poppins font-bold">
-                        {findScreenResolutionID(row.ScreenResolutionID)}
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
-                      <div className="flex flex-wrap">
-                        {row.ScreenTag.length > 0 ? (
-                          row.ScreenTag.map((items, index) => (
+                      </td>
+                      <td className="px-2 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="flex items-center">
+                          <div className="font-poppins text-xl font-bold">
+                            {row.ScreenName}
+                          </div>
+                          <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                        </div>
+                      </td>
+                      <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="font-poppins text-sm text-[#59606C] font-bold">
+                          {row.ScreenLocation || "No Data"}
+                        </div>
+                        <div className="font-poppins text-sm font-bold">
+                          {row.province || "No Data"}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="font-poppins font-bold">
+                          {row.ScreenRule[0].Width && row.ScreenRule[0].Height
+                            ? parseInt(row.ScreenRule[0].Width, 10) +
+                              "x" +
+                              parseInt(row.ScreenRule[0].Height, 10)
+                            : "Not Set"}
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <div className="flex flex-wrap">
+                          {row.ScreenTag.length > 0 ? (
+                            row.ScreenTag.map((items, index) => (
+                              <div
+                                key={index}
+                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                                style={{
+                                  flexBasis: `calc(${
+                                    100 / row.ScreenTag.length
+                                  }% - 8px)`,
+                                }}
+                              >
+                                <div className="font-poppins text-xs font-bold">
+                                  {items.TagName}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
                             <div
-                              key={index}
                               className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                              style={{
-                                flexBasis: `calc(${
-                                  100 / row.ScreenTag.length
-                                }% - 8px)`,
-                              }}
+                              style={{ flexBasis: "calc(100% - 8px)" }}
                             >
                               <div className="font-poppins text-xs font-bold">
-                                {items.TagName}
+                                No Tag
                               </div>
                             </div>
-                          ))
-                        ) : (
-                          <div
-                            className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                            style={{ flexBasis: "calc(100% - 8px)" }}
-                          >
-                            <div className="font-poppins text-xs font-bold">
-                              No Tag
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
         </div>
         <div className="mt-3 mb-2 flex items-center justify-center">
           <button
-            onClick={() => alert("Publish")}
+            onClick={() => handlePublish()}
             className="w-[30%] bg-[#6425FE] hover:bg-[#3b1694] text-white text-lg py-2 rounded-lg font-bold font-poppins "
           >
             Publish to Selected Screens

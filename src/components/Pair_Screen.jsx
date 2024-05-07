@@ -147,7 +147,10 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                   <div className="flex justify-center items-center">
                     <div className="grid grid-cols-6 space-x-2">
                       <div className="col-span-3">
-                        <button className="w-[300px] h-[48px] border border-[#6425FE] text-[#6425FE] font-poppins font-semibold text-[24px] rounded-lg">
+                        <button
+                          onClick={() => setOpenPairScreenModal(false)}
+                          className="w-[300px] h-[48px] border border-[#6425FE] text-[#6425FE] font-poppins font-semibold text-[24px] rounded-lg"
+                        >
                           Close
                         </button>
                       </div>

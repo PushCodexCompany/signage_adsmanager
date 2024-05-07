@@ -57,6 +57,7 @@ const Select_Booking = () => {
   const [checkboxes, setCheckboxes] = useState({});
 
   const [screenSelectFromEdit, setScreenSelectFromEdit] = useState(null);
+  const [fact_allocation, setFactAllocation] = useState(false);
 
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openAdsAllocationModal, setOpenAdsAllocationModal] = useState(false);
@@ -67,7 +68,7 @@ const Select_Booking = () => {
   useEffect(() => {
     getBookingData();
     getMediaItemsData();
-  }, []);
+  }, [fact_allocation]);
 
   const getBookingData = async () => {
     const {
@@ -582,7 +583,6 @@ const Select_Booking = () => {
                                     />
                                   </div>
                                 </div>
-
                                 {items.booking_content.length > 0 &&
                                   items.booking_content.map((items2, index) => (
                                     <div key={index} className="mt-3">
@@ -638,18 +638,14 @@ const Select_Booking = () => {
         />
       )}
 
-      {/* {showPublishScreen && (
+      {showPublishScreen && (
         <Publish_Screen_Booking
           setShowPublishScreen={setShowPublishScreen}
           showPublishScreen={showPublishScreen}
-          selectPublihsScreen={selectPublihsScreen}
-          allScreenData={allScreenData}
-          selectAllPubishScreen={selectAllPubishScreen}
-          toggleAllCheckboxesPublishScreen={toggleAllCheckboxesPublishScreen}
-          toggleCheckboxPublishScreen={toggleCheckboxPublishScreen}
-          checkboxPublishScreen={checkboxPublishScreen}
+          bookingId={bookingId}
+          screen={screen}
         />
-      )} */}
+      )}
 
       {openInfoScreenModal && (
         <a
@@ -704,6 +700,8 @@ const Select_Booking = () => {
           screenSelectFromEdit={screenSelectFromEdit}
           screen={screen}
           allScreenData={allScreenData}
+          setFactAllocation={setFactAllocation}
+          fact_allocation={fact_allocation}
         />
       )}
 

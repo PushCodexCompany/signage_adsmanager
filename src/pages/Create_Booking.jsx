@@ -42,19 +42,13 @@ const Create_Booking = () => {
   const [booking_slot, setBookingSlot] = useState();
 
   const [showAddScreen, setShowAddScreen] = useState(false);
-  const [showPublishScreen, setShowPublishScreen] = useState(false);
 
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
   const [screenData, setScreenData] = useState([]);
   const [allScreenData, setAllScreenData] = useState([]);
 
-  const [screenAdsAllocation, setScreennAdsAllocation] = useState([]);
   const [checkboxes, setCheckboxes] = useState({});
   const [selectAll, setSelectAll] = useState(false);
-
-  const [checkboxPublishScreen, setCheckboxPublishScreen] = useState({});
-  const [selectAllPubishScreen, setSelectAllPublishScreen] = useState(false);
-  const [selectPublihsScreen, setSelectPublishScreen] = useState([]);
 
   const [deleteModalIndex, setDeleteModalIndex] = useState({});
 
@@ -264,24 +258,6 @@ const Create_Booking = () => {
     });
   };
 
-  const toggleCheckboxPublishScreen = (rowId) => {
-    setCheckboxPublishScreen((prevCheckboxes) => {
-      const updatedCheckboxes = {
-        ...prevCheckboxes,
-        [rowId]: !prevCheckboxes[rowId],
-      };
-
-      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
-        (id) => updatedCheckboxes[id]
-      );
-
-      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
-      setSelectPublishScreen(intArray);
-
-      return updatedCheckboxes;
-    });
-  };
-
   const toggleScreenFromAllScreen = async (items) => {
     const obj_to_save = {
       bookingid: bookingId,
@@ -346,23 +322,6 @@ const Create_Booking = () => {
       ? allScreenData.map((row) => row.ScreenID)
       : [];
     setSelectedScreenItems(checkedRowIds);
-  };
-
-  const toggleAllCheckboxesPublishScreen = () => {
-    const newCheckboxes = {};
-    const newSelectAll = !selectAllPubishScreen;
-
-    allScreenData.forEach((row) => {
-      newCheckboxes[row.ScreenID] = newSelectAll;
-    });
-
-    setCheckboxPublishScreen(newCheckboxes);
-    setSelectAllPublishScreen(newSelectAll);
-
-    const checkedRowIds = newSelectAll
-      ? allScreenData.map((row) => row.ScreenID)
-      : [];
-    setSelectPublishScreen(checkedRowIds);
   };
 
   const handleAddScreen = async () => {
@@ -1240,26 +1199,6 @@ const Create_Booking = () => {
         />
       )}
 
-      {showPublishScreen && (
-        <a
-          onClick={() => setShowPublishScreen(!showPublishScreen)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )}
-
-      {showPublishScreen && (
-        <Publish_Screen_Booking
-          setShowPublishScreen={setShowPublishScreen}
-          showPublishScreen={showPublishScreen}
-          selectPublihsScreen={selectPublihsScreen}
-          allScreenData={allScreenData}
-          selectAllPubishScreen={selectAllPubishScreen}
-          toggleAllCheckboxesPublishScreen={toggleAllCheckboxesPublishScreen}
-          toggleCheckboxPublishScreen={toggleCheckboxPublishScreen}
-          checkboxPublishScreen={checkboxPublishScreen}
-        />
-      )}
-
       {openInfoScreenModal && (
         <a
           onClick={() => setOpenInfoScreenModal(!openInfoScreenModal)}
@@ -1306,7 +1245,7 @@ const Create_Booking = () => {
         />
       )}
 
-      {isApplyToScreen && (
+      {/* {isApplyToScreen && (
         <a
           onClick={() => {
             setIsApplyToScreen(!isApplyToScreen);
@@ -1334,7 +1273,7 @@ const Create_Booking = () => {
           selectedScreenItems={selectedScreenItems}
           setScreennAdsAllocation={setScreennAdsAllocation}
         />
-      )}
+      )} */}
     </>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import { PiWarningCircleFill } from "react-icons/pi";
+import User from "../libs/admin";
+import Swal from "sweetalert2";
 
 const Confirm_Allocation = ({
   setIsOpenConfirmAllocation,
@@ -9,8 +11,17 @@ const Confirm_Allocation = ({
   setIsOpenCreateNewPlaylist,
   isOpenCreateNewPlaylist,
   screenUsePlaylist,
+  bookingId,
+  datePickers,
+  screenAdsAllocation,
+  media_playlist_id,
+  setFactAllocation,
+  fact_allocation,
+  setOpenAdsAllocationModal,
+  openAdsAllocationModal,
 }) => {
   const [screen, setScreen] = useState([]);
+  const { token } = User.getCookieData();
 
   useEffect(() => {
     generateTextToScreen();
@@ -25,6 +36,69 @@ const Confirm_Allocation = ({
     // Split the outputString by commas and set it to the screen
     const outputArray = outputString.split(",");
     setScreen(outputArray);
+  };
+
+  const handleDateRangeToString = (datePickers) => {
+    let date_range;
+    if (datePickers.length > 0) {
+      date_range = datePickers
+        .reduce((acc, curr) => {
+          curr.dateRange.forEach((date) => {
+            if (!acc.includes(date)) {
+              acc.push(date);
+            }
+          });
+          return acc;
+        }, [])
+        .join(",");
+
+      return date_range;
+    }
+  };
+
+  const handleSaveReplace = async () => {
+    const date_range = handleDateRangeToString(datePickers);
+    const screenIDs = screenAdsAllocation.map((screen) => ({
+      screenid: screen.ScreenID,
+    }));
+    const screenIdsString = screenIDs
+      .map((screen) => screen.screenid)
+      .join(",");
+
+    const obj = {
+      bookingid: bookingId,
+      dates: date_range,
+      screenids: screenIdsString,
+      mediaplaylistid: parseInt(media_playlist_id),
+    };
+
+    try {
+      const data = await User.updateBookingContent(obj, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "Update Booking Content Success ...",
+          text: "แก้ไข Booking Content สำเร็จ!",
+        }).then(async (result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
+            setOpenAdsAllocationModal(!openAdsAllocationModal);
+            setFactAllocation(!fact_allocation);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -81,7 +155,7 @@ const Confirm_Allocation = ({
               </div>
               <div className="flex justify-center items-center text-center mt-3">
                 <button
-                  onClick={() => alert("save replace")}
+                  onClick={() => handleSaveReplace()}
                   className="border-2 border-[#6425FE]  w-[300px] h-[48px] rounded-lg text-[#6425FE] font-poppins font-bold"
                 >
                   {`Replace to ${temp_playlist_name}`}
