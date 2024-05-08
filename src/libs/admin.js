@@ -5,6 +5,7 @@ import avatar from "../assets/img/avatar.png";
 const SIGNAGE_MEMBER_COOKIE = "signage-member";
 const SIGNAGE_ACCOUNT_COOKIE = "signage-account";
 const SIGNAGE_BRAND_COOKIE = "signage-brand";
+const SIGNAGE_BRAND_CODE_COOKIE = "signage-brand-code";
 const SIGNAGE_MERCHANDISE_COOKIE = "signage-merchandise";
 const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
 
@@ -58,6 +59,7 @@ export default {
   // login
   login: async function (hash) {
     const { data } = await this._post(`api/v1/login?hash=${hash}`);
+    console.log("data", data);
     if (data.token) {
       this.saveCookie(data);
       return true;
@@ -98,6 +100,21 @@ export default {
       cookie.save(
         SIGNAGE_BRAND_COOKIE,
         { brand_id: data },
+        {
+          maxAge: 86400,
+          path: "/",
+        }
+      );
+
+      return true;
+    }
+  },
+
+  saveBrandCode: function (data) {
+    if (data) {
+      cookie.save(
+        SIGNAGE_BRAND_CODE_COOKIE,
+        { brand_code: data },
         {
           maxAge: 86400,
           path: "/",
@@ -180,6 +197,10 @@ export default {
   //get Campaign
   getCampaign: function () {
     return cookie.load(SIGNAGE_BRAND_COOKIE) || false;
+  },
+
+  getBrandCode: function () {
+    return cookie.load(SIGNAGE_BRAND_CODE_COOKIE) || false;
   },
 
   getMerchandise: function () {

@@ -52,8 +52,9 @@ const Brands = () => {
     }
   };
 
-  const selectCampaign = (brand_id) => {
-    const status = User.saveSelectedBrand(brand_id);
+  const selectCampaign = (items) => {
+    const status = User.saveSelectedBrand(items.BrandID);
+    User.saveBrandCode(items.BrandCode);
     if (status) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     } else {
@@ -164,7 +165,7 @@ const Brands = () => {
                           }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
-                    onClick={() => selectCampaign(items.BrandID)}
+                    onClick={() => selectCampaign(items)}
                   />
                   <div
                     onClick={() => toggleDropdown(items.BrandID)}
