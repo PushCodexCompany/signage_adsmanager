@@ -36,11 +36,12 @@ export default {
         method,
         data: body,
         url: `${process.env.REACT_APP_NODEAPI_ADSMANAGER}/${path}`,
-        headers: config ? config.headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: config
+          ? config.headers
+          : { "Content-Type": "application/x-www-form-urlencoded" },
         withCredentials: true,
       };
-    }
-    else if (config) {
+    } else if (config) {
       options = {
         method,
         data: body,
@@ -76,19 +77,29 @@ export default {
     var params = new URLSearchParams();
     params.append("code", pairingcode);
 
-    const { response } = await this._nodepost(`/api/v1/checkscreenpairing`, params, { 'Content-Type': 'application/x-www-form-urlencoded' })
-
+    const { response } = await this._nodepost(
+      `/api/v1/checkscreenpairing`,
+      params,
+      { "Content-Type": "application/x-www-form-urlencoded" }
+    );
 
     if ("result" in response.data && response.data.result === 1) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   },
 
   // Pair Screen
-  pairScreen: async function (accountcode, brandecode, branchcode, screencode, screenname, pairingcode, screensettings) {
+  pairScreen: async function (
+    accountcode,
+    brandecode,
+    branchcode,
+    screencode,
+    screenname,
+    pairingcode,
+    screensettings
+  ) {
     var params = new URLSearchParams();
 
     params.append("account", accountcode);
@@ -98,21 +109,26 @@ export default {
     params.append("screenname", screenname);
     params.append("code", pairingcode);
 
-
     // To Do: Remove screen unpair flag here
-    const screenData = { AccountCode: accountcode, BrandCode: brandecode, BranchCode: branchcode, ScreenCode: screencode }
+    const screenData = {
+      AccountCode: accountcode,
+      BrandCode: brandecode,
+      BranchCode: branchcode,
+      ScreenCode: screencode,
+    };
     FirebaseHelper.clearScreenUnpairRequest(screenData);
 
     await setTimeout(500);
 
-
-    const { response } = await this._nodepost(`/api/v1/attemptscreenpairing`, params, { 'Content-Type': 'application/x-www-form-urlencoded' })
-
+    const { response } = await this._nodepost(
+      `/api/v1/attemptscreenpairing`,
+      params,
+      { "Content-Type": "application/x-www-form-urlencoded" }
+    );
 
     if (response.data.status === "success") {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   },
@@ -272,10 +288,12 @@ export default {
     return cookie.load(SIGNAGE_MERCHANDISE_COOKIE) || false;
   },
 
-  getPHP: async function () {
+  TestConnection: async function () {
     const data = await this._get("api/hello-nf/");
     return data;
   },
+
+  /////////////////////////////
 
   getUsersList: async function (token) {
     const config = {
@@ -836,14 +854,18 @@ export default {
     return data;
   },
 
-  getScreens: async function (token) {
+  getScreens: async function (brand_code, token) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_screens`, "", config);
+    const { data } = await this._get(
+      `api/v1/get_screens?brandcode=${brand_code}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {

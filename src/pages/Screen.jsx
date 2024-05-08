@@ -11,7 +11,7 @@ import { GridTable } from "../libs/screens_grid";
 import { screens } from "../data/mockup";
 import User from "../libs/admin";
 
-import firebase from '../utils/Firebase';
+import firebase from "../utils/Firebase";
 
 const Event = () => {
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
@@ -32,10 +32,8 @@ const Event = () => {
     // testFirebase();
   }, []);
 
-
   const testFirebase = () => {
-
-    console.log("testing firebase")
+    console.log("testing firebase");
     var db = firebase.database().ref().child(`auUpa8dN4g/4lJnf/9kFQV`);
     // db = firebase.database().ref().child(`${AccountCode}/${BrandCode}/${BranchCode}`);
 
@@ -47,14 +45,17 @@ const Event = () => {
       //     // io.sockets.in(roomId).emit("receive-command", snap.key, snap.val());
       // }
 
-      console.log("child_changed " + snap.key + " : " + JSON.stringify(snap.val()))
+      console.log(
+        "child_changed " + snap.key + " : " + JSON.stringify(snap.val())
+      );
       // screensStatus[snap.key] = { ...screensStatus[snap.key], ...snap.val() }
       // setScreensStatus({ ...screensStatus })
     });
-  }
+  };
 
   const fetchScreenData = async () => {
-    const screens = await User.getScreens(token);
+    const { brand_code } = User.getBrandCode();
+    const screens = await User.getScreens(brand_code, token);
     setScreensData(screens);
   };
 
