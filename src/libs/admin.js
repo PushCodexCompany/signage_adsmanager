@@ -1,6 +1,7 @@
 import cookie from "react-cookies";
 import Axios from "axios";
 import avatar from "../assets/img/avatar.png";
+import FirebaseHelper from "../utils/FirebaseHelper";
 
 const SIGNAGE_MEMBER_COOKIE = "signage-member";
 const SIGNAGE_ACCOUNT_COOKIE = "signage-account";
@@ -13,6 +14,10 @@ export default {
    * axios wrappers
    */
   _errorMsg: "",
+
+  _nodepost: async function (path, body = null, header = null) {
+    return this._axios(path, "post", body, header);
+  },
   _post: async function (path, body = null, header = null) {
     return this._axios(path, "post", body, header);
   },
@@ -22,9 +27,19 @@ export default {
   _delete: async function (path, body) {
     return this._axios(path, "delete", body);
   },
-  _axios: async function (path, method, body, config) {
+  _axios: async function (path, method, body, config, useNodeAPI = false) {
     let options;
-    if (config) {
+
+    if (useNodeAPI) {
+      options = {
+        method,
+        data: body,
+        url: `${process.env.REACT_APP_NODEAPI_ADSMANAGER}/${path}`,
+        headers: config ? config.headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
+        withCredentials: true,
+      };
+    }
+    else if (config) {
       options = {
         method,
         data: body,
@@ -47,6 +62,56 @@ export default {
     } else {
       console.log(`User lib error ${path}: ${data.message}`);
       this._errorMsg = data.message;
+      return false;
+    }
+  },
+
+  /**
+   * NODE API functions
+   */
+
+  // Check Pairing Code Available
+  checkScreenAvailable: async function (pairingcode) {
+    var params = new URLSearchParams();
+    params.append("code", pairingcode);
+
+    const { response } = await this._nodepost(`/api/v1/checkscreenpairing`, params, { 'Content-Type': 'application/x-www-form-urlencoded' })
+
+
+    if ("result" in response.data && response.data.result === 1) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  },
+
+  // Pair Screen
+  pairScreen: async function (accountcode, brandecode, branchcode, screencode, screenname, pairingcode, screensettings) {
+    var params = new URLSearchParams();
+
+    params.append("account", accountcode);
+    params.append("brand", brandecode);
+    params.append("branch", branchcode);
+    params.append("screen", screencode);
+    params.append("screenname", screenname);
+    params.append("code", pairingcode);
+
+
+    // To Do: Remove screen unpair flag here
+    const screenData = { AccountCode: accountcode, BrandCode: brandecode, BranchCode: branchcode, ScreenCode: screencode }
+    FirebaseHelper.clearScreenUnpairRequest(screenData);
+
+    await setTimeout(500);
+
+
+    const { response } = await this._nodepost(`/api/v1/attemptscreenpairing`, params, { 'Content-Type': 'application/x-www-form-urlencoded' })
+
+
+    if (response.data.status === "success") {
+      return true;
+    }
+    else {
       return false;
     }
   },
