@@ -7,12 +7,13 @@ import {
   IoIosEyeOff,
 } from "react-icons/io";
 import { BiLinkAlt } from "react-icons/bi";
+import Swal from "sweetalert2";
 
-const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
+const Pair_Screen = ({ setOpenPairScreenModal, screens_data }) => {
   const [select_screen, setSelectScreen] = useState(null);
   const [isScreenOpen, setScreenOpen] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-
+  const [pairingCode, setPairingCode] = useState(null);
   const [oldModal, setoldModal] = useState(true);
   const [openPairScreenConfirmModal, setOpenPairScreenConfirmModal] =
     useState(false);
@@ -26,21 +27,54 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
   };
 
   const handleStatusChange = (event) => {
-    const selectedValue = event.target.value;
-    if (selectedValue === "") {
-      alert("Please select a valid status.");
-    } else {
-      setSelectScreen(selectedValue);
-    }
+    setSelectScreen(event.target.value);
   };
 
-  const handlePairScreen = () => {
+  const handlePairScreen = async () => {
     if (!select_screen) {
-      alert("Please select screen");
-    } else {
-      setoldModal(!oldModal);
-      setOpenPairScreenConfirmModal(!openPairScreenConfirmModal);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกจอที่ต้องการ ...",
+      });
+      return;
     }
+
+    if (!pairingCode) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกรหัสจอ ...",
+      });
+      return;
+    }
+
+    const find_screen = screens_data.find(
+      (items) => items.ScreenID === parseInt(select_screen)
+    );
+
+    const screenData = {
+      AccountCode: find_screen.AccountCode,
+      BrandCode: find_screen.BrandCode,
+      BranchCode: find_screen.BranchCode,
+      ScreenCode: find_screen.ScreenCode,
+      PairingCode: pairingCode,
+    };
+
+    console.log("screenData", screenData);
+
+    // save data
+
+    // try {
+    // if (success) {
+    //   setoldModal(!oldModal);
+    //   setOpenPairScreenConfirmModal(!openPairScreenConfirmModal);
+    // } else {
+    //   return "error";
+    // }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   return (
@@ -92,13 +126,13 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                             <option value="" disabled selected hidden>
                               Select Screen
                             </option>
-                            {screen.length > 0 &&
-                              screen.map((items) => (
+                            {screens_data.length > 0 &&
+                              screens_data.map((items) => (
                                 <option
                                   className="font-poppins text-[#2F3847] text-[22px]"
-                                  value={items.id}
+                                  value={items.ScreenID}
                                 >
-                                  {items.name}
+                                  {items.ScreenName}
                                 </option>
                               ))}
                           </select>
@@ -120,6 +154,7 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
                         <div className="relative w-full h-[50px] flex justify-center lg:text-base ml-3">
                           <input
                             type={passwordVisible ? "text" : "password"}
+                            onChange={(e) => setPairingCode(e.target.value)}
                             className="block appearance-none w-full bg-[#f2f2f2] font-poppins text-[#2F3847] text-[22px] font-medium border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                           />
                           <div
@@ -193,10 +228,10 @@ const Pair_Screen = ({ setOpenPairScreenModal, screen }) => {
             <div className="p-4">
               <div className="flex justify-center items-center">
                 <div className="font-poppins text-[#2F3847] text-[64px] font-bold">
-                  {
-                    screen.find((item) => item.id === parseInt(select_screen))
-                      ?.name
-                  }{" "}
+                  {screens_data.length > 0 &&
+                    screens_data.find(
+                      (item) => item.id === parseInt(select_screen)
+                    )?.name}{" "}
                   Is Paired
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { BiLinkAlt } from "react-icons/bi";
+import { BiLinkAlt, BiUnlink } from "react-icons/bi";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
@@ -11,6 +11,9 @@ export const GridTable = ({
   setSelectInfoScren,
   screens_data,
   screens_options_data,
+  setOpenUnPairScreenModal,
+  openUnPairScreenModal,
+  setScreenSelect,
 }) => {
   const navigate = useNavigate();
 
@@ -89,6 +92,11 @@ export const GridTable = ({
         text: data.message,
       });
     }
+  };
+
+  const handleUnpairScreen = (row) => {
+    setScreenSelect(row);
+    setOpenUnPairScreenModal(!openUnPairScreenModal);
   };
 
   // const findScreenResolutionID = (id) => {
@@ -280,22 +288,31 @@ export const GridTable = ({
                 </td>
                 <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
-                    {/* {row.isPair ? ( */}
-                    <button>
-                      <BiLinkAlt
-                        size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      />
-                    </button>
-                    {/* ) : (
+                    {row?.isPair ? (
                       <></>
-                    )} */}
+                    ) : row?.isPair === true ? (
+                      <button>
+                        <BiLinkAlt
+                          size={20}
+                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                        />
+                      </button>
+                    ) : (
+                      <button>
+                        <BiUnlink
+                          onClick={() => handleUnpairScreen(row)}
+                          size={20}
+                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                        />
+                      </button>
+                    )}
                     <button onClick={() => handleEditScreen(row)}>
                       <RiEditLine
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
                     </button>
+
                     <button onClick={() => handleDeleteScreen(row.ScreenID)}>
                       <RiDeleteBin5Line
                         size={20}

@@ -8,19 +8,21 @@ import { Navbar } from "../components";
 
 import Filter from "../components/Filter";
 import { GridTable } from "../libs/screens_grid";
-import { screens } from "../data/mockup";
 import User from "../libs/admin";
 
 import firebase from "../utils/Firebase";
+import Unpair_screen from "../components/Unpair_screen";
 
 const Event = () => {
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
   const [selectInfoScreen, setSelectInfoScren] = useState([]);
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openPairScreenModal, setOpenPairScreenModal] = useState(false);
+  const [openUnPairScreenModal, setOpenUnPairScreenModal] = useState(false);
 
   const [screens_data, setScreensData] = useState([]);
   const [screens_options_data, setScreensOptionsData] = useState([]);
+  const [screen_select, setScreenSelect] = useState([]);
 
   const navigate = useNavigate();
 
@@ -99,6 +101,9 @@ const Event = () => {
               setSelectInfoScren={setSelectInfoScren}
               screens_data={screens_data}
               screens_options_data={screens_options_data}
+              setOpenUnPairScreenModal={setOpenUnPairScreenModal}
+              openUnPairScreenModal={openUnPairScreenModal}
+              setScreenSelect={setScreenSelect}
             />
           ) : (
             <></>
@@ -123,7 +128,22 @@ const Event = () => {
       {openPairScreenModal && (
         <Pair_Screen
           setOpenPairScreenModal={setOpenPairScreenModal}
-          screen={screens}
+          screens_data={screens_data}
+        />
+      )}
+
+      {openUnPairScreenModal && (
+        <a
+          onClick={() => setOpenUnPairScreenModal(!openUnPairScreenModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openUnPairScreenModal && (
+        <Unpair_screen
+          setOpenUnPairScreenModal={setOpenUnPairScreenModal}
+          openUnPairScreenModal={openUnPairScreenModal}
+          screen_select={screen_select}
         />
       )}
     </>

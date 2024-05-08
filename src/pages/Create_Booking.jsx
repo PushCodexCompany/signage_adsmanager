@@ -17,15 +17,11 @@ import Screen_Info from "../components/Screen_Info";
 import New_Screen from "../components/New_Screen";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { mediaMockup } from "../data/mockup";
-
 import User from "../libs/admin";
 
 import Filter from "../components/Filter";
 import Add_Screen_Booking from "../components/Add_Screen_Booking";
-import Publish_Screen_Booking from "../components/Publish_Screen_Booking";
 import Confirm_Booking from "../components/Confirm_Booking";
-import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
 import Swal from "sweetalert2";
 
 const Create_Booking = () => {
