@@ -142,7 +142,7 @@ export const GridTable = ({
               <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
                 Screen Name
               </th>
-              <th className="px-4 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Location
               </th>
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
@@ -201,8 +201,8 @@ export const GridTable = ({
                     </label>
                   </div>
                 </td> */}
-                <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex">
+                <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="flex items-center justify-center">
                     <div className="font-poppins text-xl font-bold">
                       {key + 1}
                     </div>
@@ -219,7 +219,7 @@ export const GridTable = ({
                   </div>
                 </td>
                 <td className="px-4 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-sm text-[#59606C] font-bold">
+                  <div className="flex justify-center  font-poppins text-sm text-[#59606C] font-bold">
                     {row.ScreenLocation || "No Data"}
                   </div>
                   {/* <div className="font-poppins text-sm font-bold">
@@ -227,7 +227,7 @@ export const GridTable = ({
                   </div> */}
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins font-bold">
+                  <div className="flex justify-center items-center font-poppins font-bold">
                     {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
                     {row.ScreenRule[0].Width && row.ScreenRule[0].Height
                       ? parseInt(row.ScreenRule[0].Width, 10) +
@@ -280,16 +280,16 @@ export const GridTable = ({
                 </td>
                 <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
-                    {row.isPair ? (
-                      <button>
-                        <BiLinkAlt
-                          size={20}
-                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                        />
-                      </button>
-                    ) : (
+                    {/* {row.isPair ? ( */}
+                    <button>
+                      <BiLinkAlt
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
+                    </button>
+                    {/* ) : (
                       <></>
-                    )}
+                    )} */}
                     <button onClick={() => handleEditScreen(row)}>
                       <RiEditLine
                         size={20}

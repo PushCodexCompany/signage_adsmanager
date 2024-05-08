@@ -97,7 +97,8 @@ const Select_Booking = () => {
       ...new Set(booking_content.map((item) => item.ScreenID)),
     ];
     const output = uniqueScreenIDs.map((screenID) => ({ ScreenID: screenID }));
-    const all_screen = await User.getScreens(token);
+    const { brand_code } = User.getBrandCode();
+    const all_screen = await User.getScreens(brand_code, token);
     setAllScreenData(all_screen);
 
     const filteredOutput = all_screen.filter((screen) => {
