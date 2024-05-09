@@ -95,8 +95,6 @@ const User_Management = () => {
   const setPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = convertPermissionValuesToBoolean([user]);
-    console.log("permissions", permissions);
-    console.log("token", token);
     setPagePermission(permissions.user);
   };
 
@@ -227,6 +225,7 @@ const User_Management = () => {
             merchandise: reg_merchandise,
           },
         };
+        console.log("value", value);
 
         const { token } = User.getCookieData();
         const encrypted = await Encryption.encryption(
@@ -234,7 +233,7 @@ const User_Management = () => {
           "create_user",
           false
         );
-        // console.log(encrypted);
+
         try {
           const data = await User.createUser(encrypted, token);
           if (data.code !== 404) {
@@ -319,7 +318,6 @@ const User_Management = () => {
           <div className="col-span-4">
             <div className="font-poppins font-semibold text-2xl">User</div>
           </div>
-          {console.log("page_permission", page_permission)}
           {page_permission?.create ? (
             <button
               onClick={() => setModalNewUser(!modalNewUser)}

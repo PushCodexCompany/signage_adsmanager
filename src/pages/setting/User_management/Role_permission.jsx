@@ -763,18 +763,24 @@ const Role_permission = () => {
                     >
                       <div className="col-span-5 ml-2">
                         <div className={`font-poppins text-2xl`}>
-                          <input
-                            type="text"
-                            defaultValue={items.RoleName}
-                            disabled={editRoleName}
-                            onChange={(e) =>
-                              handleSetNewRoleName(e.target.value)
-                            }
-                            onBlur={() =>
-                              handleOutFocusRoleName(newRoleName, index)
-                            }
-                            // className="w-60"
-                          />
+                          {!editRoleName ? (
+                            <input
+                              type="text"
+                              defaultValue={items.RoleName}
+                              disabled={editRoleName}
+                              onChange={(e) =>
+                                handleSetNewRoleName(e.target.value)
+                              }
+                              onBlur={() =>
+                                handleOutFocusRoleName(newRoleName, index)
+                              }
+                              className={`${
+                                !editRoleName ? "bg-[#e8e8e8]" : ""
+                              } cursor-pointer`}
+                            />
+                          ) : (
+                            <div>{items.RoleName}</div>
+                          )}
                         </div>
                         <div className="text-xs">
                           {`${items.RoleName} Description`}
