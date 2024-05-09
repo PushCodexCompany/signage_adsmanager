@@ -213,17 +213,18 @@ const Role_permission = () => {
     );
     let obj;
 
+    const { account } = User.getAccount();
     if (isAnyValueGreaterThanZero) {
       obj = {
         rolename: newRole.name,
         permissions: summary.permissions,
-        accountcode: "huUpa8dN4i",
+        accountcode: account.AccountCode,
       };
     } else {
       obj = {
         rolename: newRole.name,
         permissions: "",
-        accountcode: "huUpa8dN4i",
+        accountcode: account.AccountCode,
       };
     }
 
@@ -905,7 +906,7 @@ const Role_permission = () => {
                   onClick={() => handleSaveNewRole()}
                   className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg"
                 >
-                  Save
+                  Savessss
                 </button>
               </div>
             ) : (
