@@ -53,7 +53,7 @@ const Brands = () => {
   };
 
   const selectCampaign = (items) => {
-    const status = User.saveSelectedBrand(items.BrandID);
+    const status = User.saveSelectedBrand(items.BrandCode);
     User.saveBrandCode(items.BrandCode);
     if (status) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;

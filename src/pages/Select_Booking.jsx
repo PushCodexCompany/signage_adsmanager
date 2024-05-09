@@ -104,7 +104,6 @@ const Select_Booking = () => {
     const filteredOutput = all_screen.filter((screen) => {
       return output.some((item) => parseInt(item.ScreenID) === screen.ScreenID);
     });
-    console.log();
 
     const filteredOutputWithBooking = filteredOutput.map((screen) => {
       const booking = booking_content.filter(
@@ -115,7 +114,6 @@ const Select_Booking = () => {
         booking_content: booking,
       };
     });
-    console.log("filteredOutputWithBooking", filteredOutputWithBooking);
 
     setScreen(filteredOutputWithBooking);
 
