@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import {
   Dashboard,
   Pdf,
@@ -36,6 +36,7 @@ import {
 const Routing = () => {
   // const user = User.getCookieData();
 
+  const navigate = useNavigate();
   return (
     <>
       <Routes>
@@ -82,13 +83,21 @@ const Routing = () => {
           element={<Booking_Summary />}
         />
 
-        {/* <Route
+        <Route
           path="*"
-          element={<div> Not Found or You do not have permission.</div>}
-        /> */}
+          element={<RedirectToAdsManager navigate={navigate} />}
+        />
       </Routes>
     </>
   );
+};
+
+const RedirectToAdsManager = ({ navigate }) => {
+  React.useEffect(() => {
+    navigate("/adsmanager");
+  }, [navigate]);
+
+  return null; // This component doesn't render anything
 };
 
 export default Routing;

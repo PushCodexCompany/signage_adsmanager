@@ -108,30 +108,35 @@ const Edit_Merchandises = () => {
     try {
       const data = await User.createMerchandise(encrypted, token);
       if (data.code !== 404) {
-        const form = new FormData();
-        form.append("target", "advertiserlogo");
-        form.append("advertiserid", data.advertiserid);
-        form.append("logo", merchandise_img);
-        const data_img = await User.saveImgMerchandise(form, token);
-        if (data_img.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "สร้าง Merchandise สำเร็จ!",
-            text: `สร้าง Merchandise สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              navigate("/merchandise");
-            }
-          });
+        if (merchandise_img) {
+          const form = new FormData();
+          form.append("target", "advertiserlogo");
+          form.append("advertiserid", data.advertiserid);
+          form.append("logo", merchandise_img);
+
+          const data_img = await User.saveImgMerchandise(form, token);
+          if (data_img.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "สร้าง Merchandise สำเร็จ!",
+              text: `สร้าง Merchandise สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                navigate("/merchandise");
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data_img.message,
+            });
+          }
         } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data_img.message,
-          });
+          navigate("/merchandise");
         }
       } else {
         Swal.fire({
@@ -194,7 +199,6 @@ const Edit_Merchandises = () => {
         }
       } else {
         const data = await User.editMerchandise(encrypted, token);
-        console.log("data", data);
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",

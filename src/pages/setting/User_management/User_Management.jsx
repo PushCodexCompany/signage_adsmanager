@@ -95,7 +95,8 @@ const User_Management = () => {
   const setPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = convertPermissionValuesToBoolean([user]);
-
+    console.log("permissions", permissions);
+    console.log("token", token);
     setPagePermission(permissions.user);
   };
 
@@ -318,8 +319,8 @@ const User_Management = () => {
           <div className="col-span-4">
             <div className="font-poppins font-semibold text-2xl">User</div>
           </div>
-
-          {page_permission.create ? (
+          {console.log("page_permission", page_permission)}
+          {page_permission?.create ? (
             <button
               onClick={() => setModalNewUser(!modalNewUser)}
               className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] h-[45px] rounded-md"

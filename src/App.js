@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
@@ -12,7 +12,16 @@ import { useStateContext } from "./contexts/ContextProvider";
 
 import User from "./libs/admin";
 
-//test comment
+const RedirectToAdsManager = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/");
+  }, [navigate]);
+
+  return null; // This component doesn't render anything
+};
+
 const App = () => {
   const {
     setCurrentColor,
@@ -29,7 +38,7 @@ const App = () => {
     const currentThemeMode = localStorage.getItem("themeMode");
 
     const pathname = window.location.pathname;
-    if (pathname == "/") {
+    if (pathname === "/") {
       window.location.href = "/adsmanager";
     }
     if (currentThemeColor && currentThemeMode) {
@@ -51,12 +60,10 @@ const App = () => {
               {/* Sidebar */}
               {activeMenu ? (
                 <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-                  {/* {select_campaign && select_merchandise ? <Sidebar /> : <></>} */}
                   {select_campaign ? <Sidebar /> : <></>}
                 </div>
               ) : (
                 <div className="w-0 dark:bg-secondary-dark-bg">
-                  {/* {select_campaign && select_merchandise ? <Sidebar /> : <></>} */}
                   {select_campaign ? <Sidebar /> : <></>}
                 </div>
               )}
@@ -65,21 +72,15 @@ const App = () => {
                 className={
                   activeMenu
                     ? `dark:bg-main-dark-bg  bg-main-bg min-h-screen md: ${
-                    // select_campaign && select_merchandise ? "ml-72" : ""
-                    select_campaign ? "ml-72" : ""
-                    } w-full`
+                        select_campaign ? "ml-72" : ""
+                      } w-full`
                     : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
                 }
               >
-                {/* Navbar */}
-                {/* <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-                  <Navbar />
-                </div> */}
                 <div>
                   {themeSettings && <ThemeSettings />}
                   <Routing />
                 </div>
-                {/* <Footer /> */}
               </div>
             </div>
           </>
@@ -89,10 +90,7 @@ const App = () => {
               <Route exact path={`/`} element={<Login />} />
               <Route exact path={`/brand`} element={<Brands />} />
               <Route exact path={`/user_account`} element={<User_Account />} />
-              <Route
-                path="*"
-                element={<div> Not Found or You do not have permission.</div>}
-              />
+              <Route path="*" element={<RedirectToAdsManager />} />
             </Routes>
           </>
         )}

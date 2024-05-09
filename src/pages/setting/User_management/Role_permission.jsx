@@ -739,7 +739,7 @@ const Role_permission = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">User Role</div>
-              {page_permission.create ? (
+              {page_permission?.create ? (
                 <button
                   className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins rounded-lg"
                   onClick={() => createNewRole()}
@@ -781,7 +781,7 @@ const Role_permission = () => {
 
                       <div className="col-span-2">
                         <div className="flex justify-center items-center mt-3 space-x-4">
-                          {page_permission.update ? (
+                          {page_permission?.update ? (
                             <button onClick={() => handleEditRoleName()}>
                               <RiEditLine
                                 size={20}
@@ -792,7 +792,7 @@ const Role_permission = () => {
                             ""
                           )}
 
-                          {page_permission.delete ? (
+                          {page_permission?.delete ? (
                             <button onClick={() => handleDeleteRoleName(index)}>
                               <RiDeleteBin5Line
                                 size={20}
