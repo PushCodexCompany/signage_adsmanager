@@ -5,7 +5,7 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import { Login, Brands, User_Account } from "./pages";
 import Routing from "./route/routing";
-
+import cookie from "react-cookies";
 import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
@@ -37,21 +37,29 @@ const App = () => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
 
-    const select_campaign = User.getCampaign();
-    const select_merchandise = User.getMerchandise();
-
-    console.log("select_campaign", select_campaign);
-    console.log("select_merchandise", select_merchandise);
-
     const pathname = window.location.pathname;
     if (pathname === "/") {
-      window.location.href = "/";
+      // clearCookiesOnUnload();
+      window.location.href = "/adsmanager";
     }
     if (currentThemeColor && currentThemeMode) {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
     }
+
+    // return () => {
+    //   // Cleanup: Remove event listener
+    //   window.removeEventListener("beforeunload", clearCookiesOnUnload);
+    // };
   }, []);
+
+  // const clearCookiesOnUnload = () => {
+  //   cookie.remove("signage-brand", { path: false });
+  //   cookie.remove("signage-account", { path: false });
+  //   cookie.remove("signage-merchandise", { path: false });
+  //   cookie.remove("signage-brand-code", { path: false });
+  //   cookie.remove("signage-member", { path: false });
+  // };
 
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();

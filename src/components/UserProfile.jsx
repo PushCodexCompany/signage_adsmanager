@@ -22,6 +22,8 @@ const UserProfile = ({ user }) => {
       cookie.remove("signage-brand", { path: false });
       cookie.remove("signage-account", { path: false });
       cookie.remove("signage-merchandise", { path: false });
+      cookie.remove("signage-brand-code", { path: false });
+      cookie.remove("signage-member", { path: false });
       return false;
       //window.location.reload()
     }
