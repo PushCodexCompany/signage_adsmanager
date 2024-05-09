@@ -45,7 +45,11 @@ const Media_rules = () => {
           {media_rules.length > 0 ? (
             <GridTable media_rules={media_rules} />
           ) : (
-            <></>
+            <div className="flex justify-center items-center mt-52">
+              <div className="font-poppins text-gray-500 text-[52px]">
+                --- No Media rule(s) ---
+              </div>
+            </div>
           )}
         </div>
       </div>
