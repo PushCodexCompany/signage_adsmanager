@@ -23,7 +23,7 @@ const Event = () => {
   const [screens_data, setScreensData] = useState([]);
   const [screens_status, setScreensStatus] = useState({})
   const [screens_options_data, setScreensOptionsData] = useState([]);
-  const [screen_select, setScreenSelect] = useState([]);
+  const [screen_select, setScreenSelect] = useState(null);
 
   const navigate = useNavigate();
   const is_screensstatus_init = useRef(false);
@@ -161,6 +161,7 @@ const Event = () => {
               </button>
               <button
                 onClick={() => {
+                  setScreenSelect(null)
                   setOpenPairScreenModal(!openPairScreenModal)
                 }}
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
