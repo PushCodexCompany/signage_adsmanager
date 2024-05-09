@@ -17,7 +17,7 @@ export default {
   _errorMsg: "",
 
   _nodepost: async function (path, body = null, header = null) {
-    return this._axios(path, "post", body, header);
+    return this._axios(path, "post", body, header, true);
   },
   _post: async function (path, body = null, header = null) {
     return this._axios(path, "post", body, header);
@@ -77,13 +77,14 @@ export default {
     var params = new URLSearchParams();
     params.append("code", pairingcode);
 
-    const { response } = await this._nodepost(
-      `/api/v1/checkscreenpairing`,
+    const { data } = await this._nodepost(
+      `api/v1/checkscreenpairing`,
       params,
       { "Content-Type": "application/x-www-form-urlencoded" }
     );
 
-    if ("result" in response.data && response.data.result === 1) {
+    console.log("checkScreenAvailable data " + JSON.stringify(data))
+    if (("result" in data) && (data.result === 1)) {
       return true;
     } else {
       return false;
@@ -93,7 +94,7 @@ export default {
   // Pair Screen
   pairScreen: async function (
     accountcode,
-    brandecode,
+    brandcode,
     branchcode,
     screencode,
     screenname,
@@ -103,7 +104,7 @@ export default {
     var params = new URLSearchParams();
 
     params.append("account", accountcode);
-    params.append("brand", brandecode);
+    params.append("brand", brandcode);
     params.append("branch", branchcode);
     params.append("screen", screencode);
     params.append("screenname", screenname);
@@ -112,7 +113,7 @@ export default {
     // To Do: Remove screen unpair flag here
     const screenData = {
       AccountCode: accountcode,
-      BrandCode: brandecode,
+      BrandCode: brandcode,
       BranchCode: branchcode,
       ScreenCode: screencode,
     };
@@ -120,13 +121,13 @@ export default {
 
     await setTimeout(500);
 
-    const { response } = await this._nodepost(
-      `/api/v1/attemptscreenpairing`,
+    const { data } = await this._nodepost(
+      `api/v1/attemptscreenpairing`,
       params,
       { "Content-Type": "application/x-www-form-urlencoded" }
     );
 
-    if (response.data.status === "success") {
+    if (data.status === "success") {
       return true;
     } else {
       return false;

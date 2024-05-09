@@ -51,8 +51,8 @@ const User_Account = () => {
     }
   };
 
-  const selectAccount = (account_id) => {
-    const status = User.saveSelectedAccount(account_id);
+  const selectAccount = (account_data) => {
+    const status = User.saveSelectedAccount(account_data);
     if (status) {
       navigate("/brand");
     } else {
@@ -155,9 +155,8 @@ const User_Account = () => {
                     src={
                       items.AccountLogo
                         ? items.AccountLogo
-                        : `https://ui-avatars.com/api/?name=${
-                            items.AccountName
-                          }&background=${"000000"}&color=fff`
+                        : `https://ui-avatars.com/api/?name=${items.AccountName
+                        }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
                     onClick={() => selectAccount(items)}

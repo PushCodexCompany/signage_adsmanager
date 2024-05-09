@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import {
   IoIosArrowDown,
@@ -8,15 +8,28 @@ import {
 } from "react-icons/io";
 import { BiLinkAlt } from "react-icons/bi";
 import Swal from "sweetalert2";
+import User from "../libs/admin";
 
-const Pair_Screen = ({ setOpenPairScreenModal, screens_data }) => {
+const Pair_Screen = ({ setOpenPairScreenModal, screens_data, screen_preselect }) => {
   const [select_screen, setSelectScreen] = useState(null);
   const [isScreenOpen, setScreenOpen] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [pairingCode, setPairingCode] = useState(null);
   const [oldModal, setoldModal] = useState(true);
-  const [openPairScreenConfirmModal, setOpenPairScreenConfirmModal] =
-    useState(false);
+  const [openPairScreenConfirmModal, setOpenPairScreenConfirmModal] = useState(false);
+
+  useEffect(() => {
+
+    console.log("screen_preselect " + JSON.stringify(screen_preselect))
+    if (screen_preselect) {
+      console.log("select screen " + screen_preselect.ScreenID)
+      setSelectScreen(screen_preselect.ScreenID);
+    }
+    else {
+      console.log("deselect screen ")
+      setSelectScreen(null);
+    }
+  }, [])
 
   const toggleScreenSelect = () => {
     setScreenOpen((prevIsOpen) => !prevIsOpen);
@@ -58,23 +71,30 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data }) => {
       BrandCode: find_screen.BrandCode,
       BranchCode: find_screen.BranchCode,
       ScreenCode: find_screen.ScreenCode,
+      ScreenName: find_screen.ScreenName,
       PairingCode: pairingCode,
     };
 
     console.log("screenData", screenData);
 
+    const isScreenWithPairingCodeAvailable = await User.checkScreenAvailable(pairingCode);
+    console.log("isScreenWithPairingCodeAvailable " + isScreenWithPairingCodeAvailable);
+
+    const pairScreenResult = await User.pairScreen(screenData.AccountCode, screenData.BrandCode, screenData.BranchCode, screenData.ScreenCode, screenData.ScreenName, pairingCode);
+
+
     // save data
 
-    // try {
-    // if (success) {
-    //   setoldModal(!oldModal);
-    //   setOpenPairScreenConfirmModal(!openPairScreenConfirmModal);
-    // } else {
-    //   return "error";
-    // }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      if (pairScreenResult) {
+        setoldModal(!oldModal);
+        setOpenPairScreenConfirmModal(!openPairScreenConfirmModal);
+      } else {
+        return "error";
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -119,6 +139,7 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data }) => {
                           <select
                             name="sector"
                             id="sector"
+                            value={select_screen}
                             onClick={toggleScreenSelect}
                             onChange={handleStatusChange}
                             className="block appearance-none w-full bg-[#f2f2f2]font-poppins text-[#2F3847] text-[22px] font-medium  border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
@@ -153,11 +174,12 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data }) => {
                       <div className="mt-5">
                         <div className="relative w-full h-[50px] flex justify-center lg:text-base ml-3">
                           <input
-                            type={passwordVisible ? "text" : "password"}
+                            type="text"
+                            // type={passwordVisible ? "text" : "password"}
                             onChange={(e) => setPairingCode(e.target.value)}
                             className="block appearance-none w-full bg-[#f2f2f2] font-poppins text-[#2F3847] text-[22px] font-medium border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                           />
-                          <div
+                          {/* <div
                             className="absolute inset-y-0 right-0 flex items-center pr-2 cursor-pointer"
                             onClick={togglePasswordVisibility}
                           >
@@ -172,7 +194,7 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data }) => {
                                 className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                               />
                             )}
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
