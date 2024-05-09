@@ -55,14 +55,14 @@ const Merchandise = () => {
   const handleDeleteMerchandise = async (merchandise_id, merchandise_name) => {
     try {
       Swal.fire({
-        title: "Do You Want Delete This Merchandise ?",
+        title: "คุณต้องการลบ Merchandise ?",
         text: merchandise_name,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#6425FE",
-        confirmButtonText: "OK",
+        confirmButtonText: "ยืนยัน",
         cancelButtonColor: "red",
-        cancelButtonText: "Cancel",
+        cancelButtonText: "ยกเลิก",
         width: "600px",
       }).then(async (result) => {
         if (result.isConfirmed) {

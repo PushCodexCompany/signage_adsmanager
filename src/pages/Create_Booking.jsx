@@ -617,9 +617,10 @@ const Create_Booking = () => {
     const handleKeyPress = async (e) => {
       if (e.key === "Enter") {
         const result = await Swal.fire({
-          title: `Do you want to change booking name ?`,
+          title: `คุณต้องการเปลี่ยนชื่อ Booking Name ?`,
           showCancelButton: true,
-          confirmButtonText: "Yes",
+          confirmButtonText: "ยืนยัน",
+          cancelButtonText: "ยกเลิก",
         });
 
         if (result.isConfirmed) {
@@ -660,9 +661,10 @@ const Create_Booking = () => {
 
     const handleBlur = async () => {
       const result = await Swal.fire({
-        title: `Do you want to change booking name ?`,
+        title: `คุณต้องการเปลี่ยนชื่อ Booking Name ?`,
         showCancelButton: true,
-        confirmButtonText: "Yes",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
       });
 
       if (result.isConfirmed) {

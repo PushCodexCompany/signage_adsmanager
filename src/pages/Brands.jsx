@@ -83,7 +83,8 @@ const Brands = () => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "ตกลง",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
       }).then(async (result) => {
         if (result.isConfirmed) {
           const obj = {

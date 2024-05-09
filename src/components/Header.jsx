@@ -22,7 +22,7 @@ const Header = ({ title, subtitle }) => {
     const { brand_id } = User.getCampaign();
     const data = await User.getBrand(token);
 
-    const brand = data.find((items) => items.BrandID === brand_id);
+    const brand = data.find((items) => items.BrandCode === brand_id);
     setBrand(brand.BrandName);
   };
 

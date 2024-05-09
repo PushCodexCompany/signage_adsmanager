@@ -37,9 +37,15 @@ const App = () => {
     const currentThemeColor = localStorage.getItem("colorMode");
     const currentThemeMode = localStorage.getItem("themeMode");
 
+    const select_campaign = User.getCampaign();
+    const select_merchandise = User.getMerchandise();
+
+    console.log("select_campaign", select_campaign);
+    console.log("select_merchandise", select_merchandise);
+
     const pathname = window.location.pathname;
     if (pathname === "/") {
-      window.location.href = "/adsmanager";
+      window.location.href = "/";
     }
     if (currentThemeColor && currentThemeMode) {
       setCurrentColor(currentThemeColor);

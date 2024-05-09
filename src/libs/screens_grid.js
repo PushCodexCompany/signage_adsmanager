@@ -71,29 +71,41 @@ export const GridTable = ({
     });
   };
 
-  const handleDeleteScreen = async (screen_id) => {
-    const { token } = User.getCookieData();
-    const data = await User.deleteScreen(screen_id, token);
-    if (data.code !== 404) {
-      Swal.fire({
-        icon: "success",
-        title: "Delete Screen Success ...",
-        text: `ลบ Screen สำเร็จ!`,
-      }).then((result) => {
-        if (
-          result.isConfirmed ||
-          result.dismiss === Swal.DismissReason.backdrop
-        ) {
-          navigate("/screen");
+  const handleDeleteScreen = async (screen_id, screen_name) => {
+    Swal.fire({
+      text: `คุณต้องการลบจอ ${screen_name} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { token } = User.getCookieData();
+        const data = await User.deleteScreen(screen_id, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Delete Screen Success ...",
+            text: `ลบ Screen สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              navigate("/screen");
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
         }
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: data.message,
-      });
-    }
+      }
+    });
   };
 
   const handleUnpairScreen = (row) => {
@@ -324,7 +336,11 @@ export const GridTable = ({
                         />
                       </button>
 
-                      <button onClick={() => handleDeleteScreen(row.ScreenID)}>
+                      <button
+                        onClick={() =>
+                          handleDeleteScreen(row.ScreenID, row.ScreenName)
+                        }
+                      >
                         <RiDeleteBin5Line
                           size={20}
                           className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"

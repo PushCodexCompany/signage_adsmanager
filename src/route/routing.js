@@ -94,7 +94,7 @@ const Routing = () => {
 
 const RedirectToAdsManager = ({ navigate }) => {
   React.useEffect(() => {
-    navigate("/adsmanager");
+    navigate("/");
   }, [navigate]);
 
   return null; // This component doesn't render anything

@@ -203,9 +203,12 @@ const SidebarMain = () => {
 
   const [imgClass, setImgClass] = useState("");
 
-  useEffect(() => {
+  useEffect(async () => {
+    const { token } = User.getCookieData();
     const { brand_id } = User.getCampaign();
-
+    // const data = await User.getBrand(token);
+    // const brand = data.find((items) => items.BrandCode === brand_id);
+    // setLogoImg(brand.BrandLogo);
     if (brand_id === 1) {
       setLogoImg(Central_Logo);
     } else {
@@ -246,9 +249,9 @@ const SidebarMain = () => {
 
         let css_value;
         if (height > 60) {
-          css_value = "w-1/4 ";
+          css_value = "w-1/6 ";
         } else {
-          css_value = "w-3/4";
+          css_value = "w-2/6";
         }
 
         resolve(css_value); // Resolve the Promise with the css_value
@@ -272,7 +275,7 @@ const SidebarMain = () => {
                 onClick={handleCloseSideBar}
                 className="items-center justify-center ml-3 mt-10 flex"
               >
-                <img className={`w-2/3 h-2/4`} src={logo_img} />
+                <img className={`w-2/4 h-2/4`} src={logo_img} />
               </Link>
             </div>
             <div ref={sidebarRef} className="mt-10">
