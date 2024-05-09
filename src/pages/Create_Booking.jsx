@@ -103,8 +103,7 @@ const Create_Booking = () => {
     ];
     setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
     setBookingSlot(parseInt(SlotPerDay));
-    const { brand_code } = User.getBrandCode();
-    const all_screens_data = await User.getScreens(brand_code, token);
+    const all_screens_data = await User.getScreens(token);
 
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
@@ -181,8 +180,7 @@ const Create_Booking = () => {
 
   const setBookingData = async () => {
     const booking_data = await User.getBookingById(bookingId, token);
-    const { brand_code } = User.getBrandCode();
-    const all_screens_data = await User.getScreens(brand_code, token);
+    const all_screens_data = await User.getScreens(token);
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
       const existing = acc.find((item) => item.ScreenID === screenID);

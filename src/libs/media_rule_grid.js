@@ -24,7 +24,7 @@ export const GridTable = ({ media_rules }) => {
 
   const onClickDelete = async (MediaRuleID) => {
     const { token } = User.getCookieData();
-    const data = await User.deleteTag(MediaRuleID, token);
+    const data = await User.deleteMediaRule(MediaRuleID, token);
     console.log("data", data);
     if (data.code !== 404) {
       Swal.fire({

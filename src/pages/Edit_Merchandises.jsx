@@ -89,14 +89,15 @@ const Edit_Merchandises = () => {
   };
 
   const handleSave = async () => {
+    const { brand_code } = User.getBrandCode();
     const obj = {
       advertisername: merchandise_name,
-      contactname: contact_person_name,
-      department: contact_person_dep,
-      position: contact_person_pos,
-      email: contact_person_email,
+      contactname: contact_person_name || null,
+      department: contact_person_dep || null,
+      position: contact_person_pos || null,
+      email: contact_person_email || null,
+      brandcode: brand_code,
     };
-
     const { token } = User.getCookieData();
     const encrypted = await Encryption.encryption(
       obj,
@@ -145,13 +146,15 @@ const Edit_Merchandises = () => {
   };
 
   const handleEdit = async () => {
+    const { brand_code } = User.getBrandCode();
     const obj = {
       advertiserid: merchandise_id,
       advertisername: merchandise_name,
-      contactname: contact_person_name,
-      department: contact_person_dep,
-      position: contact_person_pos,
-      email: contact_person_email,
+      contactname: contact_person_name || null,
+      department: contact_person_dep || null,
+      position: contact_person_pos || null,
+      email: contact_person_email || null,
+      brandcode: brand_code,
     };
 
     const { token } = User.getCookieData();
@@ -191,6 +194,7 @@ const Edit_Merchandises = () => {
         }
       } else {
         const data = await User.editMerchandise(encrypted, token);
+        console.log("data", data);
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",

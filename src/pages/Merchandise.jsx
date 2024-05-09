@@ -66,8 +66,10 @@ const Merchandise = () => {
         width: "600px",
       }).then(async (result) => {
         if (result.isConfirmed) {
+          const { brand_code } = User.getBrandCode();
           const obj = {
             advertiserid: merchandise_id,
+            brandcode: brand_code,
           };
           const { token } = User.getCookieData();
           const encrypted = await Encryption.encryption(
