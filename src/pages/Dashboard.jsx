@@ -44,10 +44,6 @@ const Dashboard = () => {
   const [isUp, setIsUp] = useState(true);
   const navigate = useNavigate();
 
-  const { user } = User.getCookieData();
-  const account = User.getAccount();
-  const brand = User.getCampaign();
-
   const toggleYearSelect = () => {
     setIsYearOpen((prevIsOpen) => !prevIsOpen);
   };
