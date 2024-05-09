@@ -265,12 +265,12 @@ const Role_permission = () => {
   //Update
   const handleSave = async (role) => {
     const summary = convertBooleanToPermissionSummary(role);
-
+    const { account } = User.getAccount();
     const obj = {
       roleid: summary.RoleID,
       rolename: summary.role ? summary.role : summary.RoleName,
       permissions: summary.permissions,
-      accountcode: "huUpa8dN4i",
+      accountcode: account.AccountCode,
     };
 
     const encrypted = await Encryption.encryption(obj, "edit_role", false);
@@ -300,9 +300,10 @@ const Role_permission = () => {
 
   //Delete
   const handleDeleteRoleName = async (key) => {
+    const { account } = User.getAccount();
     const obj = {
       roleid: child_permissions[key].RoleID,
-      accountcode: "huUpa8dN4i",
+      accountcode: account.AccountCode,
     };
 
     const encrypted = await Encryption.encryption(obj, "delete_role", false);

@@ -214,14 +214,14 @@ const User_Management = () => {
 
     if (reg_password === reg_re_password) {
       if (reg_role) {
-        //  const { user } = User.getCookieData();
+        const { account } = User.getAccount();
 
         const value = {
           username: reg_username,
           email: reg_email,
           password: reg_password,
           roleid: reg_role,
-          accountcode: "huUpa8dN4i",
+          accountcode: account.AccountCode,
           accesscontent: {
             brands: reg_brand.map(String),
             merchandise: reg_merchandise,
