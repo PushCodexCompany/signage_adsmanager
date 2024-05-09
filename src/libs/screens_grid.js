@@ -11,7 +11,9 @@ export const GridTable = ({
   setSelectInfoScren,
   screens_data,
   screens_options_data,
+  setOpenPairScreenModal,
   setOpenUnPairScreenModal,
+  openPairScreenModal,
   openUnPairScreenModal,
   setScreenSelect,
 }) => {
@@ -99,6 +101,11 @@ export const GridTable = ({
     setOpenUnPairScreenModal(!openUnPairScreenModal);
   };
 
+  const handlePairScreen = (row) => {
+    setScreenSelect(row);
+    setOpenPairScreenModal(!openPairScreenModal);
+  };
+
   // const findScreenResolutionID = (id) => {
   //   const resolution = screens_options_data.find(
   //     (item) => item.ScreenResolutionID === id
@@ -171,9 +178,13 @@ export const GridTable = ({
             </tr>
           </thead>
           <tbody>
-            {screens_data.map((row, key) => (
-              <tr key={row.ScreenID}>
-                {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+            {screens_data.map((row, key) => {
+
+              const isScreenPaired = row?.ScreenStatus ? row?.ScreenStatus.is_paired : false;
+
+              return (
+                <tr key={row.ScreenID}>
+                  {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
                   <div className="flex items-center">
                     <label className="inline-flex items-center space-x-2">
                       <input
@@ -209,120 +220,119 @@ export const GridTable = ({
                     </label>
                   </div>
                 </td> */}
-                <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex items-center justify-center">
-                    <div className="font-poppins text-xl font-bold">
-                      {key + 1}
+                  <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                    <div className="flex items-center justify-center">
+                      <div className="font-poppins text-xl font-bold">
+                        {key + 1}
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex">
-                    <div
-                      onClick={() => handleSelectInfoScreen(row)}
-                      className="font-poppins text-xl font-bold cursor-pointer"
-                    >
-                      {row.ScreenName}
+                  </td>
+                  <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                    <div className="flex">
+                      <div
+                        onClick={() => handleSelectInfoScreen(row)}
+                        className="font-poppins text-xl font-bold cursor-pointer"
+                      >
+                        {row.ScreenName}
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td className="px-4 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex justify-center  font-poppins text-sm text-[#59606C] font-bold">
-                    {row.ScreenLocation || "No Data"}
-                  </div>
-                  {/* <div className="font-poppins text-sm font-bold">
+                  </td>
+                  <td className="px-4 py-4 whitespace-no-wrap border-b  border-gray-200">
+                    <div className="flex justify-center  font-poppins text-sm text-[#59606C] font-bold">
+                      {row.ScreenLocation || "No Data"}
+                    </div>
+                    {/* <div className="font-poppins text-sm font-bold">
                     {row.province || "No Data"}
                   </div> */}
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex justify-center items-center font-poppins font-bold">
-                    {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
-                    {row.ScreenRule[0].Width && row.ScreenRule[0].Height
-                      ? parseInt(row.ScreenRule[0].Width, 10) +
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                    <div className="flex justify-center items-center font-poppins font-bold">
+                      {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
+                      {row.ScreenRule[0].Width && row.ScreenRule[0].Height
+                        ? parseInt(row.ScreenRule[0].Width, 10) +
                         "x" +
                         parseInt(row.ScreenRule[0].Height, 10)
-                      : "Not Set"}
-                  </div>
-                </td>
-                <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                  <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                    {row.ScreenRule[0]?.AdsCapacity || "No Data"}
-                  </div>
-                </td>
-                <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                  <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                    {row.loopDuration
-                      ? `${row.loopDuration} Second`
-                      : "No Data"}
-                  </div>
-                </td>
-                <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <div className="flex flex-wrap">
-                    {row.ScreenTag.length > 0 ? (
-                      row.ScreenTag.map((items, index) => (
+                        : "Not Set"}
+                    </div>
+                  </td>
+                  <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                    <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                      {row.ScreenRule[0]?.AdsCapacity || "No Data"}
+                    </div>
+                  </td>
+                  <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                    <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                      {row.loopDuration
+                        ? `${row.loopDuration} Second`
+                        : "No Data"}
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="flex flex-wrap">
+                      {row.ScreenTag.length > 0 ? (
+                        row.ScreenTag.map((items, index) => (
+                          <div
+                            key={index}
+                            className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                            style={{
+                              flexBasis: `calc(${100 / row.ScreenTag.length
+                                }% - 8px)`,
+                            }}
+                          >
+                            <div className="font-poppins text-xs font-bold">
+                              {items.TagName}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
                         <div
-                          key={index}
                           className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                          style={{
-                            flexBasis: `calc(${
-                              100 / row.ScreenTag.length
-                            }% - 8px)`,
-                          }}
+                          style={{ flexBasis: "calc(100% - 8px)" }}
                         >
                           <div className="font-poppins text-xs font-bold">
-                            {items.TagName}
+                            No Tag
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div
-                        className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                        style={{ flexBasis: "calc(100% - 8px)" }}
-                      >
-                        <div className="font-poppins text-xs font-bold">
-                          No Tag
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                  <div className="space-x-2">
-                    {row?.isPair ? (
-                      <></>
-                    ) : row?.isPair === true ? (
-                      <button>
-                        <BiLinkAlt
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                    <div className="space-x-2">
+                      {isScreenPaired ? (
+                        <button>
+                          <BiLinkAlt
+                            onClick={() => handleUnpairScreen(row)}
+                            size={20}
+                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                          />
+                        </button>
+                      ) : (
+                        <button>
+                          <BiLinkAlt
+                            onClick={() => handlePairScreen(row)}
+                            size={20}
+                            className="text-[#ccc] hover:text-[#ccc] cursor-pointer"
+                          />
+                        </button>
+                      )}
+                      <button onClick={() => handleEditScreen(row)}>
+                        <RiEditLine
                           size={20}
-                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                          className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
                         />
                       </button>
-                    ) : (
-                      <button>
-                        <BiUnlink
-                          onClick={() => handleUnpairScreen(row)}
-                          size={20}
-                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                        />
-                      </button>
-                    )}
-                    <button onClick={() => handleEditScreen(row)}>
-                      <RiEditLine
-                        size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      />
-                    </button>
 
-                    <button onClick={() => handleDeleteScreen(row.ScreenID)}>
-                      <RiDeleteBin5Line
-                        size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      <button onClick={() => handleDeleteScreen(row.ScreenID)}>
+                        <RiDeleteBin5Line
+                          size={20}
+                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                        />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
