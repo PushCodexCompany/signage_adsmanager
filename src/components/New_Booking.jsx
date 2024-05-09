@@ -198,12 +198,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   };
 
   const handleSaveMerchandise = async () => {
+    const { brand_code } = User.getBrandCode();
     const obj = {
       advertisername: merchandise_name,
       contactname: contact_person_name,
       department: contact_person_dep,
       position: contact_person_pos,
       email: contact_person_email,
+      brandcode: brand_code,
     };
 
     const { token } = User.getCookieData();

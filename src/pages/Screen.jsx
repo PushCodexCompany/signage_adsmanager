@@ -133,8 +133,7 @@ const Event = () => {
   };
 
   const fetchScreenData = async () => {
-    const { brand_code } = User.getBrandCode();
-    const screens = await User.getScreens(brand_code, token);
+    const screens = await User.getScreens(token);
     setScreensData(screens);
   };
 

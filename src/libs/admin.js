@@ -141,7 +141,6 @@ export default {
   // login
   login: async function (hash) {
     const { data } = await this._post(`api/v1/login?hash=${hash}`);
-    console.log("data", data);
     if (data.token) {
       this.saveCookie(data);
       return true;
@@ -295,6 +294,84 @@ export default {
   },
 
   /////////////////////////////
+
+  getBrand: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._get(`api/v1/get_brands`, "", config);
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  createBrand: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/create_brand?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  editBrand: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/update_brand?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  deleteBrand: async function (hash, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/delete_brand?hash=${hash}`,
+      "",
+      config
+    );
+
+    return data;
+  },
+
+  saveImgBrand: async function (obj, token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/upload_logo?target=accountlogo`,
+      obj,
+      config
+    );
+
+    return data;
+  },
+
+  ///////////////////////////////////////////////
 
   getUsersList: async function (token) {
     const config = {
@@ -493,91 +570,21 @@ export default {
     return data;
   },
 
-  getBrand: async function (token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    const { data } = await this._get(`api/v1/get_brands`, "", config);
-    if (data.code !== 404) {
-      return data;
-    } else {
-      return false;
-    }
-  },
-
-  createBrand: async function (hash, token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const { data } = await this._post(
-      `api/v1/create_brand?hash=${hash}`,
-      "",
-      config
-    );
-
-    return data;
-  },
-
-  editBrand: async function (hash, token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const { data } = await this._post(
-      `api/v1/update_brand?hash=${hash}`,
-      "",
-      config
-    );
-
-    return data;
-  },
-
-  deleteBrand: async function (hash, token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const { data } = await this._post(
-      `api/v1/delete_brand?hash=${hash}`,
-      "",
-      config
-    );
-
-    return data;
-  },
-
-  saveImgBrand: async function (obj, token) {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
-    const { data } = await this._post(
-      `api/v1/upload_logo?target=accountlogo`,
-      obj,
-      config
-    );
-
-    return data;
-  },
+  ///////////////////////////////////////////////
 
   getMerchandiseList: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_advertisers`, "", config);
+    const { data } = await this._get(
+      `api/v1/get_advertisers?brandcode=${brand_code}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {
@@ -585,6 +592,7 @@ export default {
     }
   },
 
+  // *****************************
   createMerchandise: async function (hash, token) {
     const config = {
       headers: {
@@ -647,14 +655,21 @@ export default {
     return data;
   },
 
+  // *****************************
+
   getTagCatagory: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_tagcategories`, "", config);
+    const { data } = await this._get(
+      `api/v1/get_tagcategories?brand_code=${brand_code}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {
@@ -663,13 +678,14 @@ export default {
   },
 
   createTagCategory: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/create_tagcategory?tagcategoryname=${hash.tagcategoryname}`;
+    let urlString = `api/v1/create_tagcategory?brandcode=${brand_code}&tagcategoryname=${hash.tagcategoryname}`;
 
     if (hash.tagcategorydesc !== null && hash.tagcategorydesc !== undefined) {
       urlString += `&tagcategorydesc=${hash.tagcategorydesc}`;
@@ -681,13 +697,14 @@ export default {
   },
 
   updateTagCategory: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/update_tagcategory?tagcategoryid=${hash.tagcategoryid}&tagcategoryname=${hash.tagcategoryname}`;
+    let urlString = `api/v1/update_tagcategory?brandcode=${brand_code}&tagcategoryid=${hash.tagcategoryid}&tagcategoryname=${hash.tagcategoryname}`;
 
     if (hash.tagcategorydesc !== null && hash.tagcategorydesc !== undefined) {
       urlString += `&tagcategorydesc=${hash.tagcategorydesc}`;
@@ -699,6 +716,7 @@ export default {
   },
 
   deleteTagCategory: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -706,7 +724,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/delete_tagcategory?tagcategoryid=${hash}`,
+      `api/v1/delete_tagcategory?brandcode=${brand_code}&tagcategoryid=${hash}`,
       "",
       config
     );
@@ -715,13 +733,18 @@ export default {
   },
 
   getCategorytags: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_categorytags`, "", config);
+    const { data } = await this._get(
+      `api/v1/get_categorytags?brandcode=${brand_code}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {
@@ -730,6 +753,7 @@ export default {
   },
 
   getTag: async function (id, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -737,7 +761,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_tags?tagcategoryid=${id}`,
+      `api/v1/get_tags?tagcategoryid=${id}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -749,6 +773,7 @@ export default {
   },
 
   createTag: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -756,7 +781,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/create_tag?tagname=${hash.tagname}&tagcategoryid=${hash.tagcategoryid}`,
+      `api/v1/create_tag?tagname=${hash.tagname}&tagcategoryid=${hash.tagcategoryid}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -765,6 +790,7 @@ export default {
   },
 
   updateTag: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -772,7 +798,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/update_tag?tagid=${hash.TagID}&tagname=${hash.TagName}&tagcategoryid=${hash.TagCategoryID}`,
+      `api/v1/update_tag?tagid=${hash.TagID}&tagname=${hash.TagName}&tagcategoryid=${hash.TagCategoryID}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -781,6 +807,7 @@ export default {
   },
 
   deleteTag: async function (tagId, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -788,22 +815,26 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/delete_tag?tagid=${tagId}`,
+      `api/v1/delete_tag?tagid=${tagId}&brandcode=${brand_code}`,
       "",
       config
     );
-
     return data;
   },
 
   getMediaRules: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_mediarules`, "", config);
+    const { data } = await this._get(
+      `api/v1/get_mediarules?brandcode=${brand_code}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {
@@ -812,13 +843,14 @@ export default {
   },
 
   createMediaRule: async function (hash, token, isToggle) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/create_mediarule?mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&activeresolution=${hash.activeresolution}&width=${hash.width}&height=${hash.height}`;
+    let urlString = `api/v1/create_mediarule?mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&activeresolution=${hash.activeresolution}&width=${hash.width}&height=${hash.height}&brandcode=${brand_code}`;
 
     const { data } = await this._post(urlString, "", config);
 
@@ -826,20 +858,22 @@ export default {
   },
 
   updateMediaRule: async function (hash, token, isToggle) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/update_mediarule?mediaruleid=${hash.mediaruleid}&mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&width=${hash.width}&height=${hash.height}&activeresolution=${hash.activeresolution}`;
+    let urlString = `api/v1/update_mediarule?mediaruleid=${hash.mediaruleid}&mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&width=${hash.width}&height=${hash.height}&activeresolution=${hash.activeresolution}&brandcode=${brand_code}`;
 
     const { data } = await this._post(urlString, "", config);
 
     return data;
   },
 
-  deleteTag: async function (mediaruleid, token) {
+  deleteMediaRule: async function (mediaruleid, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -847,7 +881,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/delete_mediarule?mediaruleid=${mediaruleid}`,
+      `api/v1/delete_mediarule?mediaruleid=${mediaruleid}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -855,7 +889,8 @@ export default {
     return data;
   },
 
-  getScreens: async function (brand_code, token) {
+  getScreens: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -875,13 +910,14 @@ export default {
   },
 
   getScreensWithAdsCapacity: async function (bookingid, slot, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
     const { data } = await this._get(
-      `api/v1/get_screens?adscapacity=${slot}&bookingid=${bookingid}`,
+      `api/v1/get_screens?adscapacity=${slot}&bookingid=${bookingid}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -898,6 +934,7 @@ export default {
     tags,
     token
   ) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -905,7 +942,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}&bookingid=${bookingid}`,
+      `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}&bookingid=${bookingid}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -917,13 +954,18 @@ export default {
   },
 
   getScreensOptions: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_screenoptions`, "", config);
+    const { data } = await this._get(
+      `api/v1/get_screenoptions?brandcode=${brand_code}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {
@@ -932,26 +974,28 @@ export default {
   },
 
   createNewScreen: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/create_screen?screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}`;
+    let urlString = `api/v1/create_screen?screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;
   },
 
   editScreen: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/update_screen?screenid=${hash.screenid}&screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}`;
+    let urlString = `api/v1/update_screen?screenid=${hash.screenid}&screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;
@@ -974,6 +1018,7 @@ export default {
   },
 
   deleteScreen: async function (screenid, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -981,7 +1026,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/delete_screen?screenid=${screenid}`,
+      `api/v1/delete_screen?screenid=${screenid}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -990,13 +1035,18 @@ export default {
   },
 
   getBooking: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_bookings`, "", config);
+    const { data } = await this._get(
+      `api/v1/get_bookings?brandcode${brand_code}`,
+      "",
+      config
+    );
     if (data.code !== 404) {
       return data;
     } else {
@@ -1005,6 +1055,7 @@ export default {
   },
 
   getBookingById: async function (booking_id, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1012,7 +1063,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_bookingslots?bookingid=${booking_id}`,
+      `api/v1/get_bookingslots?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -1024,71 +1075,77 @@ export default {
   },
 
   createBooking: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/create_booking?bookingname=${hash.bookingname}&advertiserid=${hash.advertiserid}&slotperday=${hash.slotperday}&bookingperoids=${hash.bookingperoids}`;
+    let urlString = `api/v1/create_booking?bookingname=${hash.bookingname}&advertiserid=${hash.advertiserid}&slotperday=${hash.slotperday}&bookingperoids=${hash.bookingperoids}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;
   },
 
   selectScreenBooking: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/create_bookingscreen?bookingid=${hash.bookingid}&screenids=${hash.screenids}`;
+    let urlString = `api/v1/create_bookingscreen?bookingid=${hash.bookingid}&screenids=${hash.screenids}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;
   },
 
   deleteScreenBooking: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/delete_bookingscreen?bookingid=${hash.bookingid}&screenid=${hash.screenid}`;
+    let urlString = `api/v1/delete_bookingscreen?bookingid=${hash.bookingid}&screenid=${hash.screenid}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;
   },
 
   updateBookingName: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/update_booking?bookingid=${hash.bookingid}&bookingname=${hash.bookingname}`;
+    let urlString = `api/v1/update_booking?bookingid=${hash.bookingid}&bookingname=${hash.bookingname}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;
   },
 
   updateBookingSlots: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    let urlString = `api/v1/update_bookingslots?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&bookingcontent=${hash.bookingcontent}`;
+    let urlString = `api/v1/update_bookingslots?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&bookingcontent=${hash.bookingcontent}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, hash, config);
 
     return data;
   },
 
   getBookingContent: async function (booking_id, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1096,7 +1153,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_bookingcontent?bookingid=${booking_id}`,
+      `api/v1/get_bookingcontent?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -1108,6 +1165,7 @@ export default {
   },
 
   getMediaPlaylist: async function (booking_id, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1115,7 +1173,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_content?bookingid=${booking_id}`,
+      `api/v1/get_content?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -1127,6 +1185,7 @@ export default {
   },
 
   createContent: async function (id, obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1135,7 +1194,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/create_content?bookingid=${id}`,
+      `api/v1/create_content?bookingid=${id}&brandcode=${brand_code}`,
       obj,
       config
     );
@@ -1143,6 +1202,7 @@ export default {
   },
 
   updateBookingContent: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1151,7 +1211,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/update_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&mediaplaylistid=${obj.mediaplaylistid}`,
+      `api/v1/update_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&mediaplaylistid=${obj.mediaplaylistid}&brandcode=${brand_code}`,
       obj,
       config
     );
@@ -1159,6 +1219,7 @@ export default {
   },
 
   getPlaylist: async function (booking_id, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1166,7 +1227,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_mediaplaylist?bookingid=${booking_id}`,
+      `api/v1/get_mediaplaylist?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -1178,6 +1239,7 @@ export default {
   },
 
   createMediaplaylist: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1186,7 +1248,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/create_mediaplaylist?bookingid=${obj.bookingid}&playlistname=${obj.playlistname}`,
+      `api/v1/create_mediaplaylist?bookingid=${obj.bookingid}&playlistname=${obj.playlistname}&brandcode=${brand_code}`,
       obj,
       config
     );
@@ -1194,6 +1256,7 @@ export default {
   },
 
   updateMediaplaylist: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1202,7 +1265,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/update_mediaplaylist?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&playlistname=${obj.playlistname}`,
+      `api/v1/update_mediaplaylist?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&playlistname=${obj.playlistname}&brandcode=${brand_code}`,
       obj,
       config
     );
@@ -1210,6 +1273,7 @@ export default {
   },
 
   getMediaPlaylistContent: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1217,7 +1281,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_mediaplaylistcontent?mediaplaylistid=${obj.mediaplaylistid}&bookingid=${obj.bookingid}`,
+      `api/v1/get_mediaplaylistcontent?mediaplaylistid=${obj.mediaplaylistid}&bookingid=${obj.bookingid}&brandcode=${brand_code}`,
       "",
       config
     );
@@ -1229,6 +1293,7 @@ export default {
   },
 
   createMediaPlaylistContent: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1237,7 +1302,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/create_mediaplaylistcontent?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&medias=${obj.medias}`,
+      `api/v1/create_mediaplaylistcontent?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&medias=${obj.medias}&brandcode=${brand_code}`,
       obj,
       config
     );
@@ -1245,6 +1310,7 @@ export default {
   },
 
   updateMediaPlaylistContent: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1253,7 +1319,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/update_mediaplaylistcontent?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&medias=${obj.medias}`,
+      `api/v1/update_mediaplaylistcontent?bookingid=${obj.bookingid}&mediaplaylistid=${obj.mediaplaylistid}&medias=${obj.medias}&brandcode=${brand_code}`,
       obj,
       config
     );
@@ -1261,6 +1327,7 @@ export default {
   },
 
   GetBookingContentScreen: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1269,7 +1336,7 @@ export default {
     };
 
     const { data } = await this._get(
-      `api/v1/get_bookingcontentscreen?bookingid=${obj.bookingid}&dates=${obj.dates}&mediaplaylistid=${obj.mediaplaylistid}`,
+      `api/v1/get_bookingcontentscreen?bookingid=${obj.bookingid}&dates=${obj.dates}&mediaplaylistid=${obj.mediaplaylistid}&brandcode=${brand_code}`,
       obj,
       config
     );
