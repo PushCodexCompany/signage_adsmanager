@@ -155,8 +155,9 @@ const User_Account = () => {
                     src={
                       items.AccountLogo
                         ? items.AccountLogo
-                        : `https://ui-avatars.com/api/?name=${items.AccountName
-                        }&background=${"000000"}&color=fff`
+                        : `https://ui-avatars.com/api/?name=${
+                            items.AccountName
+                          }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
                     onClick={() => selectAccount(items)}

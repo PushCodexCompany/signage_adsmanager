@@ -17,28 +17,13 @@ const Header = ({ title, subtitle }) => {
     findBrand();
   }, []);
 
-  const findBrand = () => {
+  const findBrand = async () => {
+    const { token } = User.getCookieData();
     const { brand_id } = User.getCampaign();
+    const data = await User.getBrand(token);
 
-    if (brand_id === 1) {
-      setBrand("CDS");
-    } else if (brand_id === 2) {
-      setBrand("Super Sports");
-    } else if (brand_id === 3) {
-      setBrand("Central Retail");
-    } else if (brand_id === 4) {
-      setBrand("CMG");
-    } else if (brand_id === 5) {
-      setBrand("7-11");
-    } else if (brand_id === 6) {
-      setBrand("Makro Pro");
-    } else if (brand_id === 7) {
-      setBrand("Lotus's");
-    } else if (brand_id === 8) {
-      setBrand("Central Pattana");
-    } else if (brand_id === 9) {
-      setBrand("Robinson");
-    }
+    const brand = data.find((items) => items.BrandID === brand_id);
+    setBrand(brand.BrandName);
   };
 
   const selectBrand = () => {

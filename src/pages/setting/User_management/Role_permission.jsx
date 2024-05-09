@@ -43,7 +43,6 @@ const Role_permission = () => {
 
   useEffect(async () => {
     const { user } = User.getCookieData();
-
     // Parent Permission
     const default_permission = convertPermissionValuesToBoolean([
       user,
@@ -51,6 +50,7 @@ const Role_permission = () => {
 
     // Child Permission
     const user_permission = await User.getUserRoles(token);
+
     const child_permission = user_permission.map((item) => {
       return {
         ...item,

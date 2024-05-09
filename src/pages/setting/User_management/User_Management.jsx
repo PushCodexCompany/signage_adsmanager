@@ -225,8 +225,6 @@ const User_Management = () => {
             merchandise: reg_merchandise,
           },
         };
-        console.log("value", value);
-
         const { token } = User.getCookieData();
         const encrypted = await Encryption.encryption(
           value,
