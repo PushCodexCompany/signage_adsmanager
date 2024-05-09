@@ -859,8 +859,8 @@ const Ads_Allocation_Booking = ({
         if (create_return.code !== 404) {
           Swal.fire({
             icon: "success",
-            title: "Create Tag Category Success ...",
-            text: "สร้าง Tag Category สำเร็จ!",
+            title: "Create Media Playlist Success ...",
+            text: "สร้าง Media Playlist สำเร็จ!",
           }).then(async (result) => {
             if (
               result.isConfirmed ||

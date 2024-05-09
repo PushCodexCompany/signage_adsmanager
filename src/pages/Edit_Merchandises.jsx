@@ -294,7 +294,7 @@ const Edit_Merchandises = () => {
                 <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
               </div>
             </div>
-            <div className="flex items-center mt-3">
+            {/* <div className="flex items-center mt-3">
               <div className="w-1/2 pr-2">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                   <select
@@ -341,19 +341,9 @@ const Edit_Merchandises = () => {
                       className="border disabled:bg-[#DBDBDB] border-gray-300 rounded-lg p-3 w-full font-bold font-poppins text-center"
                     />
                   </div>
-                  {/* <div className="col-span-1 flex items-center justify-center">
-                  <div className="font-poppins">/</div>
-                </div>
-                <div className="col-span-1">
-                  <input
-                    placeholder="50"
-                    value="50"
-                    className="border rounded-lg p-3 border-gray-300 w-full font-bold font-poppins text-center"
-                  />
-                </div> */}
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="relative mt-20 flex items-center justify-center">
               {preview_img ? (
                 <img

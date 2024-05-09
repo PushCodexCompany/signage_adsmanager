@@ -823,7 +823,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
                   </div>
                 </div>
-                <div className="flex items-center mt-3">
+                {/* <div className="flex items-center mt-3">
                   <div className="w-1/2 pr-2">
                     <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                       <select
@@ -872,7 +872,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="relative mt-20 flex items-center justify-center">
                   {preview_img ? (
                     <img src={preview_img} className="w-1/2 rounded-xl" />

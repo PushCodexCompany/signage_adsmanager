@@ -797,7 +797,7 @@ const Create_Booking = () => {
                   screenData.map((items, index) => (
                     <div
                       key={index}
-                      className="flex justify-center items-center mt-3 cursor-pointer"
+                      className="flex justify-center items-center mt-3 "
                     >
                       <div
                         className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px] ${
@@ -807,7 +807,7 @@ const Create_Booking = () => {
                             ? "bg-[#FFBD49]"
                             : ""
                         }`}
-                        onClick={() => toggleScreenFromAllScreen(items)}
+                        // onClick={() => toggleScreenFromAllScreen(items)}
                       >
                         <div className="grid grid-cols-10 md:space-x-1">
                           <div className="col-span-2 flex justify-center items-center">
