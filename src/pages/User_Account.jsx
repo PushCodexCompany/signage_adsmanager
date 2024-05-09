@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import User from "../libs/admin";
+import User, { SIGNAGE_ACCOUNT_COOKIE, SIGNAGE_BRAND_COOKIE } from "../libs/admin";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import { FaPlus } from "react-icons/fa";
@@ -24,8 +24,8 @@ const User_Account = () => {
     const user = User.getCookieData();
 
     if (!user) {
-      cookie.remove("signage-brand");
-      cookie.remove("signage-account");
+      cookie.remove(SIGNAGE_BRAND_COOKIE, { path: "/" });
+      cookie.remove(SIGNAGE_ACCOUNT_COOKIE, { path: "/" });
       window.location.href = "/adsmanager";
     }
 
@@ -156,9 +156,8 @@ const User_Account = () => {
                     src={
                       items.AccountLogo
                         ? items.AccountLogo
-                        : `https://ui-avatars.com/api/?name=${
-                            items.AccountName
-                          }&background=${"000000"}&color=fff`
+                        : `https://ui-avatars.com/api/?name=${items.AccountName
+                        }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
                     onClick={() => selectAccount(items)}

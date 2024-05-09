@@ -37,12 +37,6 @@ const Event = () => {
   }, []);
 
   useEffect(async () => {
-    await fetchScreenData();
-    fetchScreenOptionsData();
-    // testFirebase();
-  }, []);
-
-  useEffect(async () => {
     if (screens_data.length && !is_screensstatus_init.current) {
       initScreensStatus();
       is_screensstatus_init.current = true;
@@ -90,7 +84,7 @@ const Event = () => {
             !row.ScreenStatus ||
             (row.ScreenStatus &&
               JSON.stringify(row.ScreenStatus) !==
-                JSON.stringify(screens_status[snap.key]))
+              JSON.stringify(screens_status[snap.key]))
           )
             row.ScreenStatus = screens_status[snap.key];
         }
@@ -128,7 +122,7 @@ const Event = () => {
             !row.ScreenStatus ||
             (row.ScreenStatus &&
               JSON.stringify(row.ScreenStatus) !==
-                JSON.stringify(screens_status[snap.key]))
+              JSON.stringify(screens_status[snap.key]))
           )
             row.ScreenStatus = screens_status[snap.key];
         }

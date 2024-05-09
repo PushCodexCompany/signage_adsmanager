@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import User from "../libs/admin";
+import User, { SIGNAGE_BRAND_COOKIE } from "../libs/admin";
 import cookie from "react-cookies";
-const SIGNAGE_BRAND_COOKIE = "signage-brand";
 
 const Header = ({ title, subtitle }) => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import User from "../libs/admin";
+import User, { SIGNAGE_ACCOUNT_COOKIE, SIGNAGE_BRAND_COOKIE } from "../libs/admin";
 import Login_Bg from "../assets/img/login_bg.png";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
@@ -134,11 +134,11 @@ const Login = () => {
     const select_campaign = User.getCampaign();
     const select_account = User.getAccount();
     if (select_campaign) {
-      cookie.remove("signage-brand", { path: false });
+      cookie.remove(SIGNAGE_BRAND_COOKIE, { path: "/" });
     }
 
     if (select_account) {
-      cookie.remove("signage-account", { path: false });
+      cookie.remove(SIGNAGE_ACCOUNT_COOKIE, { path: "/" });
     }
 
     // User.saveRedirect();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import User from "../libs/admin";
+import User, { SIGNAGE_BRAND_CODE_COOKIE, SIGNAGE_BRAND_COOKIE } from "../libs/admin";
 import { useNavigate } from "react-router-dom";
 import { TbDots } from "react-icons/tb";
 import { FaPlus } from "react-icons/fa";
@@ -34,7 +34,9 @@ const Brands = () => {
       }
     }
 
-    cookie.remove("signage-brand");
+    cookie.remove(SIGNAGE_BRAND_COOKIE, { path: "/" });
+    cookie.remove(SIGNAGE_BRAND_CODE_COOKIE, { path: "/" });
+
     if (select_campaign) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
     }
@@ -161,9 +163,8 @@ const Brands = () => {
                     src={
                       items.BrandLogo
                         ? items.BrandLogo
-                        : `https://ui-avatars.com/api/?name=${
-                            items.BrandName
-                          }&background=${"000000"}&color=fff`
+                        : `https://ui-avatars.com/api/?name=${items.BrandName
+                        }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
                     onClick={() => selectCampaign(items)}

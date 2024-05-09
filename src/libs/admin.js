@@ -3,12 +3,12 @@ import Axios from "axios";
 import avatar from "../assets/img/avatar.png";
 import FirebaseHelper from "../utils/FirebaseHelper";
 
-const SIGNAGE_MEMBER_COOKIE = "signage-member";
-const SIGNAGE_ACCOUNT_COOKIE = "signage-account";
-const SIGNAGE_BRAND_COOKIE = "signage-brand";
-const SIGNAGE_BRAND_CODE_COOKIE = "signage-brand-code";
-const SIGNAGE_MERCHANDISE_COOKIE = "signage-merchandise";
-const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
+export const SIGNAGE_MEMBER_COOKIE = "signage-member";
+export const SIGNAGE_ACCOUNT_COOKIE = "signage-account";
+export const SIGNAGE_BRAND_COOKIE = "signage-brand";
+export const SIGNAGE_BRAND_CODE_COOKIE = "signage-brand-code";
+export const SIGNAGE_MERCHANDISE_COOKIE = "signage-merchandise";
+export const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
 
 export default {
   /**
