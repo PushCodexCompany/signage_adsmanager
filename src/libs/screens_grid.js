@@ -179,8 +179,9 @@ export const GridTable = ({
           </thead>
           <tbody>
             {screens_data.map((row, key) => {
-
-              const isScreenPaired = row?.ScreenStatus ? row?.ScreenStatus.is_paired : false;
+              const isScreenPaired = row?.ScreenStatus
+                ? row?.ScreenStatus.is_paired
+                : false;
 
               return (
                 <tr key={row.ScreenID}>
@@ -248,10 +249,10 @@ export const GridTable = ({
                   <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex justify-center items-center font-poppins font-bold">
                       {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
-                      {row.ScreenRule[0].Width && row.ScreenRule[0].Height
+                      {row?.ScreenRule[0]?.Width && row?.ScreenRule[0]?.Height
                         ? parseInt(row.ScreenRule[0].Width, 10) +
-                        "x" +
-                        parseInt(row.ScreenRule[0].Height, 10)
+                          "x" +
+                          parseInt(row.ScreenRule[0].Height, 10)
                         : "Not Set"}
                     </div>
                   </td>
@@ -275,8 +276,9 @@ export const GridTable = ({
                             key={index}
                             className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
                             style={{
-                              flexBasis: `calc(${100 / row.ScreenTag.length
-                                }% - 8px)`,
+                              flexBasis: `calc(${
+                                100 / row.ScreenTag.length
+                              }% - 8px)`,
                             }}
                           >
                             <div className="font-poppins text-xs font-bold">
@@ -331,7 +333,7 @@ export const GridTable = ({
                     </div>
                   </td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>

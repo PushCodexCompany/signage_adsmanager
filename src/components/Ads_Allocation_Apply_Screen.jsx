@@ -254,7 +254,8 @@ const Ads_Allocation_Apply_Screen = ({
                       <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                         <div className="font-poppins font-bold">
                           {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
-                          {row.ScreenRule[0].Width && row.ScreenRule[0].Height
+                          {row?.ScreenRule[0]?.Width &&
+                          row?.ScreenRule[0]?.Height
                             ? parseInt(row.ScreenRule[0].Width, 10) +
                               "x" +
                               parseInt(row.ScreenRule[0].Height, 10)

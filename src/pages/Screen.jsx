@@ -21,7 +21,7 @@ const Event = () => {
   const [openUnPairScreenModal, setOpenUnPairScreenModal] = useState(false);
 
   const [screens_data, setScreensData] = useState([]);
-  const [screens_status, setScreensStatus] = useState({})
+  const [screens_status, setScreensStatus] = useState({});
   const [screens_options_data, setScreensOptionsData] = useState([]);
   const [screen_select, setScreenSelect] = useState(null);
 
@@ -50,18 +50,19 @@ const Event = () => {
   }, [screens_data]);
 
   const initScreensStatus = () => {
-
     if (screens_data.length <= 0) {
-
-      console.log("screens_data " + JSON.stringify(screens_data))
+      console.log("screens_data " + JSON.stringify(screens_data));
       return;
     }
 
-    const { AccountCode, BrandCode, BranchCode } = screens_data[0]
+    const { AccountCode, BrandCode, BranchCode } = screens_data[0];
     // console.log("testing firebase " + `${AccountCode}/${BrandCode}/${BranchCode}`);
     // var db = firebase.database().ref().child(`auUpa8dN4g/4lJnf/9kFQV`);
 
-    var db = firebase.database().ref().child(`${AccountCode}/${BrandCode}/${BranchCode}`);
+    var db = firebase
+      .database()
+      .ref()
+      .child(`${AccountCode}/${BrandCode}/${BranchCode}`);
 
     db.on("child_changed", (snap) => {
       // if (snap.key === "is_online") {
@@ -77,27 +78,31 @@ const Event = () => {
       // screensStatus[snap.key] = { ...screensStatus[snap.key], ...snap.val() }
       // setScreensStatus({ ...screensStatus })
 
-      screens_status[snap.key] = { ...screens_status[snap.key], ...snap.val() }
+      screens_status[snap.key] = { ...screens_status[snap.key], ...snap.val() };
 
-
-      console.log("screens_data " + JSON.stringify(screens_data))
+      console.log("screens_data " + JSON.stringify(screens_data));
       const newScreensData = [...screens_data].map((row, index) => {
-
-        console.log("row.ScreenCode === snap.key " + (row.ScreenCode === snap.key))
+        console.log(
+          "row.ScreenCode === snap.key " + (row.ScreenCode === snap.key)
+        );
         if (row.ScreenCode === snap.key) {
-          if (!row.ScreenStatus || (row.ScreenStatus && JSON.stringify(row.ScreenStatus) !== JSON.stringify(screens_status[snap.key])))
+          if (
+            !row.ScreenStatus ||
+            (row.ScreenStatus &&
+              JSON.stringify(row.ScreenStatus) !==
+                JSON.stringify(screens_status[snap.key]))
+          )
             row.ScreenStatus = screens_status[snap.key];
         }
         return row;
       });
 
       // if (JSON.stringify(newScreensData) !== JSON.stringify(screens_data))
-      setScreensData(newScreensData)
+      setScreensData(newScreensData);
 
-      setScreensStatus({ ...screens_status })
+      setScreensStatus({ ...screens_status });
     });
     db.on("child_added", (snap) => {
-
       // if (snap.key === "is_online") {
 
       //     this.setState({ isOnline: snap.val() })
@@ -111,24 +116,29 @@ const Event = () => {
       // screensStatus[snap.key] = { ...screensStatus[snap.key], ...snap.val() }
       // setScreensStatus({ ...screensStatus })
 
-      screens_status[snap.key] = { ...screens_status[snap.key], ...snap.val() }
+      screens_status[snap.key] = { ...screens_status[snap.key], ...snap.val() };
 
-
-      console.log("screens_data " + JSON.stringify(screens_data))
+      console.log("screens_data " + JSON.stringify(screens_data));
       const newScreensData = [...screens_data].map((row, index) => {
-
-        console.log("row.ScreenCode === snap.key " + (row.ScreenCode === snap.key))
+        console.log(
+          "row.ScreenCode === snap.key " + (row.ScreenCode === snap.key)
+        );
         if (row.ScreenCode === snap.key) {
-          if (!row.ScreenStatus || (row.ScreenStatus && JSON.stringify(row.ScreenStatus) !== JSON.stringify(screens_status[snap.key])))
+          if (
+            !row.ScreenStatus ||
+            (row.ScreenStatus &&
+              JSON.stringify(row.ScreenStatus) !==
+                JSON.stringify(screens_status[snap.key]))
+          )
             row.ScreenStatus = screens_status[snap.key];
         }
         return row;
       });
 
       // if (JSON.stringify(newScreensData) !== JSON.stringify(screens_data))
-      setScreensData(newScreensData)
+      setScreensData(newScreensData);
 
-      setScreensStatus({ ...screens_status })
+      setScreensStatus({ ...screens_status });
     });
   };
 
@@ -161,8 +171,8 @@ const Event = () => {
               </button>
               <button
                 onClick={() => {
-                  setScreenSelect(null)
-                  setOpenPairScreenModal(!openPairScreenModal)
+                  setScreenSelect(null);
+                  setOpenPairScreenModal(!openPairScreenModal);
                 }}
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
