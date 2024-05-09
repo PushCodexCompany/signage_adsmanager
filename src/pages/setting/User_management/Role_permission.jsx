@@ -906,7 +906,7 @@ const Role_permission = () => {
                   onClick={() => handleSaveNewRole()}
                   className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg"
                 >
-                  Savessss
+                  Save
                 </button>
               </div>
             ) : (
