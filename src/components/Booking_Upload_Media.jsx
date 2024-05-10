@@ -182,8 +182,7 @@ const Booking_Upload_Media = ({
 
     updatedMediaList[media_allocation_upload_index] = media_data;
     updatedMediaList[media_allocation_upload_index].duration = 15;
-    updatedMediaList[media_allocation_upload_index].duration = 15;
-
+    updatedMediaList[media_allocation_upload_index].slot_size = 1;
     setItemsPanel1((prevState) => ({
       ...prevState,
       value: {

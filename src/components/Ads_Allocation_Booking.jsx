@@ -326,7 +326,6 @@ const Ads_Allocation_Booking = ({
 
   const handleAddMediaPlaylistItem = (index) => {
     const updatedMediaList = [...itemsPanel1.value.medias];
-
     const target = updatedMediaList[index];
 
     //*** only needed to expand slot_size if at least one empty slot is still available
