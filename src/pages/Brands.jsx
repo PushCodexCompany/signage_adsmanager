@@ -50,9 +50,7 @@ const Brands = () => {
   const fetchData = async () => {
     const { token } = User.getCookieData();
     try {
-      console.log("token", token);
       const data = await User.getBrand(token);
-      console.log("Data", data);
       setBrand(data);
     } catch (error) {
       console.error("Error : ", error);
@@ -61,6 +59,10 @@ const Brands = () => {
 
   const selectCampaign = (items) => {
     const status = User.saveSelectedBrand(items.BrandCode);
+    const acc = {
+      AccountCode: items.AccountCode,
+    };
+    User.saveSelectedAccount(acc);
     User.saveBrandCode(items.BrandCode);
     if (status) {
       window.location.href = `${process.env.REACT_APP_SUB_DIR}/dashboard`;
@@ -215,7 +217,7 @@ const Brands = () => {
                     {items.BrandName}
                   </div>
                   <div className="text-[14px] text-slate-500 font-poppins">
-                    {items.BrandDesc}
+                    {items.BrandCode}
                   </div>
                 </button>
               </div>

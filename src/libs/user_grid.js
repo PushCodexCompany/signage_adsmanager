@@ -144,7 +144,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
 
   const getImgBrand = (id) => {
     const brand_img = brand.find((item) => item.BrandID === parseInt(id));
-    return brand_img ? brand_img.BrandLogo : null;
+    return brand_img ? brand_img.BrandLogo : empty_img;
   };
 
   const onClickDelete = async (id, name) => {

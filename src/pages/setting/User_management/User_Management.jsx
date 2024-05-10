@@ -99,6 +99,9 @@ const User_Management = () => {
   };
 
   const getBrandAndMerch = async () => {
+    const { brand_code } = User.getBrandCode();
+    console.log("brand_code", brand_code);
+    console.log("token", token);
     const brand = await User.getBrand(token);
     const merchandise = await User.getMerchandiseList(token);
     setBrand(brand);
