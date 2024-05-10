@@ -141,9 +141,16 @@ const Merchandise = () => {
                 key={key}
                 className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
               >
-                <div className="relative mb-4">
+                <div
+                  onClick={() => {
+                    setEditMerchandise(items);
+                    handleEditMerchandise(items);
+                    toggleDropdown(items.AdvertiserID);
+                  }}
+                  className="relative mb-4"
+                >
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-gray-300"
                     src={
                       items.AdvertiserLogo
                         ? items.AdvertiserLogo
@@ -154,12 +161,15 @@ const Merchandise = () => {
                     alt={items.AccountName}
                   />
                   <div
-                    onClick={() => toggleDropdown(items.AdvertiserID)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleDropdown(items.AdvertiserID);
+                    }}
                     className="absolute top-2 right-2 cursor-pointer"
                   >
                     <TbDots
                       size={26}
-                      className="text-white hover:text-[#6425FE]"
+                      className="text-gray-500 hover:text-[#6425FE]"
                     />
                   </div>
                   {dropdownStates[items.AdvertiserID] && (
@@ -188,7 +198,14 @@ const Merchandise = () => {
                     </div>
                   )}
                 </div>
-                <button className="w-full">
+                <button
+                  onClick={() => {
+                    setEditMerchandise(items);
+                    handleEditMerchandise(items);
+                    toggleDropdown(items.AdvertiserID);
+                  }}
+                  className="w-full"
+                >
                   <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                     {items.AdvertiserName}
                   </div>
