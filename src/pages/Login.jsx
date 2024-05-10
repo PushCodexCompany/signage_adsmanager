@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import User, { SIGNAGE_ACCOUNT_COOKIE, SIGNAGE_BRAND_COOKIE } from "../libs/admin";
+import User, {
+  SIGNAGE_ACCOUNT_COOKIE,
+  SIGNAGE_BRAND_COOKIE,
+} from "../libs/admin";
 import Login_Bg from "../assets/img/login_bg.png";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
@@ -225,13 +228,13 @@ const Login = () => {
           Swal.fire({
             icon: "success",
             title: "Login ...",
-            text: "เข้าสู่ระบบได้!",
+            text: "เข้าสู่ระบบสำเร็จ!",
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Login Failed ...",
-            text: "ไม่สามารถเข้าสู่ระบบได้!",
+            text: "เข้าสู่ระบบไม่สำเร็จ!",
           });
         }
       } else {

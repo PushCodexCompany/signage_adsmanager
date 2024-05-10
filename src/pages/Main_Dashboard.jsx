@@ -73,8 +73,8 @@ const Main_Dashboard = () => {
         Select Your Merchandise
       </div>
       <div className="text-xl text-center text-slate-500 mb-20">
-        Lorem ipsum is simply dummy text of the printing and typesetting
-        industry.
+        Press the icon or message to edit it, or press the top right menu to
+        delete it.
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">

@@ -133,7 +133,9 @@ export const GridTable = ({ booking_data }) => {
             {booking_data.map((row) => (
               <tr key={row.BookingID}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md">{row.BookingID}</div>
+                  <div className="font-poppins text-md flex justify-center">
+                    {row.BookingID}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
                   <div

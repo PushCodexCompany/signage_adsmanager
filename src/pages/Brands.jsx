@@ -50,7 +50,9 @@ const Brands = () => {
   const fetchData = async () => {
     const { token } = User.getCookieData();
     try {
+      console.log("token", token);
       const data = await User.getBrand(token);
+      console.log("Data", data);
       setBrand(data);
     } catch (error) {
       console.error("Error : ", error);

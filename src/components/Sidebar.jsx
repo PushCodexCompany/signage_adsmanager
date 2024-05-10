@@ -17,6 +17,7 @@ import {
   MdOutlineLogout,
   MdFolderOpen,
 } from "react-icons/md";
+import { GrMultimedia } from "react-icons/gr";
 
 import { SlScreenDesktop, SlChart } from "react-icons/sl";
 import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
@@ -66,12 +67,12 @@ export const links = [
           {
             name: "Media Log",
             link: "statics/media_log",
-            icon: <FaRegListAlt size={27} />,
+            icon: <GrMultimedia size={27} />,
           },
           {
             name: "Screen",
             link: "statics/screen",
-            icon: <FaRegListAlt size={27} />,
+            icon: <SlScreenDesktop size={27} />,
           },
         ],
       },

@@ -10,26 +10,29 @@ import { BiLinkAlt } from "react-icons/bi";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
 
-const Pair_Screen = ({ setOpenPairScreenModal, screens_data, screen_preselect }) => {
+const Pair_Screen = ({
+  setOpenPairScreenModal,
+  screens_data,
+  screen_preselect,
+}) => {
   const [select_screen, setSelectScreen] = useState(null);
   const [isScreenOpen, setScreenOpen] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [pairingCode, setPairingCode] = useState(null);
   const [oldModal, setoldModal] = useState(true);
-  const [openPairScreenConfirmModal, setOpenPairScreenConfirmModal] = useState(false);
+  const [openPairScreenConfirmModal, setOpenPairScreenConfirmModal] =
+    useState(false);
 
   useEffect(() => {
-
-    console.log("screen_preselect " + JSON.stringify(screen_preselect))
+    console.log("screen_preselect " + JSON.stringify(screen_preselect));
     if (screen_preselect) {
-      console.log("select screen " + screen_preselect.ScreenID)
+      console.log("select screen " + screen_preselect.ScreenID);
       setSelectScreen(screen_preselect.ScreenID);
-    }
-    else {
-      console.log("deselect screen ")
+    } else {
+      console.log("deselect screen ");
       setSelectScreen(null);
     }
-  }, [])
+  }, []);
 
   const toggleScreenSelect = () => {
     setScreenOpen((prevIsOpen) => !prevIsOpen);
@@ -77,11 +80,21 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data, screen_preselect })
 
     console.log("screenData", screenData);
 
-    const isScreenWithPairingCodeAvailable = await User.checkScreenAvailable(pairingCode);
-    console.log("isScreenWithPairingCodeAvailable " + isScreenWithPairingCodeAvailable);
+    const isScreenWithPairingCodeAvailable = await User.checkScreenAvailable(
+      pairingCode
+    );
+    console.log(
+      "isScreenWithPairingCodeAvailable " + isScreenWithPairingCodeAvailable
+    );
 
-    const pairScreenResult = await User.pairScreen(screenData.AccountCode, screenData.BrandCode, screenData.BranchCode, screenData.ScreenCode, screenData.ScreenName, pairingCode);
-
+    const pairScreenResult = await User.pairScreen(
+      screenData.AccountCode,
+      screenData.BrandCode,
+      screenData.BranchCode,
+      screenData.ScreenCode,
+      screenData.ScreenName,
+      pairingCode
+    );
 
     // save data
 
@@ -123,9 +136,9 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data, screen_preselect })
                 </div>
                 <div className="flex justify-center items-center">
                   <div className="font-poppins text-[#2F3847] text-[18px] ">
-                    Name your booking, select merchandise, and content type to
-                    create a new booking. Personalize your campaign for maximum
-                    impact.
+                    Launch the Signage App, obtain the pairing code on your
+                    screen, and enter it into the pairing code field to complete
+                    the pairing process.
                   </div>
                 </div>
                 <div className="mt-16">
@@ -259,9 +272,7 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data, screen_preselect })
               </div>
               <div className="flex justify-center items-center">
                 <div className="font-poppins text-[#2F3847] text-[18px] ">
-                  Name your booking, select merchandise, and content type to
-                  create a new booking. Personalize your campaign for maximum
-                  impact.
+                  The selected screen has been successfully paired.
                 </div>
               </div>
               <div className="mt-36">
@@ -274,9 +285,8 @@ const Pair_Screen = ({ setOpenPairScreenModal, screens_data, screen_preselect })
                 <div className="flex justify-center  items-center text-center  mt-5">
                   <div className="w-[50%]">
                     <div className="font-poppins text-[#2F3847] text-[18px] ">
-                      Name your booking, select merchandise, and content type to
-                      create a new booking. Personalize your campaign for
-                      maximum impact.
+                      Press ‘Close’ to proceed. You may cancel the pairing at
+                      any time should it become unnecessary.
                     </div>
                   </div>
                 </div>

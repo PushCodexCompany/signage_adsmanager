@@ -119,8 +119,8 @@ const Merchandise = () => {
           Select Your Merchandise
         </div>
         <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
-          Lorem ipsum is simply dummy text of the printing and typesetting
-          industry.
+          Press the icon or message to edit it, or press the top right menu to
+          delete it.
         </div>
 
         <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
@@ -150,7 +150,7 @@ const Merchandise = () => {
                   className="relative mb-4"
                 >
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-gray-300"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
                     src={
                       items.AdvertiserLogo
                         ? items.AdvertiserLogo
