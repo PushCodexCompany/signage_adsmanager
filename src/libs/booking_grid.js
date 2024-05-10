@@ -32,13 +32,15 @@ export const GridTable = ({ booking_data }) => {
   const navigate = useNavigate();
 
   const onClickEdit = (obj) => {
-    navigate(`/booking/${obj.BookingName}`, {
+    const replacedString = obj.BookingName.replace(/\//g, "_");
+    navigate(`/booking/${replacedString}`, {
       state: { data: obj },
     });
   };
 
   const handleSelectBooking = (obj) => {
-    navigate(`/booking/select/${obj.BookingName}`, {
+    const replacedString = obj.BookingName.replace(/\//g, "_");
+    navigate(`/booking/select/${replacedString}`, {
       state: { data: obj },
     });
   };

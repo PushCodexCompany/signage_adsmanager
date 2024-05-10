@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import User, { SIGNAGE_BRAND_CODE_COOKIE, SIGNAGE_BRAND_COOKIE } from "../libs/admin";
+import User, {
+  SIGNAGE_BRAND_CODE_COOKIE,
+  SIGNAGE_BRAND_COOKIE,
+} from "../libs/admin";
 import { useNavigate } from "react-router-dom";
 import { TbDots } from "react-icons/tb";
 import { FaPlus } from "react-icons/fa";
@@ -150,7 +153,6 @@ const Brands = () => {
               </div>
             </button>
           </div>
-
           {brand.length > 0 &&
             brand.map((items, key) => (
               <div
@@ -159,12 +161,13 @@ const Brands = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
                     src={
                       items.BrandLogo
                         ? items.BrandLogo
-                        : `https://ui-avatars.com/api/?name=${items.BrandName
-                        }&background=${"000000"}&color=fff`
+                        : `https://ui-avatars.com/api/?name=${
+                            items.BrandName
+                          }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
                     onClick={() => selectCampaign(items)}

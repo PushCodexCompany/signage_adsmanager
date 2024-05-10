@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import { useStateContext } from "../contexts/ContextProvider";
 import User from "../libs/admin";
@@ -179,6 +179,7 @@ const SidebarMain = () => {
   const [logo_img, setLogoImg] = useState();
 
   const sidebarRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleLevel1 = (index) => {
     if (openLevel1 === index) {
@@ -350,7 +351,10 @@ const SidebarMain = () => {
                                                             <div
                                                               // to={`/${submenuItem.link}`}
                                                               onClick={() => {
-                                                                window.location.href = `${process.env.REACT_APP_SUB_DIR}/${submenuItem.link}`;
+                                                                navigate(
+                                                                  `/${submenuItem.link}`
+                                                                );
+                                                                // window.location.href = `${process.env.REACT_APP_SUB_DIR}/${submenuItem.link}`;
                                                               }}
                                                               key={
                                                                 submenuItem.link

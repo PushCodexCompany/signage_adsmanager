@@ -22,7 +22,7 @@ const Header = ({ title, subtitle }) => {
     const data = await User.getBrand(token);
 
     const brand = data.find((items) => items.BrandCode === brand_id);
-    setBrand(brand.BrandName);
+    setBrand(brand?.BrandName ?? null);
   };
 
   const selectBrand = () => {

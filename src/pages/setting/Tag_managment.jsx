@@ -33,12 +33,14 @@ const Tag_managment = () => {
 
   const getCategoryTag = async () => {
     const tag_category = await User.getTagCatagory(token);
-    tag_category.sort((a, b) =>
-      a.TagCategoryName.localeCompare(b.TagCategoryName)
-    );
-    setCategoryData(tag_category);
-    setSelectCat(tag_category[0]);
-    getTagData(tag_category[0]);
+    if (tag_category.length > 0) {
+      tag_category.sort((a, b) =>
+        a.TagCategoryName.localeCompare(b.TagCategoryName)
+      );
+      setCategoryData(tag_category);
+      setSelectCat(tag_category[0]);
+      getTagData(tag_category[0]);
+    }
   };
 
   const getTagData = async (tag_category) => {

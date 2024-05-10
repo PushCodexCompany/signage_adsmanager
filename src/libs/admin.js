@@ -77,14 +77,12 @@ export default {
     var params = new URLSearchParams();
     params.append("code", pairingcode);
 
-    const { data } = await this._nodepost(
-      `api/v1/checkscreenpairing`,
-      params,
-      { "Content-Type": "application/x-www-form-urlencoded" }
-    );
+    const { data } = await this._nodepost(`api/v1/checkscreenpairing`, params, {
+      "Content-Type": "application/x-www-form-urlencoded",
+    });
 
-    console.log("checkScreenAvailable data " + JSON.stringify(data))
-    if (("result" in data) && (data.result === 1)) {
+    console.log("checkScreenAvailable data " + JSON.stringify(data));
+    if ("result" in data && data.result === 1) {
       return true;
     } else {
       return false;
@@ -301,7 +299,7 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(`api/v1/get_brands`, "", config);
+    const { data } = await this._get(`api/v1/get_brands `, "", config);
     if (data.code !== 404) {
       return data;
     } else {
@@ -659,6 +657,7 @@ export default {
 
   getTagCatagory: async function (token) {
     const { brand_code } = this.getBrandCode();
+    console.log("brand_code", brand_code);
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,

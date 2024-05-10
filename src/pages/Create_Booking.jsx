@@ -778,7 +778,7 @@ const Create_Booking = () => {
           <div className="col-span-2">
             <div>
               <img
-                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover`}
+                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300`}
                 src={merchandise.AdvertiserLogo}
                 alt={merchandise.AdvertiserName}
               />

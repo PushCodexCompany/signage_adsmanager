@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import User, { SIGNAGE_ACCOUNT_COOKIE, SIGNAGE_BRAND_COOKIE } from "../libs/admin";
+import User, {
+  SIGNAGE_ACCOUNT_COOKIE,
+  SIGNAGE_BRAND_COOKIE,
+} from "../libs/admin";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import { FaPlus } from "react-icons/fa";
@@ -152,12 +155,13 @@ const User_Account = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
                     src={
                       items.AccountLogo
                         ? items.AccountLogo
-                        : `https://ui-avatars.com/api/?name=${items.AccountName
-                        }&background=${"000000"}&color=fff`
+                        : `https://ui-avatars.com/api/?name=${
+                            items.AccountName
+                          }&background=${"000000"}&color=fff`
                     }
                     alt={items.AccountName}
                     onClick={() => selectAccount(items)}

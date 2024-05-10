@@ -5,6 +5,7 @@ import { PiCaretUpDown } from "react-icons/pi";
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
+import empty_img from "../assets/img/empty_img.png";
 
 export const GridTable = ({ user_lists, page_permission, brand }) => {
   const [modal_edit, setModalEdit] = useState(false);
@@ -250,12 +251,19 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex space-x-1 ">
                       {row.AccessContent?.brands &&
+                      row.AccessContent?.brands.length > 0 ? (
                         row.AccessContent.brands.map((items) => (
                           <img
                             className="w-[50px] h-[50px] rounded-md"
                             src={getImgBrand(items)}
                           />
-                        ))}
+                        ))
+                      ) : (
+                        <img
+                          className="w-[50px] h-[50px] rounded-md"
+                          src={empty_img}
+                        />
+                      )}
                     </div>
                   </td>
                   {/* <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
