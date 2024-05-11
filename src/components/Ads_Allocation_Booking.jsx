@@ -1605,91 +1605,106 @@ const Ads_Allocation_Booking = ({
                                       className="h-[680px] overflow-y-auto space-y-2"
                                     >
                                       {itemsPanel2.length > 0 &&
-                                        itemsPanel2.map((items, index) => (
-                                          <Draggable
-                                            key={`panel2-${index}`}
-                                            draggableId={`panel2-${items.ContentID}`}
-                                            index={index}
-                                            // isDragDisabled={true}
-                                          >
-                                            {(provided) => (
-                                              <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                className="grid grid-cols-11 h-[80px] border border-gray-300"
-                                              >
-                                                <div className="col-span-2 flex justify-center items-center">
-                                                  {items.ContentTypeName ===
-                                                  "Video" ? (
-                                                    <FiVideo size={30} />
-                                                  ) : (
-                                                    <FiImage size={30} />
-                                                  )}
-                                                </div>
-                                                <div className="col-span-8">
-                                                  <div className="flex justify-start items-center mt-2">
-                                                    <div className="font-poppins text-[15px]">
-                                                      {items.ContentName
-                                                        .length > 30 ? (
-                                                        <span>
-                                                          {items.ContentName.slice(
-                                                            0,
-                                                            27
-                                                          ) + "..."}
-                                                        </span>
-                                                      ) : (
-                                                        <span>
-                                                          {items.ContentName}
-                                                        </span>
-                                                      )}
-                                                    </div>
-                                                  </div>
-                                                  <div className="flex justify-start items-center ">
-                                                    <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                      File Size :{" "}
-                                                      {parseFloat(
-                                                        JSON.parse(
-                                                          items.ContentProperties
-                                                        ).size
-                                                      ).toFixed(2)}{" "}
-                                                      MB
-                                                    </div>
-                                                  </div>
-                                                  <div className="flex justify-start items-center ">
+                                        itemsPanel2
+                                          .filter((item) => {
+                                            const contentProperties =
+                                              JSON.parse(
+                                                item.ContentProperties
+                                              );
+                                            return (
+                                              parseInt(
+                                                contentProperties.width
+                                              ) === media_rules_select.width &&
+                                              parseInt(
+                                                contentProperties.height
+                                              ) === media_rules_select.height
+                                            );
+                                          })
+                                          .map((items, index) => (
+                                            <Draggable
+                                              key={`panel2-${index}`}
+                                              draggableId={`panel2-${items.ContentID}`}
+                                              index={index}
+                                              // isDragDisabled={true}
+                                            >
+                                              {(provided) => (
+                                                <div
+                                                  ref={provided.innerRef}
+                                                  {...provided.draggableProps}
+                                                  {...provided.dragHandleProps}
+                                                  className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                                >
+                                                  <div className="col-span-2 flex justify-center items-center">
                                                     {items.ContentTypeName ===
-                                                      "Video" && (
+                                                    "Video" ? (
+                                                      <FiVideo size={30} />
+                                                    ) : (
+                                                      <FiImage size={30} />
+                                                    )}
+                                                  </div>
+                                                  <div className="col-span-8">
+                                                    <div className="flex justify-start items-center mt-2">
+                                                      <div className="font-poppins text-[15px]">
+                                                        {items.ContentName
+                                                          .length > 30 ? (
+                                                          <span>
+                                                            {items.ContentName.slice(
+                                                              0,
+                                                              27
+                                                            ) + "..."}
+                                                          </span>
+                                                        ) : (
+                                                          <span>
+                                                            {items.ContentName}
+                                                          </span>
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                    <div className="flex justify-start items-center ">
                                                       <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                        Duration :{" "}
+                                                        File Size :{" "}
                                                         {parseFloat(
                                                           JSON.parse(
                                                             items.ContentProperties
-                                                          ).duration
+                                                          ).size
                                                         ).toFixed(2)}{" "}
-                                                        sec
+                                                        MB
                                                       </div>
-                                                    )}
+                                                    </div>
+                                                    <div className="flex justify-start items-center ">
+                                                      {items.ContentTypeName ===
+                                                        "Video" && (
+                                                        <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                          Duration :{" "}
+                                                          {parseFloat(
+                                                            JSON.parse(
+                                                              items.ContentProperties
+                                                            ).duration
+                                                          ).toFixed(2)}{" "}
+                                                          sec
+                                                        </div>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  <div className="col-span-1 flex justify-start items-center">
+                                                    <IoIosPlayCircle
+                                                      size={26}
+                                                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                      onClick={() => {
+                                                        setModalPlayerOpen(
+                                                          !modalPlayerOpen
+                                                        );
+                                                        setOpenAdsAllocationModal(
+                                                          !openAdsAllocationModal
+                                                        );
+                                                        setMediaDisplay(items);
+                                                      }}
+                                                    />
                                                   </div>
                                                 </div>
-                                                <div className="col-span-1 flex justify-start items-center">
-                                                  <IoIosPlayCircle
-                                                    size={26}
-                                                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                    onClick={() => {
-                                                      setModalPlayerOpen(
-                                                        !modalPlayerOpen
-                                                      );
-                                                      setOpenAdsAllocationModal(
-                                                        !openAdsAllocationModal
-                                                      );
-                                                      setMediaDisplay(items);
-                                                    }}
-                                                  />
-                                                </div>
-                                              </div>
-                                            )}
-                                          </Draggable>
-                                        ))}
+                                              )}
+                                            </Draggable>
+                                          ))}
                                       {provided.placeholder}
                                     </div>
                                   )}
@@ -1729,7 +1744,18 @@ const Ads_Allocation_Booking = ({
                                         itemsPanel2
                                           .filter(
                                             (item) =>
-                                              item.ContentTypeName === "Video"
+                                              item.ContentTypeName ===
+                                                "Video" &&
+                                              parseInt(
+                                                JSON.parse(
+                                                  item.ContentProperties
+                                                ).width
+                                              ) === media_rules_select.width &&
+                                              parseInt(
+                                                JSON.parse(
+                                                  item.ContentProperties
+                                                ).height
+                                              ) === media_rules_select.height
                                           )
                                           .map((items, index) => (
                                             <Draggable
@@ -1854,7 +1880,18 @@ const Ads_Allocation_Booking = ({
                                         itemsPanel2
                                           .filter(
                                             (item) =>
-                                              item.ContentTypeName === "Image"
+                                              item.ContentTypeName ===
+                                                "Image" &&
+                                              parseInt(
+                                                JSON.parse(
+                                                  item.ContentProperties
+                                                ).width
+                                              ) === media_rules_select.width &&
+                                              parseInt(
+                                                JSON.parse(
+                                                  item.ContentProperties
+                                                ).height
+                                              ) === media_rules_select.height
                                           )
                                           .map((items, index) => (
                                             <Draggable

@@ -10,17 +10,39 @@ const Media_Player = ({
   openAdsAllocationModal,
   setMediaDisplay,
 }) => {
+  // Parse ContentProperties JSON string to object
+  const contentProperties = JSON.parse(mediaDisplay.ContentProperties);
+  const width = parseInt(contentProperties.width);
+  const height = parseInt(contentProperties.height);
+
+  // Determine if image is horizontal or vertical
+  const isHorizontal = width > height;
+  const baseWidth = isHorizontal ? "600px" : "400px";
+  const baseHeight = isHorizontal ? "400px" : "600px";
+  const lgWidth = isHorizontal ? "890px" : "500px";
+  const lgHeight = isHorizontal ? "500px" : "890px";
+
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
       {/* First div (circle) */}
       <div
         className={`absolute ${
           mediaDisplay.ContentTypeName === "Image"
-            ? "lg:top-24 lg:right-[160px] right-10 top-[270px]"
-            : "lg:top-1 lg:right-[160px] right-10 top-[330px]"
+            ? `${
+                isHorizontal
+                  ? "lg:top-24 lg:right-[160px] right-10 top-[270px]"
+                  : "lg:top-12 lg:right-[160px] right-10 top-[180px]"
+              } `
+            : `${
+                isHorizontal
+                  ? "lg:top-1 lg:right-[160px] right-10 top-[330px]"
+                  : "lg:top-[5px] lg:right-[160px] right-10 top-[330px]"
+              } `
         } m-4 z-30`}
       >
-        <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+        <div
+          className={`bg-[#E8E8E8] border-3 border-black  rounded-full  w-10 h-10 flex justify-center items-center`}
+        >
           <button
             onClick={() => {
               setModalPlayerOpen(!modalPlayerOpen);
@@ -43,7 +65,7 @@ const Media_Player = ({
           <div className="flex justify-center items-center">
             {mediaDisplay.ContentTypeName === "Image" ? (
               <img
-                className={`block mx-auto mt-30px w-[600px] h-[400px] lg:w-[890px] lg:h-[500px] object-cover rounded-3xl `}
+                className={`block mx-auto mt-30px w-[${baseWidth}] h-[${baseHeight}] lg:w-[${lgWidth}] lg:h-[${lgHeight}] object-cover rounded-3xl`}
                 src={mediaDisplay.ContentSource}
                 alt={mediaDisplay.ContentName}
               />
@@ -55,8 +77,8 @@ const Media_Player = ({
                 autoplay
                 loop
                 playing
-                width="80%"
-                height="80%"
+                width={isHorizontal ? "80%" : "25%"}
+                height={isHorizontal ? "80%" : "25%"}
                 controls={true}
               />
             )}

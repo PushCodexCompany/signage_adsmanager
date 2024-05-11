@@ -20,12 +20,10 @@ import Media_Player from "../components/Media_Player";
 
 import Screen_Info from "../components/Screen_Info";
 import { format } from "date-fns";
-import { mediaMockup } from "../data/mockup";
 
 const Select_Booking = () => {
   const location = useLocation();
   const { token } = User.getCookieData();
-
   const [bookingName, setBookingName] = useState();
   const [bookingId, setBookingId] = useState();
   const [merchandise, setMerchandise] = useState([]);

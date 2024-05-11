@@ -273,7 +273,8 @@ const Booking_Upload_Media = ({
               </div>
               <div className="flex items-center justify-center ">
                 <div className="font-poppins text-xl font-bold">
-                  Resolution : 1920 x 1080
+                  Resolution : {media_rules_select?.width} x{" "}
+                  {media_rules_select?.height}
                 </div>
               </div>
               <div className="flex items-center justify-center mb-16">
