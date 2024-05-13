@@ -16,11 +16,14 @@ export const GridTable = ({
   openPairScreenModal,
   openUnPairScreenModal,
   setScreenSelect,
+  setCheckboxes,
+  checkboxes,
+  screen_checkbox_select,
+  setScreenCheckboxSelect,
 }) => {
   const navigate = useNavigate();
 
   const [selectAll, setSelectAll] = useState(false);
-  const [checkboxes, setCheckboxes] = useState({});
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
 
   const toggleAllCheckboxes = () => {
@@ -32,6 +35,12 @@ export const GridTable = ({
       newCheckboxes[row.ScreenID] = newSelectAll;
     });
 
+    if (newSelectAll) {
+      setScreenCheckboxSelect(screens_data);
+    } else {
+      setScreenCheckboxSelect([]);
+    }
+
     setCheckboxes(newCheckboxes);
     setSelectAll(newSelectAll);
 
@@ -39,10 +48,24 @@ export const GridTable = ({
     const checkedRowIds = newSelectAll
       ? screens_data.map((row) => row.ScreenID)
       : [];
+
     setSelectedScreenItems(checkedRowIds);
   };
 
-  const toggleCheckboxAddScreen = (rowId) => {
+  const toggleCheckboxAddScreen = (rowId, row) => {
+    if (screen_checkbox_select.find((items) => items.ScreenID === rowId)) {
+      //ลบ
+      const screen_checkbox_select_filtered = screen_checkbox_select.filter(
+        (screen) => screen.ScreenID !== rowId
+      );
+      setScreenCheckboxSelect(screen_checkbox_select_filtered);
+    } else {
+      //เพิ่ม
+      const arr = [...screen_checkbox_select];
+      arr.push(row);
+      setScreenCheckboxSelect(arr);
+    }
+
     setCheckboxes((prevCheckboxes) => {
       const updatedCheckboxes = {
         ...prevCheckboxes,
@@ -131,7 +154,7 @@ export const GridTable = ({
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
-              {/* <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 <label className="inline-flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -162,14 +185,14 @@ export const GridTable = ({
                     </svg>
                   </span>
                 </label>
-              </th> */}
-              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
+              </th>
+              <th className="px-2 py-5 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
                 No
               </th>
               <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
                 Screen Name
               </th>
-              <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-5 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Location
               </th>
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
@@ -197,43 +220,45 @@ export const GridTable = ({
 
               return (
                 <tr key={row.ScreenID}>
-                  {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
-                  <div className="flex items-center">
-                    <label className="inline-flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                        checked={checkboxes[row.ScreenID] || false} // Set default value to false if row.ScreenID is not present
-                        onChange={() => toggleCheckboxAddScreen(row.ScreenID)}
-                      />
-                      <span
-                        className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                          checkboxes[row.ScreenID] ? "bg-white" : ""
-                        }`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className={`h-6 w-6 text-white ${
-                            checkboxes[row.ScreenID]
-                              ? "opacity-100"
-                              : "opacity-0"
-                          } transition-opacity duration-300 ease-in-out`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="#6425FE"
+                  <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <div className="flex items-center">
+                      <label className="inline-flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                          checked={checkboxes[row.ScreenID] || false} // Set default value to false if row.ScreenID is not present
+                          onChange={() =>
+                            toggleCheckboxAddScreen(row.ScreenID, row)
+                          }
+                        />
+                        <span
+                          className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                            checkboxes[row.ScreenID] ? "bg-white" : ""
+                          }`}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </span>
-                    </label>
-                  </div>
-                </td> */}
-                  <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`h-6 w-6 text-white ${
+                              checkboxes[row.ScreenID]
+                                ? "opacity-100"
+                                : "opacity-0"
+                            } transition-opacity duration-300 ease-in-out`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="#6425FE"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="3"
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </span>
+                      </label>
+                    </div>
+                  </td>
+                  <td className="px-2 py-5 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex items-center justify-center">
                       <div className="font-poppins text-xl font-bold">
                         {key + 1}
@@ -250,7 +275,7 @@ export const GridTable = ({
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <td className="px-5 py-4 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex justify-center  font-poppins text-sm text-[#59606C] font-bold">
                       {row.ScreenLocation || "No Data"}
                     </div>
@@ -281,20 +306,22 @@ export const GridTable = ({
                     </div>
                   </td>
                   <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="flex flex-wrap">
+                    <div className="flex flex-wrap ">
                       {row.ScreenTag.length > 0 ? (
                         row.ScreenTag.map((items, index) => (
                           <div
                             key={index}
-                            className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                            style={{
-                              flexBasis: `calc(${
-                                100 / row.ScreenTag.length
-                              }% - 8px)`,
-                            }}
+                            className="border border-gray-300 rounded-xl flex justify-center items-center mb-1 mr-1"
+                            // style={{
+                            //   flexBasis: `calc(${
+                            //     70 / row.ScreenTag.length
+                            //   }% - 8px)`,
+                            // }}
                           >
-                            <div className="font-poppins text-xs font-bold">
-                              {items.TagName}
+                            <div className="p-2">
+                              <div className="font-poppins text-xs font-bold">
+                                {items.TagName}
+                              </div>
                             </div>
                           </div>
                         ))

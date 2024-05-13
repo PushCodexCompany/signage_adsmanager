@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import empty_img from "../assets/img/empty_img.png";
 import { FaPlus } from "react-icons/fa";
 import { MdOutlineModeEditOutline } from "react-icons/md";
@@ -774,7 +774,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
             <button onClick={() => setShowModalAddNewBooking(false)}>
-              <AiOutlineClose size={25} color={"#6425FE"} />
+              <IoIosClose size={25} color={"#6425FE"} />
             </button>
           </div>
         </div>
@@ -797,7 +797,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setShowCreateMerchandise(false)}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import { BsInfoCircle } from "react-icons/bs";
 import { BiToggleLeft, BiToggleRight } from "react-icons/bi";
 import { LuClock4 } from "react-icons/lu";
@@ -231,7 +231,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setOpenInfoScreenModal(false)}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
@@ -275,7 +275,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                               }}
                             >
                               <div className="flex justify-center items-center mr-1 ml-1">
-                                <AiOutlineClose className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
+                                <IoIosClose className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
                               </div>
                               <div className="flex-grow text-sm font-poppins flex justify-center">
                                 {items.TagName}
@@ -611,7 +611,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   setOpenMediaScheduleModal(!openMediaScheduleModal);
                 }}
               >
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>

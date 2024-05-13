@@ -3,6 +3,7 @@ import { IoIosClose } from "react-icons/io";
 import { PiWarningCircleFill } from "react-icons/pi";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
+import { GridTable } from "../libs/allocation_screen_dub_grid";
 
 const Confirm_Allocation = ({
   setIsOpenConfirmAllocation,
@@ -24,7 +25,7 @@ const Confirm_Allocation = ({
   const { token } = User.getCookieData();
 
   useEffect(() => {
-    generateTextToScreen();
+    // generateTextToScreen();
   }, []);
 
   const generateTextToScreen = () => {
@@ -118,24 +119,21 @@ const Confirm_Allocation = ({
         </div>
         {/* Second div (gray background) */}
         <div className="bg-[#FFFFFF] w-4/5 lg:w-2/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-          <div className="mt-28">
+          <div className="mt-10">
             <div className="p-3">
               <div className="flex justify-center items-center">
-                <PiWarningCircleFill size={200} color="#2F3847" />
+                <PiWarningCircleFill size={150} color="#2F3847" />
               </div>
-              <div className="p-8">
-                <div className="mt-4 flex justify-center items-center text-center ">
+              <div className="p-3">
+                <div className="mt-4 flex justify-center items-center">
                   <div className="font-poppins text-[24px] font-bold">
                     This playlist will replace the current content on{" "}
-                    {screen.length > 0 &&
-                      screen.map((items, index) => (
-                        <>
-                          <span key={index} className="text-[#6425FE] ">
-                            screen{items}
-                          </span>{" "}
-                          {index !== screen.length - 1 && " and "}
-                        </>
-                      ))}
+                    <span className="text-[#6425FE] font-bold">
+                      {screenUsePlaylist.length} Screen
+                    </span>{" "}
+                    <div className="h-[300px] overflow-y-auto mb-2">
+                      <GridTable screenUsePlaylist={screenUsePlaylist} />
+                    </div>
                     during the selected periods. Please note that this applies
                     exclusively to the dates within the booking period.
                   </div>

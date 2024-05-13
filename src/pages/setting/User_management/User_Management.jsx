@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import { Header } from "../../../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-import { AiOutlineClose } from "react-icons/ai";
 import { Navbar } from "../../../components";
 import { PiCaretUpDown } from "react-icons/pi";
 import User from "../../../libs/admin";
@@ -100,8 +99,6 @@ const User_Management = () => {
 
   const getBrandAndMerch = async () => {
     const { brand_code } = User.getBrandCode();
-    console.log("brand_code", brand_code);
-    console.log("token", token);
     const brand = await User.getBrand(token);
     const merchandise = await User.getMerchandiseList(token);
     setBrand(brand);
@@ -484,7 +481,7 @@ const User_Management = () => {
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setModalNewUser(!modalNewUser)}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
@@ -700,7 +697,7 @@ const User_Management = () => {
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setShowBrandModal(!showBrandModal)}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
@@ -785,7 +782,7 @@ const User_Management = () => {
               <button
                 onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
               >
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>

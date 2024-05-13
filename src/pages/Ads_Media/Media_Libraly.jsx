@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/media_libraly_grid";
-import { AiOutlineClose, AiOutlineCloudUpload } from "react-icons/ai";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import { BsCheckCircle } from "react-icons/bs";
 import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
@@ -118,7 +119,7 @@ const Media_Libraly = () => {
           <div className="absolute right-12 top-14 lg:top-12 lg:right-[350px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => closeModal()}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>

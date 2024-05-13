@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import {
-  AiOutlineClose,
-  AiOutlineCloudUpload,
-  AiOutlineCloseCircle,
-} from "react-icons/ai";
+import { AiOutlineCloudUpload, AiOutlineCloseCircle } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import { BsCheckCircle } from "react-icons/bs";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
@@ -208,7 +205,7 @@ const Booking_Upload_Media = ({
               setUploads({});
             }}
           >
-            <AiOutlineClose size={25} color={"#6425FE"} />
+            <IoIosClose size={25} color={"#6425FE"} />
           </button>
         </div>
       </div>

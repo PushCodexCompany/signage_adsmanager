@@ -657,7 +657,6 @@ export default {
 
   getTagCatagory: async function (token) {
     const { brand_code } = this.getBrandCode();
-    console.log("brand_code", brand_code);
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -895,7 +894,6 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await this._get(
       `api/v1/get_screens?brandcode=${brand_code}`,
       "",
@@ -980,7 +978,7 @@ export default {
       },
     };
 
-    let urlString = `api/v1/create_screen?screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}&brandcode=${brand_code}`;
+    let urlString = `api/v1/create_screen?screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screencoords=${hash.screencoords}&screencity=${hash.screencity}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
     return data;
@@ -994,9 +992,8 @@ export default {
       },
     };
 
-    let urlString = `api/v1/update_screen?screenid=${hash.screenid}&screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}&brandcode=${brand_code}`;
+    let urlString = `api/v1/update_screen?screenid=${hash.screenid}&screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screencoords=${hash.screencoords}&screencity=${hash.screencity}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
-
     return data;
   },
 
@@ -1339,6 +1336,16 @@ export default {
       obj,
       config
     );
+    return data;
+  },
+
+  getConfiguration: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._get(`api/v1/get_configurations `, "", config);
     return data;
   },
 };

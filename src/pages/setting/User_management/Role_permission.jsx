@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "../../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import { Navbar } from "../../../components";
 import useCheckPermission from "../../../libs/useCheckPermission";
 import Encryption from "../../../libs/encryption";
@@ -853,7 +853,7 @@ const Role_permission = () => {
           <div className="absolute right-12 top-14 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => closeModal()}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>

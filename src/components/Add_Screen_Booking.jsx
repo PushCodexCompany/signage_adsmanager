@@ -22,13 +22,14 @@ const Add_Screen_Booking = ({
   const { token } = User.getCookieData();
   const [screen, setScreens] = useState([]);
   const [screens_options_data, setScreenOptionsData] = useState([]);
-
+  const [CityData, setCityData] = useState([]);
   const [filter_screen, setFilterScreen] = useState([]);
 
   useEffect(() => {
     getScreenData();
     getScreenOption();
-  }, []);
+    getCity();
+  }, [openAddNewScreenModal]);
 
   useEffect(() => {
     getScreenData(filter_screen);
@@ -56,6 +57,11 @@ const Add_Screen_Booking = ({
   const getScreenOption = async () => {
     const data = await User.getScreensOptions(token);
     setScreenOptionsData(data.screenresolution);
+  };
+
+  const getCity = async () => {
+    const data = await User.getConfiguration(token);
+    setCityData(data?.configuration?.cities);
   };
 
   const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
@@ -264,7 +270,9 @@ const Add_Screen_Booking = ({
                           {row.ScreenLocation || "No Data"}
                         </div>
                         <div className="font-poppins text-sm font-bold">
-                          {row.province || "No Data"}
+                          {CityData.find(
+                            (items) => items.CityID === row.ScreenCity
+                          )?.NameEN || "No Data"}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
@@ -284,15 +292,12 @@ const Add_Screen_Booking = ({
                             row.ScreenTag.map((items, index) => (
                               <div
                                 key={index}
-                                className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                                style={{
-                                  flexBasis: `calc(${
-                                    100 / row.ScreenTag.length
-                                  }% - 8px)`,
-                                }}
+                                className="border border-gray-300 rounded-xl flex justify-center items-center mb-1 mr-1"
                               >
-                                <div className="font-poppins text-xs font-bold">
-                                  {items.TagName}
+                                <div className="p-2">
+                                  <div className="font-poppins text-xs font-bold">
+                                    {items.TagName}
+                                  </div>
                                 </div>
                               </div>
                             ))

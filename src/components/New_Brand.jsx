@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import { HiOutlinePencil } from "react-icons/hi2";
 import Empty_Img from "../assets/img/empty_img.png";
 import User from "../libs/admin";
@@ -233,7 +233,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
             <button onClick={() => setShowModalAddNewBrand(false)}>
-              <AiOutlineClose size={25} color={"#6425FE"} />
+              <IoIosClose size={25} color={"#6425FE"} />
             </button>
           </div>
         </div>

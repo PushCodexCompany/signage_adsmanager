@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import Swal from "sweetalert2";
 import { PiCaretUpDown, PiSlidersHorizontalFill } from "react-icons/pi";
-import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
+
 import {
   IoIosClose,
   IoIosArrowUp,
@@ -399,7 +399,7 @@ const Login = () => {
             <div className="absolute right-10 top-14 lg:top-12 lg:right-[150px] m-4 z-30">
               <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
                 <button onClick={() => set_show_brand_modal(!show_brand_modal)}>
-                  <AiOutlineClose size={25} color={"#6425FE"} />
+                  <IoIosClose size={25} color={"#6425FE"} />
                 </button>
               </div>
             </div>
@@ -670,7 +670,7 @@ const Login = () => {
                 <button
                   onClick={() => show_merchandise_modal(!show_merchandise_modal)}
                 >
-                  <AiOutlineClose size={25} color={"#6425FE"} />
+                  <IoIosClose size={25} color={"#6425FE"} />
                 </button>
               </div>
             </div>

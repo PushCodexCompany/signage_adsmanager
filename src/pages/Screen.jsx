@@ -12,6 +12,8 @@ import User from "../libs/admin";
 
 import firebase from "../utils/Firebase";
 import Unpair_screen from "../components/Unpair_screen";
+import Select_Pair_screen from "../components/Select_Pair_screen";
+import IsPairScreen from "../components/IsPairScreen";
 
 const Event = () => {
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
@@ -19,11 +21,17 @@ const Event = () => {
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openPairScreenModal, setOpenPairScreenModal] = useState(false);
   const [openUnPairScreenModal, setOpenUnPairScreenModal] = useState(false);
+  const [openSelectPairScreenModel, setOpenSelectPairScreenModel] =
+    useState(false);
+  const [openIsPairModal, setOpenIsPairModal] = useState(false);
 
   const [screens_data, setScreensData] = useState([]);
   const [screens_status, setScreensStatus] = useState({});
   const [screens_options_data, setScreensOptionsData] = useState([]);
   const [screen_select, setScreenSelect] = useState(null);
+
+  const [checkboxes, setCheckboxes] = useState({});
+  const [screen_checkbox_select, setScreenCheckboxSelect] = useState([]);
 
   const navigate = useNavigate();
   const is_screensstatus_init = useRef(false);
@@ -84,7 +92,7 @@ const Event = () => {
             !row.ScreenStatus ||
             (row.ScreenStatus &&
               JSON.stringify(row.ScreenStatus) !==
-              JSON.stringify(screens_status[snap.key]))
+                JSON.stringify(screens_status[snap.key]))
           )
             row.ScreenStatus = screens_status[snap.key];
         }
@@ -122,7 +130,7 @@ const Event = () => {
             !row.ScreenStatus ||
             (row.ScreenStatus &&
               JSON.stringify(row.ScreenStatus) !==
-              JSON.stringify(screens_status[snap.key]))
+                JSON.stringify(screens_status[snap.key]))
           )
             row.ScreenStatus = screens_status[snap.key];
         }
@@ -166,7 +174,8 @@ const Event = () => {
               <button
                 onClick={() => {
                   setScreenSelect(null);
-                  setOpenPairScreenModal(!openPairScreenModal);
+                  setOpenSelectPairScreenModel(!openSelectPairScreenModel);
+                  // setOpenPairScreenModal(!openPairScreenModal);
                 }}
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
@@ -188,6 +197,10 @@ const Event = () => {
               setOpenUnPairScreenModal={setOpenUnPairScreenModal}
               openUnPairScreenModal={openUnPairScreenModal}
               setScreenSelect={setScreenSelect}
+              setCheckboxes={setCheckboxes}
+              checkboxes={checkboxes}
+              screen_checkbox_select={screen_checkbox_select}
+              setScreenCheckboxSelect={setScreenCheckboxSelect}
             />
           ) : (
             <></>
@@ -209,11 +222,58 @@ const Event = () => {
         />
       )}
 
+      {openSelectPairScreenModel && (
+        <a
+          onClick={() =>
+            setOpenSelectPairScreenModel(!openSelectPairScreenModel)
+          }
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openSelectPairScreenModel && (
+        <Select_Pair_screen
+          setOpenSelectPairScreenModel={setOpenSelectPairScreenModel}
+          openSelectPairScreenModel={openSelectPairScreenModel}
+          screen_checkbox_select={screen_checkbox_select}
+          setOpenPairScreenModal={setOpenPairScreenModal}
+          openPairScreenModal={openPairScreenModal}
+          setScreenSelect={setScreenSelect}
+        />
+      )}
+
+      {openPairScreenModal && (
+        <a
+          onClick={() => setOpenPairScreenModal(!openPairScreenModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
       {openPairScreenModal && (
         <Pair_Screen
+          openPairScreenModal={openPairScreenModal}
           setOpenPairScreenModal={setOpenPairScreenModal}
-          screens_data={screens_data}
           screen_preselect={screen_select}
+          openSelectPairScreenModel={openSelectPairScreenModel}
+          setOpenSelectPairScreenModel={setOpenSelectPairScreenModel}
+          screen_select={screen_select}
+          setOpenIsPairModal={setOpenIsPairModal}
+          openIsPairModal={openIsPairModal}
+        />
+      )}
+
+      {openIsPairModal && (
+        <a
+          onClick={() => setOpenIsPairModal(!openIsPairModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openIsPairModal && (
+        <IsPairScreen
+          setOpenIsPairModal={setOpenIsPairModal}
+          openIsPairModal={openIsPairModal}
+          screen_select={screen_select}
         />
       )}
 

@@ -9,7 +9,6 @@ import User from "../../libs/admin";
 import Permission from "../../libs/permission";
 import Create_Tag_Category from "../../components/Create_Tag_Category";
 import Swal from "sweetalert2";
-import { AiOutlineClose } from "react-icons/ai";
 
 const Tag_managment = () => {
   useCheckPermission();
@@ -318,7 +317,7 @@ const Tag_managment = () => {
                           }}
                         >
                           <div className="flex justify-center items-center mr-1 ml-1">
-                            <AiOutlineClose
+                            <IoIosClose
                               onClick={() => removeTag(items)}
                               className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                             />
@@ -398,7 +397,7 @@ const Tag_managment = () => {
           <div className="absolute right-12 md:top-[320px] md:right-[140px] lg:top-72 lg:right-[250px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setModalEditTag(!modalEditTag)}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
 
@@ -115,7 +115,7 @@ const Create_Tag_Category = ({
           <button
             onClick={() => setModalCreateNewCategory(!modalCreateNewCategory)}
           >
-            <AiOutlineClose size={25} color={"#6425FE"} />
+            <IoIosClose size={25} color={"#6425FE"} />
           </button>
         </div>
       </div>

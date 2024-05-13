@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { PiCaretUpDown } from "react-icons/pi";
-import { AiOutlineClose } from "react-icons/ai";
 import { GridTable } from "../libs/user_grid";
 import Swal from "sweetalert2";
 
@@ -274,7 +273,7 @@ const User_Management = ({ setShowModal }) => {
         <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
             <button onClick={() => setShowModal(false)}>
-              <AiOutlineClose size={25} color={"#6425FE"} />
+              <IoIosClose size={25} color={"#6425FE"} />
             </button>
           </div>
         </div>
@@ -407,7 +406,7 @@ const User_Management = ({ setShowModal }) => {
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setShowRegister(!showRegister)}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
@@ -654,7 +653,7 @@ const User_Management = ({ setShowModal }) => {
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setShowBrandModal(!showBrandModal)}>
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
@@ -750,7 +749,7 @@ const User_Management = ({ setShowModal }) => {
               <button
                 onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
               >
-                <AiOutlineClose size={25} color={"#6425FE"} />
+                <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>

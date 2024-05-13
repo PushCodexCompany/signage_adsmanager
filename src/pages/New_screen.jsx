@@ -6,7 +6,7 @@ import { Navbar } from "../components";
 import empty_img from "../assets/img/empty_location.png";
 import location_img from "../assets/img/location.png";
 import { HiOutlineClock } from "react-icons/hi";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import { BsInfoCircle } from "react-icons/bs";
 import User from "../libs/admin";
 import New_Tag from "../components/New_Tag";
@@ -28,6 +28,8 @@ const New_screen = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [preview_img, setPreviewImg] = useState(null);
   const [latLong, setLatLong] = useState([]);
+  const [screenLocationName, setScreenLocationName] = useState();
+  const [screenCityName, setScreenCityName] = useState();
   const [screenDescription, setScreenDescription] = useState();
   const [screenResolution, setScreenResolution] = useState();
   const [screenPhysical, setScreenPhysical] = useState();
@@ -41,6 +43,7 @@ const New_screen = () => {
   const [media_rules_dd, setMediaRulesDD] = useState([]);
   const [screen_resolution_dd, setScreenResolutionDD] = useState([]);
   const [screen_physical_size_dd, setScreenPhysicalSize] = useState([]);
+  const [city_data, setCityData] = useState([]);
 
   // New Tag
 
@@ -50,7 +53,7 @@ const New_screen = () => {
     if (id !== "new") {
       fetchScreen();
     }
-
+    getCity();
     getMediaRules();
     getScreenOption();
   }, [id]);
@@ -63,6 +66,8 @@ const New_screen = () => {
       ScreenTag,
       ScreenPhoto,
       ScreenLocation,
+      ScreenCity,
+      ScreenCoords,
       ScreenDesc,
       ScreenResolutionID,
       ScreenPhySizeID,
@@ -80,9 +85,12 @@ const New_screen = () => {
     setPreviewImg(ScreenPhoto);
     // setSelectedImage(ScreenPhoto);
     setLatLong({
-      lat: ScreenLocation.split(",")[0],
-      long: ScreenLocation.split(",")[1],
+      lat: ScreenCoords.split(",")[0],
+      long: ScreenCoords.split(",")[1],
     });
+
+    setScreenCityName(ScreenCity);
+    setScreenLocationName(ScreenLocation);
 
     // Location บน google map
     setLocationImg(ScreenPhoto);
@@ -99,6 +107,11 @@ const New_screen = () => {
       setIsMaintenanceSwitchOn(false);
     }
     setNotificationDelay(MANotifyDelay);
+  };
+
+  const getCity = async () => {
+    const data = await User.getConfiguration(token);
+    setCityData(data?.configuration?.cities);
   };
 
   const getMediaRules = async () => {
@@ -155,7 +168,9 @@ const New_screen = () => {
       screenname: screenName,
       mediaruleid: mediaRule || "",
       tagids: screenTag.map((item) => String(item.TagID)),
-      screenlocation: [latLong.lat, latLong.long],
+      screencoords: `${latLong.lat},${latLong.long}`,
+      screenlocation: screenLocationName || "",
+      screencity: screenCityName || "",
       screendesc: screenDescription || "",
       screenresolutionid: screenResolution || "",
       screenphysizeid: screenPhysical || "",
@@ -235,7 +250,9 @@ const New_screen = () => {
       screenname: screenName,
       mediaruleid: mediaRule || "",
       tagids: screenTag.map((item) => String(item.TagID)),
-      screenlocation: [latLong.lat, latLong.long],
+      screencoords: `${latLong.lat},${latLong.long}`,
+      screenlocation: screenLocationName || "",
+      screencity: parseInt(screenCityName) || "",
       screendesc: screenDescription || "",
       screenresolutionid: screenResolution || "",
       screenphysizeid: screenPhysical || "",
@@ -384,7 +401,7 @@ const New_screen = () => {
                             }}
                           >
                             <div className="flex justify-center items-center mr-1 ml-1">
-                              <AiOutlineClose
+                              <IoIosClose
                                 onClick={() =>
                                   handleDeleteTagInSelectTag(item.TagID)
                                 }
@@ -491,6 +508,57 @@ const New_screen = () => {
             <div className="p-1 mt-5">
               <div className="font-poppins font-semibold text-2xl">
                 Screen Detail
+              </div>
+              <div className="mt-4">
+                <div className="grid grid-cols-6 space-x-1">
+                  <div className="col-span-3">
+                    <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                      <input
+                        value={screenLocationName}
+                        onChange={(e) => setScreenLocationName(e.target.value)}
+                        type="text"
+                        placeholder="Location"
+                        className="w-full rounded-lg p-3 font-poppins border border-gray-300"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-3">
+                    <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                      <select
+                        name="screenCity"
+                        id="screenCity"
+                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                        onChange={(e) => setScreenCityName(e.target.value)}
+                        value={screenCityName}
+                      >
+                        <option value="" disabled selected hidden>
+                          City
+                        </option>
+                        {city_data.length > 0 &&
+                          city_data.map((items) => (
+                            <option value={items.CityID}>{items.NameEN}</option>
+                          ))}
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                        <svg
+                          width="13"
+                          height="15"
+                          viewBox="0 0 13 21"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
+                            stroke="#6425FE"
+                            stroke-width="3"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="mt-4">
                 <textarea

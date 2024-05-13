@@ -1211,14 +1211,10 @@ const Create_Booking = () => {
       )}
 
       {openAddNewScreenModal && (
-        <a
-          onClick={() => setOpenAddNewScreenModal(!openAddNewScreenModal)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        <New_Screen
+          setOpenAddNewScreenModal={setOpenAddNewScreenModal}
+          openAddNewScreenModal={openAddNewScreenModal}
         />
-      )}
-
-      {openAddNewScreenModal && (
-        <New_Screen setOpenAddNewScreenModal={setOpenAddNewScreenModal} />
       )}
 
       {openConfirmBookingModal && (
@@ -1241,36 +1237,6 @@ const Create_Booking = () => {
           booking_id={bookingId}
         />
       )}
-
-      {/* {isApplyToScreen && (
-        <a
-          onClick={() => {
-            setIsApplyToScreen(!isApplyToScreen);
-            setOpenAdsAllocationModal(!openAdsAllocationModal);
-          }}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )}
-
-      {isApplyToScreen && (
-        <Ads_Allocation_Apply_Screen
-          setIsApplyToScreen={setIsApplyToScreen}
-          isApplyToScreen={isApplyToScreen}
-          setOpenAdsAllocationModal={setOpenAdsAllocationModal}
-          openAdsAllocationModal={openAdsAllocationModal}
-          setSelectedData={setSelectedData}
-          booking_date={booking_date}
-          setOpenAddNewScreenModal={setOpenAddNewScreenModal}
-          openAddNewScreenModal={openAddNewScreenModal}
-          selectAll={selectAll}
-          toggleAllCheckboxes={toggleAllCheckboxes}
-          allScreenData={allScreenData}
-          checkboxes={checkboxes}
-          toggleCheckboxAddScreen={toggleCheckboxAddScreen}
-          selectedScreenItems={selectedScreenItems}
-          setScreennAdsAllocation={setScreennAdsAllocation}
-        />
-      )} */}
     </>
   );
 };

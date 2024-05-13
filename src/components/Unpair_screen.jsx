@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { IoIosClose } from "react-icons/io";
 import { BiUnlink } from "react-icons/bi";
 import FirebaseHelper from "../utils/FirebaseHelper";
 const Unpair_screen = ({
@@ -21,7 +21,7 @@ const Unpair_screen = ({
     FirebaseHelper.setScreenFlag(screenData, "os_version", "");
 
     console.log("screenData", screenData);
-    setOpenUnPairScreenModal(!openUnPairScreenModal)
+    setOpenUnPairScreenModal(!openUnPairScreenModal);
   };
 
   return (
@@ -33,7 +33,7 @@ const Unpair_screen = ({
             <button
               onClick={() => setOpenUnPairScreenModal(!openUnPairScreenModal)}
             >
-              <AiOutlineClose size={25} color={"#6425FE"} />
+              <IoIosClose size={25} color={"#6425FE"} />
             </button>
           </div>
         </div>
@@ -46,7 +46,10 @@ const Unpair_screen = ({
             </div>
             <div className="flex justify-center items-center">
               <div className="font-poppins text-[#2F3847] text-[18px] pl-12 pr-12 pt-12">
-                {screen_select?.ScreenName} is currently paired to a physical screen. Would you like to unpair them? Please note that after unpaired, you will no longer be able to send new media to the screen unless the physical screen is paired back to the system.
+                {screen_select?.ScreenName} is currently paired to a physical
+                screen. Would you like to unpair them? Please note that after
+                unpaired, you will no longer be able to send new media to the
+                screen unless the physical screen is paired back to the system.
               </div>
             </div>
             <div className="mt-36">

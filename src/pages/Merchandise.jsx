@@ -37,10 +37,6 @@ const Merchandise = () => {
     }
   };
 
-  const selectMerchandise = (merchendise) => {
-    alert(`Select : ${merchendise.name}`);
-  };
-
   const handleNewMerchandise = () => {
     navigate("/edit_merchandise/new");
   };
