@@ -294,13 +294,11 @@ export default {
   /////////////////////////////
 
   getBrand: async function (token) {
-    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    console.log("brand_code", brand_code);
     const { data } = await this._get(`api/v1/get_brands `, "", config);
     if (data.code !== 404) {
       return data;

@@ -38,6 +38,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
   };
 
   const onSelectEdit = (id) => {
+    console.log("user_lists", user_lists);
     const {
       UserID,
       Username,
@@ -51,8 +52,9 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
     setEditId(UserID);
     setEditUsername(Username);
 
-    const brandIDs = AccessContent?.brands.map((item) => item.BrandID);
-    setRegBrand(brandIDs);
+    // const brandIDs = AccessContent?.brands.map((item) => item.BrandID);
+    // setRegBrand(brandIDs);
+    setRegBrand(AccessContent?.brands ? AccessContent.brands.map(Number) : []);
     setEditEmail(Email);
     setEditActivate(Activated);
     setEditRolename(RoleID);
@@ -141,6 +143,10 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
   };
 
   const getImgBrand = (id) => {
+    console.log("brand", brand);
+    console.log("id", id);
+    // const brand_img = brand.find((item) => item.BrandID === parseInt(id));
+    // return brand_img ? brand_img.BrandLogo : empty_img;
     const brand_img = brand.find((item) => item.BrandID === parseInt(id));
     return brand_img ? brand_img.BrandLogo : empty_img;
   };
@@ -248,12 +254,14 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                   </td>
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex space-x-1 ">
+                      {console.log(row.AccessContent)}
                       {row.AccessContent?.brands &&
                       row.AccessContent?.brands.length > 0 ? (
                         row.AccessContent.brands.map((items) => (
                           <img
                             className="w-[50px] h-[50px] rounded-md"
-                            src={getImgBrand(items.BrandID)}
+                            // src={getImgBrand(items.BrandID)}
+                            src={getImgBrand(items)}
                           />
                         ))
                       ) : (
@@ -480,7 +488,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                           <img
                             className="block ml-auto mr-auto w-12 h-12 rounded-lg"
                             src={getImgBrand(item)}
-                            alt={item.name}
+                            alt={item?.name}
                           />
                         </div>
                       ))}
