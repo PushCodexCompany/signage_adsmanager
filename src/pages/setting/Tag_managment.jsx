@@ -76,7 +76,6 @@ const Tag_managment = () => {
   const handleDeleteCategoryTag = async (items) => {
     try {
       const data = await User.deleteTagCategory(items.TagCategoryID, token);
-      console.log("data", data);
       if (data.code !== 404) {
         Swal.fire({
           icon: "success",

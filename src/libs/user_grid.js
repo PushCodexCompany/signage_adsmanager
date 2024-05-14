@@ -50,7 +50,9 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
 
     setEditId(UserID);
     setEditUsername(Username);
-    setRegBrand(AccessContent?.brands ? AccessContent.brands.map(Number) : []);
+
+    const brandIDs = AccessContent?.brands.map((item) => item.BrandID);
+    setRegBrand(brandIDs);
     setEditEmail(Email);
     setEditActivate(Activated);
     setEditRolename(RoleID);
@@ -75,11 +77,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
             merchandise: reg_merchandise,
           },
         };
-
-        // console.log("obj", obj);
-
         const encrypted = await Encryption.encryption(obj, "edit_user", false);
-        // console.log("encrypted", encrypted);
         const data = await User.updateUser(encrypted, token);
 
         if (data.code !== 404) {
@@ -255,7 +253,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                         row.AccessContent.brands.map((items) => (
                           <img
                             className="w-[50px] h-[50px] rounded-md"
-                            src={getImgBrand(items)}
+                            src={getImgBrand(items.BrandID)}
                           />
                         ))
                       ) : (
