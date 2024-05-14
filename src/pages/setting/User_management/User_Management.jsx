@@ -231,7 +231,6 @@ const User_Management = () => {
           "create_user",
           false
         );
-
         try {
           const data = await User.createUser(encrypted, token);
           if (data.code !== 404) {
