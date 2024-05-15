@@ -237,7 +237,7 @@ const Select_Pair_screen = ({
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="6" className="p-4">
+                        <td colSpan="12" className="p-4">
                           <div className="flex justify-center items-center">
                             <span className="text-gray-300 text-4xl">
                               No Screen(s) Select
