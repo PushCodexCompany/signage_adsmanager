@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import { PiCaretUpDown } from "react-icons/pi";
@@ -7,9 +8,16 @@ import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 import empty_img from "../assets/img/empty_img.png";
 
-export const GridTable = ({ user_lists, page_permission, brand }) => {
+export const GridTable = ({
+  user_lists,
+  page_permission,
+  brand,
+  merchandise,
+}) => {
+  const navigate = useNavigate();
   const [modal_edit, setModalEdit] = useState(false);
   const [default_brand, setDefaultBrand] = useState([]);
+  const [default_merchandise, setDefaultMerchandise] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
 
@@ -22,6 +30,7 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
 
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [reg_brand, setRegBrand] = useState([]);
+  const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
   useEffect(() => {
@@ -32,13 +41,14 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
     const { token } = User.getCookieData();
     const roles = await User.getUserRoles(token);
     const brands = await User.getBrand(token);
+    const merchandises = await User.getMerchandiseList(token);
 
     setDefaultBrand(brands);
     setDefaultRoles(roles);
+    setDefaultMerchandise(merchandises);
   };
 
   const onSelectEdit = (id) => {
-    console.log("user_lists", user_lists);
     const {
       UserID,
       Username,
@@ -55,6 +65,9 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
     // const brandIDs = AccessContent?.brands.map((item) => item.BrandID);
     // setRegBrand(brandIDs);
     setRegBrand(AccessContent?.brands ? AccessContent.brands.map(Number) : []);
+    setRegMerchandise(
+      AccessContent?.merchandise ? AccessContent.merchandise.map(Number) : []
+    );
     setEditEmail(Email);
     setEditActivate(Activated);
     setEditRolename(RoleID);
@@ -92,7 +105,8 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
               result.isConfirmed ||
               result.dismiss === Swal.DismissReason.backdrop
             ) {
-              window.location.reload();
+              // window.location.reload();
+              navigate(0);
             }
           });
         } else {
@@ -142,13 +156,24 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
     setShowBrandModal(!showBrandModal);
   };
 
+  const saveMerchandiseReg = () => {
+    const sortMerch = reg_merchandise.slice().sort((a, b) => a - b);
+    setRegMerchandise(sortMerch);
+    setShowMerchandiseModal(!showMerchandiseModal);
+  };
+
   const getImgBrand = (id) => {
-    console.log("brand", brand);
-    console.log("id", id);
     // const brand_img = brand.find((item) => item.BrandID === parseInt(id));
     // return brand_img ? brand_img.BrandLogo : empty_img;
     const brand_img = brand.find((item) => item.BrandID === parseInt(id));
     return brand_img ? brand_img.BrandLogo : empty_img;
+  };
+
+  const getImgMerchandise = (id) => {
+    const merchandise_data = merchandise.find(
+      (item) => item.AdvertiserID === parseInt(id)
+    );
+    return merchandise_data ? merchandise_data.AdvertiserLogo : empty_img;
   };
 
   const onClickDelete = async (id, name) => {
@@ -254,7 +279,6 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                   </td>
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex space-x-1 ">
-                      {console.log(row.AccessContent)}
                       {row.AccessContent?.brands &&
                       row.AccessContent?.brands.length > 0 ? (
                         row.AccessContent.brands.map((items) => (
@@ -496,6 +520,47 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                   )}
                 </div>
               </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                    Merchandise :
+                  </div>
+                </div>
+                <div className="col-span-8">
+                  <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                    <button
+                      onClick={() => setShowMerchandiseModal(true)}
+                      name="brand"
+                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                    >
+                      Select Merchandise
+                    </button>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <PiCaretUpDown size={20} color="#6425FE" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="col-span-4">
+                  <div className="font-poppins text-[#8A8A8A] text-right"></div>
+                </div>
+                <div className="col-span-8">
+                  {reg_merchandise.length > 0 && (
+                    <div className="flex items-center space-x-4">
+                      {reg_merchandise.map((item, index) => (
+                        <div key={index} className="flex">
+                          <img
+                            className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                            src={getImgMerchandise(item)}
+                            alt={item?.name}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
             <div className="text-center">
               <button
@@ -588,6 +653,102 @@ export const GridTable = ({ user_lists, page_permission, brand }) => {
                 <div className="flex justify-center items-center">
                   <button
                     onClick={() => saveBrandReg()}
+                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showMerchandiseModal && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
+              >
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">
+                Select Merchandise
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Select Merchandise To Unleash The Power Of Digital Advertising
+              </div>
+            </div>
+            {/* <div className="mt-2 p-2">
+              <div className="relative flex items-center justify-center">
+                <input
+                  className="w-[900px] h-10 border border-gray-300 rounded-md pl-10 pr-2 font-poppins"
+                  placeholder="Search"
+                />
+                <span className="absolute inset-y-0 left-0 lg:left-80 flex items-center pl-2">
+                  <AiOutlineSearch size={20} color="#DBDBDB" />
+                </span>
+              </div>
+            </div> */}
+            <div className="mt-2 p-2">
+              <div className="h-[550px]  mt-8 overflow-y-auto">
+                <div className="h-[250px] flex items-start justify-center mt-3">
+                  <div className="grid grid-cols-4 gap-8">
+                    {default_merchandise.map((item, index) => (
+                      <div key={index}>
+                        <div className="h-64 w-64 relative">
+                          <input
+                            type="checkbox"
+                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                            onChange={() =>
+                              handleCheckboxChange(
+                                item.AdvertiserID,
+                                "merchandise"
+                              )
+                            }
+                            checked={reg_merchandise.includes(
+                              item.AdvertiserID
+                            )}
+                          />
+
+                          <div className="w-full h-full flex items-center justify-center">
+                            <img
+                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl" // Adjust the size as needed
+                              src={item.AdvertiserLogo}
+                              alt={item.AdvertiserName}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-xl font-bold">
+                            {item.AdvertiserName}
+                          </div>
+                        </div>
+                        <div className="flex justify-center items-center">
+                          <div className="font-poppins text-[#6F6F6F] text-sm">
+                            {item.AccountCode}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <button
+                    onClick={() => saveMerchandiseReg()}
                     className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
                   >
                     Save

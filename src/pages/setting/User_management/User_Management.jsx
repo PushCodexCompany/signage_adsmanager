@@ -462,6 +462,7 @@ const User_Management = () => {
               user_lists={user_lists}
               page_permission={page_permission}
               brand={brand}
+              merchandise={merchandise}
             />
           )}
         </div>

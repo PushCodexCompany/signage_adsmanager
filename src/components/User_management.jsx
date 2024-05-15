@@ -394,6 +394,7 @@ const User_Management = ({ setShowModal }) => {
                 user_lists={user_lists}
                 page_permission={page_permission}
                 brand={default_brand}
+                merchandise={default_merchandise}
               />
             )}
           </div>
