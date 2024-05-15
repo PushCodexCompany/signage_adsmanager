@@ -141,27 +141,25 @@ const Brands = () => {
         <div className="text-6xl font-[700] text-center font-poppins">
           Select Your Brand
         </div>
-        <div className="text-xl text-center text-slate-500 mb-20 font-poppins font-[500]">
+        <div className="text-xl text-center text-slate-500 mb-12 font-poppins font-[500]">
           Choose your brand from the list to access brand-specific content and
           bookings.
         </div>
 
-        <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
-          <div className="sm:w-1/2 lg:w-[27%] h-[400px] p-2 flex flex-col items-center">
-            <button onClick={() => handleNewBrand()}>
-              <div className="h-60 flex items-center justify-center">
-                <FaPlus size={100} color="#6425FE" />
-              </div>
-              <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
-                Add new Brand
-              </div>
-            </button>
-          </div>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg">
+          <button onClick={() => handleNewBrand()}>
+            <div className="h-60 flex items-center justify-center">
+              <FaPlus size={100} color="#6425FE" />
+            </div>
+            <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
+              Add new Brand
+            </div>
+          </button>
           {brand.length > 0 &&
             brand.map((items, key) => (
               <div
                 key={key}
-                className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
+                className="h-[400px] p-2 flex flex-col items-center"
               >
                 <div className="relative mb-4">
                   <img
