@@ -12,7 +12,7 @@ import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 import plus_brand from "../assets/img/plus_brand.png";
 
-import { Navbar } from "../components";
+import Navbar from "../components/Navbar_brand";
 
 const Brands = () => {
   const { user } = User.getCookieData();
@@ -26,6 +26,7 @@ const Brands = () => {
   const navigate = useNavigate();
 
   const [brand, setBrand] = useState([]);
+  const [full_brand, setFullBrand] = useState([]);
 
   useEffect(() => {
     if (!user) {
@@ -53,6 +54,7 @@ const Brands = () => {
     try {
       const data = await User.getBrand(token);
       setBrand(data);
+      setFullBrand(data);
     } catch (error) {
       console.error("Error : ", error);
     }
@@ -136,7 +138,7 @@ const Brands = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar full_brand={full_brand} setBrand={setBrand} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <div className="text-6xl font-[700] text-center font-poppins">
