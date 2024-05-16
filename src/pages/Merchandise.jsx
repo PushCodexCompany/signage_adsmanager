@@ -8,6 +8,7 @@ import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
+import plus_brand from "../assets/img/plus_brand.png";
 
 const Merchandise = () => {
   useCheckPermission();
@@ -120,14 +121,23 @@ const Merchandise = () => {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg">
-          <button onClick={() => handleNewMerchandise()}>
-            <div className="h-60 flex items-center justify-center">
-              <FaPlus size={100} color="#6425FE" />
+          <div
+            onClick={() => handleNewMerchandise()}
+            className="h-[400px] p-2 flex flex-col items-center"
+          >
+            <div className="relative mb-4">
+              <img
+                className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
+                src={plus_brand}
+              />
             </div>
-            <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
-              Add New Merchandise
-            </div>
-          </button>
+            <button className="w-full">
+              <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+                Add New Merchandise
+              </div>
+              <div className="text-[14px] text-white font-poppins"></div>
+            </button>
+          </div>
           {merchandise.length > 0 &&
             merchandise.map((items, key) => (
               <div
