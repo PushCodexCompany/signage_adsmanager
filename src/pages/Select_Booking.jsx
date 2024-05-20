@@ -63,6 +63,8 @@ const Select_Booking = () => {
   const [media_allocation_upload_index, setMediaAllocatonUploadIndex] =
     useState(null);
 
+  const [filter_screen, setFilterScreen] = useState([]);
+
   useEffect(() => {
     getBookingData();
     getMediaItemsData();
@@ -148,11 +150,12 @@ const Select_Booking = () => {
     const foundEntry = advertiser.find(
       (entry) => entry.AdvertiserName === merchandise_name
     );
-
-    if (foundEntry) {
-      return foundEntry.AccountCode;
-    } else {
-      return "No Data";
+    if (advertiser.length > 0) {
+      if (foundEntry) {
+        return foundEntry.AccountCode;
+      } else {
+        return "No Data";
+      }
     }
   };
 
@@ -226,14 +229,12 @@ const Select_Booking = () => {
           bookingid: bookingId,
           bookingname: value,
         };
-
         try {
           const data = await User.updateBookingName(obj, token);
-
           if (data.code !== 404) {
             Swal.fire({
               icon: "success",
-              title: "แก้ไขชื่อ Booking name สำเร็จ!",
+              title: "แก้ไขชื่อ Booking name สำเร็จ !",
               text: `แก้ไขชื่อ Booking name สำเร็จ!`,
             }).then((result) => {
               if (
@@ -373,7 +374,12 @@ const Select_Booking = () => {
             </div>
           </div>
         </div>
-        <Filter />
+
+        <Filter
+          filter_screen={filter_screen}
+          setFilterScreen={setFilterScreen}
+        />
+
         <div className="mt-7 grid grid-cols-8 md:space-x-2">
           {/* Left Panel */}
           <div className="col-span-2">

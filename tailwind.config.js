@@ -1,3 +1,4 @@
+const plugin = require("tailwindcss/plugin");
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: "class",
@@ -42,7 +43,42 @@ module.exports = {
       backgroundImage: {
         "hero-pattern": "url('https://i.ibb.co/MkvLDfb/Rectangle-4389.png')",
       },
+      transitionProperty: {
+        scrollbar:
+          "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
+      },
+      transitionDuration: {
+        0: "0ms",
+        2000: "2000ms",
+      },
     },
   },
-  plugins: [require("tailwind-scrollbar")],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".custom-scrollbar::-webkit-scrollbar": {
+          width: "8px",
+          height: "2px",
+        },
+        ".custom-scrollbar::-webkit-scrollbar-track": {
+          background: "#edf2f7",
+          transition: "background-color 0.3s ease",
+        },
+        ".custom-scrollbar::-webkit-scrollbar-thumb": {
+          background: "#6425FE",
+          borderRadius: "10px",
+          border: "3px solid #edf2f7",
+          transition: "background-color 0.3s ease, border-color 0.3s ease",
+        },
+        ".custom-scrollbar::-webkit-scrollbar-thumb:hover": {
+          background: "#2d3748",
+          borderColor: "#e2e8f0",
+        },
+        ".custom-scrollbar": {
+          "scrollbar-width": "thin",
+          "scrollbar-color": "#6425FE #edf2f7",
+        },
+      });
+    }),
+  ],
 };

@@ -1,4 +1,5 @@
 import cookie from "react-cookies";
+import Encryption from "../libs/encryption";
 import Axios from "axios";
 import avatar from "../assets/img/avatar.png";
 import FirebaseHelper from "../utils/FirebaseHelper";
@@ -299,7 +300,17 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(`api/v1/get_brands `, "", config);
+
+    let urlString = `api/v1/get_brands`;
+
+    const { brand_code } = this.getBrandCode();
+
+    if (brand_code !== null && brand_code !== undefined) {
+      urlString += `?brandcode=${brand_code}`;
+    }
+
+    const { data } = await this._get(urlString, "", config);
+
     if (data.code !== 404) {
       return data;
     } else {
@@ -572,17 +583,26 @@ export default {
 
   getMerchandiseList: async function (token) {
     const { brand_code } = this.getBrandCode();
+
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
+    const obj = { brandcode: brand_code };
+    const encrypted = await Encryption.encryption(
+      obj,
+      "get_advertisers",
+      false
+    );
+
     const { data } = await this._get(
-      `api/v1/get_advertisers?brandcode=${brand_code}`,
+      `api/v1/get_advertisers?hash=${encrypted}`,
       "",
       config
     );
+
     if (data.code !== 404) {
       return data;
     } else {
@@ -662,9 +682,8 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await this._get(
-      `api/v1/get_tagcategories?brand_code=${brand_code}`,
+      `api/v1/get_tagcategories?brandcode=${brand_code}`,
       "",
       config
     );
@@ -1037,12 +1056,12 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await this._get(
-      `api/v1/get_bookings?brandcode${brand_code}`,
+      `api/v1/get_bookings?brandcode=${brand_code}`,
       "",
       config
     );
+
     if (data.code !== 404) {
       return data;
     } else {
@@ -1347,5 +1366,24 @@ export default {
     };
     const { data } = await this._get(`api/v1/get_configurations `, "", config);
     return data;
+  },
+
+  PublishBookingcontent: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/publish_bookingcontent?brandcode=${brand_code}&bookingid=${hash.bookingid}&screenids=${hash.screenids} `,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
   },
 };

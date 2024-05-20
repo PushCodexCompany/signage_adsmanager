@@ -3,6 +3,7 @@ import { IoIosClose, IoIosSearch } from "react-icons/io";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import Filter from "../components/Filter";
 import User from "../libs/admin";
+import Swal from "sweetalert2";
 
 const Publish_Screen_Booking = ({
   setShowPublishScreen,
@@ -76,7 +77,7 @@ const Publish_Screen_Booking = ({
     });
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     const screensToReturn = screen.filter((screen) =>
       selectPublihsScreen.includes(screen.ScreenID)
     );
@@ -92,6 +93,32 @@ const Publish_Screen_Booking = ({
       bookingid: bookingId,
       screenids: screenIdsString,
     };
+
+    try {
+      const data = await User.PublishBookingcontent(obj, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "Publish Booking สำเร็จ!",
+          text: `Publish Booking สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            console.log("data", data);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
+    } catch (error) {
+      console.error();
+    }
 
     console.log("obj", obj);
   };

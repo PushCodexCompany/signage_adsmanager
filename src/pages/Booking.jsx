@@ -19,7 +19,9 @@ const Booking = () => {
 
   const getBookingData = async () => {
     const data = await User.getBooking(token);
-    data.sort((a, b) => a.BookingID - b.BookingID);
+    if (data.length > 0) {
+      data?.sort((a, b) => a.BookingID - b.BookingID);
+    }
     setBookingData(data);
   };
 

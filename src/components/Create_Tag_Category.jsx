@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
@@ -15,6 +16,7 @@ const Create_Tag_Category = ({
     }
   }, [select_cat]);
 
+  const navigate = useNavigate();
   const [isNew, setIsNew] = useState(true);
   const [new_categoy_name, setNewCategoryName] = useState({});
 
@@ -22,6 +24,7 @@ const Create_Tag_Category = ({
     setNewCategoryName({
       name: select_cat.TagCategoryName,
       id: select_cat.TagCategoryID,
+      description: select_cat.TagDesc,
     });
   };
 
@@ -53,7 +56,7 @@ const Create_Tag_Category = ({
                 result.isConfirmed ||
                 result.dismiss === Swal.DismissReason.backdrop
               ) {
-                window.location.reload();
+                navigate("setting/tag_management");
               }
             });
           } else {

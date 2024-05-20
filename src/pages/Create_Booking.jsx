@@ -69,14 +69,17 @@ const Create_Booking = () => {
 
   const findAccountCode = async (merchandise_name) => {
     const advertiser = await User.getMerchandiseList(token);
-    const foundEntry = advertiser.find(
-      (entry) => entry.AdvertiserName === merchandise_name
-    );
 
-    if (foundEntry) {
-      return foundEntry.AccountCode;
-    } else {
-      return "No Data";
+    if (advertiser.length > 0) {
+      const foundEntry = advertiser.find(
+        (entry) => entry.AdvertiserName === merchandise_name
+      );
+
+      if (foundEntry) {
+        return foundEntry.AccountCode;
+      } else {
+        return "No Data";
+      }
     }
   };
 
