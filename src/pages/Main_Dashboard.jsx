@@ -69,7 +69,7 @@ const Main_Dashboard = () => {
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header title="Home" subtitle="Welcome to Dashboard" />
 
-      <div className="text-4xl font-bold text-center">
+      <div className="text-[50px] font-bold text-center">
         Select Your Merchandise
       </div>
       <div className="text-xl text-center text-slate-500 mb-20">

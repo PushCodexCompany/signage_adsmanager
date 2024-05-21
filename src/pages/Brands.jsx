@@ -16,6 +16,7 @@ import Navbar from "../components/Navbar_brand";
 
 const Brands = () => {
   const { user } = User.getCookieData();
+  const { permission } = User.getPermission();
   const select_campaign = User.getCampaign();
   const select_account = User.getAccount();
 
@@ -141,7 +142,7 @@ const Brands = () => {
       <Navbar full_brand={full_brand} setBrand={setBrand} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <div className="text-6xl font-[700] text-center font-poppins">
+        <div className="text-[50px] font-[700] text-center font-poppins">
           Select Your Brand
         </div>
         <div className="text-xl text-center text-slate-500 mb-12 font-poppins font-[500]">
@@ -150,23 +151,28 @@ const Brands = () => {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg">
-          <div
-            onClick={() => handleNewBrand()}
-            className="h-[400px] p-2 flex flex-col items-center"
-          >
-            <div className="relative mb-4">
-              <img
-                className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
-                src={plus_brand}
-              />
-            </div>
-            <button className="w-full">
-              <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                Add new Brand
+          {permission.brand.create ? (
+            <div
+              onClick={() => handleNewBrand()}
+              className="h-[400px] p-2 flex flex-col items-center"
+            >
+              <div className="relative mb-4">
+                <img
+                  className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
+                  src={plus_brand}
+                />
               </div>
-              <div className="text-[14px] text-white font-poppins"></div>
-            </button>
-          </div>
+              <button className="w-full">
+                <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
+                  Add new Brand
+                </div>
+                <div className="text-[14px] text-white font-poppins"></div>
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
+
           {brand.length > 0 &&
             brand.map((items, key) => (
               <div
@@ -175,7 +181,7 @@ const Brands = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-contain border border-[#DFDFDF]"
                     src={
                       items.BrandLogo
                         ? items.BrandLogo
@@ -186,36 +192,49 @@ const Brands = () => {
                     alt={items.AccountName}
                     onClick={() => selectCampaign(items)}
                   />
-                  <div
-                    onClick={() => toggleDropdown(items.BrandID)}
-                    className="absolute top-2 right-2 cursor-pointer"
-                  >
-                    <TbDots
-                      size={26}
-                      className="text-white hover:text-[#6425FE]"
-                    />
-                  </div>
+                  {!permission.brand.update && !permission.brand.delete ? (
+                    <></>
+                  ) : (
+                    <div
+                      onClick={() => toggleDropdown(items.BrandID)}
+                      className="absolute top-2 right-2 cursor-pointer"
+                    >
+                      <TbDots
+                        size={26}
+                        className="text-white hover:text-[#6425FE]"
+                      />
+                    </div>
+                  )}
+
                   {dropdownStates[items.BrandID] && (
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
-                      <button
-                        onClick={() => {
-                          toggleDropdown(items.BrandID);
-                          setEditBrand(items);
-                          setShowModalAddNewBrand(true);
-                        }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleDeleteBrand(items.BrandID);
-                          toggleDropdown(items.BrandID);
-                        }}
-                        className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
-                      >
-                        Delete
-                      </button>
+                      {permission.brand.update ? (
+                        <button
+                          onClick={() => {
+                            toggleDropdown(items.BrandID);
+                            setEditBrand(items);
+                            setShowModalAddNewBrand(true);
+                          }}
+                          className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
+                        >
+                          Edit
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                      {permission.brand.delete ? (
+                        <button
+                          onClick={() => {
+                            handleDeleteBrand(items.BrandID);
+                            toggleDropdown(items.BrandID);
+                          }}
+                          className="block w-full text-left font-poppins hover:text-[#6425FE] py-1"
+                        >
+                          Delete
+                        </button>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   )}
                 </div>

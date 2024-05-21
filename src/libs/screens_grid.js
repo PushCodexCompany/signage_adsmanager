@@ -154,7 +154,7 @@ export const GridTable = ({
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
-              <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 <label className="inline-flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -186,28 +186,28 @@ export const GridTable = ({
                   </span>
                 </label>
               </th>
-              <th className="px-2 py-5 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
+              <th className="px-2 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
                 No
               </th>
-              <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-medium text-[#59606C] tracking-wider">
+              <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
                 Screen Name
               </th>
-              <th className="px-5 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-5 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Location
               </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Media Rule
               </th>
-              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Slot Per Day
               </th>
-              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Loop Duration
               </th>
-              <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Tag
               </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
               </th>
             </tr>
@@ -276,12 +276,9 @@ export const GridTable = ({
                     </div>
                   </td>
                   <td className="px-5 py-4 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="flex justify-center  font-poppins text-sm text-[#59606C] font-bold">
+                    <div className="font-poppins text-sm text-[#59606C] font-bold">
                       {row.ScreenLocation || "No Data"}
                     </div>
-                    {/* <div className="font-poppins text-sm font-bold">
-                    {row.province || "No Data"}
-                  </div> */}
                   </td>
                   <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex justify-center items-center font-poppins font-bold">

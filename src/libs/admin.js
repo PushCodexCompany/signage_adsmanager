@@ -10,6 +10,7 @@ export const SIGNAGE_BRAND_COOKIE = "signage-brand";
 export const SIGNAGE_BRAND_CODE_COOKIE = "signage-brand-code";
 export const SIGNAGE_MERCHANDISE_COOKIE = "signage-merchandise";
 export const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
+export const SIGNAGE_PERMISSION_COOKIE_TOKEN = "signage-permission-token";
 
 export default {
   /**
@@ -162,6 +163,7 @@ export default {
   deleteCookie: function () {
     cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
     cookie.remove(SIGNAGE_MEMBER_COOKIE_TOKEN, { path: "/" });
+    cookie.remove(SIGNAGE_PERMISSION_COOKIE_TOKEN, { path: "/" });
     cookie.remove("redirect_uri", { path: null });
   },
   // save cookie
@@ -195,6 +197,21 @@ export default {
       cookie.save(
         SIGNAGE_BRAND_CODE_COOKIE,
         { brand_code: data },
+        {
+          maxAge: 86400,
+          path: "/",
+        }
+      );
+
+      return true;
+    }
+  },
+
+  savePermission: function (data) {
+    if (data) {
+      cookie.save(
+        SIGNAGE_PERMISSION_COOKIE_TOKEN,
+        { permission: data },
         {
           maxAge: 86400,
           path: "/",
@@ -268,6 +285,10 @@ export default {
   // get cookie
   getCookieData: function () {
     return cookie.load(SIGNAGE_MEMBER_COOKIE) || false;
+  },
+
+  getPermission: function () {
+    return cookie.load(SIGNAGE_PERMISSION_COOKIE_TOKEN) || false;
   },
 
   getAccount: function () {
@@ -1341,7 +1362,7 @@ export default {
     return data;
   },
 
-  GetBookingContentScreen: async function (obj, token) {
+  getBookingContentScreen: async function (obj, token) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1368,7 +1389,7 @@ export default {
     return data;
   },
 
-  PublishBookingcontent: async function (hash, token) {
+  publishBookingcontent: async function (hash, token) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1385,5 +1406,20 @@ export default {
     } else {
       return false;
     }
+  },
+
+  get_medias: async function (token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._get(
+      `api/v1/get_medias?brandcode=${brand_code} `,
+      "",
+      config
+    );
+    return data;
   },
 };

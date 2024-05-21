@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
-import User, { SIGNAGE_ACCOUNT_COOKIE, SIGNAGE_BRAND_CODE_COOKIE, SIGNAGE_BRAND_COOKIE, SIGNAGE_MEMBER_COOKIE, SIGNAGE_MERCHANDISE_COOKIE } from "../libs/admin";
+import User, {
+  SIGNAGE_ACCOUNT_COOKIE,
+  SIGNAGE_BRAND_CODE_COOKIE,
+  SIGNAGE_BRAND_COOKIE,
+  SIGNAGE_MEMBER_COOKIE,
+  SIGNAGE_MERCHANDISE_COOKIE,
+  SIGNAGE_PERMISSION_COOKIE_TOKEN,
+} from "../libs/admin";
 import cookie from "react-cookies";
 const Logout = () => {
   useEffect(async () => {
@@ -11,6 +18,7 @@ const Logout = () => {
       cookie.remove(SIGNAGE_MERCHANDISE_COOKIE, { path: "/" });
       cookie.remove(SIGNAGE_BRAND_CODE_COOKIE, { path: "/" });
       cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
+      cookie.remove(SIGNAGE_PERMISSION_COOKIE_TOKEN, { path: "/" });
       return false;
     }
   }, []);

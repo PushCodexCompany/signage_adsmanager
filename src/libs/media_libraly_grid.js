@@ -4,18 +4,6 @@ import {
   RiPlayCircleLine,
 } from "react-icons/ri";
 
-const calculateSize = (fileSizeInKB) => {
-  const units = ["bytes", "KB", "MB", "GB"];
-  let l = 0,
-    n = parseInt(fileSizeInKB, 10) || 0;
-
-  while (n >= 1024 && ++l) {
-    n = n / 1024;
-  }
-
-  return n.toFixed(n < 10 && l > 0 ? 1 : 0) + " " + units[l];
-};
-
 const generateStatus = (id) => {
   const getStatus = (id) => {
     let status;
@@ -54,81 +42,62 @@ const onClickDelete = (id) => {
   alert(`Delete : ${id}`);
 };
 
-const dashboardData = [
-  {
-    id: 1,
-    file_name: "Summer Sale 2023 Ads.mp4",
-    merchandise: "Super Sports",
-    size: "130000000",
-    status: 1,
-  },
-  {
-    id: 2,
-    file_name: "Midnight Sale 2023.png",
-    merchandise: "TOPS",
-    size: "476000",
-    status: 0,
-  },
-  {
-    id: 3,
-    file_name: "Promotion Event Ads.mp4",
-    merchandise: "TOPS",
-    size: "55000000",
-    status: 1,
-  },
-];
-
-export const GridTable = () => {
+export const GridTable = ({ media_libraly_data }) => {
   return (
     <>
       <div className="w-auto h-[580px] overflow-auto">
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 ID
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 File Name
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Merchandise
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 File Size
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Status
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-            {dashboardData.map((row) => (
-              <tr key={row.id}>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">{row.id}</div>
-                </td>
+            {media_libraly_data.map((row) => (
+              <tr key={row.ContentID}>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.file_name}
+                    {row.ContentID}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {row.merchandise}
+                    {row.ContentName}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {calculateSize(row.size)}
+                    {row.MerchandiseName}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="font-poppins text-md font-bold">
-                    {generateStatus(row.status)}
+                    {parseFloat(JSON.parse(row.ContentProperties).size).toFixed(
+                      2
+                    )}{" "}
+                    MB
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="font-poppins text-md font-bold">
+                    {generateStatus(row.ActiveStats)}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
@@ -145,10 +114,17 @@ export const GridTable = () => {
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
                     </button>
-                    <button onClick={() => onClickDelete(row.id)}>
+                    <button
+                      onClick={() => onClickDelete(row.ContentID)}
+                      disabled={row.ActiveStats === 0 ? false : true}
+                    >
                       <RiDeleteBin5Line
                         size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                        className={`${
+                          row.ActiveStats === 0
+                            ? "text-[#6425FE] hover:text-[#3b1694] "
+                            : "text-[#dbdbdb] hover:text-[#dbdbdb]"
+                        } cursor-pointer`}
                       />
                     </button>
                   </div>

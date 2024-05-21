@@ -663,7 +663,7 @@ const Ads_Allocation_Booking = ({
       mediaplaylistid: parseInt(media_playlist_id),
     };
     try {
-      const check_screen = await User.GetBookingContentScreen(obj, token);
+      const check_screen = await User.getBookingContentScreen(obj, token);
       const isAnotherScreen = compareScreenID(
         screenSelectFromEdit,
         check_screen.screens

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/media_libraly_grid";
 import { AiOutlineCloudUpload } from "react-icons/ai";
@@ -7,10 +7,13 @@ import { BsCheckCircle } from "react-icons/bs";
 import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
 import Filter from "../../components/Filter";
+import User from "../../libs/admin";
 
 const Media_Libraly = () => {
   useCheckPermission();
+  const { token } = User.getCookieData();
   const [showModal, setShowModal] = useState(false);
+  const [media_libraly_data, setMediaLibralyData] = useState([]);
 
   const [uploads, setUploads] = useState({
     upload1: {
@@ -29,6 +32,15 @@ const Media_Libraly = () => {
       progress: 0, // Add progress property
     },
   });
+
+  useEffect(() => {
+    getMediaLibralyData();
+  }, []);
+
+  const getMediaLibralyData = async () => {
+    const data = await User.get_medias(token);
+    setMediaLibralyData(data);
+  };
 
   const createNewMedia = () => {
     setShowModal(!showModal);
@@ -101,9 +113,11 @@ const Media_Libraly = () => {
         </div>
         <Filter />
 
-        <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-          <GridTable />
-        </div>
+        {media_libraly_data.length > 0 && (
+          <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
+            <GridTable media_libraly_data={media_libraly_data} />
+          </div>
+        )}
       </div>
 
       {showModal && (

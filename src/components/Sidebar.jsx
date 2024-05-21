@@ -208,14 +208,14 @@ const SidebarMain = () => {
   useEffect(async () => {
     const { token } = User.getCookieData();
     const { brand_id } = User.getCampaign();
-    // const data = await User.getBrand(token);
-    // const brand = data.find((items) => items.BrandCode === brand_id);
-    // setLogoImg(brand.BrandLogo);
-    if (brand_id === 1) {
-      setLogoImg(Central_Logo);
-    } else {
-      setLogoImg(Robinson_Logo);
-    }
+    const data = await User.getBrand(token);
+    const brand = data.find((items) => items.BrandCode === brand_id);
+    setLogoImg(brand.BrandLogo);
+    // if (brand_id === 1) {
+    //   setLogoImg(Central_Logo);
+    // } else {
+    //   setLogoImg(Robinson_Logo);
+    // }
 
     const loadImgClass = async () => {
       const cssValue = await generateImgHeight(logo_img);

@@ -95,7 +95,7 @@ const Publish_Screen_Booking = ({
     };
 
     try {
-      const data = await User.PublishBookingcontent(obj, token);
+      const data = await User.publishBookingcontent(obj, token);
       if (data.code !== 404) {
         Swal.fire({
           icon: "success",
@@ -106,7 +106,7 @@ const Publish_Screen_Booking = ({
             result.isConfirmed ||
             result.dismiss === Swal.DismissReason.backdrop
           ) {
-            console.log("data", data);
+            setShowPublishScreen(!showPublishScreen);
           }
         });
       } else {
@@ -119,8 +119,6 @@ const Publish_Screen_Booking = ({
     } catch (error) {
       console.error();
     }
-
-    console.log("obj", obj);
   };
 
   const search = () => {

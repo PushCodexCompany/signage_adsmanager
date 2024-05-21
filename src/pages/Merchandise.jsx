@@ -112,7 +112,7 @@ const Merchandise = () => {
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <div className="text-6xl font-bold text-center font-poppins">
+        <div className="text-[50px] font-bold text-center font-poppins">
           Select Your Merchandise
         </div>
         <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
