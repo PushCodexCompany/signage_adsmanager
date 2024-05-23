@@ -61,6 +61,7 @@ const Create_Booking = () => {
 
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   useEffect(() => {
     setBooking();
@@ -775,7 +776,10 @@ const Create_Booking = () => {
           </div>
         </div>
 
-        <Filter />
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+        />
 
         <div className="mt-7 grid grid-cols-8 md:space-x-2">
           <div className="col-span-2">

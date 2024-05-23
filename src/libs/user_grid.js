@@ -283,7 +283,7 @@ export const GridTable = ({
                       row.AccessContent?.brands.length > 0 ? (
                         row.AccessContent.brands.map((items) => (
                           <img
-                            className="w-[50px] h-[50px] rounded-md"
+                            className="w-[50px] h-[50px] rounded-md object-contain border border-[#dedede]"
                             // src={getImgBrand(items.BrandID)}
                             src={getImgBrand(items)}
                           />
@@ -510,7 +510,7 @@ export const GridTable = ({
                       {reg_brand.map((item, index) => (
                         <div key={index} className="flex">
                           <img
-                            className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                            className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain border border-[#dedede]"
                             src={getImgBrand(item)}
                             alt={item?.name}
                           />
@@ -551,7 +551,7 @@ export const GridTable = ({
                       {reg_merchandise.map((item, index) => (
                         <div key={index} className="flex">
                           <img
-                            className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                            className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain  border border-[#dedede]"
                             src={getImgMerchandise(item)}
                             alt={item?.name}
                           />
@@ -627,7 +627,7 @@ export const GridTable = ({
 
                           <div className="w-full h-full flex items-center justify-center">
                             <img
-                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl" // Adjust the size as needed
+                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-contain" // Adjust the size as needed
                               src={item.BrandLogo}
                               alt={item.BrandName}
                             />
@@ -723,7 +723,7 @@ export const GridTable = ({
 
                           <div className="w-full h-full flex items-center justify-center">
                             <img
-                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl" // Adjust the size as needed
+                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-contain" // Adjust the size as needed
                               src={item.AdvertiserLogo}
                               alt={item.AdvertiserName}
                             />

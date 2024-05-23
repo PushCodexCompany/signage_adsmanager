@@ -172,7 +172,7 @@ const Merchandise = () => {
                   >
                     <TbDots
                       size={26}
-                      className="text-white hover:text-[#6425FE]"
+                      className="text-[#dedede] hover:text-[#6425FE]"
                     />
                   </div>
                   {dropdownStates[items.AdvertiserID] && (

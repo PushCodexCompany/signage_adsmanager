@@ -35,10 +35,7 @@ const Screen = () => {
           </div>
         </div>
         <Filter />
-      </div>
-
-      <div className="m-1 md:m-5 p-2 md:p-5 bg-white rounded-3xl">
-        <div className="w-auto  h-[600px] border border-[#DBDBDB] rounded-lg">
+        <div className="mt-5">
           <GridTable />
         </div>
       </div>

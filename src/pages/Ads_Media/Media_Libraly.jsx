@@ -14,6 +14,7 @@ const Media_Libraly = () => {
   const { token } = User.getCookieData();
   const [showModal, setShowModal] = useState(false);
   const [media_libraly_data, setMediaLibralyData] = useState([]);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   const [uploads, setUploads] = useState({
     upload1: {
@@ -111,10 +112,13 @@ const Media_Libraly = () => {
             </div>
           </div>
         </div>
-        <Filter />
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+        />
 
         {media_libraly_data.length > 0 && (
-          <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
+          <div className="mt-5">
             <GridTable
               media_libraly_data={media_libraly_data}
               setMediaLibralyData={setMediaLibralyData}

@@ -29,6 +29,7 @@ const Ads_Allocation_Apply_Screen = ({
   const { token } = User.getCookieData();
   const [screens_options_data, setScreenOptionsData] = useState([]);
   const [screen_filter, setScreenFilter] = useState([]);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   useEffect(() => {
     getScreenOption();
@@ -154,7 +155,10 @@ const Ads_Allocation_Apply_Screen = ({
           </div>
         </div>
         {/* Search Box */}
-        <Filter />
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+        />
         <div className="mt-5 p-6">
           <div className="font-poppins">
             *Search result displays only screens available in your booking

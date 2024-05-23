@@ -12,6 +12,7 @@ const Booking = () => {
   const { token } = User.getCookieData();
   const [showModalAddNewBooking, setShowModalAddNewBooking] = useState(false);
   const [booking_data, setBookingData] = useState([]);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   useEffect(() => {
     getBookingData();
@@ -48,7 +49,10 @@ const Booking = () => {
             </div>
           </div>
         </div>
-        <Filter />
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+        />
         <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
           {booking_data.length > 0 && <GridTable booking_data={booking_data} />}
         </div>

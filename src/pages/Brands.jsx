@@ -150,7 +150,13 @@ const Brands = () => {
           bookings.
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg">
+        <div
+          className={` ${
+            brand.length <= 1
+              ? "grid grid-cols-1 lg:grid-cols-1 "
+              : "grid grid-cols-2 lg:grid-cols-3"
+          } gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg`}
+        >
           {permission.brand.create ? (
             <div
               onClick={() => handleNewBrand()}
@@ -201,7 +207,7 @@ const Brands = () => {
                     >
                       <TbDots
                         size={26}
-                        className="text-white hover:text-[#6425FE]"
+                        className="text-[#dedede] hover:text-[#6425FE]"
                       />
                     </div>
                   )}

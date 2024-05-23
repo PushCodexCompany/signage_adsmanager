@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components";
 import { GridTable } from "../../libs/activities_log_grid";
 import { Navbar } from "../../components";
@@ -7,7 +7,7 @@ import Filter from "../../components/Filter";
 
 const Activity_Log = () => {
   useCheckPermission();
-
+  const [filter_screen, setFilterScreen] = useState([]);
   return (
     <>
       <Navbar />
@@ -31,10 +31,11 @@ const Activity_Log = () => {
             </div>
           </div>
         </div>
-        <Filter />
-      </div>
-      <div className="m-1 md:m-5 p-2 md:p-5 bg-white rounded-3xl">
-        <div className="w-auto  h-[600px] border border-[#DBDBDB] rounded-lg">
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+        />
+        <div className="mt-5">
           <GridTable />
         </div>
       </div>

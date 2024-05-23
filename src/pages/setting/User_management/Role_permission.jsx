@@ -50,7 +50,6 @@ const Role_permission = () => {
 
     // Child Permission
     const user_permission = await User.getUserRoles(token);
-
     const child_permission = user_permission.map((item) => {
       return {
         ...item,
@@ -517,6 +516,10 @@ const Role_permission = () => {
       );
     };
 
+    const areAllFalse = (obj) => {
+      return Object.values(obj).every((value) => value !== false);
+    };
+
     return (
       <>
         <div className="flex flex-wrap">
@@ -568,69 +571,7 @@ const Role_permission = () => {
                   {type === 0 ? (
                     <>
                       <div className=" grid grid-cols-8 gap-4 mt-5">
-                        <CheckboxGroup
-                          title="brand"
-                          items={Object.keys(default_permissions.brand).filter(
-                            (key) => default_permissions.brand[key]
-                          )}
-                          data={roleData.permissions.brand}
-                        />
-                        <CheckboxGroup
-                          title="branch"
-                          items={Object.keys(default_permissions.branch).filter(
-                            (key) => default_permissions.branch[key]
-                          )}
-                          data={roleData.permissions.branch}
-                        />
-                        <CheckboxGroup
-                          title="screen"
-                          items={Object.keys(default_permissions.screen).filter(
-                            (key) => default_permissions.screen[key]
-                          )}
-                          data={roleData.permissions.screen}
-                        />
-                        <CheckboxGroup
-                          title="playlist"
-                          items={Object.keys(
-                            default_permissions.playlist
-                          ).filter((key) => default_permissions.playlist[key])}
-                          data={roleData.permissions.playlist}
-                        />
-                        <CheckboxGroup
-                          title="media"
-                          items={Object.keys(default_permissions.media).filter(
-                            (key) => default_permissions.media[key]
-                          )}
-                          data={roleData.permissions.media}
-                        />
-                        <CheckboxGroup
-                          title="user"
-                          items={Object.keys(default_permissions.user).filter(
-                            (key) => default_permissions.user[key]
-                          )}
-                          data={roleData.permissions.user}
-                        />
-                        <CheckboxGroup
-                          title="userrole"
-                          items={Object.keys(
-                            default_permissions.userrole
-                          ).filter((key) => default_permissions.userrole[key])}
-                          data={roleData.permissions.userrole}
-                        />
-                        <CheckboxGroup
-                          title="booking"
-                          items={Object.keys(
-                            default_permissions.booking
-                          ).filter((key) => default_permissions.booking[key])}
-                          data={roleData.permissions.booking}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {/* 1st */}
-                      <div className=" grid grid-cols-6 gap-4 mb-11 mt-5">
-                        {default_permissions.brand && (
+                        {areAllFalse(default_permissions.brand) && (
                           <CheckboxGroup
                             title="brand"
                             items={Object.keys(
@@ -639,7 +580,7 @@ const Role_permission = () => {
                             data={roleData.permissions.brand}
                           />
                         )}
-                        {default_permissions.branch && (
+                        {areAllFalse(default_permissions.branch) && (
                           <CheckboxGroup
                             title="branch"
                             items={Object.keys(
@@ -648,7 +589,7 @@ const Role_permission = () => {
                             data={roleData.permissions.branch}
                           />
                         )}
-                        {default_permissions.screen && (
+                        {areAllFalse(default_permissions.screen) && (
                           <CheckboxGroup
                             title="screen"
                             items={Object.keys(
@@ -657,7 +598,7 @@ const Role_permission = () => {
                             data={roleData.permissions.screen}
                           />
                         )}
-                        {default_permissions.playlist && (
+                        {areAllFalse(default_permissions.playlist) && (
                           <CheckboxGroup
                             title="playlist"
                             items={Object.keys(
@@ -668,7 +609,7 @@ const Role_permission = () => {
                             data={roleData.permissions.playlist}
                           />
                         )}
-                        {default_permissions.media && (
+                        {areAllFalse(default_permissions.media) && (
                           <CheckboxGroup
                             title="media"
                             items={Object.keys(
@@ -677,7 +618,89 @@ const Role_permission = () => {
                             data={roleData.permissions.media}
                           />
                         )}
-                        {default_permissions.user && (
+                        {areAllFalse(default_permissions.user) && (
+                          <CheckboxGroup
+                            title="user"
+                            items={Object.keys(default_permissions.user).filter(
+                              (key) => default_permissions.user[key]
+                            )}
+                            data={roleData.permissions.user}
+                          />
+                        )}
+                        {areAllFalse(default_permissions.userrole) && (
+                          <CheckboxGroup
+                            title="userrole"
+                            items={Object.keys(
+                              default_permissions.userrole
+                            ).filter(
+                              (key) => default_permissions.userrole[key]
+                            )}
+                            data={roleData.permissions.userrole}
+                          />
+                        )}
+                        {areAllFalse(default_permissions.booking) && (
+                          <CheckboxGroup
+                            title="booking"
+                            items={Object.keys(
+                              default_permissions.booking
+                            ).filter((key) => default_permissions.booking[key])}
+                            data={roleData.permissions.booking}
+                          />
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* 1st */}
+                      <div className=" grid grid-cols-6 gap-4 mb-11 mt-5">
+                        {areAllFalse(default_permissions.brand) && (
+                          <CheckboxGroup
+                            title="brand"
+                            items={Object.keys(
+                              default_permissions.brand
+                            ).filter((key) => default_permissions.brand[key])}
+                            data={roleData.permissions.brand}
+                          />
+                        )}
+                        {areAllFalse(default_permissions.branch) && (
+                          <CheckboxGroup
+                            title="branch"
+                            items={Object.keys(
+                              default_permissions.branch
+                            ).filter((key) => default_permissions.branch[key])}
+                            data={roleData.permissions.branch}
+                          />
+                        )}
+                        {areAllFalse(default_permissions.screen) && (
+                          <CheckboxGroup
+                            title="screen"
+                            items={Object.keys(
+                              default_permissions.screen
+                            ).filter((key) => default_permissions.screen[key])}
+                            data={roleData.permissions.screen}
+                          />
+                        )}
+                        {areAllFalse(default_permissions.playlist) && (
+                          <CheckboxGroup
+                            title="playlist"
+                            items={Object.keys(
+                              default_permissions.playlist
+                            ).filter(
+                              (key) => default_permissions.playlist[key]
+                            )}
+                            data={roleData.permissions.playlist}
+                          />
+                        )}
+                        {areAllFalse(default_permissions.media) && (
+                          <CheckboxGroup
+                            title="media"
+                            items={Object.keys(
+                              default_permissions.media
+                            ).filter((key) => default_permissions.media[key])}
+                            data={roleData.permissions.media}
+                          />
+                        )}
+                        {areAllFalse(default_permissions.user) && (
                           <CheckboxGroup
                             title="user"
                             items={Object.keys(default_permissions.user).filter(
@@ -690,7 +713,7 @@ const Role_permission = () => {
                       {/* 1st */}
                       {/* 2nd  */}
                       <div className=" grid grid-cols-6 gap-4 mb-2">
-                        {default_permissions.userrole && (
+                        {areAllFalse(default_permissions.userrole) && (
                           <CheckboxGroup
                             title="userrole"
                             items={Object.keys(
@@ -701,7 +724,7 @@ const Role_permission = () => {
                             data={roleData.permissions.userrole}
                           />
                         )}
-                        {default_permissions.booking && (
+                        {areAllFalse(default_permissions.booking) && (
                           <CheckboxGroup
                             title="booking"
                             items={Object.keys(

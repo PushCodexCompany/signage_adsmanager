@@ -77,22 +77,10 @@ export const links = [
         ],
       },
       {
-        name: "Ad Media",
-        link: "ads_media",
-        icon: <MdOutlineCloudQueue size={27} />,
+        name: "Media Libraly",
+        link: "media_libraly",
+        icon: <MdFolderOpen size={27} />,
         notification: { is_notification: false, amount: 0 },
-        submenu: [
-          {
-            name: "Ads Management",
-            link: "ad_media/ads_management",
-            icon: <RiFileList2Line size={27} />,
-          },
-          {
-            name: "Media Libraly",
-            link: "ad_media/media_libraly",
-            icon: <MdFolderOpen size={27} />,
-          },
-        ],
       },
       {
         name: "Merchandise",

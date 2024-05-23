@@ -32,6 +32,7 @@ const Event = () => {
 
   const [checkboxes, setCheckboxes] = useState({});
   const [screen_checkbox_select, setScreenCheckboxSelect] = useState([]);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   const navigate = useNavigate();
   const is_screensstatus_init = useRef(false);
@@ -185,7 +186,10 @@ const Event = () => {
           </div>
         </div>
 
-        <Filter />
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+        />
         <div className="mt-5">
           {screens_data.length > 0 && screens_options_data.length > 0 ? (
             <GridTable

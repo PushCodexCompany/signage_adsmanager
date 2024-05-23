@@ -68,7 +68,7 @@ const Routing = () => {
           element={<Create_Media_Rule />}
         />
         <Route path="/setting/Tag_management" element={<Tag_management />} />
-        <Route path="/ad_media/media_libraly" element={<Media_Libraly />} />
+        <Route path="/media_libraly" element={<Media_Libraly />} />
         <Route path="/statics/activities_log" element={<Activity_Log />} />
         <Route path="/statics/media_log" element={<Media_Log />} />
         <Route path="/statics/screen" element={<Static_Screen />} />
