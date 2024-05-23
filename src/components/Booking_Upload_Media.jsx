@@ -159,6 +159,12 @@ const Booking_Upload_Media = ({
       } catch (error) {
         console.log("error", error);
       }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
+      });
     }
   };
 

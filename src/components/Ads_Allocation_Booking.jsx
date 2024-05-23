@@ -882,20 +882,20 @@ const Ads_Allocation_Booking = ({
                     token
                   );
                   if (data.code !== 404) {
-                    Swal.fire({
-                      icon: "success",
-                      title: "Add Media to Playlist Success ...",
-                      text: "เพิ่ม Media to Playlist สำเร็จ!",
-                    }).then(async (result) => {
-                      if (
-                        result.isConfirmed ||
-                        result.dismiss === Swal.DismissReason.backdrop
-                      ) {
-                        const data = await getMediaPlaylist();
-                        setSelectedOption(data);
-                        setCheckCreateMediaPlaylist(false);
-                      }
-                    });
+                    // Swal.fire({
+                    //   icon: "success",
+                    //   title: "Add Media to Playlist Success ...",
+                    //   text: "เพิ่ม Media to Playlist สำเร็จ!",
+                    // }).then(async (result) => {
+                    // if (
+                    //   result.isConfirmed ||
+                    //   result.dismiss === Swal.DismissReason.backdrop
+                    // ) {
+                    const data = await getMediaPlaylist();
+                    setSelectedOption(data);
+                    setCheckCreateMediaPlaylist(false);
+                    // }
+                    // });
                   } else {
                     Swal.fire({
                       icon: "error",
