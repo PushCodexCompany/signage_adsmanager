@@ -6,8 +6,6 @@ const Media_Player = ({
   mediaDisplay,
   setModalPlayerOpen,
   modalPlayerOpen,
-  setOpenAdsAllocationModal,
-  openAdsAllocationModal,
   setMediaDisplay,
 }) => {
   // Parse ContentProperties JSON string to object
@@ -46,7 +44,6 @@ const Media_Player = ({
           <button
             onClick={() => {
               setModalPlayerOpen(!modalPlayerOpen);
-              setOpenAdsAllocationModal(!openAdsAllocationModal);
               setMediaDisplay([]);
             }}
           >

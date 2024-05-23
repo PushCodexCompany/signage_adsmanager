@@ -1422,4 +1422,18 @@ export default {
     );
     return data;
   },
+
+  deleteMedia: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let urlString = `api/v1/delete_media?contentid=${hash.contentid}&brandcode=${brand_code}`;
+    const { data } = await this._post(urlString, "", config);
+
+    return data;
+  },
 };

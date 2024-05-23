@@ -115,7 +115,10 @@ const Media_Libraly = () => {
 
         {media_libraly_data.length > 0 && (
           <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
-            <GridTable media_libraly_data={media_libraly_data} />
+            <GridTable
+              media_libraly_data={media_libraly_data}
+              setMediaLibralyData={setMediaLibralyData}
+            />
           </div>
         )}
       </div>
