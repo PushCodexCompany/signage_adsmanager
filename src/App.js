@@ -7,10 +7,16 @@ import { Login, Brands, User_Account } from "./pages";
 import Routing from "./route/routing";
 import cookie from "react-cookies";
 import "./App.css";
+import User, {
+  SIGNAGE_ACCOUNT_COOKIE,
+  SIGNAGE_BRAND_CODE_COOKIE,
+  SIGNAGE_BRAND_COOKIE,
+  SIGNAGE_MEMBER_COOKIE,
+  SIGNAGE_MERCHANDISE_COOKIE,
+  SIGNAGE_PERMISSION_COOKIE_TOKEN,
+} from "./libs/admin";
 
 import { useStateContext } from "./contexts/ContextProvider";
-
-import User from "./libs/admin";
 
 const RedirectToAdsManager = () => {
   const navigate = useNavigate();
@@ -39,27 +45,36 @@ const App = () => {
 
     const pathname = window.location.pathname;
     if (pathname === "/") {
-      // clearCookiesOnUnload();
+      clearCookiesOnUnload();
       window.location.href = "/adsmanager";
+    }
+    if (pathname === "/adsmanager") {
+      const member_cookie = User.getCookieData();
+      const permission_cookie = User.getPermission();
+      if (member_cookie || permission_cookie) {
+        clearCookiesOnUnload();
+        window.location.reload();
+      }
     }
     if (currentThemeColor && currentThemeMode) {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
     }
 
-    // return () => {
-    //   // Cleanup: Remove event listener
-    //   window.removeEventListener("beforeunload", clearCookiesOnUnload);
-    // };
+    return () => {
+      // Cleanup: Remove event listener
+      window.removeEventListener("beforeunload", clearCookiesOnUnload);
+    };
   }, []);
 
-  // const clearCookiesOnUnload = () => {
-  //   cookie.remove("signage-brand", { path: false });
-  //   cookie.remove("signage-account", { path: false });
-  //   cookie.remove("signage-merchandise", { path: false });
-  //   cookie.remove("signage-brand-code", { path: false });
-  //   cookie.remove("signage-member", { path: false });
-  // };
+  const clearCookiesOnUnload = () => {
+    cookie.remove(SIGNAGE_BRAND_COOKIE, { path: "/" });
+    cookie.remove(SIGNAGE_ACCOUNT_COOKIE, { path: "/" });
+    cookie.remove(SIGNAGE_MERCHANDISE_COOKIE, { path: "/" });
+    cookie.remove(SIGNAGE_BRAND_CODE_COOKIE, { path: "/" });
+    cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
+    cookie.remove(SIGNAGE_PERMISSION_COOKIE_TOKEN, { path: "/" });
+  };
 
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();

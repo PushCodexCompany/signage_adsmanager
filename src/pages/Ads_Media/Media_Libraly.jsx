@@ -102,14 +102,14 @@ const Media_Libraly = () => {
             </div>
           </div>
           <div className="col-span-4">
-            <div className="flex justify-end space-x-1">
+            {/* <div className="flex justify-end space-x-1">
               <button
                 onClick={() => createNewMedia()}
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white  font-poppins w-full lg:w-[300px] h-[45px] rounded-md"
               >
                 New Media
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
         <Filter
