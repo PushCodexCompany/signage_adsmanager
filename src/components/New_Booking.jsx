@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import plus_brand from "../assets/img/plus_brand.png";
 
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
@@ -342,7 +343,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               booking_date,
             };
 
-            navigate(`/booking/${obj.BookingName}`, {
+            const replacedString = obj.BookingName.replace(/\//g, "_");
+            navigate(`/booking/${replacedString}`, {
               state: { data: obj, isEdited: false },
             });
           }
@@ -383,28 +385,37 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       case "1":
         return (
           <>
-            <div className="flex items-center justify-center mt-5">
-              <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
+            <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+              <div className="text-[50px] font-[700] text-center font-poppins">
                 Booking For
               </div>
-            </div>
-            <div className="flex items-center justify-center mt-2 text-center">
-              <div className="text-sm font-poppins text-[#2F3847]">
+              <div className="text-center text-slate-500 mb-12 font-poppins">
                 Name your booking, select merchandise, and content type to
                 create a New booking. Personalize your campaign for maximum
                 impact.
               </div>
-            </div>
-            <div className="h-[380px] mt-8 overflow-y-auto">
-              <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px]">
-                <div className="sm:w-1/2 lg:w-[27%] h-[400px] p-2 flex flex-col items-center">
-                  <button onClick={() => setShowCreateMerchandise(true)}>
-                    <div className="h-60 flex items-center justify-center">
-                      <FaPlus size={100} color="#6425FE" />
-                    </div>
-                    <div className="font-bold text-[20px] m-auto w-[70%] text-center mt-[10px] font-poppins hover:text-[#6425FE]">
+              <div
+                className={` ${
+                  merchandise.length <= 1
+                    ? "grid grid-cols-1 lg:grid-cols-1 "
+                    : "grid grid-cols-2 lg:grid-cols-3"
+                } gap-4 p-4 h-[380px] overflow-y-auto border border-gray-200 rounded-lg`}
+              >
+                <div
+                  onClick={() => setShowCreateMerchandise(true)}
+                  className="h-[400px] p-2 flex flex-col items-center"
+                >
+                  <div className="relative mb-4">
+                    <img
+                      className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
+                      src={plus_brand}
+                    />
+                  </div>
+                  <button className="w-full">
+                    <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                       Add New Merchandise
                     </div>
+                    <div className="text-[14px] text-white font-poppins"></div>
                   </button>
                 </div>
 
@@ -413,7 +424,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <div
                       key={key}
                       onClick={() => setSelectMerchandise(items)}
-                      className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
+                      className="h-[400px] p-2 flex flex-col items-center"
                     >
                       <div className="relative mb-4">
                         <img
