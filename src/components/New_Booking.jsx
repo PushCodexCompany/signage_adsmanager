@@ -432,7 +432,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                             select_merchandise?.AdvertiserID ===
                             items?.AdvertiserID
                               ? "border-4 border-[#6425FE] "
-                              : ""
+                              : "border border-[#dedede]"
                           } object-cover `}
                           src={
                             items.AdvertiserLogo

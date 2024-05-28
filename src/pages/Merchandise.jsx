@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar } from "../components";
 import { TbDots } from "react-icons/tb";
 import { FaPlus } from "react-icons/fa";
+import { Header } from "../components";
 import empty_img from "../assets/img/empty_img.png";
 import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
@@ -112,10 +113,11 @@ const Merchandise = () => {
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <div className="text-[50px] font-bold text-center font-poppins">
+        <Header category="Page" title="Home" />
+        <div className="text-[50px] font-bold text-center font-poppins mt-10">
           Select Your Merchandise
         </div>
-        <div className="text-xl text-center text-slate-500 mb-20 font-poppins">
+        <div className="text-xl text-center text-slate-500 mb-10 font-poppins">
           Press the icon or message to edit it, or press the top right menu to
           delete it.
         </div>
