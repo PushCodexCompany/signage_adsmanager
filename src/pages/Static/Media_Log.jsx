@@ -10,7 +10,6 @@ const Media_Log = () => {
 
   const [log_data, setLogData] = useState([]);
   const [all_pages, setAllPages] = useState(null);
-  const [now_Page, setNowPage] = useState(null);
   const [checkboxes, setCheckboxes] = useState({});
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
@@ -120,7 +119,6 @@ const Media_Log = () => {
     };
     setLogData(media_log_mockup.items);
     setAllPages(media_log_mockup.all_page);
-    setNowPage(media_log_mockup.pages);
   };
 
   return (
@@ -154,7 +152,6 @@ const Media_Log = () => {
           {log_data.length > 0 ? (
             <GridTable
               log_data={log_data}
-              now_Page={now_Page}
               all_pages={all_pages}
               checkboxes={checkboxes}
               setCheckboxes={setCheckboxes}

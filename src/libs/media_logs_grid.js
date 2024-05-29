@@ -30,7 +30,6 @@ const secondsToTime = (value) => {
 
 export const GridTable = ({
   log_data,
-  now_Page,
   all_pages,
   checkboxes,
   setCheckboxes,
