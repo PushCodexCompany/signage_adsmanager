@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ImBin } from "react-icons/im";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
@@ -30,6 +30,8 @@ const secondsToTime = (value) => {
 
 export const GridTable = ({
   log_data,
+  now_Page,
+  all_pages,
   checkboxes,
   setCheckboxes,
   selectedScreenItems,
@@ -37,25 +39,6 @@ export const GridTable = ({
   setSelectAll,
   selectAll,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageInput, setPageInput] = useState("");
-  const rowsPerPage = 10;
-
-  // Calculate the indices for slicing the data
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = log_data.slice(indexOfFirstRow, indexOfLastRow);
-
-  const totalPages = Math.ceil(log_data.length / rowsPerPage);
-
-  const handleNextPage = () => {
-    setCurrentPage(totalPages);
-  };
-
-  const handlePrevPage = () => {
-    setCurrentPage(1);
-  };
-
   const toggleCheckboxAddScreen = (rowId) => {
     setCheckboxes((prevCheckboxes) => {
       const updatedCheckboxes = {
@@ -91,37 +74,163 @@ export const GridTable = ({
     setSelectedScreenItems(checkedRowIds);
   };
 
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const [data, setData] = useState(log_data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageInput, setPageInput] = useState("");
+  const totalPages = all_pages;
+
+  useEffect(() => {
+    fetchDataForPage();
+  }, [currentPage]);
+
+  const fetchDataForPage = (page) => {
+    // Simulate fetching data for a specific page
+    const newItems = Array.from({ length: 10 }, (_, i) => ({
+      id: i,
+      media_name: `Page ${page} Media Item ${i + 1}.mp4`,
+      merchandise: `Brand ${i + 1}`,
+      screen: `Screen ${i + 1}`,
+      start_time: 1658900700000,
+      end_time: 1658900700000,
+      Duration: 15,
+    }));
+    return {
+      items: newItems,
+      pages: page,
+      length: 10,
+      all_page: 7,
+    };
   };
 
-  // Generate array of page numbers
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
+  const handleClick = (page) => {
+    setCurrentPage(page);
+    setPageInput("");
+    setData(fetchDataForPage(page).items);
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setData(fetchDataForPage(newPage).items);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      setData(fetchDataForPage(newPage).items);
+    }
+  };
 
   const handlePageInputChange = (e) => {
-    const pageNumber = parseInt(e.target.value, 10);
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-    setPageInput(e.target.value);
+    setPageInput(parseInt(e.target.value));
   };
 
-  const handlePageInputBlur = (e) => {
-    const pageNumber = parseInt(e.target.value, 10);
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
+  const handlePageInputBlur = () => {
+    const page = Number(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      setData(fetchDataForPage(page).items);
     }
-    setPageInput(e.target.value);
+    setPageInput("");
+  };
+
+  const handlePageInputKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handlePageInputBlur();
+    }
+  };
+
+  const renderTableData = () => {
+    return data.map((item, index) => (
+      <tr key={item.id}>
+        <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="flex items-center">
+            <label className="inline-flex items-center space-x-2">
+              <input
+                type="checkbox"
+                className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                checked={checkboxes[item.id] || false} // Set default value to false if item.id is not present
+                onChange={() => toggleCheckboxAddScreen(item.id)}
+              />
+              <span
+                className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                  checkboxes[item.id] ? "bg-white" : ""
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-6 w-6 text-white ${
+                    checkboxes[item.id] ? "opacity-100" : "opacity-0"
+                  } transition-opacity duration-300 ease-in-out`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="#6425FE"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </span>
+            </label>
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">{index + 1}</div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {item.media_name}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {item.merchandise}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">{item.screen}</div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {convertTimestampToFormattedDate(item.start_time)}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {convertTimestampToFormattedDate(item.end_time)}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {secondsToTime(item.Duration)}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <ImBin
+            onClick={(e) => {
+              e.stopPropagation();
+              alert(`Delete : ${item.id}`);
+            }}
+            className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+          />
+        </td>
+      </tr>
+    ));
   };
 
   const renderPageNumbers = () => {
     let displayPages = [];
 
     if (totalPages <= 4) {
-      displayPages = pageNumbers;
+      for (let i = 1; i <= totalPages; i++) {
+        displayPages.push(i);
+      }
     } else {
       if (currentPage <= 4) {
         displayPages = [1, 2, 3, 4, "...", totalPages];
@@ -129,7 +238,6 @@ export const GridTable = ({
         displayPages = [
           1,
           "...",
-          totalPages - 4,
           totalPages - 3,
           totalPages - 2,
           totalPages - 1,
@@ -148,15 +256,16 @@ export const GridTable = ({
       }
     }
 
-    return displayPages.map((number) => (
+    return displayPages.map((number, index) => (
       <button
-        key={number}
+        key={index}
         className={`px-3 py-1 mx-1 ${
           currentPage === number
-            ? "text-[#6425FE] rounded-md border border-[#6425FE] "
+            ? "text-[#6425FE] rounded-md border border-[#6425FE]"
             : "text-[#bfbfbf]"
         }  font-poppins font-bold`}
-        onClick={() => handlePageClick(number)}
+        onClick={() => number !== "..." && handleClick(number)}
+        disabled={number === "..."}
       >
         {number}
       </button>
@@ -226,119 +335,35 @@ export const GridTable = ({
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider"></th>
               </tr>
             </thead>
-            <tbody>
-              {currentRows.map((row, index) => (
-                <tr key={row.id}>
-                  <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="flex items-center">
-                      <label className="inline-flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                          checked={checkboxes[row.id] || false} // Set default value to false if row.id is not present
-                          onChange={() => toggleCheckboxAddScreen(row.id)}
-                        />
-                        <span
-                          className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                            checkboxes[row.id] ? "bg-white" : ""
-                          }`}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className={`h-6 w-6 text-white ${
-                              checkboxes[row.id] ? "opacity-100" : "opacity-0"
-                            } transition-opacity duration-300 ease-in-out`}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="#6425FE"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="3"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        </span>
-                      </label>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="font-poppins text-md font-bold">
-                      {indexOfFirstRow + index + 1}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="font-poppins text-md font-bold">
-                      {row.media_name}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="font-poppins text-md font-bold">
-                      {row.merchandise}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="font-poppins text-md font-bold">
-                      {row.screen}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="font-poppins text-md font-bold">
-                      {convertTimestampToFormattedDate(row.start_time)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="font-poppins text-md font-bold">
-                      {convertTimestampToFormattedDate(row.end_time)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="font-poppins text-md font-bold">
-                      {secondsToTime(row.Duration)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <ImBin
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        alert(`Delete : ${row.id}`);
-                      }}
-                      className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            <tbody>{renderTableData()}</tbody>
           </table>
         </div>
-        <div className="flex  justify-center items-center mt-6 ">
+        <div className="flex justify-center items-center mt-6">
           <IoIosArrowBack
             onClick={handlePrevPage}
             size={26}
-            disabled={currentPage === 1}
             className={`${
               currentPage === 1
                 ? "text-[#bfbfbf]"
                 : "cursor-pointer hover:text-[#bfbfbf]"
             }`}
           />
-
           {renderPageNumbers()}
           <IoIosArrowForward
             onClick={handleNextPage}
             size={26}
-            disabled={currentPage === totalPages}
             className={`${
               currentPage === totalPages
                 ? "text-[#bfbfbf]"
                 : "cursor-pointer hover:text-[#bfbfbf]"
             }`}
           />
-          <div className="font-poppins font-bold">Go to</div>
+          <div className="font-poppins font-bold ml-2">Go to</div>
           <input
-            type="text"
+            type="number"
+            min={1}
             value={pageInput}
+            onKeyPress={handlePageInputKeyPress}
             onChange={handlePageInputChange}
             onBlur={handlePageInputBlur}
             className="w-[50px] h-[35px] ml-1 mr-1 border border-gray-300 rounded-sm pl-1 font-poppins"
