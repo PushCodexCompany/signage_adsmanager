@@ -1408,7 +1408,7 @@ export default {
     }
   },
 
-  get_medias: async function (token) {
+  get_medias: async function (token, page) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1416,7 +1416,7 @@ export default {
       },
     };
     const { data } = await this._get(
-      `api/v1/get_medias?brandcode=${brand_code} `,
+      `api/v1/get_medias?brandcode=${brand_code}&perpage=10&page=${page}`,
       "",
       config
     );

@@ -14,6 +14,7 @@ const Media_Libraly = () => {
   const { token } = User.getCookieData();
   const [showModal, setShowModal] = useState(false);
   const [media_libraly_data, setMediaLibralyData] = useState([]);
+  const [all_pages, setAllPages] = useState(null);
   const [filter_screen, setFilterScreen] = useState([]);
 
   const [uploads, setUploads] = useState({
@@ -39,8 +40,9 @@ const Media_Libraly = () => {
   }, []);
 
   const getMediaLibralyData = async () => {
-    const data = await User.get_medias(token);
-    setMediaLibralyData(data);
+    const data = await User.get_medias(token, 1);
+    setMediaLibralyData(data.media);
+    setAllPages(data.pagination[0].totalpage);
   };
 
   const createNewMedia = () => {
@@ -95,7 +97,7 @@ const Media_Libraly = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
 
-        <div className="grid grid-cols-10 mt-10">
+        <div className="grid grid-cols-10 mt-5">
           <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl ">
               Media Libraly
@@ -121,6 +123,7 @@ const Media_Libraly = () => {
           <div className="mt-5">
             <GridTable
               media_libraly_data={media_libraly_data}
+              all_pages={all_pages}
               setMediaLibralyData={setMediaLibralyData}
             />
           </div>

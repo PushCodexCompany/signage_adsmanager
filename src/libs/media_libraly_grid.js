@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   RiDeleteBin5Line,
   RiDownloadCloud2Line,
@@ -7,8 +7,13 @@ import {
 import Media_Player from "../components/Media_Libraly_Player";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-export const GridTable = ({ media_libraly_data, setMediaLibralyData }) => {
+export const GridTable = ({
+  media_libraly_data,
+  setMediaLibralyData,
+  all_pages,
+}) => {
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaDisplay, setMediaDisplay] = useState([]);
   const { token } = User.getCookieData();
@@ -35,11 +40,6 @@ export const GridTable = ({ media_libraly_data, setMediaLibralyData }) => {
     document.body.removeChild(link);
   };
 
-  const getMediaLibralyData = async () => {
-    const data = await User.get_medias(token);
-    setMediaLibralyData(data);
-  };
-
   const onClickDelete = async (source) => {
     Swal.fire({
       text: `คุณต้องการลบ Media : ${source.ContentName}`,
@@ -61,12 +61,13 @@ export const GridTable = ({ media_libraly_data, setMediaLibralyData }) => {
               icon: "success",
               title: `Delete Media สำเร็จ!`,
               text: `Media : ${source.ContentName} ถูกลบสำเร็จ!`,
-            }).then((result) => {
+            }).then(async (result) => {
               if (
                 result.isConfirmed ||
                 result.dismiss === Swal.DismissReason.backdrop
               ) {
-                getMediaLibralyData();
+                const data = await fetchDataForPage(currentPage);
+                setData(data.media);
               }
             });
           } else {
@@ -107,96 +108,238 @@ export const GridTable = ({ media_libraly_data, setMediaLibralyData }) => {
     );
   };
 
+  // table
+
+  const [data, setData] = useState(media_libraly_data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageInput, setPageInput] = useState("");
+  const totalPages = all_pages;
+
+  useEffect(() => {
+    fetchDataForPage();
+  }, [currentPage]);
+
+  const fetchDataForPage = async (page) => {
+    if (page) {
+      const data = await User.get_medias(token, page);
+      return data;
+    }
+  };
+
+  const handleClick = async (page) => {
+    setCurrentPage(page);
+    setPageInput("");
+    const data = await fetchDataForPage(page);
+    setData(data.media);
+  };
+
+  const handlePrevPage = async () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.media);
+    }
+  };
+
+  const handleNextPage = async () => {
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.media);
+    }
+  };
+
+  const handlePageInputChange = (e) => {
+    setPageInput(parseInt(e.target.value));
+  };
+
+  const handlePageInputBlur = async () => {
+    const page = Number(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      const data = await fetchDataForPage(page);
+      setData(data.media);
+    }
+    setPageInput("");
+  };
+
+  const handlePageInputKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handlePageInputBlur();
+    }
+  };
+
+  const renderTableData = () => {
+    return data.map((row, index) => (
+      <tr key={row.ContentID}>
+        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+          <div className="font-poppins text-md font-bold">{row.ContentID}</div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {row.ContentName}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {row.MerchandiseName}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {parseFloat(JSON.parse(row.ContentProperties).size).toFixed(2)} MB
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {generateStatus(row.ActiveStats)}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+          <div className="space-x-2">
+            <button onClick={() => onClickPlay(row)}>
+              <RiPlayCircleLine
+                size={20}
+                className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+              />
+            </button>
+            <button onClick={() => onClickDownload(row)}>
+              <RiDownloadCloud2Line
+                size={20}
+                className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+              />
+            </button>
+            <button
+              onClick={() => onClickDelete(row)}
+              disabled={row.ActiveStats === 0 ? false : true}
+            >
+              <RiDeleteBin5Line
+                size={20}
+                className={`${
+                  row.ActiveStats === 0
+                    ? "text-[#6425FE] hover:text-[#3b1694] "
+                    : "text-[#dbdbdb] hover:text-[#dbdbdb]"
+                } cursor-pointer`}
+              />
+            </button>
+          </div>
+        </td>
+      </tr>
+    ));
+  };
+
+  const renderPageNumbers = () => {
+    let displayPages = [];
+
+    if (totalPages <= 4) {
+      for (let i = 1; i <= totalPages; i++) {
+        displayPages.push(i);
+      }
+    } else {
+      if (currentPage <= 4) {
+        displayPages = [1, 2, 3, 4, "...", totalPages];
+      } else if (currentPage >= totalPages - 3) {
+        displayPages = [
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        ];
+      } else {
+        displayPages = [
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages,
+        ];
+      }
+    }
+
+    return displayPages.map((number, index) => (
+      <button
+        key={index}
+        className={`px-3 py-1 mx-1 ${
+          currentPage === number
+            ? "text-[#6425FE] rounded-md border border-[#6425FE]"
+            : "text-[#bfbfbf]"
+        }  font-poppins font-bold`}
+        onClick={() => number !== "..." && handleClick(number)}
+        disabled={number === "..."}
+      >
+        {number}
+      </button>
+    ));
+  };
+
   return (
     <>
-      <div className="w-auto h-[580px] overflow-auto">
-        <table className="min-w-full border border-gray-300">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                ID
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                File Name
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Merchandise
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                File Size
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {media_libraly_data.map((row) => (
-              <tr key={row.ContentID}>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">
-                    {row.ContentID}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">
-                    {row.ContentName}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">
-                    {row.MerchandiseName}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">
-                    {parseFloat(JSON.parse(row.ContentProperties).size).toFixed(
-                      2
-                    )}{" "}
-                    MB
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md font-bold">
-                    {generateStatus(row.ActiveStats)}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="space-x-2">
-                    <button onClick={() => onClickPlay(row)}>
-                      <RiPlayCircleLine
-                        size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      />
-                    </button>
-                    <button onClick={() => onClickDownload(row)}>
-                      <RiDownloadCloud2Line
-                        size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      />
-                    </button>
-                    <button
-                      onClick={() => onClickDelete(row)}
-                      disabled={row.ActiveStats === 0 ? false : true}
-                    >
-                      <RiDeleteBin5Line
-                        size={20}
-                        className={`${
-                          row.ActiveStats === 0
-                            ? "text-[#6425FE] hover:text-[#3b1694] "
-                            : "text-[#dbdbdb] hover:text-[#dbdbdb]"
-                        } cursor-pointer`}
-                      />
-                    </button>
-                  </div>
-                </td>
+      <div>
+        <div className="w-auto h-[550px] overflow-auto">
+          <table className="min-w-full border border-gray-300">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  File Name
+                </th>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Merchandise
+                </th>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  File Size
+                </th>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Action
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>{renderTableData()}</tbody>
+          </table>
+        </div>
+        <div className="flex justify-center items-center mt-6">
+          <IoIosArrowBack
+            onClick={handlePrevPage}
+            size={26}
+            className={`${
+              currentPage === 1
+                ? "text-[#bfbfbf]"
+                : "cursor-pointer hover:text-[#bfbfbf]"
+            }`}
+          />
+          {renderPageNumbers()}
+          <IoIosArrowForward
+            onClick={handleNextPage}
+            size={26}
+            className={`${
+              currentPage === totalPages
+                ? "text-[#bfbfbf]"
+                : "cursor-pointer hover:text-[#bfbfbf]"
+            }`}
+          />
+          <div className="font-poppins font-bold ml-2">Go to</div>
+          <input
+            type="number"
+            min={1}
+            value={pageInput}
+            onKeyPress={handlePageInputKeyPress}
+            onChange={handlePageInputChange}
+            onBlur={handlePageInputBlur}
+            className="w-[50px] h-[35px] ml-1 mr-1 border border-gray-300 rounded-sm pl-1 font-poppins"
+          />
+          <div className="font-poppins font-bold">Page</div>
+        </div>
       </div>
 
       {modalPlayerOpen && (
