@@ -47,7 +47,7 @@ export const GridTable = ({ booking_data }) => {
 
   return (
     <>
-      <div className="w-auto h-[600px] overflow-auto">
+      <div className="w-auto h-[550px] overflow-auto">
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
