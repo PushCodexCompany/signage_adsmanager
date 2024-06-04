@@ -147,7 +147,6 @@ const Event = () => {
 
   const fetchScreenData = async () => {
     const screens = await User.getScreens(token);
-    console.log("screens", screens);
     setScreensData(screens);
   };
 
