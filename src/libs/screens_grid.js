@@ -154,7 +154,7 @@ export const GridTable = ({
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
-              <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+              {/* <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 <label className="inline-flex items-center space-x-2">
                   <input
                     type="checkbox"
@@ -185,7 +185,7 @@ export const GridTable = ({
                     </svg>
                   </span>
                 </label>
-              </th>
+              </th> */}
               <th className="px-2 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
                 No
               </th>
@@ -220,7 +220,7 @@ export const GridTable = ({
 
               return (
                 <tr key={row.ScreenID}>
-                  <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                  {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
                     <div className="flex items-center">
                       <label className="inline-flex items-center space-x-2">
                         <input
@@ -257,7 +257,7 @@ export const GridTable = ({
                         </span>
                       </label>
                     </div>
-                  </td>
+                  </td> */}
                   <td className="px-2 py-5 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex items-center justify-center">
                       <div className="font-poppins text-xl font-bold">
@@ -309,11 +309,6 @@ export const GridTable = ({
                           <div
                             key={index}
                             className="border border-gray-300 rounded-xl flex justify-center items-center mb-1 mr-1"
-                            // style={{
-                            //   flexBasis: `calc(${
-                            //     70 / row.ScreenTag.length
-                            //   }% - 8px)`,
-                            // }}
                           >
                             <div className="p-2">
                               <div className="font-poppins text-xs font-bold">

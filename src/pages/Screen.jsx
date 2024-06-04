@@ -172,7 +172,7 @@ const Event = () => {
               >
                 New Screen +
               </button>
-              <button
+              {/* <button
                 onClick={() => {
                   setScreenSelect(null);
                   setOpenSelectPairScreenModel(!openSelectPairScreenModel);
@@ -181,7 +181,7 @@ const Event = () => {
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
                 Pair Screen
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
