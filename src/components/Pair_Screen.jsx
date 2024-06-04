@@ -144,12 +144,13 @@ const Pair_Screen = ({
                   <div className="mt-5">
                     <div className="relative w-full h-[50px] flex justify-center lg:text-base ml-3">
                       <input
-                        // type="text"
-                        type={passwordVisible ? "text" : "password"}
+                        type="text"
+                        // type={passwordVisible ? "text" : "password"}
+                        autoComplete={false}
                         onChange={(e) => setPairingCode(e.target.value)}
                         className="block appearance-none w-full bg-[#f2f2f2] font-poppins text-[#2F3847] text-[22px] font-medium border border-gray-300 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                       />
-                      <div
+                      {/* <div
                         className="absolute inset-y-0 right-0 flex items-center pr-2 cursor-pointer"
                         onClick={togglePasswordVisibility}
                       >
@@ -164,7 +165,7 @@ const Pair_Screen = ({
                             className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                           />
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

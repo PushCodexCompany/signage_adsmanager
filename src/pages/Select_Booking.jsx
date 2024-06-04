@@ -114,7 +114,6 @@ const Select_Booking = () => {
         booking_content: booking,
       };
     });
-
     setScreen(filteredOutputWithBooking);
 
     //get Booking Date
@@ -318,7 +317,7 @@ const Select_Booking = () => {
       <>
         {processedMediaList.length > 0 &&
           processedMediaList.map((item, index2) => (
-            <div key={index2} className="w-[20%] p-1">
+            <div key={index2} className="w-[20%] p-1 relative group">
               <div
                 className={`w-[36px] h-[36px] ${
                   item.MediaID
@@ -327,6 +326,11 @@ const Select_Booking = () => {
                 } flex justify-center items-center`}
               >
                 {item.MediaID ? <IoIosPlayCircle color="#6425FE" /> : ""}
+                {item.MediaName && (
+                  <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    {item.MediaName}
+                  </span>
+                )}
               </div>
             </div>
           ))}

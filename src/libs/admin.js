@@ -1187,7 +1187,6 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-
     const { data } = await this._get(
       `api/v1/get_bookingcontent?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",

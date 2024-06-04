@@ -12,6 +12,7 @@ const Booking = () => {
   const { token } = User.getCookieData();
   const [showModalAddNewBooking, setShowModalAddNewBooking] = useState(false);
   const [booking_data, setBookingData] = useState([]);
+  const [all_pages, setAllPages] = useState(null);
   const [filter_screen, setFilterScreen] = useState([]);
 
   useEffect(() => {
@@ -24,6 +25,8 @@ const Booking = () => {
       data?.sort((a, b) => a.BookingID - b.BookingID);
     }
     setBookingData(data);
+    // setBookingData(data.booking);
+    // setAllPages(data.pagination[0].totalpage);
   };
 
   return (
@@ -54,7 +57,13 @@ const Booking = () => {
           filter_screen={filter_screen}
         />
         <div className="mt-5">
-          {booking_data.length > 0 && <GridTable booking_data={booking_data} />}
+          {booking_data.length > 0 && (
+            <GridTable
+              booking_data={booking_data}
+              // all_pages={all_pages}
+              // setBookingData={setBookingData}
+            />
+          )}
         </div>
       </div>
 
