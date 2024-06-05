@@ -98,7 +98,7 @@ const Navbar = ({ full_brand, setBrand }) => {
                 icon={<AiOutlineSearch />}
               />
               <input
-                className=" w-full h-56px rounded relative border-gray-500  transition font-poppins"
+                className="w-full h-[50px] rounded transition-all font-poppins  focus:border-transparent focus:outline-none"
                 type="text"
                 name="search"
                 placeholder="Search..."
