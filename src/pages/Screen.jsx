@@ -34,6 +34,9 @@ const Event = () => {
   const [screen_checkbox_select, setScreenCheckboxSelect] = useState([]);
   const [filter_screen, setFilterScreen] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [all_pages, setAllPages] = useState(null);
+
   const navigate = useNavigate();
   const is_screensstatus_init = useRef(false);
 
@@ -43,7 +46,7 @@ const Event = () => {
     await fetchScreenData();
     fetchScreenOptionsData();
     // testFirebase();
-  }, []);
+  }, [searchTerm]);
 
   useEffect(async () => {
     if (screens_data.length && !is_screensstatus_init.current) {
@@ -146,8 +149,19 @@ const Event = () => {
   };
 
   const fetchScreenData = async () => {
-    const screens = await User.getScreens(token);
-    setScreensData(screens);
+    if (searchTerm === null) {
+      const data = await User.getScreenList(token, 1);
+      setScreensData(data.screens);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    } else {
+      const data = await User.getScreenList(token, 1, searchTerm);
+      setScreensData(data.screens);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    }
   };
 
   const fetchScreenOptionsData = async () => {
@@ -157,7 +171,8 @@ const Event = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div className="grid grid-cols-10 mt-5">
@@ -193,21 +208,28 @@ const Event = () => {
         <div className="mt-5">
           {screens_data.length > 0 && screens_options_data.length > 0 ? (
             <GridTable
-              setSelectedScreenItems={setSelectedScreenItems}
+              // setSelectedScreenItems={setSelectedScreenItems}
               setSelectInfoScren={setSelectInfoScren}
               screens_data={screens_data}
-              screens_options_data={screens_options_data}
+              all_pages={all_pages}
+              setScreensData={setScreensData}
+              searchTerm={searchTerm}
+              // screens_options_data={screens_options_data}
               setOpenPairScreenModal={setOpenPairScreenModal}
               setOpenUnPairScreenModal={setOpenUnPairScreenModal}
               openUnPairScreenModal={openUnPairScreenModal}
               setScreenSelect={setScreenSelect}
-              setCheckboxes={setCheckboxes}
-              checkboxes={checkboxes}
-              screen_checkbox_select={screen_checkbox_select}
-              setScreenCheckboxSelect={setScreenCheckboxSelect}
+              // setCheckboxes={setCheckboxes}
+              // checkboxes={checkboxes}
+              // screen_checkbox_select={screen_checkbox_select}
+              // setScreenCheckboxSelect={setScreenCheckboxSelect}
             />
           ) : (
-            <></>
+            <div className="flex items-center justify-center h-[550px] text-center ">
+              <div className="font-poppins text-5xl text-[#dedede]">
+                --- No data ---
+              </div>
+            </div>
           )}
         </div>
       </div>

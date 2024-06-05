@@ -946,6 +946,23 @@ export default {
     }
   },
 
+  getScreenList: async function (token, page, screen_name) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let url = `api/v1/get_screenlist?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (screen_name) {
+      url += `&screenname=${screen_name}`;
+    }
+
+    const { data } = await this._get(url, "", config);
+    return data;
+  },
+
   getScreensWithAdsCapacity: async function (bookingid, slot, token) {
     const { brand_code } = this.getBrandCode();
     const config = {
@@ -1407,18 +1424,20 @@ export default {
     }
   },
 
-  get_medias: async function (token, page) {
+  get_medias: async function (token, page, content_name) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(
-      `api/v1/get_medias?brandcode=${brand_code}&perpage=10&page=${page}`,
-      "",
-      config
-    );
+    let url = `api/v1/get_medias?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (content_name) {
+      url += `&contentname=${content_name}`;
+    }
+
+    const { data } = await this._get(url, "", config);
     return data;
   },
 

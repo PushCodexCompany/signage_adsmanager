@@ -326,9 +326,9 @@ const Select_Booking = () => {
                 } flex justify-center items-center`}
               >
                 {item.MediaID ? <IoIosPlayCircle color="#6425FE" /> : ""}
-                {item.MediaName && (
+                {item.ContentName && (
                   <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                    {item.MediaName}
+                    {item.ContentName}
                   </span>
                 )}
               </div>

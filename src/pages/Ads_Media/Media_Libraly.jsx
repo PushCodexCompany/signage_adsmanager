@@ -16,6 +16,7 @@ const Media_Libraly = () => {
   const [media_libraly_data, setMediaLibralyData] = useState([]);
   const [all_pages, setAllPages] = useState(null);
   const [filter_screen, setFilterScreen] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   const [uploads, setUploads] = useState({
     upload1: {
@@ -37,12 +38,22 @@ const Media_Libraly = () => {
 
   useEffect(() => {
     getMediaLibralyData();
-  }, []);
+  }, [searchTerm]);
 
   const getMediaLibralyData = async () => {
-    const data = await User.get_medias(token, 1);
-    setMediaLibralyData(data.media);
-    setAllPages(data.pagination[0].totalpage);
+    if (searchTerm === null) {
+      const data = await User.get_medias(token, 1);
+      setMediaLibralyData(data.media);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    } else {
+      const data = await User.get_medias(token, 1, searchTerm);
+      setMediaLibralyData(data.media);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    }
   };
 
   const createNewMedia = () => {
@@ -92,7 +103,7 @@ const Media_Libraly = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
@@ -118,14 +129,20 @@ const Media_Libraly = () => {
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
         />
-
-        {media_libraly_data.length > 0 && (
+        {media_libraly_data.length > 0 ? (
           <div className="mt-5">
             <GridTable
               media_libraly_data={media_libraly_data}
               all_pages={all_pages}
               setMediaLibralyData={setMediaLibralyData}
+              searchTerm={searchTerm}
             />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-[550px] text-center ">
+            <div className="font-poppins text-5xl text-[#dedede]">
+              --- No data ---
+            </div>
           </div>
         )}
       </div>

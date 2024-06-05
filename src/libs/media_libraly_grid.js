@@ -13,6 +13,7 @@ export const GridTable = ({
   media_libraly_data,
   setMediaLibralyData,
   all_pages,
+  searchTerm,
 }) => {
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaDisplay, setMediaDisplay] = useState([]);
@@ -113,15 +114,19 @@ export const GridTable = ({
   const [data, setData] = useState(media_libraly_data);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
-  const totalPages = all_pages;
+  const totalPages = all_pages ? all_pages : 0;
+
+  // useEffect(() => {
+  //   fetchDataForPage();
+  // }, [currentPage]);
 
   useEffect(() => {
-    fetchDataForPage();
-  }, [currentPage]);
+    setData(media_libraly_data);
+  }, [media_libraly_data]);
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.get_medias(token, page);
+      const data = await User.get_medias(token, page, searchTerm);
       return data;
     }
   };
@@ -172,62 +177,69 @@ export const GridTable = ({
   };
 
   const renderTableData = () => {
-    return data.map((row, index) => (
-      <tr key={row.ContentID}>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">{row.ContentID}</div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">
-            {row.ContentName}
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">
-            {row.MerchandiseName}
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">
-            {parseFloat(JSON.parse(row.ContentProperties).size).toFixed(2)} MB
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">
-            {generateStatus(row.ActiveStats)}
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="space-x-2">
-            <button onClick={() => onClickPlay(row)}>
-              <RiPlayCircleLine
-                size={20}
-                className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-              />
-            </button>
-            <button onClick={() => onClickDownload(row)}>
-              <RiDownloadCloud2Line
-                size={20}
-                className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-              />
-            </button>
-            <button
-              onClick={() => onClickDelete(row)}
-              disabled={row.ActiveStats === 0 ? false : true}
-            >
-              <RiDeleteBin5Line
-                size={20}
-                className={`${
-                  row.ActiveStats === 0
-                    ? "text-[#6425FE] hover:text-[#3b1694] "
-                    : "text-[#dbdbdb] hover:text-[#dbdbdb]"
-                } cursor-pointer`}
-              />
-            </button>
-          </div>
-        </td>
-      </tr>
-    ));
+    return (
+      <>
+        {data.map((row, index) => (
+          <tr key={row.ContentID}>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-md font-bold">
+                {row.ContentID}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-md font-bold">
+                {row.ContentName}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-md font-bold">
+                {row.MerchandiseName}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-md font-bold">
+                {parseFloat(JSON.parse(row.ContentProperties).size).toFixed(2)}{" "}
+                MB
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-md font-bold">
+                {generateStatus(row.ActiveStats)}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="space-x-2">
+                <button onClick={() => onClickPlay(row)}>
+                  <RiPlayCircleLine
+                    size={20}
+                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                  />
+                </button>
+                <button onClick={() => onClickDownload(row)}>
+                  <RiDownloadCloud2Line
+                    size={20}
+                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                  />
+                </button>
+                <button
+                  onClick={() => onClickDelete(row)}
+                  disabled={row.ActiveStats === 0 ? false : true}
+                >
+                  <RiDeleteBin5Line
+                    size={20}
+                    className={`${
+                      row.ActiveStats === 0
+                        ? "text-[#6425FE] hover:text-[#3b1694] "
+                        : "text-[#dbdbdb] hover:text-[#dbdbdb]"
+                    } cursor-pointer`}
+                  />
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </>
+    );
   };
 
   const renderPageNumbers = () => {

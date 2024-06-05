@@ -26,11 +26,9 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   </TooltipComponent>
 );
 
-const search = () => {
-  alert("search");
-};
+const search = () => {};
 
-const Navbar = () => {
+const Navbar = ({ setSearchTerm, searchTerm }) => {
   const {
     currentColor,
     activeMenu,
@@ -43,16 +41,6 @@ const Navbar = () => {
 
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
-  const select_merchandise = User.getMerchandise();
-
-  const role = {
-    1: {
-      name: "Admin",
-    },
-    2: {
-      name: "User",
-    },
-  };
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -73,6 +61,10 @@ const Navbar = () => {
   }, [screenSize]);
 
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
+
+  const searchByName = async (value) => {
+    setSearchTerm(value);
+  };
 
   return (
     <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
@@ -99,8 +91,10 @@ const Navbar = () => {
               <input
                 className=" w-full h-56px rounded relative border-gray-500  transition font-poppins"
                 type="text"
-                name="name"
+                name="search"
                 placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => searchByName(e.target.value)}
               />
             </div>
           </div>
