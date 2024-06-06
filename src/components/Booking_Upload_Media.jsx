@@ -12,6 +12,7 @@ const Booking_Upload_Media = ({
   setOpenAdsAllocationModal,
   openAdsAllocationModal,
   bookingId,
+  advertiserId,
   media_rules_select,
   setItemsPanel1,
   itemsPanel1,
@@ -132,7 +133,12 @@ const Booking_Upload_Media = ({
   const handleUploadMediaByBooking = async () => {
     if (uploads.name) {
       try {
-        const data = await User.createContent(bookingId, forms, token);
+        const data = await User.createContent(
+          bookingId,
+          advertiserId,
+          forms,
+          token
+        );
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",

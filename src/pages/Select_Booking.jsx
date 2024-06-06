@@ -26,6 +26,7 @@ const Select_Booking = () => {
   const { token } = User.getCookieData();
   const [bookingName, setBookingName] = useState();
   const [bookingId, setBookingId] = useState();
+  const [advertiserId, setAdvertiserId] = useState();
   const [merchandise, setMerchandise] = useState([]);
   const [allScreenData, setAllScreenData] = useState([]);
   const [screen, setScreen] = useState([]);
@@ -42,6 +43,7 @@ const Select_Booking = () => {
   });
 
   const [media_rules_select, setMediaRulesSelect] = useState({});
+  const [media_rules_select_id, setMediaRulesSelectId] = useState();
 
   const [selectInfoScreen, setSelectInfoScren] = useState([]);
   const [screenAdsAllocation, setScreennAdsAllocation] = useState([]);
@@ -72,6 +74,7 @@ const Select_Booking = () => {
 
   const getBookingData = async () => {
     const {
+      AdvertiserID,
       AdvertiserLogo,
       AdvertiserName,
       BookingName,
@@ -81,6 +84,7 @@ const Select_Booking = () => {
 
     setBookingName(BookingName);
     setBookingId(BookingID);
+    setAdvertiserId(AdvertiserID);
     setMerchandise({
       AdvertiserLogo,
       AdvertiserName,
@@ -343,7 +347,7 @@ const Select_Booking = () => {
       width: parseInt(obj.ScreenRule[0].Width),
       height: parseInt(obj.ScreenRule[0].Height),
     };
-
+    setMediaRulesSelectId(obj.ScreenRule[0].MediaRuleID);
     setMediaRulesSelect(media_rule);
     media_obj.slots = parseInt(booking_slot);
     setScreenSelect({ screen, value: media_obj });
@@ -715,6 +719,7 @@ const Select_Booking = () => {
           setMediaDisplay={setMediaDisplay}
           setCheckboxes={setCheckboxes}
           media_rules_select={media_rules_select}
+          media_rules_select_id={media_rules_select_id}
           checkboxes={checkboxes}
           bookingId={bookingId}
           setMediaAllocatonUploadIndex={setMediaAllocatonUploadIndex}
@@ -733,6 +738,7 @@ const Select_Booking = () => {
           setOpenAdsAllocationModal={setOpenAdsAllocationModal}
           openAdsAllocationModal={openAdsAllocationModal}
           bookingId={bookingId}
+          advertiserId={advertiserId}
           media_rules_select={media_rules_select}
           setItemsPanel1={setItemsPanel1}
           itemsPanel1={itemsPanel1}

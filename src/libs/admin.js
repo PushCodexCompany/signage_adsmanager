@@ -1099,6 +1099,7 @@ export default {
       "",
       config
     );
+    console.log("data", data);
 
     if (data.code !== 404) {
       return data;
@@ -1236,7 +1237,7 @@ export default {
     }
   },
 
-  createContent: async function (id, obj, token) {
+  createContent: async function (id, advertiserid, obj, token) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1246,7 +1247,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/create_content?bookingid=${id}&brandcode=${brand_code}`,
+      `api/v1/create_content?bookingid=${id}&advertiserid=${advertiserid}&brandcode=${brand_code}`,
       obj,
       config
     );
@@ -1300,7 +1301,7 @@ export default {
     };
 
     const { data } = await this._post(
-      `api/v1/create_mediaplaylist?bookingid=${obj.bookingid}&playlistname=${obj.playlistname}&brandcode=${brand_code}`,
+      `api/v1/create_mediaplaylist?bookingid=${obj.bookingid}&playlistname=${obj.playlistname}&mediaruleid=${obj.mediaruleid}&brandcode=${brand_code}`,
       obj,
       config
     );

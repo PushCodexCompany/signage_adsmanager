@@ -21,6 +21,7 @@ const Booking = () => {
 
   const getBookingData = async () => {
     const data = await User.getBooking(token);
+
     if (data.length > 0) {
       data?.sort((a, b) => a.BookingID - b.BookingID);
     }
@@ -57,12 +58,18 @@ const Booking = () => {
           filter_screen={filter_screen}
         />
         <div className="mt-5">
-          {booking_data.length > 0 && (
+          {booking_data.length > 0 ? (
             <GridTable
               booking_data={booking_data}
               // all_pages={all_pages}
               // setBookingData={setBookingData}
             />
+          ) : (
+            <div className="flex items-center justify-center h-[550px] text-center ">
+              <div className="font-poppins text-5xl text-[#dedede]">
+                --- No data ---
+              </div>
+            </div>
           )}
         </div>
       </div>

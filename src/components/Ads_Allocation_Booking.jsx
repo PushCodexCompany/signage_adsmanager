@@ -47,6 +47,7 @@ const Ads_Allocation_Booking = ({
   setMediaDisplay,
   setCheckboxes,
   media_rules_select,
+  media_rules_select_id,
   checkboxes,
   bookingId,
   setMediaAllocatonUploadIndex,
@@ -850,6 +851,7 @@ const Ads_Allocation_Booking = ({
       const playlist_obj = {
         bookingid: bookingId,
         playlistname: playlist_name,
+        mediaruleid: media_rules_select_id,
       };
       try {
         const create_return = await User.createMediaplaylist(
