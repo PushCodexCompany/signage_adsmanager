@@ -126,7 +126,7 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.get_medias(token, page, searchTerm);
+      const data = await User.getMedias(token, page, searchTerm);
       return data;
     }
   };

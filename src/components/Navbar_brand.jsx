@@ -148,7 +148,11 @@ const Navbar = ({ full_brand, setBrand }) => {
                 </div>
               </TooltipComponent>
               {!select_campaign && (
-                <>{isClicked.userProfile && <UserProfile user={user} />}</>
+                <>
+                  {isClicked.userProfile && (
+                    <UserProfile user={user} after_login={false} />
+                  )}
+                </>
               )}
             </div>
           </div>

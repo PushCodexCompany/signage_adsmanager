@@ -42,13 +42,13 @@ const Media_Libraly = () => {
 
   const getMediaLibralyData = async () => {
     if (searchTerm === null) {
-      const data = await User.get_medias(token, 1);
+      const data = await User.getMedias(token, 1);
       setMediaLibralyData(data.media);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
-      const data = await User.get_medias(token, 1, searchTerm);
+      const data = await User.getMedias(token, 1, searchTerm);
       setMediaLibralyData(data.media);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);

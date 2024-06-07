@@ -18,9 +18,53 @@ import User, {
 import { BiBookContent } from "react-icons/bi";
 import User_Management from "../components/User_management";
 
-const UserProfile = ({ user }) => {
+const UserProfile = ({ user, after_login }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+
+  const { token } = User.getCookieData();
+
+  const [percent, setPercent] = useState(0);
+  const [totalSpace, setTotalSpace] = useState(null);
+  const [useSpace, setUseSpace] = useState(null);
+
+  useEffect(() => {
+    fetchAccountStorage();
+  }, []);
+
+  const fetchAccountStorage = async () => {
+    const { storagebyte } = await User.getAccountStorage(token);
+
+    if (storagebyte.percentuse < 1) {
+      setPercent(1);
+    } else {
+      setPercent(storagebyte.percentuse);
+    }
+
+    if (storagebyte.totalspace >= 1024 * 1024 * 1024) {
+      const spaceInGB = bytesToGB(storagebyte.totalspace);
+      setTotalSpace(`${spaceInGB.toFixed(2)} GB`);
+    } else {
+      const spaceInMB = bytesToMB(storagebyte.totalspace);
+      setTotalSpace(`${spaceInMB.toFixed(2)} MB`);
+    }
+
+    if (storagebyte.usesapce >= 1024 * 1024 * 1024) {
+      const spaceInGB = bytesToGB(storagebyte.usesapce);
+      setUseSpace(`${spaceInGB.toFixed(2)} GB`);
+    } else {
+      const spaceInMB = bytesToMB(storagebyte.usesapce);
+      setUseSpace(`${spaceInMB.toFixed(2)} MB`);
+    }
+  };
+
+  const bytesToMB = (bytes) => {
+    return bytes / (1024 * 1024);
+  };
+
+  const bytesToGB = (bytes) => {
+    return bytes / (1024 * 1024 * 1024);
+  };
 
   const handleLogout = async () => {
     const status = await User.logout();
@@ -40,7 +84,10 @@ const UserProfile = ({ user }) => {
   return (
     <>
       {!showModal && (
-        <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
+        <div
+          className="nav-item absolute right-1 top-16 bg-white border border-gray-500 p-8 rounded-lg w-96"
+          style={{ zIndex: 10, borderRight: "1px solid #dedede" }}
+        >
           <div className="flex justify-between items-center">
             <p className="font-semibold text-lg dark:text-gray-200 font-poppins">
               User Profile
@@ -67,38 +114,56 @@ const UserProfile = ({ user }) => {
               <p className="text-gray-500 text-sm dark:text-gray-400 font-poppins">
                 {user.user.role}
               </p>
+              <p className=" text-xs dark:text-gray-400 font-poppins">
+                Total Space : {totalSpace}
+              </p>
+              <p className=" text-xs dark:text-gray-400 font-poppins">
+                Used Space : {useSpace}
+              </p>
+              <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+                <div
+                  className="bg-[#6425FE] h-2 rounded-full"
+                  style={{ width: `${percent}%` }}
+                ></div>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            {user.user.permissions.user ? (
-              <button
-                className="w-full"
-                onClick={() => setShowModal(!showModal)}
-              >
-                <div className="grid grid-cols-5">
-                  <div className="col-span-1 ">
-                    <button
-                      type="button"
-                      style={{ color: "#6425FE", backgroundColor: "#E5FAFB" }}
-                      className="text-xl rounded-lg p-3 hover:bg-light-gray"
-                    >
-                      <FaUsersBetweenLines />
-                    </button>
-                  </div>
-                  <div className="col-span-4 ">
-                    <div className="flex justify-start hover:text-[#6425FE] left-2 font-semibold dark:text-gray-200 font-poppins">
-                      User Management
+          {!after_login ? (
+            <>
+              {" "}
+              <div className="mt-4">
+                {user.user.permissions.user ? (
+                  <button
+                    className="w-full"
+                    onClick={() => setShowModal(!showModal)}
+                  >
+                    <div className="grid grid-cols-5">
+                      <div className="col-span-1 ">
+                        <button
+                          type="button"
+                          style={{
+                            color: "#6425FE",
+                            backgroundColor: "#E5FAFB",
+                          }}
+                          className="text-xl rounded-lg p-3 hover:bg-light-gray"
+                        >
+                          <FaUsersBetweenLines />
+                        </button>
+                      </div>
+                      <div className="col-span-4 ">
+                        <div className="flex justify-start hover:text-[#6425FE] left-2 font-semibold dark:text-gray-200 font-poppins">
+                          User Management
+                        </div>
+                        <div className="flex justify-start left-2 text-gray-500 text-sm dark:text-gray-400 font-poppins">
+                          User Management Setting
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex justify-start left-2 text-gray-500 text-sm dark:text-gray-400 font-poppins">
-                      User Management Setting
-                    </div>
-                  </div>
-                </div>
-              </button>
-            ) : (
-              <></>
-            )}
-            {/* <button className="w-full" onClick={() => setShowModal(!showModal)}>
+                  </button>
+                ) : (
+                  <></>
+                )}
+                {/* <button className="w-full" onClick={() => setShowModal(!showModal)}>
               <div className="grid grid-cols-5">
                 <div className="col-span-1 ">
                   <button
@@ -119,7 +184,7 @@ const UserProfile = ({ user }) => {
                 </div>
               </div>
             </button> */}
-            {/* {!getBrand && (
+                {/* {!getBrand && (
           <div className="mt-4">
             <button className="w-full" onClick={() => navigate("/brand")}>
               <div className="grid grid-cols-5">
@@ -144,15 +209,19 @@ const UserProfile = ({ user }) => {
             </button>
           </div>
         )} */}
-          </div>
-          <div className="mt-5">
-            <button
-              onClick={() => handleLogout()}
-              className="text-white bg-[#6425FE] hover:bg-[#3b1694] rounded-[10px] w-full h-[50px] font-poppins"
-            >
-              Logout
-            </button>
-          </div>
+              </div>
+              <div className="mt-5">
+                <button
+                  onClick={() => handleLogout()}
+                  className="text-white bg-[#6425FE] hover:bg-[#3b1694] rounded-[10px] w-full h-[50px] font-poppins"
+                >
+                  Logout
+                </button>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       )}
 

@@ -1425,7 +1425,7 @@ export default {
     }
   },
 
-  get_medias: async function (token, page, content_name) {
+  getMedias: async function (token, page, content_name) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1453,6 +1453,16 @@ export default {
     let urlString = `api/v1/delete_media?contentid=${hash.contentid}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, "", config);
 
+    return data;
+  },
+
+  getAccountStorage: async function (token) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._get(`api/v1/get_accountstorage`, "", config);
     return data;
   },
 };

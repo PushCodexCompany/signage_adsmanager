@@ -134,17 +134,17 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
                       </text>
                     </span>
                   </p>
-                  {!select_campaign && (
+                  {select_campaign && (
                     <MdKeyboardArrowDown className="text-gray-400 text-14" />
                   )}
                 </div>
               </TooltipComponent>
-
-              {/* {isClicked.cart && <Cart />} */}
-              {/* {isClicked.chat && <Chat />} */}
-              {/* {isClicked.notification && <Notification />} */}
-              {!select_campaign && (
-                <>{isClicked.userProfile && <UserProfile user={user} />}</>
+              {select_campaign && (
+                <>
+                  {isClicked.userProfile && (
+                    <UserProfile user={user} after_login={true} />
+                  )}
+                </>
               )}
             </div>
           </div>
