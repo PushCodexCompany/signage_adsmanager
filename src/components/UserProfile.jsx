@@ -119,17 +119,30 @@ const UserProfile = ({ user, after_login }) => {
                 {user.user.role}
               </p>
               <p className=" text-xs dark:text-gray-400 font-poppins">
-                Total Space : {totalSpace}
+                Used Space : {useSpace} / {totalSpace}
               </p>
-              <p className=" text-xs dark:text-gray-400 font-poppins">
-                Used Space : {useSpace}
-              </p>
-              <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
-                <div
-                  className="bg-[#6425FE] h-2 rounded-full"
-                  style={{ width: `${percent}%` }}
-                ></div>
-              </div>
+              {percent < 80 ? (
+                <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+                  <div
+                    className="bg-[#6425FE] h-2 rounded-full"
+                    style={{ width: `${percent}%` }}
+                  ></div>
+                </div>
+              ) : percent >= 80 && percent <= 100 ? (
+                <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+                  <div
+                    className="bg-[#B3261E] h-2 rounded-full"
+                    style={{ width: `${percent}%` }}
+                  ></div>
+                </div>
+              ) : (
+                <div className="w-full bg-gray-300 rounded-full h-2 mt-2">
+                  <div
+                    className="bg-[#B3261E] h-2 rounded-full"
+                    style={{ width: `${100}%` }}
+                  ></div>
+                </div>
+              )}
             </div>
           </div>
           {!after_login ? (
