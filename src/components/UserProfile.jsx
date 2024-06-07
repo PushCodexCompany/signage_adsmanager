@@ -120,7 +120,7 @@ const UserProfile = ({ user, after_login }) => {
               </p>
               <p
                 className={`text-xs font-poppins ${
-                  percent > 80 ? "text-[#B3261E]" : "text-black"
+                  percent >= 80 ? "text-[#B3261E]" : "text-black"
                 }`}
               >
                 {useSpace} of {totalSpace} ({percent}% used)
