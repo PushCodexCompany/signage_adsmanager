@@ -35,10 +35,14 @@ const UserProfile = ({ user, after_login }) => {
   const fetchAccountStorage = async () => {
     const { storagebyte } = await User.getAccountStorage(token);
 
-    if (storagebyte.percentuse < 1) {
-      setPercent(1);
+    if (storagebyte.percentuse > 0) {
+      if (storagebyte.percentuse <= 1) {
+        setPercent(1);
+      } else {
+        setPercent(storagebyte.percentuse);
+      }
     } else {
-      setPercent(storagebyte.percentuse);
+      setPercent(0);
     }
 
     if (storagebyte.totalspace >= 1024 * 1024 * 1024) {
