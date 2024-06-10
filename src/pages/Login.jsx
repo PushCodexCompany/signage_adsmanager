@@ -136,6 +136,7 @@ const Login = () => {
   useEffect(async () => {
     const select_campaign = User.getCampaign();
     const select_account = User.getAccount();
+
     if (select_campaign) {
       cookie.remove(SIGNAGE_BRAND_COOKIE, { path: "/" });
     }
@@ -155,7 +156,6 @@ const Login = () => {
   //     return false;
   //   }
   // };
-
   const checkPasswordTemplate = () => {
     const lengthRegex = /^.{6,}$/;
     if (lengthRegex.test(password)) {
@@ -245,7 +245,8 @@ const Login = () => {
         const status = await User.login(encrypted);
         if (status) {
           const user_data = User.getCookieData();
-
+          const { storagebyte } = await User.getAccountStorage(user_data.token);
+          User.saveStorage(storagebyte);
           const { permissions } = convertPermissionValuesToBoolean([
             user_data.user,
           ]);

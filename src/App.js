@@ -14,6 +14,7 @@ import User, {
   SIGNAGE_MEMBER_COOKIE,
   SIGNAGE_MERCHANDISE_COOKIE,
   SIGNAGE_PERMISSION_COOKIE_TOKEN,
+  SIGNAGE_STORAGE_COOKIE_TOKEN,
 } from "./libs/admin";
 
 import { useStateContext } from "./contexts/ContextProvider";
@@ -74,6 +75,7 @@ const App = () => {
     cookie.remove(SIGNAGE_BRAND_CODE_COOKIE, { path: "/" });
     cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
     cookie.remove(SIGNAGE_PERMISSION_COOKIE_TOKEN, { path: "/" });
+    cookie.remove(SIGNAGE_STORAGE_COOKIE_TOKEN, { path: "/" });
   };
 
   const user = User.getCookieData();

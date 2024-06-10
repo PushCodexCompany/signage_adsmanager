@@ -11,6 +11,7 @@ export const SIGNAGE_BRAND_CODE_COOKIE = "signage-brand-code";
 export const SIGNAGE_MERCHANDISE_COOKIE = "signage-merchandise";
 export const SIGNAGE_MEMBER_COOKIE_TOKEN = "signage-member-token";
 export const SIGNAGE_PERMISSION_COOKIE_TOKEN = "signage-permission-token";
+export const SIGNAGE_STORAGE_COOKIE_TOKEN = "signage-storage-token";
 
 export default {
   /**
@@ -164,6 +165,7 @@ export default {
     cookie.remove(SIGNAGE_MEMBER_COOKIE, { path: "/" });
     cookie.remove(SIGNAGE_MEMBER_COOKIE_TOKEN, { path: "/" });
     cookie.remove(SIGNAGE_PERMISSION_COOKIE_TOKEN, { path: "/" });
+    cookie.remove(SIGNAGE_STORAGE_COOKIE_TOKEN, { path: "/" });
     cookie.remove("redirect_uri", { path: null });
   },
   // save cookie
@@ -212,6 +214,21 @@ export default {
       cookie.save(
         SIGNAGE_PERMISSION_COOKIE_TOKEN,
         { permission: data },
+        {
+          maxAge: 86400,
+          path: "/",
+        }
+      );
+
+      return true;
+    }
+  },
+
+  saveStorage: function (data) {
+    if (data) {
+      cookie.save(
+        SIGNAGE_STORAGE_COOKIE_TOKEN,
+        { storagebyte: data },
         {
           maxAge: 86400,
           path: "/",
@@ -289,6 +306,10 @@ export default {
 
   getPermission: function () {
     return cookie.load(SIGNAGE_PERMISSION_COOKIE_TOKEN) || false;
+  },
+
+  getStorage: function () {
+    return cookie.load(SIGNAGE_STORAGE_COOKIE_TOKEN) || false;
   },
 
   getAccount: function () {

@@ -33,8 +33,7 @@ const UserProfile = ({ user, after_login }) => {
   }, []);
 
   const fetchAccountStorage = async () => {
-    const { storagebyte } = await User.getAccountStorage(token);
-
+    const { storagebyte } = await User.getStorage();
     if (storagebyte.percentuse > 0) {
       if (storagebyte.percentuse <= 1) {
         setPercent(1);
@@ -44,7 +43,6 @@ const UserProfile = ({ user, after_login }) => {
     } else {
       setPercent(0);
     }
-
     if (storagebyte.totalspace >= 1024 * 1024 * 1024) {
       const spaceInGB = bytesToGB(storagebyte.totalspace);
       setTotalSpace(`${spaceInGB.toFixed(2)} GB`);
@@ -52,7 +50,6 @@ const UserProfile = ({ user, after_login }) => {
       const spaceInMB = bytesToMB(storagebyte.totalspace);
       setTotalSpace(`${spaceInMB.toFixed(2)} MB`);
     }
-
     if (storagebyte.usesapce >= 1024 * 1024 * 1024) {
       const spaceInGB = bytesToGB(storagebyte.usesapce);
       setUseSpace(`${spaceInGB.toFixed(2)} GB`);
