@@ -424,6 +424,7 @@ const Ads_Allocation_Booking = ({
 
   const renderMediaList = (slots, media_list) => {
     const nullFreeList = media_list.filter((it) => it.ContentID !== null);
+
     var currentIndex = 0;
     var accumulatecSlotSize = 1;
 
@@ -509,13 +510,15 @@ const Ads_Allocation_Booking = ({
                         <div>
                           <div className="flex justify-start items-center">
                             <div className="font-poppins text-[15px]">
-                              {items.ContentName.length > 30 ? (
+                              {items.ContentName?.length > 30 ? (
                                 <span>
-                                  {items.ContentName.slice(0, 27) + "..."}
+                                  {items.ContentName?.slice(0, 27) + "..."}
                                 </span>
                               ) : (
                                 <div className="font-poppins font-bold">
-                                  {items.ContentName}
+                                  {items.ContentName
+                                    ? items.ContentName
+                                    : "....."}
                                 </div>
                               )}
                             </div>
@@ -523,9 +526,11 @@ const Ads_Allocation_Booking = ({
                           <div className="flex justify-start items-center ">
                             <div className="font-poppins text-[#8A8A8A] text-[12px]">
                               File Size :{" "}
-                              {parseFloat(
-                                JSON.parse(items.ContentProperties).size
-                              ).toFixed(2)}{" "}
+                              {items.ContentProperties
+                                ? parseFloat(
+                                    JSON.parse(items.ContentProperties).size
+                                  ).toFixed(2)
+                                : "....."}{" "}
                               MB
                             </div>
                           </div>
@@ -1476,7 +1481,6 @@ const Ads_Allocation_Booking = ({
                             )}
                           </div>
                         </div>
-
                         <div className="mt-11" style={{ display: "flex" }}>
                           <Droppable droppableId="panel-1">
                             {(provided) => (

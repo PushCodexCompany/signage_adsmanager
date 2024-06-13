@@ -93,7 +93,10 @@ const Select_Booking = () => {
     setBookingSlot(SlotPerDay);
 
     // get Booking Content
+    console.log("token", token);
+    console.log("BookingID", BookingID);
     const booking_content = await User.getBookingContent(BookingID, token);
+    console.log("booking_content", booking_content);
 
     calculateSize(booking_content);
 
@@ -353,8 +356,6 @@ const Select_Booking = () => {
     setScreenSelect({ screen, value: media_obj });
     setItemsPanel1({ screen, value: media_obj });
     setScreenSelectFromEdit(obj.ScreenID);
-    // setScreenSelect({ screen, value: test_data });
-    // setItemsPanel1({ screen, value: test_data });
     setOpenAdsAllocationModal(!openAdsAllocationModal);
   };
 
