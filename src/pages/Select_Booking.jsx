@@ -9,6 +9,7 @@ import {
   IoIosInformationCircleOutline,
   IoIosCalendar,
   IoIosPlayCircle,
+  IoMdEye,
 } from "react-icons/io";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 
@@ -20,6 +21,7 @@ import Media_Player from "../components/Media_Player";
 
 import Screen_Info from "../components/Screen_Info";
 import { format } from "date-fns";
+import View_Allocation from "../components/View_Allocation";
 
 const Select_Booking = () => {
   const location = useLocation();
@@ -62,6 +64,7 @@ const Select_Booking = () => {
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [openAdsAllocationModal, setOpenAdsAllocationModal] = useState(false);
   const [openModalUploadNewMedia, setOpenModalUploadMedia] = useState(false);
+  const [openViewMediaAllocation, setOpenViewMediaAllocation] = useState(false);
   const [media_allocation_upload_index, setMediaAllocatonUploadIndex] =
     useState(null);
 
@@ -93,10 +96,8 @@ const Select_Booking = () => {
     setBookingSlot(SlotPerDay);
 
     // get Booking Content
-    console.log("token", token);
-    console.log("BookingID", BookingID);
     const booking_content = await User.getBookingContent(BookingID, token);
-    console.log("booking_content", booking_content);
+    // console.log("booking_content", booking_content);
 
     calculateSize(booking_content);
 
@@ -363,6 +364,11 @@ const Select_Booking = () => {
     setMediaAdsAllocationTab(tabName);
   };
 
+  const handleViewMediaAllocation = (screen, media_obj) => {
+    setItemsPanel1({ screen, value: media_obj });
+    setOpenViewMediaAllocation(!openViewMediaAllocation);
+  };
+
   return (
     <>
       <Navbar />
@@ -619,22 +625,56 @@ const Select_Booking = () => {
                                               {renderMediaListBox(items2)}
                                             </div>
                                           </div>
+
                                           {items2?.DisplaySlot > 0 ? (
-                                            <div
-                                              onClick={() =>
-                                                handleSelectScreenAddmedia(
-                                                  screenIndex + 1,
-                                                  items,
-                                                  items2
-                                                )
-                                              }
-                                              className="col-span-1 flex justify-center items-center cursor-pointer"
-                                            >
-                                              <MdOutlineModeEditOutline
-                                                size={26}
-                                                className="text-[#6425FE] hover:text-[#3b1694]"
-                                              />
-                                            </div>
+                                            new Date(
+                                              new Date().getFullYear(),
+                                              new Date().getMonth(),
+                                              new Date().getDate()
+                                            ) <=
+                                            new Date(
+                                              new Date(
+                                                items2.BookingDate
+                                              ).getFullYear(),
+                                              new Date(
+                                                items2.BookingDate
+                                              ).getMonth(),
+                                              new Date(
+                                                items2.BookingDate
+                                              ).getDate()
+                                            ) ? (
+                                              <div
+                                                onClick={() =>
+                                                  handleSelectScreenAddmedia(
+                                                    screenIndex + 1,
+                                                    items,
+                                                    items2
+                                                  )
+                                                }
+                                                className="col-span-1 flex justify-center items-center cursor-pointer"
+                                              >
+                                                <MdOutlineModeEditOutline
+                                                  size={26}
+                                                  className="text-[#6425FE] hover:text-[#3b1694]"
+                                                />
+                                              </div>
+                                            ) : (
+                                              <div
+                                                onClick={() =>
+                                                  handleViewMediaAllocation(
+                                                    screenIndex + 1,
+                                                    items,
+                                                    items2
+                                                  )
+                                                }
+                                                className="col-span-1 flex justify-center items-center cursor-pointer"
+                                              >
+                                                <IoMdEye
+                                                  size={26}
+                                                  className="text-[#6425FE] hover:text-[#3b1694]"
+                                                />
+                                              </div>
+                                            )
                                           ) : (
                                             <></>
                                           )}
@@ -767,6 +807,24 @@ const Select_Booking = () => {
           setOpenAdsAllocationModal={setOpenAdsAllocationModal}
           openAdsAllocationModal={openAdsAllocationModal}
           setMediaDisplay={setMediaDisplay}
+        />
+      )}
+
+      {openViewMediaAllocation && (
+        <a
+          onClick={() => {
+            setOpenViewMediaAllocation(!openViewMediaAllocation);
+          }}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openViewMediaAllocation && (
+        <View_Allocation
+          openViewMediaAllocation={openViewMediaAllocation}
+          setOpenViewMediaAllocation={setOpenViewMediaAllocation}
+          itemsPanel1={itemsPanel1}
+          bookingId={bookingId}
         />
       )}
     </>
