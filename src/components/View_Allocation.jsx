@@ -25,7 +25,7 @@ const View_Allocation = ({
   const getMediaPlaylist = async () => {
     const { token } = User.getCookieData();
     const media = await User.getPlaylist(bookingId, token);
-    setPlaylistName(media[0].PlaylistName);
+    setPlaylistName(media[0]?.PlaylistName);
 
     const obj = {
       mediaplaylistid: itemsPanel1.value.booking_content[0].mediaplaylistid,
@@ -36,8 +36,9 @@ const View_Allocation = ({
   };
 
   const onClickPlay = (source) => {
-    const duration = JSON.parse(source.ContentProperties).duration;
-
+    const duration = source.ContentProperties
+      ? JSON.parse(source.ContentProperties).duration
+      : null;
     if (duration) {
       source.ContentTypeName = "Video";
     } else {
@@ -68,11 +69,11 @@ const View_Allocation = ({
           <div className="bg-[#FFFFFF] w-4/5 lg:w-3/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
-                Playlist : {playlist_name}
+                Playlist : {playlist_name ? playlist_name : "No Playlist ..."}
               </div>
             </div>
             <div className="mt-10">
-              <div className="flex justify-center items-center">
+              <div className="flex flex-col justify-start items-center space-y-1 h-[550px] overflow-y-auto">
                 {playlist_content.length > 0 &&
                   playlist_content.map((items, index) => (
                     <div key={index} className="col-span-11">

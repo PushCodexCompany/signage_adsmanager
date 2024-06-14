@@ -11,9 +11,15 @@ const Media_Player = ({
   main_modal,
 }) => {
   // Parse ContentProperties JSON string to object
-  const contentProperties = JSON.parse(mediaDisplay.ContentProperties);
-  const width = parseInt(contentProperties.width);
-  const height = parseInt(contentProperties.height);
+  const contentProperties = mediaDisplay.ContentProperties
+    ? JSON.parse(mediaDisplay.ContentProperties)
+    : "";
+  const width = contentProperties.width
+    ? parseInt(contentProperties.width)
+    : 200;
+  const height = contentProperties.height
+    ? parseInt(contentProperties.height)
+    : 100;
 
   // Determine if image is horizontal or vertical
   const isHorizontal = width > height;
@@ -58,7 +64,10 @@ const Media_Player = ({
       <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
         <div className="flex justify-center items-center text-center mt-5">
           <div className="font-poppins text-xl lg:text-4xl font-bold">
-            Media : {mediaDisplay.ContentName}
+            Media :{" "}
+            {mediaDisplay.ContentName
+              ? mediaDisplay.ContentName
+              : "No Media Name ..."}
           </div>
         </div>
         <div className="mt-10">
@@ -87,9 +96,11 @@ const Media_Player = ({
             <div className="flex justify-center items-center">
               <div className="font-poppins text-2xl">
                 <b>Media Size :</b>{" "}
-                {parseFloat(
-                  JSON.parse(mediaDisplay.ContentProperties).size
-                ).toFixed(2)}{" "}
+                {mediaDisplay.ContentProperties
+                  ? parseFloat(
+                      JSON.parse(mediaDisplay.ContentProperties).size
+                    ).toFixed(2)
+                  : "0"}{" "}
                 MB
               </div>
             </div>
