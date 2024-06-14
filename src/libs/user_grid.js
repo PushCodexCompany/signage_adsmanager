@@ -42,7 +42,7 @@ export const GridTable = ({
     const roles = await User.getUserRoles(token);
     const brands = await User.getBrand(token);
     const merchandises = await User.getMerchandiseList(token);
-
+    console.log("merchandises", merchandises);
     setDefaultBrand(brands);
     setDefaultRoles(roles);
     setDefaultMerchandise(merchandises);
@@ -704,43 +704,44 @@ export const GridTable = ({
               <div className="h-[550px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
-                    {default_merchandise.map((item, index) => (
-                      <div key={index}>
-                        <div className="h-64 w-64 relative">
-                          <input
-                            type="checkbox"
-                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
-                            onChange={() =>
-                              handleCheckboxChange(
-                                item.AdvertiserID,
-                                "merchandise"
-                              )
-                            }
-                            checked={reg_merchandise.includes(
-                              item.AdvertiserID
-                            )}
-                          />
-
-                          <div className="w-full h-full flex items-center justify-center">
-                            <img
-                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-contain" // Adjust the size as needed
-                              src={item.AdvertiserLogo}
-                              alt={item.AdvertiserName}
+                    {default_merchandise.length > 0 &&
+                      default_merchandise.map((item, index) => (
+                        <div key={index}>
+                          <div className="h-64 w-64 relative">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.AdvertiserID,
+                                  "merchandise"
+                                )
+                              }
+                              checked={reg_merchandise.includes(
+                                item.AdvertiserID
+                              )}
                             />
+
+                            <div className="w-full h-full flex items-center justify-center">
+                              <img
+                                className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-contain" // Adjust the size as needed
+                                src={item.AdvertiserLogo}
+                                alt={item.AdvertiserName}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-xl font-bold">
+                              {item.AdvertiserName}
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-[#6F6F6F] text-sm">
+                              {item.AccountCode}
+                            </div>
                           </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-xl font-bold">
-                            {item.AdvertiserName}
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-[#6F6F6F] text-sm">
-                            {item.AccountCode}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               </div>

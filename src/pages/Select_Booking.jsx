@@ -526,7 +526,7 @@ const Select_Booking = () => {
                                 className={`lg:min-w-[20px] min-w-[100px] 
                                   ${
                                     booking_col === 2
-                                      ? "h-[80px]"
+                                      ? "h-[100px]"
                                       : booking_col === 2
                                       ? "h-[100px]"
                                       : booking_col === 3
@@ -621,11 +621,10 @@ const Select_Booking = () => {
                                       <div className="p-2">
                                         <div className="grid grid-cols-6 space-x-1 h-[85px]">
                                           <div className="col-span-5 flex items-center">
-                                            <div className="flex flex-wrap w-full">
+                                            <div className="flex flex-wrap w-full ">
                                               {renderMediaListBox(items2)}
                                             </div>
                                           </div>
-
                                           {items2?.DisplaySlot > 0 ? (
                                             new Date(
                                               new Date().getFullYear(),

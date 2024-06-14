@@ -84,7 +84,7 @@ const Ads_Allocation_Apply_Screen = ({
   };
 
   const handleAddScreenAllocation = () => {
-    const screensToReturn = screen.filter((screen) =>
+    const screensToReturn = screen_filter.filter((screen) =>
       selectedScreenItems.includes(screen.ScreenID)
     );
     setScreennAdsAllocation(screensToReturn);

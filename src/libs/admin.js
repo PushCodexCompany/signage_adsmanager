@@ -645,6 +645,8 @@ export default {
       config
     );
 
+    // console.log("data", data);
+
     if (data.code !== 404) {
       return data;
     } else {
