@@ -293,11 +293,20 @@ const Ads_Allocation_Booking = ({
         newItem,
         ...arr.slice(index + 1),
       ];
-      //ToDo
-      // 1. Check if droppableID is panel-1
-      // 2. Check if destination still has empty slot
-      // 3. Check dropped index to determine where to insert new media
+
+      const getLastNonNullIndex = (arr) => {
+        for (let i = arr.length - 1; i >= 0; i--) {
+          if (arr[i].ContentID !== null) {
+            return i;
+          }
+        }
+        return -1;
+      };
+
       var newDestinationItems = [...destinationItems];
+
+      let lastIndex = getLastNonNullIndex(destinationItems);
+      let destinationIndex = lastIndex === -1 ? 0 : lastIndex + 1;
 
       if (destination.droppableId === "panel-1") {
         const draggedItem = sourceItems.find(
@@ -305,7 +314,7 @@ const Ads_Allocation_Booking = ({
             item.ContentID === parseInt(result.draggableId.split("-")[1])
         );
 
-        newDestinationItems = insert(destinationItems, destination.index, {
+        newDestinationItems = insert(destinationItems, destinationIndex, {
           ...draggedItem,
           MediaID: 0,
           slot_size: 1,
@@ -328,8 +337,6 @@ const Ads_Allocation_Booking = ({
   const handleAddMediaPlaylistItem = (index) => {
     const updatedMediaList = [...itemsPanel1.value.medias];
     const target = updatedMediaList[index];
-
-    //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
       target.slot_size = target.slot_size + 1;
       target.duration = target.duration + 15;
@@ -889,20 +896,9 @@ const Ads_Allocation_Booking = ({
                     token
                   );
                   if (data.code !== 404) {
-                    // Swal.fire({
-                    //   icon: "success",
-                    //   title: "Add Media to Playlist Success ...",
-                    //   text: "เพิ่ม Media to Playlist สำเร็จ!",
-                    // }).then(async (result) => {
-                    // if (
-                    //   result.isConfirmed ||
-                    //   result.dismiss === Swal.DismissReason.backdrop
-                    // ) {
                     const data = await getMediaPlaylist();
                     setSelectedOption(data);
                     setCheckCreateMediaPlaylist(false);
-                    // }
-                    // });
                   } else {
                     Swal.fire({
                       icon: "error",
@@ -1026,7 +1022,6 @@ const Ads_Allocation_Booking = ({
           mediaplaylistid: media_playlist_id,
           medias: media_list,
         };
-
         try {
           const data = await User.updateMediaPlaylistContent(
             playlist_obj,
