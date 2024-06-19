@@ -142,12 +142,11 @@ const Select_Booking = () => {
   const calculateSize = (screen) => {
     let maxLength = 0;
     screen.forEach((screen) => {
-      const bookingLength = screen.medias.length;
+      const bookingLength = screen.DisplaySlot;
       if (bookingLength > maxLength) {
         maxLength = bookingLength;
       }
     });
-
     const col_booking = Math.ceil(maxLength / 5);
     setBookingCol(col_booking);
   };
@@ -503,7 +502,7 @@ const Select_Booking = () => {
                 </div>
               </div>
 
-              <div className="lg:w-[1140px] w-[520px] h-[630px] overflow-x-auto overflow-y-auto  mt-5">
+              <div className="lg:w-[1140px] w-[520px] h-[630px] overflow-x-auto overflow-y-auto mt-5 scrollbar pb-[10px]">
                 <div className="grid grid-cols-12 space-x-1 mt-3">
                   <div className="col-span-3 lg:col-span-1">
                     <div className="min-w-[100%]">
@@ -523,17 +522,11 @@ const Select_Booking = () => {
                           booking_date.map((items, index) => (
                             <div key={index} className="mt-3 space-x-2">
                               <div
-                                className={`lg:min-w-[20px] min-w-[100px] 
+                                className={`lg:min-w-[20px] min-w-[100px]
                                   ${
-                                    booking_col === 2
-                                      ? "h-[100px]"
-                                      : booking_col === 2
-                                      ? "h-[100px]"
-                                      : booking_col === 3
-                                      ? "h-[150px]"
-                                      : booking_col === 4
-                                      ? "h-[400px]"
-                                      : "h-[100px]"
+                                    booking_col > 1
+                                      ? `h-[${booking_col * 50}px]`
+                                      : `h-[100px]`
                                   } 
                                   bg-[#59606C] rounded-lg flex flex-col justify-center items-center`}
                               >
@@ -617,66 +610,78 @@ const Select_Booking = () => {
                                 </div>
                                 {items.booking_content.length > 0 &&
                                   items.booking_content.map((items2, index) => (
-                                    <div key={index} className="mt-3">
-                                      <div className="p-2">
-                                        <div className="grid grid-cols-6 space-x-1 h-[85px]">
-                                          <div className="col-span-5 flex items-center">
-                                            <div className="flex flex-wrap w-full ">
-                                              {renderMediaListBox(items2)}
+                                    <div key={index} className="mt-3 space-x-2">
+                                      <div
+                                        className={`p-2
+                                          ${
+                                            booking_col > 1
+                                              ? `h-[${booking_col * 50}px]`
+                                              : `h-[100px]`
+                                          } 
+                                         rounded-lg`}
+                                      >
+                                        <div class="flex justify-start items-center h-full">
+                                          <div className="grid grid-cols-8 space-x-1 ">
+                                            <div className="col-span-7 flex items-center justify-center">
+                                              <div className="flex flex-wrap w-full ">
+                                                {renderMediaListBox(items2)}
+                                              </div>
+                                            </div>
+                                            <div className="col-span-1 flex items-center">
+                                              {items2?.DisplaySlot > 0 ? (
+                                                new Date(
+                                                  new Date().getFullYear(),
+                                                  new Date().getMonth(),
+                                                  new Date().getDate()
+                                                ) <=
+                                                new Date(
+                                                  new Date(
+                                                    items2.BookingDate
+                                                  ).getFullYear(),
+                                                  new Date(
+                                                    items2.BookingDate
+                                                  ).getMonth(),
+                                                  new Date(
+                                                    items2.BookingDate
+                                                  ).getDate()
+                                                ) ? (
+                                                  <div
+                                                    onClick={() =>
+                                                      handleSelectScreenAddmedia(
+                                                        screenIndex + 1,
+                                                        items,
+                                                        items2
+                                                      )
+                                                    }
+                                                    className="col-span-1 flex justify-center items-center cursor-pointer"
+                                                  >
+                                                    <MdOutlineModeEditOutline
+                                                      size={26}
+                                                      className="text-[#6425FE] hover:text-[#3b1694]"
+                                                    />
+                                                  </div>
+                                                ) : (
+                                                  <div
+                                                    onClick={() =>
+                                                      handleViewMediaAllocation(
+                                                        screenIndex + 1,
+                                                        items,
+                                                        items2
+                                                      )
+                                                    }
+                                                    className="col-span-1 flex justify-center items-center cursor-pointer"
+                                                  >
+                                                    <IoMdEye
+                                                      size={26}
+                                                      className="text-[#6425FE] hover:text-[#3b1694]"
+                                                    />
+                                                  </div>
+                                                )
+                                              ) : (
+                                                <></>
+                                              )}
                                             </div>
                                           </div>
-                                          {items2?.DisplaySlot > 0 ? (
-                                            new Date(
-                                              new Date().getFullYear(),
-                                              new Date().getMonth(),
-                                              new Date().getDate()
-                                            ) <=
-                                            new Date(
-                                              new Date(
-                                                items2.BookingDate
-                                              ).getFullYear(),
-                                              new Date(
-                                                items2.BookingDate
-                                              ).getMonth(),
-                                              new Date(
-                                                items2.BookingDate
-                                              ).getDate()
-                                            ) ? (
-                                              <div
-                                                onClick={() =>
-                                                  handleSelectScreenAddmedia(
-                                                    screenIndex + 1,
-                                                    items,
-                                                    items2
-                                                  )
-                                                }
-                                                className="col-span-1 flex justify-center items-center cursor-pointer"
-                                              >
-                                                <MdOutlineModeEditOutline
-                                                  size={26}
-                                                  className="text-[#6425FE] hover:text-[#3b1694]"
-                                                />
-                                              </div>
-                                            ) : (
-                                              <div
-                                                onClick={() =>
-                                                  handleViewMediaAllocation(
-                                                    screenIndex + 1,
-                                                    items,
-                                                    items2
-                                                  )
-                                                }
-                                                className="col-span-1 flex justify-center items-center cursor-pointer"
-                                              >
-                                                <IoMdEye
-                                                  size={26}
-                                                  className="text-[#6425FE] hover:text-[#3b1694]"
-                                                />
-                                              </div>
-                                            )
-                                          ) : (
-                                            <></>
-                                          )}
                                         </div>
                                       </div>
                                     </div>

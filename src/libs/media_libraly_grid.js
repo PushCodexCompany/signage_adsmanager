@@ -9,12 +9,7 @@ import Swal from "sweetalert2";
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-export const GridTable = ({
-  media_libraly_data,
-  setMediaLibralyData,
-  all_pages,
-  searchTerm,
-}) => {
+export const GridTable = ({ media_libraly_data, all_pages, searchTerm }) => {
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaDisplay, setMediaDisplay] = useState([]);
   const { token } = User.getCookieData();
@@ -115,10 +110,6 @@ export const GridTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_pages ? all_pages : 0;
-
-  // useEffect(() => {
-  //   fetchDataForPage();
-  // }, [currentPage]);
 
   useEffect(() => {
     setData(media_libraly_data);

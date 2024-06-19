@@ -14,25 +14,37 @@ const Booking = () => {
   const [booking_data, setBookingData] = useState([]);
   const [all_pages, setAllPages] = useState(null);
   const [filter_screen, setFilterScreen] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   useEffect(() => {
     getBookingData();
-  }, []);
+  }, [searchTerm]);
 
   const getBookingData = async () => {
-    const data = await User.getBooking(token);
-
-    if (data.length > 0) {
-      data?.sort((a, b) => a.BookingID - b.BookingID);
+    if (searchTerm === null) {
+      const data = await User.getBooking(token, 1);
+      if (data.booking.length > 0) {
+        data.booking?.sort((a, b) => a.BookingID - b.BookingID);
+      }
+      setBookingData(data.booking);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    } else {
+      const data = await User.getBooking(token, 1, searchTerm);
+      if (data.booking.length > 0) {
+        data.booking?.sort((a, b) => a.BookingID - b.BookingID);
+      }
+      setBookingData(data.booking);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
     }
-    setBookingData(data);
-    // setBookingData(data.booking);
-    // setAllPages(data.pagination[0].totalpage);
   };
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
@@ -61,8 +73,8 @@ const Booking = () => {
           {booking_data.length > 0 ? (
             <GridTable
               booking_data={booking_data}
-              // all_pages={all_pages}
-              // setBookingData={setBookingData}
+              all_pages={all_pages}
+              searchTerm={searchTerm}
             />
           ) : (
             <div className="flex items-center justify-center h-[550px] text-center ">

@@ -1110,19 +1110,41 @@ export default {
     return data;
   },
 
-  getBooking: async function (token) {
+  // getBooking: async function (token) {
+  //   const { brand_code } = this.getBrandCode();
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+  //   const { data } = await this._get(
+  //     `api/v1/get_bookings?brandcode=${brand_code}`,
+  //     "",
+  //     config
+  //   );
+
+  //   if (data.code !== 404) {
+  //     return data;
+  //   } else {
+  //     return false;
+  //   }
+  // },
+
+  getBooking: async function (token, page, booking_name) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(
-      `api/v1/get_bookings?brandcode=${brand_code}`,
-      "",
-      config
-    );
 
+    let url = `api/v1/get_bookingsb?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (booking_name) {
+      url += `&bookingname=${booking_name}`;
+    }
+
+    const { data } = await this._get(url, "", config);
     if (data.code !== 404) {
       return data;
     } else {
@@ -1214,9 +1236,8 @@ export default {
       },
     };
 
-    let urlString = `api/v1/update_bookingslots?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&bookingcontent=${hash.bookingcontent}&brandcode=${brand_code}`;
+    let urlString = `api/v1/update_bookingslots?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&brandcode=${brand_code}`;
     const { data } = await this._post(urlString, hash, config);
-
     return data;
   },
 

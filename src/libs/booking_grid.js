@@ -1,39 +1,17 @@
-import topImg from "../assets/img/merchandise/tops.png";
-import matsumotoImg from "../assets/img/merchandise/Matsumoto_KiYoshi.png";
-import supersportImg from "../assets/img/merchandise/Super_Sports.png";
-import powerbuyImg from "../assets/img/merchandise/Power_Buy.png";
-import { bookingData } from "../data/mockup";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { IoIosArrowDown } from "react-icons/io";
 import {
   RiDeleteBin5Line,
   RiEditLine,
   RiShareBoxLine,
   RiVideoAddLine,
 } from "react-icons/ri";
+import User from "../libs/admin";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-const getImg = (id) => {
-  let img;
-  if (id === 1) {
-    img = topImg;
-  } else if (id === 2) {
-    img = matsumotoImg;
-  } else if (id === 3) {
-    img = supersportImg;
-  } else if (id === 4) {
-    img = powerbuyImg;
-  }
-
-  return img;
-};
-
-export const GridTable = ({
-  booking_data,
-  // all_pages,
-  // setBookingData
-}) => {
+export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
   const navigate = useNavigate();
+  const { token } = User.getCookieData();
 
   const onClickEdit = (obj) => {
     const replacedString = obj.BookingName.replace(/\//g, "_");
@@ -49,155 +27,256 @@ export const GridTable = ({
     });
   };
 
+  // Pagination Table
+  const [data, setData] = useState(booking_data);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageInput, setPageInput] = useState("");
+  const totalPages = all_pages ? all_pages : 0;
+
+  useEffect(() => {
+    setData(booking_data);
+  }, [booking_data]);
+
+  const fetchDataForPage = async (page) => {
+    if (page) {
+      const data = await User.getBooking(token, page, searchTerm);
+      return data;
+    }
+  };
+
+  const handleClick = async (page) => {
+    setCurrentPage(page);
+    setPageInput("");
+    const data = await fetchDataForPage(page);
+    setData(data.booking);
+  };
+
+  const handlePrevPage = async () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.booking);
+    }
+  };
+
+  const handleNextPage = async () => {
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.booking);
+    }
+  };
+
+  const handlePageInputChange = (e) => {
+    setPageInput(parseInt(e.target.value));
+  };
+
+  const handlePageInputBlur = async () => {
+    const page = Number(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      const data = await fetchDataForPage(page);
+      setData(data.booking);
+    }
+    setPageInput("");
+  };
+
+  const handlePageInputKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handlePageInputBlur();
+    }
+  };
+
+  const renderTableData = () => {
+    return (
+      <>
+        {data.map((row, index) => (
+          <tr key={row.BookingID}>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-md flex justify-center">
+                {row.BookingID}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+              <div
+                // onClick={() => handleSelectBooking(row)}
+                className="font-poppins text-xl  text-[#6425FE]"
+              >
+                {row.BookingName}
+              </div>
+              <div className="font-poppins text-sm text-gray-500">
+                {row.AdvertiserName}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="flex items-center justify-center">
+                <img
+                  className="w-[60px] h-[60px] rounded-md object-cover"
+                  src={row.AdvertiserLogo}
+                  alt={row.AdvertiserName}
+                />
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-xl flex justify-center items-center">
+                {row.TotalScreen ? row.TotalScreen : 0}
+              </div>
+            </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-xl flex justify-center items-center">
+                {row.SlotPerDay ? row.SlotPerDay : 0}
+              </div>
+            </td>
+            {row.BookingStatus === 1 ? (
+              <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                <div className="space-x-2">
+                  <button onClick={() => onClickEdit(row)}>
+                    <RiEditLine
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694]"
+                    />
+                  </button>
+                </div>
+              </td>
+            ) : (
+              <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                <div className="space-x-2">
+                  <button onClick={() => handleSelectBooking(row)}>
+                    <RiVideoAddLine
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694]"
+                    />
+                  </button>
+                </div>
+              </td>
+            )}
+          </tr>
+        ))}
+      </>
+    );
+  };
+
+  const renderPageNumbers = () => {
+    let displayPages = [];
+
+    if (totalPages <= 4) {
+      for (let i = 1; i <= totalPages; i++) {
+        displayPages.push(i);
+      }
+    } else {
+      if (currentPage <= 4) {
+        displayPages = [1, 2, 3, 4, "...", totalPages];
+      } else if (currentPage >= totalPages - 3) {
+        displayPages = [
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        ];
+      } else {
+        displayPages = [
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages,
+        ];
+      }
+    }
+
+    return displayPages.map((number, index) => (
+      <button
+        key={index}
+        className={`px-3 py-1 mx-1 ${
+          currentPage === number
+            ? "text-[#6425FE] rounded-md border border-[#6425FE]"
+            : "text-[#bfbfbf]"
+        }  font-poppins font-bold`}
+        onClick={() => number !== "..." && handleClick(number)}
+        disabled={number === "..."}
+      >
+        {number}
+      </button>
+    ));
+  };
+
   return (
     <>
-      <div className="w-auto h-[550px] overflow-auto">
-        <table className="min-w-full border border-gray-300">
-          <thead>
-            <tr>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                ID
-              </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Booking Name
-              </th>
-              {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider ">
+      <div>
+        <div className="w-auto h-[550px] overflow-auto">
+          <table className="min-w-full border border-gray-300">
+            <thead>
+              <tr>
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Booking Name
+                </th>
+                {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider ">
                 Content Type
               </th> */}
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Merchandise
-              </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Screens
-              </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Slots
-              </th>
-              {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Merchandise
+                </th>
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Screens
+                </th>
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Slots
+                </th>
+                {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Booking Status
               </th>
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Content Status
               </th> */}
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* {bookingData.map((row) => (
-              <tr key={row.id}>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md">{row.id}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
-                  <div className="font-poppins text-xl  text-[#6425FE]">
-                    {row.booking_name[0]}
-                  </div>
-                  <div className="font-poppins text-sm text-gray-500">
-                    {row.booking_name[1]}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md flex font-bold items-center justify-center">
-                    {row.content_type}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex items-center justify-center">
-                    <img
-                      className="w-[60px] h-[60px] rounded-md object-cover"
-                      src={row.merchandise.AdvertiserLogo}
-                      alt={row.merchandise.AdvertiserName}
-                    />
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-xl flex justify-center items-center">
-                    {row.screen.length}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-xl flex justify-center items-center">
-                    {row.booking_slot}
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                  <div className="space-x-2">
-                    <button onClick={() => onClickEdit(row)}>
-                      <RiEditLine
-                        size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
-                      />
-                    </button>
-                  </div>
-                </td>
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                  Action
+                </th>
               </tr>
-            ))} */}
-            {booking_data.map((row) => (
-              <tr key={row.BookingID}>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-md flex justify-center">
-                    {row.BookingID}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
-                  <div
-                    // onClick={() => handleSelectBooking(row)}
-                    className="font-poppins text-xl  text-[#6425FE]"
-                  >
-                    {row.BookingName}
-                  </div>
-                  <div className="font-poppins text-sm text-gray-500">
-                    {row.AdvertiserName}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="flex items-center justify-center">
-                    <img
-                      className="w-[60px] h-[60px] rounded-md object-cover"
-                      src={row.AdvertiserLogo}
-                      alt={row.AdvertiserName}
-                    />
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-xl flex justify-center items-center">
-                    {row.TotalScreen ? row.TotalScreen : 0}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div className="font-poppins text-xl flex justify-center items-center">
-                    {row.SlotPerDay ? row.SlotPerDay : 0}
-                  </div>
-                </td>
-                {row.BookingStatus === 1 ? (
-                  <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                    <div className="space-x-2">
-                      <button onClick={() => onClickEdit(row)}>
-                        <RiEditLine
-                          size={20}
-                          className="text-[#6425FE] hover:text-[#3b1694]"
-                        />
-                      </button>
-                    </div>
-                  </td>
-                ) : (
-                  <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                    <div className="space-x-2">
-                      <button onClick={() => handleSelectBooking(row)}>
-                        <RiVideoAddLine
-                          size={20}
-                          className="text-[#6425FE] hover:text-[#3b1694]"
-                        />
-                      </button>
-                    </div>
-                  </td>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>{renderTableData()}</tbody>
+          </table>
+        </div>
+        <div className="flex justify-center items-center mt-6">
+          <IoIosArrowBack
+            onClick={handlePrevPage}
+            size={26}
+            className={`${
+              currentPage === 1
+                ? "text-[#bfbfbf]"
+                : "cursor-pointer hover:text-[#bfbfbf]"
+            }`}
+          />
+          {renderPageNumbers()}
+          <IoIosArrowForward
+            onClick={handleNextPage}
+            size={26}
+            className={`${
+              currentPage === totalPages
+                ? "text-[#bfbfbf]"
+                : "cursor-pointer hover:text-[#bfbfbf]"
+            }`}
+          />
+          <div className="font-poppins font-bold ml-2">Go to</div>
+          <input
+            type="number"
+            min={1}
+            value={pageInput}
+            onKeyPress={handlePageInputKeyPress}
+            onChange={handlePageInputChange}
+            onBlur={handlePageInputBlur}
+            className="w-[50px] h-[35px] ml-1 mr-1 border border-gray-300 rounded-sm pl-1 font-poppins"
+          />
+          <div className="font-poppins font-bold">Page</div>
+        </div>
       </div>
     </>
   );

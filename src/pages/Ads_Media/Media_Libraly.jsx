@@ -134,7 +134,6 @@ const Media_Libraly = () => {
             <GridTable
               media_libraly_data={media_libraly_data}
               all_pages={all_pages}
-              setMediaLibralyData={setMediaLibralyData}
               searchTerm={searchTerm}
             />
           </div>
