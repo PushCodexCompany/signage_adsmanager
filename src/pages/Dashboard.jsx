@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Header } from "../components";
+import { Header, Navbar } from "../components";
 import { MdOutlineCalendarToday, MdCalendarToday } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import central_img from "../assets/img/central.png";
@@ -22,7 +22,6 @@ import { ImArrowUp, ImArrowDown } from "react-icons/im";
 import { GridTable } from "../libs/dashboard_grid";
 import "./css/dashboard.css";
 
-import { Navbar } from "../components";
 import User from "../libs/admin";
 import useCheckPermission from "../libs/useCheckPermission";
 

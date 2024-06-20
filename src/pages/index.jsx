@@ -28,3 +28,4 @@ export { default as Select_Booking } from "./Select_Booking";
 export { default as User_Account } from "./User_Account";
 export { default as New_screen } from "./New_screen";
 export { default as Booking_Summary } from "./Booking_Summary";
+export { default as Static_Booking } from "./Static_Booking";

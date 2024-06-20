@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "../components";
+import { Header, Navbar } from "../components";
 
 import Screen_Info from "../components/Screen_Info";
 import Pair_Screen from "../components/Pair_Screen";
-import { Navbar } from "../components";
 
 import Filter from "../components/Filter";
 import { GridTable } from "../libs/screens_grid";

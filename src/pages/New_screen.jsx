@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Header } from "../components";
-import { Navbar } from "../components";
+import { Header, Navbar } from "../components";
 import empty_img from "../assets/img/empty_location.png";
 import location_img from "../assets/img/location.png";
 import { HiOutlineClock } from "react-icons/hi";

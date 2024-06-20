@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "../components";
+import { Header, Navbar } from "../components";
 import { GridTable } from "../libs/booking_grid";
-import { Navbar } from "../components";
 import useCheckPermission from "../libs/useCheckPermission";
 import New_Booking from "../components/New_Booking";
 import Filter from "../components/Filter";

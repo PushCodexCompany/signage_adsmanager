@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { Header } from "../components";
+import { Header, Navbar } from "../components";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import supersport_img from "../assets/img/merchandise/Super_Sports.png";
 import evisu_img from "../assets/img/merchandise/Evisu.png";
 import kfc_img from "../assets/img/merchandise/kfc.png";
 import Empty_Img from "../assets/img/empty_img.png";
-import { Navbar } from "../components";
 
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";

@@ -16,6 +16,7 @@ import {
   MdInfoOutline,
   MdOutlineLogout,
   MdFolderOpen,
+  MdOutlineMarkunreadMailbox,
 } from "react-icons/md";
 import { GrMultimedia } from "react-icons/gr";
 
@@ -46,6 +47,18 @@ export const links = [
         link: "booking",
         icon: <RiFileEditLine size={27} />,
         notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "Digital Screen",
+            link: "booking",
+            icon: <SlScreenDesktop size={27} />,
+          },
+          {
+            name: "Static Screen",
+            link: "static_booking",
+            icon: <MdOutlineMarkunreadMailbox size={27} />,
+          },
+        ],
       },
       {
         name: "Screens",

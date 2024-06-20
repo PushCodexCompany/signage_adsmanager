@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { Header } from "../../../components";
+import { Header, Navbar } from "../../../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
-import { Navbar } from "../../../components";
 import { PiCaretUpDown } from "react-icons/pi";
 import User from "../../../libs/admin";
 

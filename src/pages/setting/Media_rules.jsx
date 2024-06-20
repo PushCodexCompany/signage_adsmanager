@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Header } from "../../components";
+import { Header, Navbar } from "../../components";
 import { GridTable } from "../../libs/media_rule_grid";
 import { useNavigate } from "react-router-dom";
-import { Navbar } from "../../components";
 import useCheckPermission from "../../libs/useCheckPermission";
 import User from "../../libs/admin";
 

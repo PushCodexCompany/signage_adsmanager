@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Header } from "../../components";
+import { Header, Navbar } from "../../components";
 
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import { RiDeleteBin5Line } from "react-icons/ri";
@@ -10,8 +10,6 @@ import {
   IoIosCheckmark,
 } from "react-icons/io";
 import useCheckPermission from "../../libs/useCheckPermission";
-
-import { Navbar } from "../../components";
 
 const _tags = [
   {

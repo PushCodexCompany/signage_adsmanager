@@ -29,6 +29,7 @@ import {
   New_screen,
   Booking_Summary,
   Select_Booking,
+  Static_Booking,
 } from "../pages";
 
 // import User from "../libs/admin";
@@ -51,6 +52,7 @@ const Routing = () => {
         {/* <Route path="/campaign" element={<Campaign />} /> */}
         <Route path="/ads_media" element={<Ads_Media />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/static_booking" element={<Static_Booking />} />
         <Route path="/inbox" element={<Inbox />} />
         {/* <Route path="/event" element={<Event />} /> */}
         <Route path="/logout" element={<Logout />} />
