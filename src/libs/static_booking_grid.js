@@ -4,10 +4,13 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { IoImageOutline } from "react-icons/io5";
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import Edit_Static_Booking from "../components/Edit_Static_Booking";
 
 export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
+  const [edit_booking_data, setEditBookingData] = useState([]);
+  const [modalEditBooking, setModalEditBooking] = useState(false);
 
   // Pagination Table
   const [data, setData] = useState(booking_data);
@@ -163,10 +166,13 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
               </td>
             )}
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-              <div className="font-poppins text-md flex justify-center items-center">
+              <div
+                onClick={() => handleEditBooking(row)}
+                className="font-poppins text-md flex justify-center items-center"
+              >
                 <MdOutlineModeEditOutline
                   size={24}
-                  className="text-[#6425FE] hover:text-[#3b1694]"
+                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                 />
               </div>
             </td>
@@ -222,6 +228,11 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
         {number}
       </button>
     ));
+  };
+
+  const handleEditBooking = (row) => {
+    setEditBookingData(row);
+    setModalEditBooking(!modalEditBooking);
   };
 
   return (
@@ -293,6 +304,21 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
           <div className="font-poppins font-bold">Page</div>
         </div>
       </div>
+
+      {modalEditBooking && (
+        <a
+          onClick={() => setModalEditBooking(!modalEditBooking)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {modalEditBooking && (
+        <Edit_Static_Booking
+          setModalEditBooking={setModalEditBooking}
+          modalEditBooking={modalEditBooking}
+          edit_booking_data={edit_booking_data}
+        />
+      )}
     </>
   );
 };
