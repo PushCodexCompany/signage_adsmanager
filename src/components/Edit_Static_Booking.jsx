@@ -115,7 +115,9 @@ const Edit_Static_Booking = ({
                       <option value="" disabled selected hidden>
                         Select Screen
                       </option>
-                      <option value="test">Screen 1</option>
+                      <option value="1">Screen 1</option>
+                      <option value="2">Screen 2</option>
+                      <option value="3">Screen 3</option>
                     </select>
                     {/* <div className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300">
                       <select

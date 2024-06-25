@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
 import Filter from "../components/Filter";
 import { GridTable } from "../libs/static_booking_grid";
+import New_Static_Booking from "../components/New_Static_Booking";
 
 const Static_Booking = () => {
   const [showModalAddNewBooking, setShowModalAddNewBooking] = useState(false);
@@ -199,7 +200,7 @@ const Static_Booking = () => {
         </div>
       </div>
 
-      {/* {showModalAddNewBooking && (
+      {showModalAddNewBooking && (
         <a
           onClick={() => setShowModalAddNewBooking(!showModalAddNewBooking)}
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
@@ -207,8 +208,10 @@ const Static_Booking = () => {
       )}
 
       {showModalAddNewBooking && (
-        <New_Booking setShowModalAddNewBooking={setShowModalAddNewBooking} />
-      )} */}
+        <New_Static_Booking
+          setShowModalAddNewBooking={setShowModalAddNewBooking}
+        />
+      )}
     </>
   );
 };
