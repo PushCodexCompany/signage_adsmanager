@@ -65,6 +65,18 @@ export const links = [
         link: "screen",
         icon: <SlScreenDesktop size={27} />,
         notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "Digital Screen",
+            link: "screen",
+            icon: <SlScreenDesktop size={27} />,
+          },
+          {
+            name: "Static Screen",
+            link: "static_screen",
+            icon: <MdOutlineMarkunreadMailbox size={27} />,
+          },
+        ],
       },
       {
         name: "Statics",

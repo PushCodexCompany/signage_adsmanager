@@ -30,6 +30,7 @@ import {
   Booking_Summary,
   Select_Booking,
   Static_Booking,
+  Static_Screens,
 } from "../pages";
 
 // import User from "../libs/admin";
@@ -53,6 +54,7 @@ const Routing = () => {
         <Route path="/ads_media" element={<Ads_Media />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/static_booking" element={<Static_Booking />} />
+        <Route path="/static_screen" element={<Static_Screens />} />
         <Route path="/inbox" element={<Inbox />} />
         {/* <Route path="/event" element={<Event />} /> */}
         <Route path="/logout" element={<Logout />} />
