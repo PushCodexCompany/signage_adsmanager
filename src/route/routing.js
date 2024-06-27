@@ -31,6 +31,7 @@ import {
   Select_Booking,
   Static_Booking,
   Static_Screens,
+  New_Static_Screen,
 } from "../pages";
 
 // import User from "../libs/admin";
@@ -61,6 +62,10 @@ const Routing = () => {
         <Route path="/user" element={<User_Page />} />
         <Route path="/screen" element={<Screen />} />
         <Route path="/screen/create/:id" element={<New_screen />} />
+        <Route
+          path="/static_screen/create/:id"
+          element={<New_Static_Screen />}
+        />
         <Route
           path="/setting/user_management/user"
           element={<User_Management />}

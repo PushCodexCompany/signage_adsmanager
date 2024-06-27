@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header, Navbar } from "../components";
 import Filter from "../components/Filter";
 import User from "../libs/admin";
@@ -16,6 +17,7 @@ const Static_Screen = () => {
   const [screen_select, setScreenSelect] = useState(null);
 
   const { token } = User.getCookieData();
+  const navigate = useNavigate();
 
   useEffect(async () => {
     await fetchScreenData();
@@ -58,7 +60,7 @@ const Static_Screen = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               <button
-                // onClick={() => navigate("/screen/create/new")}
+                onClick={() => navigate("/static_screen/create/new")}
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
                 New Screen +

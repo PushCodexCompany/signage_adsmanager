@@ -24,6 +24,8 @@ export const GridTable = ({
   // screen_checkbox_select,
   // setScreenCheckboxSelect,
 }) => {
+  const navigate = useNavigate();
+
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
 
   // table
@@ -221,9 +223,9 @@ export const GridTable = ({
   };
 
   const handleEditScreen = (screen) => {
-    // navigate(`/screen/create/${screen.ScreenID}`, {
-    //   state: { screen: screen },
-    // });
+    navigate(`/static_screen/create/${screen.ScreenID}`, {
+      state: { screen: screen },
+    });
   };
 
   const handleDeleteScreen = async (screen_id, screen_name) => {
