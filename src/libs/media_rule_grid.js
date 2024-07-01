@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin5Line, RiEditLine, RiShareBoxLine } from "react-icons/ri";
+import { FiExternalLink } from "react-icons/fi";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
 
 export const GridTable = ({ media_rules }) => {
+  console.log("media_rules", media_rules);
   const navigate = useNavigate();
 
   const onClickEdit = (data) => {
@@ -82,10 +84,7 @@ export const GridTable = ({ media_rules }) => {
                   <div className="font-poppins text-md">{row.MediaRuleID}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-                  <div
-                    onClick={() => onClickEdit(row)}
-                    className="font-poppins text-lg text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                  >
+                  <div className="font-poppins text-lg text-[#59606C]">
                     {row.MediaRuleName}
                   </div>
                 </td>
@@ -95,7 +94,7 @@ export const GridTable = ({ media_rules }) => {
                       className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
                       style={{ flexBasis: "calc(30% - 8px)" }}
                     >
-                      <div className="font-poppins text-sm text-[#6425FE] ">
+                      <div className="font-poppins text-sm font-bold text-[#6425FE] ">
                         Resolution :
                         {row.Width && row.Height
                           ? `${parseFloat(row.Width).toString()}x${parseFloat(
@@ -108,7 +107,7 @@ export const GridTable = ({ media_rules }) => {
                       className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
                       style={{ flexBasis: "calc(30% - 8px)" }}
                     >
-                      <div className="font-poppins text-sm text-[#6425FE] ">
+                      <div className="font-poppins text-sm font-bold text-[#6425FE] ">
                         Ads Capacity : {row.AdsCapacity}
                       </div>
                     </div>
@@ -116,6 +115,12 @@ export const GridTable = ({ media_rules }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
+                    <button onClick={() => onClickEdit(row)}>
+                      <FiExternalLink
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
+                    </button>
                     <button onClick={() => onClickEdit(row)}>
                       <RiEditLine
                         size={20}

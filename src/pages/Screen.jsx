@@ -56,7 +56,7 @@ const Event = () => {
 
   const initScreensStatus = () => {
     if (screens_data.length <= 0) {
-      console.log("screens_data " + JSON.stringify(screens_data));
+      // console.log("screens_data " + JSON.stringify(screens_data));
       return;
     }
 
@@ -85,11 +85,11 @@ const Event = () => {
 
       screens_status[snap.key] = { ...screens_status[snap.key], ...snap.val() };
 
-      console.log("screens_data " + JSON.stringify(screens_data));
+      // console.log("screens_data " + JSON.stringify(screens_data));
       const newScreensData = [...screens_data].map((row, index) => {
-        console.log(
-          "row.ScreenCode === snap.key " + (row.ScreenCode === snap.key)
-        );
+        // console.log(
+        //   "row.ScreenCode === snap.key " + (row.ScreenCode === snap.key)
+        // );
         if (row.ScreenCode === snap.key) {
           if (
             !row.ScreenStatus ||
@@ -123,11 +123,11 @@ const Event = () => {
 
       screens_status[snap.key] = { ...screens_status[snap.key], ...snap.val() };
 
-      console.log("screens_data " + JSON.stringify(screens_data));
+      // console.log("screens_data " + JSON.stringify(screens_data));
       const newScreensData = [...screens_data].map((row, index) => {
-        console.log(
-          "row.ScreenCode === snap.key " + (row.ScreenCode === snap.key)
-        );
+        // console.log(
+        //   "row.ScreenCode === snap.key " + (row.ScreenCode === snap.key)
+        // );
         if (row.ScreenCode === snap.key) {
           if (
             !row.ScreenStatus ||

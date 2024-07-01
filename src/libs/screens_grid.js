@@ -152,7 +152,7 @@ export const GridTable = ({
                 <div className="flex">
                   <div
                     onClick={() => handleSelectInfoScreen(row)}
-                    className="font-poppins text-md font-bold cursor-pointer"
+                    className="font-poppins text-md font-bold"
                   >
                     {row.ScreenName}
                   </div>

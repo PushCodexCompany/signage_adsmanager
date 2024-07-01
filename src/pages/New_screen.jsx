@@ -44,6 +44,8 @@ const New_screen = () => {
   const [screen_physical_size_dd, setScreenPhysicalSize] = useState([]);
   const [city_data, setCityData] = useState([]);
 
+  const [screenInUse, setScreenInUse] = useState(false);
+
   // New Tag
 
   const [openModalNewTag, setOpenModalNewTag] = useState(false);
@@ -75,6 +77,7 @@ const New_screen = () => {
       ScreenOpenTime,
       ScreenCloseTime,
       MANotifyDelay,
+      ScreenRuleInUse,
     } = location.state.screen;
 
     setScreenId(ScreenID);
@@ -106,6 +109,7 @@ const New_screen = () => {
       setIsMaintenanceSwitchOn(false);
     }
     setNotificationDelay(MANotifyDelay);
+    setScreenInUse(ScreenRuleInUse);
   };
 
   const getCity = async () => {
@@ -348,6 +352,7 @@ const New_screen = () => {
                   className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                   onChange={(e) => setMediaRule(e.target.value)}
                   value={mediaRule}
+                  disabled={screenInUse}
                 >
                   <option value="" disabled selected hidden>
                     Media Rule
