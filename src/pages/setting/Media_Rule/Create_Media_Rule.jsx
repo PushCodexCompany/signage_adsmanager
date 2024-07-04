@@ -19,10 +19,15 @@ const Create_Media_Rule = () => {
   const [media_rule_adsCapacity, setMediaRuleAdsCapacity] = useState(null);
 
   const [toggle_disable, setToggleDisable] = useState(false);
+  const [isView, setIsView] = useState(false);
 
   useEffect(() => {
-    if (location.state) {
+    if (location.state.data) {
       fetchData();
+    }
+
+    if (location.state.isView) {
+      setIsView(location.state.isView);
     }
   }, []);
 
@@ -148,7 +153,11 @@ const Create_Media_Rule = () => {
     <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
       <Header category="Page" title="Home" />
       <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
-        New Screen Media Rule
+        {location.state.isView
+          ? "View Screen Media Rule"
+          : location.state.data
+          ? "Edit Screen Media Rule"
+          : "New Screen Media Rule"}
       </div>
       <div className="flex flex-col lg:flex-row">
         <div className="w-full lg:w-1/2 p-4">
@@ -160,14 +169,15 @@ const Create_Media_Rule = () => {
                   placeholder="Media Rule Name"
                   onChange={(e) => setMediaRuleName(e.target.value)}
                   value={media_rule_name}
+                  disabled={isView}
                 />
               </div>
             </div>
-            <div className="flex justify-center mt-14 font-bold text-2xl font-poppins">
+            <div className="flex justify-center mt-5 font-bold text-2xl font-poppins">
               Screen Ratio Preview
             </div>
 
-            <div className="flex justify-center  mt-4">
+            <div className="flex justify-center mt-2">
               {media_rule_width && media_rule_height ? (
                 <RatioDisplay
                   width={media_rule_width}
@@ -178,29 +188,35 @@ const Create_Media_Rule = () => {
               )}
             </div>
 
-            <div className="flex justify-center mt-10">
-              {media_rule_id ? (
-                <button
-                  onClick={() => handleSaveNewOrEditMediaRules("edit")}
-                  className="bg-[#6425FE] w-[420px] hover:bg-[#3b1694] text-xl rounded-lg h-[65px] text-white font-bold font-poppins"
-                >
-                  Edit
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleSaveNewOrEditMediaRules("create")}
-                  className="bg-[#6425FE] w-[420px] hover:bg-[#3b1694] text-xl rounded-lg h-[65px] text-white font-bold font-poppins"
-                >
-                  Create
-                </button>
-              )}
-            </div>
-            <div className="flex justify-center mt-5 font-poppins">
-              <span>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </span>
-            </div>
+            {!isView ? (
+              <>
+                <div className="flex justify-center mt-5">
+                  {media_rule_id ? (
+                    <button
+                      onClick={() => handleSaveNewOrEditMediaRules("edit")}
+                      className="bg-[#6425FE] w-[420px] hover:bg-[#3b1694] text-xl rounded-lg h-[65px] text-white font-bold font-poppins"
+                    >
+                      Edit
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleSaveNewOrEditMediaRules("create")}
+                      className="bg-[#6425FE] w-[420px] hover:bg-[#3b1694] text-xl rounded-lg h-[65px] text-white font-bold font-poppins"
+                    >
+                      Create
+                    </button>
+                  )}
+                </div>
+                <div className="flex justify-center mt-5 font-poppins">
+                  <span>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry.
+                  </span>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <div className="w-full lg:w-1/2 p-4 lg:pl-8 ">
@@ -255,104 +271,39 @@ const Create_Media_Rule = () => {
                   >
                     Resolution
                   </div>
-                  {/* <select
-                    name="resolution"
-                    id="resolution"
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    placeholder="Resolution"
-                  >
-                    <option value="">Resolution</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div> */}
                 </div>
               </div>
               <div className="col-span-2">
                 <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold border border-gray-300 rounded-md">
-                  <input
-                    className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
-                      toggle_disable ? "text-black" : "text-gray-500"
-                    }`}
-                    type="number"
-                    placeholder="Width"
-                    onChange={(e) => {
-                      const newValue = e.target.value;
-                      if (newValue > 0) {
-                        setMediaRuleWidth(newValue);
-                      } else {
-                        Swal.fire({
-                          icon: "error",
-                          title: "เกิดข้อผิดพลาด!",
-                          text: "ต้องมีค่ามากกว่า 0",
-                        });
-                      }
-                    }}
-                    value={media_rule_width}
-                    disabled={!toggle_disable}
-                  />
-                  {/* <select
-                    name="resolution"
-                    id="resolution"
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    placeholder="Resolution"
-                  >
-                    <option
-                      selected={
-                        media_value.rule1?.height === "1" ? true : false
-                      }
-                      value="1"
-                    >
-                      1080
-                    </option>
-                    <option
-                      selected={
-                        media_value.rule1?.height === "2" ? true : false
-                      }
-                      value="2"
-                    >
-                      1440
-                    </option>
-                    <option
-                      selected={
-                        media_value.rule1?.height === "3" ? true : false
-                      }
-                      value="3"
-                    >
-                      2160
-                    </option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                  {isView ? (
+                    <div className="font-bold text-sm font-poppins">
+                      {media_rule_width}
+                    </div>
+                  ) : (
+                    <>
+                      <input
+                        className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
+                          toggle_disable ? "text-black" : "text-gray-500"
+                        }`}
+                        type="number"
+                        placeholder="Width"
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (newValue > 0) {
+                            setMediaRuleWidth(newValue);
+                          } else {
+                            Swal.fire({
+                              icon: "error",
+                              title: "เกิดข้อผิดพลาด!",
+                              text: "ต้องมีค่ามากกว่า 0",
+                            });
+                          }
+                        }}
+                        value={media_rule_width}
+                        disabled={!toggle_disable}
                       />
-                    </svg>
-                  </div> */}
+                    </>
+                  )}
                 </div>
               </div>
               <div className="col-span-1">
@@ -366,27 +317,36 @@ const Create_Media_Rule = () => {
               </div>
               <div className="col-span-2">
                 <div className="relative flex flex-col justify-center items-center h-[40px] border border-gray-300 rounded-md">
-                  <input
-                    className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
-                      toggle_disable ? "text-black" : "text-gray-500"
-                    }`}
-                    placeholder="Height"
-                    type="number"
-                    onChange={(e) => {
-                      const newValue = e.target.value;
-                      if (newValue > 0) {
-                        setMediaRuleHeight(newValue);
-                      } else {
-                        Swal.fire({
-                          icon: "error",
-                          title: "เกิดข้อผิดพลาด!",
-                          text: "ต้องมีค่ามากกว่า 0",
-                        });
-                      }
-                    }}
-                    value={media_rule_height}
-                    disabled={!toggle_disable}
-                  />
+                  {isView ? (
+                    <div className="font-bold text-sm font-poppins">
+                      {media_rule_height}
+                    </div>
+                  ) : (
+                    <>
+                      <input
+                        className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
+                          toggle_disable ? "text-black" : "text-gray-500"
+                        }`}
+                        placeholder="Height"
+                        type="number"
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          if (newValue > 0) {
+                            setMediaRuleHeight(newValue);
+                          } else {
+                            Swal.fire({
+                              icon: "error",
+                              title: "เกิดข้อผิดพลาด!",
+                              text: "ต้องมีค่ามากกว่า 0",
+                            });
+                          }
+                        }}
+                        value={media_rule_height}
+                        disabled={!toggle_disable}
+                      />
+                    </>
+                  )}
+
                   {/* <select
                     name="resolution"
                     id="resolution"
@@ -464,6 +424,7 @@ const Create_Media_Rule = () => {
                   onChange={(e) => setMediaRuleAdsCapacity(e.target.value)}
                   placeholder="Ads Capacity"
                   value={media_rule_adsCapacity}
+                  disabled={isView}
                   className="font-poppins  border border-gray-300 h-[40px] rounded-md pl-4"
                 />
               </div>

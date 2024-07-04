@@ -5,7 +5,6 @@ import User from "../libs/admin";
 import Swal from "sweetalert2";
 
 export const GridTable = ({ media_rules }) => {
-  console.log("media_rules", media_rules);
   const navigate = useNavigate();
 
   const onClickEdit = (data) => {
@@ -21,13 +20,14 @@ export const GridTable = ({ media_rules }) => {
       data.Width = parseFloat(data.Width);
     }
 
-    navigate("/setting/media_rule/create", { state: { data: data } });
+    navigate("/setting/media_rule/create", {
+      state: { data: data, isView: false },
+    });
   };
 
   const onClickDelete = async (MediaRuleID) => {
     const { token } = User.getCookieData();
     const data = await User.deleteMediaRule(MediaRuleID, token);
-    console.log("data", data);
     if (data.code !== 404) {
       Swal.fire({
         icon: "success",
@@ -50,9 +50,11 @@ export const GridTable = ({ media_rules }) => {
     }
   };
 
-  // const onClickView = (data) => {
-  //   alert(`View : ${data}`);
-  // };
+  const onClickView = (data) => {
+    navigate("/setting/media_rule/create", {
+      state: { data: data, isView: true },
+    });
+  };
 
   return (
     <>
@@ -60,19 +62,19 @@ export const GridTable = ({ media_rules }) => {
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 ID
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Rule Name
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Rule Properties
               </th>
-              {/* <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Screen
-              </th> */}
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                Screens
+              </th>
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
               </th>
             </tr>
@@ -114,23 +116,44 @@ export const GridTable = ({ media_rules }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <div className="flex items-center justify-center">
+                    <div className="font-poppins text-md text-[#59606C]">
+                      {row.TotalInUse}
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="space-x-2">
-                    <button onClick={() => onClickEdit(row)}>
+                    <button onClick={() => onClickView(row)}>
                       <FiExternalLink
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                     </button>
-                    <button onClick={() => onClickEdit(row)}>
+                    <button
+                      disabled={row.TotalInUse > 0 ? true : false}
+                      onClick={() => onClickEdit(row)}
+                    >
                       <RiEditLine
                         size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
+                        className={`${
+                          row.TotalInUse > 0
+                            ? "text-[#B9B7BD]"
+                            : "text-[#6425FE] hover:text-[#3b1694]"
+                        }`}
                       />
                     </button>
-                    <button onClick={() => onClickDelete(row.MediaRuleID)}>
+                    <button
+                      disabled={row.TotalInUse > 0 ? true : false}
+                      onClick={() => onClickDelete(row.MediaRuleID)}
+                    >
                       <RiDeleteBin5Line
                         size={20}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
+                        className={`${
+                          row.TotalInUse > 0
+                            ? "text-[#B9B7BD]"
+                            : "text-[#6425FE] hover:text-[#3b1694]"
+                        }`}
                       />
                     </button>
                   </div>

@@ -34,7 +34,11 @@ const Media_rules = () => {
           </div>
 
           <button
-            onClick={() => navigate("/setting/media_rule/create")}
+            onClick={() =>
+              navigate("/setting/media_rule/create", {
+                state: { isView: false },
+              })
+            }
             className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
           >
             New Media Rule +
