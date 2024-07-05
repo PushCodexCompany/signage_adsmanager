@@ -4,12 +4,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import User from "../libs/admin";
 
-import Central_Logo from "../assets/img/central-logo.png";
-import Robinson_Logo from "../assets/img/robinson-logo.png";
-import Bluetree_logo from "../assets/img/logo/bluetree.svg";
-import Cpn_logo from "../assets/img/logo/cpn.svg";
-import Cpn_vertical_logo from "../assets/img/logo/cpn_vertical.svg";
-
 import {
   MdOutlineCloudQueue,
   MdOutlineSettings,
@@ -17,6 +11,7 @@ import {
   MdOutlineLogout,
   MdFolderOpen,
   MdOutlineMarkunreadMailbox,
+  MdSettings,
 } from "react-icons/md";
 import { GrMultimedia } from "react-icons/gr";
 
@@ -165,6 +160,11 @@ export const links = [
             name: "Tag Management",
             link: "setting/tag_management",
             icon: <BiPurchaseTag size={27} />,
+          },
+          {
+            name: "Configuration",
+            link: "setting/configuration",
+            icon: <MdSettings size={27} />,
           },
         ],
       },

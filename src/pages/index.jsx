@@ -31,3 +31,4 @@ export { default as Booking_Summary } from "./Booking_Summary";
 export { default as Static_Booking } from "./Static_Booking";
 export { default as Static_Screens } from "./Static_Screen";
 export { default as New_Static_Screen } from "./New_Static_Screen";
+export { default as Configuration } from "./setting/Configuration";

@@ -1440,12 +1440,18 @@ export default {
   },
 
   getConfiguration: async function (token) {
+    const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(`api/v1/get_configurations `, "", config);
+    const { data } = await this._get(
+      `api/v1/get_configurations?brandcode=${brand_code}`,
+      "",
+      config
+    );
+
     return data;
   },
 
@@ -1506,6 +1512,23 @@ export default {
       },
     };
     const { data } = await this._get(`api/v1/get_accountstorage`, "", config);
+    return data;
+  },
+
+  updateConfiguration: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/update_configurations?brandcode=${brand_code}`,
+      obj,
+      config
+    );
     return data;
   },
 };

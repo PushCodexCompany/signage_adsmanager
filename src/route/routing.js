@@ -32,6 +32,7 @@ import {
   Static_Booking,
   Static_Screens,
   New_Static_Screen,
+  Configuration,
 } from "../pages";
 
 // import User from "../libs/admin";
@@ -72,6 +73,7 @@ const Routing = () => {
         />
         <Route path="/setting/content_type" element={<Content_type />} />
         <Route path="/setting/media_rule" element={<Media_Rule />} />
+        <Route path="/setting/configuration" element={<Configuration />} />
         <Route
           path="/setting/media_rule/create"
           element={<Create_Media_Rule />}
