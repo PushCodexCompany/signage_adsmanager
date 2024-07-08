@@ -20,6 +20,7 @@ const Create_Media_Rule = () => {
 
   const [toggle_disable, setToggleDisable] = useState(false);
   const [isView, setIsView] = useState(false);
+  const [maNotification, setMaNotification] = useState();
 
   useEffect(() => {
     if (location.state.data) {
@@ -29,6 +30,8 @@ const Create_Media_Rule = () => {
     if (location.state.isView) {
       setIsView(location.state.isView);
     }
+
+    getConfiguration();
   }, []);
 
   const fetchData = () => {
@@ -90,7 +93,6 @@ const Create_Media_Rule = () => {
           height: media_rule_height,
           activeresolution: toggle_disable,
         };
-        console.log(obj);
         const data = await User.createMediaRule(obj, token, toggle_disable);
         if (data.code !== 404) {
           Swal.fire({
@@ -147,6 +149,19 @@ const Create_Media_Rule = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const getConfiguration = async () => {
+    const {
+      configuration: { brandconfig },
+    } = await User.getConfiguration(token);
+
+    const initialValues = brandconfig.reduce((acc, item) => {
+      acc[item.ParameterKey] = item.ParameterValue;
+      return acc;
+    }, {});
+
+    setMaNotification(initialValues.CONTENTPERSLOT_SEC);
   };
 
   return (
@@ -437,8 +452,26 @@ const Create_Media_Rule = () => {
               </div>
             </div>
             <div className="mt-2">
-              <div className="font-poppins text-[15px]">
-                1 Loop = 15 Seconds
+              <div className="grid grid-cols-6">
+                <div className="col-span-2">
+                  <div className="font-poppins text-[15px]">
+                    1 Loop = {maNotification} Seconds
+                  </div>
+                </div>
+                <div className="col-span-4">
+                  <div className="font-poppins text-[15px]">
+                    Total Time ={" "}
+                    {media_rule_adsCapacity * maNotification > 60
+                      ? (
+                          (media_rule_adsCapacity * maNotification) /
+                          60
+                        ).toFixed(2)
+                      : media_rule_adsCapacity * maNotification}{" "}
+                    {media_rule_adsCapacity * maNotification > 60
+                      ? "Minutes"
+                      : "Seconds"}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
