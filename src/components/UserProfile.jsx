@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
 import { MdOutlineCancel } from "react-icons/md";
 import { FaUsersBetweenLines } from "react-icons/fa6";
+import { PiUserCircleFill } from "react-icons/pi";
 import { Button } from ".";
 import { userProfileData } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -102,11 +103,7 @@ const UserProfile = ({ user, after_login }) => {
             />
           </div>
           <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
-            <img
-              className="rounded-full h-24 w-24"
-              src={avatar}
-              alt="user-profile"
-            />
+            <PiUserCircleFill size={64} className="text-[#6425FE]" />
             <div>
               <p className="font-semibold text-xl dark:text-gray-200 font-poppins">
                 {user ? `${user.user.firstname} ${user.user.lastname}` : ""}

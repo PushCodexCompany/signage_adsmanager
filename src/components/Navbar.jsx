@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { PiUserCircleFill } from "react-icons/pi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import avatar from "../assets/img/avatar.png";
@@ -115,11 +116,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
                   className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
                   onClick={() => handleClick("userProfile")}
                 >
-                  <img
-                    className="rounded-full w-8 h-8"
-                    src={avatar}
-                    alt="user-profile"
-                  />
+                  <PiUserCircleFill size={40} className="text-[#6425FE]" />
                   <p>
                     <span className="">
                       <text className="text-black font-bold text-14 font-poppins">

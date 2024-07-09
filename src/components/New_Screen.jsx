@@ -12,6 +12,11 @@ import User from "../libs/admin";
 import New_Tag from "../components/New_Tag";
 import Swal from "sweetalert2";
 
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import moment from "moment";
+
 const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
   const { token } = User.getCookieData();
   const fileInputRef = useRef(null);
@@ -30,8 +35,8 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
   const [screenPhysical, setScreenPhysical] = useState();
   const [orientation, setOrientation] = useState();
   const [inDoorOutdoot, setIndoorOutDoor] = useState();
-  const [openTime, setOpenTime] = useState();
-  const [closeTime, setCloseTime] = useState();
+  const [openTime, setOpenTime] = useState(null);
+  const [closeTime, setCloseTime] = useState(null);
   const [IsMaintenanceSwitchOn, setIsMaintenanceSwitchOn] = useState(false);
   const [notificationDelay, setNotificationDelay] = useState();
 
@@ -41,11 +46,13 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
   const [city_data, setCityData] = useState([]);
 
   const [openModalNewTag, setOpenModalNewTag] = useState(false);
+  const [maNotification, setMaNotification] = useState();
 
   useEffect(() => {
     getCity();
     getMediaRules();
     getScreenOption();
+    getConfiguration();
   }, []);
 
   const getCity = async () => {
@@ -62,6 +69,20 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
     const screen_option = await User.getScreensOptions(token);
     setScreenResolutionDD(screen_option.screenresolution);
     setScreenPhysicalSize(screen_option.screenphysicalsize);
+  };
+
+  const getConfiguration = async () => {
+    const {
+      configuration: { brandconfig },
+    } = await User.getConfiguration(token);
+
+    const initialValues = brandconfig.reduce((acc, item) => {
+      acc[item.ParameterKey] = item.ParameterValue;
+      return acc;
+    }, {});
+
+    setMaNotification(initialValues.NOTIDELAY_SEC);
+    setNotificationDelay(initialValues.NOTIDELAY_SEC);
   };
 
   const handleDeleteTagInSelectTag = (id) => {
@@ -103,34 +124,140 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
   };
 
   const handleCreateScreen = async () => {
-    const obj = {
-      screenname: screenName,
-      mediaruleid: mediaRule || "",
-      tagids: screenTag.map((item) => String(item.TagID)),
-      screencoords: `${latLong.lat},${latLong.long}`,
-      screenlocation: screenLocationName || "",
-      screencity: screenCityName || "",
-      screendesc: screenDescription || "",
-      screenresolutionid: screenResolution || "",
-      screenphysizeid: screenPhysical || "",
-      screenorientation: orientation || "",
-      screenplacement: inDoorOutdoot || "",
-      screenopentime: openTime || "",
-      screenclosetime: closeTime || "",
-      manotifydelay: notificationDelay || "",
-    };
-
-    if (obj.screenname) {
-      try {
-        const data = await User.createNewScreen(obj, token);
-        if (data.code !== 404) {
-          if (selectedImage) {
-            const form = new FormData();
-            form.append("target", "screenphoto");
-            form.append("screenid", data.screenid);
-            form.append("logo", selectedImage);
-            const data_img = await User.saveImgAccountScreens(form, token);
-            if (data_img.code !== 404) {
+    if (IsMaintenanceSwitchOn) {
+      if (notificationDelay >= maNotification) {
+        const obj = {
+          screenname: screenName,
+          mediaruleid: mediaRule || "",
+          tagids: screenTag.map((item) => String(item.TagID)),
+          screencoords: `${latLong.lat},${latLong.long}`,
+          screenlocation: screenLocationName || "",
+          screencity: screenCityName || "",
+          screendesc: screenDescription || "",
+          screenresolutionid: screenResolution || "",
+          screenphysizeid: screenPhysical || "",
+          screenorientation: orientation || "",
+          screenplacement: inDoorOutdoot || "",
+          screenopentime: openTime || "",
+          screenclosetime: closeTime || "",
+          manotifydelay: notificationDelay || "",
+        };
+        if (obj.screenname) {
+          try {
+            const data = await User.createNewScreen(obj, token);
+            if (data.code !== 404) {
+              if (selectedImage) {
+                const form = new FormData();
+                form.append("target", "screenphoto");
+                form.append("screenid", data.screenid);
+                form.append("logo", selectedImage);
+                const data_img = await User.saveImgAccountScreens(form, token);
+                if (data_img.code !== 404) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "สร้าง Screen สำเร็จ!",
+                    text: `สร้าง Screen สำเร็จ!`,
+                  }).then((result) => {
+                    if (
+                      result.isConfirmed ||
+                      result.dismiss === Swal.DismissReason.backdrop
+                    ) {
+                      setOpenAddNewScreenModal(!openAddNewScreenModal);
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: data_img.message,
+                  });
+                }
+              } else {
+                Swal.fire({
+                  icon: "success",
+                  title: "สร้าง Screen สำเร็จ!",
+                  text: `สร้าง Screen สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    setOpenAddNewScreenModal(!openAddNewScreenModal);
+                  }
+                });
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
+            }
+          } catch (error) {
+            console.log("error", error);
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: "กรุณากรอกชื่อ Screen Name",
+          });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "จำนวน Notification Delay (sec) ผิดพลาด ...",
+        });
+      }
+    } else {
+      const obj = {
+        screenname: screenName,
+        mediaruleid: mediaRule || "",
+        tagids: screenTag.map((item) => String(item.TagID)),
+        screencoords: `${latLong.lat},${latLong.long}`,
+        screenlocation: screenLocationName || "",
+        screencity: screenCityName || "",
+        screendesc: screenDescription || "",
+        screenresolutionid: screenResolution || "",
+        screenphysizeid: screenPhysical || "",
+        screenorientation: orientation || "",
+        screenplacement: inDoorOutdoot || "",
+        screenopentime: openTime || "",
+        screenclosetime: closeTime || "",
+        manotifydelay: null,
+      };
+      if (obj.screenname) {
+        try {
+          const data = await User.createNewScreen(obj, token);
+          if (data.code !== 404) {
+            if (selectedImage) {
+              const form = new FormData();
+              form.append("target", "screenphoto");
+              form.append("screenid", data.screenid);
+              form.append("logo", selectedImage);
+              const data_img = await User.saveImgAccountScreens(form, token);
+              if (data_img.code !== 404) {
+                Swal.fire({
+                  icon: "success",
+                  title: "สร้าง Screen สำเร็จ!",
+                  text: `สร้าง Screen สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    setOpenAddNewScreenModal(!openAddNewScreenModal);
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data_img.message,
+                });
+              }
+            } else {
               Swal.fire({
                 icon: "success",
                 title: "สร้าง Screen สำเร็จ!",
@@ -143,44 +270,33 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                   setOpenAddNewScreenModal(!openAddNewScreenModal);
                 }
               });
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "เกิดข้อผิดพลาด!",
-                text: data_img.message,
-              });
             }
           } else {
             Swal.fire({
-              icon: "success",
-              title: "สร้าง Screen สำเร็จ!",
-              text: `สร้าง Screen สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                setOpenAddNewScreenModal(!openAddNewScreenModal);
-              }
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
             });
           }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
+        } catch (error) {
+          console.log("error", error);
         }
-      } catch (error) {
-        console.log("error", error);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "กรุณากรอกชื่อ Screen Name",
+        });
       }
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: "กรุณากรอกชื่อ Screen Name",
-      });
     }
+  };
+
+  const handleSetOpenTime = (time) => {
+    setOpenTime(time.format("HH:mm:ss"));
+  };
+
+  const handleSetCloseTime = (time) => {
+    setCloseTime(time.format("HH:mm:ss"));
   };
 
   return (
@@ -613,15 +729,22 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                       <div className="grid grid-cols-12">
                         <div className="col-span-5">
                           <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
-                            <input
-                              value={openTime}
-                              onChange={(e) => {
-                                const time_value = generateTime(e.target.value);
-                                setOpenTime(time_value);
-                              }}
-                              placeholder="Open Time"
-                              className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            />
+                            <>
+                              {openTime !== undefined && (
+                                <>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                  >
+                                    <TimePicker
+                                      ampm={false}
+                                      label="Open time"
+                                      onChange={handleSetOpenTime}
+                                      views={["hours", "minutes", "seconds"]}
+                                    />
+                                  </LocalizationProvider>
+                                </>
+                              )}
+                            </>
                           </div>
                         </div>
                         <div className="col-span-1">
@@ -631,22 +754,29 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                         </div>
                         <div className="col-span-5">
                           <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
-                            <input
-                              value={closeTime}
-                              onChange={(e) => {
-                                const time_value = generateTime(e.target.value);
-                                setCloseTime(time_value);
-                              }}
-                              placeholder="Close Time"
-                              className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            />
+                            <>
+                              {closeTime !== undefined && (
+                                <>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                  >
+                                    <TimePicker
+                                      ampm={false}
+                                      label="Close time"
+                                      onChange={handleSetCloseTime}
+                                      views={["hours", "minutes", "seconds"]}
+                                    />
+                                  </LocalizationProvider>
+                                </>
+                              )}
+                            </>
                           </div>
                         </div>
-                        <div className="col-span-1">
+                        {/* <div className="col-span-1">
                           <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
                             <HiOutlineClock color="#6425FE" size="20" />
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="col-span-3">
@@ -711,11 +841,15 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                           <div className="flex items-center justify-end">
                             <input
                               placeholder="Second"
-                              className="border border-gray-300 rounded-lg p-3 pr-10 w-[80%] h-[30px]  font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                              value={notificationDelay}
-                              onChange={(e) =>
-                                setNotificationDelay(e.target.value)
+                              type="number"
+                              className="border border-gray-300 rounded-lg p-3  w-[80%] h-[30px]  font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                              min={maNotification}
+                              value={
+                                !IsMaintenanceSwitchOn ? "" : notificationDelay
                               }
+                              onChange={(e) => {
+                                setNotificationDelay(e.target.value);
+                              }}
                               disabled={!IsMaintenanceSwitchOn}
                             />
                           </div>

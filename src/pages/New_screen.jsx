@@ -10,6 +10,11 @@ import { BsInfoCircle } from "react-icons/bs";
 import User from "../libs/admin";
 import New_Tag from "../components/New_Tag";
 import Swal from "sweetalert2";
+import moment from "moment";
+
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 const New_screen = () => {
   const { id } = useParams();
@@ -34,8 +39,8 @@ const New_screen = () => {
   const [screenPhysical, setScreenPhysical] = useState();
   const [orientation, setOrientation] = useState();
   const [inDoorOutdoot, setIndoorOutDoor] = useState();
-  const [openTime, setOpenTime] = useState();
-  const [closeTime, setCloseTime] = useState();
+  const [openTime, setOpenTime] = useState(null);
+  const [closeTime, setCloseTime] = useState(null);
   const [IsMaintenanceSwitchOn, setIsMaintenanceSwitchOn] = useState(false);
   const [notificationDelay, setNotificationDelay] = useState();
 
@@ -46,6 +51,9 @@ const New_screen = () => {
 
   const [screenInUse, setScreenInUse] = useState(false);
   const [maNotification, setMaNotification] = useState();
+
+  const [openTimeString, setOpenTimeString] = useState();
+  const [closeTimeString, setCloseTimeString] = useState();
 
   // New Tag
 
@@ -103,8 +111,10 @@ const New_screen = () => {
     setScreenPhysical(ScreenPhySizeID);
     setOrientation(ScreenOrientation);
     setIndoorOutDoor(ScreenPlacement);
+
     setOpenTime(ScreenOpenTime);
     setCloseTime(ScreenCloseTime);
+
     if (MANotifyDelay) {
       setIsMaintenanceSwitchOn(true);
     } else {
@@ -163,18 +173,6 @@ const New_screen = () => {
 
   const toggleMaintenanceSwitch = () => {
     setIsMaintenanceSwitchOn(!IsMaintenanceSwitchOn);
-  };
-
-  const generateTime = (time) => {
-    let inputTime = time;
-    // Remove non-numeric characters
-    inputTime = inputTime.replace(/\D/g, "");
-    // Format to HH:MM:SS format
-    if (inputTime.length >= 4) {
-      inputTime = inputTime.replace(/(\d{2})(\d{2})(\d{2})/, "$1:$2:$3");
-    }
-
-    return inputTime;
   };
 
   const handleDeleteTagInSelectTag = (id) => {
@@ -284,7 +282,7 @@ const New_screen = () => {
         screenplacement: inDoorOutdoot || "",
         screenopentime: openTime || "",
         screenclosetime: closeTime || "",
-        manotifydelay: "",
+        manotifydelay: null,
       };
       if (obj.screenname) {
         try {
@@ -442,9 +440,8 @@ const New_screen = () => {
         screenplacement: inDoorOutdoot || "",
         screenopentime: openTime || "",
         screenclosetime: closeTime || "",
-        manotifydelay: "",
+        manotifydelay: null,
       };
-
       if (selectedImage) {
         const form = new FormData();
         form.append("target", "screenphoto");
@@ -494,6 +491,14 @@ const New_screen = () => {
         });
       }
     }
+  };
+
+  const handleSetOpenTime = (time) => {
+    setOpenTime(time.format("HH:mm:ss"));
+  };
+
+  const handleSetCloseTime = (time) => {
+    setCloseTime(time.format("HH:mm:ss"));
   };
 
   return (
@@ -916,15 +921,47 @@ const New_screen = () => {
                     <div className="grid grid-cols-12">
                       <div className="col-span-5">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
-                          <input
-                            value={openTime}
-                            onChange={(e) => {
-                              const time_value = generateTime(e.target.value);
-                              setOpenTime(time_value);
-                            }}
-                            placeholder="Open Time"
-                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                          />
+                          {id === "new" && (
+                            <>
+                              {openTime !== undefined && (
+                                <>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                  >
+                                    <TimePicker
+                                      ampm={false}
+                                      label="Open time"
+                                      onChange={handleSetOpenTime}
+                                      views={["hours", "minutes", "seconds"]}
+                                    />
+                                  </LocalizationProvider>
+                                </>
+                              )}
+                            </>
+                          )}
+
+                          {id !== "new" && (
+                            <>
+                              {openTime !== undefined && openTime !== null && (
+                                <>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                  >
+                                    <TimePicker
+                                      ampm={false}
+                                      label="Open time"
+                                      onChange={handleSetOpenTime}
+                                      views={["hours", "minutes", "seconds"]}
+                                      defaultValue={moment(
+                                        openTime,
+                                        "HH:mm:ss"
+                                      )}
+                                    />
+                                  </LocalizationProvider>
+                                </>
+                              )}
+                            </>
+                          )}
                         </div>
                       </div>
                       <div className="col-span-1">
@@ -934,22 +971,55 @@ const New_screen = () => {
                       </div>
                       <div className="col-span-5">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
-                          <input
-                            value={closeTime}
-                            onChange={(e) => {
-                              const time_value = generateTime(e.target.value);
-                              setCloseTime(time_value);
-                            }}
-                            placeholder="Close Time"
-                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                          />
+                          {id === "new" && (
+                            <>
+                              {closeTime !== undefined && (
+                                <>
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                  >
+                                    <TimePicker
+                                      ampm={false}
+                                      label="Close time"
+                                      onChange={handleSetCloseTime}
+                                      views={["hours", "minutes", "seconds"]}
+                                    />
+                                  </LocalizationProvider>
+                                </>
+                              )}
+                            </>
+                          )}
+
+                          {id !== "new" && (
+                            <>
+                              {closeTime !== undefined &&
+                                closeTime !== null && (
+                                  <>
+                                    <LocalizationProvider
+                                      dateAdapter={AdapterMoment}
+                                    >
+                                      <TimePicker
+                                        ampm={false}
+                                        label="Close time"
+                                        onChange={handleSetCloseTime}
+                                        views={["hours", "minutes", "seconds"]}
+                                        defaultValue={moment(
+                                          closeTime,
+                                          "HH:mm:ss"
+                                        )}
+                                      />
+                                    </LocalizationProvider>
+                                  </>
+                                )}
+                            </>
+                          )}
                         </div>
                       </div>
-                      <div className="col-span-1">
+                      {/* <div className="col-span-1">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
                           <HiOutlineClock color="#6425FE" size="20" />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="col-span-3">

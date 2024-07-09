@@ -6,6 +6,27 @@ body{
     font-family: "Open Sans", sans-serif;
 }
 
+a.ant-picker-now-btn {
+    font-size: 0;
+  }
+  
+  a.ant-picker-now-btn:after {
+    content: "Now";
+    font-size: 16px; 
+  }
+  
+  .ant-picker-ok > button.ant-btn > span {
+    font-size: 0;
+  }
+  
+  .ant-picker-ok > button.ant-btn > span:after {
+    content: "OK";
+    width: '45px';
+    font-size: 16px; 
+    font-family: 'Poppins', sans-serif;
+    color: #bfbfbf;
+  }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
