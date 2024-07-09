@@ -111,7 +111,6 @@ const New_screen = () => {
     setScreenPhysical(ScreenPhySizeID);
     setOrientation(ScreenOrientation);
     setIndoorOutDoor(ScreenPlacement);
-
     setOpenTime(ScreenOpenTime);
     setCloseTime(ScreenCloseTime);
 
@@ -952,10 +951,11 @@ const New_screen = () => {
                                       label="Open time"
                                       onChange={handleSetOpenTime}
                                       views={["hours", "minutes", "seconds"]}
-                                      defaultValue={moment(
-                                        openTime,
-                                        "HH:mm:ss"
-                                      )}
+                                      defaultValue={
+                                        openTime
+                                          ? moment(openTime, "HH:mm:ss")
+                                          : null
+                                      }
                                     />
                                   </LocalizationProvider>
                                 </>
@@ -1003,10 +1003,11 @@ const New_screen = () => {
                                         label="Close time"
                                         onChange={handleSetCloseTime}
                                         views={["hours", "minutes", "seconds"]}
-                                        defaultValue={moment(
-                                          closeTime,
-                                          "HH:mm:ss"
-                                        )}
+                                        defaultValue={
+                                          closeTime
+                                            ? moment(closeTime, "HH:mm:ss")
+                                            : null
+                                        }
                                       />
                                     </LocalizationProvider>
                                   </>
