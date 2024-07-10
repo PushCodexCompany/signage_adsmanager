@@ -90,6 +90,8 @@ const New_screen = () => {
       ScreenRuleInUse,
     } = location.state.screen;
 
+    console.log("location.state.screen", location.state.screen);
+
     setScreenId(ScreenID);
     setScreenName(ScreenName);
     setMediaRule(ScreenRule[0]?.MediaRuleID);
@@ -498,6 +500,11 @@ const New_screen = () => {
 
   const handleSetCloseTime = (time) => {
     setCloseTime(time.format("HH:mm:ss"));
+  };
+
+  const handleClearTime = () => {
+    setOpenTime(null);
+    setCloseTime(null);
   };
 
   return (
@@ -1016,11 +1023,16 @@ const New_screen = () => {
                           )}
                         </div>
                       </div>
-                      {/* <div className="col-span-1">
-                        <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
-                          <HiOutlineClock color="#6425FE" size="20" />
+                      <div className="col-span-1">
+                        <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-10">
+                          <button
+                            onClick={() => handleClearTime()}
+                            className="bg-[#6425FE] hover:bg-[#3b1694] w-[60px] h-[35px] font-poppins text-white rounded-lg "
+                          >
+                            Clear
+                          </button>
                         </div>
-                      </div> */}
+                      </div>
                     </div>
                   </div>
                   <div className="col-span-3">
@@ -1114,7 +1126,7 @@ const New_screen = () => {
                       onClick={() => handleEditScreen()}
                       className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins rounded-lg"
                     >
-                      Edit Screen
+                      Save Edit Screen
                     </button>
                   )}
                 </div>
