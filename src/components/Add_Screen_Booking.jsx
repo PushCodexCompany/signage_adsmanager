@@ -18,6 +18,9 @@ const Add_Screen_Booking = ({
   handleAddScreen,
   booking_slot,
   bookingId,
+  setShowDetailScreen,
+  showDetailScreen,
+  setDetailScreen,
 }) => {
   const { token } = User.getCookieData();
   const [screen, setScreens] = useState([]);
@@ -87,6 +90,11 @@ const Add_Screen_Booking = ({
 
   const search = () => {
     alert("search");
+  };
+
+  const handleClickViewDetail = (data) => {
+    setDetailScreen(data);
+    setShowDetailScreen(!showDetailScreen);
   };
 
   // const findScreenResolutionID = (id) => {
@@ -317,7 +325,7 @@ const Add_Screen_Booking = ({
                         <div className="space-x-2">
                           <button
                             className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
-                            onClick={() => alert(key)}
+                            onClick={() => handleClickViewDetail(row)}
                           >
                             View Detail
                           </button>

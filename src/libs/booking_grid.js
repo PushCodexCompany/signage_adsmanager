@@ -114,7 +114,13 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
               <div className="flex items-center justify-center">
                 <img
                   className="w-[60px] h-[60px] rounded-md object-cover"
-                  src={row.AdvertiserLogo}
+                  src={
+                    row.AdvertiserLogo
+                      ? row.AdvertiserLogo
+                      : `https://ui-avatars.com/api/?name=${
+                          row.AdvertiserName
+                        }&background=${"000000"}&color=fff`
+                  }
                   alt={row.AdvertiserName}
                 />
               </div>

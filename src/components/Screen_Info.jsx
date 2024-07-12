@@ -6,6 +6,7 @@ import { LuClock4 } from "react-icons/lu";
 import { MdDragHandle } from "react-icons/md";
 import { format } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import empty_img from "../assets/img/empty_location.png";
 import User from "../libs/admin";
 
 const schedule = [
@@ -259,9 +260,9 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                     <div className="grid grid-cols-6 space-x-2">
                       <div className="col-span-1 flex justify-end">
                         {/* Adjusted to flex and justified to end */}
-                        <button className="w-[130px] h-[35px] rounded-lg text-[18px] font-poppins bg-[#6425FE] hover:bg-[#3b1694] text-white">
-                          New Tag+
-                        </button>
+                        <div className="flex items-center justify-center text-center w-[130px] h-[35px] rounded-lg text-[18px] font-poppins bg-[#6425FE] text-white">
+                          Tag
+                        </div>
                       </div>
                       <div className="col-span-5">
                         {/* Kept as it is */}
@@ -295,7 +296,11 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="col-span-3">
                         <div className="flex justify-center items-center h-full">
                           <img
-                            src={selectInfoScreen.ScreenPhoto}
+                            src={
+                              selectInfoScreen.ScreenPhoto
+                                ? selectInfoScreen.ScreenPhoto
+                                : empty_img
+                            }
                             className="object-cover w-[290px] h-[290px]"
                             alt="placeImage"
                           />
@@ -305,7 +310,11 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                         <div className="flex justify-center items-center h-full">
                           {/* Temporay Use screen photo wait replace location */}
                           <img
-                            src={selectInfoScreen.ScreenPhoto}
+                            src={
+                              selectInfoScreen.ScreenPhoto
+                                ? selectInfoScreen.ScreenPhoto
+                                : empty_img
+                            }
                             className="object-cover w-[290px] h-[290px]"
                             alt="latImage"
                           />

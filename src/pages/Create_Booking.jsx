@@ -23,6 +23,7 @@ import Filter from "../components/Filter";
 import Add_Screen_Booking from "../components/Add_Screen_Booking";
 import Confirm_Booking from "../components/Confirm_Booking";
 import Swal from "sweetalert2";
+import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 
 const Create_Booking = () => {
   const location = useLocation();
@@ -62,6 +63,9 @@ const Create_Booking = () => {
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
   const [filter_screen, setFilterScreen] = useState([]);
+
+  const [showDetailScreen, setShowDetailScreen] = useState(false);
+  const [detailScreen, setDetailScreen] = useState(null);
 
   useEffect(() => {
     setBooking();
@@ -786,7 +790,13 @@ const Create_Booking = () => {
             <div>
               <img
                 className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300`}
-                src={merchandise.AdvertiserLogo}
+                src={
+                  merchandise.AdvertiserLogo
+                    ? merchandise.AdvertiserLogo
+                    : `https://ui-avatars.com/api/?name=${
+                        merchandise.AdvertiserName
+                      }&background=${"000000"}&color=fff`
+                }
                 alt={merchandise.AdvertiserName}
               />
             </div>
@@ -809,13 +819,7 @@ const Create_Booking = () => {
                       className="flex justify-center items-center mt-3 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px] ${
-                          screenData.some(
-                            (screen) => screen.ScreenID === items.ScreenID
-                          )
-                            ? "bg-[#FFBD49]"
-                            : ""
-                        }`}
+                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px]`}
                         // onClick={() => toggleScreenFromAllScreen(items)}
                       >
                         <div className="grid grid-cols-10 md:space-x-1">
@@ -874,11 +878,9 @@ const Create_Booking = () => {
                                   <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
                                     <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
                                       <p className="font-poppins text-xs text-white">
-                                        Do You Want to Delete This Screen. Lorem
-                                        Ipsum is simply dummy text of the
-                                        printing and typesetting industry.
+                                        Do You Want to Delete This Screen ?
                                       </p>
-                                      <div className="flex justify-center items-center">
+                                      <div className="flex justify-center items-center mt-5">
                                         <button
                                           className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
                                           onClick={(e) => {
@@ -1210,6 +1212,23 @@ const Create_Booking = () => {
           handleAddScreen={handleAddScreen}
           booking_slot={booking_slot}
           bookingId={bookingId}
+          setShowDetailScreen={setShowDetailScreen}
+          showDetailScreen={showDetailScreen}
+          setDetailScreen={setDetailScreen}
+        />
+      )}
+
+      {/* {showDetailScreen && (
+        <a
+          onClick={() => setShowDetailScreen(!showDetailScreen)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )} */}
+
+      {showDetailScreen && (
+        <Detail_Screen_Booking
+          setShowDetailScreen={setShowDetailScreen}
+          detailScreen={detailScreen}
         />
       )}
 

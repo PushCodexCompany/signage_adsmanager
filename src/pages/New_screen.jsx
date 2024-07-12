@@ -52,9 +52,6 @@ const New_screen = () => {
   const [screenInUse, setScreenInUse] = useState(false);
   const [maNotification, setMaNotification] = useState();
 
-  const [openTimeString, setOpenTimeString] = useState();
-  const [closeTimeString, setCloseTimeString] = useState();
-
   // New Tag
 
   const [openModalNewTag, setOpenModalNewTag] = useState(false);
@@ -89,8 +86,6 @@ const New_screen = () => {
       MANotifyDelay,
       ScreenRuleInUse,
     } = location.state.screen;
-
-    console.log("location.state.screen", location.state.screen);
 
     setScreenId(ScreenID);
     setScreenName(ScreenName);
