@@ -48,6 +48,9 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
     setCurrentPage(page);
     setPageInput("");
     const data = await fetchDataForPage(page);
+    // if (data.booking.length > 0) {
+    //   data.booking?.sort((a, b) => a.BookingID - b.BookingID);
+    // }
     setData(data.booking);
   };
 

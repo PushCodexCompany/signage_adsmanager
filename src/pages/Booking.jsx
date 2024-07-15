@@ -22,18 +22,12 @@ const Booking = () => {
   const getBookingData = async () => {
     if (searchTerm === null) {
       const data = await User.getBooking(token, 1);
-      if (data.booking.length > 0) {
-        data.booking?.sort((a, b) => a.BookingID - b.BookingID);
-      }
       setBookingData(data.booking);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
       const data = await User.getBooking(token, 1, searchTerm);
-      if (data.booking.length > 0) {
-        data.booking?.sort((a, b) => a.BookingID - b.BookingID);
-      }
       setBookingData(data.booking);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);

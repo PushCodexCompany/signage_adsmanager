@@ -1531,4 +1531,24 @@ export default {
     );
     return data;
   },
+
+  getScreenSchulde: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_screenschedule?brandcode=${brand_code}&screenid=${obj.screenid}&selectmonth=${obj.selectmonth}&selectyear=${obj.selectyear}`,
+      "",
+      config
+    );
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
 };

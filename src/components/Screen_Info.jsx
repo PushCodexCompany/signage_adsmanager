@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import empty_img from "../assets/img/empty_location.png";
 import User from "../libs/admin";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const schedule = [
   {
@@ -161,23 +162,120 @@ const health = [
   80, 80, 80, 80, 80, 40, 80, 40, 80, 80,
 ];
 
+const month_data = [
+  {
+    name: "January",
+    value: 1,
+  },
+  {
+    name: "February",
+    value: 2,
+  },
+  {
+    name: "March",
+    value: 3,
+  },
+  {
+    name: "April",
+    value: 4,
+  },
+  {
+    name: "May",
+    value: 5,
+  },
+  {
+    name: "June",
+    value: 6,
+  },
+  {
+    name: "July",
+    value: 7,
+  },
+  {
+    name: "August",
+    value: 8,
+  },
+  {
+    name: "September",
+    value: 9,
+  },
+  {
+    name: "October",
+    value: 10,
+  },
+  {
+    name: "November",
+    value: 11,
+  },
+  {
+    name: "December",
+    value: 12,
+  },
+];
+
+const year_data = [
+  {
+    name: "2024",
+    value: 2024,
+  },
+  {
+    name: "2025",
+    value: 2025,
+  },
+  {
+    name: "2026",
+    value: 2026,
+  },
+  {
+    name: "2027",
+    value: 2027,
+  },
+  {
+    name: "2028",
+    value: 2028,
+  },
+];
+
 const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
+  const { token } = User.getCookieData();
   const [openMediaScheduleModal, setOpenMediaScheduleModal] = useState(false);
   const [selectMediaScreen, setSelectMediaScreen] = useState();
   const [hideOldModal, setHideOldModal] = useState(true);
 
   const [screen_resolution, setScreenResolution] = useState([]);
   const [screen_physical_size, setScreenPhysicalSize] = useState([]);
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
     getScreenData();
+    getSchulde();
   }, []);
 
+  useEffect(() => {
+    getSchulde();
+  }, [month]);
+
   const getScreenData = async () => {
-    const { token } = User.getCookieData();
     const screens_option = await User.getScreensOptions(token);
     setScreenResolution(screens_option.screenresolution);
     setScreenPhysicalSize(screens_option.screenphysicalsize);
+  };
+
+  const getSchulde = async () => {
+    const { ScreenID } = selectInfoScreen;
+    const obj = {
+      screenid: ScreenID,
+      selectmonth: month,
+      selectyear: year,
+    };
+    try {
+      const { screenschedule } = await User.getScreenSchulde(obj, token);
+      setSchedule(screenschedule);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSelectMedia = (items) => {
@@ -223,6 +321,10 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
     );
     return resolution ? resolution.PhysicalSize : "No Physical Size";
   };
+
+  // const toggleYearSelect = () => {
+  //   setIsYearOpen((prevIsOpen) => !prevIsOpen);
+  // };
 
   return (
     <>
@@ -301,7 +403,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                                 ? selectInfoScreen.ScreenPhoto
                                 : empty_img
                             }
-                            className="object-cover w-[290px] h-[290px]"
+                            className="object-contain w-[290px] h-[290px]"
                             alt="placeImage"
                           />
                         </div>
@@ -315,7 +417,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                                 ? selectInfoScreen.ScreenPhoto
                                 : empty_img
                             }
-                            className="object-cover w-[290px] h-[290px]"
+                            className="object-contain w-[290px] h-[290px]"
                             alt="latImage"
                           />
                         </div>
@@ -432,27 +534,75 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
               </div>
               <div className="w-full lg:w-1/2 p-4 lg:pl-8 ">
                 <div className="p-4 border border-gray-200">
-                  <div className="mt-[90px]">
-                    <div className="font-poppins text-[30px] font-bold ">
-                      Schedule
+                  <div className="mt-[70px]">
+                    <div className="grid grid-cols-12">
+                      <div className="col-span-3">
+                        <div className="font-poppins text-[30px] font-bold">
+                          Schedule
+                        </div>
+                      </div>
+                      <div className="col-span-2">
+                        <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                          <select
+                            name="month"
+                            id="month"
+                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                            onChange={(e) => setMonth(e.target.value)}
+                            value={month}
+                          >
+                            <option value="" disabled selected hidden>
+                              Month
+                            </option>
+                            {month_data.map((items) => (
+                              <option value={items.value}>{items.name}</option>
+                            ))}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-2">
+                        <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                          <select
+                            name="year"
+                            id="year"
+                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                            onChange={(e) => setYear(e.target.value)}
+                            value={year}
+                          >
+                            <option value="" disabled selected hidden>
+                              Year
+                            </option>
+                            {year_data.map((items) => (
+                              <option value={items.value}>{items.name}</option>
+                            ))}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                            <IoIosArrowDown size={18} color="#6425FE" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="w-[720px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
-                      <div className="mt-3">
-                        <div className="flex space-x-2">
-                          {schedule?.map((items, index) => (
-                            <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
-                              <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
-                                {format(items.date, "EEE")}
+
+                    {schedule.length > 0 ? (
+                      <div className="w-[720px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px] bg-[#ececec]">
+                        <div className="mt-3">
+                          <div className="flex space-x-2">
+                            {schedule?.map((items, index) => (
+                              <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
+                                <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
+                                  {format(items.BookingDate, "EEE")}
+                                </div>
+                                <div className="font-poppins font-bold flex justify-center items-center text-[30px]">
+                                  {format(items.BookingDate, "dd")}
+                                </div>
+                                <div className="font-poppins font-bold flex justify-center items-center text-[9px] ">
+                                  {format(items.BookingDate, "MMM yyyy")}
+                                </div>
                               </div>
-                              <div className="font-poppins font-bold flex justify-center items-center text-[30px]">
-                                {format(items.date, "dd")}
-                              </div>
-                              <div className="font-poppins font-bold flex justify-center items-center text-[9px] ">
-                                {format(items.date, "MMM yyyy")}
-                              </div>
-                            </div>
-                          ))}
-                          {/* {selectInfoScreen.schedule?.map((items, index) => (
+                            ))}
+                            {/* {selectInfoScreen.schedule?.map((items, index) => (
                             <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
                               <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
                                 {format(items.date, "EEE")}
@@ -465,11 +615,28 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                               </div>
                             </div>
                           ))} */}
+                          </div>
                         </div>
-                      </div>
-                      <div className="mt-4">
-                        <div className="w-[720px] flex space-x-2">
-                          {schedule?.map((items, index) => (
+                        <div className="mt-4">
+                          <div className="w-[720px] flex space-x-2">
+                            {schedule?.map((items, index) => (
+                              <div
+                                // onClick={() => handleSelectMedia(items)}
+                                className={`${
+                                  items.MaxSlot - items.TotalUseSlot === 0
+                                    ? "bg-[#5C5C5C]"
+                                    : items.MaxSlot - items.TotalUseSlot ===
+                                      items.MaxSlot
+                                    ? "bg-[#018C41] opacity-40"
+                                    : "bg-[#018C41]"
+                                } min-w-[60px] h-[60px] flex justify-center items-center cursor-pointer rounded-md`}
+                              >
+                                <div className="font-poppins text-white text-[18px]">
+                                  {items.TotalUseSlot}/{items.MaxSlot}
+                                </div>
+                              </div>
+                            ))}
+                            {/* {selectInfoScreen.schedule?.map((items, index) => (
                             <div
                               onClick={() => handleSelectMedia(items)}
                               className={`${
@@ -484,28 +651,20 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                                 {items.booking}/{items.slot}
                               </div>
                             </div>
-                          ))}
-                          {/* {selectInfoScreen.schedule?.map((items, index) => (
-                            <div
-                              onClick={() => handleSelectMedia(items)}
-                              className={`${
-                                items.slot - items.booking === 0
-                                  ? "bg-[#5C5C5C]"
-                                  : items.slot - items.booking === items.slot
-                                  ? "bg-[#018C41] opacity-40"
-                                  : "bg-[#018C41]"
-                              } min-w-[60px] h-[60px] flex justify-center items-center cursor-pointer `}
-                            >
-                              <div className="font-poppins text-white text-[18px]">
-                                {items.booking}/{items.slot}
-                              </div>
-                            </div>
                           ))} */}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex items-center justify-center text-center mt-2">
+                        <div className="font-poppins text-2xl text-gray-300">
+                          --- No Schedule ---
+                        </div>
+                      </div>
+                    )}
+
                     <div className="mt-10 flex justify-center border-b-2 items-center text-[#DBDBDB] " />
-                    <div className="mt-6">
+                    <div className="mt-2">
                       <div className="font-poppins text-[30px] font-bold">
                         Screen Health
                       </div>

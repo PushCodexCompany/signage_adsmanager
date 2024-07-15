@@ -63,7 +63,7 @@ const New_screen = () => {
     getCity();
     getMediaRules();
     getScreenOption();
-    getConfiguration();
+    getConfigurationData();
   }, [id]);
 
   const fetchScreen = () => {
@@ -136,7 +136,7 @@ const New_screen = () => {
     setScreenPhysicalSize(screen_option.screenphysicalsize);
   };
 
-  const getConfiguration = async () => {
+  const getConfigurationData = async () => {
     const {
       configuration: { brandconfig },
     } = await User.getConfiguration(token);
@@ -147,7 +147,12 @@ const New_screen = () => {
     }, {});
 
     setMaNotification(initialValues.NOTIDELAY_SEC);
-    setNotificationDelay(initialValues.NOTIDELAY_SEC);
+
+    const { MANotifyDelay } = location.state.screen;
+
+    if (!MANotifyDelay) {
+      setNotificationDelay(initialValues.NOTIDELAY_SEC);
+    }
   };
 
   const handleImageChange = () => {
