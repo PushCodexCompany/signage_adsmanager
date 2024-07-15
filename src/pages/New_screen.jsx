@@ -498,8 +498,8 @@ const New_screen = () => {
   };
 
   const handleClearTime = () => {
-    setOpenTime(null);
-    setCloseTime(null);
+    setOpenTime();
+    setCloseTime();
   };
 
   return (
@@ -922,48 +922,20 @@ const New_screen = () => {
                     <div className="grid grid-cols-12">
                       <div className="col-span-5">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
-                          {id === "new" && (
-                            <>
-                              {openTime !== undefined && (
-                                <>
-                                  <LocalizationProvider
-                                    dateAdapter={AdapterMoment}
-                                  >
-                                    <TimePicker
-                                      ampm={false}
-                                      label="Open time"
-                                      onChange={handleSetOpenTime}
-                                      views={["hours", "minutes", "seconds"]}
-                                    />
-                                  </LocalizationProvider>
-                                </>
-                              )}
-                            </>
-                          )}
-
-                          {id !== "new" && (
-                            <>
-                              {openTime !== undefined && openTime !== null && (
-                                <>
-                                  <LocalizationProvider
-                                    dateAdapter={AdapterMoment}
-                                  >
-                                    <TimePicker
-                                      ampm={false}
-                                      label="Open time"
-                                      onChange={handleSetOpenTime}
-                                      views={["hours", "minutes", "seconds"]}
-                                      defaultValue={
-                                        openTime
-                                          ? moment(openTime, "HH:mm:ss")
-                                          : null
-                                      }
-                                    />
-                                  </LocalizationProvider>
-                                </>
-                              )}
-                            </>
-                          )}
+                          <LocalizationProvider dateAdapter={AdapterMoment}>
+                            <TimePicker
+                              ampm={false}
+                              label="Open time"
+                              onChange={handleSetOpenTime}
+                              views={["hours", "minutes", "seconds"]}
+                              defaultValue={
+                                openTime ? moment(openTime, "HH:mm:ss") : null
+                              }
+                              value={
+                                openTime ? moment(openTime, "HH:mm:ss") : null
+                              }
+                            />
+                          </LocalizationProvider>
                         </div>
                       </div>
                       <div className="col-span-1">
@@ -973,49 +945,20 @@ const New_screen = () => {
                       </div>
                       <div className="col-span-5">
                         <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
-                          {id === "new" && (
-                            <>
-                              {closeTime !== undefined && (
-                                <>
-                                  <LocalizationProvider
-                                    dateAdapter={AdapterMoment}
-                                  >
-                                    <TimePicker
-                                      ampm={false}
-                                      label="Close time"
-                                      onChange={handleSetCloseTime}
-                                      views={["hours", "minutes", "seconds"]}
-                                    />
-                                  </LocalizationProvider>
-                                </>
-                              )}
-                            </>
-                          )}
-
-                          {id !== "new" && (
-                            <>
-                              {closeTime !== undefined &&
-                                closeTime !== null && (
-                                  <>
-                                    <LocalizationProvider
-                                      dateAdapter={AdapterMoment}
-                                    >
-                                      <TimePicker
-                                        ampm={false}
-                                        label="Close time"
-                                        onChange={handleSetCloseTime}
-                                        views={["hours", "minutes", "seconds"]}
-                                        defaultValue={
-                                          closeTime
-                                            ? moment(closeTime, "HH:mm:ss")
-                                            : null
-                                        }
-                                      />
-                                    </LocalizationProvider>
-                                  </>
-                                )}
-                            </>
-                          )}
+                          <LocalizationProvider dateAdapter={AdapterMoment}>
+                            <TimePicker
+                              ampm={false}
+                              label="Close time"
+                              onChange={handleSetCloseTime}
+                              views={["hours", "minutes", "seconds"]}
+                              defaultValue={
+                                closeTime ? moment(closeTime, "HH:mm:ss") : null
+                              }
+                              value={
+                                closeTime ? moment(closeTime, "HH:mm:ss") : null
+                              }
+                            />
+                          </LocalizationProvider>
                         </div>
                       </div>
                       <div className="col-span-1">
