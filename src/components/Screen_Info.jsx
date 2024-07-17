@@ -10,152 +10,7 @@ import empty_img from "../assets/img/empty_location.png";
 import User from "../libs/admin";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Swal from "sweetalert2";
-
-const schedule = [
-  {
-    date: "2023-06-20T17:00:00.000Z",
-    slot: 10,
-    booking: 9,
-    mediaSchedule: [
-      {
-        id: "1",
-        name: "Mid year sale 2023.mp4",
-        merchandise: "Nike",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "2",
-        name: "Promotion Summer.mp4",
-        merchandise: "Adidas",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "3",
-        name: "Sample Ads.png",
-        merchandise: "Adidas 3",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "4",
-        name: "Mid Night Sale 2023.mp4",
-        merchandise: "FILA",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "5",
-        name: "Mid Night Sale 2023.mp4",
-        merchandise: "FILA",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "6",
-        name: "Mid year Sale 2023.mp4",
-        merchandise: "FILA",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "7",
-        name: "Mid year Sale 2023.mp4",
-        merchandise: "BAOBAO",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "8",
-        name: "Food Hall Ads.mp4",
-        merchandise: "After You",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "9",
-        name: "Mid year sale 2023.mp4",
-        merchandise: "Adidas",
-        screen: "Screen 1",
-        duration: 15,
-      },
-      {
-        id: "10",
-        name: "Pet Show 2023.mp4",
-        merchandise: "Tops",
-        screen: "Screen 1",
-        duration: 15,
-      },
-    ],
-  },
-  {
-    date: "2023-06-21T17:00:00.000Z",
-    slot: 10,
-    booking: 7,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-22T17:00:00.000Z",
-    slot: 10,
-    booking: 4,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-23T17:00:00.000Z",
-    slot: 10,
-    booking: 1,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-24T17:00:00.000Z",
-    slot: 10,
-    booking: 5,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-25T17:00:00.000Z",
-    slot: 10,
-    booking: 7,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-26T17:00:00.000Z",
-    slot: 10,
-    booking: 10,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-27T17:00:00.000Z",
-    slot: 10,
-    booking: 10,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-28T17:00:00.000Z",
-    slot: 10,
-    booking: 0,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-29T17:00:00.000Z",
-    slot: 10,
-    booking: 0,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-06-30T17:00:00.000Z",
-    slot: 10,
-    booking: 0,
-    mediaSchedule: [],
-  },
-  {
-    date: "2023-07-01T17:00:00.000Z",
-    slot: 10,
-    booking: 0,
-    mediaSchedule: [],
-  },
-];
+import firebase_func from "../libs/firebase_func";
 
 const health = [
   80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80,
@@ -245,12 +100,13 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
 
   const [screen_resolution, setScreenResolution] = useState([]);
   const [screen_physical_size, setScreenPhysicalSize] = useState([]);
-  const [month, setMonth] = useState(new Date().getMonth());
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
   const [schedule, setSchedule] = useState([]);
 
   const [mediaSchedule, setMediaSchedule] = useState([]);
   const [mediaScheduleData, setMediaScheduleDate] = useState(null);
+  const [screenStatus, setScreenStatus] = useState(false);
 
   useEffect(() => {
     getScreenData();
@@ -259,6 +115,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
 
   useEffect(() => {
     getSchulde();
+    getScreenStatus();
   }, [month]);
 
   const getScreenData = async () => {
@@ -280,6 +137,11 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const getScreenStatus = async () => {
+    const screen_status = await firebase_func.getStatusScreen(selectInfoScreen);
+    setScreenStatus(screen_status);
   };
 
   const handleSelectMedia = async (items) => {
@@ -394,13 +256,13 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                     {selectInfoScreen.ScreenLocation}
                   </div>
                   <div className="flex items-center space-x-1 ">
-                    {selectInfoScreen.status === 0 ? (
-                      <div className="bg-red-500 w-[8px] h-[8px]  rounded-xl"></div>
-                    ) : (
+                    {screenStatus ? (
                       <div className="bg-[#00C32B] w-[8px] h-[8px]  rounded-xl"></div>
+                    ) : (
+                      <div className="bg-red-500 w-[8px] h-[8px]  rounded-xl"></div>
                     )}
                     <div className="font-poppins text-[18px] p-[2px]">
-                      {selectInfoScreen.status === 0 ? "Offline" : "Online"}
+                      {screenStatus ? "Online" : "Offline"}
                     </div>
                   </div>
                   <div className="mt-2">
@@ -821,13 +683,13 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                     {selectInfoScreen.ScreenLocation}
                   </div>
                   <div className="flex items-center space-x-1 ">
-                    {selectInfoScreen.status === 0 ? (
-                      <div className="bg-red-500 w-[8px] h-[8px]  rounded-xl"></div>
+                    {screenStatus ? (
+                      <div className="bg-[#00C32B] w-[8px] h-[8px] rounded-xl"></div>
                     ) : (
-                      <div className="bg-[#00C32B] w-[8px] h-[8px]  rounded-xl"></div>
+                      <div className="bg-red-500 w-[8px] h-[8px]  rounded-xl"></div>
                     )}
-                    <div className="font-poppins font-bold text-[18px] p-[2px]">
-                      {selectInfoScreen.status === 0 ? "Offline" : "Online"}
+                    <div className="font-poppins text-[18px] p-[2px]">
+                      {screenStatus ? "Online" : "Offline"}
                     </div>
                   </div>
                   <div className="mt-2 flex justify-center items-center">
@@ -914,7 +776,13 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                               key={items.MediaID.toString()}
                               draggableId={items.MediaID.toString()}
                               index={index}
-                              isDragDisabled={from === "list" ? false : true}
+                              isDragDisabled={
+                                from === "list" &&
+                                new Date() >
+                                  new Date(mediaScheduleData.BookingDate)
+                                  ? false
+                                  : true
+                              }
                             >
                               {(provided) => (
                                 <div
@@ -962,14 +830,20 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                     </Droppable>
                   </DragDropContext>
                   {from === "list" ? (
-                    <div className="flex justify-center items-center mt-10 mb-10">
-                      <button
-                        onClick={() => handleSaveNewOrderMedia()}
-                        className="bg-[#6425FE] hover:bg-[#3b1694] text-white h-[35px] w-[255px] rounded-lg font-poppins"
-                      >
-                        Save
-                      </button>
-                    </div>
+                    <>
+                      {new Date() > new Date(mediaScheduleData.BookingDate) ? (
+                        <div className="flex justify-center items-center mt-10 mb-10">
+                          <button
+                            onClick={() => handleSaveNewOrderMedia()}
+                            className="bg-[#6425FE] hover:bg-[#3b1694] text-white h-[35px] w-[255px] rounded-lg font-poppins"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   ) : (
                     <></>
                   )}

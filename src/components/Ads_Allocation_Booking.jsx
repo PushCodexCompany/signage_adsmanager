@@ -308,7 +308,16 @@ const Ads_Allocation_Booking = ({
       let lastIndex = getLastNonNullIndex(destinationItems);
       let destinationIndex = lastIndex === -1 ? 0 : lastIndex + 1;
 
-      if (destination.droppableId === "panel-1") {
+      const isFull = newDestinationItems.length >= itemsPanel1.value.slots;
+      const hasContentID = itemsPanel1.value.medias[0].ContentID !== null;
+
+      if (isFull && hasContentID) {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "จำนวน Slot เต็มแล้ว ...",
+        });
+      } else if (destination.droppableId === "panel-1") {
         const draggedItem = sourceItems.find(
           (item) =>
             item.ContentID === parseInt(result.draggableId.split("-")[1])
@@ -320,9 +329,7 @@ const Ads_Allocation_Booking = ({
           slot_size: 1,
           duration: 15,
         });
-      }
 
-      if (destination.droppableId === "panel-1") {
         setItemsPanel1({
           ...itemsPanel1,
           value: {
@@ -751,59 +758,71 @@ const Ads_Allocation_Booking = ({
   };
 
   const handleOptionClick = async (option) => {
-    getMediaInPlaylist(option.MediaPlaylistID);
-    setMediaPlaylistId(option.MediaPlaylistID);
-    setPlaylistName(option.PlaylistName);
-    setTempPlaylistName(option.PlaylistName);
-    setCheckCreateMediaPlaylist(false);
-    setIsExpanded(false);
+    getMediaInPlaylist(option.MediaPlaylistID, option);
   };
 
-  const getMediaInPlaylist = async (mediaplaylistid) => {
+  const getMediaInPlaylist = async (mediaplaylistid, option) => {
     const obj = {
       bookingid: bookingId,
       mediaplaylistid: mediaplaylistid,
     };
     try {
       const data = await User.getMediaPlaylistContent(obj, token);
+
       if (data && data.length > 0) {
-        const updatedObj = data.map((item) => {
-          const duration = parseInt(item.Duration);
+        if (data.length > itemsPanel1.value.slots) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: "จำนวน Media ใน Playlist มากกว่าจำนวน Slot",
+          });
+          return;
+        } else {
+          const updatedObj = data.map((item) => {
+            const duration = parseInt(item.Duration);
 
-          const newSlotSize = duration / 15;
-          return {
-            ...item,
-            slot_size: newSlotSize,
-            slot_num: item.Ordering,
-            duration: parseInt(item.Duration),
-          };
-        });
-        const clonedItemsPanel1 = { ...itemsPanel1 };
-        // Calculate the total sum of slot_size values
-        const totalSlotsUsed = updatedObj.reduce(
-          (acc, obj) => acc + obj.slot_size,
-          0
-        );
-        // Add slots only if the total slots used is less than the total number of slots
-        if (totalSlotsUsed < clonedItemsPanel1.value.slots) {
-          const remainingSlots = clonedItemsPanel1.value.slots - totalSlotsUsed;
+            const newSlotSize = duration / 15;
+            return {
+              ...item,
+              slot_size: newSlotSize,
+              slot_num: item.Ordering,
+              duration: parseInt(item.Duration),
+            };
+          });
+          const clonedItemsPanel1 = { ...itemsPanel1 };
+          // Calculate the total sum of slot_size values
+          const totalSlotsUsed = updatedObj.reduce(
+            (acc, obj) => acc + obj.slot_size,
+            0
+          );
+          // Add slots only if the total slots used is less than the total number of slots
+          if (totalSlotsUsed < clonedItemsPanel1.value.slots) {
+            const remainingSlots =
+              clonedItemsPanel1.value.slots - totalSlotsUsed;
 
-          const mock = {
-            ContentID: null,
-            ContentName: null,
-            ContentTypeName: null,
-            ContentProperties: null,
-            slot_size: 1,
-            slot_num: updatedObj.length + 1,
-          };
+            const mock = {
+              ContentID: null,
+              ContentName: null,
+              ContentTypeName: null,
+              ContentProperties: null,
+              slot_size: 1,
+              slot_num: updatedObj.length + 1,
+            };
 
-          for (let i = 0; i < remainingSlots; i++) {
-            updatedObj.push({ ...mock });
-            mock.slot_num++;
+            for (let i = 0; i < remainingSlots; i++) {
+              updatedObj.push({ ...mock });
+              mock.slot_num++;
+            }
           }
+          clonedItemsPanel1.value.medias = updatedObj;
+          setItemsPanel1(clonedItemsPanel1);
+
+          setMediaPlaylistId(option.MediaPlaylistID);
+          setPlaylistName(option.PlaylistName);
+          setTempPlaylistName(option.PlaylistName);
+          setCheckCreateMediaPlaylist(false);
+          setIsExpanded(false);
         }
-        clonedItemsPanel1.value.medias = updatedObj;
-        setItemsPanel1(clonedItemsPanel1);
       } else {
         const clonedItemsPanel1 = { ...itemsPanel1 };
         const updatedObj = clonedItemsPanel1.value.medias.map((item, index) => {
@@ -819,6 +838,12 @@ const Ads_Allocation_Booking = ({
         clonedItemsPanel1.value.medias = updatedObj;
 
         setItemsPanel1(clonedItemsPanel1);
+
+        setMediaPlaylistId(option.MediaPlaylistID);
+        setPlaylistName(option.PlaylistName);
+        setTempPlaylistName(option.PlaylistName);
+        setCheckCreateMediaPlaylist(false);
+        setIsExpanded(false);
       }
     } catch (error) {
       console.error("Error fetching media playlist content:", error);
@@ -980,6 +1005,7 @@ const Ads_Allocation_Booking = ({
           mediaplaylistid: media_playlist_id,
           medias: media_list,
         };
+
         try {
           const data = await User.updateMediaPlaylistContent(
             playlist_obj,
@@ -1022,6 +1048,7 @@ const Ads_Allocation_Booking = ({
           mediaplaylistid: media_playlist_id,
           medias: media_list,
         };
+
         try {
           const data = await User.updateMediaPlaylistContent(
             playlist_obj,

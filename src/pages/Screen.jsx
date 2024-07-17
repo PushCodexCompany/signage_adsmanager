@@ -104,7 +104,6 @@ const Event = () => {
 
       // if (JSON.stringify(newScreensData) !== JSON.stringify(screens_data))
       setScreensData(newScreensData);
-
       setScreensStatus({ ...screens_status });
     });
     db.on("child_added", (snap) => {
@@ -142,7 +141,6 @@ const Event = () => {
 
       // if (JSON.stringify(newScreensData) !== JSON.stringify(screens_data))
       setScreensData(newScreensData);
-
       setScreensStatus({ ...screens_status });
     });
   };

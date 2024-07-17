@@ -6,6 +6,7 @@ import { RiDeleteBin5Line, RiEditLine, RiCalendar2Fill } from "react-icons/ri";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import firebase_func from "../libs/firebase_func";
 
 export const GridTable = ({
   // setSelectedScreenItems,
@@ -40,8 +41,16 @@ export const GridTable = ({
   const totalPages = all_pages ? all_pages : 0;
 
   useEffect(() => {
-    setData(screens_data);
+    generateStatus();
   }, [screens_data]);
+
+  const generateStatus = async () => {
+    screens_data.map(async (items) => {
+      const screen_status = await firebase_func.getStatusScreen(items);
+      items.screen_status = screen_status;
+    });
+    setData(screens_data);
+  };
 
   const fetchDataForPage = async (page) => {
     if (page) {
@@ -153,7 +162,14 @@ export const GridTable = ({
               <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex">
                   <div className="font-poppins text-md font-bold">
-                    {row.ScreenName}
+                    <div className="flex">
+                      {row.ScreenName}
+                      {row.screen_status ? (
+                        <div className="bg-[#00C32B] w-[5px] h-[5px]  rounded-xl"></div>
+                      ) : (
+                        <div className="bg-red-500 w-[5px] h-[5px]  rounded-xl"></div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </td>
