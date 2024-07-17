@@ -209,6 +209,8 @@ const Event = () => {
             <GridTable
               // setSelectedScreenItems={setSelectedScreenItems}
               setSelectInfoScren={setSelectInfoScren}
+              setOpenInfoScreenModal={setOpenInfoScreenModal}
+              openInfoScreenModal={openInfoScreenModal}
               screens_data={screens_data}
               all_pages={all_pages}
               setScreensData={setScreensData}
@@ -244,6 +246,7 @@ const Event = () => {
         <Screen_Info
           setOpenInfoScreenModal={setOpenInfoScreenModal}
           selectInfoScreen={selectInfoScreen}
+          from="list"
         />
       )}
 

@@ -1551,4 +1551,42 @@ export default {
       return false;
     }
   },
+
+  getScreenmedia: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await this._get(
+      `api/v1/get_screenmedia?brandcode=${brand_code}&screenid=${obj.screenid}&bookingdate=${obj.bookingdate}`,
+      "",
+      config
+    );
+
+    if (data.code !== 404) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  updateScreenmediaordering: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/update_screenmediaordering?brandcode=${brand_code}&screenid=${obj.screenid}&bookingdate=${obj.bookingdate}&mediaids=${obj.mediaids}`,
+      obj,
+      config
+    );
+    return data;
+  },
 };

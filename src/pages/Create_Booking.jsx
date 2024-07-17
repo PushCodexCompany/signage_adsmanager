@@ -1243,6 +1243,7 @@ const Create_Booking = () => {
         <Screen_Info
           setOpenInfoScreenModal={setOpenInfoScreenModal}
           selectInfoScreen={selectInfoScreen}
+          from="edit"
         />
       )}
 

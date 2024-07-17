@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { BiLinkAlt, BiUnlink } from "react-icons/bi";
-import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
+import { RiDeleteBin5Line, RiEditLine, RiCalendar2Fill } from "react-icons/ri";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -24,11 +24,13 @@ export const GridTable = ({
   // checkboxes,
   // screen_checkbox_select,
   // setScreenCheckboxSelect,
+  openInfoScreenModal,
+  setOpenInfoScreenModal,
 }) => {
   const navigate = useNavigate();
 
   // const [selectAll, setSelectAll] = useState(false);
-  const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
+  // const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
 
   // table
   const { token } = User.getCookieData();
@@ -150,10 +152,7 @@ export const GridTable = ({
               </td>
               <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex">
-                  <div
-                    onClick={() => handleSelectInfoScreen(row)}
-                    className="font-poppins text-md font-bold"
-                  >
+                  <div className="font-poppins text-md font-bold">
                     {row.ScreenName}
                   </div>
                 </div>
@@ -241,6 +240,12 @@ export const GridTable = ({
                   )}
                   <button onClick={() => handleEditScreen(row)}>
                     <RiEditLine
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
+                    />
+                  </button>
+                  <button onClick={() => handleSelectInfoScreen(row)}>
+                    <RiCalendar2Fill
                       size={20}
                       className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
                     />

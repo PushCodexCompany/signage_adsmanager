@@ -9,6 +9,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import empty_img from "../assets/img/empty_location.png";
 import User from "../libs/admin";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import Swal from "sweetalert2";
 
 const schedule = [
   {
@@ -236,7 +237,7 @@ const year_data = [
   },
 ];
 
-const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
+const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
   const { token } = User.getCookieData();
   const [openMediaScheduleModal, setOpenMediaScheduleModal] = useState(false);
   const [selectMediaScreen, setSelectMediaScreen] = useState();
@@ -247,6 +248,9 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
   const [schedule, setSchedule] = useState([]);
+
+  const [mediaSchedule, setMediaSchedule] = useState([]);
+  const [mediaScheduleData, setMediaScheduleDate] = useState(null);
 
   useEffect(() => {
     getScreenData();
@@ -278,10 +282,21 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
     }
   };
 
-  const handleSelectMedia = (items) => {
-    setHideOldModal(!hideOldModal);
-    setSelectMediaScreen(items);
-    setOpenMediaScheduleModal(!openMediaScheduleModal);
+  const handleSelectMedia = async (items) => {
+    const obj = {
+      screenid: selectInfoScreen.ScreenID,
+      bookingdate: items.BookingDate,
+    };
+
+    try {
+      const { screenmedia } = await User.getScreenmedia(obj, token);
+      setMediaSchedule(screenmedia);
+      setHideOldModal(!hideOldModal);
+      setMediaScheduleDate(items);
+      setOpenMediaScheduleModal(!openMediaScheduleModal);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const formatTime = (seconds) => {
@@ -296,16 +311,10 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return; // dropped outside the list
-    const items = Array.from(selectMediaScreen.mediaSchedule);
+    const items = Array.from(mediaSchedule);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
-    setSelectMediaScreen((prevState) => {
-      return {
-        ...prevState,
-        mediaSchedule: items,
-      };
-    });
+    setMediaSchedule(items);
   };
 
   const findScreenResolutionID = (id) => {
@@ -320,6 +329,42 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
       (item) => item.ScreenPhySizeID === id
     );
     return resolution ? resolution.PhysicalSize : "No Physical Size";
+  };
+
+  const handleSaveNewOrderMedia = async () => {
+    const { ScreenID } = selectInfoScreen;
+    const { BookingDate } = mediaScheduleData;
+    const mediaIDs = mediaSchedule.map((item) => item.MediaID).join(",");
+    const obj = {
+      screenid: ScreenID,
+      bookingdate: BookingDate,
+      mediaids: mediaIDs,
+    };
+
+    try {
+      const data = await User.updateScreenmediaordering(obj, token);
+      if (data.code !== 404) {
+        Swal.fire({
+          icon: "success",
+          title: "Update Screen Ordering Success ...",
+          text: "แก้ไข Screen Ordering สำเร็จ!",
+        }).then(async (result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "เกิดข้อผิดพลาด",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // const toggleYearSelect = () => {
@@ -621,7 +666,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                           <div className="w-[720px] flex space-x-2">
                             {schedule?.map((items, index) => (
                               <div
-                                // onClick={() => handleSelectMedia(items)}
+                                onClick={() => handleSelectMedia(items)}
                                 className={`${
                                   items.MaxSlot - items.TotalUseSlot === 0
                                     ? "bg-[#5C5C5C]"
@@ -636,22 +681,6 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                                 </div>
                               </div>
                             ))}
-                            {/* {selectInfoScreen.schedule?.map((items, index) => (
-                            <div
-                              onClick={() => handleSelectMedia(items)}
-                              className={`${
-                                items.slot - items.booking === 0
-                                  ? "bg-[#5C5C5C]"
-                                  : items.slot - items.booking === items.slot
-                                  ? "bg-[#018C41] opacity-40"
-                                  : "bg-[#018C41]"
-                              } min-w-[60px] h-[60px] flex justify-center items-center cursor-pointer `}
-                            >
-                              <div className="font-poppins text-white text-[18px]">
-                                {items.booking}/{items.slot}
-                              </div>
-                            </div>
-                          ))} */}
                           </div>
                         </div>
                       </div>
@@ -744,17 +773,17 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       <div className="mt-8">
                         <div className="flex justify-center items-center">
                           <div className="font-poppins text-[15px] font-bold">
-                            Screen Description
+                            Screen Description : {selectInfoScreen.ScreenDesc}
                           </div>
                         </div>
                       </div>
-                      <div className="mt-8">
+                      {/* <div className="mt-8">
                         <div className="flex justify-center items-center">
                           <button className="font-poppins text-[15px] w-[315px] h-[48px] rounded-lg bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold">
                             Start Booking
                           </button>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -763,10 +792,6 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
           </div>
         </div>
       )}
-
-      {/* {openMediaScheduleModal && (
-        <a className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur" />
-      )} */}
 
       {openMediaScheduleModal && (
         <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
@@ -790,10 +815,10 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
               <div className="w-full lg:w-1/4 p-1">
                 <div className="p-8">
                   <div className="text-[30px] font-semibold font-poppins">
-                    {selectInfoScreen.name}
+                    {selectInfoScreen.ScreenName}
                   </div>
                   <div className="text-[18px] font-poppins text-[#8A8A8A]">
-                    {selectInfoScreen.location}
+                    {selectInfoScreen.ScreenLocation}
                   </div>
                   <div className="flex items-center space-x-1 ">
                     {selectInfoScreen.status === 0 ? (
@@ -808,30 +833,33 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                   <div className="mt-2 flex justify-center items-center">
                     <div className="border border-[#E8E8E8] w-[130px] h-[130px]">
                       <div className="font-poppins font-bold text-[17px] flex justify-center items-center">
-                        {format(selectMediaScreen.date, "EEE")}
+                        {format(mediaScheduleData.BookingDate, "EEE")}
                       </div>
                       <div className="font-poppins font-bold flex justify-center items-center text-[46px]">
-                        {format(selectMediaScreen.date, "dd")}
+                        {format(mediaScheduleData.BookingDate, "dd")}
                       </div>
                       <div className="font-poppins font-bold flex justify-center items-center text-[17px] ">
-                        {format(selectMediaScreen.date, "MMM yyyy")}
+                        {format(mediaScheduleData.BookingDate, "MMM yyyy")}
                       </div>
                     </div>
                   </div>
                   <div className="mt-2 flex justify-center items-center">
                     <div
                       className={`${
-                        selectMediaScreen.slot - selectMediaScreen.booking === 0
+                        mediaScheduleData.MaxSlot -
+                          mediaScheduleData.TotalUseSlot ===
+                        0
                           ? "bg-[#5C5C5C]"
-                          : selectMediaScreen.slot -
-                              selectMediaScreen.booking ===
-                            selectMediaScreen.slot
+                          : mediaScheduleData.MaxSlot -
+                              mediaScheduleData.TotalUseSlot ===
+                            mediaScheduleData.MaxSlot
                           ? "bg-[#018C41] opacity-40"
                           : "bg-[#018C41]"
                       } min-w-[130px] h-[130px] flex justify-center items-center`}
                     >
                       <div className="font-poppins text-white text-[36px]">
-                        {selectMediaScreen.booking}/{selectMediaScreen.slot}
+                        {mediaScheduleData.TotalUseSlot}/
+                        {mediaScheduleData.MaxSlot}
                       </div>
                     </div>
                   </div>
@@ -859,16 +887,19 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                       </div>
                     </div>
                     <div className="col-span-2">
-                      <div className="text-[#59606C] font-poppins">Screen</div>
-                    </div>
-                    <div className="col-span-2">
                       <div className="text-[#59606C] font-poppins">
                         Duration
                       </div>
                     </div>
-                    <div className="col-span-1">
-                      <div className="text-[#59606C] font-poppins">Action</div>
-                    </div>
+                    {from === "list" ? (
+                      <div className="col-span-1">
+                        <div className="text-[#59606C] font-poppins">
+                          Action
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
 
                   <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -878,66 +909,70 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen }) => {
                           {...provided.droppableProps}
                           ref={provided.innerRef}
                         >
-                          {selectMediaScreen.mediaSchedule.map(
-                            (items, index) => (
-                              <Draggable
-                                key={items.id}
-                                draggableId={items.id}
-                                index={index}
-                              >
-                                {(provided) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    className="grid grid-cols-12 mt-5"
-                                  >
-                                    <div className="col-span-1">
-                                      <div className="font-poppins font-semibold text-sm lg:text-base">
-                                        {index + 1}
-                                      </div>
+                          {mediaSchedule.map((items, index) => (
+                            <Draggable
+                              key={items.MediaID.toString()}
+                              draggableId={items.MediaID.toString()}
+                              index={index}
+                              isDragDisabled={from === "list" ? false : true}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className="grid grid-cols-12 mt-5"
+                                >
+                                  <div className="col-span-1">
+                                    <div className="font-poppins font-semibold text-sm lg:text-base">
+                                      {index + 1}
                                     </div>
-                                    <div className="col-span-4">
-                                      <div className="font-poppins font-semibold text-sm lg:text-base">
-                                        {items.name}
-                                      </div>
+                                  </div>
+                                  <div className="col-span-4">
+                                    <div className="font-poppins font-semibold text-sm lg:text-base">
+                                      {items.ContentName}
                                     </div>
-                                    <div className="col-span-2">
-                                      <div className="font-poppins font-semibold text-sm lg:text-base">
-                                        {items.merchandise}
-                                      </div>
+                                  </div>
+                                  <div className="col-span-2">
+                                    <div className="font-poppins font-semibold text-sm lg:text-base">
+                                      {items.AdvertiserName}
                                     </div>
-                                    <div className="col-span-2">
-                                      <div className="font-poppins font-semibold text-sm lg:text-base">
-                                        {items.screen}
-                                      </div>
+                                  </div>
+                                  <div className="col-span-2">
+                                    <div className="font-poppins font-semibold text-sm lg:text-base">
+                                      {formatTime(items.Duration)}
                                     </div>
-                                    <div className="col-span-2">
-                                      <div className="font-poppins font-semibold text-sm lg:text-base">
-                                        {formatTime(items.duration)}
-                                      </div>
-                                    </div>
+                                  </div>
+                                  {from === "list" ? (
                                     <div className="col-span-1">
                                       <div className="font-poppins font-semibold text-sm lg:text-base">
                                         <MdDragHandle color={"#6425FE"} />
                                       </div>
                                     </div>
-                                  </div>
-                                )}
-                              </Draggable>
-                            )
-                          )}
+                                  ) : (
+                                    <></>
+                                  )}
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
                           {provided.placeholder}
                         </div>
                       )}
                     </Droppable>
                   </DragDropContext>
-
-                  <div className="flex justify-center items-center mt-10 mb-10">
-                    <button className="bg-[#6425FE] hover:bg-[#3b1694] text-white h-[35px] w-[255px] rounded-lg font-poppins">
-                      Save
-                    </button>
-                  </div>
+                  {from === "list" ? (
+                    <div className="flex justify-center items-center mt-10 mb-10">
+                      <button
+                        onClick={() => handleSaveNewOrderMedia()}
+                        className="bg-[#6425FE] hover:bg-[#3b1694] text-white h-[35px] w-[255px] rounded-lg font-poppins"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             </div>
