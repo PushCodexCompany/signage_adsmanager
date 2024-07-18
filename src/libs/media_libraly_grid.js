@@ -41,10 +41,10 @@ export const GridTable = ({ media_libraly_data, all_pages, searchTerm }) => {
       text: `คุณต้องการลบ Media : ${source.ContentName}`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน!",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
       cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {

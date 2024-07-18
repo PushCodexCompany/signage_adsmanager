@@ -150,14 +150,14 @@ export const GridTable = ({
                       </label>
                     </div>
                   </td> */}
-              <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex items-center justify-center">
                   <div className="font-poppins text-md font-bold">
                     {key + 1}
                   </div>
                 </div>
               </td>
-              <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex">
                   <div className="font-poppins text-md font-bold">
                     <div className="flex">
@@ -167,23 +167,22 @@ export const GridTable = ({
                       ) : (
                         <div className="bg-red-500 w-[5px] h-[5px]  rounded-xl"></div>
                       )}
-                      {/* {status_screen ? status_screen : "false"} */}
                     </div>
                   </div>
                 </div>
               </td>
-              <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="font-poppins text-md text-[#59606C] font-bold">
                   {row.ScreenLocation || "No Data"}
                 </div>
               </td>
-              <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex justify-center items-center font-poppins font-bold">
                   {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
                   {row?.ScreenRule[0]?.Width && row?.ScreenRule[0]?.Height
-                    ? parseInt(row.ScreenRule[0].Width, 10) +
-                      "x" +
-                      parseInt(row.ScreenRule[0].Height, 10)
+                    ? `W ${parseInt(row.ScreenRule[0].Width, 10)}` +
+                      " x " +
+                      `H ${parseInt(row.ScreenRule[0].Height, 10)}`
                     : "Not Set"}
                 </div>
               </td>
@@ -197,7 +196,7 @@ export const GridTable = ({
                   {row.loopDuration ? `${row.loopDuration} Second` : "No Data"}
                 </div>
               </td>
-              <td className="px-2 py-4 whitespace-no-wrap border-b border-gray-200">
+              <td className="px-1 py-4 whitespace-no-wrap border-b border-gray-200">
                 <div className="flex flex-wrap">
                   {row.ScreenTag.length > 0 ? (
                     row.ScreenTag.map((items, index) => (
@@ -234,7 +233,7 @@ export const GridTable = ({
                   )}
                 </div>
               </td>
-              <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-1 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-2">
                   {isScreenPaired ? (
                     <button>
@@ -406,10 +405,10 @@ export const GridTable = ({
       text: `คุณต้องการลบจอ ${screen_name} ?`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "ยืนยัน",
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
       cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
         const { token } = User.getCookieData();
@@ -494,16 +493,16 @@ export const GridTable = ({
                   </span>
                 </label>
               </th> */}
-                <th className="px-2 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
+                <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
                   No
                 </th>
-                <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
                   Screen Name
                 </th>
-                <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Location
                 </th>
-                <th className="px-2 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Media Rule
                 </th>
                 <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
@@ -512,10 +511,10 @@ export const GridTable = ({
                 <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Loop Duration
                 </th>
-                <th className="px-2 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Tag
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Action
                 </th>
               </tr>

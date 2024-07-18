@@ -181,8 +181,10 @@ const Select_Booking = () => {
         const result = await Swal.fire({
           title: `คุณต้องการเปลี่ยน Booking name ?`,
           showCancelButton: true,
-          confirmButtonText: "ยืนยัน",
+          confirmButtonColor: "#d33",
+          confirmButtonText: "ลบข้อมูล",
           cancelButtonText: "ยกเลิก",
+          reverseButtons: true,
         });
 
         if (result.isConfirmed) {

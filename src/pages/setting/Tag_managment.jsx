@@ -43,7 +43,9 @@ const Tag_managment = () => {
 
   const getTagData = async (tag_category) => {
     const tag = await User.getTag(tag_category.TagCategoryID, token);
-
+    tag.sort((a, b) =>
+      a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
+    );
     setTagData(tag);
   };
 
@@ -69,6 +71,12 @@ const Tag_managment = () => {
   const handleSelectTagCategory = async (items) => {
     setSelectCat(items);
     const tag = await User.getTag(items.TagCategoryID, token);
+    if (tag.length > 0) {
+      tag.sort((a, b) =>
+        a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
+      );
+    }
+
     setTagData(tag);
   };
 
@@ -305,30 +313,34 @@ const Tag_managment = () => {
               </div>
               <div className="col-span-5 mt-5 h-[600px] overflow-y-auto">
                 <div className="flex flex-wrap">
-                  {tag_data.length > 0
-                    ? tag_data.map((items, index) => (
-                        <div
-                          key={index}
-                          className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
-                          style={{
-                            flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
-                          }}
-                        >
-                          <div className="flex justify-center items-center mr-1 ml-1">
-                            <IoIosClose
-                              onClick={() => removeTag(items)}
-                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                            />
-                          </div>
-                          <div
-                            onClick={() => handleEditTag(items)}
-                            className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center cursor-pointer"
-                          >
-                            {items.TagName}
-                          </div>
+                  {tag_data.length > 0 ? (
+                    tag_data.map((items, index) => (
+                      <div
+                        key={index}
+                        className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
+                        style={{
+                          flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
+                        }}
+                      >
+                        <div className="flex justify-center items-center mr-1 ml-1">
+                          <IoIosClose
+                            onClick={() => removeTag(items)}
+                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                          />
                         </div>
-                      ))
-                    : null}
+                        <div
+                          onClick={() => handleEditTag(items)}
+                          className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center cursor-pointer"
+                        >
+                          {items.TagName}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex justify-center items-center w-full h-[600px]">
+                      <span className="text-gray-300 text-4xl">No Tag(s)</span>
+                    </div>
+                  )}
                 </div>
               </div>
               {/* {tag_data.length > 0 ? (

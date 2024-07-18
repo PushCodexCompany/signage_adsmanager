@@ -209,14 +209,14 @@ const Create_Media_Rule = () => {
                   {media_rule_id ? (
                     <button
                       onClick={() => handleSaveNewOrEditMediaRules("edit")}
-                      className="bg-[#6425FE] w-[420px] hover:bg-[#3b1694] text-xl rounded-lg h-[65px] text-white font-bold font-poppins"
+                      className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
                     >
-                      Edit
+                      Save Change
                     </button>
                   ) : (
                     <button
                       onClick={() => handleSaveNewOrEditMediaRules("create")}
-                      className="bg-[#6425FE] w-[420px] hover:bg-[#3b1694] text-xl rounded-lg h-[65px] text-white font-bold font-poppins"
+                      className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
                     >
                       Create
                     </button>

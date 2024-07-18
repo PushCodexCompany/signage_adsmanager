@@ -21,6 +21,7 @@ import User from "../libs/admin";
 import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
 import Confirm_Allocation from "../components/Confirm_Allocation";
 import Create_New_Playlist_Allocation from "../components/Create_New_Playlist_Allocation";
+import "./css/alert.css";
 
 const Ads_Allocation_Booking = ({
   setOpenAdsAllocationModal,
@@ -378,10 +379,10 @@ const Ads_Allocation_Booking = ({
         text: `คุณต้องการลบ ${target.ContentName} ออกจาก Playlist?`,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "ยืนยัน!",
+        confirmButtonColor: "#d33",
+        confirmButtonText: "ลบข้อมูล",
         cancelButtonText: "ยกเลิก",
+        reverseButtons: true,
       }).then(async (result) => {
         if (result.isConfirmed) {
           const nullifiedMediaItem = {

@@ -56,11 +56,10 @@ const Merchandise = () => {
         text: merchandise_name,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#6425FE",
-        confirmButtonText: "ยืนยัน",
-        cancelButtonColor: "red",
+        confirmButtonColor: "#d33",
+        confirmButtonText: "ลบข้อมูล",
         cancelButtonText: "ยกเลิก",
-        width: "600px",
+        reverseButtons: true,
       }).then(async (result) => {
         if (result.isConfirmed) {
           const { brand_code } = User.getBrandCode();
@@ -158,9 +157,7 @@ const Merchandise = () => {
                     src={
                       items.AdvertiserLogo
                         ? items.AdvertiserLogo
-                        : `https://ui-avatars.com/api/?name=${
-                            items.AdvertiserName
-                          }&background=${"000000"}&color=fff`
+                        : `https://ui-avatars.com/api/?name=${items.AdvertiserName}&background=000000&color=fff`
                     }
                     alt={items.AccountName}
                   />
@@ -179,7 +176,8 @@ const Merchandise = () => {
                   {dropdownStates[items.AdvertiserID] && (
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setEditMerchandise(items);
                           handleEditMerchandise(items);
                           toggleDropdown(items.AdvertiserID);
@@ -189,7 +187,8 @@ const Merchandise = () => {
                         Edit
                       </button>
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           handleDeleteMerchandise(
                             items.AdvertiserID,
                             items.AdvertiserName
