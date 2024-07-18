@@ -45,10 +45,6 @@ export const GridTable = ({
   }, [screens_data]);
 
   const generateStatus = async () => {
-    screens_data.map(async (items) => {
-      const screen_status = await firebase_func.getStatusScreen(items);
-      items.screen_status = screen_status;
-    });
     setData(screens_data);
   };
 
@@ -112,6 +108,8 @@ export const GridTable = ({
             ? row?.ScreenStatus.is_paired
             : false;
 
+          const status_screen = row?.screen_status ? row?.screen_status : false;
+
           return (
             <tr key={row.ScreenID}>
               {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -164,11 +162,12 @@ export const GridTable = ({
                   <div className="font-poppins text-md font-bold">
                     <div className="flex">
                       {row.ScreenName}
-                      {row.screen_status ? (
+                      {status_screen === 1 ? (
                         <div className="bg-[#00C32B] w-[5px] h-[5px]  rounded-xl"></div>
                       ) : (
                         <div className="bg-red-500 w-[5px] h-[5px]  rounded-xl"></div>
                       )}
+                      {/* {status_screen ? status_screen : "false"} */}
                     </div>
                   </div>
                 </div>

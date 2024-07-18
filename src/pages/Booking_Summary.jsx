@@ -6,6 +6,7 @@ import { PiMonitor } from "react-icons/pi";
 import { format } from "date-fns";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
+import firebase_func from "../libs/firebase_func";
 
 const Booking_Summary = () => {
   useCheckPermission();
@@ -81,6 +82,14 @@ const Booking_Summary = () => {
     }
   };
 
+  // const generateStatus = async () => {
+  //   screens_data.map(async (items) => {
+  //     const screen_status = await firebase_func.getStatusScreen(items);
+  //     items.screen_status = screen_status;
+  //   });
+  //   setData(screens_data);
+  // };
+
   return (
     <>
       <Navbar />
@@ -140,13 +149,15 @@ const Booking_Summary = () => {
                               </div>
                             </div>
                             <div className="flex justify-start items-center space-x-1">
-                              {items.status === 0 ? (
+                              {items.screen_status === 0 ? (
                                 <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
                               ) : (
                                 <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
                               )}
                               <div className="font-poppins text-xs p-[2px]">
-                                {items.status === 0 ? "Offline" : "Online"}
+                                {items.screen_status === 0
+                                  ? "Offline"
+                                  : "Online"}
                               </div>
                             </div>
                           </div>

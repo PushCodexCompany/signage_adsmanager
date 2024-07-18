@@ -25,15 +25,15 @@ export default {
     if (screenData[ScreenCode]) {
       if (screenData[ScreenCode].is_online !== undefined) {
         if (screenData[ScreenCode].is_online === 1) {
-          return true;
+          return 1;
         } else {
-          return false;
+          return 0;
         }
       } else {
-        return false;
+        return 0;
       }
     } else {
-      return false;
+      return 0;
     }
   },
 };

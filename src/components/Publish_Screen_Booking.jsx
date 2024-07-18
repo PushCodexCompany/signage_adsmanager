@@ -256,7 +256,11 @@ const Publish_Screen_Booking = ({
                           <div className="font-poppins text-xl font-bold">
                             {row.ScreenName}
                           </div>
-                          <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                          {row.screen_status === 0 ? (
+                            <div className="bg-red-500 w-1 h-1 rounded-full ml-2"></div>
+                          ) : (
+                            <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                          )}
                         </div>
                       </td>
                       <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">

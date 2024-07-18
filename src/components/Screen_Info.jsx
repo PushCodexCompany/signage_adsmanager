@@ -256,13 +256,13 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                     {selectInfoScreen.ScreenLocation}
                   </div>
                   <div className="flex items-center space-x-1 ">
-                    {screenStatus ? (
+                    {screenStatus === 1 ? (
                       <div className="bg-[#00C32B] w-[8px] h-[8px]  rounded-xl"></div>
                     ) : (
                       <div className="bg-red-500 w-[8px] h-[8px]  rounded-xl"></div>
                     )}
                     <div className="font-poppins text-[18px] p-[2px]">
-                      {screenStatus ? "Online" : "Offline"}
+                      {screenStatus === 1 ? "Online" : "Offline"}
                     </div>
                   </div>
                   <div className="mt-2">
@@ -683,13 +683,13 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                     {selectInfoScreen.ScreenLocation}
                   </div>
                   <div className="flex items-center space-x-1 ">
-                    {screenStatus ? (
+                    {screenStatus === 1 ? (
                       <div className="bg-[#00C32B] w-[8px] h-[8px] rounded-xl"></div>
                     ) : (
                       <div className="bg-red-500 w-[8px] h-[8px]  rounded-xl"></div>
                     )}
                     <div className="font-poppins text-[18px] p-[2px]">
-                      {screenStatus ? "Online" : "Offline"}
+                      {screenStatus === 1 ? "Online" : "Offline"}
                     </div>
                   </div>
                   <div className="mt-2 flex justify-center items-center">

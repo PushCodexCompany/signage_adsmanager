@@ -97,7 +97,6 @@ const Select_Booking = () => {
 
     // get Booking Content
     const booking_content = await User.getBookingContent(BookingID, token);
-    // console.log("booking_content", booking_content);
 
     calculateSize(booking_content);
 
@@ -106,7 +105,7 @@ const Select_Booking = () => {
       ...new Set(booking_content.map((item) => item.ScreenID)),
     ];
     const output = uniqueScreenIDs.map((screenID) => ({ ScreenID: screenID }));
-    const all_screen = await User.getScreens(token);
+    const all_screen = location.state.screen_data;
     setAllScreenData(all_screen);
 
     const filteredOutput = all_screen.filter((screen) => {
@@ -432,7 +431,16 @@ const Select_Booking = () => {
                           <div className="col-span-6">
                             <div className="flex justify-start items-center">
                               <div className="font-poppins lg:text-xl md:text-md font-bold">
-                                {items.ScreenName}
+                                {items.ScreenName.length > 15 ? (
+                                  <>
+                                    {items.ScreenName.slice(0, 12) + "..."}
+                                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                      {items.ScreenName}
+                                    </span>
+                                  </>
+                                ) : (
+                                  <>{items.ScreenName}</>
+                                )}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
@@ -441,13 +449,15 @@ const Select_Booking = () => {
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
-                              {items.status === 0 ? (
+                              {items.screen_status === 0 ? (
                                 <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
                               ) : (
                                 <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
                               )}
                               <div className="font-poppins text-xs p-[2px]">
-                                {items.status === 0 ? "Offline" : "Online"}
+                                {items.screen_status === 0
+                                  ? "Offline"
+                                  : "Online"}
                               </div>
                             </div>
                           </div>

@@ -8,30 +8,23 @@ import {
 } from "react-icons/ri";
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import firebase_func from "../libs/firebase_func";
 
 export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
-
-  const onClickEdit = (obj) => {
-    const replacedString = obj.BookingName.replace(/\//g, "_");
-    navigate(`/booking/${replacedString}`, {
-      state: { data: obj },
-    });
-  };
-
-  const handleSelectBooking = (obj) => {
-    const replacedString = obj.BookingName.replace(/\//g, "_");
-    navigate(`/booking/select/${replacedString}`, {
-      state: { data: obj },
-    });
-  };
 
   // Pagination Table
   const [data, setData] = useState(booking_data);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_pages ? all_pages : 0;
+
+  const [screen_data, setScreenData] = useState([]);
+
+  useEffect(() => {
+    getScreenData();
+  }, []);
 
   useEffect(() => {
     setData(booking_data);
@@ -42,6 +35,29 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
       const data = await User.getBooking(token, page, searchTerm);
       return data;
     }
+  };
+
+  const getScreenData = async () => {
+    const all_screens_data = await User.getScreens(token);
+    all_screens_data.map(async (items) => {
+      const screen_status = await firebase_func.getStatusScreen(items);
+      items.screen_status = screen_status;
+    });
+    setScreenData(all_screens_data);
+  };
+
+  const onClickEdit = async (obj) => {
+    const replacedString = obj.BookingName.replace(/\//g, "_");
+    navigate(`/booking/${replacedString}`, {
+      state: { data: obj, screen_data },
+    });
+  };
+
+  const handleSelectBooking = (obj) => {
+    const replacedString = obj.BookingName.replace(/\//g, "_");
+    navigate(`/booking/select/${replacedString}`, {
+      state: { data: obj, screen_data },
+    });
   };
 
   const handleClick = async (page) => {

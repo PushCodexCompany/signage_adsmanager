@@ -4,6 +4,7 @@ import Filter from "../components/Filter";
 import { format } from "date-fns";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import User from "../libs/admin";
+import firebase_func from "../libs/firebase_func";
 
 const Add_Screen_Booking = ({
   showAddScreen,
@@ -39,22 +40,36 @@ const Add_Screen_Booking = ({
   }, [filter_screen]);
 
   const getScreenData = async (filter) => {
-    let data;
-    if (filter && filter.length > 0) {
-      data = await User.getScreensWithAdsCapacityAndTag(
-        bookingId,
-        booking_slot,
-        filter,
-        token
+    try {
+      let data;
+      if (filter && filter.length > 0) {
+        data = await User.getScreensWithAdsCapacityAndTag(
+          bookingId,
+          booking_slot,
+          filter,
+          token
+        );
+      } else {
+        data = await User.getScreensWithAdsCapacity(
+          bookingId,
+          booking_slot,
+          token
+        );
+      }
+
+      // Using Promise.all to handle asynchronous mapping
+      const updatedData = await Promise.all(
+        data.map(async (items) => {
+          const screen_status = await firebase_func.getStatusScreen(items);
+          items.screen_status = screen_status;
+          return items;
+        })
       );
-    } else {
-      data = await User.getScreensWithAdsCapacity(
-        bookingId,
-        booking_slot,
-        token
-      );
+
+      setScreens(updatedData);
+    } catch (error) {
+      console.error("Error fetching screen data:", error);
     }
-    setScreens(data);
   };
 
   const getScreenOption = async () => {
@@ -270,7 +285,11 @@ const Add_Screen_Booking = ({
                           <div className="font-poppins text-xl font-bold">
                             {row.ScreenName}
                           </div>
-                          <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                          {row.screen_status === 1 ? (
+                            <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                          ) : (
+                            <div className="bg-red-500 w-1 h-1 rounded-full ml-2"></div>
+                          )}
                         </div>
                       </td>
                       <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">

@@ -24,6 +24,7 @@ import Add_Screen_Booking from "../components/Add_Screen_Booking";
 import Confirm_Booking from "../components/Confirm_Booking";
 import Swal from "sweetalert2";
 import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
+import firebase_func from "../libs/firebase_func";
 
 const Create_Booking = () => {
   const location = useLocation();
@@ -111,7 +112,7 @@ const Create_Booking = () => {
     ];
     setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
     setBookingSlot(parseInt(SlotPerDay));
-    const all_screens_data = await User.getScreens(token);
+    const all_screens_data = location.state.screen_data;
 
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
@@ -141,6 +142,12 @@ const Create_Booking = () => {
                   parseInt(filter_screen.ScreenRule[0]?.Height).toString()
                 : "Not Set",
             MaxSlot: parseInt(curr.MaxSlot),
+            AccountCode: filter_screen.AccountCode,
+            BrandCode: filter_screen.BrandCode,
+            BranchCode: filter_screen.BranchCode,
+            ScreenCode: filter_screen.ScreenCode,
+            screen_status: filter_screen.screen_status,
+            ScreenLocation: filter_screen.ScreenLocation,
             booking: [
               {
                 BookingDateID: curr.BookingDateID,
@@ -188,7 +195,7 @@ const Create_Booking = () => {
 
   const setBookingData = async () => {
     const booking_data = await User.getBookingById(bookingId, token);
-    const all_screens_data = await User.getScreens(token);
+    const all_screens_data = location.state.screen_data;
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
       const existing = acc.find((item) => item.ScreenID === screenID);
@@ -217,6 +224,8 @@ const Create_Booking = () => {
                   parseInt(filter_screen.ScreenRule[0]?.Height).toString()
                 : "Not Set",
             MaxSlot: parseInt(curr.MaxSlot),
+            screen_status: filter_screen.screen_status,
+            ScreenLocation: filter_screen.ScreenLocation,
             booking: [
               {
                 BookingDateID: curr.BookingDateID,
@@ -240,6 +249,10 @@ const Create_Booking = () => {
   const getAllScreen = async () => {
     const { SlotPerDay } = location.state.data;
     const data = await User.getScreensWithAdsCapacity(null, SlotPerDay, token);
+    data.map(async (items) => {
+      const screen_status = await firebase_func.getStatusScreen(items);
+      items.screen_status = screen_status;
+    });
     setAllScreenData(data);
   };
 
@@ -261,54 +274,54 @@ const Create_Booking = () => {
     });
   };
 
-  const toggleScreenFromAllScreen = async (items) => {
-    const obj_to_save = {
-      bookingid: bookingId,
-      screenids: items.ScreenID,
-    };
+  // const toggleScreenFromAllScreen = async (items) => {
+  //   const obj_to_save = {
+  //     bookingid: bookingId,
+  //     screenids: items.ScreenID,
+  //   };
 
-    try {
-      const data = await User.selectScreenBooking(obj_to_save, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "เลือก Screen สำเร็จ!",
-          text: `เลือก Screen สำเร็จ!`,
-        }).then(async (result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            const data = await User.getBookingById(bookingId, token);
-            const filteredData = data.filter(
-              (item) => item.ScreenID === items.ScreenID
-            );
-            const obj = {
-              MaxSlot: parseInt(items.ScreenRule[0].AdsCapacity),
-              Media_Rules:
-                items.ScreenRule[0].Width && items.ScreenRule[0].Height
-                  ? items.ScreenRule[0].Width + "x" + items.ScreenRule[0].Height
-                  : "Not Set",
-              ScreenID: items.ScreenID,
-              ScreenName: items.ScreenName,
-              booking: filteredData,
-            };
-            screenData.push(obj);
-            setScreenData(screenData);
-            setBookingData();
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  //   try {
+  //     const data = await User.selectScreenBooking(obj_to_save, token);
+  //     if (data.code !== 404) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "เลือก Screen สำเร็จ!",
+  //         text: `เลือก Screen สำเร็จ!`,
+  //       }).then(async (result) => {
+  //         if (
+  //           result.isConfirmed ||
+  //           result.dismiss === Swal.DismissReason.backdrop
+  //         ) {
+  //           const data = await User.getBookingById(bookingId, token);
+  //           const filteredData = data.filter(
+  //             (item) => item.ScreenID === items.ScreenID
+  //           );
+  //           const obj = {
+  //             MaxSlot: parseInt(items.ScreenRule[0].AdsCapacity),
+  //             Media_Rules:
+  //               items.ScreenRule[0].Width && items.ScreenRule[0].Height
+  //                 ? items.ScreenRule[0].Width + "x" + items.ScreenRule[0].Height
+  //                 : "Not Set",
+  //             ScreenID: items.ScreenID,
+  //             ScreenName: items.ScreenName,
+  //             booking: filteredData,
+  //           };
+  //           screenData.push(obj);
+  //           setScreenData(screenData);
+  //           setBookingData();
+  //         }
+  //       });
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "เกิดข้อผิดพลาด!",
+  //         text: data.message,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
 
   const toggleAllCheckboxes = () => {
     const newCheckboxes = {};
@@ -829,24 +842,33 @@ const Create_Booking = () => {
                           <div className="col-span-6">
                             <div className="flex justify-start items-center">
                               <div className="font-poppins lg:text-xl md:text-md font-bold">
-                                {/* {findScreenData(items, "name")} */}
-                                {items.ScreenName}
+                                {items.ScreenName.length > 15 ? (
+                                  <>
+                                    {items.ScreenName.slice(0, 12) + "..."}
+                                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                      {items.ScreenName}
+                                    </span>
+                                  </>
+                                ) : (
+                                  <>{items.ScreenName}</>
+                                )}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
-                              <div className="font-poppins lg:text-sm md:text-xs">
-                                {/* {findScreenData(items, "location")} */}
+                              <div className="font-poppins text-sm md:text-xs">
                                 {items.ScreenLocation}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
-                              {items.status === 0 ? (
+                              {items.screen_status === 0 ? (
                                 <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
                               ) : (
                                 <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
                               )}
                               <div className="font-poppins text-xs p-[2px]">
-                                {items.status === 0 ? "Offline" : "Online"}
+                                {items.screen_status === 0
+                                  ? "Offline"
+                                  : "Online"}
                               </div>
                             </div>
                           </div>

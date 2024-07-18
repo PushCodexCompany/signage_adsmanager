@@ -13,6 +13,7 @@ import firebase from "../utils/Firebase";
 import Unpair_screen from "../components/Unpair_screen";
 import Select_Pair_screen from "../components/Select_Pair_screen";
 import IsPairScreen from "../components/IsPairScreen";
+import firebase_func from "../libs/firebase_func";
 
 const Event = () => {
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
@@ -148,12 +149,21 @@ const Event = () => {
   const fetchScreenData = async () => {
     if (searchTerm === null) {
       const data = await User.getScreenList(token, 1);
+      data.screens.map(async (items) => {
+        const screen_status = await firebase_func.getStatusScreen(items);
+        items.screen_status = screen_status;
+      });
+
       setScreensData(data.screens);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
       const data = await User.getScreenList(token, 1, searchTerm);
+      data.screens.map(async (items) => {
+        const screen_status = await firebase_func.getStatusScreen(items);
+        items.screen_status = screen_status;
+      });
       setScreensData(data.screens);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
