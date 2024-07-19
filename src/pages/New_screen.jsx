@@ -11,10 +11,16 @@ import User from "../libs/admin";
 import New_Tag from "../components/New_Tag";
 import Swal from "sweetalert2";
 import moment from "moment";
+import TextField from "@mui/material/TextField";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const New_screen = () => {
   const { id } = useParams();
@@ -148,9 +154,20 @@ const New_screen = () => {
 
     setMaNotification(initialValues.NOTIDELAY_SEC);
 
-    const { MANotifyDelay } = location.state.screen;
+    // const { MANotifyDelay } = location.state.screen;
 
-    if (!MANotifyDelay) {
+    // if (!MANotifyDelay) {
+    //   setNotificationDelay(initialValues.NOTIDELAY_SEC);
+    // }
+
+    if (location.state && location.state.screen) {
+      const { MANotifyDelay } = location.state.screen;
+
+      if (!MANotifyDelay) {
+        setNotificationDelay(initialValues.NOTIDELAY_SEC);
+      }
+    } else {
+      // Handle the case where location.state or location.state.screen is undefined
       setNotificationDelay(initialValues.NOTIDELAY_SEC);
     }
   };
@@ -369,7 +386,6 @@ const New_screen = () => {
           screenclosetime: closeTime || "",
           manotifydelay: notificationDelay || "",
         };
-
         if (selectedImage) {
           const form = new FormData();
           form.append("target", "screenphoto");
@@ -520,20 +536,20 @@ const New_screen = () => {
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-1/2 p-4">
             <div className="relative">
-              <div className="flex items-center">
-                <div className="flex justify-start items-center h-full whitespace-nowrap">
-                  <div className="font-poppins text-lg font-bold">
-                    Screen Name:
-                  </div>
-                </div>
-
-                <input
-                  placeholder="Screen Name"
-                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  value={screenName}
-                  onChange={(e) => setScreenName(e.target.value)}
-                />
-              </div>
+              <label
+                className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                  screenName
+                    ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                    : "top-3 text-gray-300"
+                }`}
+              >
+                Screen Name
+              </label>
+              <input
+                className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                value={screenName}
+                onChange={(e) => setScreenName(e.target.value)}
+              />
             </div>
             <div className="mt-2">
               <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
@@ -708,21 +724,39 @@ const New_screen = () => {
                 <div className="grid grid-cols-6 space-x-1">
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          screenLocationName
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Location
+                      </label>
                       <input
                         value={screenLocationName}
                         onChange={(e) => setScreenLocationName(e.target.value)}
                         type="text"
-                        placeholder="Location"
-                        className="w-full rounded-lg p-3 font-poppins border border-gray-300"
+                        placeholder=""
+                        className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-blue-500"
                       />
                     </div>
                   </div>
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                      <label
+                        className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                          screenCityName
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-white"
+                        }`}
+                      >
+                        {screenCityName ? "City" : ""}
+                      </label>
                       <select
                         name="screenCity"
                         id="screenCity"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                        className={`block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins`}
                         onChange={(e) => setScreenCityName(e.target.value)}
                         value={screenCityName}
                       >
@@ -756,18 +790,29 @@ const New_screen = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <textarea
-                  value={screenDescription}
-                  onChange={(e) => setScreenDescription(e.target.value)}
-                  placeholder="Screen Description"
-                  className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300"
-                  style={{
-                    whiteSpace: "pre-wrap",
-                    wordWrap: "break-word",
-                    lineHeight: "1.2",
-                  }}
-                  maxLength={255}
-                />
+                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                  <label
+                    className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                      screenDescription
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
+                    }`}
+                  >
+                    Screen Description
+                  </label>
+                  <textarea
+                    value={screenDescription}
+                    onChange={(e) => setScreenDescription(e.target.value)}
+                    placeholder=""
+                    className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-blue-500"
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      lineHeight: "1.2",
+                    }}
+                    maxLength={255}
+                  />
+                </div>
               </div>
               <div className="mt-4">
                 <div className="grid grid-cols-6 space-x-1">

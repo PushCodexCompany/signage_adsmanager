@@ -4,9 +4,6 @@
   "private": true,
   "homepage": "https://cds.push-signage.com/adsmanager",
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/material": "^5.16.0",
     "@mui/x-date-pickers": "^7.9.0",
     "@syncfusion/ej2": "^19.4.48",
     "@syncfusion/ej2-react-calendars": "^19.4.48",
