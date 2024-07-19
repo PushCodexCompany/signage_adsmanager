@@ -152,7 +152,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       setDateRange([date]);
       setSelectedDates([date]);
     } else {
-      if (date < endDate) {
+      if (date <= endDate) {
         // If the selected date is less than the end date, update the start date and recalculate the date range
         setStartDate(date);
         const range = generateDateRange(date, endDate);
