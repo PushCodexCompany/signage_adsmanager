@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ImBin } from "react-icons/im";
+import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const convertTimestampToFormattedDate = (timestamp) => {
@@ -37,6 +38,9 @@ export const GridTable = ({
   setSelectedScreenItems,
   setSelectAll,
   selectAll,
+  searchTerm,
+  setExportData,
+  setCurrentPagePdf,
 }) => {
   const toggleCheckboxAddScreen = (rowId) => {
     setCheckboxes((prevCheckboxes) => {
@@ -77,49 +81,47 @@ export const GridTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_pages;
+  const { token } = User.getCookieData();
 
   useEffect(() => {
-    fetchDataForPage();
-  }, [currentPage]);
+    setData(log_data);
+  }, [log_data]);
 
-  const fetchDataForPage = (page) => {
-    // Simulate fetching data for a specific page
-    const newItems = Array.from({ length: 10 }, (_, i) => ({
-      id: i,
-      media_name: `Page ${page} Media Item ${i + 1}.mp4`,
-      merchandise: `Brand ${i + 1}`,
-      screen: `Screen ${i + 1}`,
-      start_time: 1658900700000,
-      end_time: 1658900700000,
-      Duration: 15,
-    }));
-    return {
-      items: newItems,
-      pages: page,
-      length: 10,
-      all_page: 7,
-    };
-  };
-
-  const handleClick = (page) => {
-    setCurrentPage(page);
-    setPageInput("");
-    setData(fetchDataForPage(page).items);
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      const newPage = currentPage - 1;
-      setCurrentPage(newPage);
-      setData(fetchDataForPage(newPage).items);
+  const fetchDataForPage = async (page) => {
+    if (page) {
+      const data = await User.getMedialog(token, page, searchTerm);
+      return data;
     }
   };
 
-  const handleNextPage = () => {
+  const handleClick = async (page) => {
+    setCurrentPage(page);
+    setCurrentPagePdf(page);
+    setPageInput("");
+    const data = await fetchDataForPage(page);
+    setData(data.medialog);
+    setExportData(data.medialog);
+  };
+
+  const handlePrevPage = async () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setCurrentPagePdf(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.medialog);
+      setExportData(data.medialog);
+    }
+  };
+
+  const handleNextPage = async () => {
     if (currentPage < totalPages) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
-      setData(fetchDataForPage(newPage).items);
+      setCurrentPagePdf(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.medialog);
+      setExportData(data.medialog);
     }
   };
 
@@ -127,11 +129,14 @@ export const GridTable = ({
     setPageInput(parseInt(e.target.value));
   };
 
-  const handlePageInputBlur = () => {
+  const handlePageInputBlur = async () => {
     const page = Number(pageInput);
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      setData(fetchDataForPage(page).items);
+      setCurrentPagePdf(page);
+      const data = await fetchDataForPage(page);
+      setData(data.medialog);
+      setExportData(data.medialog);
     }
     setPageInput("");
   };
@@ -145,7 +150,7 @@ export const GridTable = ({
   const renderTableData = () => {
     return data.map((item, index) => (
       <tr key={item.id}>
-        <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+        {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
           <div className="flex items-center">
             <label className="inline-flex items-center space-x-2">
               <input
@@ -178,31 +183,35 @@ export const GridTable = ({
               </span>
             </label>
           </div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div className="font-poppins text-md font-bold">{index + 1}</div>
-        </td>
+        </td> */}
         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
-            {item.media_name}
+            {item.MediaLogID}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
-            {item.merchandise}
-          </div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div className="font-poppins text-md font-bold">{item.screen}</div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div className="font-poppins text-md font-bold">
-            {convertTimestampToFormattedDate(item.start_time)}
+            {item.ContentName}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
-            {convertTimestampToFormattedDate(item.end_time)}
+            {item.AdvertiserName}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {item.ScreenName}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {convertTimestampToFormattedDate(item.StartTime)}
+          </div>
+        </td>
+        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div className="font-poppins text-md font-bold">
+            {convertTimestampToFormattedDate(item.EndTime)}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
@@ -210,7 +219,7 @@ export const GridTable = ({
             {secondsToTime(item.Duration)}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        {/* <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <ImBin
             onClick={(e) => {
               e.stopPropagation();
@@ -218,7 +227,7 @@ export const GridTable = ({
             }}
             className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
           />
-        </td>
+        </td> */}
       </tr>
     ));
   };
@@ -278,7 +287,7 @@ export const GridTable = ({
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr>
-                <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                {/* <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   <label className="inline-flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -309,7 +318,7 @@ export const GridTable = ({
                       </svg>
                     </span>
                   </label>
-                </th>
+                </th> */}
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   No
                 </th>
@@ -331,7 +340,7 @@ export const GridTable = ({
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Duration
                 </th>
-                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider"></th>
+                {/* <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider"></th> */}
               </tr>
             </thead>
             <tbody>{renderTableData()}</tbody>

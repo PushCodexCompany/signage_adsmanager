@@ -1589,4 +1589,38 @@ export default {
     );
     return data;
   },
+
+  getMedialog: async function (token, page, content_name) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let url = `api/v1/get_medialog?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (content_name) {
+      url += `&contentname=${content_name}`;
+    }
+
+    const { data } = await this._get(url, "", config);
+    return data;
+  },
+
+  getScreenlog: async function (token, page, content_name) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let url = `api/v1/get_screenlog?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (content_name) {
+      url += `&screenname=${content_name}`;
+    }
+
+    const { data } = await this._get(url, "", config);
+    return data;
+  },
 };

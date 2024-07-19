@@ -3,10 +3,13 @@ import { Header, Navbar } from "../../components";
 import { GridTable } from "../../libs/media_logs_grid";
 import useCheckPermission from "../../libs/useCheckPermission";
 import Filter from "../../components/Filter";
+import User from "../../libs/admin";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const Media_Log = () => {
   useCheckPermission();
-
+  const { token } = User.getCookieData();
   const [log_data, setLogData] = useState([]);
   const [all_pages, setAllPages] = useState(null);
   const [checkboxes, setCheckboxes] = useState({});
@@ -14,115 +17,76 @@ const Media_Log = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [filter_screen, setFilterScreen] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [exportData, setExportData] = useState([]);
+  const [currentPagePdf, setCurrentPagePdf] = useState();
+
   useEffect(() => {
     getLogData();
-  }, []);
+  }, [searchTerm]);
 
   const getLogData = async () => {
-    const media_log_mockup = {
-      items: [
-        {
-          id: 1,
-          media_name: "Mid year sale 2023.mp4",
-          merchandise: "Nike",
-          screen: "Screen 1",
-          start_time: 1658901600000,
-          end_time: 1658901600000,
-          Duration: 15,
-        },
-        {
-          id: 2,
-          media_name: "Promotion Summer.mp4",
-          merchandise: "Adidas",
-          screen: "Screen 2",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 3,
-          media_name: "Sample Ads.png",
-          merchandise: "Adidas 3",
-          screen: "Screen 2",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 4,
-          media_name: "Mid Night Sale 2023.mp4",
-          merchandise: "FILA",
-          screen: "Screen 3",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 5,
-          media_name: "Mid year sale 2023.mp4",
-          merchandise: "FILA",
-          screen: "Screen 4",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 6,
-          media_name: "Mid year sale 2023.mp4",
-          merchandise: "BAOBAO",
-          screen: "Screen 5",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 7,
-          media_name: "Food Hall Ads.png",
-          merchandise: "After You",
-          screen: "Screen 5",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 8,
-          media_name: "Mid year sale 2023.mp4",
-          merchandise: "Adidas",
-          screen: "Screen 7",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 9,
-          media_name: "Pet Show 2023.mp4",
-          merchandise: "Tops",
-          screen: "Screen 10",
-          start_time: 1658900700000,
-          end_time: 1658900700000,
-          Duration: 15,
-        },
-        {
-          id: 10,
-          media_name: "Mid year sale 2023.mp4",
-          merchandise: "Nike",
-          screen: "Screen 1",
-          start_time: 1658901600000,
-          end_time: 1658901600000,
-          Duration: 15,
-        },
+    if (searchTerm === null) {
+      const data = await User.getMedialog(token, 1);
+      setLogData(data.medialog);
+      setExportData(data.medialog);
+      setCurrentPagePdf(data.pagination[0].currentpage);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    } else {
+      const data = await User.getMedialog(token, 1, searchTerm);
+      setLogData(data.medialog);
+      setExportData(data.medialog);
+      setCurrentPagePdf(data.pagination[0].currentpage);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    }
+  };
+
+  const handleExport = () => {
+    const doc = new jsPDF();
+
+    // Convert log_data to an array of objects for the table
+    const logs = exportData.map((entry) => [
+      entry.MediaLogID.toString(),
+      entry.ContentName,
+      entry.AdvertiserName,
+      entry.ScreenName,
+      entry.EndTime,
+      entry.StartTime,
+      entry.Duration,
+    ]);
+
+    // Add table to the PDF
+    doc.autoTable({
+      head: [
+        [
+          "MediaID",
+          "Media Name",
+          "Merchandise",
+          "Screen",
+          "Start Time",
+          "End Time",
+          "Duration",
+        ],
       ],
-      pages: 1,
-      lenght: 10,
-      all_page: 7,
-    };
-    setLogData(media_log_mockup.items);
-    setAllPages(media_log_mockup.all_page);
+      body: logs,
+      startY: 20,
+      margin: { top: 30 },
+      styles: { fontSize: 10 }, // Adjust font size if needed
+    });
+    // Save the PDF
+    const date = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    doc.save(`medialog_page${currentPagePdf}_${date}/${month}/${year}`);
   };
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
@@ -133,9 +97,7 @@ const Media_Log = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               <button
-                onClick={() =>
-                  (window.location.href = "/setting/media_rule/create")
-                }
+                onClick={handleExport}
                 className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
                 Export
@@ -158,9 +120,16 @@ const Media_Log = () => {
               setSelectedScreenItems={setSelectedScreenItems}
               setSelectAll={setSelectAll}
               selectAll={selectAll}
+              searchTerm={searchTerm}
+              setExportData={setExportData}
+              setCurrentPagePdf={setCurrentPagePdf}
             />
           ) : (
-            <></>
+            <div className="flex items-center justify-center h-[550px] text-center ">
+              <div className="font-poppins text-5xl text-[#dedede]">
+                --- No data ---
+              </div>
+            </div>
           )}
         </div>
       </div>

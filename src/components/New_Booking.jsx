@@ -59,6 +59,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const [contact_person_phone, setContactPersonPhone] = useState();
 
   const [startDate, setStartDate] = useState(null);
+  const [startDateCheck, setStartDateCheck] = useState();
   const [endDate, setEndDate] = useState(null);
   const [dateRange, setDateRange] = useState([]);
   const currentDate = new Date();
@@ -145,17 +146,28 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
 
   const handleStartDate = (date) => {
     if (!endDate) {
+      // If there's no end date set, just set the start date and other related states
       setStartDate(date);
+      setStartDateCheck(date);
       setDateRange([date]);
       setSelectedDates([date]);
     } else {
-      setStartDate(date);
-      const range = generateDateRange(date, endDate);
-      setDateRange(range);
-      setSelectedDates(range);
+      if (date < endDate) {
+        // If the selected date is less than the end date, update the start date and recalculate the date range
+        setStartDate(date);
+        const range = generateDateRange(date, endDate);
+        setDateRange(range);
+        setSelectedDates(range);
+      } else {
+        // Show error if the start date is greater than or equal to the end date
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "วันเริ่มต้นไม่สามารถมากกว่าวันสิ้นสุดได้...",
+        });
+      }
     }
   };
-
   const handleEndDate = (date) => {
     if (!startDate) {
       Swal.fire({

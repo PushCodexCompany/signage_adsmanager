@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ImBin } from "react-icons/im";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import User from "../libs/admin";
 
 const convertTimestampToFormattedDate = (timestamp) => {
   const date = new Date(timestamp);
@@ -16,52 +17,57 @@ const convertTimestampToFormattedDate = (timestamp) => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
-export const GridTable = ({ log_data, all_pages }) => {
+export const GridTable = ({
+  log_data,
+  all_pages,
+  searchTerm,
+  setExportData,
+  setCurrentPagePdf,
+}) => {
   const [data, setData] = useState(log_data);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_pages;
+  const { token } = User.getCookieData();
 
   useEffect(() => {
-    fetchDataForPage();
-  }, [currentPage]);
+    setData(log_data);
+  }, [log_data]);
 
-  const fetchDataForPage = (page) => {
-    // Simulate fetching data for a specific page
-    const newItems = Array.from({ length: 10 }, (_, i) => ({
-      id: i,
-      screen_name: `Page ${page} Screen ${i + 1}`,
-      event: "Event 1",
-      time: 1658901600000,
-      status: "Up",
-    }));
-    return {
-      items: newItems,
-      pages: page,
-      length: 10,
-      all_page: 7,
-    };
-  };
-
-  const handleClick = (page) => {
-    setCurrentPage(page);
-    setPageInput("");
-    setData(fetchDataForPage(page).items);
-  };
-
-  const handlePrevPage = () => {
-    if (currentPage > 1) {
-      const newPage = currentPage - 1;
-      setCurrentPage(newPage);
-      setData(fetchDataForPage(newPage).items);
+  const fetchDataForPage = async (page) => {
+    if (page) {
+      const data = await User.getScreenlog(token, page, searchTerm);
+      return data;
     }
   };
 
-  const handleNextPage = () => {
+  const handleClick = async (page) => {
+    setCurrentPage(page);
+    setPageInput("");
+    const data = await fetchDataForPage(page);
+    setData(data.screenlog);
+    setExportData(data.screenlog);
+  };
+
+  const handlePrevPage = async () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      setCurrentPagePdf(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.screenlog);
+      setExportData(data.screenlog);
+    }
+  };
+
+  const handleNextPage = async () => {
     if (currentPage < totalPages) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
-      setData(fetchDataForPage(newPage).items);
+      setCurrentPagePdf(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.screenlog);
+      setExportData(data.screenlog);
     }
   };
 
@@ -69,11 +75,14 @@ export const GridTable = ({ log_data, all_pages }) => {
     setPageInput(parseInt(e.target.value));
   };
 
-  const handlePageInputBlur = () => {
+  const handlePageInputBlur = async () => {
     const page = Number(pageInput);
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      setData(fetchDataForPage(page).items);
+      setCurrentPagePdf(page);
+      const data = await fetchDataForPage(page);
+      setData(data.screenlog);
+      setExportData(data.screenlog);
     }
     setPageInput("");
   };
@@ -88,24 +97,22 @@ export const GridTable = ({ log_data, all_pages }) => {
     return data.map((row, index) => (
       <tr key={row.id}>
         <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">{index + 1}</div>
-        </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
-            {row.screen_name}
+            {row.SceenStatusID}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">{row.event}</div>
+          <div className="font-poppins text-md font-bold">{row.ScreenName}</div>
         </td>
-
         <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
-            {convertTimestampToFormattedDate(row.time)}
+            {convertTimestampToFormattedDate(row.SceenDateTime)}
           </div>
         </td>
         <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
-          <div className="font-poppins text-md font-bold">{row.status}</div>
+          <div className="font-poppins text-md font-bold">
+            {row.ScreenStatus === 1 ? "UP" : "DOWN"}
+          </div>
         </td>
       </tr>
     ));
@@ -170,9 +177,6 @@ export const GridTable = ({ log_data, all_pages }) => {
                 </th>
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   Screen Name
-                </th>
-                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  Event
                 </th>
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   Time
