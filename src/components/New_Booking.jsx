@@ -115,15 +115,55 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     });
   };
 
-  const handleDateChange = (date) => {
-    if (!startDate || (startDate && endDate)) {
-      // If start date is not set or both start and end dates are set, set new start date
+  // const handleDateChange = (date) => {
+  //   if (!startDate || (startDate && endDate && date < startDate)) {
+  //     // If start date is not set or the new date is before the current start date,
+  //     // set new start date and reset end date
+  //     setStartDate(date);
+  //     if (endDate) {
+  //       setEndDate(endDate);
+  //     }
+
+  //     setDateRange([date]);
+  //     setSelectedDates([date]);
+  //   } else if (startDate && date > startDate && date < endDate) {
+  //     // If start date is set and the new date is after the start date,
+  //     // update end date and set date range
+  //     setStartDate(date);
+  //     const range = generateDateRange(date, endDate);
+  //     setDateRange(range);
+  //     setSelectedDates(range);
+  //   } else if (startDate && date > startDate) {
+  //     // If start date is set and the new date is after the start date,
+  //     // update end date and set date range
+  //     setEndDate(date);
+  //     const range = generateDateRange(startDate, date);
+  //     setDateRange(range);
+  //     setSelectedDates(range);
+  //   }
+  // };
+
+  const handleStartDate = (date) => {
+    if (!endDate) {
       setStartDate(date);
-      setEndDate(null);
       setDateRange([date]);
       setSelectedDates([date]);
     } else {
-      // If start date is already set, set end date
+      setStartDate(date);
+      const range = generateDateRange(date, endDate);
+      setDateRange(range);
+      setSelectedDates(range);
+    }
+  };
+
+  const handleEndDate = (date) => {
+    if (!startDate) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกวันเริ่มต้นต้องการจอง...",
+      });
+    } else {
       setEndDate(date);
       const range = generateDateRange(startDate, date);
       setDateRange(range);
@@ -479,7 +519,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="basis-1/2">
                   <DatePicker
                     selected={startDate}
-                    onChange={(date) => handleDateChange(date)}
+                    onChange={(date) => handleStartDate(date)}
                     selectsStart
                     startDate={startDate}
                     endDate={endDate}
@@ -498,7 +538,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="basis-1/2">
                   <DatePicker
                     selected={endDate}
-                    onChange={(date) => handleDateChange(date)}
+                    onChange={(date) => handleEndDate(date)}
                     selectsEnd
                     startDate={startDate}
                     endDate={endDate}
