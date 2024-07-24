@@ -80,9 +80,12 @@ const Routing = () => {
         />
         <Route path="/setting/Tag_management" element={<Tag_management />} />
         <Route path="/media_libraly" element={<Media_Libraly />} />
-        <Route path="/statics/activities_log" element={<Activity_Log />} />
-        <Route path="/statics/media_log" element={<Media_Log />} />
-        <Route path="/statics/screen" element={<Static_Screen />} />
+        <Route
+          path="/log_management/activities_log"
+          element={<Activity_Log />}
+        />
+        <Route path="/log_management/media_log" element={<Media_Log />} />
+        <Route path="/log_management/screen" element={<Static_Screen />} />
         <Route
           path="/setting/user_management/role_permission"
           element={<Role_permission />}

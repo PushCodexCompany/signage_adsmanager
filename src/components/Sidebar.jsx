@@ -74,24 +74,24 @@ export const links = [
         ],
       },
       {
-        name: "Statics",
-        link: "static",
+        name: "Log Management",
+        link: "logmanagement",
         icon: <HiOutlineNewspaper size={27} />,
         notification: { is_notification: false, amount: 0 },
         submenu: [
           {
             name: "Activities Log",
-            link: "statics/activities_log",
+            link: "log_management/activities_log",
             icon: <FaRegListAlt size={27} />,
           },
           {
             name: "Media Log",
-            link: "statics/media_log",
+            link: "log_management/media_log",
             icon: <GrMultimedia size={27} />,
           },
           {
             name: "Screen",
-            link: "statics/screen",
+            link: "log_management/screen",
             icon: <SlScreenDesktop size={27} />,
           },
         ],
@@ -138,11 +138,6 @@ export const links = [
                 name: "Role And Permission",
                 link: "setting/user_management/role_permission",
                 icon: <IoPersonOutline size={27} />,
-              },
-              {
-                name: "Activity Log",
-                link: "setting/user_management/activity_log",
-                icon: <AiOutlineFileText size={27} />,
               },
             ],
           },
