@@ -3,10 +3,13 @@ import { Header, Navbar } from "../../components";
 import { GridTable } from "../../libs/activities_log_grid";
 import useCheckPermission from "../../libs/useCheckPermission";
 import Filter from "../../components/Filter";
+import User from "../../libs/admin";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const Activity_Log = () => {
   useCheckPermission();
-
+  const { token } = User.getCookieData();
   const [log_data, setLogData] = useState([]);
   const [all_pages, setAllPages] = useState(null);
   const [checkboxes, setCheckboxes] = useState({});
@@ -14,115 +17,103 @@ const Activity_Log = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [filter_screen, setFilterScreen] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [exportData, setExportData] = useState([]);
+  const [currentPagePdf, setCurrentPagePdf] = useState();
+
   useEffect(() => {
     getLogData();
-  }, []);
+  }, [searchTerm]);
 
   const getLogData = async () => {
-    const media_log_mockup = {
-      items: [
-        {
-          id: 1,
-          user: "Admin01",
-          page: "Requests",
-          time: 1658469600000,
-          action: "Approve",
-          action_on: "Booking",
-          value: "#001",
-        },
-        {
-          id: 2,
-          user: "Admin02",
-          page: "Booking",
-          time: 1658468700000,
-          action: "Submit Request",
-          action_on: "Content",
-          value: "#002",
-        },
-        {
-          id: 3,
-          user: "Sale01",
-          page: "Content",
-          time: 1658468700000,
-          action: "Reject",
-          action_on: "Content",
-          value: "#003",
-        },
-        {
-          id: 4,
-          user: "Supachai4",
-          page: "Booking",
-          time: 1658468700000,
-          action: "Submit Request",
-          action_on: "Content",
-          value: "#004",
-        },
-        {
-          id: 5,
-          user: "Nidarat_ssu",
-          page: "Content",
-          time: 1658468700000,
-          action: "Reject",
-          action_on: "Content",
-          value: "#005",
-        },
-        {
-          id: 6,
-          user: "Admin_sale",
-          page: "Request",
-          time: 1658468700000,
-          action: "Approve",
-          action_on: "Booking",
-          value: "#006",
-        },
-        {
-          id: 7,
-          user: "Admin05",
-          page: "Content",
-          time: 1658468700000,
-          action: "Reject",
-          action_on: "Booking",
-          value: "#007",
-        },
-        {
-          id: 8,
-          user: "Admin010",
-          page: "Booking",
-          time: 1658468700000,
-          action: "Approve",
-          action_on: "Content",
-          value: "#008",
-        },
-        {
-          id: 9,
-          user: "Admin12",
-          page: "Requests",
-          time: 1658468700000,
-          action: "Submit Request",
-          action_on: "Booking",
-          value: "#009",
-        },
-        {
-          id: 10,
-          user: "Admin_sale",
-          page: "Request",
-          time: 1658468700000,
-          action: "Approve",
-          action_on: "Booking",
-          value: "#006",
-        },
+    if (searchTerm === null) {
+      const data = await User.getActivitylog(token, 1);
+      setLogData(data.activitylog);
+      setExportData(data.activitylog);
+      setCurrentPagePdf(data.pagination[0].currentpage);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    } else {
+      const data = await User.getActivitylog(token, 1, searchTerm);
+      setLogData(data.activitylog);
+      setExportData(data.activitylog);
+      setCurrentPagePdf(data.pagination[0].currentpage);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    }
+  };
+
+  const generateActionString = (word) => {
+    if (word) {
+      let text;
+
+      switch (word) {
+        case "U":
+          text = "Update";
+          break;
+        case "D":
+          text = "Deleted";
+          break;
+        case "A":
+          text = "Create";
+          break;
+        default:
+          const result = word.charAt(0).toUpperCase() + word.slice(1);
+          text = result;
+      }
+
+      return text;
+    }
+  };
+
+  const handleExport = () => {
+    const doc = new jsPDF();
+
+    // Convert log_data to an array of objects for the table
+    const logs = exportData.map((entry) => [
+      entry.ActivitiyID.toString(),
+      generateActionString(entry.Action),
+      entry.TargetField,
+      entry.OnTable,
+      entry.IndexValue,
+      entry.OldvValue,
+      entry.NewValue,
+      entry.ByUser,
+      entry.ActionDate,
+    ]);
+
+    // Add table to the PDF
+    doc.autoTable({
+      head: [
+        [
+          "Activitiy ID",
+          "Action",
+          "Target Field",
+          "On Table",
+          "Index Value",
+          "Old Value",
+          "New Value",
+          "By User",
+          "Action Date",
+        ],
       ],
-      pages: 1,
-      lenght: 10,
-      all_page: 7,
-    };
-    setLogData(media_log_mockup.items);
-    setAllPages(media_log_mockup.all_page);
+      body: logs,
+      startY: 20,
+      margin: { top: 30 },
+      styles: { fontSize: 10 }, // Adjust font size if needed
+    });
+    // Save the PDF
+    const date = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    doc.save(`activity_log_page${currentPagePdf}_${date}/${month}/${year}`);
   };
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
@@ -135,7 +126,7 @@ const Activity_Log = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               <button
-                onClick={() => alert("export")}
+                onClick={handleExport}
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
                 Export
@@ -158,9 +149,16 @@ const Activity_Log = () => {
               setSelectedScreenItems={setSelectedScreenItems}
               setSelectAll={setSelectAll}
               selectAll={selectAll}
+              searchTerm={searchTerm}
+              setExportData={setExportData}
+              setCurrentPagePdf={setCurrentPagePdf}
             />
           ) : (
-            <></>
+            <div className="flex items-center justify-center h-[550px] text-center ">
+              <div className="font-poppins text-5xl text-[#dedede]">
+                --- No data ---
+              </div>
+            </div>
           )}
         </div>
       </div>

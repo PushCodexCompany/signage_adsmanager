@@ -1623,4 +1623,21 @@ export default {
     const { data } = await this._get(url, "", config);
     return data;
   },
+
+  getActivitylog: async function (token, page, content_name) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let url = `api/v1/get_activitylog?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (content_name) {
+      url += `&activityname=${content_name}`;
+    }
+
+    const { data } = await this._get(url, "", config);
+    return data;
+  },
 };
