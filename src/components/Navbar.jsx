@@ -9,6 +9,7 @@ import avatar from "../assets/img/avatar.png";
 import { UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 import User from "../libs/admin";
+import "./css/navbar.css";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -54,7 +55,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
   }, []);
 
   useEffect(() => {
-    if (screenSize <= 900) {
+    if (screenSize <= 1025) {
       setActiveMenu(false);
     } else {
       setActiveMenu(true);
@@ -71,7 +72,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
     <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
       <div className="p-2 md:ml-6 md:mr-6 relative">
         <div className="flex flex-row space-x-1">
-          <div className="lg:hidden basis-1/12">
+          <div className="custom-hidden-basis">
             {select_campaign && (
               <NavButton
                 title="Menu"

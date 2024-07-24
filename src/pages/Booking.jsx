@@ -41,23 +41,38 @@ const Booking = () => {
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
-        <div className="grid grid-cols-10 mt-5">
-          <div className="col-span-6">
-            <div className="font-poppins font-semibold text-2xl ">
+        <div className="grid grid-cols-5 gap-4 mt-10">
+          <div className="col-span-4">
+            <div className="font-poppins font-semibold text-2xl">
               My booking
             </div>
           </div>
-          <div className="col-span-4">
-            <div className="flex justify-end space-x-1">
+          <div className="col-span-1 flex justify-end">
+            <button
+              onClick={() => setShowModalAddNewBooking(true)}
+              className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+            >
+              New Booking +
+            </button>
+          </div>
+        </div>
+        {/* <div className="grid grid-cols-12 gap-4 mt-5">
+          <div className="col-span-12 md:col-span-8">
+            <div className="font-poppins font-semibold text-2xl">
+              My booking
+            </div>
+          </div>
+          <div className="col-span-12 md:col-span-4">
+            <div className="flex md:justify-end space-x-1">
               <button
                 onClick={() => setShowModalAddNewBooking(true)}
-                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full h-[45px] lg:w-[300px]  rounded-md"
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full h-[45px] lg:w-[300px] rounded-md"
               >
                 New Booking +
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}

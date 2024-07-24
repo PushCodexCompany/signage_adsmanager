@@ -108,6 +108,8 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
   const [mediaScheduleData, setMediaScheduleDate] = useState(null);
   const [screenStatus, setScreenStatus] = useState(false);
 
+  const [width, setWidth] = useState(window.innerWidth);
+
   useEffect(() => {
     getScreenData();
     getSchulde();
@@ -117,6 +119,16 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
     getSchulde();
     getScreenStatus();
   }, [month]);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const getScreenData = async () => {
     const screens_option = await User.getScreensOptions(token);
@@ -236,18 +248,26 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
   return (
     <>
       {hideOldModal && (
-        <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+        <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-full overflow-x-auto">
           {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+          <div
+            className={`absolute  ${
+              width >= 1026
+                ? "top-12 right-[160px]"
+                : width < 1024
+                ? "right-12 top-12"
+                : "right-[65px] top-12"
+            }  m-4 z-30`}
+          >
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setOpenInfoScreenModal(false)}>
                 <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-            <div className="flex flex-col lg:flex-row">
-              <div className="w-full lg:w-1/2 p-4">
+          <div className="bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className={`flex  ${width >= 1026 ? "" : "flex-col"} `}>
+              <div className={`w-full ${width >= 1026 ? "" : "w-1/2"}  p-4`}>
                 <div className="p-4">
                   <div className="font-poppins text-[30px] font-bold">
                     {selectInfoScreen.ScreenName}
@@ -439,7 +459,15 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                   </div>
                 </div>
               </div>
-              <div className="w-full lg:w-1/2 p-4 lg:pl-8 ">
+              <div
+                className={` ${
+                  width >= 1026
+                    ? "w-1/2 pl-8"
+                    : width < 1024
+                    ? "w-full"
+                    : "w-full"
+                } p-4 `}
+              >
                 <div className="p-4 border border-gray-200">
                   <div className="mt-[70px]">
                     <div className="grid grid-cols-12">
@@ -559,7 +587,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                       <div className="font-poppins text-[30px] font-bold">
                         Screen Health
                       </div>
-                      <div className="w-[720px] bg-[#D9D9D9] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
+                      <div className="w-full bg-[#D9D9D9] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
                         <div className="mt-2 mb-2">
                           <div className="flex items-end">
                             {health?.map((height, index) => (
@@ -569,13 +597,6 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                                 style={{ minWidth: "1rem" }}
                               />
                             ))}
-                            {/* {selectInfoScreen.health?.map((height, index) => (
-                              <div
-                                key={index}
-                                className={`h-[${height}px] bg-[#2F8B5A] w-4 m-[1px]`}
-                                style={{ minWidth: "1rem" }}
-                              />
-                            ))} */}
                           </div>
                         </div>
                       </div>

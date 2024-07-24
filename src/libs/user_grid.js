@@ -42,7 +42,6 @@ export const GridTable = ({
     const roles = await User.getUserRoles(token);
     const brands = await User.getBrand(token);
     const merchandises = await User.getMerchandiseList(token);
-    console.log("merchandises", merchandises);
     setDefaultBrand(brands);
     setDefaultRoles(roles);
     setDefaultMerchandise(merchandises);

@@ -246,7 +246,7 @@ const Event = () => {
       {openInfoScreenModal && (
         <a
           onClick={() => setOpenInfoScreenModal(!openInfoScreenModal)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+          className="fixed top-0 w-full left-[0px] h-full opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
 
