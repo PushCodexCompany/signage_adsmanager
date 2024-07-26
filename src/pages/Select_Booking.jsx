@@ -105,15 +105,20 @@ const Select_Booking = () => {
       ...new Set(booking_content.map((item) => item.ScreenID)),
     ];
     const output = uniqueScreenIDs.map((screenID) => ({ ScreenID: screenID }));
-    const all_screen = location.state.screen_data;
-    setAllScreenData(all_screen);
+    let all_screen;
+    if (location.state.screen_data) {
+      all_screen = location.state.screen_data;
+    } else {
+      all_screen = await User.getScreens(token);
+    }
 
-    const filteredOutput = all_screen.filter((screen) => {
+    setAllScreenData(all_screen);
+    const filteredOutput = all_screen?.filter((screen) => {
       return output.some((item) => parseInt(item.ScreenID) === screen.ScreenID);
     });
 
-    const filteredOutputWithBooking = filteredOutput.map((screen) => {
-      const booking = booking_content.filter(
+    const filteredOutputWithBooking = filteredOutput?.map((screen) => {
+      const booking = booking_content?.filter(
         (booking) => parseInt(booking.ScreenID) === screen.ScreenID
       );
       return {
@@ -304,7 +309,7 @@ const Select_Booking = () => {
   };
 
   const renderMediaListBox = (items) => {
-    const nullFreeList = items.medias.filter((it) => it.ContentID !== null);
+    const nullFreeList = items.medias?.filter((it) => it.ContentID !== null);
     const mediaSize = nullFreeList.length;
 
     const emptySlots = [];

@@ -304,11 +304,14 @@ const Ads_Allocation_Booking = ({
         return -1;
       };
 
-      var newDestinationItems = [...destinationItems];
+      let newDestinationItems = [...destinationItems];
+
+      newDestinationItems = newDestinationItems.filter(
+        (item) => item.ContentID !== null
+      );
 
       let lastIndex = getLastNonNullIndex(destinationItems);
       let destinationIndex = lastIndex === -1 ? 0 : lastIndex + 1;
-
       const isFull = newDestinationItems.length >= itemsPanel1.value.slots;
       const hasContentID = itemsPanel1.value.medias[0].ContentID !== null;
 

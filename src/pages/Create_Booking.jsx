@@ -77,7 +77,7 @@ const Create_Booking = () => {
     const advertiser = await User.getMerchandiseList(token);
 
     if (advertiser.length > 0) {
-      const foundEntry = advertiser.find(
+      const foundEntry = advertiser?.find(
         (entry) => entry.AdvertiserName === merchandise_name
       );
 
@@ -112,12 +112,17 @@ const Create_Booking = () => {
     ];
     setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
     setBookingSlot(parseInt(SlotPerDay));
-    const all_screens_data = location.state.screen_data;
+    let all_screens_data;
+    if (location.state.screen_data) {
+      all_screens_data = location.state.screen_data;
+    } else {
+      all_screens_data = await User.getScreens(token);
+    }
 
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
-      const existing = acc.find((item) => item.ScreenID === screenID);
-      const filter_screen = all_screens_data.find(
+      const existing = acc?.find((item) => item.ScreenID === screenID);
+      const filter_screen = all_screens_data?.find(
         (items) => items.ScreenID === screenID
       );
       if (filter_screen) {
@@ -195,11 +200,11 @@ const Create_Booking = () => {
 
   const setBookingData = async () => {
     const booking_data = await User.getBookingById(bookingId, token);
-    const all_screens_data = location.state.screen_data;
+    const all_screens_data = await User.getScreens(token);
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
-      const existing = acc.find((item) => item.ScreenID === screenID);
-      const filter_screen = all_screens_data.find(
+      const existing = acc?.find((item) => item.ScreenID === screenID);
+      const filter_screen = all_screens_data?.find(
         (items) => items.ScreenID === screenID
       );
       if (filter_screen) {
@@ -226,6 +231,10 @@ const Create_Booking = () => {
             MaxSlot: parseInt(curr.MaxSlot),
             screen_status: filter_screen.screen_status,
             ScreenLocation: filter_screen.ScreenLocation,
+            AccountCode: filter_screen.AccountCode,
+            BrandCode: filter_screen.BrandCode,
+            BranchCode: filter_screen.BranchCode,
+            ScreenCode: filter_screen.ScreenCode,
             booking: [
               {
                 BookingDateID: curr.BookingDateID,
@@ -242,6 +251,11 @@ const Create_Booking = () => {
 
       return acc;
     }, []);
+
+    groupedByScreenID.map(async (items) => {
+      const screen_status = await firebase_func.getStatusScreen(items);
+      items.screen_status = screen_status;
+    });
 
     setScreenData(groupedByScreenID);
   };
@@ -351,6 +365,7 @@ const Create_Booking = () => {
       bookingid: bookingId,
       screenids: screenIDs,
     };
+
     try {
       const data = await User.selectScreenBooking(obj, token);
       if (data.code !== 404) {
@@ -547,7 +562,7 @@ const Create_Booking = () => {
       };
       screenData.forEach((screen) => {
         screen.booking.forEach((booking) => {
-          const matchingBooking = bookingSelect.find(
+          const matchingBooking = bookingSelect?.find(
             (select) =>
               select.ScreenID === screen.ScreenID &&
               select.BookingDateID === booking.BookingDateID
@@ -604,7 +619,7 @@ const Create_Booking = () => {
       setSelectInfoScren(screen);
       setOpenInfoScreenModal(!openInfoScreenModal);
     } else {
-      const screen_data = allScreenData.find(
+      const screen_data = allScreenData?.find(
         (items) => items.ScreenID === screen.ScreenID
       );
 
