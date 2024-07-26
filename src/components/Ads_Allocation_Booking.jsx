@@ -314,6 +314,10 @@ const Ads_Allocation_Booking = ({
       let destinationIndex = lastIndex === -1 ? 0 : lastIndex + 1;
       const isFull = newDestinationItems.length >= itemsPanel1.value.slots;
       const hasContentID = itemsPanel1.value.medias[0].ContentID !== null;
+      const totalDuration = itemsPanel1.value.medias.reduce((sum, item) => {
+        // Check if duration exists and is a number
+        return sum + (item.duration ? item.duration : 0);
+      }, 0);
 
       if (isFull && hasContentID) {
         Swal.fire({
@@ -322,25 +326,33 @@ const Ads_Allocation_Booking = ({
           text: "จำนวน Slot เต็มแล้ว ...",
         });
       } else if (destination.droppableId === "panel-1") {
-        const draggedItem = sourceItems.find(
-          (item) =>
-            item.ContentID === parseInt(result.draggableId.split("-")[1])
-        );
+        if (totalDuration === itemsPanel1.value.slots * 15) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: "จำนวน Slot เต็มแล้ว ...",
+          });
+        } else {
+          const draggedItem = sourceItems.find(
+            (item) =>
+              item.ContentID === parseInt(result.draggableId.split("-")[1])
+          );
 
-        newDestinationItems = insert(destinationItems, destinationIndex, {
-          ...draggedItem,
-          MediaID: 0,
-          slot_size: 1,
-          duration: 15,
-        });
+          newDestinationItems = insert(destinationItems, destinationIndex, {
+            ...draggedItem,
+            MediaID: 0,
+            slot_size: 1,
+            duration: 15,
+          });
 
-        setItemsPanel1({
-          ...itemsPanel1,
-          value: {
-            ...itemsPanel1.value,
-            medias: newDestinationItems,
-          },
-        });
+          setItemsPanel1({
+            ...itemsPanel1,
+            value: {
+              ...itemsPanel1.value,
+              medias: newDestinationItems,
+            },
+          });
+        }
       }
     }
   };
@@ -1507,6 +1519,7 @@ const Ads_Allocation_Booking = ({
                             )}
                           </div>
                         </div>
+
                         <div className="mt-11" style={{ display: "flex" }}>
                           <Droppable droppableId="panel-1">
                             {(provided) => (

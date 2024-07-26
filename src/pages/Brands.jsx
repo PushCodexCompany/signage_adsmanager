@@ -157,7 +157,8 @@ const Brands = () => {
               : "grid grid-cols-2 lg:grid-cols-3"
           } gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg`}
         >
-          {permission.brand.create ? (
+          {console.log("permission", permission)}
+          {permission.brand?.create ? (
             <div
               onClick={() => handleNewBrand()}
               className="h-[400px] p-2 flex flex-col items-center"
@@ -198,7 +199,7 @@ const Brands = () => {
                     alt={items.AccountName}
                     onClick={() => selectCampaign(items)}
                   />
-                  {!permission.brand.update && !permission.brand.delete ? (
+                  {!permission.brand?.update && !permission.brand?.delete ? (
                     <></>
                   ) : (
                     <div
@@ -214,7 +215,7 @@ const Brands = () => {
 
                   {dropdownStates[items.BrandID] && (
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
-                      {permission.brand.update ? (
+                      {permission.brand?.update ? (
                         <button
                           onClick={() => {
                             toggleDropdown(items.BrandID);
@@ -228,7 +229,7 @@ const Brands = () => {
                       ) : (
                         <></>
                       )}
-                      {permission.brand.delete ? (
+                      {permission.brand?.delete ? (
                         <button
                           onClick={() => {
                             handleDeleteBrand(items.BrandID);
