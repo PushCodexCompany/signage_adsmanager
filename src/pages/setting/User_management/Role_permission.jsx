@@ -40,7 +40,6 @@ const Role_permission = () => {
 
   const { token } = User.getCookieData();
   const { permission } = User.getPermission();
-
   useEffect(async () => {
     const { user } = User.getCookieData();
     // Parent Permission
@@ -620,80 +619,76 @@ const Role_permission = () => {
                     <>
                       {/* 1st */}
                       <div className=" grid grid-cols-6 gap-4 mb-11 mt-5">
-                        {roleData.permissions?.brand &&
-                          areAllFalse(roleData.permissions?.brand) && (
-                            <CheckboxGroup
-                              title="brand"
-                              items={Object.keys(roleData.permissions?.brand)}
-                              data={roleData.permissions?.brand}
-                            />
-                          )}
+                        {roleData.permissions?.brand && (
+                          // areAllFalse(roleData.permissions?.brand) &&
+                          <CheckboxGroup
+                            title="brand"
+                            items={Object.keys(roleData.permissions?.brand)}
+                            data={roleData.permissions?.brand}
+                          />
+                        )}
 
-                        {roleData.permissions?.branch &&
-                          areAllFalse(roleData.permissions?.branch) && (
-                            <CheckboxGroup
-                              title="branch"
-                              items={Object.keys(roleData.permissions?.branch)}
-                              data={roleData.permissions?.branch}
-                            />
-                          )}
+                        {roleData.permissions?.branch && (
+                          // areAllFalse(roleData.permissions?.branch) &&
+                          <CheckboxGroup
+                            title="branch"
+                            items={Object.keys(roleData.permissions?.branch)}
+                            data={roleData.permissions?.branch}
+                          />
+                        )}
 
-                        {roleData.permissions?.screen &&
-                          areAllFalse(roleData.permissions?.screen) && (
-                            <CheckboxGroup
-                              title="screen"
-                              items={Object.keys(roleData.permissions?.screen)}
-                              data={roleData.permissions?.screen}
-                            />
-                          )}
-                        {roleData.permissions?.playlist &&
-                          areAllFalse(roleData.permissions?.playlist) && (
-                            <CheckboxGroup
-                              title="playlist"
-                              items={Object.keys(
-                                roleData.permissions?.playlist
-                              )}
-                              data={roleData.permissions?.playlist}
-                            />
-                          )}
-                        {roleData.permissions?.media &&
-                          areAllFalse(roleData.permissions?.media) && (
-                            <CheckboxGroup
-                              title="media"
-                              items={Object.keys(roleData.permissions?.media)}
-                              data={roleData.permissions?.media}
-                            />
-                          )}
-                        {roleData.permissions?.user &&
-                          areAllFalse(roleData.permissions?.user) && (
-                            <CheckboxGroup
-                              title="user"
-                              items={Object.keys(roleData.permissions?.user)}
-                              data={roleData.permissions?.user}
-                            />
-                          )}
+                        {roleData.permissions?.screen && (
+                          // areAllFalse(roleData.permissions?.screen) &&
+                          <CheckboxGroup
+                            title="screen"
+                            items={Object.keys(roleData.permissions?.screen)}
+                            data={roleData.permissions?.screen}
+                          />
+                        )}
+                        {roleData.permissions?.playlist && (
+                          // areAllFalse(roleData.permissions?.playlist) &&
+                          <CheckboxGroup
+                            title="playlist"
+                            items={Object.keys(roleData.permissions?.playlist)}
+                            data={roleData.permissions?.playlist}
+                          />
+                        )}
+                        {roleData.permissions?.media && (
+                          // areAllFalse(roleData.permissions?.media) &&
+                          <CheckboxGroup
+                            title="media"
+                            items={Object.keys(roleData.permissions?.media)}
+                            data={roleData.permissions?.media}
+                          />
+                        )}
+                        {roleData.permissions?.user && (
+                          // areAllFalse(roleData.permissions?.user) &&
+                          <CheckboxGroup
+                            title="user"
+                            items={Object.keys(roleData.permissions?.user)}
+                            data={roleData.permissions?.user}
+                          />
+                        )}
                       </div>
                       {/* 1st */}
                       {/* 2nd  */}
                       <div className=" grid grid-cols-6 gap-4 mb-2">
-                        {roleData.permissions?.userrole &&
-                          areAllFalse(roleData.permissions?.userrole) && (
-                            <CheckboxGroup
-                              title="userrole"
-                              items={Object.keys(
-                                roleData.permissions?.userrole
-                              )}
-                              data={roleData.permissions?.userrole}
-                            />
-                          )}
-                        {roleData.permissions?.booking &&
-                          areAllFalse(roleData.permissions?.booking) && (
-                            <CheckboxGroup
-                              title="booking"
-                              items={Object.keys(roleData.permissions?.booking)}
-                              data={roleData.permissions?.booking}
-                            />
-                          )}
+                        {roleData.permissions?.userrole && (
+                          // areAllFalse(roleData.permissions?.userrole) &&
+                          <CheckboxGroup
+                            title="userrole"
+                            items={Object.keys(roleData.permissions?.userrole)}
+                            data={roleData.permissions?.userrole}
+                          />
+                        )}
+                        {roleData.permissions?.booking && (
+                          // areAllFalse(roleData.permissions?.booking) &&
+                          <CheckboxGroup
+                            title="booking"
+                            items={Object.keys(roleData.permissions?.booking)}
+                            data={roleData.permissions?.booking}
+                          />
+                        )}
                       </div>
                       {/* 2nd  */}
                     </>
