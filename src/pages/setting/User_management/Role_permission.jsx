@@ -28,6 +28,7 @@ const Role_permission = () => {
       media: { view: false, create: false, update: false, delete: false },
       user: { view: false, create: false, update: false, delete: false },
       role: { view: false, create: false, update: false, delete: false },
+      userrole: { view: false, create: false, update: false, delete: false },
       booking: { view: false, create: false, update: false, delete: false },
     },
     other_permission: {
@@ -37,8 +38,8 @@ const Role_permission = () => {
     },
   });
 
-  const [page_permission, setPagePermission] = useState([]);
   const { token } = User.getCookieData();
+  const { permission } = User.getPermission();
 
   useEffect(async () => {
     const { user } = User.getCookieData();
@@ -61,17 +62,9 @@ const Role_permission = () => {
 
     const old_role = user_permission.map((permission) => permission.RoleName);
     setOldRoleName(old_role);
-    setSelectOldRole(old_role[0]);
     setDefaultPermission(default_permission);
     setChildPermission(child_permission);
-    setPermissionPage();
   }, []);
-
-  const setPermissionPage = async () => {
-    const { user } = User.getCookieData();
-    const { permissions } = convertPermissionValuesToBoolean([user]);
-    setPagePermission(permissions.userrole);
-  };
 
   const convertPermissionValuesToBoolean = (data) => {
     const convertedData = { permissions: {}, other_permission: {} };
@@ -227,7 +220,6 @@ const Role_permission = () => {
     }
 
     const value = removeZeroPermissions(obj);
-
     const encrypted = await Encryption.encryption(
       value,
       "add_permission_role",
@@ -270,7 +262,6 @@ const Role_permission = () => {
       permissions: summary.permissions,
       accountcode: account.AccountCode,
     };
-
     const encrypted = await Encryption.encryption(obj, "edit_role", false);
     const data = await User.updateUserRole(encrypted, token);
 
@@ -329,12 +320,13 @@ const Role_permission = () => {
     }
   };
 
-  const Tabs = ({ roleData, type, page_permission }) => {
+  const Tabs = ({ roleData, type }) => {
     const [openTab, setOpenTab] = React.useState(1);
 
     const CheckboxGroup = ({ title, items, data }) => {
-      let data_check;
+      const header = ["create", "delete", "update", "view"];
 
+      let data_check;
       if (data) {
         data_check = data;
       } else {
@@ -347,8 +339,8 @@ const Role_permission = () => {
       }
 
       const [checkboxes, setCheckboxes] = useState(
-        items.reduce((acc, item) => {
-          acc[item] = data_check[item];
+        header.reduce((acc, item) => {
+          acc[item] = data_check[item] !== undefined ? data_check[item] : false;
           return acc;
         }, {})
       );
@@ -385,6 +377,7 @@ const Role_permission = () => {
               <div className="font-poppins font-bold">
                 {title[0].toUpperCase() + title.slice(1)}
               </div>
+
               {items.map((item, index) => (
                 <div
                   className="grid grid-cols-4 space-x-4 lg:space-x-2"
@@ -397,6 +390,9 @@ const Role_permission = () => {
                         className="opacity-0 absolute h-5 w-5 cursor-pointer"
                         checked={checkboxes[item]}
                         onChange={() => toggleCheckbox(item)}
+                        disabled={
+                          permission.userrole?.update === false ? true : false
+                        }
                       />
                       <span
                         className={`h-5 w-5 border-2 border-[#6425FE] hover:border-[#3b1694] rounded-sm cursor-pointer flex items-center justify-center ${
@@ -466,7 +462,9 @@ const Role_permission = () => {
                         <input
                           type="checkbox"
                           className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                          disabled={page_permission.update ? false : true}
+                          disabled={
+                            permission.userrole?.update === false ? true : false
+                          }
                           checked={checkboxes[item]}
                           onChange={() => toggleCheckbox(item)}
                         />
@@ -516,7 +514,7 @@ const Role_permission = () => {
     };
 
     const areAllFalse = (obj) => {
-      return Object.values(obj).every((value) => value !== false);
+      return Object.values(obj).some((value) => value === true);
     };
 
     return (
@@ -570,168 +568,132 @@ const Role_permission = () => {
                   {type === 0 ? (
                     <>
                       <div className=" grid grid-cols-8 gap-4 mt-5">
-                        {areAllFalse(default_permissions.brand) && (
-                          <CheckboxGroup
-                            title="brand"
-                            items={Object.keys(
-                              default_permissions.brand
-                            ).filter((key) => default_permissions.brand[key])}
-                            data={roleData.permissions.brand}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.branch) && (
-                          <CheckboxGroup
-                            title="branch"
-                            items={Object.keys(
-                              default_permissions.branch
-                            ).filter((key) => default_permissions.branch[key])}
-                            data={roleData.permissions.branch}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.screen) && (
-                          <CheckboxGroup
-                            title="screen"
-                            items={Object.keys(
-                              default_permissions.screen
-                            ).filter((key) => default_permissions.screen[key])}
-                            data={roleData.permissions.screen}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.playlist) && (
-                          <CheckboxGroup
-                            title="playlist"
-                            items={Object.keys(
-                              default_permissions.playlist
-                            ).filter(
-                              (key) => default_permissions.playlist[key]
-                            )}
-                            data={roleData.permissions.playlist}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.media) && (
-                          <CheckboxGroup
-                            title="media"
-                            items={Object.keys(
-                              default_permissions.media
-                            ).filter((key) => default_permissions.media[key])}
-                            data={roleData.permissions.media}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.user) && (
-                          <CheckboxGroup
-                            title="user"
-                            items={Object.keys(default_permissions.user).filter(
-                              (key) => default_permissions.user[key]
-                            )}
-                            data={roleData.permissions.user}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.userrole) && (
-                          <CheckboxGroup
-                            title="userrole"
-                            items={Object.keys(
-                              default_permissions.userrole
-                            ).filter(
-                              (key) => default_permissions.userrole[key]
-                            )}
-                            data={roleData.permissions.userrole}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.booking) && (
-                          <CheckboxGroup
-                            title="booking"
-                            items={Object.keys(
-                              default_permissions.booking
-                            ).filter((key) => default_permissions.booking[key])}
-                            data={roleData.permissions.booking}
-                          />
-                        )}
+                        <CheckboxGroup
+                          title="brand"
+                          items={Object.keys(roleData.permissions?.brand)}
+                          data={roleData.permissions?.brand}
+                        />
+
+                        <CheckboxGroup
+                          title="branch"
+                          items={Object.keys(roleData.permissions?.branch)}
+                          data={roleData.permissions?.branch}
+                        />
+
+                        <CheckboxGroup
+                          title="screen"
+                          items={Object.keys(roleData.permissions?.screen)}
+                          data={roleData.permissions?.screen}
+                        />
+
+                        <CheckboxGroup
+                          title="playlist"
+                          items={Object.keys(roleData.permissions?.playlist)}
+                          data={roleData.permissions?.playlist}
+                        />
+
+                        <CheckboxGroup
+                          title="media"
+                          items={Object.keys(roleData.permissions?.media)}
+                          data={roleData.permissions?.media}
+                        />
+
+                        <CheckboxGroup
+                          title="user"
+                          items={Object.keys(roleData.permissions?.user)}
+                          data={roleData.permissions?.user}
+                        />
+                        <CheckboxGroup
+                          title="userrole"
+                          items={Object.keys(roleData.permissions?.userrole)}
+                          data={roleData.permissions?.userrole}
+                        />
+
+                        <CheckboxGroup
+                          title="booking"
+                          items={Object.keys(roleData.permissions?.booking)}
+                          data={roleData.permissions?.booking}
+                        />
                       </div>
                     </>
                   ) : (
                     <>
                       {/* 1st */}
                       <div className=" grid grid-cols-6 gap-4 mb-11 mt-5">
-                        {areAllFalse(default_permissions.brand) && (
-                          <CheckboxGroup
-                            title="brand"
-                            items={Object.keys(
-                              default_permissions.brand
-                            ).filter((key) => default_permissions.brand[key])}
-                            data={roleData.permissions.brand}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.branch) && (
-                          <CheckboxGroup
-                            title="branch"
-                            items={Object.keys(
-                              default_permissions.branch
-                            ).filter((key) => default_permissions.branch[key])}
-                            data={roleData.permissions.branch}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.screen) && (
-                          <CheckboxGroup
-                            title="screen"
-                            items={Object.keys(
-                              default_permissions.screen
-                            ).filter((key) => default_permissions.screen[key])}
-                            data={roleData.permissions.screen}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.playlist) && (
-                          <CheckboxGroup
-                            title="playlist"
-                            items={Object.keys(
-                              default_permissions.playlist
-                            ).filter(
-                              (key) => default_permissions.playlist[key]
-                            )}
-                            data={roleData.permissions.playlist}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.media) && (
-                          <CheckboxGroup
-                            title="media"
-                            items={Object.keys(
-                              default_permissions.media
-                            ).filter((key) => default_permissions.media[key])}
-                            data={roleData.permissions.media}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.user) && (
-                          <CheckboxGroup
-                            title="user"
-                            items={Object.keys(default_permissions.user).filter(
-                              (key) => default_permissions.user[key]
-                            )}
-                            data={roleData.permissions.user}
-                          />
-                        )}
+                        {roleData.permissions?.brand &&
+                          areAllFalse(roleData.permissions?.brand) && (
+                            <CheckboxGroup
+                              title="brand"
+                              items={Object.keys(roleData.permissions?.brand)}
+                              data={roleData.permissions?.brand}
+                            />
+                          )}
+
+                        {roleData.permissions?.branch &&
+                          areAllFalse(roleData.permissions?.branch) && (
+                            <CheckboxGroup
+                              title="branch"
+                              items={Object.keys(roleData.permissions?.branch)}
+                              data={roleData.permissions?.branch}
+                            />
+                          )}
+
+                        {roleData.permissions?.screen &&
+                          areAllFalse(roleData.permissions?.screen) && (
+                            <CheckboxGroup
+                              title="screen"
+                              items={Object.keys(roleData.permissions?.screen)}
+                              data={roleData.permissions?.screen}
+                            />
+                          )}
+                        {roleData.permissions?.playlist &&
+                          areAllFalse(roleData.permissions?.playlist) && (
+                            <CheckboxGroup
+                              title="playlist"
+                              items={Object.keys(
+                                roleData.permissions?.playlist
+                              )}
+                              data={roleData.permissions?.playlist}
+                            />
+                          )}
+                        {roleData.permissions?.media &&
+                          areAllFalse(roleData.permissions?.media) && (
+                            <CheckboxGroup
+                              title="media"
+                              items={Object.keys(roleData.permissions?.media)}
+                              data={roleData.permissions?.media}
+                            />
+                          )}
+                        {roleData.permissions?.user &&
+                          areAllFalse(roleData.permissions?.user) && (
+                            <CheckboxGroup
+                              title="user"
+                              items={Object.keys(roleData.permissions?.user)}
+                              data={roleData.permissions?.user}
+                            />
+                          )}
                       </div>
                       {/* 1st */}
                       {/* 2nd  */}
                       <div className=" grid grid-cols-6 gap-4 mb-2">
-                        {areAllFalse(default_permissions.userrole) && (
-                          <CheckboxGroup
-                            title="userrole"
-                            items={Object.keys(
-                              default_permissions.userrole
-                            ).filter(
-                              (key) => default_permissions.userrole[key]
-                            )}
-                            data={roleData.permissions.userrole}
-                          />
-                        )}
-                        {areAllFalse(default_permissions.booking) && (
-                          <CheckboxGroup
-                            title="booking"
-                            items={Object.keys(
-                              default_permissions.booking
-                            ).filter((key) => default_permissions.booking[key])}
-                            data={roleData.permissions.booking}
-                          />
-                        )}
+                        {roleData.permissions?.userrole &&
+                          areAllFalse(roleData.permissions?.userrole) && (
+                            <CheckboxGroup
+                              title="userrole"
+                              items={Object.keys(
+                                roleData.permissions?.userrole
+                              )}
+                              data={roleData.permissions?.userrole}
+                            />
+                          )}
+                        {roleData.permissions?.booking &&
+                          areAllFalse(roleData.permissions?.booking) && (
+                            <CheckboxGroup
+                              title="booking"
+                              items={Object.keys(roleData.permissions?.booking)}
+                              data={roleData.permissions?.booking}
+                            />
+                          )}
                       </div>
                       {/* 2nd  */}
                     </>
@@ -763,7 +725,7 @@ const Role_permission = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">User Role</div>
-              {page_permission?.create ? (
+              {permission.userrole?.create ? (
                 <button
                   className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins rounded-lg"
                   onClick={() => createNewRole()}
@@ -811,7 +773,7 @@ const Role_permission = () => {
 
                       <div className="col-span-2">
                         <div className="flex justify-center items-center mt-3 space-x-4">
-                          {page_permission?.update ? (
+                          {permission.userrole?.update ? (
                             <button onClick={() => handleEditRoleName()}>
                               <RiEditLine
                                 size={20}
@@ -822,7 +784,7 @@ const Role_permission = () => {
                             ""
                           )}
 
-                          {page_permission?.delete ? (
+                          {permission.userrole?.delete ? (
                             <button onClick={() => handleDeleteRoleName(index)}>
                               <RiDeleteBin5Line
                                 size={20}
@@ -844,19 +806,20 @@ const Role_permission = () => {
           {/* Right Panel */}
           <div className="col-span-5 bg-[#FAFAFA] w-full">
             {child_permissions.length > 0 && (
-              <Tabs
-                roleData={child_permissions[select_role]}
-                page_permission={page_permission}
-              />
+              <Tabs roleData={child_permissions[select_role]} />
             )}
-            <div className="p-4">
-              <button
-                className="w-40 h-11 bg-[#6425FE]  hover:bg-[#3b1694] rounded-md text-white font-poppins"
-                onClick={() => handleSave(child_permissions[select_role])}
-              >
-                Save
-              </button>
-            </div>
+            {permission.userrole?.update ? (
+              <div className="p-4">
+                <button
+                  className="w-40 h-11 bg-[#6425FE]  hover:bg-[#3b1694] rounded-md text-white font-poppins"
+                  onClick={() => handleSave(child_permissions[select_role])}
+                >
+                  Save
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
           {/* Right Panel */}
         </div>
@@ -929,7 +892,7 @@ const Role_permission = () => {
                 />
               </div>
             </div>
-            {page_permission.update ? (
+            {permission.userrole?.update ? (
               <div className="flex justify-center items-center -mt-3">
                 <button
                   onClick={() => handleSaveNewRole()}

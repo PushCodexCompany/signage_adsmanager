@@ -157,7 +157,6 @@ const Brands = () => {
               : "grid grid-cols-2 lg:grid-cols-3"
           } gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg`}
         >
-          {console.log("permission", permission)}
           {permission.brand?.create ? (
             <div
               onClick={() => handleNewBrand()}
