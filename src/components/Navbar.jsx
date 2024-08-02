@@ -123,7 +123,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
                       <text className="text-black font-bold text-14 font-poppins">
                         {user
                           ? `${user.user.firstname || "Name"} ${
-                              user.user.lastname || "Last Name"
+                              user.user.lastname || "LastName"
                             }`
                           : ""}
                         {/* {user ? `${user.user.username}` : ""} */}

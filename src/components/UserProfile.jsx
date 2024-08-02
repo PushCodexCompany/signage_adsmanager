@@ -106,7 +106,11 @@ const UserProfile = ({ user, after_login }) => {
             <PiUserCircleFill size={64} className="text-[#6425FE]" />
             <div>
               <p className="font-semibold text-xl dark:text-gray-200 font-poppins">
-                {user ? `${user.user.firstname} ${user.user.lastname}` : ""}
+                {user
+                  ? `${user.user.firstname || "Name"} ${
+                      user.user.lastname || "LastName"
+                    }`
+                  : ""}
                 {/* {`${user.user.username}`} */}
               </p>
               <p className="text-gray-500 text-sm dark:text-gray-400 font-poppins">

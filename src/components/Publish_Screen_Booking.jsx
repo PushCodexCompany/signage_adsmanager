@@ -94,30 +94,40 @@ const Publish_Screen_Booking = ({
       screenids: screenIdsString,
     };
 
-    try {
-      const data = await User.publishBookingcontent(obj, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "Publish Booking สำเร็จ!",
-          text: `Publish Booking สำเร็จ!`,
-        }).then((result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            setShowPublishScreen(!showPublishScreen);
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
+    console.log("obj", obj.screenids);
+
+    if (obj.screenids) {
+      try {
+        const data = await User.publishBookingcontent(obj, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Publish Booking สำเร็จ!",
+            text: `Publish Booking สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              setShowPublishScreen(!showPublishScreen);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      } catch (error) {
+        console.error();
       }
-    } catch (error) {
-      console.error();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกจอที่ต้องการ Publish ...",
+      });
     }
   };
 
