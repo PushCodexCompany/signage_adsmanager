@@ -307,13 +307,13 @@ const Ads_Allocation_Booking = ({
       let newDestinationItems = [...destinationItems];
 
       newDestinationItems = newDestinationItems.filter(
-        (item) => item.ContentID !== null
+        (item) => item?.ContentID !== null
       );
 
       let lastIndex = getLastNonNullIndex(destinationItems);
       let destinationIndex = lastIndex === -1 ? 0 : lastIndex + 1;
       const isFull = newDestinationItems.length >= itemsPanel1.value.slots;
-      const hasContentID = itemsPanel1.value.medias[0].ContentID !== null;
+      const hasContentID = itemsPanel1.value.medias[0]?.ContentID !== null;
       const totalDuration = itemsPanel1.value.medias.reduce((sum, item) => {
         // Check if duration exists and is a number
         return sum + (item.duration ? item.duration : 0);
