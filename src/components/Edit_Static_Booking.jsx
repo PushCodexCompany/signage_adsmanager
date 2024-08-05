@@ -151,9 +151,7 @@ const Edit_Static_Booking = ({
             </div>
             <div className="flex justify-center items-center space-x-2 mt-28">
               <button
-                // onClick={() =>
-                //   setOpenConfirmBookingModal(!openConfirmBookingModal)
-                // }
+                onClick={() => setModalEditBooking(!modalEditBooking)}
                 className="border-2 border-[#6425FE]  w-[300px] h-[48px] rounded-lg text-[#6425FE] font-poppins font-bold"
               >
                 Cancel

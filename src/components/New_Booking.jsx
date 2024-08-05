@@ -67,8 +67,19 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   // calendar
   const today = startOfToday();
   const [currMonth, setCurrMonth] = useState(() => format(today, "MMM-yyyy"));
+  const [width, setWidth] = useState(window.innerWidth);
 
   let firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date());
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth),
@@ -832,9 +843,17 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+      <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-full overflow-x-auto">
         {/* First div (circle) */}
-        <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+        <div
+          className={`absolute  ${
+            width >= 1026
+              ? "top-12 right-[160px]"
+              : width < 1024
+              ? "right-12 top-12"
+              : "right-[65px] top-12"
+          }  m-4 z-30`}
+        >
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
             <button onClick={() => setShowModalAddNewBooking(false)}>
               <IoIosClose size={25} color={"#6425FE"} />

@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { IoIosClose } from "react-icons/io";
+import {
+  IoIosClose,
+  IoIosCloseCircle,
+  IoIosAdd,
+  IoIosSearch,
+} from "react-icons/io";
 import Swal from "sweetalert2";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 import DatePicker from "react-datepicker";
@@ -28,9 +33,12 @@ import User from "../libs/admin";
 import Empty_Img from "../assets/img/empty_img.png";
 import Encryption from "../libs/encryption";
 import { useNavigate } from "react-router-dom";
+import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+import Filter from "../components/Filter";
 
 const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
   const navigate = useNavigate();
+  const { token } = User.getCookieData();
   const fileInputRef = useRef(null);
   const [step, setStep] = useState("1");
   const [merchandise, setMerchandise] = useState([]);
@@ -48,6 +56,8 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
   const currentDate = new Date();
   const [currMonth, setCurrMonth] = useState(() => format(today, "MMM-yyyy"));
   let firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date());
+  const [width, setWidth] = useState(window.innerWidth);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   // New Merch
   const [preview_img, setPreviewImg] = useState(null);
@@ -60,6 +70,32 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
   const [contact_person_pos, setContactPersonPos] = useState();
   const [contact_person_email, setContactPersonEmail] = useState();
   const [contact_person_phone, setContactPersonPhone] = useState();
+  const [screenAdsAllocation, setScreenAdsAllocation] = useState([]);
+
+  const [modalSelectScreen, setModalSelectScreen] = useState(false);
+  const [oldModal, setOldModal] = useState(true);
+  const [selectAll, setSelectAll] = useState(false);
+  const [checkboxes, setCheckboxes] = useState({});
+  const [selectedScreenItems, setSelectedScreenItems] = useState([]);
+  const [screen_filter, setScreenFilter] = useState([]);
+  const [screenSelectFromEdit, setScreenSelectFromEdit] = useState(null);
+
+  const [allScreenData, setAllScreenData] = useState([]);
+  const [isApplyToScreen, setIsApplyToScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    getScreenData();
+  }, []);
 
   const STEP_OPTIONS = [
     {
@@ -108,7 +144,7 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
         }
         break;
       case "4":
-        if (booking_name && selectedScreen) {
+        if (booking_name && screenAdsAllocation.length > 0) {
           setStep("4");
         } else {
           Swal.fire({
@@ -127,6 +163,11 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
     const prevStepIndex = currentStep - 1;
     const step = `${prevStepIndex}`;
     setStep(step);
+  };
+
+  const getScreenData = async () => {
+    const data = await User.getScreens(token);
+    setAllScreenData(data);
   };
 
   const handleDeleteFile = () => {
@@ -233,6 +274,24 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
     fileInput.click();
   };
 
+  const handleDeleteScreenAdsAllocation = (index, id) => {
+    const newData = [...screenAdsAllocation];
+    newData.splice(index, 1);
+    setScreenAdsAllocation(newData);
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [id]: !prevCheckboxes[id],
+      };
+      return updatedCheckboxes;
+    });
+  };
+
+  const handleToggleOpenSelectScreen = () => {
+    setOldModal(!oldModal);
+    setModalSelectScreen(!modalSelectScreen);
+  };
+
   const renderStepContent = (stepID) => {
     switch (`${stepID}`) {
       case "1":
@@ -255,7 +314,10 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                 } gap-4 p-4 h-[380px] overflow-y-auto border border-gray-200 rounded-lg`}
               >
                 <div
-                  onClick={() => setShowCreateMerchandise(true)}
+                  onClick={() => {
+                    setShowCreateMerchandise(true);
+                    setOldModal(false);
+                  }}
                   className="h-[400px] p-2 flex flex-col items-center"
                 >
                   <div className="relative mb-4">
@@ -332,7 +394,7 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="basis-1/2">
                   <DatePicker
                     selected={startDate}
-                    onChange={(date) => handleDateChange(date)}
+                    onChange={(date) => handleStartDate(date)}
                     selectsStart
                     startDate={startDate}
                     endDate={endDate}
@@ -351,7 +413,7 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="basis-1/2">
                   <DatePicker
                     selected={endDate}
-                    onChange={(date) => handleDateChange(date)}
+                    onChange={(date) => handleEndDate(date)}
                     selectsEnd
                     startDate={startDate}
                     endDate={endDate}
@@ -468,7 +530,7 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
               </div>
             </div>
             <div className="mt-6 h-[450px] overflow-y-auto">
-              <div className="flex flex-row lg:flex-row">
+              <div className="flex flex-col lg:flex-row">
                 <div className="w-full lg:w-1/3 p-4">
                   <div>
                     <img
@@ -508,20 +570,65 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                   <div className="mt-3">
-                    <select
-                      name="screen"
-                      id="screen"
-                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
-                      onChange={(e) => setSelectedScreen(e.target.value)}
-                      value={selectedScreen}
-                    >
-                      <option value="" disabled selected hidden>
-                        Select Screen
-                      </option>
-                      <option value="1">Screen 1</option>
-                      <option value="2">Screen 2</option>
-                      <option value="3">Screen 3</option>
-                    </select>
+                    <div className="w-[80%] rounded-lg col-span-4 border border-[#D9D9D9]">
+                      <div className="p-2">
+                        <div className="grid grid-cols-5">
+                          <div className="col-span-4">
+                            <div className="flex flex-wrap">
+                              {screenAdsAllocation.length > 0 &&
+                                screenAdsAllocation.map((screen, index) => (
+                                  <div
+                                    key={index}
+                                    className="border border-gray-300 rounded-sm bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1 px-2 py-1"
+                                    style={{ flexBasis: "calc(50% - 8px)" }}
+                                  >
+                                    <div className="font-poppins text-xs font-bold">
+                                      {screen.ScreenName}
+                                    </div>
+
+                                    <IoIosClose
+                                      size={20}
+                                      className="cursor-pointer text-[#6425FE]"
+                                      onClick={() =>
+                                        handleDeleteScreenAdsAllocation(
+                                          index,
+                                          screen.ScreenID
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                ))}
+                            </div>
+                          </div>
+                          <div className="col-span-1 flex justify-end items-center">
+                            {screenAdsAllocation.length > 1 && (
+                              <IoIosCloseCircle
+                                onClick={() => {
+                                  const filteredScreen = allScreenData.filter(
+                                    (screen) =>
+                                      screen.ScreenID === screenSelectFromEdit
+                                  );
+                                  const output = {
+                                    [screenSelectFromEdit]: true,
+                                  };
+                                  setCheckboxes(output);
+                                  setScreenAdsAllocation(filteredScreen);
+                                }}
+                                size={24}
+                                className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
+                              />
+                            )}
+                            <div className="relative ml-2">
+                              <IoIosAdd
+                                size={24}
+                                className="mt-1 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                onClick={handleToggleOpenSelectScreen}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div className="mt-10">
                     <div className="font-poppins font-bold">
@@ -543,7 +650,6 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                     <div className="font-poppins font-bold">Media Upload :</div>
                   </div>
                   <div className="mt-3">
-                    {console.log("upload", upload)}
                     <div className="flex space-x-2">
                       <div
                         onClick={() => uploadFile()}
@@ -629,7 +735,7 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                   </div>
                   <div className="mt-5">
                     <div className="font-poppins font-bold text-2xl">
-                      Static Screen {selectedScreen}
+                      Total Static Screen : {screenAdsAllocation.length}
                     </div>
                   </div>
                   <div className="mt-5">
@@ -678,15 +784,53 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
     }
   };
 
-  const handleDateChange = (date) => {
-    if (!startDate || (startDate && endDate)) {
-      // If start date is not set or both start and end dates are set, set new start date
+  // const handleDateChange = (date) => {
+  //   if (!startDate || (startDate && endDate)) {
+  //     // If start date is not set or both start and end dates are set, set new start date
+  //     setStartDate(date);
+  //     setEndDate(null);
+  //     setDateRange([date]);
+  //     setSelectedDates([date]);
+  //   } else {
+  //     // If start date is already set, set end date
+  //     setEndDate(date);
+  //     const range = generateDateRange(startDate, date);
+  //     setDateRange(range);
+  //     setSelectedDates(range);
+  //   }
+  // };
+
+  const handleStartDate = (date) => {
+    if (!endDate) {
+      // If there's no end date set, just set the start date and other related states
       setStartDate(date);
-      setEndDate(null);
       setDateRange([date]);
       setSelectedDates([date]);
     } else {
-      // If start date is already set, set end date
+      if (date <= endDate) {
+        // If the selected date is less than the end date, update the start date and recalculate the date range
+        setStartDate(date);
+        const range = generateDateRange(date, endDate);
+        setDateRange(range);
+        setSelectedDates(range);
+      } else {
+        // Show error if the start date is greater than or equal to the end date
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "วันเริ่มต้นไม่สามารถมากกว่าวันสิ้นสุดได้...",
+        });
+      }
+    }
+  };
+  const handleEndDate = (date) => {
+    if (!startDate) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณาเลือกวันเริ่มต้นต้องการจอง...",
+      });
+    } else {
       setEndDate(date);
       const range = generateDateRange(startDate, date);
       setDateRange(range);
@@ -918,36 +1062,116 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
     }
   };
 
+  const toggleAllCheckboxes = () => {
+    const newCheckboxes = {};
+    const newSelectAll = !selectAll;
+
+    allScreenData.forEach((row) => {
+      newCheckboxes[row.ScreenID] = newSelectAll;
+    });
+
+    setCheckboxes(newCheckboxes);
+    setSelectAll(newSelectAll);
+
+    const checkedRowIds = newSelectAll
+      ? allScreenData.map((row) => row.ScreenID)
+      : [];
+    setSelectedScreenItems(checkedRowIds);
+  };
+
+  const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
+    <TooltipComponent content={title} position="BottomCenter">
+      <button
+        type="button"
+        onClick={() => customFunc()}
+        style={{ color }}
+        className="relative text-xl rounded-full p-3 hover:bg-light-gray"
+      >
+        <span
+          style={{ background: dotColor }}
+          className="absolute inline-flex rounded-full h-2 w-2 right-2 top-2"
+        />
+        {icon}
+      </button>
+    </TooltipComponent>
+  );
+
+  const search = () => {
+    alert("search");
+  };
+
+  const toggleCheckboxAddScreen = (rowId) => {
+    setCheckboxes((prevCheckboxes) => {
+      const updatedCheckboxes = {
+        ...prevCheckboxes,
+        [rowId]: !prevCheckboxes[rowId],
+      };
+
+      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
+        (id) => updatedCheckboxes[id]
+      );
+
+      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
+      setSelectedScreenItems(intArray);
+
+      return updatedCheckboxes;
+    });
+  };
+
+  const handleAddScreenAllocation = () => {
+    const screensToReturn = allScreenData.filter((screen) =>
+      selectedScreenItems.includes(screen.ScreenID)
+    );
+    setScreenAdsAllocation(screensToReturn);
+    setOldModal(!oldModal);
+    setModalSelectScreen(!modalSelectScreen);
+  };
+
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-        {/* First div (circle) */}
-        <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-          <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-            <button onClick={() => setShowModalAddNewBooking(false)}>
-              <IoIosClose size={25} color={"#6425FE"} />
-            </button>
+      {oldModal && (
+        <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-full overflow-x-auto">
+          {/* First div (circle) */}
+          <div
+            className={`absolute  ${
+              width >= 1026
+                ? "top-12 right-[160px]"
+                : width < 1024
+                ? "right-12 top-12"
+                : "right-[65px] top-12"
+            }  m-4 z-30`}
+          >
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setShowModalAddNewBooking(false)}>
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
           </div>
-        </div>
-        {/* Second div (gray background) */}
+          {/* Second div (gray background) */}
 
-        <New_Booking_Steps_Modal
-          options={STEP_OPTIONS}
-          currentStep={parseInt(step)}
-          handleNextStep={handleNextStep}
-          handleBackStep={handleBackStep}
-          setStep={setStep}
-        >
-          {renderStepContent(step)}
-        </New_Booking_Steps_Modal>
-      </div>
+          <New_Booking_Steps_Modal
+            options={STEP_OPTIONS}
+            currentStep={parseInt(step)}
+            handleNextStep={handleNextStep}
+            handleBackStep={handleBackStep}
+            setStep={setStep}
+          >
+            {renderStepContent(step)}
+          </New_Booking_Steps_Modal>
+        </div>
+      )}
 
       {showCreateMerchandise && (
         <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
           {/* First div (circle) */}
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setShowCreateMerchandise(false)}>
+              <button
+                onClick={() => {
+                  setShowCreateMerchandise(false);
+                  setOldModal(!oldModal);
+                }}
+              >
                 <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
@@ -1069,6 +1293,259 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modalSelectScreen && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+          {/* First div (circle) */}
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => {
+                  setModalSelectScreen(!modalSelectScreen);
+                  setOldModal(!oldModal);
+                }}
+              >
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
+          </div>
+          {/* Second div (gray background) */}
+          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            <div className="flex justify-center items-center mt-5">
+              <div className="font-poppins text-5xl font-bold">
+                Select Screens
+              </div>
+            </div>
+            <div className="mt-1">
+              <div className="grid grid-cols-4">
+                <div className="flex justify-end items-center col-span-3">
+                  <div className="font-poppins text-xs lg:text-xl text-[#2F3847] mr-28">
+                    {`You Booking Period : ${format(
+                      selected_dates[0],
+                      "EEE dd MMM yyyy"
+                    )} - ${format(
+                      selected_dates[selected_dates.length - 1],
+                      "EEE dd MMM yyyy"
+                    )}`}
+                  </div>
+                </div>
+                <div className="flex justify-end items-center col-span-1 ">
+                  <button
+                    // onClick={() =>
+                    //   setOpenAddNewScreenModal(!openAddNewScreenModal)
+                    // }
+                    className="bg-[#6425FE] w-[200px] h-[45px] rounded-lg text-white font-poppins mr-10"
+                  >
+                    New Screen
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-1 mt-1">
+              <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
+                <div className="flex">
+                  <NavButton
+                    customFunc={search}
+                    title="Search"
+                    color="grey"
+                    icon={<IoIosSearch />}
+                  />
+                  <input
+                    className=" w-full h-[46px] rounded relative border-gray-500  transition font-poppins"
+                    type="text"
+                    name="name"
+                    placeholder="Search..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Filter
+              setFilterScreen={setFilterScreen}
+              filter_screen={filter_screen}
+            />
+
+            <div className="mt-5 p-6">
+              <div className="font-poppins">
+                *Search result displays only screens available in your booking
+              </div>
+            </div>
+
+            <div className="p-4">
+              <div className="w-auto h-[350px] overflow-y-auto">
+                <table className="min-w-full border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        <label className="inline-flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                            checked={selectAll}
+                            onChange={toggleAllCheckboxes}
+                          />
+                          <span
+                            className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
+                              selectAll ? "bg-white" : ""
+                            }`}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className={`h-6 w-6 text-white ${
+                                selectAll ? "opacity-100" : "opacity-0"
+                              } transition-opacity duration-300 ease-in-out`}
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="#6425FE"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="3"
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          </span>
+                        </label>
+                      </th>
+                      <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Screen Name
+                      </th>
+                      <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Media Rule
+                      </th>
+                      <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Tag
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allScreenData.length > 0 ? (
+                      allScreenData.map((row, key) => (
+                        <tr key={row.ScreenID}>
+                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                            <div className="flex items-center">
+                              <input
+                                type="checkbox"
+                                className=" h-5 w-5 cursor-pointer"
+                                checked={checkboxes[row.ScreenID] || false}
+                                onChange={() =>
+                                  toggleCheckboxAddScreen(row.ScreenID)
+                                }
+                                disabled={
+                                  row.ScreenID === screenSelectFromEdit
+                                    ? true
+                                    : false
+                                }
+                              />
+                            </div>
+                          </td>
+                          <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                            <div className="flex items-center">
+                              <div className="font-poppins text-xl font-bold">
+                                {row.ScreenName}
+                              </div>
+                              {row.screen_status === 0 ? (
+                                <div className="bg-red-500 w-1 h-1 rounded-full ml-2"></div>
+                              ) : (
+                                <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
+                            <div className="font-poppins text-sm text-[#59606C] font-bold">
+                              {row.ScreenLocation || "No Data"}
+                            </div>
+                            <div className="font-poppins text-sm font-bold">
+                              {row.province || "No Data"}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                            <div className="font-poppins font-bold">
+                              {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
+                              {row?.ScreenRule[0]?.Width &&
+                              row?.ScreenRule[0]?.Height
+                                ? parseInt(row.ScreenRule[0].Width, 10) +
+                                  "x" +
+                                  parseInt(row.ScreenRule[0].Height, 10)
+                                : "Not Set"}
+                            </div>
+                          </td>
+                          <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                            <div className="flex flex-wrap">
+                              {row.ScreenTag.length > 0 ? (
+                                row.ScreenTag.map((items, index) => (
+                                  <div
+                                    key={index}
+                                    className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                                    style={{
+                                      flexBasis: `calc(${
+                                        100 / row.ScreenTag.length
+                                      }% - 8px)`,
+                                    }}
+                                  >
+                                    <div className="font-poppins text-xs font-bold">
+                                      {items.TagName}
+                                    </div>
+                                  </div>
+                                ))
+                              ) : (
+                                <div
+                                  className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
+                                  style={{ flexBasis: "calc(100% - 8px)" }}
+                                >
+                                  <div className="font-poppins text-xs font-bold">
+                                    No Tag
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                            <div className="space-x-2">
+                              <button
+                                className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
+                                onClick={() => alert(key)}
+                              >
+                                View Detail
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6" className="p-4">
+                          <div className="flex justify-center items-center">
+                            <span className="text-gray-300 text-4xl">
+                              No Screen(s) Match with Media Rules
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="mt-1 mb-3 flex items-center justify-center">
+              <button
+                onClick={() => handleAddScreenAllocation()}
+                className="w-[20%] bg-[#6425FE] text-white text-xl py-2 rounded-lg font-bold font-poppins "
+              >
+                Add Screen
+              </button>
             </div>
           </div>
         </div>
