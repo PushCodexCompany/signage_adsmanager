@@ -3,6 +3,7 @@ import { Header, Navbar } from "../components";
 import Filter from "../components/Filter";
 import { GridTable } from "../libs/static_booking_grid";
 import New_Static_Booking from "../components/New_Static_Booking";
+import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 
 const Static_Booking = () => {
   const [showModalAddNewBooking, setShowModalAddNewBooking] = useState(false);
@@ -10,6 +11,9 @@ const Static_Booking = () => {
   const [searchTerm, setSearchTerm] = useState(null);
   const [all_pages, setAllPages] = useState(null);
   const [booking_data, setBookingData] = useState([]);
+
+  const [showDetailScreen, setShowDetailScreen] = useState(false);
+  const [detailScreen, setDetailScreen] = useState(null);
 
   useEffect(() => {
     getBookingData();
@@ -210,6 +214,16 @@ const Static_Booking = () => {
       {showModalAddNewBooking && (
         <New_Static_Booking
           setShowModalAddNewBooking={setShowModalAddNewBooking}
+          setShowDetailScreen={setShowDetailScreen}
+          showDetailScreen={showDetailScreen}
+          setDetailScreen={setDetailScreen}
+        />
+      )}
+
+      {showDetailScreen && (
+        <Detail_Screen_Booking
+          setShowDetailScreen={setShowDetailScreen}
+          detailScreen={detailScreen}
         />
       )}
     </>

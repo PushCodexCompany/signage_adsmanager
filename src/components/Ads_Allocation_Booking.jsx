@@ -21,6 +21,7 @@ import User from "../libs/admin";
 import Ads_Allocation_Apply_Screen from "../components/Ads_Allocation_Apply_Screen";
 import Confirm_Allocation from "../components/Confirm_Allocation";
 import Create_New_Playlist_Allocation from "../components/Create_New_Playlist_Allocation";
+import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 import "./css/alert.css";
 
 const Ads_Allocation_Booking = ({
@@ -69,6 +70,9 @@ const Ads_Allocation_Booking = ({
 
   const [isOpenConfirmAllocation, setIsOpenConfirmAllocation] = useState(false);
   const [isOpenCreateNewPlaylist, setIsOpenCreateNewPlaylist] = useState(false);
+
+  const [showDetailScreen, setShowDetailScreen] = useState(false);
+  const [detailScreen, setDetailScreen] = useState(null);
 
   const { token } = User.getCookieData();
 
@@ -2062,6 +2066,9 @@ const Ads_Allocation_Booking = ({
           media_rules_select={media_rules_select}
           screenSelectFromEdit={screenSelectFromEdit}
           screen={screen}
+          setShowDetailScreen={setShowDetailScreen}
+          showDetailScreen={showDetailScreen}
+          setDetailScreen={setDetailScreen}
         />
       )}
 
@@ -2093,6 +2100,13 @@ const Ads_Allocation_Booking = ({
           setPlaylistName={setPlaylistName}
           setCheckCreateMediaPlaylist={setCheckCreateMediaPlaylist}
           setTempPlaylistName={setTempPlaylistName}
+        />
+      )}
+
+      {showDetailScreen && (
+        <Detail_Screen_Booking
+          setShowDetailScreen={setShowDetailScreen}
+          detailScreen={detailScreen}
         />
       )}
     </>

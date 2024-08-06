@@ -42,16 +42,16 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+      <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
         {/* First div (circle) */}
-        <div className="absolute right-10 top-[150px] lg:top-[30px] lg:right-[160px] m-4 z-30">
+        <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
             <button onClick={() => setShowDetailScreen(false)}>
               <IoIosClose size={25} color={"#6425FE"} />
             </button>
           </div>
         </div>
-        <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
+        <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
           <div className="flex items-center justify-between mt-10 mb-5  p-4">
             <div className="font-poppins font-semibold text-2xl">
               Screen Detail : {detailScreen.ScreenName}
@@ -60,21 +60,20 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
           <div className=" h-[700px] flex flex-col lg:flex-row overflow-y-auto">
             <div className="w-full lg:w-1/2 p-4">
               <div className="relative">
-                <div className="flex items-center">
-                  <div className="flex justify-start items-center h-full whitespace-nowrap">
-                    <div className="font-poppins text-lg font-bold">
-                      Screen Name:
-                    </div>
-                  </div>
-
-                  <input
-                    placeholder="Screen Name"
-                    className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                    value={detailScreen.ScreenName}
-                    // onChange={(e) => setScreenName(e.target.value)}
-                    disabled
-                  />
-                </div>
+                <label
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    detailScreen.ScreenName
+                      ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                      : "top-3 text-gray-300"
+                  }`}
+                >
+                  Screen Name
+                </label>
+                <input
+                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  value={detailScreen.ScreenName}
+                  disabled
+                />
               </div>
               <div className="mt-2">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
@@ -82,7 +81,6 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                     name="mediaRule"
                     id="mediaRule"
                     className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    // onChange={(e) => setMediaRule(e.target.value)}
                     value={detailScreen.ScreenRule[0].MediaRuleName}
                     disabled
                   >
@@ -118,10 +116,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
               <div className="mt-5">
                 <div className="grid grid-cols-6 space-x-1">
                   <div className="col-span-1 flex justify-start">
-                    <div
-                      //   onClick={() => setOpenModalNewTag(!openModalNewTag)}
-                      className="w-[150px] h-[45px] rounded-lg flex text-center justify-center items-center  font-poppins bg-[#6425FE] text-white"
-                    >
+                    <div className="w-[150px] h-[45px] rounded-lg flex text-center justify-center items-center  font-poppins bg-[#6425FE] text-white">
                       Screen Tag
                     </div>
                   </div>
@@ -136,14 +131,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                                 flexBasis: `calc(30% - 5px)`,
                               }}
                             >
-                              <div className="flex justify-center items-center mr-1 ml-1">
-                                {/* <IoIosClose
-                                  onClick={() =>
-                                    handleDeleteTagInSelectTag(item.TagID)
-                                  }
-                                  className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                /> */}
-                              </div>
+                              <div className="flex justify-center items-center mr-1 ml-1"></div>
                               <div className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center">
                                 {item.TagName}
                               </div>
@@ -179,10 +167,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                       )}
                     </div>
                     <div className="mt-2 flex justify-center items-center">
-                      <div
-                        // onClick={() => handleImageChange()}
-                        className="bg-[#6425FE] flex text-center justify-center items-center text-white font-bold font-poppins w-[315px] h-[48px] rounded-lg"
-                      >
+                      <div className="bg-[#6425FE] flex text-center justify-center items-center text-white font-bold font-poppins w-[315px] h-[48px] rounded-lg">
                         Screen Image
                       </div>
                     </div>
@@ -200,9 +185,6 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                         <div className="col-span-2">
                           <input
                             value={detailScreen.ScreenCoords.split(",")[0]}
-                            // onChange={(e) =>
-                            //   setLatLong({ ...latLong, lat: e.target.value })
-                            // }
                             type="text"
                             placeholder="Lat"
                             className="w-[157px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
@@ -212,9 +194,6 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                         <div className="col-span-2">
                           <input
                             value={detailScreen.ScreenCoords.split(",")[1]}
-                            // onChange={(e) =>
-                            //   setLatLong({ ...latLong, long: e.target.value })
-                            // }
                             type="text"
                             placeholder="Long"
                             className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
@@ -244,39 +223,49 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                 <div className="mt-4">
                   <div className="grid grid-cols-6 space-x-1">
                     <div className="col-span-3">
-                      <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                      <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                            detailScreen.ScreenLocation
+                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                              : "top-3 text-gray-300"
+                          }`}
+                        >
+                          Location
+                        </label>
                         <input
-                          value={detailScreen.ScreenDesc}
-                          //   onChange={(e) =>
-                          //     setScreenLocationName(e.target.value)
-                          //   }
+                          value={detailScreen.ScreenLocation}
                           type="text"
                           placeholder="Location"
-                          className="w-full rounded-lg p-3 font-poppins border border-gray-300"
+                          className="w-full rounded-lg p-3 font-poppins border border-gray-300 font-bold"
                           disabled
                         />
                       </div>
                     </div>
                     <div className="col-span-3">
-                      <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                        <select
-                          name="screenCity"
-                          id="screenCity"
-                          className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                          //   onChange={(e) => setScreenCityName(e.target.value)}
-                          value={detailScreen.ScreenCity}
-                          disabled
+                      <div className="relative flex flex-col justify-center items-center h-full text-sm  ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                            detailScreen.ScreenCity
+                              ? "-top-2.5 text-xs bg-white"
+                              : "top-3 text-white"
+                          }`}
                         >
-                          <option value="" disabled selected hidden>
-                            City
-                          </option>
-                          {city_data.length > 0 &&
-                            city_data.map((items) => (
-                              <option value={items.CityID}>
-                                {items.NameEN}
-                              </option>
-                            ))}
-                        </select>
+                          {detailScreen.ScreenCity ? "City" : ""}
+                        </label>
+                        <input
+                          value={
+                            city_data.find(
+                              (items) =>
+                                items.CityID === detailScreen.ScreenCity
+                            )?.NameEN || ""
+                          }
+                          type="text"
+                          placeholder="City"
+                          className="w-full rounded-lg p-3 font-poppins border border-gray-300 font-bold"
+                          disabled
+                        />
+
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
                           <svg
                             width="13"
@@ -299,19 +288,33 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <textarea
-                    value={detailScreen.ScreenDesc}
-                    // onChange={(e) => setScreenDescription(e.target.value)}
-                    placeholder="Screen Description"
-                    className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300"
-                    style={{
-                      whiteSpace: "pre-wrap",
-                      wordWrap: "break-word",
-                      lineHeight: "1.2",
-                    }}
-                    maxLength={255}
-                    disabled
-                  />
+                  <div className="relative flex flex-col justify-center items-center h-full text-sm ml-1">
+                    <label
+                      className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                        detailScreen.ScreenDesc
+                          ? "-top-2.5 text-xs bg-white"
+                          : "top-3 text-gray-400"
+                      }`}
+                    >
+                      Screen Description
+                    </label>
+                    <textarea
+                      value={detailScreen.ScreenDesc}
+                      placeholder={
+                        detailScreen.ScreenDesc !== null
+                          ? ""
+                          : "Screen Description"
+                      }
+                      className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300 font-bold "
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        wordWrap: "break-word",
+                        lineHeight: "1.2",
+                      }}
+                      maxLength={255}
+                      disabled
+                    />
+                  </div>
                 </div>
                 <div className="mt-4">
                   <div className="grid grid-cols-6 space-x-1">

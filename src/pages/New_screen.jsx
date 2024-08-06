@@ -4,23 +4,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Header, Navbar } from "../components";
 import empty_img from "../assets/img/empty_location.png";
 import location_img from "../assets/img/location.png";
-import { HiOutlineClock } from "react-icons/hi";
 import { IoIosClose } from "react-icons/io";
 import { BsInfoCircle } from "react-icons/bs";
 import User from "../libs/admin";
 import New_Tag from "../components/New_Tag";
 import Swal from "sweetalert2";
 import moment from "moment";
-import TextField from "@mui/material/TextField";
-
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
 const New_screen = () => {
   const { id } = useParams();
@@ -723,7 +715,7 @@ const New_screen = () => {
               <div className="mt-4">
                 <div className="grid grid-cols-6 space-x-1">
                   <div className="col-span-3">
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
                       <label
                         className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
                           screenLocationName
@@ -738,12 +730,12 @@ const New_screen = () => {
                         onChange={(e) => setScreenLocationName(e.target.value)}
                         type="text"
                         placeholder=""
-                        className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-blue-500"
+                        className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-blue-500 font-bold"
                       />
                     </div>
                   </div>
                   <div className="col-span-3">
-                    <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                    <div className="relative flex flex-col justify-center items-center h-full text-sm  ml-1">
                       <label
                         className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
                           screenCityName
@@ -756,7 +748,7 @@ const New_screen = () => {
                       <select
                         name="screenCity"
                         id="screenCity"
-                        className={`block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins`}
+                        className={`block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300 font-bold   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins`}
                         onChange={(e) => setScreenCityName(e.target.value)}
                         value={screenCityName}
                       >
@@ -790,7 +782,7 @@ const New_screen = () => {
                 </div>
               </div>
               <div className="mt-4">
-                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                <div className="relative flex flex-col justify-center items-center h-full text-sm  ml-1">
                   <label
                     className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
                       screenDescription
@@ -804,7 +796,7 @@ const New_screen = () => {
                     value={screenDescription}
                     onChange={(e) => setScreenDescription(e.target.value)}
                     placeholder=""
-                    className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-blue-500"
+                    className="w-full h-[147px] font-bold rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-blue-500"
                     style={{
                       whiteSpace: "pre-wrap",
                       wordWrap: "break-word",

@@ -36,7 +36,12 @@ import { useNavigate } from "react-router-dom";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import Filter from "../components/Filter";
 
-const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
+const New_Static_Booking = ({
+  setShowModalAddNewBooking,
+  setShowDetailScreen,
+  showDetailScreen,
+  setDetailScreen,
+}) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
   const fileInputRef = useRef(null);
@@ -800,6 +805,11 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
   //   }
   // };
 
+  const handleClickViewDetail = (data) => {
+    setDetailScreen(data);
+    setShowDetailScreen(!showDetailScreen);
+  };
+
   const handleStartDate = (date) => {
     if (!endDate) {
       // If there's no end date set, just set the start date and other related states
@@ -1299,9 +1309,9 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
       )}
 
       {modalSelectScreen && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+        <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
           {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+          <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
               <button
                 onClick={() => {
@@ -1314,7 +1324,7 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
             </div>
           </div>
           {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+          <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
             <div className="flex justify-center items-center mt-5">
               <div className="font-poppins text-5xl font-bold">
                 Select Screens
@@ -1516,7 +1526,7 @@ const New_Static_Booking = ({ setShowModalAddNewBooking }) => {
                             <div className="space-x-2">
                               <button
                                 className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
-                                onClick={() => alert(key)}
+                                onClick={() => handleClickViewDetail(row)}
                               >
                                 View Detail
                               </button>

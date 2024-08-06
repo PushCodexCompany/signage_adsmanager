@@ -25,6 +25,9 @@ const Ads_Allocation_Apply_Screen = ({
   media_rules_select,
   screenSelectFromEdit,
   screen,
+  setShowDetailScreen,
+  showDetailScreen,
+  setDetailScreen,
 }) => {
   const { token } = User.getCookieData();
   const [screens_options_data, setScreenOptionsData] = useState([]);
@@ -89,6 +92,11 @@ const Ads_Allocation_Apply_Screen = ({
     );
     setScreennAdsAllocation(screensToReturn);
     setIsApplyToScreen(!isApplyToScreen);
+  };
+
+  const handleClickViewDetail = (data) => {
+    setDetailScreen(data);
+    setShowDetailScreen(!showDetailScreen);
   };
 
   return (
@@ -304,7 +312,7 @@ const Ads_Allocation_Apply_Screen = ({
                         <div className="space-x-2">
                           <button
                             className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"
-                            onClick={() => alert(key)}
+                            onClick={() => handleClickViewDetail(row)}
                           >
                             View Detail
                           </button>
