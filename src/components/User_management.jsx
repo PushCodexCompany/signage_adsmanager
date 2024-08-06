@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import Encryption from "../libs/encryption";
 import User from "../libs/admin";
 
-const User_Management = ({ setShowModal }) => {
+const User_Management = ({ setShowUserMng }) => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [filter, setFilter] = useState(["Active", "Admin"]);
@@ -18,8 +18,6 @@ const User_Management = ({ setShowModal }) => {
   const [default_roles, setDefaultRoles] = useState([]);
   const [default_brand, setDefaultBrand] = useState([]);
   const [default_merchandise, setDefaultMerchandise] = useState([]);
-
-  //   const [showModal, setShowModal] = useState(false);
 
   //Register
   const [reg_username, setRegUserName] = useState(null);
@@ -272,7 +270,7 @@ const User_Management = ({ setShowModal }) => {
         {/* First div (circle) */}
         <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-            <button onClick={() => setShowModal(false)}>
+            <button onClick={() => setShowUserMng(false)}>
               <IoIosClose size={25} color={"#6425FE"} />
             </button>
           </div>

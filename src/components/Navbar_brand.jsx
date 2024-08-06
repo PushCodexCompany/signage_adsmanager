@@ -44,6 +44,8 @@ const Navbar = ({ full_brand, setBrand }) => {
   const select_campaign = User.getCampaign();
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
 
@@ -123,7 +125,7 @@ const Navbar = ({ full_brand, setBrand }) => {
               <TooltipComponent content="Profile" position="BottomCenter">
                 <div
                   className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-                  onClick={() => handleClick("userProfile")}
+                  onClick={() => setShowModal(!showModal)}
                 >
                   <PiUserCircleFill size={40} className="text-[#6425FE]" />
                   <p>
@@ -140,14 +142,22 @@ const Navbar = ({ full_brand, setBrand }) => {
                     </span>
                   </p>
                   {!select_campaign && (
-                    <MdKeyboardArrowDown className="text-gray-400 text-14" />
+                    <MdKeyboardArrowDown
+                      onClick={() => setShowModal(!showModal)}
+                      className="text-gray-400 text-14"
+                    />
                   )}
                 </div>
               </TooltipComponent>
               {!select_campaign && (
                 <>
-                  {isClicked.userProfile && (
-                    <UserProfile user={user} after_login={false} />
+                  {showModal && (
+                    <UserProfile
+                      user={user}
+                      after_login={false}
+                      setShowModal={setShowModal}
+                      showModal={showModal}
+                    />
                   )}
                 </>
               )}

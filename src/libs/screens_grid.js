@@ -153,7 +153,7 @@ export const GridTable = ({
               <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex items-center justify-center">
                   <div className="font-poppins text-md font-bold">
-                    {key + 1}
+                    {row.ScreenID}
                   </div>
                 </div>
               </td>

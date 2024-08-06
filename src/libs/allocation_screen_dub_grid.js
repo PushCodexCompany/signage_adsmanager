@@ -25,7 +25,7 @@ export const GridTable = ({ screenUsePlaylist }) => {
                   <td className="px-2 py-5 whitespace-no-wrap border-b  border-gray-200">
                     <div className="flex items-center justify-center">
                       <div className="font-poppins text-xl font-bold">
-                        {key + 1}
+                        {row.ScreenID}
                       </div>
                     </div>
                   </td>

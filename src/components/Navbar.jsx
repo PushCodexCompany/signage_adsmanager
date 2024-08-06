@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -43,6 +43,8 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
 
   const user = User.getCookieData();
   const select_campaign = User.getCampaign();
+
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -115,7 +117,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
               <TooltipComponent content="Profile" position="BottomCenter">
                 <div
                   className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-                  onClick={() => handleClick("userProfile")}
+                  onClick={() => setShowModal(!showModal)}
                 >
                   <PiUserCircleFill size={40} className="text-[#6425FE]" />
                   <p>
@@ -135,14 +137,22 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
                     </span>
                   </p>
                   {select_campaign && (
-                    <MdKeyboardArrowDown className="text-gray-400 text-14" />
+                    <MdKeyboardArrowDown
+                      onClick={() => setShowModal(!showModal)}
+                      className="text-gray-400 text-14"
+                    />
                   )}
                 </div>
               </TooltipComponent>
               {select_campaign && (
                 <>
-                  {isClicked.userProfile && (
-                    <UserProfile user={user} after_login={true} />
+                  {showModal && (
+                    <UserProfile
+                      user={user}
+                      after_login={true}
+                      setShowModal={setShowModal}
+                      showModal={showModal}
+                    />
                   )}
                 </>
               )}

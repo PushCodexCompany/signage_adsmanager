@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
 import { MdOutlineCancel } from "react-icons/md";
@@ -19,9 +19,11 @@ import User, {
 import { BiBookContent } from "react-icons/bi";
 import User_Management from "../components/User_management";
 
-const UserProfile = ({ user, after_login }) => {
+const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  const [showUserMng, setShowUserMng] = useState(false);
+  const ref = useRef();
 
   const { token } = User.getCookieData();
 
@@ -31,6 +33,25 @@ const UserProfile = ({ user, after_login }) => {
 
   useEffect(() => {
     fetchAccountStorage();
+  }, []);
+
+  useEffect(() => {
+    // Function to handle clicks outside the component
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        if (after_login) {
+          setShowModal(!showModal);
+        }
+      }
+    };
+
+    // Add event listener for clicks
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const fetchAccountStorage = async () => {
@@ -85,22 +106,28 @@ const UserProfile = ({ user, after_login }) => {
 
   return (
     <>
-      {!showModal && (
+      {showModal && (
         <div
           className="nav-item absolute right-1 top-16 bg-white border border-gray-500 p-8 rounded-lg w-96"
           style={{ zIndex: 10, borderRight: "1px solid #dedede" }}
+          ref={ref}
         >
           <div className="flex justify-between items-center">
             <p className="font-semibold text-lg dark:text-gray-200 font-poppins">
               User Profile
             </p>
-            <Button
+            <MdOutlineCancel
+              onClick={() => setShowModal(!showModal)}
+              size={35}
+              className="text-gray-500 hover:bg-gray-200 rounded-full p-2"
+            />
+            {/* <Button
               icon={<MdOutlineCancel />}
               color="rgb(153, 171, 180)"
               bgHoverColor="light-gray"
               size="2xl"
               borderRadius="50%"
-            />
+            /> */}
           </div>
           <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
             <PiUserCircleFill size={64} className="text-[#6425FE]" />
@@ -149,12 +176,11 @@ const UserProfile = ({ user, after_login }) => {
           </div>
           {!after_login ? (
             <>
-              {" "}
               <div className="mt-4">
                 {user.user.permissions.user ? (
                   <button
                     className="w-full"
-                    onClick={() => setShowModal(!showModal)}
+                    onClick={() => setShowUserMng(!showUserMng)}
                   >
                     <div className="grid grid-cols-5">
                       <div className="col-span-1 ">
@@ -182,52 +208,6 @@ const UserProfile = ({ user, after_login }) => {
                 ) : (
                   <></>
                 )}
-                {/* <button className="w-full" onClick={() => setShowModal(!showModal)}>
-              <div className="grid grid-cols-5">
-                <div className="col-span-1 ">
-                  <button
-                    type="button"
-                    style={{ color: "#6425FE", backgroundColor: "#E5FAFB" }}
-                    className="text-xl rounded-lg p-3 hover:bg-light-gray"
-                  >
-                    <FaUsersBetweenLines />
-                  </button>
-                </div>
-                <div className="col-span-4 ">
-                  <div className="flex justify-start hover:text-[#6425FE] left-2 font-semibold dark:text-gray-200 font-poppins">
-                    User Management
-                  </div>
-                  <div className="flex justify-start left-2 text-gray-500 text-sm dark:text-gray-400 font-poppins">
-                    User Management Setting
-                  </div>
-                </div>
-              </div>
-            </button> */}
-                {/* {!getBrand && (
-          <div className="mt-4">
-            <button className="w-full" onClick={() => navigate("/brand")}>
-              <div className="grid grid-cols-5">
-                <div className="col-span-1 ">
-                  <button
-                    type="button"
-                    style={{ color: "#6425FE", backgroundColor: "#E5FAFB" }}
-                    className="text-xl rounded-lg p-3 hover:bg-light-gray"
-                  >
-                    <BiBookContent />
-                  </button>
-                </div>
-                <div className="col-span-4 ">
-                  <div className="flex justify-start left-2 hover:text-[#6425FE] font-semibold dark:text-gray-200 font-poppins">
-                    Brand
-                  </div>
-                  <div className="flex justify-start left-2 text-gray-500 text-sm dark:text-gray-400 font-poppins">
-                    Select Brand
-                  </div>
-                </div>
-              </div>
-            </button>
-          </div>
-        )} */}
               </div>
               <div className="mt-5">
                 <button
@@ -244,14 +224,14 @@ const UserProfile = ({ user, after_login }) => {
         </div>
       )}
 
-      {showModal && (
+      {showUserMng && (
         <a
-          onClick={() => setShowModal(!showModal)}
+          onClick={() => setShowUserMng(!showUserMng)}
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
 
-      {showModal && <User_Management setShowModal={setShowModal} />}
+      {showUserMng && <User_Management setShowUserMng={setShowUserMng} />}
     </>
   );
 };

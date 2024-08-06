@@ -24,19 +24,20 @@ const Screen = () => {
   const getLogData = async () => {
     if (searchTerm === null) {
       const data = await User.getScreenlog(token, 1);
+      console.log("data", data);
       setLogData(data.screenlog);
       setExportData(data.screenlog);
-      setCurrentPagePdf(data.pagination[0].currentpage);
+      setCurrentPagePdf(data.pagination[0]?.currentpage);
       if (data.pagination.length > 0) {
-        setAllPages(data.pagination[0].totalpage);
+        setAllPages(data.pagination[0]?.totalpage);
       }
     } else {
       const data = await User.getScreenlog(token, 1, searchTerm);
       setLogData(data.screenlog);
       setExportData(data.screenlog);
-      setCurrentPagePdf(data.pagination[0].currentpage);
+      setCurrentPagePdf(data.pagination[0]?.currentpage);
       if (data.pagination.length > 0) {
-        setAllPages(data.pagination[0].totalpage);
+        setAllPages(data.pagination[0]?.totalpage);
       }
     }
   };
