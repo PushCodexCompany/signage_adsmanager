@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
+import Select from "react-select";
 
 const New_Tag = ({
   setOpenModalNewTag,
@@ -42,22 +43,33 @@ const New_Tag = ({
 
   const getTag = async (id) => {
     const tag = await User.getTag(id, token);
-    setTag(tag);
+    const options = tag.map((item) => ({
+      value: item.TagID,
+      label: item.TagName,
+      TagCategoryID: item.TagCategoryID,
+    }));
+    setTag(options);
+  };
+
+  const handleChange = (selectedOption) => {
+    setTagSelect(selectedOption);
   };
 
   const handleSaveTag = () => {
     if (tag_select !== undefined && tag_select !== null && tag_select !== "0") {
-      const tag_value = tag.find(
-        (items) => items.TagID === parseInt(tag_select)
-      );
+      const tag_value = tag.find((items) => items.value === tag_select.value);
 
       const isDuplicate = screenTag.some(
-        (item) => item.TagID === tag_value.TagID
+        (item) => item.TagID === tag_value.value
       );
-
       if (!isDuplicate) {
         // If TagID of b is not a duplicate, push b into a
-        screenTag.push(tag_value);
+        const transformedTags = {
+          TagID: tag_value.value,
+          TagName: tag_value.label,
+          TagCategoryID: tag_value.TagCategoryID, // Keeping this key as is, if needed
+        };
+        screenTag.push(transformedTags);
         setScreenTag(screenTag);
         setOpenModalNewTag(!openModalNewTag);
       } else {
@@ -132,7 +144,16 @@ const New_Tag = ({
                 </div>
               </div>
               <div className="col-span-8">
-                <select
+                <Select
+                  name="tag"
+                  id="tag"
+                  value={tag_select}
+                  onChange={handleChange}
+                  options={tag}
+                  placeholder="Please Select Tag"
+                  className="lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins"
+                />
+                {/* <select
                   name="tag"
                   id="tag"
                   onChange={(e) => {
@@ -149,7 +170,7 @@ const New_Tag = ({
                         <option value={items.TagID}>{items.TagName}</option>
                       ))
                     : null}
-                </select>
+                </select> */}
               </div>
             </div>
           </div>

@@ -301,7 +301,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                               key={index}
                               className="border border-gray-200 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
                               style={{
-                                flexBasis: `calc(30% - 5px)`,
+                                flexBasis: `calc(33% - 5px)`,
                               }}
                             >
                               <div className="flex justify-center items-center mr-1 ml-1">
@@ -755,6 +755,9 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                       Media Schedule
                     </div>
                   </div>
+                  <div className="text-center text-slate-500 mb-12 font-poppins">
+                    Drag media up and down to sort playback ordering
+                  </div>
                   <div className="grid grid-cols-12  mt-5">
                     <div className="col-span-1">
                       <div className="text-[#59606C] font-poppins">No</div>
@@ -775,7 +778,7 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                       </div>
                     </div>
                     {from === "list" ? (
-                      <div className="col-span-1">
+                      <div className="col-span-1 flex justify-center items-center">
                         <div className="text-[#59606C] font-poppins">
                           Action
                         </div>
@@ -833,9 +836,12 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                                     </div>
                                   </div>
                                   {from === "list" ? (
-                                    <div className="col-span-1">
-                                      <div className="font-poppins font-semibold text-sm lg:text-base">
-                                        <MdDragHandle color={"#6425FE"} />
+                                    <div className="col-span-1 flex justify-center items-center">
+                                      <div className="font-poppins font-semibold lg:text-base">
+                                        <MdDragHandle
+                                          size={28}
+                                          color={"#6425FE"}
+                                        />
                                       </div>
                                     </div>
                                   ) : (

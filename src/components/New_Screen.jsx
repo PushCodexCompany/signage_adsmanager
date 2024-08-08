@@ -390,7 +390,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                               key={index}
                               className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1"
                               style={{
-                                flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
+                                flexBasis: `calc(32% - 5px)`, // Increased width and adjusted spacing
                               }}
                             >
                               <div className="flex justify-center items-center mr-1 ml-1">
