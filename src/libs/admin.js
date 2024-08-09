@@ -1474,6 +1474,19 @@ export default {
     }
   },
 
+  getMedia: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let url = `api/v1/get_media?brandcode=${brand_code}&mediaids=${hash.mediaids}`;
+
+    const { data } = await this._get(url, "", config);
+    return data;
+  },
+
   getMedias: async function (token, page, content_name) {
     const { brand_code } = this.getBrandCode();
     const config = {

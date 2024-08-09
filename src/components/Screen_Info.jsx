@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IoIosClose } from "react-icons/io";
+import { IoIosClose, IoIosPlayCircle } from "react-icons/io";
 import { BsInfoCircle } from "react-icons/bs";
 import { BiToggleLeft, BiToggleRight } from "react-icons/bi";
 import { LuClock4 } from "react-icons/lu";
@@ -11,6 +11,7 @@ import User from "../libs/admin";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Swal from "sweetalert2";
 import firebase_func from "../libs/firebase_func";
+import Media_Player from "../components/Media_Info_Player";
 
 const health = [
   80, 80, 80, 80, 80, 80, 80, 80, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80,
@@ -110,6 +111,10 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
 
   const [width, setWidth] = useState(window.innerWidth);
 
+  const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
+  const [mediaSource, setMediaSource] = useState([]);
+  const [mediaDisplay, setMediaDisplay] = useState([]);
+
   useEffect(() => {
     getScreenData();
     getSchulde();
@@ -165,12 +170,23 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
     try {
       const { screenmedia } = await User.getScreenmedia(obj, token);
       setMediaSchedule(screenmedia);
+      getMediaContent(screenmedia);
       setHideOldModal(!hideOldModal);
       setMediaScheduleDate(items);
       setOpenMediaScheduleModal(!openMediaScheduleModal);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const getMediaContent = async (screenmedia) => {
+    const mediaIDs = screenmedia.map((item) => item.MediaID).join(",");
+    const obj = {
+      mediaids: mediaIDs,
+    };
+
+    const data = await User.getMedia(obj, token);
+    setMediaSource(data);
   };
 
   const formatTime = (seconds) => {
@@ -239,6 +255,22 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const onClickPlay = async (media_item) => {
+    const mediaitem = mediaSource.find(
+      (item) => item.MediaID === media_item.MediaID
+    );
+
+    const duration = JSON.parse(mediaitem.ContentProperties).duration;
+    if (duration) {
+      mediaitem.ContentTypeName = "Video";
+    } else {
+      mediaitem.ContentTypeName = "Image";
+    }
+    setMediaDisplay(mediaitem);
+    setModalPlayerOpen(!modalPlayerOpen);
+    setOpenMediaScheduleModal(!openMediaScheduleModal);
   };
 
   // const toggleYearSelect = () => {
@@ -786,6 +818,11 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                     ) : (
                       <></>
                     )}
+                    <div className="col-span-1 flex justify-center items-center">
+                      <div className="text-[#59606C] font-poppins">
+                        View Media
+                      </div>
+                    </div>
                   </div>
 
                   <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -847,6 +884,15 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                                   ) : (
                                     <></>
                                   )}
+                                  <div className="col-span-1 flex justify-center items-center">
+                                    <div className="font-poppins font-semibold lg:text-base cursor-pointer">
+                                      <IoIosPlayCircle
+                                        onClick={() => onClickPlay(items)}
+                                        size={28}
+                                        color={"#6425FE"}
+                                      />
+                                    </div>
+                                  </div>
                                 </div>
                               )}
                             </Draggable>
@@ -879,6 +925,17 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
             </div>
           </div>
         </div>
+      )}
+
+      {modalPlayerOpen && (
+        <Media_Player
+          mediaDisplay={mediaDisplay}
+          setModalPlayerOpen={setModalPlayerOpen}
+          modalPlayerOpen={modalPlayerOpen}
+          setMediaDisplay={setMediaDisplay}
+          setOpenMediaScheduleModal={setOpenMediaScheduleModal}
+          openMediaScheduleModal={openMediaScheduleModal}
+        />
       )}
     </>
   );
