@@ -713,7 +713,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     />
                   </div>
                   <div className="mt-10">
-                    <div className="font-poppins font-bold">Slot Per Day</div>
+                    <div className="font-poppins font-bold">Number of Slot</div>
                   </div>
                   <div className="mt-3">
                     <input
@@ -721,7 +721,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       value={booking_slot}
                       type="number"
                       className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
-                      placeholder="Enter Slot Per Day"
+                      placeholder="Enter Number of Slot"
                     />
                   </div>
                   <div className="mt-10">

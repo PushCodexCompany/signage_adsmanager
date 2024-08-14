@@ -64,20 +64,18 @@ const Create_Media_Rule = () => {
     const ratioWidth = width / divisor;
     const ratioHeight = height / divisor;
 
-    const w_percentage = ((100 - ratioWidth) / 100) * 550;
-    const h_percentage = ((100 - ratioHeight) / 100) * 550;
-
     return (
       <>
         <div className="w-[550px] h-[550px] bg-gray-200 flex justify-center items-center">
           <div
-            className={`w-[${h_percentage}px]  h-[${w_percentage}px]  bg-black text-white p-4`}
+            className={` bg-black text-white p-4`}
             style={{
-              width: `${h_percentage}px`,
-              height: `${w_percentage}px`,
+              aspectRatio: `${ratioWidth}/${ratioHeight}`,
+              width: ratioWidth * 20,
+              height: ratioHeight * 20,
               backgroundColor: "black",
             }}
-          ></div>
+          />
         </div>
       </>
     );
@@ -93,26 +91,40 @@ const Create_Media_Rule = () => {
           height: media_rule_height,
           activeresolution: toggle_disable,
         };
-        const data = await User.createMediaRule(obj, token, toggle_disable);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Add Media Rule Success ...",
-            text: `เพิ่ม Media Rule สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              navigate("/setting/media_rule/");
-            }
-          });
-        } else {
+
+        if (
+          media_rule_width === 0 ||
+          media_rule_height === 0 ||
+          media_rule_width === null ||
+          media_rule_height === null
+        ) {
           Swal.fire({
             icon: "error",
             title: "เกิดข้อผิดพลาด!",
-            text: data.message,
+            text: "width หรือ height ต้องมีค่ามากกว่า 0",
           });
+        } else {
+          const data = await User.createMediaRule(obj, token, toggle_disable);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "Add Media Rule Success ...",
+              text: `เพิ่ม Media Rule สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                navigate("/setting/media_rule/");
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
         }
       } else {
         const obj = {
@@ -124,26 +136,39 @@ const Create_Media_Rule = () => {
           activeresolution: toggle_disable,
         };
 
-        const data = await User.updateMediaRule(obj, token, toggle_disable);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Edit Media Rule Success ...",
-            text: `แก้ไข Media Rule สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              navigate("/setting/media_rule");
-            }
-          });
-        } else {
+        if (
+          media_rule_width === 0 ||
+          media_rule_height === 0 ||
+          media_rule_width === null ||
+          media_rule_height === null
+        ) {
           Swal.fire({
             icon: "error",
             title: "เกิดข้อผิดพลาด!",
-            text: data.message,
+            text: "width หรือ height ต้องมีค่ามากกว่า 0",
           });
+        } else {
+          const data = await User.updateMediaRule(obj, token, toggle_disable);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "Edit Media Rule Success ...",
+              text: `แก้ไข Media Rule สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                navigate("/setting/media_rule");
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
         }
       }
     } catch (error) {
@@ -289,35 +314,55 @@ const Create_Media_Rule = () => {
                 </div>
               </div>
               <div className="col-span-2">
-                <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold border border-gray-300 rounded-md">
+                <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold  rounded-md">
                   {isView ? (
-                    <div className="font-bold text-sm font-poppins">
-                      {media_rule_width}
-                    </div>
-                  ) : (
-                    <>
+                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          media_rule_width
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Width
+                      </label>
                       <input
-                        className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
+                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                           toggle_disable ? "text-black" : "text-gray-500"
                         }`}
                         type="number"
-                        placeholder="Width"
                         onChange={(e) => {
                           const newValue = e.target.value;
-                          if (newValue > 0) {
-                            setMediaRuleWidth(newValue);
-                          } else {
-                            Swal.fire({
-                              icon: "error",
-                              title: "เกิดข้อผิดพลาด!",
-                              text: "ต้องมีค่ามากกว่า 0",
-                            });
-                          }
+                          setMediaRuleWidth(newValue);
+                        }}
+                        value={media_rule_width}
+                        disabled
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          media_rule_width
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Width
+                      </label>
+                      <input
+                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
+                          toggle_disable ? "text-black" : "text-gray-500"
+                        }`}
+                        type="number"
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setMediaRuleWidth(newValue);
                         }}
                         value={media_rule_width}
                         disabled={!toggle_disable}
                       />
-                    </>
+                    </div>
                   )}
                 </div>
               </div>
@@ -331,79 +376,56 @@ const Create_Media_Rule = () => {
                 </div>
               </div>
               <div className="col-span-2">
-                <div className="relative flex flex-col justify-center items-center h-[40px] border border-gray-300 rounded-md">
+                <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold rounded-md">
                   {isView ? (
-                    <div className="font-bold text-sm font-poppins">
-                      {media_rule_height}
-                    </div>
-                  ) : (
-                    <>
+                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          media_rule_height
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Height
+                      </label>
                       <input
-                        className={`font-bold text-sm w-full h-full font-poppins pl-4 ${
+                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                           toggle_disable ? "text-black" : "text-gray-500"
                         }`}
-                        placeholder="Height"
                         type="number"
                         onChange={(e) => {
                           const newValue = e.target.value;
-                          if (newValue > 0) {
-                            setMediaRuleHeight(newValue);
-                          } else {
-                            Swal.fire({
-                              icon: "error",
-                              title: "เกิดข้อผิดพลาด!",
-                              text: "ต้องมีค่ามากกว่า 0",
-                            });
-                          }
+                          setMediaRuleHeight(newValue);
+                        }}
+                        value={media_rule_height}
+                        disabled
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          media_rule_height
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Height
+                      </label>
+                      <input
+                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
+                          toggle_disable ? "text-black" : "text-gray-500"
+                        }`}
+                        type="number"
+                        onChange={(e) => {
+                          const newValue = e.target.value;
+                          setMediaRuleHeight(newValue);
                         }}
                         value={media_rule_height}
                         disabled={!toggle_disable}
                       />
-                    </>
+                    </div>
                   )}
-
-                  {/* <select
-                    name="resolution"
-                    id="resolution"
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    placeholder="Resolution"
-                  >
-                    <option
-                      selected={media_value.rule1?.width === "1" ? true : false}
-                      value="1"
-                    >
-                      1920
-                    </option>
-                    <option
-                      selected={media_value.rule1?.width === "2" ? true : false}
-                      value="2"
-                    >
-                      2560
-                    </option>
-                    <option
-                      selected={media_value.rule1?.width === "3" ? true : false}
-                      value="3"
-                    >
-                      3840
-                    </option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div> */}
                 </div>
               </div>
               <div className="col-span-3">
@@ -446,7 +468,7 @@ const Create_Media_Rule = () => {
               <div className="col-span-4">
                 <div className="flex justify-start items-center">
                   <div className="font-poppins font-bold mt-2">
-                    Loops per Day
+                    Slots per Loop
                   </div>
                 </div>
               </div>
@@ -455,7 +477,7 @@ const Create_Media_Rule = () => {
               <div className="grid grid-cols-6">
                 <div className="col-span-2">
                   <div className="font-poppins text-[15px]">
-                    1 Loop = {maNotification} Seconds
+                    1 Slot = {maNotification} Seconds
                   </div>
                 </div>
                 <div className="col-span-4">

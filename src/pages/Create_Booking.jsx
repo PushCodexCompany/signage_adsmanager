@@ -1060,9 +1060,9 @@ const Create_Booking = () => {
                                   <div className="col-span-6">
                                     <div className="flex justify-start items-center">
                                       <div className="font-poppins text-xl font-bold relative group">
-                                        {items.ScreenName.length > 15 ? (
+                                        {items.ScreenName.length > 12 ? (
                                           <>
-                                            {items.ScreenName.slice(0, 12) +
+                                            {items.ScreenName.slice(0, 9) +
                                               "..."}
                                             <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                               {items.ScreenName}

@@ -197,7 +197,12 @@ const User_Management = () => {
     const merchandise_img = merchandise.find(
       (item) => item.AdvertiserID === id
     );
-    return merchandise_img ? merchandise_img.AdvertiserLogo : null;
+
+    return merchandise_img.AdvertiserLogo
+      ? merchandise_img.AdvertiserLogo
+      : `https://ui-avatars.com/api/?name=${
+          merchandise_img.AdvertiserName
+        }&background=${"000000"}&color=fff`;
   };
 
   const registerNewUser = async () => {
@@ -623,7 +628,7 @@ const User_Management = () => {
                         {reg_brand.map((item, index) => (
                           <div key={index} className="flex">
                             <img
-                              className="block ml-auto mr-auto w-12 h-12 rounded-lg"
+                              className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain"
                               src={findBrandImg(item)}
                               alt={item.name}
                             />
@@ -722,7 +727,7 @@ const User_Management = () => {
                   >
                     <div className="relative mb-4">
                       <img
-                        className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
+                        className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-contain"
                         src={
                           items.BrandLogo
                             ? items.BrandLogo
@@ -798,63 +803,67 @@ const User_Management = () => {
                 Select Merchandise to unleash the power of digital advertising
               </div>
             </div>
-            <div className="flex flex-wrap justify-center items-center lg:space-x-[-100px] mt-5 h-[550px] overflow-y-auto">
-              {merchandise.length > 0 &&
-                merchandise.map((items, key) => (
-                  <div
-                    key={key}
-                    className="sm:w-1/2 lg:w-[33%] h-[400px] p-2 flex flex-col items-center"
-                  >
-                    <div className="relative mb-4">
-                      <img
-                        className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover"
-                        src={
-                          items.AdvertiserLogo
-                            ? items.AdvertiserLogo
-                            : `https://ui-avatars.com/api/?name=${
-                                items.AdvertiserName
-                              }&background=${"000000"}&color=fff`
-                        }
-                        alt={items.AdvertiserName}
-                      />
-                      <div className="absolute top-2 right-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          onChange={() =>
-                            handleCheckboxChange(
-                              items.AdvertiserID,
-                              "merchandise"
-                            )
-                          }
-                          className="w-[20px] h-[20px]"
-                          checked={reg_merchandise.includes(items.AdvertiserID)}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      onClick={() =>
-                        handleCheckboxChange(items.AdvertiserID, "merchandise")
-                      }
-                      className="w-full"
-                    >
-                      <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                        {items.AdvertiserName}
-                      </div>
-                      <div className="text-[14px] text-slate-500 font-poppins">
-                        {items.Department}
-                      </div>
-                    </button>
+            <div className="mt-2 p-2">
+              <div className="h-[550px]  mt-8 overflow-y-auto">
+                <div className="h-[250px] flex items-start justify-center mt-3">
+                  <div className="grid grid-cols-4 gap-8">
+                    {merchandise.length > 0 &&
+                      merchandise.map((item, index) => (
+                        <div key={index}>
+                          <div className="h-64 w-64 relative">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                              onChange={() =>
+                                handleCheckboxChange(
+                                  item.AdvertiserID,
+                                  "merchandise"
+                                )
+                              }
+                              checked={reg_merchandise.includes(
+                                item.AdvertiserID
+                              )}
+                            />
+
+                            <div className="w-full h-full flex items-center justify-center border border-gray-200 rounded-lg">
+                              <img
+                                className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-contain" // Adjust the size as needed
+                                src={
+                                  item.AdvertiserLogo
+                                    ? item.AdvertiserLogo
+                                    : `https://ui-avatars.com/api/?name=${
+                                        item.AdvertiserName
+                                      }&background=${"000000"}&color=fff`
+                                }
+                                alt={item.AdvertiserName}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-xl font-bold">
+                              {item.AdvertiserName}
+                            </div>
+                          </div>
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-[#6F6F6F] text-sm">
+                              {item.AccountCode}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                   </div>
-                ))}
-            </div>
-            <div className="mt-5">
-              <div className="flex justify-center items-center">
-                <button
-                  onClick={() => saveBrandMerchandise()}
-                  className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
-                >
-                  Save
-                </button>
+                </div>
+              </div>
+
+              <div className="mt-2">
+                <div className="flex justify-center items-center">
+                  <button
+                    onClick={() => saveBrandMerchandise()}
+                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </div>
           </div>

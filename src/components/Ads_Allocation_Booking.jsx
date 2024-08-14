@@ -971,6 +971,7 @@ const Ads_Allocation_Booking = ({
       }
     } else {
       // Edit
+
       if (playlist_name !== temp_playlist_name) {
         const playlist_obj = {
           bookingid: bookingId,
@@ -1480,7 +1481,7 @@ const Ads_Allocation_Booking = ({
                         </div>
                         <div className="flex items-center justify-start">
                           <div className="font-poppins text-[32px] font-bold">
-                            {playlist_name ? (
+                            {temp_playlist_name ? (
                               <div className="flex items-center">
                                 <input
                                   className={`w-[80%] text-[#2F3847] mt-2 ${
@@ -1488,19 +1489,11 @@ const Ads_Allocation_Booking = ({
                                       ? "border border-gray-300 pl-2"
                                       : ""
                                   }`}
-                                  placeholder="Playlist"
+                                  placeholder="Playlist Name"
                                   value={playlist_name}
                                   onChange={(e) => {
                                     const newName = e.target.value;
-                                    if (newName.length < 1) {
-                                      Swal.fire({
-                                        icon: "error",
-                                        title: "เกิดข้อผิดพลาด!",
-                                        text: "กรุณากรอกชื่อ Playlist ...",
-                                      });
-                                    } else {
-                                      setPlaylistName(newName);
-                                    }
+                                    setPlaylistName(newName);
                                   }}
                                   onBlur={() => setEditPlaylist(!editPlaylist)}
                                   disabled={editPlaylist}

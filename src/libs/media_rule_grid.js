@@ -94,7 +94,7 @@ export const GridTable = ({ media_rules }) => {
                   <div className="flex flex-wrap">
                     <div
                       className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
-                      style={{ flexBasis: "calc(30% - 8px)" }}
+                      style={{ flexBasis: "calc(35% - 8px)" }}
                     >
                       <div className="font-poppins text-sm font-bold text-[#6425FE] ">
                         Resolution :
@@ -107,7 +107,7 @@ export const GridTable = ({ media_rules }) => {
                     </div>
                     <div
                       className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
-                      style={{ flexBasis: "calc(30% - 8px)" }}
+                      style={{ flexBasis: "calc(35% - 8px)" }}
                     >
                       <div className="font-poppins text-sm font-bold text-[#6425FE] ">
                         Ads Capacity : {row.AdsCapacity}

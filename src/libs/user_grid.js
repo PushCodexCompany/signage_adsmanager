@@ -172,7 +172,14 @@ export const GridTable = ({
     const merchandise_data = merchandise.find(
       (item) => item.AdvertiserID === parseInt(id)
     );
-    return merchandise_data ? merchandise_data.AdvertiserLogo : empty_img;
+
+    console.log("merchandise_data", merchandise_data);
+
+    return merchandise_data.AdvertiserLogo
+      ? merchandise_data.AdvertiserLogo
+      : `https://ui-avatars.com/api/?name=${
+          merchandise_data.AdvertiserName
+        }&background=${"000000"}&color=fff`;
   };
 
   const onClickDelete = async (id, name) => {
@@ -550,7 +557,7 @@ export const GridTable = ({
                       {reg_merchandise.map((item, index) => (
                         <div key={index} className="flex">
                           <img
-                            className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain  border border-[#dedede]"
+                            className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain  border border-[#dedede] "
                             src={getImgMerchandise(item)}
                             alt={item?.name}
                           />
@@ -688,17 +695,7 @@ export const GridTable = ({
                 Select Merchandise To Unleash The Power Of Digital Advertising
               </div>
             </div>
-            {/* <div className="mt-2 p-2">
-              <div className="relative flex items-center justify-center">
-                <input
-                  className="w-[900px] h-10 border border-gray-300 rounded-md pl-10 pr-2 font-poppins"
-                  placeholder="Search"
-                />
-                <span className="absolute inset-y-0 left-0 lg:left-80 flex items-center pl-2">
-                  <AiOutlineSearch size={20} color="#DBDBDB" />
-                </span>
-              </div>
-            </div> */}
+
             <div className="mt-2 p-2">
               <div className="h-[550px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
@@ -721,10 +718,16 @@ export const GridTable = ({
                               )}
                             />
 
-                            <div className="w-full h-full flex items-center justify-center">
+                            <div className="w-full h-full flex items-center justify-center border border-gray-200 rounded-lg">
                               <img
                                 className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-contain" // Adjust the size as needed
-                                src={item.AdvertiserLogo}
+                                src={
+                                  item.AdvertiserLogo
+                                    ? item.AdvertiserLogo
+                                    : `https://ui-avatars.com/api/?name=${
+                                        item.AdvertiserName
+                                      }&background=${"000000"}&color=fff`
+                                }
                                 alt={item.AdvertiserName}
                               />
                             </div>
