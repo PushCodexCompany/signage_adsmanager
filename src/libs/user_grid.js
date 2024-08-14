@@ -633,22 +633,35 @@ export const GridTable = ({
 
                           <div className="w-full h-full flex items-center justify-center">
                             <img
-                              className="block ml-auto mr-auto w-60 h-60 rounded-3xl object-contain" // Adjust the size as needed
-                              src={item.BrandLogo}
+                              className="block ml-auto mr-auto w-60 h-60 object-contain  border border-gray-200 rounded-lg" // Adjust the size as needed
+                              src={
+                                item.BrandLogo
+                                  ? item.BrandLogo
+                                  : `https://ui-avatars.com/api/?name=${
+                                      item.BrandName
+                                    }&background=${"000000"}&color=fff`
+                              }
                               alt={item.BrandName}
                             />
                           </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-xl font-bold">
-                            {item.BrandName}
+                        <button
+                          onClick={() =>
+                            handleCheckboxChange(item.BrandID, "brand")
+                          }
+                          className="w-full"
+                        >
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-xl font-bold  hover:text-[#6425FE]">
+                              {item.BrandName}
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-[#6F6F6F] text-sm">
-                            {item.BrandDesc}
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-[#6F6F6F] text-sm">
+                              {item.BrandDesc}
+                            </div>
                           </div>
-                        </div>
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -732,16 +745,26 @@ export const GridTable = ({
                               />
                             </div>
                           </div>
-                          <div className="flex justify-center items-center">
-                            <div className="font-poppins text-xl font-bold">
-                              {item.AdvertiserName}
+                          <button
+                            onClick={() =>
+                              handleCheckboxChange(
+                                item.AdvertiserID,
+                                "merchandise"
+                              )
+                            }
+                            className="w-full"
+                          >
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins text-xl font-bold  hover:text-[#6425FE]">
+                                {item.AdvertiserName}
+                              </div>
                             </div>
-                          </div>
-                          <div className="flex justify-center items-center">
-                            <div className="font-poppins text-[#6F6F6F] text-sm">
-                              {item.AccountCode}
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins text-[#6F6F6F] text-sm">
+                                {item.AccountCode}
+                              </div>
                             </div>
-                          </div>
+                          </button>
                         </div>
                       ))}
                   </div>

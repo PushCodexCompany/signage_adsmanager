@@ -57,28 +57,35 @@ const New_Tag = ({
 
   const handleSaveTag = () => {
     if (tag_select !== undefined && tag_select !== null && tag_select !== "0") {
-      const tag_value = tag.find((items) => items.value === tag_select.value);
+      // const tag_value = tag.find((items) => items.value === tag_select.value);
+      const tag_value = tag_select.map((selectedItem) => {
+        return tag.find((item) => item.value === selectedItem.value);
+      });
 
-      const isDuplicate = screenTag.some(
-        (item) => item.TagID === tag_value.value
-      );
-      if (!isDuplicate) {
-        // If TagID of b is not a duplicate, push b into a
-        const transformedTags = {
-          TagID: tag_value.value,
-          TagName: tag_value.label,
-          TagCategoryID: tag_value.TagCategoryID, // Keeping this key as is, if needed
-        };
-        screenTag.push(transformedTags);
-        setScreenTag(screenTag);
-        setOpenModalNewTag(!openModalNewTag);
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: "มี Tag นี้อยู่แล้ว",
-        });
-      }
+      tag_value.forEach((tag) => {
+        const isDuplicate = screenTag.some((item) => item.TagID === tag.value);
+
+        if (!isDuplicate) {
+          const transformedTags = {
+            TagID: tag.value,
+            TagName: tag.label,
+            TagCategoryID: tag.TagCategoryID,
+          };
+
+          screenTag.push(transformedTags);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: "มี Tag นี้อยู่แล้ว",
+          });
+        }
+      });
+
+      setScreenTag([...screenTag]);
+
+      // Close the modal after processing all tags
+      setOpenModalNewTag(!openModalNewTag);
     } else {
       Swal.fire({
         icon: "error",
@@ -152,6 +159,7 @@ const New_Tag = ({
                   options={tag}
                   placeholder="Please Select Tag"
                   className="lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins"
+                  isMulti
                 />
                 {/* <select
                   name="tag"

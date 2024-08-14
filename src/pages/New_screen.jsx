@@ -54,6 +54,8 @@ const New_screen = () => {
 
   const [openModalNewTag, setOpenModalNewTag] = useState(false);
 
+  const [disableCreateButton, setDisableCreateButton] = useState(false);
+
   useEffect(() => {
     if (id !== "new") {
       fetchScreen();
@@ -92,8 +94,14 @@ const New_screen = () => {
     setPreviewImg(ScreenPhoto);
     // setSelectedImage(ScreenPhoto);
     setLatLong({
-      lat: ScreenCoords.split(",")[0],
-      long: ScreenCoords.split(",")[1],
+      lat:
+        ScreenCoords.split(",")[0] !== "undefined"
+          ? ScreenCoords.split(",")[0]
+          : "",
+      long:
+        ScreenCoords.split(",")[1] !== "undefined"
+          ? ScreenCoords.split(",")[1]
+          : "",
     });
 
     setScreenCityName(ScreenCity);
@@ -209,17 +217,43 @@ const New_screen = () => {
           screenclosetime: closeTime || "",
           manotifydelay: notificationDelay || "",
         };
+
         if (obj.screenname) {
-          try {
-            const data = await User.createNewScreen(obj, token);
-            if (data.code !== 404) {
-              if (selectedImage) {
-                const form = new FormData();
-                form.append("target", "screenphoto");
-                form.append("screenid", data.screenid);
-                form.append("logo", selectedImage);
-                const data_img = await User.saveImgAccountScreens(form, token);
-                if (data_img.code !== 404) {
+          if (mediaRule) {
+            try {
+              const data = await User.createNewScreen(obj, token);
+              setDisableCreateButton(true);
+              if (data.code !== 404) {
+                if (selectedImage) {
+                  const form = new FormData();
+                  form.append("target", "screenphoto");
+                  form.append("screenid", data.screenid);
+                  form.append("logo", selectedImage);
+                  const data_img = await User.saveImgAccountScreens(
+                    form,
+                    token
+                  );
+                  if (data_img.code !== 404) {
+                    Swal.fire({
+                      icon: "success",
+                      title: "สร้าง Screen สำเร็จ!",
+                      text: `สร้าง Screen สำเร็จ!`,
+                    }).then((result) => {
+                      if (
+                        result.isConfirmed ||
+                        result.dismiss === Swal.DismissReason.backdrop
+                      ) {
+                        navigate(`/screen`);
+                      }
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: "error",
+                      title: "เกิดข้อผิดพลาด!",
+                      text: data_img.message,
+                    });
+                  }
+                } else {
                   Swal.fire({
                     icon: "success",
                     title: "สร้าง Screen สำเร็จ!",
@@ -232,36 +266,24 @@ const New_screen = () => {
                       navigate(`/screen`);
                     }
                   });
-                } else {
-                  Swal.fire({
-                    icon: "error",
-                    title: "เกิดข้อผิดพลาด!",
-                    text: data_img.message,
-                  });
                 }
               } else {
+                setDisableCreateButton(false);
                 Swal.fire({
-                  icon: "success",
-                  title: "สร้าง Screen สำเร็จ!",
-                  text: `สร้าง Screen สำเร็จ!`,
-                }).then((result) => {
-                  if (
-                    result.isConfirmed ||
-                    result.dismiss === Swal.DismissReason.backdrop
-                  ) {
-                    navigate(`/screen`);
-                  }
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data.message,
                 });
               }
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "เกิดข้อผิดพลาด!",
-                text: data.message,
-              });
+            } catch (error) {
+              console.log("error", error);
             }
-          } catch (error) {
-            console.log("error", error);
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: "กรุณาเลือก Media Rule",
+            });
           }
         } else {
           Swal.fire({
@@ -295,16 +317,39 @@ const New_screen = () => {
         manotifydelay: null,
       };
       if (obj.screenname) {
-        try {
-          const data = await User.createNewScreen(obj, token);
-          if (data.code !== 404) {
-            if (selectedImage) {
-              const form = new FormData();
-              form.append("target", "screenphoto");
-              form.append("screenid", data.screenid);
-              form.append("logo", selectedImage);
-              const data_img = await User.saveImgAccountScreens(form, token);
-              if (data_img.code !== 404) {
+        if (mediaRule) {
+          try {
+            setDisableCreateButton(true);
+            const data = await User.createNewScreen(obj, token);
+            if (data.code !== 404) {
+              if (selectedImage) {
+                const form = new FormData();
+                form.append("target", "screenphoto");
+                form.append("screenid", data.screenid);
+                form.append("logo", selectedImage);
+                const data_img = await User.saveImgAccountScreens(form, token);
+                if (data_img.code !== 404) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "สร้าง Screen สำเร็จ!",
+                    text: `สร้าง Screen สำเร็จ!`,
+                  }).then((result) => {
+                    if (
+                      result.isConfirmed ||
+                      result.dismiss === Swal.DismissReason.backdrop
+                    ) {
+                      navigate(`/screen`);
+                    }
+                  });
+                } else {
+                  setDisableCreateButton(false);
+                  Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: data_img.message,
+                  });
+                }
+              } else {
                 Swal.fire({
                   icon: "success",
                   title: "สร้าง Screen สำเร็จ!",
@@ -317,36 +362,24 @@ const New_screen = () => {
                     navigate(`/screen`);
                   }
                 });
-              } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "เกิดข้อผิดพลาด!",
-                  text: data_img.message,
-                });
               }
             } else {
+              setDisableCreateButton(false);
               Swal.fire({
-                icon: "success",
-                title: "สร้าง Screen สำเร็จ!",
-                text: `สร้าง Screen สำเร็จ!`,
-              }).then((result) => {
-                if (
-                  result.isConfirmed ||
-                  result.dismiss === Swal.DismissReason.backdrop
-                ) {
-                  navigate(`/screen`);
-                }
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
               });
             }
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
+          } catch (error) {
+            console.log("error", error);
           }
-        } catch (error) {
-          console.log("error", error);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: "กรุณาเลือก Media Rule",
+          });
         }
       } else {
         Swal.fire({
@@ -1098,6 +1131,7 @@ const New_screen = () => {
                     <button
                       onClick={() => handleCreateScreen()}
                       className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins rounded-lg"
+                      disabled={disableCreateButton}
                     >
                       Create Screen
                     </button>
@@ -1105,6 +1139,7 @@ const New_screen = () => {
                     <button
                       onClick={() => handleEditScreen()}
                       className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins rounded-lg"
+                      disabled={disableCreateButton}
                     >
                       Save Edit Screen
                     </button>

@@ -742,7 +742,7 @@ const Create_Booking = () => {
 
     return (
       <div className="grid grid-cols-6">
-        <div className="col-span-3">
+        <div className="col-span-3 ">
           <div className="flex">
             {editing ? (
               <input
@@ -752,10 +752,10 @@ const Create_Booking = () => {
                 onKeyPress={handleKeyPress}
                 onBlur={handleBlur}
                 autoFocus
-                className="font-poppins font-semibold text-2xl w-[95%] pl-2"
+                className="font-poppins font-semibold text-2xl w-[95%] pl-2 border border-gray-200 rounded-lg"
               />
             ) : (
-              <div className="font-poppins font-semibold text-2xl w-[95%] pl-2">
+              <div className="font-poppins font-semibold text-2xl w-[95%] pl-2 border border-gray-200 rounded-lg">
                 {value}
               </div>
             )}
@@ -810,10 +810,10 @@ const Create_Booking = () => {
           </div>
         </div>
 
-        <Filter
+        {/* <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
-        />
+        /> */}
 
         <div className="mt-7 grid grid-cols-8 md:space-x-2">
           <div className="col-span-2">

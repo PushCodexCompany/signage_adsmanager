@@ -332,6 +332,72 @@ export const GridTable = ({
     ));
   };
 
+  const handleSelectInfoScreen = (screen) => {
+    setSelectInfoScren(screen);
+    setOpenInfoScreenModal(!openInfoScreenModal);
+  };
+
+  const handleEditScreen = (screen) => {
+    navigate(`/screen/create/${screen.ScreenID}`, {
+      state: { screen: screen },
+    });
+  };
+
+  const handleDeleteScreen = async (screen_id, screen_name) => {
+    Swal.fire({
+      text: `คุณต้องการลบจอ ${screen_name} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { token } = User.getCookieData();
+        const data = await User.deleteScreen(screen_id, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Delete Screen Success ...",
+            text: `ลบ Screen สำเร็จ!`,
+          }).then(async (result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              const data = await fetchDataForPage(currentPage);
+              setData(data.screens);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      }
+    });
+  };
+
+  const handleUnpairScreen = (row) => {
+    setScreenSelect(row);
+    setOpenUnPairScreenModal(!openUnPairScreenModal);
+  };
+
+  const handlePairScreen = (row) => {
+    setScreenSelect(row);
+    setOpenPairScreenModal(!openPairScreenModal);
+  };
+
+  // const findScreenResolutionID = (id) => {
+  //   const resolution = screens_options_data.find(
+  //     (item) => item.ScreenResolutionID === id
+  //   );
+  //   return resolution ? resolution.Resolution : "No Resolution";
+  // };
+
   // const toggleAllCheckboxes = () => {
   //   const newCheckboxes = {};
   //   const newSelectAll = !selectAll;
@@ -387,71 +453,6 @@ export const GridTable = ({
 
   //     return updatedCheckboxes;
   //   });
-  // };
-
-  const handleSelectInfoScreen = (screen) => {
-    setSelectInfoScren(screen);
-    setOpenInfoScreenModal(!openInfoScreenModal);
-  };
-
-  const handleEditScreen = (screen) => {
-    navigate(`/screen/create/${screen.ScreenID}`, {
-      state: { screen: screen },
-    });
-  };
-
-  const handleDeleteScreen = async (screen_id, screen_name) => {
-    Swal.fire({
-      text: `คุณต้องการลบจอ ${screen_name} ?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      confirmButtonText: "ลบข้อมูล",
-      cancelButtonText: "ยกเลิก",
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        const { token } = User.getCookieData();
-        const data = await User.deleteScreen(screen_id, token);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Delete Screen Success ...",
-            text: `ลบ Screen สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              navigate("/screen");
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
-        }
-      }
-    });
-  };
-
-  const handleUnpairScreen = (row) => {
-    setScreenSelect(row);
-    setOpenUnPairScreenModal(!openUnPairScreenModal);
-  };
-
-  const handlePairScreen = (row) => {
-    setScreenSelect(row);
-    setOpenPairScreenModal(!openPairScreenModal);
-  };
-
-  // const findScreenResolutionID = (id) => {
-  //   const resolution = screens_options_data.find(
-  //     (item) => item.ScreenResolutionID === id
-  //   );
-  //   return resolution ? resolution.Resolution : "No Resolution";
   // };
 
   return (

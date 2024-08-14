@@ -71,8 +71,8 @@ const Create_Media_Rule = () => {
             className={` bg-black text-white p-4`}
             style={{
               aspectRatio: `${ratioWidth}/${ratioHeight}`,
-              width: ratioWidth * 20,
-              height: ratioHeight * 20,
+              width: ratioWidth * 15,
+              height: ratioHeight * 15,
               backgroundColor: "black",
             }}
           />
@@ -468,7 +468,7 @@ const Create_Media_Rule = () => {
               <div className="col-span-4">
                 <div className="flex justify-start items-center">
                   <div className="font-poppins font-bold mt-2">
-                    Slots per Loop
+                    Slots per Loops
                   </div>
                 </div>
               </div>
@@ -477,7 +477,7 @@ const Create_Media_Rule = () => {
               <div className="grid grid-cols-6">
                 <div className="col-span-2">
                   <div className="font-poppins text-[15px]">
-                    1 Slot = {maNotification} Seconds
+                    1 Slot = {maNotification} Second
                   </div>
                 </div>
                 <div className="col-span-4">
@@ -490,8 +490,8 @@ const Create_Media_Rule = () => {
                         ).toFixed(2)
                       : media_rule_adsCapacity * maNotification}{" "}
                     {media_rule_adsCapacity * maNotification > 60
-                      ? "Minutes"
-                      : "Seconds"}
+                      ? "Minute"
+                      : "Second"}
                   </div>
                 </div>
               </div>

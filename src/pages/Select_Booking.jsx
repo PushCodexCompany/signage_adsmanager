@@ -281,10 +281,10 @@ const Select_Booking = () => {
                 onKeyPress={handleKeyPress}
                 onBlur={handleBlur}
                 autoFocus
-                className="font-poppins font-semibold text-2xl w-[95%] pl-2"
+                className="font-poppins font-semibold text-2xl w-[95%] pl-2 border border-gray-200 rounded-lg"
               />
             ) : (
-              <div className="font-poppins font-semibold text-2xl w-[95%] pl-2">
+              <div className="font-poppins font-semibold text-2xl w-[95%] pl-2 border border-gray-200 rounded-lg">
                 {value}
               </div>
             )}
@@ -395,10 +395,10 @@ const Select_Booking = () => {
           </div>
         </div>
 
-        <Filter
+        {/* <Filter
           filter_screen={filter_screen}
           setFilterScreen={setFilterScreen}
-        />
+        /> */}
 
         <div className="mt-7 grid grid-cols-8 md:space-x-2">
           {/* Left Panel */}

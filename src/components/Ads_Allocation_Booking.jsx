@@ -910,195 +910,194 @@ const Ads_Allocation_Booking = ({
         playlistname: playlist_name,
         mediaruleid: media_rules_select_id,
       };
-      try {
-        const create_return = await User.createMediaplaylist(
-          playlist_obj,
-          token
-        );
-        if (create_return.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Create Media Playlist Success ...",
-            text: "สร้าง Media Playlist สำเร็จ!",
-          }).then(async (result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              const data = await getMediaPlaylist();
-              setMediaPlaylistId(create_return.mediaplaylistid);
-              setSelectedOption(data);
-              setCheckCreateMediaPlaylist(false);
-              if (media_list.length > 0) {
-                try {
-                  const media_obj = {
-                    bookingid: bookingId,
-                    mediaplaylistid: create_return.mediaplaylistid,
-                    medias: media_list,
-                  };
-                  const data = await User.createMediaPlaylistContent(
-                    media_obj,
-                    token
-                  );
-                  if (data.code !== 404) {
-                    const data = await getMediaPlaylist();
-                    setSelectedOption(data);
-                    setCheckCreateMediaPlaylist(false);
-                  } else {
-                    Swal.fire({
-                      icon: "error",
-                      title: "เกิดข้อผิดพลาด!",
-                      text: data.message,
-                    });
+      if (playlist_name) {
+        try {
+          const create_return = await User.createMediaplaylist(
+            playlist_obj,
+            token
+          );
+          if (create_return.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "Create Media Playlist Success ...",
+              text: "สร้าง Media Playlist สำเร็จ!",
+            }).then(async (result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                const data = await getMediaPlaylist();
+                setMediaPlaylistId(create_return.mediaplaylistid);
+                setSelectedOption(data);
+                setCheckCreateMediaPlaylist(false);
+                if (media_list.length > 0) {
+                  try {
+                    const media_obj = {
+                      bookingid: bookingId,
+                      mediaplaylistid: create_return.mediaplaylistid,
+                      medias: media_list,
+                    };
+                    const data = await User.createMediaPlaylistContent(
+                      media_obj,
+                      token
+                    );
+                    if (data.code !== 404) {
+                      const data = await getMediaPlaylist();
+                      setSelectedOption(data);
+                      setCheckCreateMediaPlaylist(false);
+                    } else {
+                      Swal.fire({
+                        icon: "error",
+                        title: "เกิดข้อผิดพลาด!",
+                        text: data.message,
+                      });
+                    }
+                  } catch (error) {
+                    console.log("error");
                   }
-                } catch (error) {
-                  console.log("error");
+                } else {
+                  return;
                 }
-              } else {
-                return;
               }
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: create_return.message,
-          });
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: create_return.message,
+            });
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "กรุณากรอกชื่อ Playlist",
+        });
       }
     } else {
       // Edit
-
-      if (playlist_name !== temp_playlist_name) {
-        const playlist_obj = {
-          bookingid: bookingId,
-          mediaplaylistid: media_playlist_id,
-          playlistname: playlist_name,
-        };
-
-        try {
-          const data = await User.updateMediaplaylist(playlist_obj, token);
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "Edit Media to Playlist Success ...",
-              text: "แก้ไข Media to Playlist สำเร็จ!",
-            }).then(async (result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                const data = await getMediaPlaylist();
-                setSelectedOption(data);
-                setTempPlaylistName(playlist_name);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
+      if (playlist_name) {
+        if (playlist_name !== temp_playlist_name) {
+          const playlist_obj = {
+            bookingid: bookingId,
+            mediaplaylistid: media_playlist_id,
+            playlistname: playlist_name,
+          };
+          try {
+            const data = await User.updateMediaplaylist(playlist_obj, token);
+            if (data.code !== 404) {
+              const data = await getMediaPlaylist();
+              setSelectedOption(data);
+              setTempPlaylistName(playlist_name);
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
+            }
+          } catch (error) {
+            console.log("error");
           }
-        } catch (error) {
-          console.log("error");
         }
-      }
-
-      const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
-      const isNewMediaInPlaylist = clonedItemsPanel1.value.medias.some(
-        (item) => item.MediaID === 0
-      );
-      if (isNewMediaInPlaylist) {
-        const playlist = handleMediaPlaylist(clonedItemsPanel1);
-        const media_list = playlist.map((media, index) => ({
-          mediaid: media.MediaID,
-          contentid: media.ContentID,
-          duration: media.duration,
-          ordering: index + 1,
-        }));
-
-        const playlist_obj = {
-          bookingid: bookingId,
-          mediaplaylistid: media_playlist_id,
-          medias: media_list,
-        };
-
-        try {
-          const data = await User.updateMediaPlaylistContent(
-            playlist_obj,
-            token
-          );
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "Edit Media to Playlist Success ...",
-              text: "แก้ไข Media to Playlist สำเร็จ!",
-            }).then(async (result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                const data = await getMediaPlaylist();
-                setSelectedOption(data);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
+        const clonedItemsPanel1 = JSON.parse(JSON.stringify(itemsPanel1));
+        const isNewMediaInPlaylist = clonedItemsPanel1.value.medias.some(
+          (item) => item.MediaID === 0
+        );
+        if (isNewMediaInPlaylist) {
+          const playlist = handleMediaPlaylist(clonedItemsPanel1);
+          const media_list = playlist.map((media, index) => ({
+            mediaid: media.MediaID,
+            contentid: media.ContentID,
+            duration: media.duration,
+            ordering: index + 1,
+          }));
+          const playlist_obj = {
+            bookingid: bookingId,
+            mediaplaylistid: media_playlist_id,
+            medias: media_list,
+          };
+          try {
+            const data = await User.updateMediaPlaylistContent(
+              playlist_obj,
+              token
+            );
+            if (data.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "Edit Media to Playlist Success ...",
+                text: "แก้ไข Media to Playlist สำเร็จ!",
+              }).then(async (result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  const data = await getMediaPlaylist();
+                  setSelectedOption(data);
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
+            }
+          } catch (error) {
+            console.log("error");
           }
-        } catch (error) {
-          console.log("error");
+        } else {
+          const playlist = handleMediaPlaylist(clonedItemsPanel1);
+          const media_list = playlist.map((media, index) => ({
+            mediaid: media.MediaID,
+            contentid: media.ContentID,
+            duration: media.duration,
+            ordering: index + 1,
+          }));
+          const playlist_obj = {
+            bookingid: bookingId,
+            mediaplaylistid: media_playlist_id,
+            medias: media_list,
+          };
+          try {
+            const data = await User.updateMediaPlaylistContent(
+              playlist_obj,
+              token
+            );
+            if (data.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "Edit Media to Playlist Success ...",
+                text: "แก้ไข Media to Playlist สำเร็จ!",
+              }).then(async (result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  const data = await getMediaPlaylist();
+                  setSelectedOption(data);
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
+            }
+          } catch (error) {
+            console.log("error");
+          }
         }
       } else {
-        const playlist = handleMediaPlaylist(clonedItemsPanel1);
-        const media_list = playlist.map((media, index) => ({
-          mediaid: media.MediaID,
-          contentid: media.ContentID,
-          duration: media.duration,
-          ordering: index + 1,
-        }));
-        const playlist_obj = {
-          bookingid: bookingId,
-          mediaplaylistid: media_playlist_id,
-          medias: media_list,
-        };
-
-        try {
-          const data = await User.updateMediaPlaylistContent(
-            playlist_obj,
-            token
-          );
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "Edit Media to Playlist Success ...",
-              text: "แก้ไข Media to Playlist สำเร็จ!",
-            }).then(async (result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                const data = await getMediaPlaylist();
-                setSelectedOption(data);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
-          }
-        } catch (error) {
-          console.log("error");
-        }
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "กรุณากรอกชื่อ Playlist",
+        });
       }
     }
   };
@@ -1525,7 +1524,7 @@ const Ads_Allocation_Booking = ({
                                 {...provided.droppableProps}
                                 className="h-[630px] overflow-y-auto space-y-2"
                               >
-                                {playlist_name ? (
+                                {temp_playlist_name ? (
                                   renderMediaList(
                                     itemsPanel1.value.slots,
                                     itemsPanel1.value.medias
