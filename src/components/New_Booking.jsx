@@ -261,6 +261,33 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     }
   };
 
+  const formatDates = (dates) => {
+    const formatted = [];
+    let rangeStart = null;
+
+    for (let i = 0; i < dates.length; i++) {
+      const currentDate = new Date(dates[i]);
+      const nextDate = i < dates.length - 1 ? new Date(dates[i + 1]) : null;
+
+      if (!rangeStart) {
+        rangeStart = currentDate;
+      }
+
+      if (!nextDate || (nextDate - currentDate) / (1000 * 60 * 60 * 24) > 1) {
+        const rangeEnd = currentDate;
+        const startStr = format(rangeStart, "dd MMM yyyy");
+        const endStr = format(rangeEnd, "dd MMM yyyy");
+
+        formatted.push(
+          startStr + (rangeStart !== rangeEnd ? " - " + endStr : "")
+        );
+        rangeStart = null;
+      }
+    }
+
+    return formatted.join(" , ");
+  };
+
   const handleSaveMerchandise = async () => {
     const { brand_code } = User.getBrandCode();
     const obj = {
@@ -282,12 +309,34 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     try {
       const data = await User.createMerchandise(encrypted, token);
       if (data.code !== 404) {
-        const form = new FormData();
-        form.append("target", "advertiserlogo");
-        form.append("advertiserid", data.advertiserid);
-        form.append("logo", merchandise_img);
-        const data_img = await User.saveImgMerchandise(form, token);
-        if (data_img.code !== 404) {
+        if (merchandise_img) {
+          const form = new FormData();
+          form.append("target", "advertiserlogo");
+          form.append("advertiserid", data.advertiserid);
+          form.append("logo", merchandise_img);
+          const data_img = await User.saveImgMerchandise(form, token);
+          if (data_img.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "สร้าง Merchandise สำเร็จ!",
+              text: `สร้าง Merchandise สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                getMechendise();
+                setShowCreateMerchandise(!showCreateMerchandise);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data_img.message,
+            });
+          }
+        } else {
           Swal.fire({
             icon: "success",
             title: "สร้าง Merchandise สำเร็จ!",
@@ -297,14 +346,9 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               result.isConfirmed ||
               result.dismiss === Swal.DismissReason.backdrop
             ) {
-              navigate("/merchandise");
+              getMechendise();
+              setShowCreateMerchandise(!showCreateMerchandise);
             }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data_img.message,
           });
         }
       } else {
@@ -646,16 +690,19 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="mt-8 flex justify-center items-center">
                 {selected_dates.length > 0 ? (
                   <div className="font-poppins text-[#7C7B7B]">
-                    {`Your Booking Period :  ${format(
-                      selected_dates[0],
-                      "EEE dd MMM yyyy"
-                    )} - ${format(
-                      selected_dates[selected_dates.length - 1],
-                      "EEE dd MMM yyyy"
-                    )}`}
+                    {`Your Booking Period: ${formatDates(selected_dates)}`}
                   </div>
                 ) : (
-                  ""
+                  //    <div className="font-poppins text-[#7C7B7B]">
+                  //    {`Your Booking Period :  ${format(
+                  //      selected_dates[0],
+                  //      "EEE dd MMM yyyy"
+                  //    )} - ${format(
+                  //      selected_dates[selected_dates.length - 1],
+                  //      "EEE dd MMM yyyy"
+                  //    )}`}
+                  //  </div>
+                  <></>
                 )}
               </div>
             </div>
@@ -730,15 +777,22 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                   <div className="mt-3 flex justify-center items-center">
-                    <div className="font-poppins text-[#7C7B7B]">
-                      {`Your Booking Period :  ${format(
-                        selected_dates[0],
-                        "EEE dd MMM yyyy"
-                      )} - ${format(
-                        selected_dates[selected_dates.length - 1],
-                        "EEE dd MMM yyyy"
-                      )}`}
-                    </div>
+                    {selected_dates.length > 0 ? (
+                      <div className="font-poppins text-[#7C7B7B]">
+                        {`Your Booking Period: ${formatDates(selected_dates)}`}
+                      </div>
+                    ) : (
+                      //    <div className="font-poppins text-[#7C7B7B]">
+                      //    {`Your Booking Period :  ${format(
+                      //      selected_dates[0],
+                      //      "EEE dd MMM yyyy"
+                      //    )} - ${format(
+                      //      selected_dates[selected_dates.length - 1],
+                      //      "EEE dd MMM yyyy"
+                      //    )}`}
+                      //  </div>
+                      <></>
+                    )}
                   </div>
                 </div>
               </div>
@@ -801,7 +855,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                   <div className="mt-5 flex">
-                    <div className="font-poppins font-bold text-2xl">
+                    {selected_dates.length > 0 ? (
+                      <div className="font-poppins font-bold text-2xl">
+                        {`${formatDates(selected_dates)}`}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    {/* <div className="font-poppins font-bold text-2xl">
                       {`${format(
                         selected_dates[0],
                         "EEE dd MMM yyyy"
@@ -809,7 +870,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         selected_dates[selected_dates.length - 1],
                         "EEE dd MMM yyyy"
                       )}`}
-                    </div>
+                    </div> */}
                   </div>
                   <div className="mt-5">
                     <div className="font-poppins font-bold text-4xl">
@@ -874,7 +935,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       </div>
 
       {showCreateMerchandise && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
+        <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-full overflow-x-auto">
           {/* First div (circle) */}
           <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
             <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">

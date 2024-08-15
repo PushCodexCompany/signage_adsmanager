@@ -1079,8 +1079,17 @@ const Create_Booking = () => {
                                       </div>
                                     </div>
                                     <div className="flex justify-start items-center">
-                                      <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
-                                        Media Rule : {items.Media_Rules}
+                                      <div className="w-full font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                        <div className="flex items-center justify-center ">
+                                          Media Rule
+                                        </div>
+                                        <div className="flex items-center justify-center">
+                                          {`W ${
+                                            items.Media_Rules.split("x")[0]
+                                          } x H ${
+                                            items.Media_Rules.split("x")[1]
+                                          }`}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

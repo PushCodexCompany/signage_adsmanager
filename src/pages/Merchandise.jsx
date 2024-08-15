@@ -84,7 +84,7 @@ const Merchandise = () => {
                 result.isConfirmed ||
                 result.dismiss === Swal.DismissReason.backdrop
               ) {
-                window.location.reload();
+                getMechendise();
               }
             });
           } else {

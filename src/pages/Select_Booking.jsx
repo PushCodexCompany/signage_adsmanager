@@ -598,20 +598,24 @@ const Select_Booking = () => {
                                       </div>
                                     </div>
                                     <div className="flex justify-start items-center">
-                                      <div className="font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
-                                        Media Rule :{" "}
-                                        {items.ScreenRule[0].Width &&
-                                        items.ScreenRule[0].Height
-                                          ? parseInt(
-                                              items.ScreenRule[0].Width,
-                                              10
-                                            ) +
-                                            "x" +
-                                            parseInt(
-                                              items.ScreenRule[0].Height,
-                                              10
-                                            )
-                                          : "Not Set"}
+                                      <div className="w-full font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                        <div className="flex items-center justify-center ">
+                                          Media Rule
+                                        </div>
+                                        <div className="flex items-center justify-center">
+                                          {items.ScreenRule[0].Width &&
+                                          items.ScreenRule[0].Height
+                                            ? `W ${parseInt(
+                                                items.ScreenRule[0].Width,
+                                                10
+                                              )}` +
+                                              " x " +
+                                              `H ${parseInt(
+                                                items.ScreenRule[0].Height,
+                                                10
+                                              )}`
+                                            : "Not Set"}
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

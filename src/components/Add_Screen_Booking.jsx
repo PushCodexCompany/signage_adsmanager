@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoIosClose, IoIosSearch } from "react-icons/io";
+import Navbar from "../components/Navbar_modal";
 import Filter from "../components/Filter";
 import { format } from "date-fns";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -25,9 +26,11 @@ const Add_Screen_Booking = ({
 }) => {
   const { token } = User.getCookieData();
   const [screen, setScreens] = useState([]);
+  const [temp_screen, setTempScreen] = useState([]);
   const [screens_options_data, setScreenOptionsData] = useState([]);
   const [CityData, setCityData] = useState([]);
   const [filter_screen, setFilterScreen] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   useEffect(() => {
     getScreenData();
@@ -38,6 +41,10 @@ const Add_Screen_Booking = ({
   useEffect(() => {
     getScreenData(filter_screen);
   }, [filter_screen]);
+
+  useEffect(() => {
+    FilterScreen();
+  }, [searchTerm]);
 
   const getScreenData = async (filter) => {
     try {
@@ -65,10 +72,21 @@ const Add_Screen_Booking = ({
           return items;
         })
       );
-
       setScreens(updatedData);
+      setTempScreen(updatedData);
     } catch (error) {
       console.error("Error fetching screen data:", error);
+    }
+  };
+
+  const FilterScreen = () => {
+    if (searchTerm.length > 0) {
+      const filteredScreens = screen.filter((s) =>
+        s.ScreenName.includes(searchTerm)
+      );
+      setScreens(filteredScreens);
+    } else {
+      setScreens(temp_screen);
     }
   };
 
@@ -162,24 +180,7 @@ const Add_Screen_Booking = ({
           </div>
         </div>
         {/* Search Box */}
-        <div className="p-1 mt-1">
-          <div className="basis-8/12 lg:basis-11/12 rounded-lg border border-gray-200">
-            <div className="flex">
-              <NavButton
-                customFunc={search}
-                title="Search"
-                color="grey"
-                icon={<IoIosSearch />}
-              />
-              <input
-                className=" w-full h-[46px] rounded relative border-gray-500  transition font-poppins"
-                type="text"
-                name="name"
-                placeholder="Search..."
-              />
-            </div>
-          </div>
-        </div>
+        <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
         {/* Search Box */}
         <Filter
           filter_screen={filter_screen}

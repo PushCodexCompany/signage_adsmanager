@@ -1371,7 +1371,7 @@ const Ads_Allocation_Booking = ({
                       <div className="col-span-1" />
                       <div className="col-span-6">
                         <div className="font-poppins font-medium text-lg">
-                          {media_rules_select?.width}x
+                          W {media_rules_select?.width} x H{" "}
                           {media_rules_select?.height} px
                         </div>
                       </div>
@@ -1390,7 +1390,7 @@ const Ads_Allocation_Booking = ({
                         <div className="h-[40px] bg-[#FD6822] rounded-md">
                           <div className="flex justify-center items-center">
                             <div className="font-poppins font-medium text-lg text-white text-center mt-2">
-                              Resolution : {media_rules_select?.width}x
+                              Resolution : W {media_rules_select?.width} x H{" "}
                               {media_rules_select?.height} px
                             </div>
                           </div>
