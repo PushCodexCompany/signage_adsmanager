@@ -49,7 +49,7 @@ const Add_Screen_Booking = ({
   const getScreenData = async (filter) => {
     try {
       let data;
-      if (filter && filter.length > 0) {
+      if (filter && filter?.length > 0) {
         data = await User.getScreensWithAdsCapacityAndTag(
           bookingId,
           booking_slot,
@@ -80,7 +80,7 @@ const Add_Screen_Booking = ({
   };
 
   const FilterScreen = () => {
-    if (searchTerm.length > 0) {
+    if (searchTerm?.length > 0) {
       const filteredScreens = screen.filter((s) =>
         s.ScreenName.includes(searchTerm)
       );
