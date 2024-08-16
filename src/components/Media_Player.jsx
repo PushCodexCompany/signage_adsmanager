@@ -6,8 +6,6 @@ const Media_Player = ({
   mediaDisplay,
   setModalPlayerOpen,
   modalPlayerOpen,
-  setOpenAdsAllocationModal,
-  openAdsAllocationModal,
   setMediaDisplay,
 }) => {
   // Parse ContentProperties JSON string to object
@@ -23,20 +21,20 @@ const Media_Player = ({
   const lgHeight = isHorizontal ? "500px" : "890px";
 
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
+    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
       {/* First div (circle) */}
       <div
         className={`absolute ${
           mediaDisplay.ContentTypeName === "Image"
             ? `${
                 isHorizontal
-                  ? "lg:top-36 lg:right-[160px] right-10 top-[270px]"
-                  : "lg:top-12 lg:right-[160px] right-10 top-[180px]"
+                  ? "lg:top-12 lg:right-[120px] right-11 top-[45px]"
+                  : "lg:top-12 lg:right-[120px] right-11 top-[45px]"
               } `
             : `${
                 isHorizontal
-                  ? "lg:top-1 lg:right-[160px] right-10 top-[330px]"
-                  : "lg:top-[5px] lg:right-[160px] right-10 top-[330px]"
+                  ? "lg:top-12 lg:right-[120px] right-11 top-[45px]"
+                  : "lg:top-12 lg:right-[120px] right-11 top-[45px]"
               } `
         } m-4 z-30`}
       >
@@ -46,7 +44,6 @@ const Media_Player = ({
           <button
             onClick={() => {
               setModalPlayerOpen(!modalPlayerOpen);
-              setOpenAdsAllocationModal(!openAdsAllocationModal);
               setMediaDisplay([]);
             }}
           >
@@ -55,7 +52,7 @@ const Media_Player = ({
         </div>
       </div>
       {/* Second div (gray background) */}
-      <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
+      <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative ">
         <div className="flex justify-center items-center text-center mt-5">
           <div className="font-poppins text-xl lg:text-4xl font-bold">
             Media : {mediaDisplay.ContentName}

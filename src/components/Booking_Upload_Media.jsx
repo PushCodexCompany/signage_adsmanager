@@ -298,10 +298,10 @@ const Booking_Upload_Media = ({
           <div className="font-poppins text-5xl font-bold">New Media</div>
         </div>
         <div className="flex justify-center items-center mt-2">
-          <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+          {/* <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry.
-          </div>
+          </div> */}
         </div>
 
         <div className="flex justify-center items-center mt-2 p-5">

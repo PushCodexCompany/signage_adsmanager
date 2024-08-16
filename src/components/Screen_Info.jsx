@@ -211,7 +211,11 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
     const resolution = screen_resolution.find(
       (item) => item.ScreenResolutionID === id
     );
-    return resolution ? resolution.Resolution : "No Resolution";
+    return resolution
+      ? `W ${resolution.Resolution.split("x")[0]} x H ${
+          resolution.Resolution.split("x")[1]
+        }`
+      : "No Resolution";
   };
 
   const findPhysicalSizeID = (id) => {
@@ -336,9 +340,9 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                                 flexBasis: `calc(33% - 5px)`,
                               }}
                             >
-                              <div className="flex justify-center items-center mr-1 ml-1">
+                              {/* <div className="flex justify-center items-center mr-1 ml-1">
                                 <IoIosClose className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
-                              </div>
+                              </div> */}
                               <div className="flex-grow text-sm font-poppins flex justify-center">
                                 {items.TagName}
                               </div>

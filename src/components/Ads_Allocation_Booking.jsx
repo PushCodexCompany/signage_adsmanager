@@ -1735,9 +1735,7 @@ const Ads_Allocation_Booking = ({
                                                         setModalPlayerOpen(
                                                           !modalPlayerOpen
                                                         );
-                                                        setOpenAdsAllocationModal(
-                                                          !openAdsAllocationModal
-                                                        );
+
                                                         setMediaDisplay(items);
                                                       }}
                                                     />
@@ -1871,9 +1869,6 @@ const Ads_Allocation_Booking = ({
                                                         setModalPlayerOpen(
                                                           !modalPlayerOpen
                                                         );
-                                                        setOpenAdsAllocationModal(
-                                                          !openAdsAllocationModal
-                                                        );
                                                         setMediaDisplay(items);
                                                       }}
                                                     />
@@ -2004,13 +1999,10 @@ const Ads_Allocation_Booking = ({
                                                       size={26}
                                                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                                                       onClick={() => {
-                                                        setModalPlayerOpen(
-                                                          !modalPlayerOpen
-                                                        );
-                                                        setOpenAdsAllocationModal(
-                                                          !openAdsAllocationModal
-                                                        );
-                                                        setMediaDisplay(items);
+                                                        // setModalPlayerOpen(
+                                                        //   !modalPlayerOpen
+                                                        // );
+                                                        // setMediaDisplay(items);
                                                       }}
                                                     />
                                                   </div>

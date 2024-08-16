@@ -721,14 +721,12 @@ const Select_Booking = () => {
           {/* Right Panel */}
         </div>
       </div>
-
       {showPublishScreen && (
         <a
           onClick={() => setShowPublishScreen(!showPublishScreen)}
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
-
       {showPublishScreen && (
         <Publish_Screen_Booking
           setShowPublishScreen={setShowPublishScreen}
@@ -737,14 +735,12 @@ const Select_Booking = () => {
           screen={screen}
         />
       )}
-
       {openInfoScreenModal && (
         <a
           onClick={() => setOpenInfoScreenModal(!openInfoScreenModal)}
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
-
       {openInfoScreenModal && (
         <Screen_Info
           setOpenInfoScreenModal={setOpenInfoScreenModal}
@@ -752,14 +748,12 @@ const Select_Booking = () => {
           from="edit"
         />
       )}
-
       {openAdsAllocationModal && (
         <a
           onClick={() => setOpenAdsAllocationModal(!openAdsAllocationModal)}
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
-
       {openAdsAllocationModal && (
         <Ads_Allocation_Booking
           setOpenAdsAllocationModal={setOpenAdsAllocationModal}
@@ -797,7 +791,6 @@ const Select_Booking = () => {
           fact_allocation={fact_allocation}
         />
       )}
-
       {openModalUploadNewMedia && (
         <Booking_Upload_Media
           setOpenModalUploadMedia={setOpenModalUploadMedia}
@@ -816,26 +809,13 @@ const Select_Booking = () => {
       )}
 
       {modalPlayerOpen && (
-        <a
-          onClick={() => {
-            setModalPlayerOpen(!modalPlayerOpen);
-            setOpenAdsAllocationModal(!openAdsAllocationModal);
-          }}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )}
-
-      {modalPlayerOpen && (
         <Media_Player
           mediaDisplay={mediaDisplay}
           setModalPlayerOpen={setModalPlayerOpen}
           modalPlayerOpen={modalPlayerOpen}
-          setOpenAdsAllocationModal={setOpenAdsAllocationModal}
-          openAdsAllocationModal={openAdsAllocationModal}
           setMediaDisplay={setMediaDisplay}
         />
       )}
-
       {openViewMediaAllocation && (
         <a
           onClick={() => {
@@ -844,7 +824,6 @@ const Select_Booking = () => {
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
-
       {openViewMediaAllocation && (
         <View_Allocation
           openViewMediaAllocation={openViewMediaAllocation}
