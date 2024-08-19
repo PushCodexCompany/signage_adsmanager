@@ -58,6 +58,7 @@ const Edit_Merchandises = () => {
       Department,
       Email,
       Position,
+      ContactNumber,
     } = location.state.merchandise;
 
     setMerchandiseId(AdvertiserID);
@@ -68,6 +69,7 @@ const Edit_Merchandises = () => {
     setContactPersonDep(Department);
     setContactPersonPos(Position);
     setContactPersonEmail(Email);
+    setContactPersonPhone(ContactNumber);
   };
 
   const handleButtonClick = () => {
@@ -95,6 +97,7 @@ const Edit_Merchandises = () => {
       department: contact_person_dep || null,
       position: contact_person_pos || null,
       email: contact_person_email || null,
+      contactnumber: contact_person_phone || null,
       brandcode: brand_code,
     };
     const { token } = User.getCookieData();
@@ -103,7 +106,6 @@ const Edit_Merchandises = () => {
       "create_merchandise",
       false
     );
-
     try {
       const data = await User.createMerchandise(encrypted, token);
       if (data.code !== 404) {
@@ -158,6 +160,7 @@ const Edit_Merchandises = () => {
       department: contact_person_dep || null,
       position: contact_person_pos || null,
       email: contact_person_email || null,
+      contactnumber: contact_person_phone || null,
       brandcode: brand_code,
     };
 
@@ -421,6 +424,8 @@ const Edit_Merchandises = () => {
               <div className="w-1/2 pl-2">
                 <input
                   placeholder="Phone"
+                  value={contact_person_phone}
+                  type="number"
                   onChange={(e) => setContactPersonPhone(e.target.value)}
                   className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                 />

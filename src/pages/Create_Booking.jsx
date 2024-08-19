@@ -666,7 +666,55 @@ const Create_Booking = () => {
             bookingid: bookingId,
             bookingname: value,
           };
+          if (bookingName !== value) {
+            try {
+              const data = await User.updateBookingName(obj, token);
 
+              if (data.code !== 404) {
+                Swal.fire({
+                  icon: "success",
+                  title: "แก้ไขชื่อ Booking name สำเร็จ!",
+                  text: `แก้ไขชื่อ Booking name สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    setEditing(false);
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data.message,
+                });
+              }
+            } catch (error) {
+              console.log("error", error);
+            }
+          } else {
+            setEditing(false);
+          }
+        }
+      }
+    };
+
+    const handleBlur = async () => {
+      const result = await Swal.fire({
+        title: `คุณต้องการเปลี่ยนชื่อ Booking Name ?`,
+        showCancelButton: true,
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+      });
+
+      if (result.isConfirmed) {
+        const obj = {
+          bookingid: bookingId,
+          bookingname: value,
+        };
+
+        if (bookingName !== value) {
           try {
             const data = await User.updateBookingName(obj, token);
 
@@ -693,49 +741,8 @@ const Create_Booking = () => {
           } catch (error) {
             console.log("error", error);
           }
-        }
-      }
-    };
-
-    const handleBlur = async () => {
-      const result = await Swal.fire({
-        title: `คุณต้องการเปลี่ยนชื่อ Booking Name ?`,
-        showCancelButton: true,
-        confirmButtonText: "ยืนยัน",
-        cancelButtonText: "ยกเลิก",
-      });
-
-      if (result.isConfirmed) {
-        const obj = {
-          bookingid: bookingId,
-          bookingname: value,
-        };
-
-        try {
-          const data = await User.updateBookingName(obj, token);
-
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "แก้ไขชื่อ Booking name สำเร็จ!",
-              text: `แก้ไขชื่อ Booking name สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                setEditing(false);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
-          }
-        } catch (error) {
-          console.log("error", error);
+        } else {
+          setEditing(false);
         }
       }
     };

@@ -217,7 +217,6 @@ const New_screen = () => {
           screenclosetime: closeTime || "",
           manotifydelay: notificationDelay || "",
         };
-
         if (obj.screenname) {
           if (mediaRule) {
             try {
