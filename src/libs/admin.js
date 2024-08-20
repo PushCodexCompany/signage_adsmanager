@@ -84,7 +84,7 @@ export default {
       "Content-Type": "application/x-www-form-urlencoded",
     });
 
-    console.log("checkScreenAvailable data " + JSON.stringify(data));
+    // console.log("checkScreenAvailable data " + JSON.stringify(data));
     if ("result" in data && data.result === 1) {
       return true;
     } else {

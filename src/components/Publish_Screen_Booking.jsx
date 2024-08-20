@@ -94,8 +94,6 @@ const Publish_Screen_Booking = ({
       screenids: screenIdsString,
     };
 
-    console.log("obj", obj.screenids);
-
     if (obj.screenids) {
       try {
         const data = await User.publishBookingcontent(obj, token);

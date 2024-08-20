@@ -216,11 +216,11 @@ const User = () => {
     }
 
     if (reg_password === reg_re_password) {
-      console.log("email", reg_email);
-      console.log("password", reg_password);
-      console.log("re-password", reg_re_password);
-      console.log("brand", reg_brand);
-      console.log("merchandise", reg_merchandise);
+      // console.log("email", reg_email);
+      // console.log("password", reg_password);
+      // console.log("re-password", reg_re_password);
+      // console.log("brand", reg_brand);
+      // console.log("merchandise", reg_merchandise);
     } else {
       Swal.fire({
         icon: "error",

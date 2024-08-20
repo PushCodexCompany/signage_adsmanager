@@ -24,7 +24,6 @@ const Screen = () => {
   const getLogData = async () => {
     if (searchTerm === null) {
       const data = await User.getScreenlog(token, 1);
-      console.log("data", data);
       setLogData(data.screenlog);
       setExportData(data.screenlog);
       setCurrentPagePdf(data.pagination[0]?.currentpage);

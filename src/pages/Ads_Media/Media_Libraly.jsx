@@ -109,7 +109,6 @@ const Media_Libraly = () => {
   const getPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    console.log("permissions", permissions);
     setPagePermission(permissions.media);
   };
 

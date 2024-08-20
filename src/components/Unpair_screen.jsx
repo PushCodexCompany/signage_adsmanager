@@ -20,7 +20,7 @@ const Unpair_screen = ({
     FirebaseHelper.setScreenFlag(screenData, "os", "");
     FirebaseHelper.setScreenFlag(screenData, "os_version", "");
 
-    console.log("screenData", screenData);
+    // console.log("screenData", screenData);
     setOpenUnPairScreenModal(!openUnPairScreenModal);
   };
 

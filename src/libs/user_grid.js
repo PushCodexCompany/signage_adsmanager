@@ -173,8 +173,6 @@ export const GridTable = ({
       (item) => item.AdvertiserID === parseInt(id)
     );
 
-    console.log("merchandise_data", merchandise_data);
-
     return merchandise_data.AdvertiserLogo
       ? merchandise_data.AdvertiserLogo
       : `https://ui-avatars.com/api/?name=${
