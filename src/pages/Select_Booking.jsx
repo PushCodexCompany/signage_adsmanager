@@ -550,7 +550,7 @@ const Select_Booking = () => {
                     <div className="min-w-[100%]">
                       <div
                         // onClick={() => console.log("Clear Selection")}
-                        className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
+                        className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
                       >
                         <div className="text-xs font-poppins text-white">
                           Clear
@@ -595,7 +595,7 @@ const Select_Booking = () => {
                             <>
                               <div
                                 key={screenIndex}
-                                className="h-[70px] min-w-[250px] rounded-lg"
+                                className="h-[90px] min-w-[250px] rounded-lg"
                               >
                                 <div className="grid grid-cols-10">
                                   <div className="col-span-2 flex justify-center items-center">
@@ -618,7 +618,7 @@ const Select_Booking = () => {
                                       </div>
                                     </div>
                                     <div className="flex justify-start items-center">
-                                      <div className="font-poppins text-sm text-[#8A8A8A]">
+                                      <div className="font-poppins text-xs text-[#8A8A8A]">
                                         {items.ScreenLocation}
                                       </div>
                                     </div>

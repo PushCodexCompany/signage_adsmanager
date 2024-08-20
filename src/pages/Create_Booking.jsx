@@ -1042,7 +1042,7 @@ const Create_Booking = () => {
                               handleSelectAllAvilable();
                             }
                           }}
-                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                          className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
                         >
                           <div className="text-xs font-poppins text-white">
                             Select all
@@ -1061,7 +1061,7 @@ const Create_Booking = () => {
                               handleDeselectAllAvilable();
                             }
                           }}
-                          className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                          className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
                         >
                           <div className="text-xs font-poppins text-white">
                             Deselect All
@@ -1097,7 +1097,7 @@ const Create_Booking = () => {
                             <>
                               <div
                                 key={screenIndex}
-                                className="h-[70px] min-w-[250px] rounded-lg"
+                                className="h-[90px] min-w-[250px] rounded-lg"
                               >
                                 <div className="grid grid-cols-10">
                                   <div className="col-span-2 flex justify-center items-center">
@@ -1149,7 +1149,7 @@ const Create_Booking = () => {
                                     />
                                   </div>
                                 </div>
-                                <div className="mt-3 space-y-3">
+                                <div className="mt-[23px] space-y-3">
                                   {items.booking !== undefined &&
                                     items.booking
                                       .slice(0, booking_date.length)
