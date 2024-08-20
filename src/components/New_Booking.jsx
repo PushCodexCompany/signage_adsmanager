@@ -296,6 +296,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       department: contact_person_dep,
       position: contact_person_pos,
       email: contact_person_email,
+      contactnumber: contact_person_phone,
       brandcode: brand_code,
     };
 

@@ -867,7 +867,7 @@ const Create_Booking = () => {
                   {merchandise.AccountCode}
                 </div>
               </div>
-              <div className="h-[400px] overflow-y-auto mt-5">
+              <div className="h-[360px] overflow-y-auto mt-5">
                 {screenData.length > 0 ? (
                   screenData.map((items, index) => (
                     <div
@@ -875,7 +875,7 @@ const Create_Booking = () => {
                       className="flex justify-center items-center mt-3 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px]`}
+                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px]`}
                         // onClick={() => toggleScreenFromAllScreen(items)}
                       >
                         <div className="grid grid-cols-10 md:space-x-1">

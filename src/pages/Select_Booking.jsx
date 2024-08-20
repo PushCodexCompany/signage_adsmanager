@@ -446,7 +446,7 @@ const Select_Booking = () => {
                   {merchandise.AccountCode}
                 </div>
               </div>
-              <div className="h-[350px] overflow-y-auto mt-5">
+              <div className="h-[360px] overflow-y-auto mt-5">
                 {screen.length > 0 &&
                   screen.map((items, index) => (
                     <div
@@ -454,7 +454,7 @@ const Select_Booking = () => {
                       className="flex justify-center items-center mt-3 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[75px] `}
+                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] `}
                       >
                         <div className="grid grid-cols-10">
                           <div className="col-span-2 flex justify-center items-center">
