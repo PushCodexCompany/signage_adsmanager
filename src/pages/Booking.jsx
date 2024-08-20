@@ -5,6 +5,7 @@ import useCheckPermission from "../libs/useCheckPermission";
 import New_Booking from "../components/New_Booking";
 import Filter from "../components/Filter";
 import User from "../libs/admin";
+import Permission from "../libs/permission";
 
 const Booking = () => {
   useCheckPermission();
@@ -14,10 +15,15 @@ const Booking = () => {
   const [all_pages, setAllPages] = useState(null);
   const [filter_screen, setFilterScreen] = useState([]);
   const [searchTerm, setSearchTerm] = useState(null);
+  const [page_permission, setPagePermission] = useState([]);
 
   useEffect(() => {
     getBookingData();
   }, [searchTerm]);
+
+  useEffect(() => {
+    getPermission();
+  }, []);
 
   const getBookingData = async () => {
     if (searchTerm === null) {
@@ -35,6 +41,12 @@ const Booking = () => {
     }
   };
 
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    setPagePermission(permissions.booking);
+  };
+
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
@@ -47,14 +59,18 @@ const Booking = () => {
               My booking
             </div>
           </div>
-          <div className="col-span-1 flex justify-end">
-            <button
-              onClick={() => setShowModalAddNewBooking(true)}
-              className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
-            >
-              New Booking +
-            </button>
-          </div>
+          {page_permission?.create ? (
+            <div className="col-span-1 flex justify-end">
+              <button
+                onClick={() => setShowModalAddNewBooking(true)}
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+              >
+                New Booking +
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
         {/* <div className="grid grid-cols-12 gap-4 mt-5">
           <div className="col-span-12 md:col-span-8">
@@ -83,6 +99,7 @@ const Booking = () => {
               booking_data={booking_data}
               all_pages={all_pages}
               searchTerm={searchTerm}
+              page_permission={page_permission}
             />
           ) : (
             <div className="flex items-center justify-center h-[550px] text-center ">

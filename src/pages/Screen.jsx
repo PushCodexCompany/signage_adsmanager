@@ -14,6 +14,7 @@ import Unpair_screen from "../components/Unpair_screen";
 import Select_Pair_screen from "../components/Select_Pair_screen";
 import IsPairScreen from "../components/IsPairScreen";
 import firebase_func from "../libs/firebase_func";
+import Permission from "../libs/permission";
 
 const Event = () => {
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
@@ -41,10 +42,12 @@ const Event = () => {
   const is_screensstatus_init = useRef(false);
 
   const { token } = User.getCookieData();
+  const [page_permission, setPagePermission] = useState([]);
 
   useEffect(async () => {
     await fetchScreenData();
     fetchScreenOptionsData();
+    getPermission();
     // testFirebase();
   }, [searchTerm]);
 
@@ -176,6 +179,12 @@ const Event = () => {
     setScreensOptionsData(screens_option.screenresolution);
   };
 
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    setPagePermission(permissions.screen);
+  };
+
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
@@ -187,14 +196,15 @@ const Event = () => {
             <div className="font-poppins font-semibold text-2xl ">Screens</div>
           </div>
           <div className="col-span-4">
-            <div className="flex justify-end space-x-1">
-              <button
-                onClick={() => navigate("/screen/create/new")}
-                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
-              >
-                New Screen +
-              </button>
-              {/* <button
+            {page_permission?.create ? (
+              <div className="flex justify-end space-x-1">
+                <button
+                  onClick={() => navigate("/screen/create/new")}
+                  className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+                >
+                  New Screen +
+                </button>
+                {/* <button
                 onClick={() => {
                   setScreenSelect(null);
                   setOpenSelectPairScreenModel(!openSelectPairScreenModel);
@@ -204,7 +214,10 @@ const Event = () => {
               >
                 Pair Screen
               </button> */}
-            </div>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
 
@@ -228,6 +241,7 @@ const Event = () => {
               setOpenUnPairScreenModal={setOpenUnPairScreenModal}
               openUnPairScreenModal={openUnPairScreenModal}
               setScreenSelect={setScreenSelect}
+              page_permission={page_permission}
               // setCheckboxes={setCheckboxes}
               // checkboxes={checkboxes}
               // screen_checkbox_select={screen_checkbox_select}
@@ -255,6 +269,7 @@ const Event = () => {
           setOpenInfoScreenModal={setOpenInfoScreenModal}
           selectInfoScreen={selectInfoScreen}
           from="list"
+          page_permission={page_permission}
         />
       )}
 

@@ -25,6 +25,7 @@ import Confirm_Booking from "../components/Confirm_Booking";
 import Swal from "sweetalert2";
 import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 import firebase_func from "../libs/firebase_func";
+import Permission from "../libs/permission";
 
 const Create_Booking = () => {
   const location = useLocation();
@@ -67,10 +68,12 @@ const Create_Booking = () => {
 
   const [showDetailScreen, setShowDetailScreen] = useState(false);
   const [detailScreen, setDetailScreen] = useState(null);
+  const [page_permission, setPagePermission] = useState([]);
 
   useEffect(() => {
     setBooking();
     getAllScreen();
+    getPermission();
   }, []);
 
   const findAccountCode = async (merchandise_name) => {
@@ -268,6 +271,12 @@ const Create_Booking = () => {
       items.screen_status = screen_status;
     });
     setAllScreenData(data);
+  };
+
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    setPagePermission(permissions.booking);
   };
 
   const toggleCheckboxAddScreen = (rowId) => {
@@ -770,10 +779,14 @@ const Create_Booking = () => {
         </div>
         <div className="col-span-3">
           <div className="flex justify-start items-center">
-            <RiEditLine
-              className="text-[26px] text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
-              onClick={handleClick}
-            />
+            {page_permission?.update ? (
+              <RiEditLine
+                className="text-[26px] text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                onClick={handleClick}
+              />
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>
@@ -794,24 +807,30 @@ const Create_Booking = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               <>
-                <button
-                  onClick={() => setShowAddScreen(true)}
-                  className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                >
-                  Add Screen+
-                </button>
-                <button
-                  onClick={() => handleSaveScreen()}
-                  className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                >
-                  Save Booking
-                </button>
-                <button
-                  onClick={() => handleConfirmbooking()}
-                  className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                >
-                  Confirm Booking
-                </button>
+                {page_permission?.create || page_permission?.update ? (
+                  <>
+                    <button
+                      onClick={() => setShowAddScreen(true)}
+                      className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    >
+                      Add Screen+
+                    </button>
+                    <button
+                      onClick={() => handleSaveScreen()}
+                      className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    >
+                      Save Booking
+                    </button>
+                    <button
+                      onClick={() => handleConfirmbooking()}
+                      className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    >
+                      Confirm Booking
+                    </button>
+                  </>
+                ) : (
+                  <></>
+                )}
               </>
             </div>
           </div>
@@ -912,45 +931,51 @@ const Create_Booking = () => {
                               (screen) => screen.ScreenID === items.ScreenID
                             ) && (
                               <>
-                                <IoMdTrash
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteClick(index);
-                                  }}
-                                  size={22}
-                                  className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
-                                />
-                                {deleteModalIndex[index] && (
-                                  <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
-                                    <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
-                                      <p className="font-poppins text-xs text-white">
-                                        Do You Want to Delete This Screen ?
-                                      </p>
-                                      <div className="flex justify-center items-center mt-5">
-                                        <button
-                                          className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleConfirmDelete(
-                                              index,
-                                              items.ScreenID
-                                            );
-                                          }}
-                                        >
-                                          Yes
-                                        </button>
-                                        <button
-                                          className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleCancelDelete(index);
-                                          }}
-                                        >
-                                          No
-                                        </button>
+                                {page_permission?.delete ? (
+                                  <>
+                                    <IoMdTrash
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteClick(index);
+                                      }}
+                                      size={22}
+                                      className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                    />
+                                    {deleteModalIndex[index] && (
+                                      <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
+                                        <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
+                                          <p className="font-poppins text-xs text-white">
+                                            Do You Want to Delete This Screen ?
+                                          </p>
+                                          <div className="flex justify-center items-center mt-5">
+                                            <button
+                                              className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 mr-2 rounded"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleConfirmDelete(
+                                                  index,
+                                                  items.ScreenID
+                                                );
+                                              }}
+                                            >
+                                              Yes
+                                            </button>
+                                            <button
+                                              className="bg-[#6425FE] hover:bg-[#3b1694] w-[76px] h-[30px] text-white font-poppins text-xs px-4 py-2 rounded"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleCancelDelete(index);
+                                              }}
+                                            >
+                                              No
+                                            </button>
+                                          </div>
+                                        </div>
                                       </div>
-                                    </div>
-                                  </div>
+                                    )}
+                                  </>
+                                ) : (
+                                  <></>
                                 )}
                               </>
                             )}
@@ -1009,7 +1034,14 @@ const Create_Booking = () => {
                     <div className="min-w-[100%]">
                       {bookingSelect.length <= 0 ? (
                         <div
-                          onClick={() => handleSelectAllAvilable()}
+                          onClick={() => {
+                            if (
+                              page_permission?.create ||
+                              page_permission?.update
+                            ) {
+                              handleSelectAllAvilable();
+                            }
+                          }}
                           className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
                         >
                           <div className="text-xs font-poppins text-white">
@@ -1021,7 +1053,14 @@ const Create_Booking = () => {
                         </div>
                       ) : (
                         <div
-                          onClick={() => handleDeselectAllAvilable()}
+                          onClick={() => {
+                            if (
+                              page_permission?.create ||
+                              page_permission?.update
+                            ) {
+                              handleDeselectAllAvilable();
+                            }
+                          }}
                           className="lg:min-w-[20px] min-w-[100px] h-[70px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
                         >
                           <div className="text-xs font-poppins text-white">
@@ -1117,23 +1156,30 @@ const Create_Booking = () => {
                                       .map((items2, dateIndex) => (
                                         <div
                                           key={dateIndex}
-                                          onClick={() =>
-                                            items2.UsedSlot > 0
-                                              ? handleRemoveScreen(
+                                          onClick={() => {
+                                            if (
+                                              page_permission?.create ||
+                                              page_permission?.update
+                                            ) {
+                                              if (items2.UsedSlot > 0) {
+                                                handleRemoveScreen(
                                                   screenIndex,
                                                   dateIndex,
                                                   items
-                                                )
-                                              : items2.MaxSlot -
+                                                );
+                                              } else if (
+                                                items2.MaxSlot -
                                                   parseInt(items2.UsedTotal) >
                                                 0
-                                              ? handleSelectScreen(
+                                              ) {
+                                                handleSelectScreen(
                                                   screenIndex,
                                                   dateIndex,
                                                   items
-                                                )
-                                              : null
-                                          }
+                                                );
+                                              }
+                                            }
+                                          }}
                                           className={`${
                                             bookingSelect?.some(
                                               (bookingItem) =>

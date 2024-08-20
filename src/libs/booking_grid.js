@@ -10,7 +10,12 @@ import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import firebase_func from "../libs/firebase_func";
 
-export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
+export const GridTable = ({
+  booking_data,
+  all_pages,
+  searchTerm,
+  page_permission,
+}) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
 
@@ -157,23 +162,31 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
             {row.BookingStatus === 1 ? (
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-2">
-                  <button onClick={() => onClickEdit(row)}>
-                    <RiEditLine
-                      size={20}
-                      className="text-[#6425FE] hover:text-[#3b1694]"
-                    />
-                  </button>
+                  {page_permission?.view ? (
+                    <button onClick={() => onClickEdit(row)}>
+                      <RiEditLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
+                    </button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </td>
             ) : (
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-2">
-                  <button onClick={() => handleSelectBooking(row)}>
-                    <RiVideoAddLine
-                      size={20}
-                      className="text-[#6425FE] hover:text-[#3b1694]"
-                    />
-                  </button>
+                  {page_permission?.view ? (
+                    <button onClick={() => handleSelectBooking(row)}>
+                      <RiVideoAddLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
+                    </button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </td>
             )}

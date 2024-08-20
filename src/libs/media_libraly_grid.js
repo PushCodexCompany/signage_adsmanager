@@ -9,7 +9,12 @@ import Swal from "sweetalert2";
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-export const GridTable = ({ media_libraly_data, all_pages, searchTerm }) => {
+export const GridTable = ({
+  media_libraly_data,
+  all_pages,
+  searchTerm,
+  page_permission,
+}) => {
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaDisplay, setMediaDisplay] = useState([]);
   const { token } = User.getCookieData();
@@ -200,31 +205,43 @@ export const GridTable = ({ media_libraly_data, all_pages, searchTerm }) => {
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="space-x-2">
-                <button onClick={() => onClickPlay(row)}>
-                  <RiPlayCircleLine
-                    size={20}
-                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                  />
-                </button>
-                <button onClick={() => onClickDownload(row)}>
-                  <RiDownloadCloud2Line
-                    size={20}
-                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                  />
-                </button>
-                <button
-                  onClick={() => onClickDelete(row)}
-                  disabled={row.ActiveStats === 0 ? false : true}
-                >
-                  <RiDeleteBin5Line
-                    size={20}
-                    className={`${
-                      row.ActiveStats === 0
-                        ? "text-[#6425FE] hover:text-[#3b1694] "
-                        : "text-[#dbdbdb] hover:text-[#dbdbdb]"
-                    } cursor-pointer`}
-                  />
-                </button>
+                {page_permission?.view ? (
+                  <button onClick={() => onClickPlay(row)}>
+                    <RiPlayCircleLine
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                    />
+                  </button>
+                ) : (
+                  <></>
+                )}
+                {page_permission?.view ? (
+                  <button onClick={() => onClickDownload(row)}>
+                    <RiDownloadCloud2Line
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                    />
+                  </button>
+                ) : (
+                  <></>
+                )}
+                {page_permission?.delete ? (
+                  <button
+                    onClick={() => onClickDelete(row)}
+                    disabled={row.ActiveStats === 0 ? false : true}
+                  >
+                    <RiDeleteBin5Line
+                      size={20}
+                      className={`${
+                        row.ActiveStats === 0
+                          ? "text-[#6425FE] hover:text-[#3b1694] "
+                          : "text-[#dbdbdb] hover:text-[#dbdbdb]"
+                      } cursor-pointer`}
+                    />
+                  </button>
+                ) : (
+                  <></>
+                )}
               </div>
             </td>
           </tr>

@@ -22,6 +22,7 @@ import Media_Player from "../components/Media_Player";
 import Screen_Info from "../components/Screen_Info";
 import { format } from "date-fns";
 import View_Allocation from "../components/View_Allocation";
+import Permission from "../libs/permission";
 
 const Select_Booking = () => {
   const location = useLocation();
@@ -70,10 +71,16 @@ const Select_Booking = () => {
 
   const [filter_screen, setFilterScreen] = useState([]);
 
+  const [page_permission, setPagePermission] = useState([]);
+
   useEffect(() => {
     getBookingData();
     getMediaItemsData();
   }, [fact_allocation]);
+
+  useEffect(() => {
+    getPermission();
+  }, []);
 
   const getBookingData = async () => {
     const {
@@ -141,6 +148,12 @@ const Select_Booking = () => {
     const media_item = await User.getMediaPlaylist(BookingID, token);
     setItemsPanel2(media_item);
     setMediaList(media_item);
+  };
+
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    setPagePermission(permissions.booking);
   };
 
   const calculateSize = (screen) => {
@@ -393,12 +406,16 @@ const Select_Booking = () => {
           </div>
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
-              <button
-                onClick={() => setShowPublishScreen(true)}
-                className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-              >
-                Publish
-              </button>
+              {page_permission?.create || page_permission?.update ? (
+                <button
+                  onClick={() => setShowPublishScreen(true)}
+                  className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                >
+                  Publish
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
@@ -674,21 +691,26 @@ const Select_Booking = () => {
                                                     items2.BookingDate
                                                   ).getDate()
                                                 ) ? (
-                                                  <div
-                                                    onClick={() =>
-                                                      handleSelectScreenAddmedia(
-                                                        screenIndex + 1,
-                                                        items,
-                                                        items2
-                                                      )
-                                                    }
-                                                    className="col-span-1 flex justify-center items-center cursor-pointer"
-                                                  >
-                                                    <MdOutlineModeEditOutline
-                                                      size={26}
-                                                      className="text-[#6425FE] hover:text-[#3b1694]"
-                                                    />
-                                                  </div>
+                                                  page_permission?.create ||
+                                                  page_permission?.update ? (
+                                                    <div
+                                                      onClick={() =>
+                                                        handleSelectScreenAddmedia(
+                                                          screenIndex + 1,
+                                                          items,
+                                                          items2
+                                                        )
+                                                      }
+                                                      className="col-span-1 flex justify-center items-center cursor-pointer"
+                                                    >
+                                                      <MdOutlineModeEditOutline
+                                                        size={26}
+                                                        className="text-[#6425FE] hover:text-[#3b1694]"
+                                                      />
+                                                    </div>
+                                                  ) : (
+                                                    <></>
+                                                  )
                                                 ) : (
                                                   <div
                                                     onClick={() =>

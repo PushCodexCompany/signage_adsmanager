@@ -27,6 +27,7 @@ export const GridTable = ({
   // setScreenCheckboxSelect,
   openInfoScreenModal,
   setOpenInfoScreenModal,
+  page_permission,
 }) => {
   const navigate = useNavigate();
 
@@ -252,12 +253,17 @@ export const GridTable = ({
                       />
                     </button>
                   )}
-                  <button onClick={() => handleEditScreen(row)}>
-                    <RiEditLine
-                      size={20}
-                      className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
-                    />
-                  </button>
+                  {page_permission?.update ? (
+                    <button onClick={() => handleEditScreen(row)}>
+                      <RiEditLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
+                      />
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+
                   <button onClick={() => handleSelectInfoScreen(row)}>
                     <RiCalendar2Fill
                       size={20}
@@ -265,16 +271,20 @@ export const GridTable = ({
                     />
                   </button>
 
-                  <button
-                    onClick={() =>
-                      handleDeleteScreen(row.ScreenID, row.ScreenName)
-                    }
-                  >
-                    <RiDeleteBin5Line
-                      size={20}
-                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                    />
-                  </button>
+                  {page_permission?.delete ? (
+                    <button
+                      onClick={() =>
+                        handleDeleteScreen(row.ScreenID, row.ScreenName)
+                      }
+                    >
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
+                    </button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </td>
             </tr>

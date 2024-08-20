@@ -56,27 +56,27 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
 
   const fetchAccountStorage = async () => {
     const { storagebyte } = await User.getStorage();
-    if (storagebyte.percentuse > 0) {
-      if (storagebyte.percentuse <= 1) {
+    if (storagebyte?.percentuse > 0) {
+      if (storagebyte?.percentuse <= 1) {
         setPercent(1);
       } else {
-        setPercent(storagebyte.percentuse);
+        setPercent(storagebyte?.percentuse);
       }
     } else {
       setPercent(0);
     }
-    if (storagebyte.totalspace >= 1024 * 1024 * 1024) {
-      const spaceInGB = bytesToGB(storagebyte.totalspace);
+    if (storagebyte?.totalspace >= 1024 * 1024 * 1024) {
+      const spaceInGB = bytesToGB(storagebyte?.totalspace);
       setTotalSpace(`${spaceInGB.toFixed(2)} GB`);
     } else {
-      const spaceInMB = bytesToMB(storagebyte.totalspace);
+      const spaceInMB = bytesToMB(storagebyte?.totalspace);
       setTotalSpace(`${spaceInMB.toFixed(2)} MB`);
     }
-    if (storagebyte.usesapce >= 1024 * 1024 * 1024) {
-      const spaceInGB = bytesToGB(storagebyte.usesapce);
+    if (storagebyte?.usesapce >= 1024 * 1024 * 1024) {
+      const spaceInGB = bytesToGB(storagebyte?.usesapce);
       setUseSpace(`${spaceInGB.toFixed(2)} GB`);
     } else {
-      const spaceInMB = bytesToMB(storagebyte.usesapce);
+      const spaceInMB = bytesToMB(storagebyte?.usesapce);
       setUseSpace(`${spaceInMB.toFixed(2)} MB`);
     }
   };

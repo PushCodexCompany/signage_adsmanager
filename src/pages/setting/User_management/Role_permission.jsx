@@ -5,6 +5,7 @@ import { IoIosClose } from "react-icons/io";
 import useCheckPermission from "../../../libs/useCheckPermission";
 import Encryption from "../../../libs/encryption";
 import User from "../../../libs/admin";
+import Permission from "../../../libs/permission";
 import Swal from "sweetalert2";
 
 const Role_permission = () => {
@@ -40,10 +41,15 @@ const Role_permission = () => {
 
   const { token } = User.getCookieData();
   const { permission } = User.getPermission();
-  useEffect(async () => {
+
+  useEffect(() => {
+    getPermission();
+  }, []);
+
+  const getPermission = async () => {
     const { user } = User.getCookieData();
     // Parent Permission
-    const default_permission = convertPermissionValuesToBoolean([
+    const default_permission = Permission.convertPermissionValuesToBoolean([
       user,
     ]).permissions;
 
@@ -52,9 +58,10 @@ const Role_permission = () => {
     const child_permission = user_permission.map((item) => {
       return {
         ...item,
-        permissions: convertPermissionValuesToBoolean([item]).permissions,
+        permissions: Permission.convertPermissionValuesToBoolean([item])
+          .permissions,
         other_permission: item.other_permission
-          ? convertPermissionValuesToBoolean([item]).other_permission
+          ? Permission.convertPermissionValuesToBoolean([item]).other_permission
           : [],
       };
     });
@@ -63,32 +70,6 @@ const Role_permission = () => {
     setOldRoleName(old_role);
     setDefaultPermission(default_permission);
     setChildPermission(child_permission);
-  }, []);
-
-  const convertPermissionValuesToBoolean = (data) => {
-    const convertedData = { permissions: {}, other_permission: {} };
-
-    data.map((items) => {
-      for (const resource in items.permissions) {
-        const value = items.permissions[resource];
-
-        const resourcePermissions = {
-          view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
-          create: (value & (2 ** 2)) !== 0, // Check if the "create" bit is set
-          update: (value & (2 ** 3)) !== 0, // Check if the "update" bit is set
-          delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
-        };
-        convertedData.permissions[resource] = resourcePermissions;
-      }
-
-      for (const permissions in items.other_permission) {
-        const value = items.other_permission[permissions];
-        convertedData.other_permission[permissions] =
-          value === 1 || value === true;
-      }
-    });
-
-    return convertedData;
   };
 
   const selectRole = (key) => {
@@ -236,7 +217,7 @@ const Role_permission = () => {
             result.isConfirmed ||
             result.dismiss === Swal.DismissReason.backdrop
           ) {
-            window.location.reload();
+            getPermission();
           }
         });
       } else {
@@ -274,7 +255,7 @@ const Role_permission = () => {
           result.isConfirmed ||
           result.dismiss === Swal.DismissReason.backdrop
         ) {
-          window.location.reload();
+          getPermission();
         }
       });
     } else {
@@ -307,7 +288,7 @@ const Role_permission = () => {
           result.isConfirmed ||
           result.dismiss === Swal.DismissReason.backdrop
         ) {
-          window.location.reload();
+          getPermission();
         }
       });
     } else {

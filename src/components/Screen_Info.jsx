@@ -93,7 +93,12 @@ const year_data = [
   },
 ];
 
-const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
+const Screen_Info = ({
+  setOpenInfoScreenModal,
+  selectInfoScreen,
+  from,
+  page_permission,
+}) => {
   const { token } = User.getCookieData();
   const [openMediaScheduleModal, setOpenMediaScheduleModal] = useState(false);
   const [selectMediaScreen, setSelectMediaScreen] = useState();
@@ -910,12 +915,16 @@ const Screen_Info = ({ setOpenInfoScreenModal, selectInfoScreen, from }) => {
                     <>
                       {new Date() > new Date(mediaScheduleData.BookingDate) ? (
                         <div className="flex justify-center items-center mt-10 mb-10">
-                          <button
-                            onClick={() => handleSaveNewOrderMedia()}
-                            className="bg-[#6425FE] hover:bg-[#3b1694] text-white h-[35px] w-[255px] rounded-lg font-poppins"
-                          >
-                            Save
-                          </button>
+                          {page_permission?.update ? (
+                            <button
+                              onClick={() => handleSaveNewOrderMedia()}
+                              className="bg-[#6425FE] hover:bg-[#3b1694] text-white h-[35px] w-[255px] rounded-lg font-poppins"
+                            >
+                              Save
+                            </button>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       ) : (
                         <></>

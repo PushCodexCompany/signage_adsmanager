@@ -3,6 +3,7 @@ import User, {
   SIGNAGE_ACCOUNT_COOKIE,
   SIGNAGE_BRAND_COOKIE,
 } from "../libs/admin";
+import Permission from "../libs/permission";
 import Login_Bg from "../assets/img/login_bg.png";
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
@@ -210,32 +211,6 @@ const Login = () => {
   //   }
   // };
 
-  const convertPermissionValuesToBoolean = (data) => {
-    const convertedData = { permissions: {}, other_permission: {} };
-
-    data.map((items) => {
-      for (const resource in items.permissions) {
-        const value = items.permissions[resource];
-
-        const resourcePermissions = {
-          view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
-          create: (value & (2 ** 2)) !== 0, // Check if the "create" bit is set
-          update: (value & (2 ** 3)) !== 0, // Check if the "update" bit is set
-          delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
-        };
-        convertedData.permissions[resource] = resourcePermissions;
-      }
-
-      for (const permissions in items.other_permission) {
-        const value = items.other_permission[permissions];
-        convertedData.other_permission[permissions] =
-          value === 1 || value === true;
-      }
-    });
-
-    return convertedData;
-  };
-
   const handleSubmit = async () => {
     try {
       // if (checkEmailTemplate()) {
@@ -247,7 +222,7 @@ const Login = () => {
           const user_data = User.getCookieData();
           const { storagebyte } = await User.getAccountStorage(user_data.token);
           User.saveStorage(storagebyte);
-          const { permissions } = convertPermissionValuesToBoolean([
+          const { permissions } = Permission.convertPermissionValuesToBoolean([
             user_data.user,
           ]);
           User.savePermission(permissions);

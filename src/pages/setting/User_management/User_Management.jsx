@@ -7,6 +7,7 @@ import User from "../../../libs/admin";
 
 import { GridTable } from "../../../libs/user_grid";
 import useCheckPermission from "../../../libs/useCheckPermission";
+import Permission from "../../../libs/permission";
 import Encryption from "../../../libs/encryption";
 import Swal from "sweetalert2";
 
@@ -92,7 +93,7 @@ const User_Management = () => {
 
   const setPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = convertPermissionValuesToBoolean([user]);
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
     setPagePermission(permissions.user);
   };
 
@@ -102,32 +103,6 @@ const User_Management = () => {
     const merchandise = await User.getMerchandiseList(token);
     setBrand(brand);
     setMerchandise(merchandise);
-  };
-
-  const convertPermissionValuesToBoolean = (data) => {
-    const convertedData = { permissions: {} };
-
-    data.map((items) => {
-      for (const resource in items.permissions) {
-        const value = items.permissions[resource];
-
-        const resourcePermissions = {
-          view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
-          create: (value & (2 ** 2)) !== 0, // Check if the "create" bit is set
-          update: (value & (2 ** 3)) !== 0, // Check if the "update" bit is set
-          delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
-        };
-        convertedData.permissions[resource] = resourcePermissions;
-      }
-
-      for (const permissions in items.other_permission) {
-        const value = items.other_permission[permissions];
-        convertedData.other_permission[permissions] =
-          value === 1 || value === true;
-      }
-    });
-
-    return convertedData;
   };
 
   const toggleStatusSelect = () => {

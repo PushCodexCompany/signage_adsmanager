@@ -7,6 +7,7 @@ import { BsCheckCircle } from "react-icons/bs";
 import useCheckPermission from "../../libs/useCheckPermission";
 import Filter from "../../components/Filter";
 import User from "../../libs/admin";
+import Permission from "../../libs/permission";
 
 const Media_Libraly = () => {
   useCheckPermission();
@@ -34,10 +35,15 @@ const Media_Libraly = () => {
       progress: 0, // Add progress property
     },
   });
+  const [page_permission, setPagePermission] = useState([]);
 
   useEffect(() => {
     getMediaLibralyData();
   }, [searchTerm]);
+
+  useEffect(() => {
+    getPermission();
+  }, []);
 
   const getMediaLibralyData = async () => {
     if (searchTerm === null) {
@@ -100,6 +106,13 @@ const Media_Libraly = () => {
     });
   };
 
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    console.log("permissions", permissions);
+    setPagePermission(permissions.media);
+  };
+
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
@@ -134,6 +147,7 @@ const Media_Libraly = () => {
               media_libraly_data={media_libraly_data}
               all_pages={all_pages}
               searchTerm={searchTerm}
+              page_permission={page_permission}
             />
           </div>
         ) : (
