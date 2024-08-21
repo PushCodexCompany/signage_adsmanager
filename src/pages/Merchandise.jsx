@@ -111,7 +111,7 @@ const Merchandise = () => {
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header category="Page" title="Home" />
+        <Header lv1={"merchandise"} />
         <div className="text-[50px] font-bold text-center font-poppins mt-10">
           Select Your Merchandise
         </div>

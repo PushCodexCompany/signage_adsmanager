@@ -214,7 +214,7 @@ const Tag_managment = () => {
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header category="Page" title="Home" />
+        <Header lv1={"Setting"} lv2={"tag_management"} />
         <div className="font-poppins font-semibold text-2xl mt-10">
           Tag Management
         </div>

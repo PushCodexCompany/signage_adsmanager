@@ -94,7 +94,11 @@ const Booking_Summary = () => {
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header category="Page" title="Home" />
+        <Header
+          lv1={"Booking"}
+          lv1Url={"/booking"}
+          lv2={"booking_pricing_summary"}
+        />
         <div className="mt-5">
           <div className="font-poppins font-semibold text-2xl w-[95%] pl-2">
             Booking Pricing Summary

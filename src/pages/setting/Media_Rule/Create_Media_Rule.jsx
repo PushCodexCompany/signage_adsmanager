@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Header } from "../../../components";
+import { Header, Navbar } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import useCheckPermission from "../../../libs/useCheckPermission";
 import User from "../../../libs/admin";
@@ -190,308 +190,318 @@ const Create_Media_Rule = () => {
   };
 
   return (
-    <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-      <Header category="Page" title="Home" />
-      <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
-        {location.state.isView
-          ? "View Screen Media Rule"
-          : location.state.data
-          ? "Edit Screen Media Rule"
-          : "New Screen Media Rule"}
-      </div>
-      <div className="flex flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 p-4">
-          <div>
-            <div className=" h-10 rounded-sm flex items-center justify-start">
-              <div className="flex-grow h-full w-full border-1 border-gray-300 rounded-sm ">
-                <input
-                  className="font-bold text-sm w-full h-full font-poppins pl-4"
-                  placeholder="Media Rule Name"
-                  onChange={(e) => setMediaRuleName(e.target.value)}
-                  value={media_rule_name}
-                  disabled={isView}
-                />
+    <>
+      <Navbar />
+      <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+        <Header
+          lv1={"Setting"}
+          lv2={"media_rule"}
+          lv2Url={"/setting/media_rule"}
+          lv3={"Create/Edit Media Rule"}
+        />
+        <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
+          {location.state.isView
+            ? "View Screen Media Rule"
+            : location.state.data
+            ? "Edit Screen Media Rule"
+            : "New Screen Media Rule"}
+        </div>
+        <div className="flex flex-col lg:flex-row">
+          <div className="w-full lg:w-1/2 p-4">
+            <div>
+              <div className=" h-10 rounded-sm flex items-center justify-start">
+                <div className="flex-grow h-full w-full border-1 border-gray-300 rounded-sm ">
+                  <input
+                    className="font-bold text-sm w-full h-full font-poppins pl-4"
+                    placeholder="Media Rule Name"
+                    onChange={(e) => setMediaRuleName(e.target.value)}
+                    value={media_rule_name}
+                    disabled={isView}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex justify-center mt-5 font-bold text-2xl font-poppins">
-              Screen Ratio Preview
-            </div>
+              <div className="flex justify-center mt-5 font-bold text-2xl font-poppins">
+                Screen Ratio Preview
+              </div>
 
-            <div className="flex justify-center mt-2">
-              {media_rule_width && media_rule_height ? (
-                <RatioDisplay
-                  width={media_rule_width}
-                  height={media_rule_height}
-                />
+              <div className="flex justify-center mt-2">
+                {media_rule_width && media_rule_height ? (
+                  <RatioDisplay
+                    width={media_rule_width}
+                    height={media_rule_height}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+
+              {!isView ? (
+                <>
+                  <div className="flex justify-center mt-5">
+                    {media_rule_id ? (
+                      <button
+                        onClick={() => handleSaveNewOrEditMediaRules("edit")}
+                        className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
+                      >
+                        Save Change
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleSaveNewOrEditMediaRules("create")}
+                        className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
+                      >
+                        Create
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex justify-center mt-5 font-poppins">
+                    <span>
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
+                    </span>
+                  </div>
+                </>
               ) : (
                 <></>
               )}
             </div>
-
-            {!isView ? (
-              <>
-                <div className="flex justify-center mt-5">
-                  {media_rule_id ? (
-                    <button
-                      onClick={() => handleSaveNewOrEditMediaRules("edit")}
-                      className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
-                    >
-                      Save Change
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleSaveNewOrEditMediaRules("create")}
-                      className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
-                    >
-                      Create
-                    </button>
-                  )}
-                </div>
-                <div className="flex justify-center mt-5 font-poppins">
-                  <span>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
-                  </span>
-                </div>
-              </>
-            ) : (
-              <></>
-            )}
           </div>
-        </div>
-        <div className="w-full lg:w-1/2 p-4 lg:pl-8 ">
-          <div>
-            <span className="font-bold text-3xl font-poppins">
-              Media Rule Setting
-            </span>
-          </div>
-
-          {/* Resolution 1 */}
-          <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-10">
-            <div className="flex flex-row mt-3 space-x-5">
-              <div>
-                <label className="relative inline-flex items-center cursor-pointer mt-1">
-                  <input
-                    type="checkbox"
-                    value={toggle_disable}
-                    onClick={(e) => setToggleDisable(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div
-                    className={`w-[58px] h-6 flex items-center justify-${
-                      toggle_disable ? "end" : "start"
-                    } p-1 rounded-full border border-gray-500 transition duration-300`}
-                  >
-                    <div
-                      className={`w-5 h-5 rounded-full shadow-md transform ${
-                        toggle_disable
-                          ? "translate-x-1 bg-[#6425FE] "
-                          : "translate-x-0 border bg-white border-gray-500"
-                      } duration-300 ease-in-out`}
-                    />
-                  </div>
-                </label>
-              </div>
-              <div
-                className={`text-xl font-poppins font-bold ${
-                  toggle_disable ? "text-black" : "text-gray-500"
-                }`}
-              >
-                Resolution
-              </div>
+          <div className="w-full lg:w-1/2 p-4 lg:pl-8 ">
+            <div>
+              <span className="font-bold text-3xl font-poppins">
+                Media Rule Setting
+              </span>
             </div>
 
-            <div className="grid grid-cols-11 mt-3 space-x-2  justify-center items-center">
-              <div className="col-span-3">
-                <div className="relative flex flex-col justify-center items-center h-full ">
-                  <div
-                    className={`text-sm font-poppins font-bold ${
-                      toggle_disable ? "text-black" : "text-gray-500"
-                    }`}
-                  >
-                    Resolution
-                  </div>
-                </div>
-              </div>
-              <div className="col-span-2">
-                <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold  rounded-md">
-                  {isView ? (
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
-                      <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
-                          media_rule_width
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
-                        }`}
-                      >
-                        Width
-                      </label>
-                      <input
-                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
-                          toggle_disable ? "text-black" : "text-gray-500"
-                        }`}
-                        type="number"
-                        onChange={(e) => {
-                          const newValue = e.target.value;
-                          setMediaRuleWidth(newValue);
-                        }}
-                        value={media_rule_width}
-                        disabled
+            {/* Resolution 1 */}
+            <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-10">
+              <div className="flex flex-row mt-3 space-x-5">
+                <div>
+                  <label className="relative inline-flex items-center cursor-pointer mt-1">
+                    <input
+                      type="checkbox"
+                      value={toggle_disable}
+                      onClick={(e) => setToggleDisable(e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div
+                      className={`w-[58px] h-6 flex items-center justify-${
+                        toggle_disable ? "end" : "start"
+                      } p-1 rounded-full border border-gray-500 transition duration-300`}
+                    >
+                      <div
+                        className={`w-5 h-5 rounded-full shadow-md transform ${
+                          toggle_disable
+                            ? "translate-x-1 bg-[#6425FE] "
+                            : "translate-x-0 border bg-white border-gray-500"
+                        } duration-300 ease-in-out`}
                       />
                     </div>
-                  ) : (
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
-                      <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
-                          media_rule_width
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
-                        }`}
-                      >
-                        Width
-                      </label>
-                      <input
-                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
-                          toggle_disable ? "text-black" : "text-gray-500"
-                        }`}
-                        type="number"
-                        onChange={(e) => {
-                          const newValue = e.target.value;
-                          setMediaRuleWidth(newValue);
-                        }}
-                        value={media_rule_width}
-                        disabled={!toggle_disable}
-                      />
-                    </div>
-                  )}
+                  </label>
                 </div>
-              </div>
-              <div className="col-span-1">
                 <div
-                  className={`flex justify-center items-end font-bold font-poppins mt-1 ${
+                  className={`text-xl font-poppins font-bold ${
                     toggle_disable ? "text-black" : "text-gray-500"
                   }`}
                 >
-                  X
+                  Resolution
                 </div>
               </div>
-              <div className="col-span-2">
-                <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold rounded-md">
-                  {isView ? (
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
-                      <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
-                          media_rule_height
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
-                        }`}
-                      >
-                        Height
-                      </label>
-                      <input
-                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
-                          toggle_disable ? "text-black" : "text-gray-500"
-                        }`}
-                        type="number"
-                        onChange={(e) => {
-                          const newValue = e.target.value;
-                          setMediaRuleHeight(newValue);
-                        }}
-                        value={media_rule_height}
-                        disabled
-                      />
+
+              <div className="grid grid-cols-11 mt-3 space-x-2  justify-center items-center">
+                <div className="col-span-3">
+                  <div className="relative flex flex-col justify-center items-center h-full ">
+                    <div
+                      className={`text-sm font-poppins font-bold ${
+                        toggle_disable ? "text-black" : "text-gray-500"
+                      }`}
+                    >
+                      Resolution
                     </div>
-                  ) : (
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
-                      <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
-                          media_rule_height
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
-                        }`}
-                      >
-                        Height
-                      </label>
-                      <input
-                        className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
-                          toggle_disable ? "text-black" : "text-gray-500"
-                        }`}
-                        type="number"
-                        onChange={(e) => {
-                          const newValue = e.target.value;
-                          setMediaRuleHeight(newValue);
-                        }}
-                        value={media_rule_height}
-                        disabled={!toggle_disable}
-                      />
-                    </div>
-                  )}
+                  </div>
                 </div>
-              </div>
-              <div className="col-span-3">
-                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
+                <div className="col-span-2">
+                  <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold  rounded-md">
+                    {isView ? (
+                      <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                            media_rule_width
+                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                              : "top-3 text-gray-300"
+                          }`}
+                        >
+                          Width
+                        </label>
+                        <input
+                          className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
+                            toggle_disable ? "text-black" : "text-gray-500"
+                          }`}
+                          type="number"
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            setMediaRuleWidth(newValue);
+                          }}
+                          value={media_rule_width}
+                          disabled
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                            media_rule_width
+                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                              : "top-3 text-gray-300"
+                          }`}
+                        >
+                          Width
+                        </label>
+                        <input
+                          className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
+                            toggle_disable ? "text-black" : "text-gray-500"
+                          }`}
+                          type="number"
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            setMediaRuleWidth(newValue);
+                          }}
+                          value={media_rule_width}
+                          disabled={!toggle_disable}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="col-span-1">
                   <div
-                    className={`text-sm font-poppins ${
+                    className={`flex justify-center items-end font-bold font-poppins mt-1 ${
                       toggle_disable ? "text-black" : "text-gray-500"
                     }`}
                   >
-                    pixels
+                    X
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div
-              className={`flex justify-center text-sm mt-3 font-poppins ${
-                toggle_disable ? "text-black" : "text-gray-500"
-              }`}
-            >
-              Maximum Image Size of Requests must be over than 300 X 300
-            </div>
-          </div>
-
-          {/* Ads capacity */}
-          <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-5">
-            <div className="flex flex-row mt-3 space-x-5">
-              <div className="text-xl font-bold font-poppins">Ads capacity</div>
-            </div>
-            <div className="grid grid-cols-6 mt-5 space-x-2">
-              <div className="col-span-2">
-                <input
-                  onChange={(e) => setMediaRuleAdsCapacity(e.target.value)}
-                  placeholder="Ads Capacity"
-                  value={media_rule_adsCapacity}
-                  disabled={isView}
-                  className="font-poppins  border border-gray-300 h-[40px] rounded-md pl-4"
-                />
-              </div>
-              <div className="col-span-4">
-                <div className="flex justify-start items-center">
-                  <div className="font-poppins font-bold mt-2">
-                    Slots per Loops
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-2">
-              <div className="grid grid-cols-6">
                 <div className="col-span-2">
-                  <div className="font-poppins text-[15px]">
-                    1 Slot = {maNotification} Second
+                  <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold rounded-md">
+                    {isView ? (
+                      <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                            media_rule_height
+                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                              : "top-3 text-gray-300"
+                          }`}
+                        >
+                          Height
+                        </label>
+                        <input
+                          className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
+                            toggle_disable ? "text-black" : "text-gray-500"
+                          }`}
+                          type="number"
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            setMediaRuleHeight(newValue);
+                          }}
+                          value={media_rule_height}
+                          disabled
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                            media_rule_height
+                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                              : "top-3 text-gray-300"
+                          }`}
+                        >
+                          Height
+                        </label>
+                        <input
+                          className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
+                            toggle_disable ? "text-black" : "text-gray-500"
+                          }`}
+                          type="number"
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            setMediaRuleHeight(newValue);
+                          }}
+                          value={media_rule_height}
+                          disabled={!toggle_disable}
+                        />
+                      </div>
+                    )}
                   </div>
+                </div>
+                <div className="col-span-3">
+                  <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
+                    <div
+                      className={`text-sm font-poppins ${
+                        toggle_disable ? "text-black" : "text-gray-500"
+                      }`}
+                    >
+                      pixels
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`flex justify-center text-sm mt-3 font-poppins ${
+                  toggle_disable ? "text-black" : "text-gray-500"
+                }`}
+              >
+                Maximum Image Size of Requests must be over than 300 X 300
+              </div>
+            </div>
+
+            {/* Ads capacity */}
+            <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-5">
+              <div className="flex flex-row mt-3 space-x-5">
+                <div className="text-xl font-bold font-poppins">
+                  Ads capacity
+                </div>
+              </div>
+              <div className="grid grid-cols-6 mt-5 space-x-2">
+                <div className="col-span-2">
+                  <input
+                    onChange={(e) => setMediaRuleAdsCapacity(e.target.value)}
+                    placeholder="Ads Capacity"
+                    value={media_rule_adsCapacity}
+                    disabled={isView}
+                    className="font-poppins  border border-gray-300 h-[40px] rounded-md pl-4"
+                  />
                 </div>
                 <div className="col-span-4">
-                  <div className="font-poppins text-[15px]">
-                    Total Time ={" "}
-                    {media_rule_adsCapacity * maNotification > 60
-                      ? (
-                          (media_rule_adsCapacity * maNotification) /
-                          60
-                        ).toFixed(2)
-                      : media_rule_adsCapacity * maNotification}{" "}
-                    {media_rule_adsCapacity * maNotification > 60
-                      ? "Minute"
-                      : "Second"}
+                  <div className="flex justify-start items-center">
+                    <div className="font-poppins font-bold mt-2">
+                      Slots per Loops
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-2">
+                <div className="grid grid-cols-6">
+                  <div className="col-span-2">
+                    <div className="font-poppins text-[15px]">
+                      1 Slot = {maNotification} Second
+                    </div>
+                  </div>
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[15px]">
+                      Total Time ={" "}
+                      {media_rule_adsCapacity * maNotification > 60
+                        ? (
+                            (media_rule_adsCapacity * maNotification) /
+                            60
+                          ).toFixed(2)
+                        : media_rule_adsCapacity * maNotification}{" "}
+                      {media_rule_adsCapacity * maNotification > 60
+                        ? "Minute"
+                        : "Second"}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -499,7 +509,7 @@ const Create_Media_Rule = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

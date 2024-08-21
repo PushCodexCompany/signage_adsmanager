@@ -52,7 +52,7 @@ const Booking = () => {
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header category="Page" title="Home" />
+        <Header lv1={"Booking"} />
         <div className="grid grid-cols-5 gap-4 mt-10">
           <div className="col-span-4">
             <div className="font-poppins font-semibold text-2xl">

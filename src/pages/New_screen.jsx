@@ -551,7 +551,11 @@ const New_screen = () => {
     <>
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header category="Page" title="Home" />
+        <Header
+          lv1={"Screens"}
+          lv1Url={"/screen"}
+          lv2={"Create/Edit Screens"}
+        />
         <div className="flex items-center justify-between mt-10 mb-5 ">
           <div className="font-poppins font-semibold text-2xl">
             {id !== "new" ? "Edit Screens" : "Create New Screens"}

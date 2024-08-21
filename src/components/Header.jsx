@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import User, { SIGNAGE_BRAND_COOKIE } from "../libs/admin";
 import cookie from "react-cookies";
 
-const Header = ({ title, subtitle }) => {
+const Header = ({ lv1, lv1Url, lv2, lv2Url, lv3, lv3Url }) => {
   const navigate = useNavigate();
   const [brand, setBrand] = useState(null);
   const pathname = window.location.pathname
@@ -40,12 +40,83 @@ const Header = ({ title, subtitle }) => {
           <li className="inline-flex items-center">
             <button
               onClick={() => selectBrand()}
-              className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white font-poppins"
+              className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-[#6425FE] dark:text-gray-400 dark:hover:text-white font-poppins"
             >
               {brand}
             </button>
           </li>
-          {pathname.map((items, index) => {
+          {lv1 ? (
+            <li aria-current="page">
+              <div className="flex items-center">
+                <IoIosArrowForward />
+                <div
+                  onClick={() => {
+                    if (lv1Url) {
+                      navigate(lv1Url);
+                    }
+                  }}
+                  className={`ml-1 text-sm font-medium text-gray-700 ${
+                    lv1Url ? "hover:text-[#6425FE] hover:cursor-pointer" : ""
+                  }  md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins `}
+                >
+                  {(lv1.charAt(0).toUpperCase() + lv1.slice(1))
+                    .replace(/_/g, " ")
+                    .replace(/%20/g, " ")}
+                </div>
+              </div>
+            </li>
+          ) : (
+            <></>
+          )}
+          {lv2 ? (
+            <li aria-current="page">
+              <div className="flex items-center">
+                <IoIosArrowForward />
+                <div
+                  onClick={() => {
+                    if (lv2Url) {
+                      navigate(lv2Url);
+                    }
+                  }}
+                  className={`ml-1 text-sm font-medium text-gray-700 ${
+                    lv2Url ? "hover:text-[#6425FE] hover:cursor-pointer" : ""
+                  }  md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins `}
+                >
+                  {(lv2.charAt(0).toUpperCase() + lv2.slice(1))
+                    .replace(/_/g, " ")
+                    .replace(/%20/g, " ")}
+                </div>
+              </div>
+            </li>
+          ) : (
+            <></>
+          )}
+
+          {lv3 ? (
+            <li aria-current="page">
+              <div className="flex items-center">
+                <IoIosArrowForward />
+                <div
+                  onClick={() => {
+                    if (lv3Url) {
+                      navigate(lv3Url);
+                    }
+                  }}
+                  className={`ml-1 text-sm font-medium text-gray-700 ${
+                    lv3Url ? "hover:text-[#6425FE] hover:cursor-pointer" : ""
+                  }  md:ml-2 dark:text-gray-400 dark:hover:text-white font-poppins `}
+                >
+                  {(lv3.charAt(0).toUpperCase() + lv3.slice(1))
+                    .replace(/_/g, " ")
+                    .replace(/%20/g, " ")}
+                </div>
+              </div>
+            </li>
+          ) : (
+            <></>
+          )}
+
+          {/* {pathname.map((items, index) => {
             const to = `/${pathname.slice(0, index + 1).join(`/`)}`;
             const last = index === pathname.length - 1;
             return last ? (
@@ -76,7 +147,7 @@ const Header = ({ title, subtitle }) => {
                 </div>
               </li>
             );
-          })}
+          })} */}
         </ol>
       </nav>
     </>

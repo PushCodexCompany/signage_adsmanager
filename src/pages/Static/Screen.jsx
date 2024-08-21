@@ -74,7 +74,7 @@ const Screen = () => {
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header category="Page" title="Home" />
+        <Header lv1={"Log Management"} lv2={"screen"} />
 
         <div className="grid grid-cols-10 mt-5">
           <div className="col-span-6">

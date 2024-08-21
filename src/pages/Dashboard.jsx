@@ -814,7 +814,7 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header title="Home" subtitle="Welcome to Dashboard" />
+        <Header lv1={"Dashboard"} />
 
         <div className="grid grid-cols-8 mt-10">
           <div className="lg:col-span-1 col-span-2 ">
