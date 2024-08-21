@@ -56,7 +56,7 @@ export const GridTable = ({
       RoleName,
       RoleID,
       AccessContent,
-    } = user_lists.find((item) => item.UserID === id);
+    } = user_lists?.find((item) => item.UserID === id);
 
     setEditId(UserID);
     setEditUsername(Username);
@@ -164,20 +164,24 @@ export const GridTable = ({
   const getImgBrand = (id) => {
     // const brand_img = brand.find((item) => item.BrandID === parseInt(id));
     // return brand_img ? brand_img.BrandLogo : empty_img;
-    const brand_img = brand.find((item) => item.BrandID === parseInt(id));
+    const brand_img = brand?.find((item) => item.BrandID === parseInt(id));
     return brand_img ? brand_img.BrandLogo : empty_img;
   };
 
   const getImgMerchandise = (id) => {
-    const merchandise_data = merchandise.find(
-      (item) => item.AdvertiserID === parseInt(id)
-    );
+    if (merchandise) {
+      const merchandise_data = merchandise?.find(
+        (item) => item.AdvertiserID === parseInt(id)
+      );
 
-    return merchandise_data.AdvertiserLogo
-      ? merchandise_data.AdvertiserLogo
-      : `https://ui-avatars.com/api/?name=${
-          merchandise_data.AdvertiserName
-        }&background=${"000000"}&color=fff`;
+      return merchandise_data?.AdvertiserLogo
+        ? merchandise_data.AdvertiserLogo
+        : `https://ui-avatars.com/api/?name=${
+            merchandise_data.AdvertiserName
+          }&background=${"000000"}&color=fff`;
+    } else {
+      return null;
+    }
   };
 
   const onClickDelete = async (id, name) => {

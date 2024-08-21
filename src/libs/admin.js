@@ -625,20 +625,17 @@ export default {
 
   getMerchandiseList: async function (token) {
     const { brand_code } = this.getBrandCode();
-
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-
-    const obj = { brandcode: brand_code };
+    const obj = { brandcode: brand_code || null };
     const encrypted = await Encryption.encryption(
       obj,
       "get_advertisers",
       false
     );
-
     const { data } = await this._get(
       `api/v1/get_advertisers?hash=${encrypted}`,
       "",

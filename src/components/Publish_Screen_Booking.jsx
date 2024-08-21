@@ -95,31 +95,43 @@ const Publish_Screen_Booking = ({
     };
 
     if (obj.screenids) {
-      try {
-        const data = await User.publishBookingcontent(obj, token);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Publish Booking สำเร็จ!",
-            text: `Publish Booking สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              setShowPublishScreen(!showPublishScreen);
+      Swal.fire({
+        text: `ยืนยันการ Publish ?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#8CD4F5",
+        confirmButtonText: "ตกลง",
+        cancelButtonText: "ยกเลิก",
+        reverseButtons: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const data = await User.publishBookingcontent(obj, token);
+            if (data.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "Publish Booking สำเร็จ!",
+                text: `Publish Booking สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  setShowPublishScreen(!showPublishScreen);
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
             }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
+          } catch (error) {
+            console.error();
+          }
         }
-      } catch (error) {
-        console.error();
-      }
+      });
     } else {
       Swal.fire({
         icon: "error",

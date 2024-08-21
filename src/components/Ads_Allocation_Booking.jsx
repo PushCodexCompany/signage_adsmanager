@@ -23,6 +23,7 @@ import Confirm_Allocation from "../components/Confirm_Allocation";
 import Create_New_Playlist_Allocation from "../components/Create_New_Playlist_Allocation";
 import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 import "./css/alert.css";
+import Permission from "../libs/permission";
 
 const Ads_Allocation_Booking = ({
   setOpenAdsAllocationModal,
@@ -75,12 +76,14 @@ const Ads_Allocation_Booking = ({
   const [detailScreen, setDetailScreen] = useState(null);
 
   const { token } = User.getCookieData();
+  const [page_permission, setPagePermission] = useState([]);
 
   useEffect(() => {
     setEditData();
     setTempMediaList();
     setDefaultApplyToScreen();
     setDefaultPanel1(itemsPanel1.value.slots, itemsPanel1.value.medias);
+    getPermission();
   }, []);
 
   const setTempMediaList = async () => {
@@ -100,6 +103,12 @@ const Ads_Allocation_Booking = ({
       setPlaylistName(screen_data[0].PlaylistName);
       setTempPlaylistName(screen_data[0].PlaylistName);
     }
+  };
+
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    setPagePermission(permissions.playlist);
   };
 
   const setDefaultApplyToScreen = () => {
@@ -521,11 +530,23 @@ const Ads_Allocation_Booking = ({
                         />
                       </>
                     )}
-
                     <IoIosRemoveCircle
                       size={24}
                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      onClick={() => handleRemoveMediaPlaylistItem(index)}
+                      onClick={() => {
+                        if (
+                          page_permission?.craete ||
+                          page_permission?.update
+                        ) {
+                          handleRemoveMediaPlaylistItem(index);
+                        } else {
+                          Swal.fire({
+                            icon: "error",
+                            title: "เกิดข้อผิดพลาด!",
+                            text: "คุณไม่มีสิทธิ์ในการจัดการ Playlist ...",
+                          });
+                        }
+                      }}
                     />
                   </div>
                   <div className="flex-1">
@@ -1449,12 +1470,18 @@ const Ads_Allocation_Booking = ({
                               </div>
                               {isExpanded && (
                                 <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2">
-                                  <button
-                                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins h-[36px] w-[110px] rounded-md"
-                                    onClick={() => handleButtonNewPlaylist()}
-                                  >
-                                    New Playlist
-                                  </button>
+                                  {page_permission?.create ||
+                                  page_permission?.update ? (
+                                    <button
+                                      className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins h-[36px] w-[110px] rounded-md"
+                                      onClick={() => handleButtonNewPlaylist()}
+                                    >
+                                      New Playlist
+                                    </button>
+                                  ) : (
+                                    <></>
+                                  )}
+
                                   {selectedOption.map((option, index) => (
                                     <div
                                       key={option.MediaPlaylistID}
@@ -1497,16 +1524,26 @@ const Ads_Allocation_Booking = ({
                                   onBlur={() => setEditPlaylist(!editPlaylist)}
                                   disabled={editPlaylist}
                                 />
-                                <RiEditLine
-                                  onClick={() => setEditPlaylist(!editPlaylist)}
-                                  size={26}
-                                  className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
-                                />
-                                <RiSave3Line
-                                  onClick={() => handleSavePlaylist()}
-                                  size={26}
-                                  className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
-                                />
+
+                                {page_permission?.craete ||
+                                page_permission?.update ? (
+                                  <>
+                                    <RiEditLine
+                                      onClick={() =>
+                                        setEditPlaylist(!editPlaylist)
+                                      }
+                                      size={26}
+                                      className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                                    />
+                                    <RiSave3Line
+                                      onClick={() => handleSavePlaylist()}
+                                      size={26}
+                                      className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                                    />
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
                               </div>
                             ) : (
                               <div className="font-poppins text-[32px] font-bold text-[#B4B4B4] mt-2">
