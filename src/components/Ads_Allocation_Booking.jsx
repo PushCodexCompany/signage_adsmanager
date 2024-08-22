@@ -1294,13 +1294,19 @@ const Ads_Allocation_Booking = ({
 
                     <div className="grid grid-cols-12 mt-5">
                       <div className="col-span-1" />
-                      <div className="col-span-3 flex justify-end items-center">
+                      <div className="col-span-3 flex justify-end items-start pt-3">
                         <div className="font-poppins font-bold">
                           Apply to Period :
                         </div>
                       </div>
                       <div className="col-span-1" />
-                      <div className="col-span-6 space-y-1 ">
+                      <div
+                        className={`col-span-6 space-y-1   ${
+                          datePickers.length > 2
+                            ? "h-[200px] overflow-y-auto"
+                            : ""
+                        }`}
+                      >
                         {datePickers.map((items, index) => (
                           <div
                             key={index}
@@ -1420,7 +1426,11 @@ const Ads_Allocation_Booking = ({
                       <div className="col-span-1" />
                     </div>
 
-                    <div className="grid grid-cols-10 mt-16 lg:mt-36">
+                    <div
+                      className={`grid grid-cols-10 mt-12  ${
+                        datePickers.length > 1 ? "lg:mt-22" : "lg:mt-36"
+                      }`}
+                    >
                       <div className="col-span-2" />
                       <div className="col-span-7">
                         <div className="flex">

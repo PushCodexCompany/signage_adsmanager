@@ -23,6 +23,7 @@ import Screen_Info from "../components/Screen_Info";
 import { format } from "date-fns";
 import View_Allocation from "../components/View_Allocation";
 import Permission from "../libs/permission";
+import Remove_Content from "../components/Remove_Content";
 
 const Select_Booking = () => {
   const location = useLocation();
@@ -38,6 +39,7 @@ const Select_Booking = () => {
   const [booking_col, setBookingCol] = useState();
 
   const [showPublishScreen, setShowPublishScreen] = useState(false);
+  const [showRemoveContent, setShowRemoveContent] = useState(false);
 
   const [itemsPanel1, setItemsPanel1] = useState([]);
   const [screen_select, setScreenSelect] = useState({
@@ -50,6 +52,7 @@ const Select_Booking = () => {
 
   const [selectInfoScreen, setSelectInfoScren] = useState([]);
   const [screenAdsAllocation, setScreennAdsAllocation] = useState([]);
+
   const [datePickers, setDatePickers] = useState([]);
   const [media_list, setMediaList] = useState([]);
   const [itemsPanel2, setItemsPanel2] = useState([]);
@@ -407,12 +410,20 @@ const Select_Booking = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               {page_permission?.create || page_permission?.update ? (
-                <button
-                  onClick={() => setShowPublishScreen(true)}
-                  className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                >
-                  Publish
-                </button>
+                <>
+                  <button
+                    onClick={() => setShowRemoveContent(!showRemoveContent)}
+                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Remove Content
+                  </button>
+                  <button
+                    onClick={() => setShowPublishScreen(!showPublishScreen)}
+                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                  >
+                    Publish
+                  </button>
+                </>
               ) : (
                 <></>
               )}
@@ -837,7 +848,6 @@ const Select_Booking = () => {
           media_allocation_upload_index={media_allocation_upload_index}
         />
       )}
-
       {modalPlayerOpen && (
         <Media_Player
           mediaDisplay={mediaDisplay}
@@ -859,6 +869,25 @@ const Select_Booking = () => {
           openViewMediaAllocation={openViewMediaAllocation}
           setOpenViewMediaAllocation={setOpenViewMediaAllocation}
           itemsPanel1={itemsPanel1}
+          bookingId={bookingId}
+        />
+      )}
+      {showRemoveContent && (
+        <a
+          onClick={() => setShowRemoveContent(!showRemoveContent)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {showRemoveContent && (
+        <Remove_Content
+          setShowRemoveContent={setShowRemoveContent}
+          showRemoveContent={showRemoveContent}
+          booking_date={booking_date}
+          screenSelectFromEdit={screenSelectFromEdit}
+          allScreenData={allScreenData}
+          media_rules_select={media_rules_select}
+          screen={screen}
           bookingId={bookingId}
         />
       )}

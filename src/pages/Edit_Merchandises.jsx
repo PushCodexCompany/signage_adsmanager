@@ -137,7 +137,18 @@ const Edit_Merchandises = () => {
             });
           }
         } else {
-          navigate("/merchandise");
+          Swal.fire({
+            icon: "success",
+            title: "สร้าง Merchandise สำเร็จ!",
+            text: `สร้าง Merchandise สำเร็จ!`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              navigate("/merchandise");
+            }
+          });
         }
       } else {
         Swal.fire({
