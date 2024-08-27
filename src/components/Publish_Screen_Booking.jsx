@@ -146,18 +146,17 @@ const Publish_Screen_Booking = ({
   };
 
   return (
-    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
-      {/* First div (circle) */}
-      <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
-        <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-          <button onClick={() => setShowPublishScreen(!showPublishScreen)}>
-            <IoIosClose size={25} color={"#6425FE"} />
-          </button>
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+      {/* Main centered content container */}
+      <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+        {/* Close button - adjust positioning */}
+        <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+          <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+            <button onClick={() => setShowPublishScreen(!showPublishScreen)}>
+              <IoIosClose size={25} color={"#6425FE"} />
+            </button>
+          </div>
         </div>
-      </div>
-
-      {/* Second div (gray background) */}
-      <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
         <div className="flex justify-center items-center mt-5">
           <div className="font-poppins text-5xl text-[#2F3847] font-bold">
             Publish to Screens
@@ -217,8 +216,8 @@ const Publish_Screen_Booking = ({
                       />
                       <span
                         className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center 
-                        ${selectAllPubishScreen ? "bg-white" : ""}
-                        `}
+                  ${selectAllPubishScreen ? "bg-white" : ""}
+                  `}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

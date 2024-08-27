@@ -402,17 +402,19 @@ const Tag_managment = () => {
       )}
 
       {modalEditTag && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-          {/* First div (circle) */}
-          <div className="absolute right-12 md:top-[320px] md:right-[140px] lg:top-72 lg:right-[250px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setModalEditTag(!modalEditTag)}>
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button onClick={() => setModalEditTag(!modalEditTag)}>
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-[60%] lg:w-[70%] h-[40%] lg:h-[30%] rounded-md max-h-screen overflow-y-auto relative">
+
+            {/* Content  */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">Edit Tag</div>
             </div>

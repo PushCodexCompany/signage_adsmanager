@@ -301,16 +301,19 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-        {/* First div (circle) */}
-        <div className="absolute right-10 top-[150px] lg:top-[30px] lg:right-[160px] m-4 z-30">
-          <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-            <button onClick={() => setOpenAddNewScreenModal(false)}>
-              <IoIosClose size={25} color={"#6425FE"} />
-            </button>
+      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+        {/* Main centered content container */}
+        <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+          {/* Close button - adjust positioning */}
+          <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+            <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setOpenAddNewScreenModal(false)}>
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-auto rounded-md max-h-screen  relative">
+
+          {/* Content  */}
           <div className="flex items-center justify-between mt-10 mb-5  p-4">
             <div className="font-poppins font-semibold text-2xl">
               Create New Screens
@@ -773,22 +776,22 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                           </div>
                         </div>
                         {/* <div className="col-span-1">
-                          <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
-                            <HiOutlineClock color="#6425FE" size="20" />
-                          </div>
-                        </div> */}
+                  <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
+                    <HiOutlineClock color="#6425FE" size="20" />
+                  </div>
+                </div> */}
                       </div>
                     </div>
                     <div className="col-span-3">
                       {/* <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
-                      <input
-                        onChange={(e) => setSlotPerDay(e.target.value)}
-                        value={slotPerDay}
-                        type="number"
-                        placeholder="Slot Per Day"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                      />
-                    </div> */}
+              <input
+                onChange={(e) => setSlotPerDay(e.target.value)}
+                value={slotPerDay}
+                type="number"
+                placeholder="Slot Per Day"
+                className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+              />
+            </div> */}
                     </div>
                   </div>
                 </div>

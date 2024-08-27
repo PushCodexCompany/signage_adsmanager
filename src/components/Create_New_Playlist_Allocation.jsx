@@ -15,22 +15,24 @@ const Create_New_Playlist_Allocation = ({
   const [new_playlist, setNewPlaylistName] = useState(null);
   return (
     <>
-      <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
-        {/* First div (circle) */}
-        <div className="absolute right-12 top-12 lg:top-12 lg:right-[540px] m-4 z-30">
-          <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-            <button
-              onClick={() => {
-                setIsOpenCreateNewPlaylist(!isOpenCreateNewPlaylist);
-                setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
-              }}
-            >
-              <IoIosClose size={25} color={"#6425FE"} />
-            </button>
+      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+        {/* Main centered content container */}
+        <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+          {/* Close button - adjust positioning */}
+          <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+            <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+              <button
+                onClick={() => {
+                  setIsOpenCreateNewPlaylist(!isOpenCreateNewPlaylist);
+                  setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
+                }}
+              >
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
           </div>
-        </div>
-        {/* Second div (gray background) */}
-        <div className="bg-[#FFFFFF] w-4/5 lg:w-2/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+
+          {/* Content  */}
           <div className="mt-28">
             <div className="p-3">
               <div className="flex justify-center items-center">

@@ -289,26 +289,22 @@ const Screen_Info = ({
   return (
     <>
       {hideOldModal && (
-        <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-full overflow-x-auto">
-          {/* First div (circle) */}
-          <div
-            className={`absolute  ${
-              width >= 1026
-                ? "top-12 right-[160px]"
-                : width < 1024
-                ? "right-12 top-12"
-                : "right-[65px] top-12"
-            }  m-4 z-30`}
-          >
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setOpenInfoScreenModal(false)}>
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button onClick={() => setOpenInfoScreenModal(false)}>
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-            <div className={`flex  ${width >= 1026 ? "" : "flex-col"} `}>
-              <div className={`w-full ${width >= 1026 ? "" : "w-1/2"}  p-4`}>
+
+            {/* Content Container */}
+            <div className={`flex ${width >= 1026 ? "" : "flex-col"}`}>
+              {/* Left section */}
+              <div className={`w-full ${width >= 1026 ? "" : "w-1/2"} p-4`}>
                 <div className="p-4">
                   <div className="font-poppins text-[30px] font-bold">
                     {selectInfoScreen.ScreenName}
@@ -346,8 +342,8 @@ const Screen_Info = ({
                               }}
                             >
                               {/* <div className="flex justify-center items-center mr-1 ml-1">
-                                <IoIosClose className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
-                              </div> */}
+                               <IoIosClose className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
+                             </div> */}
                               <div className="flex-grow text-sm font-poppins flex justify-center">
                                 {items.TagName}
                               </div>
@@ -500,19 +496,15 @@ const Screen_Info = ({
                   </div>
                 </div>
               </div>
+
+              {/* Right section */}
               <div
-                className={` ${
-                  width >= 1026
-                    ? "w-1/2 pl-8"
-                    : width < 1024
-                    ? "w-full"
-                    : "w-full"
-                } p-4 `}
+                className={` ${width >= 1026 ? "w-1/2 pl-8" : "w-full"} p-4 `}
               >
                 <div className="p-4 border border-gray-200">
                   <div className="mt-[70px]">
                     <div className="grid grid-cols-12">
-                      <div className="col-span-3">
+                      <div className="col-span-4">
                         <div className="font-poppins text-[30px] font-bold">
                           Schedule
                         </div>
@@ -562,7 +554,7 @@ const Screen_Info = ({
                     </div>
 
                     {schedule.length > 0 ? (
-                      <div className="w-[720px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px] bg-[#ececec]">
+                      <div className="w-[720px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px] ">
                         <div className="mt-3">
                           <div className="flex space-x-2">
                             {schedule?.map((items, index) => (
@@ -579,18 +571,18 @@ const Screen_Info = ({
                               </div>
                             ))}
                             {/* {selectInfoScreen.schedule?.map((items, index) => (
-                            <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
-                              <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
-                                {format(items.date, "EEE")}
-                              </div>
-                              <div className="font-poppins font-bold flex justify-center items-center text-[30px]">
-                                {format(items.date, "dd")}
-                              </div>
-                              <div className="font-poppins font-bold flex justify-center items-center text-[9px] ">
-                                {format(items.date, "MMM yyyy")}
-                              </div>
-                            </div>
-                          ))} */}
+                           <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
+                             <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
+                               {format(items.date, "EEE")}
+                             </div>
+                             <div className="font-poppins font-bold flex justify-center items-center text-[30px]">
+                               {format(items.date, "dd")}
+                             </div>
+                             <div className="font-poppins font-bold flex justify-center items-center text-[9px] ">
+                               {format(items.date, "MMM yyyy")}
+                             </div>
+                           </div>
+                         ))} */}
                           </div>
                         </div>
                         <div className="mt-4">
@@ -628,7 +620,7 @@ const Screen_Info = ({
                       <div className="font-poppins text-[30px] font-bold">
                         Screen Health
                       </div>
-                      <div className="w-full bg-[#D9D9D9] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
+                      <div className="w-full  overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
                         <div className="mt-2 mb-2">
                           <div className="flex items-end">
                             {health?.map((height, index) => (
@@ -702,12 +694,12 @@ const Screen_Info = ({
                         </div>
                       </div>
                       {/* <div className="mt-8">
-                        <div className="flex justify-center items-center">
-                          <button className="font-poppins text-[15px] w-[315px] h-[48px] rounded-lg bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold">
-                            Start Booking
-                          </button>
-                        </div>
-                      </div> */}
+                       <div className="flex justify-center items-center">
+                         <button className="font-poppins text-[15px] w-[315px] h-[48px] rounded-lg bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold">
+                           Start Booking
+                         </button>
+                       </div>
+                     </div> */}
                     </div>
                   </div>
                 </div>
@@ -718,23 +710,22 @@ const Screen_Info = ({
       )}
 
       {openMediaScheduleModal && (
-        <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
-          {/* First div (circle) */}
-          <div className="absolute right-10 top-14 lg:top-12 lg:right-[130px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button
-                onClick={() => {
-                  setHideOldModal(!hideOldModal);
-                  setOpenMediaScheduleModal(!openMediaScheduleModal);
-                }}
-              >
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button
+                  onClick={() => {
+                    setHideOldModal(!hideOldModal);
+                    setOpenMediaScheduleModal(!openMediaScheduleModal);
+                  }}
+                >
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
-
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-1/4 p-1">
                 <div className="p-8">

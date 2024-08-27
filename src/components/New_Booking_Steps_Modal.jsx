@@ -26,7 +26,7 @@ const New_Booking_Steps_Modal = (props) => {
     if (clickedStep < currentStep) setStep(`${clickedStep}`);
   };
   return (
-    <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+    <>
       <div className="p-4  pl-16 flex space-x-3 border-b-1 border-gray-300">
         {options.map((step, index) => {
           const isActiveStep = `${currentStep}` === `${step.stepIndex}`;
@@ -90,7 +90,7 @@ const New_Booking_Steps_Modal = (props) => {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

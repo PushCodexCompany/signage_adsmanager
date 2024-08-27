@@ -1319,13 +1319,6 @@ const Create_Booking = () => {
         />
       )}
 
-      {/* {showDetailScreen && (
-        <a
-          onClick={() => setShowDetailScreen(!showDetailScreen)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )} */}
-
       {showDetailScreen && (
         <Detail_Screen_Booking
           setShowDetailScreen={setShowDetailScreen}

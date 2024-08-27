@@ -878,7 +878,6 @@ const Select_Booking = () => {
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
-
       {showRemoveContent && (
         <Remove_Content
           setShowRemoveContent={setShowRemoveContent}

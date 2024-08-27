@@ -96,17 +96,19 @@ const New_Tag = ({
   };
 
   return (
-    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[970px] items-center justify-center z-20">
-      {/* First div (circle) */}
-      <div className="absolute right-12 top-12 lg:top-12 lg:right-[165px] m-4 z-30">
-        <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-          <button onClick={() => setOpenModalNewTag(!openModalNewTag)}>
-            <IoIosClose size={25} color={"#6425FE"} />
-          </button>
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+      {/* Main centered content container */}
+      <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+        {/* Close button - adjust positioning */}
+        <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+          <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+            <button onClick={() => setOpenModalNewTag(!openModalNewTag)}>
+              <IoIosClose size={25} color={"#6425FE"} />
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+        {/* Content  */}
         <div className="flex justify-center items-center mt-5">
           <div className="font-poppins text-5xl text-[#2F3847] font-bold">
             Tag
@@ -162,23 +164,23 @@ const New_Tag = ({
                   isMulti
                 />
                 {/* <select
-                  name="tag"
-                  id="tag"
-                  onChange={(e) => {
-                    setTagSelect(e.target.value);
-                  }}
-                  value={tag_select}
-                  className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                >
-                  <option value={"0"} disabled selected hidden>
-                    Please Select Tag
-                  </option>
-                  {tag.length > 0
-                    ? tag.map((items) => (
-                        <option value={items.TagID}>{items.TagName}</option>
-                      ))
-                    : null}
-                </select> */}
+              name="tag"
+              id="tag"
+              onChange={(e) => {
+                setTagSelect(e.target.value);
+              }}
+              value={tag_select}
+              className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+            >
+              <option value={"0"} disabled selected hidden>
+                Please Select Tag
+              </option>
+              {tag.length > 0
+                ? tag.map((items) => (
+                    <option value={items.TagID}>{items.TagName}</option>
+                  ))
+                : null}
+            </select> */}
               </div>
             </div>
           </div>

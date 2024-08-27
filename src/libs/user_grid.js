@@ -383,18 +383,20 @@ export const GridTable = ({
       )}
 
       {modal_edit && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-30 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setModalEdit(!modal_edit)}>
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button onClick={() => setModalEdit(!modal_edit)}>
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            {/* Content Container */}
+
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">Edit User</div>
             </div>
@@ -403,174 +405,179 @@ export const GridTable = ({
                 Edit User To Unleash The Power Of Digital Advertising
               </div>
             </div>
-
-            <div className="mt-10 mx-40">
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
-                    Username :
+            <div className="h-[550px] overflow-y-auto">
+              <div className="mt-10 mx-40">
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Username :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => setEditUsername(e.target.value)}
+                      type="text"
+                      placeholder="Your Username"
+                      defaultValue={edit_username}
+                      value={edit_username}
+                      required
+                      disabled
+                      autoComplete="username"
+                    />
                   </div>
                 </div>
-                <div className="col-span-8">
-                  <input
-                    className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => setEditUsername(e.target.value)}
-                    type="text"
-                    placeholder="Your Username"
-                    defaultValue={edit_username}
-                    value={edit_username}
-                    required
-                    disabled
-                    autoComplete="username"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
-                    Email :
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Email :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => setEditEmail(e.target.value)}
+                      type="text"
+                      placeholder="Your Email"
+                      defaultValue={edit_email}
+                      value={edit_email}
+                      required
+                      autoFocus
+                      autoComplete="email"
+                    />
                   </div>
                 </div>
-                <div className="col-span-8">
-                  <input
-                    className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                    onChange={(e) => setEditEmail(e.target.value)}
-                    type="text"
-                    placeholder="Your Email"
-                    defaultValue={edit_email}
-                    value={edit_email}
-                    required
-                    autoFocus
-                    autoComplete="email"
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
-                    Role :
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Role :
+                    </div>
                   </div>
-                </div>
-                <div className="col-span-8">
-                  <select
-                    name="role"
-                    id="role"
-                    onClick={toggleStatusSelect}
-                    onChange={(e) => setEditRolename(parseInt(e.target.value))}
-                    value={edit_rolename}
-                    className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                  >
-                    <option value="null">-- Please Select Role ---</option>
-                    {default_roles.map((items) => (
-                      <option value={items.RoleID}>{items.RoleName}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
-                    Status :
-                  </div>
-                </div>
-                <div className="col-span-8">
-                  <select
-                    name="status"
-                    id="status"
-                    onClick={toggleStatusSelect}
-                    onChange={(e) => setEditActivate(parseInt(e.target.value))}
-                    value={edit_activate}
-                    className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                  >
-                    <option value="1">Activated</option>
-                    <option value="0">Deactivated</option>
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                    Brand :
-                  </div>
-                </div>
-                <div className="col-span-8">
-                  <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
-                    <button
-                      onClick={() => setShowBrandModal(true)}
-                      name="brand"
-                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                  <div className="col-span-8">
+                    <select
+                      name="role"
+                      id="role"
+                      onClick={toggleStatusSelect}
+                      onChange={(e) =>
+                        setEditRolename(parseInt(e.target.value))
+                      }
+                      value={edit_rolename}
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     >
-                      Select Brand
-                    </button>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <PiCaretUpDown size={20} color="#6425FE" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right"></div>
-                </div>
-                <div className="col-span-8">
-                  {reg_brand.length > 0 && (
-                    <div className="flex items-center space-x-4">
-                      {reg_brand.map((item, index) => (
-                        <div key={index} className="flex">
-                          <img
-                            className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain border border-[#dedede]"
-                            src={getImgBrand(item)}
-                            alt={item?.name}
-                          />
-                        </div>
+                      <option value="null">-- Please Select Role ---</option>
+                      {default_roles.map((items) => (
+                        <option value={items.RoleID}>{items.RoleName}</option>
                       ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                    Merchandise :
+                    </select>
                   </div>
                 </div>
-                <div className="col-span-8">
-                  <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
-                    <button
-                      onClick={() => setShowMerchandiseModal(true)}
-                      name="brand"
-                      className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Status :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <select
+                      name="status"
+                      id="status"
+                      onClick={toggleStatusSelect}
+                      onChange={(e) =>
+                        setEditActivate(parseInt(e.target.value))
+                      }
+                      value={edit_activate}
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     >
-                      Select Merchandise
-                    </button>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <PiCaretUpDown size={20} color="#6425FE" />
+                      <option value="1">Activated</option>
+                      <option value="0">Deactivated</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Brand :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                      <button
+                        onClick={() => setShowBrandModal(true)}
+                        name="brand"
+                        className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                      >
+                        Select Brand
+                      </button>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                        <PiCaretUpDown size={20} color="#6425FE" />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-12 space-x-2 mb-4">
-                <div className="col-span-4">
-                  <div className="font-poppins text-[#8A8A8A] text-right"></div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right"></div>
+                  </div>
+                  <div className="col-span-8">
+                    {reg_brand.length > 0 && (
+                      <div className="flex items-center space-x-4">
+                        {reg_brand.map((item, index) => (
+                          <div key={index} className="flex">
+                            <img
+                              className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain border border-[#dedede]"
+                              src={getImgBrand(item)}
+                              alt={item?.name}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="col-span-8">
-                  {reg_merchandise.length > 0 && (
-                    <div className="flex items-center space-x-4">
-                      {reg_merchandise.map((item, index) => (
-                        <div key={index} className="flex">
-                          <img
-                            className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain  border border-[#dedede] "
-                            src={getImgMerchandise(item)}
-                            alt={item?.name}
-                          />
-                        </div>
-                      ))}
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Merchandise :
                     </div>
-                  )}
+                  </div>
+                  <div className="col-span-8">
+                    <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                      <button
+                        onClick={() => setShowMerchandiseModal(true)}
+                        name="brand"
+                        className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
+                      >
+                        Select Merchandise
+                      </button>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                        <PiCaretUpDown size={20} color="#6425FE" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right"></div>
+                  </div>
+                  <div className="col-span-8">
+                    {reg_merchandise.length > 0 && (
+                      <div className="flex items-center space-x-4">
+                        {reg_merchandise.map((item, index) => (
+                          <div key={index} className="flex">
+                            <img
+                              className="block ml-auto mr-auto w-12 h-12 rounded-lg object-contain  border border-[#dedede] "
+                              src={getImgMerchandise(item)}
+                              alt={item?.name}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="text-center">
+            <div className="text-center mt-5">
               <button
                 type="submit"
                 onClick={() => handleSaveEdit(edit_id)}
@@ -584,18 +591,19 @@ export const GridTable = ({
       )}
 
       {showBrandModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setShowBrandModal(!showBrandModal)}>
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button onClick={() => setShowBrandModal(!showBrandModal)}>
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
                 Select Brands
@@ -606,79 +614,69 @@ export const GridTable = ({
                 Select Brands To Unleash The Power Of Digital Advertising
               </div>
             </div>
-            {/* <div className="mt-2 p-2">
-              <div className="relative flex items-center justify-center">
-                <input
-                  className="w-[900px] h-10 border border-gray-300 rounded-md pl-10 pr-2 font-poppins"
-                  placeholder="Search"
-                />
-                <span className="absolute inset-y-0 left-0 lg:left-80 flex items-center pl-2">
-                  <AiOutlineSearch size={20} color="#DBDBDB" />
-                </span>
-              </div>
-            </div> */}
+
             <div className="mt-2 p-2">
-              <div className="h-[550px]  mt-8 overflow-y-auto">
+              <div className="h-[500px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
-                    {default_brand.map((item, index) => (
-                      <div key={index}>
-                        <div className="h-64 w-64 relative">
-                          <input
-                            type="checkbox"
-                            className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
-                            onChange={() =>
+                    {default_brand.length > 0 &&
+                      default_brand.map((item, index) => (
+                        <div key={index}>
+                          <div className="h-64 w-64 relative">
+                            <input
+                              type="checkbox"
+                              className="absolute top-0 left-0 mt-4 ml-4 w-5 h-5"
+                              onChange={() =>
+                                handleCheckboxChange(item.BrandID, "brand")
+                              }
+                              checked={reg_brand.includes(item.BrandID)}
+                            />
+
+                            <div className="w-full h-full flex items-center justify-center">
+                              <img
+                                className="block ml-auto mr-auto w-60 h-60 object-contain  border border-gray-200 rounded-lg" // Adjust the size as needed
+                                src={
+                                  item.BrandLogo
+                                    ? item.BrandLogo
+                                    : `https://ui-avatars.com/api/?name=${
+                                        item.BrandName
+                                      }&background=${"000000"}&color=fff`
+                                }
+                                alt={item.BrandName}
+                              />
+                            </div>
+                          </div>
+                          <button
+                            onClick={() =>
                               handleCheckboxChange(item.BrandID, "brand")
                             }
-                            checked={reg_brand.includes(item.BrandID)}
-                          />
-
-                          <div className="w-full h-full flex items-center justify-center">
-                            <img
-                              className="block ml-auto mr-auto w-60 h-60 object-contain  border border-gray-200 rounded-lg" // Adjust the size as needed
-                              src={
-                                item.BrandLogo
-                                  ? item.BrandLogo
-                                  : `https://ui-avatars.com/api/?name=${
-                                      item.BrandName
-                                    }&background=${"000000"}&color=fff`
-                              }
-                              alt={item.BrandName}
-                            />
-                          </div>
+                            className="w-full"
+                          >
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins text-xl font-bold  hover:text-[#6425FE]">
+                                {item.BrandName}
+                              </div>
+                            </div>
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins text-[#6F6F6F] text-sm">
+                                {item.BrandDesc}
+                              </div>
+                            </div>
+                          </button>
                         </div>
-                        <button
-                          onClick={() =>
-                            handleCheckboxChange(item.BrandID, "brand")
-                          }
-                          className="w-full"
-                        >
-                          <div className="flex justify-center items-center">
-                            <div className="font-poppins text-xl font-bold  hover:text-[#6425FE]">
-                              {item.BrandName}
-                            </div>
-                          </div>
-                          <div className="flex justify-center items-center">
-                            <div className="font-poppins text-[#6F6F6F] text-sm">
-                              {item.BrandDesc}
-                            </div>
-                          </div>
-                        </button>
-                      </div>
-                    ))}
+                      ))}
                   </div>
                 </div>
               </div>
-
-              <div className="mt-2">
-                <div className="flex justify-center items-center">
-                  <button
-                    onClick={() => saveBrandReg()}
-                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
-                  >
-                    Save
-                  </button>
-                </div>
+            </div>
+            <div className="mt-2">
+              <div className="flex justify-center items-center">
+                <button
+                  onClick={() => saveBrandReg()}
+                  className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
@@ -686,20 +684,21 @@ export const GridTable = ({
       )}
 
       {showMerchandiseModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button
-                onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
-              >
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button
+                  onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
+                >
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
                 Select Merchandise
@@ -707,12 +706,12 @@ export const GridTable = ({
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Merchandise To Unleash The Power Of Digital Advertising
+                Select Merchandise to unleash the power of digital advertising
               </div>
             </div>
 
             <div className="mt-2 p-2">
-              <div className="h-[550px]  mt-8 overflow-y-auto">
+              <div className="h-[500px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {default_merchandise.length > 0 &&
@@ -772,16 +771,15 @@ export const GridTable = ({
                   </div>
                 </div>
               </div>
-
-              <div className="mt-2">
-                <div className="flex justify-center items-center">
-                  <button
-                    onClick={() => saveMerchandiseReg()}
-                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
-                  >
-                    Save
-                  </button>
-                </div>
+            </div>
+            <div className="mt-2">
+              <div className="flex justify-center items-center">
+                <button
+                  onClick={() => saveMerchandiseReg()}
+                  className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>

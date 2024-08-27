@@ -1161,21 +1161,22 @@ const Ads_Allocation_Booking = ({
   return (
     <>
       <div
-        className={`fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20 ${
+        className={`fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto ${
           isOpenConfirmAllocation || isOpenCreateNewPlaylist
             ? "blur-[3px] opacity-70 bg-black bg-opacity-50 "
             : ""
         }`}
       >
-        {/* First div (circle) */}
-        <div className="absolute right-12 top-12 lg:top-12 lg:right-[120px] m-4 z-30">
-          <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-            <button onClick={() => handleCloseModalAdsAllocation()}>
-              <IoIosClose size={25} color={"#6425FE"} />
-            </button>
+        {/* Main centered content container */}
+        <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+          {/* Close button - adjust positioning */}
+          <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+            <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => handleCloseModalAdsAllocation()}>
+                <IoIosClose size={25} color={"#6425FE"} />
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative ">
           <div className="p-3">
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-1/2 p-1">

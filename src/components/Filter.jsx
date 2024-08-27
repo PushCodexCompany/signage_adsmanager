@@ -68,7 +68,7 @@ const Filter = ({ filter_screen, setFilterScreen }) => {
             : ""
         }`}
       >
-        <div className="w-full h-[70px]">
+        <div className="w-[50%] lg:w-full h-[70px]">
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
             <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
               <div className="flex flex-col lg:flex-row">

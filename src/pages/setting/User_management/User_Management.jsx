@@ -37,6 +37,8 @@ const User_Management = () => {
 
   const [page_permission, setPagePermission] = useState([]);
 
+  const [width, setWidth] = useState(window.innerWidth);
+
   const { token } = User.getCookieData();
 
   useEffect(() => {
@@ -53,6 +55,16 @@ const User_Management = () => {
       fetchUsersList();
     }
   }, [filterActive, filterRole]);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const filterList = () => {
     const mapFilterValues = (value) => {
@@ -455,18 +467,20 @@ const User_Management = () => {
       )}
 
       {modalNewUser && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-30 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setModalNewUser(!modalNewUser)}>
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button onClick={() => setModalNewUser(!modalNewUser)}>
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            {/* Content Container */}
+
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">Sign Up</div>
             </div>
@@ -656,7 +670,6 @@ const User_Management = () => {
                 </div>
               </div>
             </div>
-
             <div className="text-center mt-5">
               <button
                 type="submit"
@@ -671,18 +684,19 @@ const User_Management = () => {
       )}
 
       {showBrandModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setShowBrandModal(!showBrandModal)}>
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button onClick={() => setShowBrandModal(!showBrandModal)}>
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
                 Select Brands
@@ -695,7 +709,7 @@ const User_Management = () => {
             </div>
 
             <div className="mt-2 p-2">
-              <div className="h-[550px]  mt-8 overflow-y-auto">
+              <div className="h-[500px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {brand.length > 0 &&
@@ -747,16 +761,15 @@ const User_Management = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="mt-2">
-                <div className="flex justify-center items-center">
-                  <button
-                    onClick={() => saveBrandReg()}
-                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
-                  >
-                    Save
-                  </button>
-                </div>
+            </div>
+            <div className="mt-2">
+              <div className="flex justify-center items-center">
+                <button
+                  onClick={() => saveBrandReg()}
+                  className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>
@@ -764,20 +777,21 @@ const User_Management = () => {
       )}
 
       {showMerchandiseModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-40 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button
-                onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
-              >
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button
+                  onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
+                >
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+            {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
                 Select Merchandise
@@ -788,8 +802,9 @@ const User_Management = () => {
                 Select Merchandise to unleash the power of digital advertising
               </div>
             </div>
+
             <div className="mt-2 p-2">
-              <div className="h-[550px]  mt-8 overflow-y-auto">
+              <div className="h-[500px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {merchandise.length > 0 &&
@@ -849,16 +864,15 @@ const User_Management = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="mt-2">
-                <div className="flex justify-center items-center">
-                  <button
-                    onClick={() => saveBrandMerchandise()}
-                    className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
-                  >
-                    Save
-                  </button>
-                </div>
+            </div>
+            <div className="mt-2">
+              <div className="flex justify-center items-center">
+                <button
+                  onClick={() => saveBrandMerchandise()}
+                  className="w-52 h-10 bg-[#6425FE] hover:bg-[#3b1694] rounded-lg text-white font-poppins"
+                >
+                  Save
+                </button>
               </div>
             </div>
           </div>

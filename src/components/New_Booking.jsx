@@ -667,7 +667,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     className={colStartClasses[getDay(day)]}
                   >
                     <p
-                      className={`cursor-pointer border-1 border-gray-300 hover:border-[#6425FE] flex items-center rounded-md justify-center font-poppins md:h-5 md:w-16 lg:h-8 lg:w-32 hover:text-[#6425FE] ${
+                      className={`cursor-pointer border-1 border-gray-300 hover:border-[#6425FE] flex items-center rounded-md justify-center font-poppins md:h-5 md:w-16 lg:h-8 lg:w-28 hover:text-[#6425FE] ${
                         isSameMonth(day, today)
                           ? "text-gray-900"
                           : "text-gray-400"
@@ -905,48 +905,45 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
 
   return (
     <>
-      <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-full overflow-x-auto">
-        {/* First div (circle) */}
-        <div
-          className={`absolute  ${
-            width >= 1026
-              ? "top-12 right-[160px]"
-              : width < 1024
-              ? "right-12 top-12"
-              : "right-[65px] top-12"
-          }  m-4 z-30`}
-        >
-          <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-            <button onClick={() => setShowModalAddNewBooking(false)}>
-              <IoIosClose size={25} color={"#6425FE"} />
-            </button>
-          </div>
-        </div>
-        {/* Second div (gray background) */}
-
-        <New_Booking_Steps_Modal
-          options={STEP_OPTIONS}
-          currentStep={parseInt(step)}
-          handleNextStep={handleNextStep}
-          handleBackStep={handleBackStep}
-          setStep={setStep}
-        >
-          {renderStepContent(step)}
-        </New_Booking_Steps_Modal>
-      </div>
-
-      {showCreateMerchandise && (
-        <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-full overflow-x-auto">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setShowCreateMerchandise(false)}>
+      <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+        {/* Main centered content container */}
+        <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+          {/* Close button - adjust positioning */}
+          <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+            <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+              <button onClick={() => setShowModalAddNewBooking(false)}>
                 <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
           </div>
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
+
+          {/* Content  */}
+          <New_Booking_Steps_Modal
+            options={STEP_OPTIONS}
+            currentStep={parseInt(step)}
+            handleNextStep={handleNextStep}
+            handleBackStep={handleBackStep}
+            setStep={setStep}
+          >
+            {renderStepContent(step)}
+          </New_Booking_Steps_Modal>
+        </div>
+      </div>
+
+      {showCreateMerchandise && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button onClick={() => setShowCreateMerchandise(false)}>
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
+            </div>
+
+            {/* Content  */}
             <div className="p-4 flex space-x-3">
               <div className="flex items-center justify-center">
                 <div className="font-poppins text-2xl font-bold ">
@@ -968,55 +965,55 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   </div>
                 </div>
                 {/* <div className="flex items-center mt-3">
-                  <div className="w-1/2 pr-2">
-                    <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                      <select
-                        name="file_size_type"
-                        id="file_size_type"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        placeholder="Resolution"
-                        onChange={(e) => setMerchandiseType(e.target.value)}
-                      >
-                        <option value="0">Category</option>
-                        <option value="1">Department Store</option>
-                        <option value="2">Mock 1 </option>
-                        <option value="3">Mock 2</option>
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                        <svg
-                          width="13"
-                          height="15"
-                          viewBox="0 0 13 21"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                            stroke="#6425FE"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="w-1/2 pl-2">
-                    <div className="grid grid-cols-4 space-x-2">
-                      <div className="col-span-1 flex items-center justify-center">
-                        <div className="font-poppins font-bold">Total Slot</div>
-                      </div>
-                      <div className="col-span-1">
-                        <input
-                          onChange={(e) => setMerchandiseSlot(e.target.value)}
-                          value={merchandise_slot}
-                          placeholder="0"
-                          className="border disabled:bg-[#DBDBDB] border-gray-300 rounded-lg p-3 w-full font-bold font-poppins text-center"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
+          <div className="w-1/2 pr-2">
+            <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+              <select
+                name="file_size_type"
+                id="file_size_type"
+                className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                placeholder="Resolution"
+                onChange={(e) => setMerchandiseType(e.target.value)}
+              >
+                <option value="0">Category</option>
+                <option value="1">Department Store</option>
+                <option value="2">Mock 1 </option>
+                <option value="3">Mock 2</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                <svg
+                  width="13"
+                  height="15"
+                  viewBox="0 0 13 21"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
+                    stroke="#6425FE"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div className="w-1/2 pl-2">
+            <div className="grid grid-cols-4 space-x-2">
+              <div className="col-span-1 flex items-center justify-center">
+                <div className="font-poppins font-bold">Total Slot</div>
+              </div>
+              <div className="col-span-1">
+                <input
+                  onChange={(e) => setMerchandiseSlot(e.target.value)}
+                  value={merchandise_slot}
+                  placeholder="0"
+                  className="border disabled:bg-[#DBDBDB] border-gray-300 rounded-lg p-3 w-full font-bold font-poppins text-center"
+                />
+              </div>
+            </div>
+          </div>
+        </div> */}
                 <div className="relative mt-20 flex items-center justify-center">
                   {preview_img ? (
                     <img src={preview_img} className="w-1/2 rounded-xl" />

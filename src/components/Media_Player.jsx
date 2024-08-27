@@ -21,38 +21,24 @@ const Media_Player = ({
   const lgHeight = isHorizontal ? "500px" : "890px";
 
   return (
-    <div className="fixed -top-7 left-0 right-0 bottom-0 flex h-[1000px] items-center justify-center z-20">
-      {/* First div (circle) */}
-      <div
-        className={`absolute ${
-          mediaDisplay.ContentTypeName === "Image"
-            ? `${
-                isHorizontal
-                  ? "lg:top-12 lg:right-[120px] right-11 top-[45px]"
-                  : "lg:top-12 lg:right-[120px] right-11 top-[45px]"
-              } `
-            : `${
-                isHorizontal
-                  ? "lg:top-12 lg:right-[120px] right-11 top-[45px]"
-                  : "lg:top-12 lg:right-[120px] right-11 top-[45px]"
-              } `
-        } m-4 z-30`}
-      >
-        <div
-          className={`bg-[#E8E8E8] border-3 border-black  rounded-full  w-10 h-10 flex justify-center items-center`}
-        >
-          <button
-            onClick={() => {
-              setModalPlayerOpen(!modalPlayerOpen);
-              setMediaDisplay([]);
-            }}
-          >
-            <IoIosClose size={25} color={"#6425FE"} />
-          </button>
+    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+      {/* Main centered content container */}
+      <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+        {/* Close button - adjust positioning */}
+        <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+          <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+            <button
+              onClick={() => {
+                setModalPlayerOpen(!modalPlayerOpen);
+                setMediaDisplay([]);
+              }}
+            >
+              <IoIosClose size={25} color={"#6425FE"} />
+            </button>
+          </div>
         </div>
-      </div>
-      {/* Second div (gray background) */}
-      <div className="bg-[#FFFFFF] w-5/6 lg:w-5/6 h-5/6 rounded-md max-h-screen overflow-y-auto relative ">
+
+        {/* Content  */}
         <div className="flex justify-center items-center text-center mt-5">
           <div className="font-poppins text-xl lg:text-4xl font-bold">
             Media : {mediaDisplay.ContentName}
