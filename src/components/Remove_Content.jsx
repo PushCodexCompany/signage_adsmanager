@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import Remove_From_Screen from "./Remove_From_Screen";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
+import User from "../libs/admin";
 
 const Remove_Content = ({
   setShowRemoveContent,
@@ -19,6 +20,8 @@ const Remove_Content = ({
   media_rules_select,
   screen,
   bookingId,
+  fact_allocation,
+  setFactAllocation,
 }) => {
   const [isRemoveFromScreen, setIsRemoveFromScreen] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
@@ -28,6 +31,7 @@ const Remove_Content = ({
   const [screenRemoveContent, setScreenRemoveContent] = useState([]);
   const [screenSelect, setScreenSelect] = useState(null);
   const [datePickers, setDatePickers] = useState([]);
+  const { token } = User.getCookieData();
 
   const handleToggleDropdownRemoveScreen = () => {
     setIsRemoveFromScreen(!isRemoveFromScreen);
@@ -217,51 +221,47 @@ const Remove_Content = ({
       return;
     }
 
-    const obj = {
-      bookingid: bookingId,
-      dates: date_range,
-      screenids: screenIdsString,
-    };
-
-    console.log("obj", obj);
-    // try {
-    //   const check_screen = await User.getBookingContentScreen(obj, token);
-    //   const isAnotherScreen = compareScreenID(
-    //     screenSelectFromEdit,
-    //     check_screen.screens
-    //   );
-    //   if (check_screen.screens.length >= 1 && isAnotherScreen) {
-    //     // ถ้ามีจออื่นใช้ playlist นี้ด้วย
-    //     setScreenUsePlaylist(check_screen.screens);
-    //     setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
-    //   } else {
-    //     // ถ้าไม่มีจออื่นใช้
-    //     const data = await User.updateBookingContent(obj, token);
-    //     if (data.code !== 404) {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: "Update Booking Content Success ...",
-    //         text: "แก้ไข Booking Content สำเร็จ!",
-    //       }).then(async (result) => {
-    //         if (
-    //           result.isConfirmed ||
-    //           result.dismiss === Swal.DismissReason.backdrop
-    //         ) {
-    //           setOpenAdsAllocationModal(!openAdsAllocationModal);
-    //           setFactAllocation(!fact_allocation);
-    //         }
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         icon: "error",
-    //         title: "เกิดข้อผิดพลาด!",
-    //         text: data.message,
-    //       });
-    //     }
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    Swal.fire({
+      text: `คุณต้องการลบข้อมูล Playlist ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const obj = {
+            bookingid: bookingId,
+            dates: date_range,
+            screenids: screenIdsString,
+          };
+          const data = await User.deleteBookingContent(obj, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: `Delete Playlist สำเร็จ!`,
+              text: `Delete Playlist สำเร็จ!`,
+            }).then(async (result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                setShowRemoveContent(!showRemoveContent);
+                setFactAllocation(!fact_allocation);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {}
+      }
+    });
   };
 
   return (
@@ -293,7 +293,7 @@ const Remove_Content = ({
                     </div>
                   </div>
                 </div>
-                <div className="mt-10 h-[450px] lg:h-[500px]">
+                <div className="mt-10 h-[450px] lg:h-[450px]">
                   {/* Booking Period */}
                   <div className="grid grid-cols-12">
                     <div className="col-span-1" />
@@ -401,7 +401,7 @@ const Remove_Content = ({
                     <div
                       className={`col-span-4 space-y-1 ${
                         datePickers.length > 3
-                          ? "h-[300px] lg:h-[350px] overflow-y-auto"
+                          ? "h-[300px] lg:h-[300px] overflow-y-auto"
                           : ""
                       }`}
                     >

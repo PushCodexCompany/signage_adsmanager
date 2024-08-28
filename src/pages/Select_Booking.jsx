@@ -487,8 +487,14 @@ const Select_Booking = () => {
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
-                              <div className="font-poppins text-sm md:text-xs">
-                                {items.ScreenLocation}
+                              <div
+                                className={`font-poppins text-sm md:text-xs ${
+                                  items.ScreenLocation
+                                    ? "text-black"
+                                    : "text-gray-400"
+                                }`}
+                              >
+                                {items.ScreenLocation || "No Location ..."}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
@@ -630,7 +636,8 @@ const Select_Booking = () => {
                                     </div>
                                     <div className="flex justify-start items-center">
                                       <div className="font-poppins text-xs text-[#8A8A8A]">
-                                        {items.ScreenLocation}
+                                        {items.ScreenLocation ||
+                                          "No Location..."}
                                       </div>
                                     </div>
                                     <div className="flex justify-start items-center">
@@ -888,6 +895,8 @@ const Select_Booking = () => {
           media_rules_select={media_rules_select}
           screen={screen}
           bookingId={bookingId}
+          fact_allocation={fact_allocation}
+          setFactAllocation={setFactAllocation}
         />
       )}
     </>

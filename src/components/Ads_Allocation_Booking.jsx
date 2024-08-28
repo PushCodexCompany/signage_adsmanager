@@ -1127,17 +1127,36 @@ const Ads_Allocation_Booking = ({
     const newCheckboxes = {};
     const newSelectAll = !selectAll;
 
-    allScreenData.forEach((row) => {
-      newCheckboxes[row.ScreenID] = newSelectAll;
-    });
+    if (newSelectAll) {
+      // เลือกทั้งหมด
+      allScreenData.forEach((row) => {
+        newCheckboxes[row.ScreenID] = newSelectAll;
+      });
 
-    setCheckboxes(newCheckboxes);
-    setSelectAll(newSelectAll);
+      setCheckboxes(newCheckboxes);
+      setSelectAll(newSelectAll);
+      const checkedRowIds = newSelectAll
+        ? allScreenData.map((row) => row.ScreenID)
+        : [];
+      setSelectedScreenItems(checkedRowIds);
+    } else {
+      // ลบทั้งหมด
+      allScreenData.forEach((row) => {
+        newCheckboxes[row.ScreenID] = newSelectAll;
+      });
 
-    const checkedRowIds = newSelectAll
-      ? allScreenData.map((row) => row.ScreenID)
-      : [];
-    setSelectedScreenItems(checkedRowIds);
+      if (newCheckboxes.hasOwnProperty(screenSelectFromEdit)) {
+        newCheckboxes[screenSelectFromEdit] = true;
+      }
+      setCheckboxes(newCheckboxes);
+      setSelectAll(newSelectAll);
+
+      const checkedRowIds = newSelectAll
+        ? allScreenData.map((row) => row.ScreenID)
+        : [screenSelectFromEdit];
+
+      setSelectedScreenItems(checkedRowIds);
+    }
   };
 
   const toggleCheckboxAddScreen = (rowId) => {
@@ -2101,6 +2120,7 @@ const Ads_Allocation_Booking = ({
           setShowDetailScreen={setShowDetailScreen}
           showDetailScreen={showDetailScreen}
           setDetailScreen={setDetailScreen}
+          setSelectAll={setSelectAll}
         />
       )}
 

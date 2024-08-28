@@ -24,7 +24,7 @@ import {
 } from "react-icons/io5";
 import { RiFileEditLine, RiFileList2Line } from "react-icons/ri";
 import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
 import { FaRegListAlt } from "react-icons/fa";
 export const links = [
@@ -190,19 +190,19 @@ const SidebarMain = () => {
   const sidebarRef = useRef(null);
   const navigate = useNavigate();
 
-  const toggleLevel1 = (index) => {
-    if (openLevel1 === index) {
-      setOpenLevel1(null);
-    } else {
-      setOpenLevel1(index);
-    }
-  };
+  // const toggleLevel1 = (index) => {
+  //   if (openLevel1 === index) {
+  //     setOpenLevel1(null);
+  //   } else {
+  //     setOpenLevel1(index);
+  //   }
+  // };
 
-  const toggleLevel2 = (openLevel1, event) => {
-    setOpenLevel1(openLevel1); // Set openLevel1 to the passed value
-    setOpenLevel2(!openLevel2);
-    event.stopPropagation(); // Prevent the click event from propagating to the parent div
-  };
+  // const toggleLevel2 = (openLevel1, event) => {
+  //   setOpenLevel1(openLevel1); // Set openLevel1 to the passed value
+  //   setOpenLevel2(!openLevel2);
+  //   event.stopPropagation(); // Prevent the click event from propagating to the parent div
+  // };
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
@@ -269,16 +269,25 @@ const SidebarMain = () => {
     });
   };
 
-  const activeLink =
-    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
-  const normalLink =
-    "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
+  // const activeLink =
+  //   "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
+  // const normalLink =
+  //   "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
+
+  const [openSubmenus, setOpenSubmenus] = useState({});
+
+  const toggleSubmenu = (title) => {
+    setOpenSubmenus((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }));
+  };
 
   return (
     <>
-      <div className="ml-1 h-screen pb-10">
-        {activeMenu && (
-          <>
+      {activeMenu && (
+        <>
+          <div className="w-full h-screen text-gray-600 flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
             <div ref={sidebarRef} className="flex justify-center items-center">
               <Link
                 to="/dashboard"
@@ -288,161 +297,106 @@ const SidebarMain = () => {
                 <img className={`w-2/4 h-2/4`} src={logo_img} />
               </Link>
             </div>
-            <div ref={sidebarRef} className="mt-10">
-              {links.map((item) => (
-                <div key={item.title}>
-                  <p className="text-gray-400 text-sm dark:text-gray-400 m-3 mt-4 uppercase font-poppins">
-                    {item.title}
-                  </p>
-                  {item.links.map((link, index) => (
-                    <div key={link.link}>
-                      {link.submenu ? (
-                        <>
-                          <div
-                            to={`/${link.link}`}
-                            key={link.link}
-                            // onClick={handleCloseSideBar}
-                            // style={({ isActive }) => ({
-                            //   color: isActive ? "#6427FE" : "",
-                            // })}
-                            className={`flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2  cursor-pointer `}
-                            onClick={() => toggleLevel1(index)}
-                          >
-                            {link.icon}
-                            <div className="capitalize text-sm font-poppins">
-                              {link.name}
-                            </div>
-
-                            <div className="ml-auto">
-                              <div className="text-xs font-bold text-gray-300">
-                                <IoIosArrowForward size={26} />
-                              </div>
-                            </div>
-
-                            <div className="relative group">
-                              {openLevel1 === index && (
-                                <div className="absolute  top-[-50px] w-80 bg-white border border-gray-300 shadow-lg p-3">
-                                  {link.submenu.map((items) => (
-                                    <>
-                                      {items.submenu ? (
-                                        <div
-                                          to={`/${items.link}`}
-                                          key={items.link}
-                                          className={`flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-gray-700  text-md m-2`}
-                                        >
-                                          <div
-                                            onClick={(event) =>
-                                              toggleLevel2(openLevel1, event)
-                                            }
-                                            className="w-full flex hover:text-[#804DFE]"
-                                          >
-                                            <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
-                                              <div>{items.icon}</div>
-                                              <div>{items.name}</div>
-                                            </div>
-                                            <div className="w-1/4">
-                                              <div className="flex justify-end">
-                                                {items.submenu && (
-                                                  <div className="relative group">
-                                                    <div className="flex">
-                                                      <div className="w-[35px] h-[35px] rounded-full ml-20">
-                                                        <div className="mt-[5px] text-xs font-bold text-gray-300 text-center font-poppins">
-                                                          <IoIosArrowForward
-                                                            size={26}
-                                                          />
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                    {openLevel2 && (
-                                                      <div className="absolute left-[140px] top-[-32px] w-72 bg-white border border-gray-300 shadow-lg p-3">
-                                                        {items.submenu.map(
-                                                          (submenuItem) => (
-                                                            <div
-                                                              // to={`/${submenuItem.link}`}
-                                                              onClick={() => {
-                                                                navigate(
-                                                                  `/${submenuItem.link}`
-                                                                );
-                                                                // window.location.href = `${process.env.REACT_APP_SUB_DIR}/${submenuItem.link}`;
-                                                              }}
-                                                              key={
-                                                                submenuItem.link
-                                                              }
-                                                              className={
-                                                                normalLink
-                                                              }
-                                                            >
-                                                              {submenuItem.icon}
-                                                              <div className="capitalize text-sm font-poppins ">
-                                                                {
-                                                                  submenuItem.name
-                                                                }
-                                                              </div>
-                                                            </div>
-                                                          )
-                                                        )}
-                                                      </div>
-                                                    )}
-                                                  </div>
-                                                )}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <NavLink
-                                          to={`/${items.link}`}
-                                          key={items.link}
-                                          style={({ isActive }) => ({
-                                            color: isActive ? "#6427FE" : "",
-                                          })}
-                                          className={({ isActive }) =>
-                                            isActive ? activeLink : normalLink
-                                          }
-                                        >
-                                          <div className="w-full flex hover:text-[#804DFE]">
-                                            <div className=" w-3/4 capitalize text-sm font-poppins flex justify-start items-center space-x-2">
-                                              <div>{items.icon}</div>
-                                              <div>{items.name}</div>
-                                            </div>
-                                          </div>
-                                        </NavLink>
-                                      )}
-                                    </>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <NavLink
-                            to={`/${link.link}`}
-                            key={link.link}
-                            onClick={handleCloseSideBar}
-                            style={({ isActive }) => ({
-                              color: isActive ? "#6427FE" : "",
-                            })}
-                            className={({ isActive }) =>
-                              isActive ? activeLink : normalLink
+            <div className="mt-10 p-2">
+              {links.map((category, index) => (
+                <div key={index} className="mt-4">
+                  <h2 className="px-4 text-gray-400 uppercase  text-sm">
+                    {category.title}
+                  </h2>
+                  <ul className="mt-2">
+                    {category.links.map((link, i) => (
+                      <li key={i} className="group">
+                        <div
+                          className="flex items-center px-4 py-3 text-sm font-medium hover:bg-light-gray hover:text-[#6427FE] rounded cursor-pointer"
+                          onClick={() => {
+                            if (link.submenu) {
+                              link.submenu && toggleSubmenu(link.name);
+                            } else {
+                              navigate(`/${link.link}`);
                             }
-                          >
-                            {link.icon}
-                            <div className="capitalize text-sm font-poppins ">
-                              {link.name}
+                          }}
+                        >
+                          {link.icon}
+                          <div className="ml-2 flex-1 font-poppins">
+                            {link.name}
+                          </div>
+                          {link.submenu && (
+                            <IoIosArrowDown
+                              size={20}
+                              className={`ml-auto transition-transform duration-200 ${
+                                openSubmenus[link.name] ? "rotate-180" : ""
+                              }`}
+                            />
+                          )}
+                          {link.notification?.is_notification && (
+                            <div className="ml-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs font-poppins">
+                              {link.notification.amount}
                             </div>
-                          </NavLink>
-                        </>
-                      )}
-                    </div>
-                  ))}
+                          )}
+                        </div>
+                        {link.submenu && openSubmenus[link.name] && (
+                          <ul className="ml-8 mt-2 space-y-1">
+                            {link.submenu.map((sublink, j) => (
+                              <li key={j}>
+                                <div
+                                  className="flex items-center px-4 py-2 text-sm font-medium hover:bg-light-gray rounded cursor-pointer  hover:text-[#6427FE]"
+                                  onClick={() => {
+                                    if (sublink.link) {
+                                      navigate(`/${sublink.link}`);
+                                    } else {
+                                      sublink.submenu &&
+                                        toggleSubmenu(sublink.name);
+                                    }
+                                  }}
+                                >
+                                  {sublink.icon}
+                                  <div className="ml-2 flex-1 font-poppins">
+                                    {sublink.name}
+                                  </div>
+                                  {sublink.submenu && (
+                                    <IoIosArrowDown
+                                      size={20}
+                                      className={`ml-auto transition-transform duration-200 ${
+                                        openSubmenus[sublink.name]
+                                          ? "rotate-180"
+                                          : ""
+                                      }`}
+                                    />
+                                  )}
+                                </div>
+                                {sublink.submenu &&
+                                  openSubmenus[sublink.name] && (
+                                    <ul className="ml-8 mt-2 space-y-1">
+                                      {sublink.submenu.map((subSubLink, k) => (
+                                        <li key={k}>
+                                          <div
+                                            onClick={() => {
+                                              navigate(`/${subSubLink.link}`);
+                                            }}
+                                            className="flex items-center px-4 py-2 text-sm font-medium hover:bg-light-gray rounded transition duration-200 cursor-pointer  hover:text-[#6427FE]"
+                                          >
+                                            {subSubLink.icon}
+                                            <div className="ml-2 font-poppins">
+                                              {subSubLink.name}
+                                            </div>
+                                          </div>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

@@ -899,7 +899,7 @@ const Create_Booking = () => {
                             </div>
                             <div className="flex justify-start items-center">
                               <div className="font-poppins text-sm md:text-xs">
-                                {items.ScreenLocation}
+                                {items.ScreenLocation || "No Location ..."}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">

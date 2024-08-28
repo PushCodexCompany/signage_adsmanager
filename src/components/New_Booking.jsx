@@ -507,7 +507,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   merchandise.length <= 1
                     ? "grid grid-cols-1 lg:grid-cols-1 "
                     : "grid grid-cols-2 lg:grid-cols-3"
-                } gap-4 p-4 h-[380px] overflow-y-auto border border-gray-200 rounded-lg`}
+                } gap-4 p-4 h-[350px] overflow-y-auto border border-gray-200 rounded-lg`}
               >
                 <div
                   onClick={() => setShowCreateMerchandise(true)}
@@ -532,7 +532,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <div
                       key={key}
                       onClick={() => setSelectMerchandise(items)}
-                      className="h-[400px] p-2 flex flex-col items-center"
+                      className="h-[350px] p-2 flex flex-col items-center"
                     >
                       <div className="relative mb-4">
                         <img
@@ -748,7 +748,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full lg:w-2/3 p-4 lg:pl-8 border border-gray-300">
+                <div className="w-full lg:w-3/5 p-4 lg:pl-8 border border-gray-300">
                   <div>
                     <div className="font-poppins font-bold">Booking Name :</div>
                   </div>

@@ -109,8 +109,8 @@ const Ads_Allocation_Apply_Screen = ({
             <button
               onClick={() => {
                 setIsApplyToScreen(!isApplyToScreen);
-                setSelectedData([]);
-                setCheckboxes({});
+                // setSelectedData([]);
+                // setCheckboxes({});
               }}
             >
               <IoIosClose size={25} color={"#6425FE"} />

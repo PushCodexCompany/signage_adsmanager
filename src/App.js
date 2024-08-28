@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
@@ -88,17 +88,16 @@ const App = () => {
         {user ? (
           <>
             <div className="flex relative dark:bg-main-dark-bg">
-              {/* Sidebar */}
               {activeMenu ? (
                 <div
-                  className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white "
+                  className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white transition-all duration-300 ease-in-out"
                   style={{ zIndex: 10 }}
                 >
-                  {select_campaign ? <Sidebar /> : <></>}
+                  {select_campaign ? <Sidebar /> : null}
                 </div>
               ) : (
-                <div className="w-0 dark:bg-secondary-dark-bg">
-                  {select_campaign ? <Sidebar /> : <></>}
+                <div className="w-0 dark:bg-secondary-dark-bg transition-all duration-300 ease-in-out">
+                  {select_campaign ? <Sidebar /> : null}
                 </div>
               )}
 
@@ -107,14 +106,11 @@ const App = () => {
                   activeMenu
                     ? `dark:bg-main-dark-bg  bg-main-bg min-h-screen md: ${
                         select_campaign ? "ml-72" : ""
-                      } w-full`
-                    : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
+                      } w-full transition-all duration-300 ease-in-out`
+                    : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 transition-all duration-300 ease-in-out"
                 }
               >
-                <div>
-                  {themeSettings && <ThemeSettings />}
-                  <Routing />
-                </div>
+                <Routing />
               </div>
             </div>
           </>

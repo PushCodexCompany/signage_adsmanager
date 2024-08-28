@@ -314,28 +314,28 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
           </div>
 
           {/* Content  */}
-          <div className="flex items-center justify-between mt-10 mb-5  p-4">
+          <div className="flex items-center justify-between mt-5 mb-5 p-2">
             <div className="font-poppins font-semibold text-2xl">
               Create New Screens
             </div>
           </div>
-          <div className=" h-[700px] flex flex-col lg:flex-row overflow-y-auto">
+          <div className="h-[700px] flex flex-col lg:flex-row overflow-y-auto">
             <div className="w-full lg:w-1/2 p-4">
               <div className="relative">
-                <div className="flex items-center">
-                  <div className="flex justify-start items-center h-full whitespace-nowrap">
-                    <div className="font-poppins text-lg font-bold">
-                      Screen Name:
-                    </div>
-                  </div>
-
-                  <input
-                    placeholder="Screen Name"
-                    className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                    value={screenName}
-                    onChange={(e) => setScreenName(e.target.value)}
-                  />
-                </div>
+                <label
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    screenName
+                      ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                      : "top-3 text-gray-300"
+                  }`}
+                >
+                  Screen Name
+                </label>
+                <input
+                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  value={screenName}
+                  onChange={(e) => setScreenName(e.target.value)}
+                />
               </div>
               <div className="mt-2">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
@@ -509,19 +509,36 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                   <div className="grid grid-cols-6 space-x-1">
                     <div className="col-span-3">
                       <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                            screenLocationName
+                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                              : "top-3 text-gray-300"
+                          }`}
+                        >
+                          Location
+                        </label>
                         <input
                           value={screenLocationName}
                           onChange={(e) =>
                             setScreenLocationName(e.target.value)
                           }
                           type="text"
-                          placeholder="Location"
                           className="w-full rounded-lg p-3 font-poppins border border-gray-300"
                         />
                       </div>
                     </div>
                     <div className="col-span-3">
                       <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                        <label
+                          className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                            screenCityName
+                              ? "-top-2.5 text-xs bg-white"
+                              : "top-3 text-white"
+                          }`}
+                        >
+                          {screenCityName ? "City" : ""}
+                        </label>
                         <select
                           name="screenCity"
                           id="screenCity"
@@ -561,18 +578,29 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <textarea
-                    value={screenDescription}
-                    onChange={(e) => setScreenDescription(e.target.value)}
-                    placeholder="Screen Description"
-                    className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300"
-                    style={{
-                      whiteSpace: "pre-wrap",
-                      wordWrap: "break-word",
-                      lineHeight: "1.2",
-                    }}
-                    maxLength={255}
-                  />
+                  <div className="relative flex flex-col justify-center items-center h-full text-sm  ml-1">
+                    <label
+                      className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                        screenDescription
+                          ? "-top-2.5 text-xs bg-white"
+                          : "top-3 text-gray-400"
+                      }`}
+                    >
+                      Screen Description
+                    </label>
+                    <textarea
+                      value={screenDescription}
+                      onChange={(e) => setScreenDescription(e.target.value)}
+                      placeholder=""
+                      className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300"
+                      style={{
+                        whiteSpace: "pre-wrap",
+                        wordWrap: "break-word",
+                        lineHeight: "1.2",
+                      }}
+                      maxLength={255}
+                    />
+                  </div>
                 </div>
                 <div className="mt-4">
                   <div className="grid grid-cols-6 space-x-1">
@@ -861,7 +889,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-16">
+                <div className="mt-10">
                   <div className="flex justify-center items-center">
                     <button
                       onClick={() => handleCreateScreen()}

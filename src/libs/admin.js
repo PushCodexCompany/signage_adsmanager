@@ -1311,6 +1311,23 @@ export default {
     return data;
   },
 
+  deleteBookingContent: async function (obj, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const { data } = await this._post(
+      `api/v1/delete_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&brandcode=${brand_code}`,
+      obj,
+      config
+    );
+    return data;
+  },
+
   getPlaylist: async function (booking_id, token) {
     const { brand_code } = this.getBrandCode();
     const config = {

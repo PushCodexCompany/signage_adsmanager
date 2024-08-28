@@ -195,7 +195,7 @@ const Add_Screen_Booking = ({
         </div>
 
         <div className="p-4">
-          <div className="w-auto h-[350px] overflow-y-auto">
+          <div className="w-auto h-[300px] overflow-y-auto">
             <table className="min-w-full border border-gray-300">
               <thead>
                 <tr>
@@ -262,24 +262,6 @@ const Add_Screen_Booking = ({
                               toggleCheckboxAddScreen(row.ScreenID)
                             }
                           />
-                          {/* <span className="h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center bg-white">
-                    {checkboxes[row.id] && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="#6425FE"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="3"
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
-                  </span> */}
                         </div>
                       </td>
                       <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
@@ -306,7 +288,6 @@ const Add_Screen_Booking = ({
                       </td>
                       <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                         <div className="font-poppins font-bold">
-                          {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
                           {row?.ScreenRule[0]?.Width &&
                           row?.ScreenRule[0]?.Height
                             ? parseInt(row.ScreenRule[0].Width, 10) +

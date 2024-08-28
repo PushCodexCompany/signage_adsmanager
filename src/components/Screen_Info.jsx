@@ -693,13 +693,6 @@ const Screen_Info = ({
                           </div>
                         </div>
                       </div>
-                      {/* <div className="mt-8">
-                       <div className="flex justify-center items-center">
-                         <button className="font-poppins text-[15px] w-[315px] h-[48px] rounded-lg bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold">
-                           Start Booking
-                         </button>
-                       </div>
-                     </div> */}
                     </div>
                   </div>
                 </div>
