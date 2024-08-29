@@ -174,6 +174,7 @@ const Ads_Allocation_Booking = ({
 
   const handleStartDateChange = (index, date) => {
     const newDatePickers = [...datePickers];
+
     newDatePickers[index].startDate = date;
     setDatePickers(newDatePickers);
     generateDateRange(index);
@@ -182,7 +183,6 @@ const Ads_Allocation_Booking = ({
   const handleEndDateChange = (index, date) => {
     const newDatePickers = [...datePickers];
     newDatePickers[index].endDate = date;
-
     if (newDatePickers[index].endDate < newDatePickers[index].startDate) {
       Swal.fire({
         icon: "error",
@@ -209,27 +209,24 @@ const Ads_Allocation_Booking = ({
       newDateRange.push(currentDate.toISOString().split("T")[0]);
     }
 
-    // Replace the old dateRange with the new one
     datePickers[index].dateRange = newDateRange;
-  };
-
-  const handleRemoveDatePicker = (index) => {
-    const newDatePickers = [...datePickers];
-    newDatePickers.splice(index, 1);
-    setDatePickers(newDatePickers);
   };
 
   const handleAddDatePicker = () => {
     const booking_date_format = booking_date.map((timestamp) =>
       format(timestamp, "yyyy-MM-dd")
     );
+    const todayed = new Date().toISOString().split("T")[0];
+    const filteredDates = booking_date_format.filter((date) => date >= todayed);
+
+    const today = new Date();
+    today.setHours(7, 0, 0, 0); // Set the time to 07:00:00
 
     if (datePickers.length > 0) {
       const nextStartDate = new Date(
         datePickers[datePickers.length - 1].endDate
       );
       nextStartDate.setDate(nextStartDate.getDate() + 1);
-
       if (nextStartDate > new Date(booking_date[booking_date.length - 1])) {
         nextStartDate.setDate(nextStartDate.getDate() - 1);
         setDatePickers([
@@ -254,12 +251,18 @@ const Ads_Allocation_Booking = ({
       setDatePickers([
         ...datePickers,
         {
-          startDate: new Date(booking_date[0]),
+          startDate: today,
           endDate: new Date(booking_date[booking_date.length - 1]),
-          dateRange: booking_date_format,
+          dateRange: filteredDates,
         },
       ]);
     }
+  };
+
+  const handleRemoveDatePicker = (index) => {
+    const newDatePickers = [...datePickers];
+    newDatePickers.splice(index, 1);
+    setDatePickers(newDatePickers);
   };
 
   const onDragEnd = (result) => {
@@ -1323,7 +1326,7 @@ const Ads_Allocation_Booking = ({
                       <div
                         className={`col-span-6 space-y-1   ${
                           datePickers.length > 2
-                            ? "h-[200px] overflow-y-auto"
+                            ? "h-[150px] overflow-y-auto"
                             : ""
                         }`}
                       >
@@ -1337,9 +1340,9 @@ const Ads_Allocation_Booking = ({
                                 <DatePicker
                                   selected={items.startDate}
                                   selectsStart
-                                  startDate={items.startDate}
+                                  startDate={new Date()}
                                   endDate={items.endDate}
-                                  minDate={booking_date[0]}
+                                  minDate={new Date()}
                                   maxDate={
                                     booking_date[booking_date.length - 1]
                                   }
@@ -1359,9 +1362,9 @@ const Ads_Allocation_Booking = ({
                                 <DatePicker
                                   selected={items.endDate}
                                   selectsEnd
-                                  startDate={items.startDate}
+                                  startDate={new Date()}
                                   endDate={items.endDate}
-                                  minDate={booking_date[0]}
+                                  minDate={new Date()}
                                   maxDate={
                                     booking_date[booking_date.length - 1]
                                   }

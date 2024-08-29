@@ -92,6 +92,12 @@ const Remove_Content = ({
       format(timestamp, "yyyy-MM-dd")
     );
 
+    const todayed = new Date().toISOString().split("T")[0];
+    const filteredDates = booking_date_format.filter((date) => date >= todayed);
+
+    const today = new Date();
+    today.setHours(7, 0, 0, 0); // Set the time to 07:00:00
+
     if (datePickers.length > 0) {
       const nextStartDate = new Date(
         datePickers[datePickers.length - 1].endDate
@@ -122,9 +128,9 @@ const Remove_Content = ({
       setDatePickers([
         ...datePickers,
         {
-          startDate: new Date(booking_date[0]),
+          startDate: today,
           endDate: new Date(booking_date[booking_date.length - 1]),
-          dateRange: booking_date_format,
+          dateRange: filteredDates,
         },
       ]);
     }
@@ -415,9 +421,9 @@ const Remove_Content = ({
                               <DatePicker
                                 selected={items.startDate}
                                 selectsStart
-                                startDate={items.startDate}
+                                startDate={new Date()}
                                 endDate={items.endDate}
-                                minDate={booking_date[0]}
+                                minDate={new Date()}
                                 maxDate={booking_date[booking_date.length - 1]}
                                 dateFormat="yyyy-MM-dd"
                                 onChange={(date) =>
@@ -435,9 +441,9 @@ const Remove_Content = ({
                               <DatePicker
                                 selected={items.endDate}
                                 selectsEnd
-                                startDate={items.startDate}
+                                startDate={new Date()}
                                 endDate={items.endDate}
-                                minDate={booking_date[0]}
+                                minDate={new Date()}
                                 maxDate={booking_date[booking_date.length - 1]}
                                 dateFormat="yyyy-MM-dd"
                                 onChange={(date) =>
