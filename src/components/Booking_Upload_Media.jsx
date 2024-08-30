@@ -25,14 +25,24 @@ const Booking_Upload_Media = ({
   const [forms, setFormData] = useState({});
   const [disableButton, setDisableButton] = useState(false);
 
-  // useEffect(async () => {
-  //   const data = await User.getConfiguration(token);
-  // }, []);
+  const [file_type, setFileTyle] = useState("");
+
+  useEffect(async () => {
+    const {
+      configuration: { contenttype },
+    } = await User.getConfiguration(token);
+
+    const extensions = contenttype
+      .flatMap((type) => type.ContentTypeSub || []) // Flatten the array and filter out items without ContentTypeSub
+      .map((sub) => `.${sub.ContentTypeSubName}`) // Format as `.jpg`, `.png`, etc.
+      .join(", "); // Join into a single string
+    setFileTyle(extensions);
+  }, []);
 
   const uploadFile = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".mp4, .jpg, .png";
+    fileInput.accept = file_type;
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
 
@@ -135,62 +145,60 @@ const Booking_Upload_Media = ({
     fileInput.click();
   };
 
-  // const handleUploadMediaByBooking = async () => {
-  //   if (uploads.name) {
-  //     setDisableButton(!disableButton);
-  //     try {
-  //       // Function to update progress
-  //       const onUploadProgress = (progressEvent) => {
-  //         const { loaded, total } = progressEvent;
-  //         const percentCompleted = Math.floor((loaded * 100) / total);
-  //         console.log(`Upload progress: ${percentCompleted}%`);
-  //         setUploadProgress(percentCompleted); // Update state with the current progress
-  //       };
-
-  //       const data = await User.createContent(
-  //         bookingId,
-  //         advertiserId,
-  //         forms,
-  //         token,
-  //         onUploadProgress // Pass the progress function to the API call
-  //       );
-
-  //       if (data.code !== 404) {
-  //         Swal.fire({
-  //           icon: "success",
-  //           title: "เพิ่ม media สำเร็จ!",
-  //           text: `เพิ่ม media สำเร็จ!`,
-  //         }).then((result) => {
-  //           if (
-  //             result.isConfirmed ||
-  //             result.dismiss === Swal.DismissReason.backdrop
-  //           ) {
-  //             setNewMediaPlayList(data.contentids);
-  //             updateMediaPlaylist();
-  //             setOpenModalUploadMedia(!openModalUploadNewMedia);
-  //             setDisableButton(!disableButton);
-  //           }
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "เกิดข้อผิดพลาด!",
-  //           text: data.message,
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   } else {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "เกิดข้อผิดพลาด!",
-  //       text: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
-  //     });
-  //   }
-  // };
-
   const handleUploadMediaByBooking = async () => {
+    // if (uploads.name) {
+    //   setDisableButton(!disableButton);
+    //   try {
+    //     // Function to update progress
+    //     const onUploadProgress = (progressEvent) => {
+    //       const { loaded, total } = progressEvent;
+    //       const percentCompleted = Math.floor((loaded * 100) / total);
+    //       console.log(`Upload progress: ${percentCompleted}%`);
+    //       setUploadProgress(percentCompleted); // Update state with the current progress
+    //     };
+
+    //     const data = await User.createContent(
+    //       bookingId,
+    //       advertiserId,
+    //       forms,
+    //       token,
+    //       onUploadProgress // Pass the progress function to the API call
+    //     );
+
+    //     if (data.code !== 404) {
+    //       Swal.fire({
+    //         icon: "success",
+    //         title: "เพิ่ม media สำเร็จ!",
+    //         text: `เพิ่ม media สำเร็จ!`,
+    //       }).then((result) => {
+    //         if (
+    //           result.isConfirmed ||
+    //           result.dismiss === Swal.DismissReason.backdrop
+    //         ) {
+    //           setNewMediaPlayList(data.contentids);
+    //           updateMediaPlaylist();
+    //           setOpenModalUploadMedia(!openModalUploadNewMedia);
+    //           setDisableButton(!disableButton);
+    //         }
+    //       });
+    //     } else {
+    //       Swal.fire({
+    //         icon: "error",
+    //         title: "เกิดข้อผิดพลาด!",
+    //         text: data.message,
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.log("error", error);
+    //   }
+    // } else {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "เกิดข้อผิดพลาด!",
+    //     text: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
+    //   });
+    // }
+
     if (uploads.name) {
       setDisableButton(!disableButton);
 

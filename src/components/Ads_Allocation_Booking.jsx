@@ -1324,10 +1324,10 @@ const Ads_Allocation_Booking = ({
                       </div>
                       <div className="col-span-1" />
                       <div
-                        className={`col-span-6 space-y-1   ${
-                          datePickers.length > 2
+                        className={`col-span-6 space-y-1 ${
+                          datePickers.length > 1
                             ? "h-[150px] overflow-y-auto"
-                            : ""
+                            : "h-[70px]"
                         }`}
                       >
                         {datePickers.map((items, index) => (
@@ -1479,10 +1479,10 @@ const Ads_Allocation_Booking = ({
                   </div>
                 </div>
               </div>
-              <div className="w-full lg:w-1/2 p-1 lg:pl-8">
+              <div className="w-full  lg:w-1/2 p-1 lg:pl-8 ">
                 <div className="grid grid-cols-6 space-x-2">
                   <DragDropContext onDragEnd={onDragEnd}>
-                    <div className="col-span-3 border border-gray-300 rounded-md">
+                    <div className="col-span-3  border border-gray-300 rounded-md">
                       <div className="p-2">
                         <div className="flex items-center justify-start">
                           <div className="w-full">
@@ -1592,7 +1592,7 @@ const Ads_Allocation_Booking = ({
                               <div
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
-                                className="h-[630px] overflow-y-auto space-y-2"
+                                className="h-[550px] overflow-y-auto space-y-2"
                               >
                                 {temp_playlist_name ? (
                                   renderMediaList(
@@ -1610,7 +1610,7 @@ const Ads_Allocation_Booking = ({
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-3 border border-gray-300 rounded-md">
+                    <div className="col-span-3  border border-gray-300 rounded-md">
                       <div className="p-2">
                         <div className="grid grid-cols-3 gap-4">
                           <button
@@ -1713,7 +1713,7 @@ const Ads_Allocation_Booking = ({
                                     <div
                                       ref={provided.innerRef}
                                       {...provided.droppableProps}
-                                      className="h-[680px] overflow-y-auto space-y-2"
+                                      className="h-[600px] overflow-y-auto space-y-2"
                                     >
                                       {itemsPanel2.length > 0 &&
                                         itemsPanel2
@@ -1847,7 +1847,7 @@ const Ads_Allocation_Booking = ({
                                     <div
                                       ref={provided.innerRef}
                                       {...provided.droppableProps}
-                                      className="h-[680px] overflow-y-auto space-y-2"
+                                      className="h-[600px] overflow-y-auto space-y-2"
                                     >
                                       {itemsPanel2.length > 0 &&
                                         itemsPanel2
@@ -1980,7 +1980,7 @@ const Ads_Allocation_Booking = ({
                                     <div
                                       ref={provided.innerRef}
                                       {...provided.droppableProps}
-                                      className="h-[680px] overflow-y-auto space-y-2"
+                                      className="h-[600px] overflow-y-auto space-y-2"
                                     >
                                       {itemsPanel2.length > 0 &&
                                         itemsPanel2
