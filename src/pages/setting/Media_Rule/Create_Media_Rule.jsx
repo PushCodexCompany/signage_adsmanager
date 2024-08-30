@@ -91,7 +91,6 @@ const Create_Media_Rule = () => {
           height: media_rule_height,
           activeresolution: toggle_disable,
         };
-
         if (
           media_rule_width === 0 ||
           media_rule_height === 0 ||
@@ -225,13 +224,13 @@ const Create_Media_Rule = () => {
               </div>
 
               <div className="flex justify-center mt-2">
-                {media_rule_width && media_rule_height ? (
+                {media_rule_width > 0 && media_rule_height > 0 ? (
                   <RatioDisplay
                     width={media_rule_width}
                     height={media_rule_height}
                   />
                 ) : (
-                  <></>
+                  <div className="w-[550px] h-[550px] bg-gray-200 flex justify-center items-center"></div>
                 )}
               </div>
 
@@ -340,9 +339,13 @@ const Create_Media_Rule = () => {
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
+                            if (newValue.length > 1 && newValue.startsWith(0)) {
+                              return;
+                            }
                             setMediaRuleWidth(newValue);
                           }}
                           value={media_rule_width}
+                          min={0}
                           disabled
                         />
                       </div>
@@ -364,9 +367,13 @@ const Create_Media_Rule = () => {
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
+                            if (newValue.length > 1 && newValue.startsWith(0)) {
+                              return;
+                            }
                             setMediaRuleWidth(newValue);
                           }}
                           value={media_rule_width}
+                          min={0}
                           disabled={!toggle_disable}
                         />
                       </div>
@@ -402,9 +409,13 @@ const Create_Media_Rule = () => {
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
+                            if (newValue.length > 1 && newValue.startsWith(0)) {
+                              return;
+                            }
                             setMediaRuleHeight(newValue);
                           }}
                           value={media_rule_height}
+                          min={0}
                           disabled
                         />
                       </div>
@@ -426,8 +437,13 @@ const Create_Media_Rule = () => {
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
+                            if (newValue.length > 1 && newValue.startsWith(0)) {
+                              return;
+                            }
+
                             setMediaRuleHeight(newValue);
                           }}
+                          min={0}
                           value={media_rule_height}
                           disabled={!toggle_disable}
                         />

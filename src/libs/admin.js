@@ -1277,13 +1277,20 @@ export default {
     }
   },
 
-  createContent: async function (id, advertiserid, obj, token) {
+  createContent: async function (
+    id,
+    advertiserid,
+    obj,
+    token,
+    onUploadProgress
+  ) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
+      onUploadProgress, // Adding the onUploadProgress callback to the config
     };
 
     const { data } = await this._post(

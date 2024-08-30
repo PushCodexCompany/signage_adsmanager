@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineCloudUpload, AiOutlineCloseCircle } from "react-icons/ai";
 import { IoIosClose } from "react-icons/io";
 import { BsCheckCircle } from "react-icons/bs";
@@ -25,6 +25,10 @@ const Booking_Upload_Media = ({
   const [forms, setFormData] = useState({});
   const [disableButton, setDisableButton] = useState(false);
 
+  // useEffect(async () => {
+  //   const data = await User.getConfiguration(token);
+  // }, []);
+
   const uploadFile = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -43,7 +47,7 @@ const Booking_Upload_Media = ({
             video.addEventListener("loadedmetadata", () => {
               // Accessing video properties after it's loaded
 
-              const duration = video.duration;
+              const duration = video.duration || 0;
               const width = video.videoWidth;
               const height = video.videoHeight;
 
@@ -131,51 +135,62 @@ const Booking_Upload_Media = ({
     fileInput.click();
   };
 
-  const handleUploadMediaByBooking = async () => {
-    // if (uploads.name) {
-    //   setDisableButton(!disableButton);
-    //   try {
-    //     const data = await User.createContent(
-    //       bookingId,
-    //       advertiserId,
-    //       forms,
-    //       token
-    //     );
-    //     if (data.code !== 404) {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: "เพิ่ม media สำเร็จ!",
-    //         text: `เพิ่ม media สำเร็จ!`,
-    //       }).then((result) => {
-    //         if (
-    //           result.isConfirmed ||
-    //           result.dismiss === Swal.DismissReason.backdrop
-    //         ) {
-    //           setNewMediaPlayList(data.contentids);
-    //           updateMediaPlaylist();
-    //           setOpenModalUploadMedia(!openModalUploadNewMedia);
-    //           setDisableButton(!disableButton);
-    //           // setOpenAdsAllocationModal(!openAdsAllocationModal);
-    //         }
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         icon: "error",
-    //         title: "เกิดข้อผิดพลาด!",
-    //         text: data.message,
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.log("error", error);
-    //   }
-    // } else {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "เกิดข้อผิดพลาด!",
-    //     text: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
-    //   });
-    // }
+  // const handleUploadMediaByBooking = async () => {
+  //   if (uploads.name) {
+  //     setDisableButton(!disableButton);
+  //     try {
+  //       // Function to update progress
+  //       const onUploadProgress = (progressEvent) => {
+  //         const { loaded, total } = progressEvent;
+  //         const percentCompleted = Math.floor((loaded * 100) / total);
+  //         console.log(`Upload progress: ${percentCompleted}%`);
+  //         setUploadProgress(percentCompleted); // Update state with the current progress
+  //       };
 
+  //       const data = await User.createContent(
+  //         bookingId,
+  //         advertiserId,
+  //         forms,
+  //         token,
+  //         onUploadProgress // Pass the progress function to the API call
+  //       );
+
+  //       if (data.code !== 404) {
+  //         Swal.fire({
+  //           icon: "success",
+  //           title: "เพิ่ม media สำเร็จ!",
+  //           text: `เพิ่ม media สำเร็จ!`,
+  //         }).then((result) => {
+  //           if (
+  //             result.isConfirmed ||
+  //             result.dismiss === Swal.DismissReason.backdrop
+  //           ) {
+  //             setNewMediaPlayList(data.contentids);
+  //             updateMediaPlaylist();
+  //             setOpenModalUploadMedia(!openModalUploadNewMedia);
+  //             setDisableButton(!disableButton);
+  //           }
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "เกิดข้อผิดพลาด!",
+  //           text: data.message,
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.log("error", error);
+  //     }
+  //   } else {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "เกิดข้อผิดพลาด!",
+  //       text: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
+  //     });
+  //   }
+  // };
+
+  const handleUploadMediaByBooking = async () => {
     if (uploads.name) {
       setDisableButton(!disableButton);
 
@@ -236,7 +251,7 @@ const Booking_Upload_Media = ({
         }
       };
 
-      // xhr.send(forms);
+      xhr.send(forms);
     } else {
       Swal.fire({
         icon: "error",
@@ -369,6 +384,15 @@ const Booking_Upload_Media = ({
             </div>
           </div>
         </div>
+        {/* <div className="flex justify-center items-center mt-1">
+          {uploadProgress > 0 && (
+            <div id="uploadProgressContainer">
+              <progress id="uploadProgress" value={uploadProgress} max="100">
+                {uploadProgress}%
+              </progress>
+            </div>
+          )}
+        </div> */}
         <div className="flex justify-center items-center mt-1">
           <div id="uploadProgressContainer" style={{ display: "none" }}>
             <progress id="uploadProgress" value="0" max="100"></progress>
