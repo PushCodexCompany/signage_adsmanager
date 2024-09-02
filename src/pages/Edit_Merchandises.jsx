@@ -291,19 +291,27 @@ const Edit_Merchandises = () => {
       <Navbar />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header
-          lv1={"merchandise"}
+          lv1={"customer"}
           lv1Url={"/merchandise"}
-          lv2={"Create/Edit Merchandise"}
+          lv2={"Create/Edit Customer"}
         />
         <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
-          {id === "new" ? "Create Merchandise" : "Edit Merchandise"}
+          {id === "new" ? "Create Customer" : "Edit Customer"}
         </div>
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-1/2 p-4">
             <div className="relative">
+              <label
+                className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                  merchandise_name
+                    ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                    : "top-3 text-gray-300"
+                }`}
+              >
+                Customer Name
+              </label>
               <div className="flex items-center">
                 <input
-                  placeholder="Merchandise Name"
                   className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
                   value={merchandise_name}
                   onChange={(e) => setMerchandiseName(e.target.value)}
@@ -365,13 +373,13 @@ const Edit_Merchandises = () => {
               {preview_img ? (
                 <img
                   src={preview_img}
-                  className="w-[250px] h-[250px] rounded-xl object-cover"
+                  className="w-[250px] h-[250px] border border-gray-300 rounded-xl object-contain"
                 />
               ) : (
                 <div className="flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
                   <img
                     src={Empty_Img}
-                    className="flex items-center justify-center object-cover"
+                    className="flex items-center justify-center object-contain"
                   />
                 </div>
               )}
@@ -402,48 +410,98 @@ const Edit_Merchandises = () => {
               Contact Person
             </div>
             <div className="flex items-center">
-              <input
-                placeholder="Full Name"
-                value={contact_person_name}
-                onChange={(e) => setContactPersonName(e.target.value)}
-                className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
-              />
-            </div>
-            <div className="flex items-center mt-3">
-              <div className="w-1/2 pr-2">
+              <div className="relative w-full">
+                <label
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    contact_person_name
+                      ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                      : "top-3 text-gray-300"
+                  }`}
+                >
+                  Full Name
+                </label>
                 <input
-                  placeholder="Department"
-                  value={contact_person_dep}
-                  onChange={(e) => setContactPersonDep(e.target.value)}
-                  className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-                />
-              </div>
-              <div className="w-1/2 pl-2">
-                <input
-                  placeholder="Position"
-                  value={contact_person_pos}
-                  onChange={(e) => setContactPersonPos(e.target.value)}
-                  className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  value={contact_person_name}
+                  onChange={(e) => setContactPersonName(e.target.value)}
+                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
                 />
               </div>
             </div>
             <div className="flex items-center mt-3">
               <div className="w-1/2 pr-2">
-                <input
-                  placeholder="Email"
-                  value={contact_person_email}
-                  onChange={(e) => setContactPersonEmail(e.target.value)}
-                  className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-                />
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      contact_person_dep
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Department
+                  </label>
+                  <input
+                    value={contact_person_dep}
+                    onChange={(e) => setContactPersonDep(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
               </div>
               <div className="w-1/2 pl-2">
-                <input
-                  placeholder="Phone"
-                  value={contact_person_phone}
-                  type="number"
-                  onChange={(e) => setContactPersonPhone(e.target.value)}
-                  className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-                />
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      contact_person_pos
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Position
+                  </label>
+                  <input
+                    value={contact_person_pos}
+                    onChange={(e) => setContactPersonPos(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center mt-3">
+              <div className="w-1/2 pr-2">
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      contact_person_email
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Email
+                  </label>
+                  <input
+                    value={contact_person_email}
+                    onChange={(e) => setContactPersonEmail(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
+              </div>
+              <div className="w-1/2 pl-2">
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      contact_person_phone
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Phone
+                  </label>
+                  <input
+                    value={contact_person_phone}
+                    type="number"
+                    onChange={(e) => setContactPersonPhone(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
               </div>
             </div>
             {/* <div className="mt-10 mb-5 font-bold font-poppins text-2xl">

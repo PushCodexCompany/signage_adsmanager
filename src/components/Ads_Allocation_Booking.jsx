@@ -1572,6 +1572,7 @@ const Ads_Allocation_Booking = ({
                                       onClick={() => handleSavePlaylist()}
                                       size={26}
                                       className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                                      // className="text-red-500 hover:text-red-900 ml-2 cursor-pointer"
                                     />
                                   </>
                                 ) : (

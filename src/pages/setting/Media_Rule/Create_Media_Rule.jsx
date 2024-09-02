@@ -18,7 +18,7 @@ const Create_Media_Rule = () => {
   const [media_rule_width, setMediaRuleWidth] = useState(null);
   const [media_rule_adsCapacity, setMediaRuleAdsCapacity] = useState(null);
 
-  const [toggle_disable, setToggleDisable] = useState(false);
+  const [toggle_disable, setToggleDisable] = useState(true);
   const [isView, setIsView] = useState(false);
   const [maNotification, setMaNotification] = useState();
 
@@ -253,12 +253,6 @@ const Create_Media_Rule = () => {
                       </button>
                     )}
                   </div>
-                  <div className="flex justify-center mt-5 font-poppins">
-                    <span>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry.
-                    </span>
-                  </div>
                 </>
               ) : (
                 <></>
@@ -275,7 +269,7 @@ const Create_Media_Rule = () => {
             {/* Resolution 1 */}
             <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-10">
               <div className="flex flex-row mt-3 space-x-5">
-                <div>
+                {/* <div>
                   <label className="relative inline-flex items-center cursor-pointer mt-1">
                     <input
                       type="checkbox"
@@ -297,7 +291,7 @@ const Create_Media_Rule = () => {
                       />
                     </div>
                   </label>
-                </div>
+                </div> */}
                 <div
                   className={`text-xl font-poppins font-bold ${
                     toggle_disable ? "text-black" : "text-gray-500"

@@ -254,9 +254,6 @@ export const GridTable = ({
               <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Role
               </th>
-              <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Account
-              </th>
               <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
               </th>
@@ -338,13 +335,6 @@ export const GridTable = ({
                       {row.RoleName ? row.RoleName : "-- No Role --"}
                     </div>
                   </td>
-
-                  <td className="px-7 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="font-poppins">
-                      {row.AccountName ? row.AccountName : "-- No Account --"}
-                    </div>
-                  </td>
-
                   <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
                     {page_permission.update ? (
                       <button onClick={() => onSelectEdit(row.UserID)}>

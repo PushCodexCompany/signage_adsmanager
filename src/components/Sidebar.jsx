@@ -44,12 +44,12 @@ export const links = [
         notification: { is_notification: false, amount: 0 },
         submenu: [
           {
-            name: "Digital Screen",
+            name: "Digital Booking Screen",
             link: "booking",
             icon: <SlScreenDesktop size={27} />,
           },
           {
-            name: "Static Screen",
+            name: "Static Booking Screen",
             link: "static_booking",
             icon: <MdOutlineMarkunreadMailbox size={27} />,
           },
@@ -103,7 +103,7 @@ export const links = [
         notification: { is_notification: false, amount: 0 },
       },
       {
-        name: "Merchandise",
+        name: "Customer",
         link: "merchandise",
         icon: <IoDocumentTextOutline size={27} />,
         notification: { is_notification: false, amount: 0 },
@@ -163,12 +163,12 @@ export const links = [
           },
         ],
       },
-      {
-        name: "Help & Center",
-        link: "help_center",
-        icon: <MdInfoOutline size={27} />,
-        notification: { is_notification: false, amount: 0 },
-      },
+      // {
+      //   name: "Help & Center",
+      //   link: "help_center",
+      //   icon: <MdInfoOutline size={27} />,
+      //   notification: { is_notification: false, amount: 0 },
+      // },
       {
         name: "Log Out",
         link: "logout",
@@ -186,6 +186,10 @@ const SidebarMain = () => {
   const [openLevel1, setOpenLevel1] = useState(false);
   const [openLevel2, setOpenLevel2] = useState(false);
   const [logo_img, setLogoImg] = useState();
+
+  const [active_lv1, setActiveLv1] = useState("");
+  const [active_lv2, setActiveLv2] = useState("");
+  const [active_lv3, setActiveLv3] = useState("");
 
   const sidebarRef = useRef(null);
   const navigate = useNavigate();
@@ -307,11 +311,16 @@ const SidebarMain = () => {
                     {category.links.map((link, i) => (
                       <li key={i} className="group">
                         <div
-                          className="flex items-center px-4 py-3 text-sm font-medium hover:bg-light-gray hover:text-[#6427FE] rounded cursor-pointer"
+                          className={`flex items-center px-4 py-3 text-sm font-medium hover:bg-light-gray hover:text-[#6427FE] rounded cursor-pointer ${
+                            active_lv1 === link.name ? "text-[#6427FE]" : ""
+                          }`}
                           onClick={() => {
                             if (link.submenu) {
                               link.submenu && toggleSubmenu(link.name);
                             } else {
+                              setActiveLv1(link.name);
+                              setActiveLv2("");
+                              setActiveLv3("");
                               navigate(`/${link.link}`);
                             }
                           }}
@@ -339,9 +348,16 @@ const SidebarMain = () => {
                             {link.submenu.map((sublink, j) => (
                               <li key={j}>
                                 <div
-                                  className="flex items-center px-4 py-2 text-sm font-medium hover:bg-light-gray rounded cursor-pointer  hover:text-[#6427FE]"
+                                  className={`flex items-center px-4 py-2 text-sm font-medium hover:bg-light-gray rounded cursor-pointer  hover:text-[#6427FE] ${
+                                    active_lv2 === sublink.name
+                                      ? "text-[#6427FE]"
+                                      : ""
+                                  } `}
                                   onClick={() => {
                                     if (sublink.link) {
+                                      setActiveLv1(link.name);
+                                      setActiveLv2(sublink.name);
+                                      setActiveLv3("");
                                       navigate(`/${sublink.link}`);
                                     } else {
                                       sublink.submenu &&
@@ -371,9 +387,16 @@ const SidebarMain = () => {
                                         <li key={k}>
                                           <div
                                             onClick={() => {
+                                              setActiveLv1(link.name);
+                                              setActiveLv2(sublink.name);
+                                              setActiveLv3(subSubLink.name);
                                               navigate(`/${subSubLink.link}`);
                                             }}
-                                            className="flex items-center px-4 py-2 text-sm font-medium hover:bg-light-gray rounded transition duration-200 cursor-pointer  hover:text-[#6427FE]"
+                                            className={`flex items-center px-4 py-2 text-sm font-medium hover:bg-light-gray rounded transition duration-200 cursor-pointer  hover:text-[#6427FE] ${
+                                              active_lv3 === subSubLink.name
+                                                ? "text-[#6427FE]"
+                                                : ""
+                                            }`}
                                           >
                                             {subSubLink.icon}
                                             <div className="ml-2 font-poppins">

@@ -93,20 +93,22 @@ export const GridTable = ({ media_rules }) => {
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="flex flex-wrap">
                     <div
-                      className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
-                      style={{ flexBasis: "calc(35% - 8px)" }}
+                      className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1"
+                      style={{ flexBasis: "calc(38% - 8px)" }}
                     >
                       <div className="font-poppins text-sm font-bold text-[#6425FE] ">
                         Resolution :
                         {row.Width && row.Height
-                          ? `${parseFloat(row.Width).toString()}x${parseFloat(
+                          ? `W ${parseFloat(
+                              row.Width
+                            ).toString()} x H ${parseFloat(
                               row.Height
                             ).toString()}`
                           : "Not Set"}
                       </div>
                     </div>
                     <div
-                      className="bg-[#D9D9D9] flex justify-center items-center mb-1 mr-1"
+                      className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1"
                       style={{ flexBasis: "calc(35% - 8px)" }}
                     >
                       <div className="font-poppins text-sm font-bold text-[#6425FE] ">

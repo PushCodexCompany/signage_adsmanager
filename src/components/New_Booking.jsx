@@ -59,8 +59,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const [contact_person_phone, setContactPersonPhone] = useState();
 
   const [startDate, setStartDate] = useState(null);
+  const [startDateDump, setStartDateDump] = useState(null);
   const [startDateCheck, setStartDateCheck] = useState();
   const [endDate, setEndDate] = useState(null);
+  const [endDateDump, setEndDateDump] = useState(null);
   const [dateRange, setDateRange] = useState([]);
   const currentDate = new Date();
 
@@ -194,6 +196,41 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     }
   };
 
+  const handleCalendarStartClose = () => {
+    if (startDateDump) {
+      if (
+        format(startDateDump, "dd-MMM-yyyy") ===
+        format(startDate, "dd-MMM-yyyy")
+      ) {
+        const range = generateDateRange(startDate, endDate);
+        setDateRange(range);
+        setSelectedDates(range);
+        setStartDateDump(startDate);
+      } else {
+        setStartDateDump(startDate);
+      }
+    } else {
+      setStartDateDump(startDate);
+    }
+  };
+
+  const handleCalendarEndClose = () => {
+    if (endDateDump) {
+      if (
+        format(endDateDump, "dd-MMM-yyyy") === format(endDate, "dd-MMM-yyyy")
+      ) {
+        const range = generateDateRange(startDate, endDate);
+        setDateRange(range);
+        setSelectedDates(range);
+        setEndDateDump(endDate);
+      } else {
+        setEndDateDump(endDate);
+      }
+    } else {
+      setEndDateDump(endDate);
+    }
+  };
+
   const generateDateRange = (start, end) => {
     const range = [];
     let currentDate = new Date(start);
@@ -286,6 +323,33 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     }
 
     return formatted.join(" , ");
+  };
+
+  const formatDatesNL = (dates) => {
+    const formatted = [];
+    let rangeStart = null;
+
+    for (let i = 0; i < dates.length; i++) {
+      const currentDate = new Date(dates[i]);
+      const nextDate = i < dates.length - 1 ? new Date(dates[i + 1]) : null;
+
+      if (!rangeStart) {
+        rangeStart = currentDate;
+      }
+
+      if (!nextDate || (nextDate - currentDate) / (1000 * 60 * 60 * 24) > 1) {
+        const rangeEnd = currentDate;
+        const startStr = format(rangeStart, "dd MMM yyyy");
+        const endStr = format(rangeEnd, "dd MMM yyyy");
+
+        formatted.push(
+          startStr + (rangeStart !== rangeEnd ? " - " + endStr : "")
+        );
+        rangeStart = null;
+      }
+    }
+
+    return formatted.join("\n"); // Join with newline character
   };
 
   const handleSaveMerchandise = async () => {
@@ -592,6 +656,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     startDate={startDate}
                     endDate={endDate}
                     placeholderText="Start Date"
+                    onCalendarClose={handleCalendarStartClose}
                     dateFormat="dd/MM/yyyy"
                     minDate={currentDate}
                     showYearDropdown
@@ -611,6 +676,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     startDate={startDate}
                     endDate={endDate}
                     placeholderText="End Date"
+                    onCalendarClose={handleCalendarEndClose}
                     dateFormat="dd/MM/yyyy"
                     minDate={startDate || currentDate}
                     showYearDropdown
@@ -777,21 +843,20 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       Booking Period :
                     </div>
                   </div>
-                  <div className="mt-3 flex justify-center items-center">
+                  <div className="mt-3 flex justify-start items-center">
                     {selected_dates.length > 0 ? (
                       <div className="font-poppins text-[#7C7B7B]">
-                        {`Your Booking Period: ${formatDates(selected_dates)}`}
+                        <div>Your Booking Period:</div>
+                        {formatDatesNL(selected_dates)
+                          .split("\n")
+                          .map((line, index) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          ))}
                       </div>
                     ) : (
-                      //    <div className="font-poppins text-[#7C7B7B]">
-                      //    {`Your Booking Period :  ${format(
-                      //      selected_dates[0],
-                      //      "EEE dd MMM yyyy"
-                      //    )} - ${format(
-                      //      selected_dates[selected_dates.length - 1],
-                      //      "EEE dd MMM yyyy"
-                      //    )}`}
-                      //  </div>
                       <></>
                     )}
                   </div>
@@ -858,7 +923,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <div className="mt-5 flex">
                     {selected_dates.length > 0 ? (
                       <div className="font-poppins font-bold text-2xl">
-                        {`${formatDates(selected_dates)}`}
+                        {formatDatesNL(selected_dates)
+                          .split("\n")
+                          .map((line, index) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          ))}
                       </div>
                     ) : (
                       <></>
