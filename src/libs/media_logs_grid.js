@@ -326,7 +326,7 @@ export const GridTable = ({
                   Media Name
                 </th>
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                  Merchandise
+                  Customer
                 </th>
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Screen

@@ -794,7 +794,7 @@ const Screen_Info = ({
                     </div>
                     <div className="col-span-2">
                       <div className="text-[#59606C] font-poppins">
-                        Merchandise
+                        Customer
                       </div>
                     </div>
                     <div className="col-span-2">

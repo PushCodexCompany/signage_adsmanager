@@ -8,10 +8,10 @@ import Permission from "../libs/permission";
 import Encryption from "../libs/encryption";
 import User from "../libs/admin";
 
-const User_Management = ({ setShowUserMng }) => {
+const User_Management = ({ setShowUserMng, showUserMng }) => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
-  const [filter, setFilter] = useState(["Active", "Admin"]);
+  const [filter, setFilter] = useState([]);
 
   const [user_lists, setUserLists] = useState([]);
   const [default_account, setDefaultAccount] = useState([]);
@@ -45,21 +45,12 @@ const User_Management = ({ setShowUserMng }) => {
     setPermission();
   }, []);
 
-  const fetchUsersList = async (brand) => {
+  useEffect(() => {
+    fetchUsersList();
+  }, []);
+
+  const fetchUsersList = async () => {
     const lists = await User.getUsersList(token);
-
-    // const updatedData = lists.map((item) => {
-    //   if (item.AccessContent.brands && item.AccessContent.brands.length > 0) {
-    //     const brandID = item.AccessContent.brands;
-    //     const foundBrand = findBrandByID(brandID.map(Number), brand);
-    //     if (foundBrand) {
-    //       item.AccessContent.brands = foundBrand;
-    //     }
-    //   }
-    //   return item;
-    // });
-
-    // setUserLists(updatedData);
     setUserLists(lists);
   };
 
@@ -83,7 +74,6 @@ const User_Management = ({ setShowUserMng }) => {
     const merchandise = await User.getMerchandiseList(token);
     setDefaultBrand(brand);
     setDefaultMerchandise(merchandise);
-    fetchUsersList(brand);
   };
 
   const setPermission = async () => {
@@ -214,12 +204,15 @@ const User_Management = ({ setShowUserMng }) => {
           icon: "success",
           title: "สร้างผู้ใช้งานสำเร็จ!",
           text: `สร้างผู้ใช้งานสำเร็จ!`,
-        }).then((result) => {
+        }).then(async (result) => {
           if (
             result.isConfirmed ||
             result.dismiss === Swal.DismissReason.backdrop
           ) {
-            window.location.reload();
+            const freshToken = User.getCookieData().token;
+            const lists = await User.getUsersList(freshToken);
+            setUserLists(lists);
+            setShowRegister(!showRegister);
           }
         });
       } else {
@@ -244,9 +237,9 @@ const User_Management = ({ setShowUserMng }) => {
         {/* Main centered content container */}
         <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
           {/* Close button - adjust positioning */}
-          <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+          <div className={`absolute -top-4 -right-4 m-4 z-20`}>
             <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setShowUserMng(false)}>
+              <button onClick={() => setShowUserMng(!showUserMng)}>
                 <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
@@ -390,11 +383,13 @@ const User_Management = ({ setShowUserMng }) => {
 
             {/* Content  */}
             <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">Sign Up</div>
+              <div className="font-poppins text-5xl font-bold">
+                Create New User
+              </div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Sign Up To Unleash The Power Of Digital Advertising
+                Create User To Unleash The Power Of Digital Advertising
               </div>
             </div>
             <div className="h-[550px] overflow-y-auto">
@@ -528,7 +523,7 @@ const User_Management = ({ setShowUserMng }) => {
                 <div className="grid grid-cols-12 space-x-2 mb-4">
                   <div className="col-span-4">
                     <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                      Brand :
+                      BU :
                     </div>
                   </div>
                   <div className="col-span-8">
@@ -538,7 +533,7 @@ const User_Management = ({ setShowUserMng }) => {
                         name="brand"
                         className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                       >
-                        Select Brand
+                        Select BU
                       </button>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <PiCaretUpDown size={20} color="#6425FE" />
@@ -569,7 +564,7 @@ const User_Management = ({ setShowUserMng }) => {
                 <div className="grid grid-cols-12 space-x-2 mb-4">
                   <div className="col-span-4">
                     <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                      Merchandise :
+                      Customer :
                     </div>
                   </div>
                   <div className="col-span-8">
@@ -579,7 +574,7 @@ const User_Management = ({ setShowUserMng }) => {
                         name="merchandise"
                         className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                       >
-                        Select Merchandise
+                        Select Customer
                       </button>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <PiCaretUpDown size={20} color="#6425FE" />
@@ -616,7 +611,7 @@ const User_Management = ({ setShowUserMng }) => {
                 onClick={() => registerNewUser()}
                 className="w-[300px] bg-[#2f3847] hover:bg-[#445066] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
               >
-                Sign Up
+                Create
               </button>
             </div>
           </div>
@@ -638,13 +633,11 @@ const User_Management = ({ setShowUserMng }) => {
 
             {/* Content  */}
             <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">
-                Select Brands
-              </div>
+              <div className="font-poppins text-5xl font-bold">Select BU</div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Brands To Unleash The Power Of Digital Advertising
+                Select BU To Unleash The Power Of Digital Advertising
               </div>
             </div>
 
@@ -735,12 +728,12 @@ const User_Management = ({ setShowUserMng }) => {
             {/* Content  */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
-                Select Merchandise
+                Select Customer
               </div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Merchandise to unleash the power of digital advertising
+                Select Customer to unleash the power of digital advertising
               </div>
             </div>
             <div className="mt-2 p-2">

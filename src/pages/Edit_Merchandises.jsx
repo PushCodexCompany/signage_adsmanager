@@ -34,13 +34,12 @@ const Edit_Merchandises = () => {
   const [contact_person_pos, setContactPersonPos] = useState();
   const [contact_person_email, setContactPersonEmail] = useState();
   const [contact_person_phone, setContactPersonPhone] = useState();
-  const [billing_contact_name, setBillingContactName] = useState();
-  const [billing_email, setBillingEmail] = useState();
-  const [billing_contact_number, setBillingContactNumber] = useState();
-  const [billing_address, setBillingAddress] = useState();
-  const [billing_address2, setBillingAddress2] = useState();
-  const [billing_country, setBillingCountry] = useState();
-  const [billing_zip, setBillingZip] = useState();
+
+  const [company_des, setCompanyDes] = useState();
+  const [company_name, setCompanyName] = useState();
+  const [company_tax_id, setCompanyTaxId] = useState();
+  const [company_tax_address, setCompanyTaxAddress] = useState();
+  const [company_phone, setCompanyPhone] = useState();
 
   useEffect(() => {
     if (id !== "new") {
@@ -91,6 +90,43 @@ const Edit_Merchandises = () => {
 
   const handleSave = async () => {
     const { brand_code } = User.getBrandCode();
+
+    if (!merchandise_name) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Customer",
+      });
+      return;
+    }
+
+    if (!contact_person_name) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Contact Person",
+      });
+      return;
+    }
+
+    if (!contact_person_email) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกอีเมลล์ Contact Person",
+      });
+      return;
+    }
+
+    if (!contact_person_phone) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกเบอร์โทรศัพท์ Contact Person",
+      });
+      return;
+    }
+
     const obj = {
       advertisername: merchandise_name,
       contactname: contact_person_name || null,
@@ -119,8 +155,8 @@ const Edit_Merchandises = () => {
           if (data_img.code !== 404) {
             Swal.fire({
               icon: "success",
-              title: "สร้าง Merchandise สำเร็จ!",
-              text: `สร้าง Merchandise สำเร็จ!`,
+              title: "สร้าง Customer สำเร็จ!",
+              text: `สร้าง Customer สำเร็จ!`,
             }).then((result) => {
               if (
                 result.isConfirmed ||
@@ -139,8 +175,8 @@ const Edit_Merchandises = () => {
         } else {
           Swal.fire({
             icon: "success",
-            title: "สร้าง Merchandise สำเร็จ!",
-            text: `สร้าง Merchandise สำเร็จ!`,
+            title: "สร้าง Customer สำเร็จ!",
+            text: `สร้าง Customer สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -193,8 +229,8 @@ const Edit_Merchandises = () => {
         if (data_img.code !== 404) {
           Swal.fire({
             icon: "success",
-            title: "แก้ไข Merchandise สำเร็จ!",
-            text: `แก้ไข Merchandise สำเร็จ!`,
+            title: "แก้ไข Customer สำเร็จ!",
+            text: `แก้ไข Customer สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -215,8 +251,8 @@ const Edit_Merchandises = () => {
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",
-            title: "แก้ไข Merchandise สำเร็จ!",
-            text: `แก้ไข Merchandise สำเร็จ!`,
+            title: "แก้ไข Customer สำเร็จ!",
+            text: `แก้ไข Customer สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -245,8 +281,8 @@ const Edit_Merchandises = () => {
           if (data_img.code !== 404) {
             Swal.fire({
               icon: "success",
-              title: "แก้ไข Merchandise สำเร็จ!",
-              text: `แก้ไข Merchandise สำเร็จ!`,
+              title: "แก้ไข Customer สำเร็จ!",
+              text: `แก้ไข Customer สำเร็จ!`,
             }).then((result) => {
               if (
                 result.isConfirmed ||
@@ -265,8 +301,8 @@ const Edit_Merchandises = () => {
         } else {
           Swal.fire({
             icon: "success",
-            title: "แก้ไข Merchandise สำเร็จ!",
-            text: `แก้ไข Merchandise สำเร็จ!`,
+            title: "แก้ไข Customer สำเร็จ!",
+            text: `แก้ไข Customer สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -319,56 +355,7 @@ const Edit_Merchandises = () => {
                 <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
               </div>
             </div>
-            {/* <div className="flex items-center mt-3">
-              <div className="w-1/2 pr-2">
-                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                  <select
-                    name="file_size_type"
-                    id="file_size_type"
-                    className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    placeholder="Resolution"
-                    onChange={(e) => setMerchandiseType(e.target.value)}
-                  >
-                    <option value="0">Category</option>
-                    <option value="1">Department Store</option>
-                    <option value="2">Mock 1 </option>
-                    <option value="3">Mock 2</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <div className="w-1/2 pl-2">
-                <div className="grid grid-cols-4 space-x-2">
-                  <div className="col-span-1 flex items-center justify-center">
-                    <div className="font-poppins font-bold">Total Slot</div>
-                  </div>
-                  <div className="col-span-1">
-                    <input
-                      onChange={(e) => setMerchandiseSlot(e.target.value)}
-                      value={merchandise_slot}
-                      placeholder="0"
-                      className="border disabled:bg-[#DBDBDB] border-gray-300 rounded-lg p-3 w-full font-bold font-poppins text-center"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div> */}
+
             <div className="relative mt-20 flex items-center justify-center">
               {preview_img ? (
                 <img
@@ -401,7 +388,7 @@ const Edit_Merchandises = () => {
             </div>
             <div className="mt-4 flex items-center justify-center">
               <div className="font-poppins">
-                Upload merchandise logo to enhance brand presence
+                Upload Customer logo to enhance brand presence222
               </div>
             </div>
           </div>
@@ -504,62 +491,103 @@ const Edit_Merchandises = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="mt-10 mb-5 font-bold font-poppins text-2xl">
-            Billing
-          </div>
-          <div className="flex items-center">
-            <input
-              placeholder="Contact Name"
-              onChange={(e) => setBillingContactName(e.target.value)}
-              className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
-            />
-          </div>
-          <div className="flex items-center mt-3">
-            <div className="w-1/2 pr-2">
-              <input
-                placeholder="Email"
-                onChange={(e) => setBillingEmail(e.target.value)}
-                className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-              />
+            <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
+              Company Info for Quotation
             </div>
-            <div className="w-1/2 pl-2">
-              <input
-                placeholder="Contact Number"
-                onChange={(e) => setBillingContactNumber(e.target.value)}
-                className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-              />
+            <div className="flex items-center">
+              <div className="relative w-full">
+                <label
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    company_des
+                      ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                      : "top-3 text-gray-300"
+                  }`}
+                >
+                  Company Description
+                </label>
+                <input
+                  onChange={(e) => setCompanyDes(e.target.value)}
+                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex items-center mt-3">
-            <input
-              placeholder="Street Address"
-              onChange={(e) => setBillingAddress(e.target.value)}
-              className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
-            />
-          </div>
-          <div className="flex items-center mt-3">
-            <input
-              placeholder="Address Line 2"
-              onChange={(e) => setBillingAddress2(e.target.value)}
-              className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
-            />
-          </div>
-          <div className="flex items-center mt-3">
-            <div className="w-1/2 pr-2">
-              <input
-                placeholder="Country"
-                onChange={(e) => setBillingCountry(e.target.value)}
-                className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-              />
+            <div className="flex items-center mt-3">
+              <div className="w-1/2 pr-2">
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      company_name
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Company Name
+                  </label>
+                  <input
+                    value={company_name}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
+              </div>
+              <div className="w-1/2 pl-2">
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      company_phone
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Company Phone
+                  </label>
+                  <input
+                    value={company_phone}
+                    onChange={(e) => setCompanyPhone(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="w-1/2 pl-2">
-              <input
-                placeholder="Zip, Postal Code"
-                onChange={(e) => setBillingZip(e.target.value)}
-                className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-              />
+            <div className="flex items-center mt-3">
+              <div className="w-1/2 pr-2">
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      company_tax_id
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Tax ID
+                  </label>
+                  <input
+                    value={company_tax_id}
+                    onChange={(e) => setCompanyTaxId(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
+              </div>
+              <div className="w-1/2 pl-2">
+                <div className="relative ">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      company_tax_address
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Tax Address
+                  </label>
+                  <input
+                    value={company_tax_address}
+                    onChange={(e) => setCompanyTaxAddress(e.target.value)}
+                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                  />
+                </div>
+              </div>
             </div>
-          </div> */}
+
             <div className="flex items-center mt-3">
               <div className="font-poppins">
                 Please provide details as they will be used in generating

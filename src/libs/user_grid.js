@@ -15,6 +15,7 @@ export const GridTable = ({
   merchandise,
 }) => {
   const navigate = useNavigate();
+  const [user_data, setUserData] = useState(user_lists);
   const [modal_edit, setModalEdit] = useState(false);
   const [default_brand, setDefaultBrand] = useState([]);
   const [default_merchandise, setDefaultMerchandise] = useState([]);
@@ -33,9 +34,16 @@ export const GridTable = ({
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
+  const [oldModal, setOldModal] = useState(true);
+  const { token } = User.getCookieData();
+
   useEffect(() => {
     fetchRoleData();
   }, []);
+
+  useEffect(() => {
+    setData();
+  }, [user_lists]);
 
   const fetchRoleData = async () => {
     const { token } = User.getCookieData();
@@ -47,6 +55,11 @@ export const GridTable = ({
     setDefaultMerchandise(merchandises);
   };
 
+  const setData = async () => {
+    const lists = await User.getUsersList(token);
+    setUserData(lists);
+  };
+
   const onSelectEdit = (id) => {
     const {
       UserID,
@@ -56,7 +69,7 @@ export const GridTable = ({
       RoleName,
       RoleID,
       AccessContent,
-    } = user_lists?.find((item) => item.UserID === id);
+    } = user_data?.find((item) => item.UserID === id);
 
     setEditId(UserID);
     setEditUsername(Username);
@@ -70,6 +83,7 @@ export const GridTable = ({
     setEditEmail(Email);
     setEditActivate(Activated);
     setEditRolename(RoleID);
+    setOldModal(!oldModal);
     setModalEdit(!modal_edit);
   };
 
@@ -105,7 +119,8 @@ export const GridTable = ({
               result.dismiss === Swal.DismissReason.backdrop
             ) {
               // window.location.reload();
-              navigate(0);
+              setData();
+              // setModalEdit(!modal_edit);
             }
           });
         } else {
@@ -216,7 +231,7 @@ export const GridTable = ({
               result.isConfirmed ||
               result.dismiss === Swal.DismissReason.backdrop
             ) {
-              window.location.reload();
+              setData();
             }
           });
         } else {
@@ -232,138 +247,114 @@ export const GridTable = ({
 
   return (
     <>
-      <div className="w-auto h-[520px] overflow-auto">
-        <table className="min-w-full border border-gray-300">
-          <thead>
-            <tr>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                ID
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Username
-              </th>
-              <th className="lg:px-6 px-8 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Brand
-              </th>
-              {/* <th className="lg:px-6 px-14 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Merchandise
-              </th> */}
-              <th className="lg:px-6 px-9 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Status
-              </th>
-              <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Role
-              </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {user_lists.length > 0 &&
-              user_lists.map((row, key) => (
-                <tr key={key}>
-                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="font-poppins text-xl">{row.UserID}</div>
-                  </td>
-                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    {page_permission.update ? (
-                      <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
-                        <a onClick={() => onSelectEdit(row.UserID)}>
-                          {row.Username}
-                        </a>
-                      </div>
-                    ) : (
-                      <div className="font-poppins text-xl font-bold">
-                        <div>{row.Username}</div>
-                      </div>
-                    )}
-                    <div className="font-poppins text-sm text-gray-500">
-                      {row.Email ? row.Email : "-- No Email --"}
-                    </div>
-                  </td>
-                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="flex space-x-1 ">
-                      {row.AccessContent?.brands &&
-                      row.AccessContent?.brands.length > 0 ? (
-                        row.AccessContent.brands.map((items) => (
-                          <img
-                            className="w-[50px] h-[50px] rounded-md object-contain border border-[#dedede]"
-                            // src={getImgBrand(items.BrandID)}
-                            src={getImgBrand(items)}
-                          />
-                        ))
+      {oldModal && (
+        <div className="w-auto h-[520px] overflow-auto">
+          <table className="min-w-full border border-gray-300">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  ID
+                </th>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  Username
+                </th>
+                <th className="lg:px-6 px-8 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  BU
+                </th>
+                <th className="lg:px-6 px-9 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  Status
+                </th>
+                <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  Role
+                </th>
+                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {user_data.length > 0 &&
+                user_data.map((row, key) => (
+                  <tr key={key}>
+                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="font-poppins text-xl">{row.UserID}</div>
+                    </td>
+                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                      {page_permission.update ? (
+                        <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
+                          <a onClick={() => onSelectEdit(row.UserID)}>
+                            {row.Username}
+                          </a>
+                        </div>
                       ) : (
-                        <img
-                          className="w-[50px] h-[50px] rounded-md"
-                          src={empty_img}
-                        />
+                        <div className="font-poppins text-xl font-bold">
+                          <div>{row.Username}</div>
+                        </div>
                       )}
-                    </div>
-                  </td>
-                  {/* <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="flex space-x-1 ">
-                      {row.merchandise.map((items) => (
-                        <img
-                          className="w-[50px] h-[50px] rounded-md"
-                          src={getImg(items)}
-                        />
-                      ))}
-                    </div>
-                  </td> */}
-                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="font-poppins">
-                      {row.Activated === 1 ? "Active" : "Deactive"}
-                    </div>
-                    {/* <div className="relative w-full lg:w-[100px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
-                    <select
-                      name="status"
-                      id="status"
-                      className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                      defaultValue={row.status}
-                    >
-                      <option value="1">Active</option>
-                      <option value="0">Deactive</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                      <PiCaretUpDown size="18" color="#6425FE" />
-                    </div>
-                  </div> */}
-                  </td>
-                  <td className="px-7 py-2 whitespace-no-wrap border-b  border-gray-200">
-                    <div className="font-poppins">
-                      {row.RoleName ? row.RoleName : "-- No Role --"}
-                    </div>
-                  </td>
-                  <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
-                    {page_permission.update ? (
-                      <button onClick={() => onSelectEdit(row.UserID)}>
-                        <RiEditLine
-                          size={20}
-                          className="text-[#6425FE] hover:text-[#3b1694]"
-                        />
-                      </button>
-                    ) : (
-                      <></>
-                    )}
-                    {page_permission.delete ? (
-                      <button
-                        onClick={() => onClickDelete(row.UserID, row.Username)}
-                      >
-                        <RiDeleteBin5Line
-                          size={20}
-                          className="text-[#6425FE] hover:text-[#3b1694]"
-                        />
-                      </button>
-                    ) : (
-                      ""
-                    )}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+                      <div className="font-poppins text-sm text-gray-500">
+                        {row.Email ? row.Email : "-- No Email --"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="flex space-x-1 ">
+                        {row.AccessContent?.brands &&
+                        row.AccessContent?.brands.length > 0 ? (
+                          row.AccessContent.brands.map((items) => (
+                            <img
+                              className="w-[50px] h-[50px] rounded-md object-contain border border-[#dedede]"
+                              src={getImgBrand(items)}
+                            />
+                          ))
+                        ) : (
+                          <img
+                            className="w-[50px] h-[50px] rounded-md"
+                            src={empty_img}
+                          />
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="font-poppins">
+                        {row.Activated === 1 ? "Active" : "Inactive"}
+                      </div>
+                    </td>
+                    <td className="px-7 py-2 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="font-poppins">
+                        {row.RoleName ? row.RoleName : "-- No Role --"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
+                      {page_permission.update ? (
+                        <button onClick={() => onSelectEdit(row.UserID)}>
+                          <RiEditLine
+                            size={20}
+                            className="text-[#6425FE] hover:text-[#3b1694]"
+                          />
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                      {page_permission.delete ? (
+                        <button
+                          onClick={() =>
+                            onClickDelete(row.UserID, row.Username)
+                          }
+                        >
+                          <RiDeleteBin5Line
+                            size={20}
+                            className="text-[#6425FE] hover:text-[#3b1694]"
+                          />
+                        </button>
+                      ) : (
+                        ""
+                      )}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {modal_edit && (
         <a
@@ -377,9 +368,14 @@ export const GridTable = ({
           {/* Main centered content container */}
           <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
             {/* Close button - adjust positioning */}
-            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+            <div className={`absolute -top-4 -right-4 m-4 z-40`}>
               <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
-                <button onClick={() => setModalEdit(!modal_edit)}>
+                <button
+                  onClick={() => {
+                    setOldModal(!oldModal);
+                    setModalEdit(!modal_edit);
+                  }}
+                >
                   <IoIosClose size={25} color={"#6425FE"} />
                 </button>
               </div>
@@ -479,14 +475,14 @@ export const GridTable = ({
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     >
                       <option value="1">Activated</option>
-                      <option value="0">Deactivated</option>
+                      <option value="0">Inactive</option>
                     </select>
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">
                   <div className="col-span-4">
                     <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                      Brand :
+                      BU :
                     </div>
                   </div>
                   <div className="col-span-8">
@@ -496,7 +492,7 @@ export const GridTable = ({
                         name="brand"
                         className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                       >
-                        Select Brand
+                        Select BU
                       </button>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <PiCaretUpDown size={20} color="#6425FE" />
@@ -527,17 +523,17 @@ export const GridTable = ({
                 <div className="grid grid-cols-12 space-x-2 mb-4">
                   <div className="col-span-4">
                     <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                      Merchandise :
+                      Customer :
                     </div>
                   </div>
                   <div className="col-span-8">
                     <div className="relative lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
                       <button
                         onClick={() => setShowMerchandiseModal(true)}
-                        name="brand"
+                        name="Customer"
                         className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                       >
-                        Select Merchandise
+                        Select Customer
                       </button>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <PiCaretUpDown size={20} color="#6425FE" />
@@ -595,13 +591,11 @@ export const GridTable = ({
 
             {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">
-                Select Brands
-              </div>
+              <div className="font-poppins text-5xl font-bold">Select BU</div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Brands To Unleash The Power Of Digital Advertising
+                Select BU To Unleash The Power Of Digital Advertising
               </div>
             </div>
 
@@ -691,12 +685,12 @@ export const GridTable = ({
             {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
-                Select Merchandise
+                Select Customer
               </div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Merchandise to unleash the power of digital advertising
+                Select Customer to unleash the power of digital advertising
               </div>
             </div>
 

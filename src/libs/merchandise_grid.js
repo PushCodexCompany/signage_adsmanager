@@ -20,8 +20,8 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
   const handleDeleteMerchandise = async (merchandise_id, merchandise_name) => {
     try {
       Swal.fire({
-        title: "คุณต้องการลบ Merchandise ?",
-        text: merchandise_name,
+        title: "คุณต้องการลบ Customer ?",
+        text: `คุณต้องการลบ Customer : ${merchandise_name}`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -45,8 +45,8 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
           if (data.code !== 404) {
             Swal.fire({
               icon: "success",
-              title: "ลบ Merchandise สำเร็จ!",
-              text: `ลบ Merchandise สำเร็จ!`,
+              title: "ลบ Customer สำเร็จ!",
+              text: `ลบ Customer สำเร็จ!`,
             }).then((result) => {
               if (
                 result.isConfirmed ||
@@ -99,7 +99,7 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="flex items-center justify-center">
                 <img
-                  className="w-[60px] h-[60px] rounded-md object-cover"
+                  className="w-[60px] h-[60px] rounded-md object-contain"
                   src={
                     row.AdvertiserLogo
                       ? row.AdvertiserLogo

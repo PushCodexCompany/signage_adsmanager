@@ -248,7 +248,7 @@ const Booking_Summary = () => {
                   <div className="col-span-1 lg:col-span-2" />
                   <div className="col-span-3 lg:col-span-2 flex justify-start items-center">
                     <div className="font-poppins text-[18px] lg:text-[24px] font-bold ">
-                      Merchandise:
+                      Customer:
                     </div>
                   </div>
                   <div className="col-span-4 flex justify-start items-center">

@@ -78,8 +78,8 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         if (data_img.code !== 404) {
           Swal.fire({
             icon: "success",
-            title: "สร้าง Brand สำเร็จ!",
-            text: `สร้าง Brand สำเร็จ!`,
+            title: "สร้าง BU สำเร็จ!",
+            text: `สร้าง BU สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -134,8 +134,8 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         if (data_img.code !== 404) {
           Swal.fire({
             icon: "success",
-            title: "แก้ไข Brand สำเร็จ!",
-            text: `แก้ไข Brand สำเร็จ!`,
+            title: "แก้ไข BU สำเร็จ!",
+            text: `แก้ไข BU สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -156,8 +156,8 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         if (data.code !== 404) {
           Swal.fire({
             icon: "success",
-            title: "แก้ไข Brand สำเร็จ!",
-            text: `แก้ไข Brand สำเร็จ!`,
+            title: "แก้ไข BU สำเร็จ!",
+            text: `แก้ไข BU สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -186,8 +186,8 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
           if (data_img.code !== 404) {
             Swal.fire({
               icon: "success",
-              title: "แก้ไข Brand สำเร็จ!",
-              text: `แก้ไข Brand สำเร็จ!`,
+              title: "แก้ไข BU สำเร็จ!",
+              text: `แก้ไข BU สำเร็จ!`,
             }).then((result) => {
               if (
                 result.isConfirmed ||
@@ -206,8 +206,8 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         } else {
           Swal.fire({
             icon: "success",
-            title: "แก้ไข Brand สำเร็จ!",
-            text: `แก้ไข Brand สำเร็จ!`,
+            title: "แก้ไข BU สำเร็จ!",
+            text: `แก้ไข BU สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -243,19 +243,19 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
           {/* Content  */}
           <div className="flex justify-center items-center mt-8">
             <div className="font-poppins text-5xl font-bold">
-              {edit_brand.BrandID ? "Edit Brand" : "Create Brand"}
+              {edit_brand.BrandID ? "Edit BU" : "Create BU"}
             </div>
           </div>
           <div className="flex justify-center items-center mt-2">
             <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-              Let's Get To Know Your Brand
+              Let's Get To Know Your BU
             </div>
           </div>
           <div className="p-4">
             <div className="grid grid-cols-8">
               <div className="col-span-8">
                 <div className="text-2xl font-poppins font-bold text-[#2F3847]">
-                  Brand Information
+                  BU Information
                 </div>
               </div>
             </div>
@@ -267,7 +267,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                   <input
                     className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
                     type="text"
-                    placeholder="Brand Name"
+                    placeholder="BU Name"
                     value={brand_name}
                     onChange={(e) => setBrandName(e.target.value)}
                     required
@@ -287,7 +287,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                   <input
                     className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
                     type="text"
-                    placeholder="Brand Description"
+                    placeholder="BU Description"
                     value={brand_description}
                     onChange={(e) => setBrandDescription(e.target.value)}
                     required
@@ -316,13 +316,13 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                     {selectedImage ? (
                       <img
                         src={selectedImage}
-                        className="flex items-center justify-center object-cover w-[250px] h-[250px]"
+                        className="flex items-center justify-center object-contain border border-gray-300 rounded-lg w-[250px] h-[250px]"
                       />
                     ) : (
                       <div className="flex items-center justify-center border border-[#A9A9A9] mt-3 w-[250px] h-[250px] rounded-lg">
                         <img
                           src={Empty_Img}
-                          className="flex items-center justify-center object-cover"
+                          className="flex items-center justify-center object-contain border border-gray-300 rounded-lg"
                         />
                       </div>
                     )}

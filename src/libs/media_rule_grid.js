@@ -1,10 +1,14 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin5Line, RiEditLine, RiShareBoxLine } from "react-icons/ri";
 import { FiExternalLink } from "react-icons/fi";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
+import { IoIosClose } from "react-icons/io";
 
-export const GridTable = ({ media_rules }) => {
+export const GridTable = ({ media_rules, getMediaRulesData }) => {
+  const [modalViewScreen, setModalViewScreen] = useState(false);
+
   const navigate = useNavigate();
 
   const onClickEdit = (data) => {
@@ -25,29 +29,42 @@ export const GridTable = ({ media_rules }) => {
     });
   };
 
-  const onClickDelete = async (MediaRuleID) => {
-    const { token } = User.getCookieData();
-    const data = await User.deleteMediaRule(MediaRuleID, token);
-    if (data.code !== 404) {
-      Swal.fire({
-        icon: "success",
-        title: "Delete Media Rule Success ...",
-        text: `ลบ Media Rule สำเร็จ!`,
-      }).then((result) => {
-        if (
-          result.isConfirmed ||
-          result.dismiss === Swal.DismissReason.backdrop
-        ) {
-          navigate("/setting/media_rule");
+  const onClickDelete = async (MediaRuleName, MediaRuleID) => {
+    Swal.fire({
+      title: "คุณต้องการลบ Media Rule?",
+      text: `คุณต้องการลบ Media Rule : ${MediaRuleName}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { token } = User.getCookieData();
+        const data = await User.deleteMediaRule(MediaRuleID, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "ลบ Media Rule สำเร็จ",
+            text: `ลบ Media Rule ${MediaRuleName} แล้ว`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              getMediaRulesData();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
         }
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: data.message,
-      });
-    }
+      }
+    });
   };
 
   const onClickView = (data) => {
@@ -119,7 +136,10 @@ export const GridTable = ({ media_rules }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="flex items-center justify-center">
-                    <div className="font-poppins text-md text-[#59606C]">
+                    <div
+                      onClick={() => setModalViewScreen(!modalViewScreen)}
+                      className="font-poppins text-md text-[#59606C] hover:text-[#3b4047] cursor-pointer"
+                    >
                       {row.TotalInUse}
                     </div>
                   </div>
@@ -147,7 +167,9 @@ export const GridTable = ({ media_rules }) => {
                     </button>
                     <button
                       disabled={row.TotalInUse > 0 ? true : false}
-                      onClick={() => onClickDelete(row.MediaRuleID)}
+                      onClick={() =>
+                        onClickDelete(row.MediaRuleName, row.MediaRuleID)
+                      }
                     >
                       <RiDeleteBin5Line
                         size={20}
@@ -165,6 +187,42 @@ export const GridTable = ({ media_rules }) => {
           </tbody>
         </table>
       </div>
+
+      {modalViewScreen && (
+        <a
+          onClick={() => setModalViewScreen(!modalViewScreen)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {modalViewScreen && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-40`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button
+                  onClick={() => {
+                    setModalViewScreen(!modalViewScreen);
+                  }}
+                >
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
+            </div>
+
+            {/* Content Container */}
+
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">Screen List</div>
+            </div>
+            <div className="h-[550px] overflow-y-auto">
+              <div className="mt-10 mx-40">Screen List ...</div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

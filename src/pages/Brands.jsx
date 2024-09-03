@@ -91,7 +91,7 @@ const Brands = () => {
     try {
       Swal.fire({
         title: "คุณแน่ใจแล้วหรือไม่?",
-        text: "คุณต้องการลบข้อมูล Brand!",
+        text: "คุณต้องการลบข้อมูล BU!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -113,8 +113,8 @@ const Brands = () => {
           if (data.code !== 404) {
             Swal.fire({
               icon: "success",
-              title: "ลบ Brand สำเร็จ!",
-              text: `ลบ Brand สำเร็จ!`,
+              title: "ลบ BU สำเร็จ!",
+              text: `ลบ BU สำเร็จ!`,
             }).then((result) => {
               if (
                 result.isConfirmed ||
@@ -143,7 +143,7 @@ const Brands = () => {
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <div className="text-[50px] font-[700] text-center font-poppins">
-          Select Your Brand
+          Select Your BU
         </div>
         <div className="text-xl text-center text-slate-500 mb-12 font-poppins font-[500]">
           Choose your brand from the list to access brand-specific content and
@@ -170,7 +170,7 @@ const Brands = () => {
               </div>
               <button className="w-full">
                 <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                  Add new Brand
+                  Add new BU
                 </div>
                 <div className="text-[14px] text-white font-poppins"></div>
               </button>

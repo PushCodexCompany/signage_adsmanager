@@ -206,7 +206,7 @@ const Dashboard = () => {
               <div className="w-[21px] h-[55px] ml-2 mt-1 bg-[#706195] rounded-lg" />
               <div className="space-y-[-3px]">
                 <div className="flex justify-start items-center ml-2 text-gray-600 font-poppins text-[18px]">
-                  Number of Brand Booking
+                  Number of BU Booking
                 </div>
                 <div className="flex ml-2">
                   <div className="grid grid-cols-5 gap-6">

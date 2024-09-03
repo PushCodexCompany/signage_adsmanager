@@ -8,6 +8,7 @@ const Create_Tag_Category = ({
   setModalCreateNewCategory,
   modalCreateNewCategory,
   select_cat,
+  getCategoryTag,
 }) => {
   useEffect(() => {
     if (select_cat !== "new") {
@@ -38,7 +39,7 @@ const Create_Tag_Category = ({
   const handleCreateOrUpdateTagCategory = async () => {
     if (new_categoy_name.name) {
       const { token } = User.getCookieData();
-
+      // Create
       if (isNew) {
         const obj = {
           tagcategoryname: new_categoy_name.name,
@@ -56,7 +57,8 @@ const Create_Tag_Category = ({
                 result.isConfirmed ||
                 result.dismiss === Swal.DismissReason.backdrop
               ) {
-                navigate("setting/tag_management");
+                getCategoryTag();
+                setModalCreateNewCategory(!modalCreateNewCategory);
               }
             });
           } else {
@@ -70,6 +72,7 @@ const Create_Tag_Category = ({
           console.error("Error:", error);
         }
       } else {
+        // Update
         const obj = {
           tagcategoryid: new_categoy_name.id,
           tagcategoryname: new_categoy_name.name,
@@ -87,7 +90,8 @@ const Create_Tag_Category = ({
                 result.isConfirmed ||
                 result.dismiss === Swal.DismissReason.backdrop
               ) {
-                window.location.reload();
+                getCategoryTag();
+                setModalCreateNewCategory(!modalCreateNewCategory);
               }
             });
           } else {
@@ -128,19 +132,13 @@ const Create_Tag_Category = ({
         {/* Content  */}
         <div className="flex justify-center items-center mt-8">
           <div className="font-poppins text-5xl font-bold">
-            {isNew ? "New Category" : "Edit Category"}
-          </div>
-        </div>
-        <div className="flex justify-center items-center mt-2">
-          <div className="font-poppins text-xs lg:text-sm ">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+            {isNew ? "New Tag" : "Edit Tag"}
           </div>
         </div>
         <div className="flex justify-center items-center mt-10">
           <div className="grid grid-cols-6 gap-2">
             <div className="col-span-3 flex items-center justify-start">
-              <div className="font-poppins">Tag Category Name:</div>
+              <div className="font-poppins">Tag Name:</div>
             </div>
             <div className="col-span-3">
               <input
@@ -155,7 +153,7 @@ const Create_Tag_Category = ({
         <div className="flex justify-center items-center mt-10">
           <div className="grid grid-cols-6 gap-2">
             <div className="col-span-3 flex items-center justify-start">
-              <div className="font-poppins">Tag Category Description:</div>
+              <div className="font-poppins">Tag Description:</div>
             </div>
             <div className="col-span-3 ">
               <input
@@ -172,7 +170,7 @@ const Create_Tag_Category = ({
             onClick={() => handleCreateOrUpdateTagCategory()}
             className="bg-[#6425FE] hover:bg-[#3b1694] w-[20%] h-[40px] text-white font-poppins flex justify-center items-center rounded-lg"
           >
-            Save
+            {isNew ? "Create" : "Save"}
           </button>
         </div>
       </div>

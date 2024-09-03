@@ -3,8 +3,8 @@ export default {
     const convertedData = { permissions: {}, other_permission: {} };
 
     data.map((items) => {
-      for (const resource in items.permissions) {
-        const value = items.permissions[resource];
+      for (const resource in items?.permissions) {
+        const value = items?.permissions[resource];
 
         const resourcePermissions = {
           view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
@@ -16,7 +16,7 @@ export default {
       }
 
       for (const permissions in items.other_permission) {
-        const value = items.other_permission[permissions];
+        const value = items?.other_permission[permissions];
         convertedData.other_permission[permissions] =
           value === 1 || value === true;
       }

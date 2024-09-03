@@ -1,0 +1,31 @@
+/* Hide the default checkbox */
+.custom-checkbox {
+    -webkit-appearance: none; /* Hide the checkbox in Chrome/Safari */
+    -moz-appearance: none; /* Hide the checkbox in Firefox */
+    appearance: none; /* Hide the checkbox in modern browsers */
+    width: 30px;
+    height: 30px;
+    border: 2px solid #6425FE; /* Border color */
+    border-radius: 4px; /* Optional: Adds rounded corners */
+    outline: none; /* Removes default outline */
+    cursor: pointer; /* Cursor style when hovering */
+    display: flex; /* Make the checkbox a flex container */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    position: relative; /* Position relative for ::after positioning */
+  }
+  
+  /* Style the checkbox when checked */
+  .custom-checkbox:checked {
+    background-color: white; /* Checkbox background color when checked */
+    border: 2px solid #6425FE; /* Checkbox border color when checked */
+  }
+  
+  /* Add a checkmark */
+  .custom-checkbox:checked::after {
+    content: '✓'; /* Unicode checkmark */
+    color: #6425FE; /* Color of the checkmark */
+    font-size: 18px; /* Size of the checkmark */
+    position: absolute; /* Position absolute to center inside the checkbox */
+  }
+  

@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useCheckPermission from "../../../libs/useCheckPermission";
 import User from "../../../libs/admin";
 import Swal from "sweetalert2";
+import "../../css/create_mediarule.css";
 
 const Create_Media_Rule = () => {
   useCheckPermission();
@@ -18,9 +19,14 @@ const Create_Media_Rule = () => {
   const [media_rule_width, setMediaRuleWidth] = useState(null);
   const [media_rule_adsCapacity, setMediaRuleAdsCapacity] = useState(null);
 
+  const [media_rule_image, setMediaRuleImage] = useState(null);
+  const [media_rule_video, setMediaRuleVideo] = useState(null);
+
   const [toggle_disable, setToggleDisable] = useState(true);
   const [isView, setIsView] = useState(false);
   const [maNotification, setMaNotification] = useState();
+
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     if (location.state.data) {
@@ -90,6 +96,8 @@ const Create_Media_Rule = () => {
           width: media_rule_width,
           height: media_rule_height,
           activeresolution: toggle_disable,
+          image: media_rule_image || false,
+          video: media_rule_video || false,
         };
         if (
           media_rule_width === 0 ||
@@ -213,7 +221,17 @@ const Create_Media_Rule = () => {
                   <input
                     className="font-bold text-sm w-full h-full font-poppins pl-4"
                     placeholder="Media Rule Name"
-                    onChange={(e) => setMediaRuleName(e.target.value)}
+                    onChange={(e) => {
+                      if (
+                        location.state?.data?.MediaRuleName !== e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+
+                      setMediaRuleName(e.target.value);
+                    }}
                     value={media_rule_name}
                     disabled={isView}
                   />
@@ -233,37 +251,13 @@ const Create_Media_Rule = () => {
                   <div className="w-[550px] h-[550px] bg-gray-200 flex justify-center items-center"></div>
                 )}
               </div>
-
-              {!isView ? (
-                <>
-                  <div className="flex justify-center mt-5">
-                    {media_rule_id ? (
-                      <button
-                        onClick={() => handleSaveNewOrEditMediaRules("edit")}
-                        className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
-                      >
-                        Save Change
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => handleSaveNewOrEditMediaRules("create")}
-                        className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
-                      >
-                        Create
-                      </button>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
             </div>
           </div>
           <div className="w-full lg:w-1/2 p-4 lg:pl-8 ">
             <div>
-              <span className="font-bold text-3xl font-poppins">
+              <div className="font-bold text-3xl font-poppins">
                 Media Rule Setting
-              </span>
+              </div>
             </div>
 
             {/* Resolution 1 */}
@@ -364,6 +358,13 @@ const Create_Media_Rule = () => {
                             if (newValue.length > 1 && newValue.startsWith(0)) {
                               return;
                             }
+                            if (
+                              location.state?.data?.Width !== parseInt(newValue)
+                            ) {
+                              setIsEdit(true);
+                            } else {
+                              setIsEdit(false);
+                            }
                             setMediaRuleWidth(newValue);
                           }}
                           value={media_rule_width}
@@ -434,6 +435,14 @@ const Create_Media_Rule = () => {
                             if (newValue.length > 1 && newValue.startsWith(0)) {
                               return;
                             }
+                            if (
+                              location.state?.data?.Height !==
+                              parseInt(newValue)
+                            ) {
+                              setIsEdit(true);
+                            } else {
+                              setIsEdit(false);
+                            }
 
                             setMediaRuleHeight(newValue);
                           }}
@@ -477,7 +486,16 @@ const Create_Media_Rule = () => {
               <div className="grid grid-cols-6 mt-5 space-x-2">
                 <div className="col-span-2">
                   <input
-                    onChange={(e) => setMediaRuleAdsCapacity(e.target.value)}
+                    onChange={(e) => {
+                      if (
+                        location.state?.data?.AdsCapacity !== e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setMediaRuleAdsCapacity(e.target.value);
+                    }}
                     placeholder="Ads Capacity"
                     value={media_rule_adsCapacity}
                     disabled={isView}
@@ -516,6 +534,90 @@ const Create_Media_Rule = () => {
                 </div>
               </div>
             </div>
+
+            {/* Media Type */}
+            <div className="border-1 border-[#DBDBDB] rounded-sm p-2 mt-5">
+              <div className="flex flex-row mt-3 space-x-5">
+                <div className="text-xl font-bold font-poppins">Media Type</div>
+              </div>
+              <div className="grid grid-cols-6 mt-5 space-x-2">
+                <div className="col-span-2">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-1 flex justify-center items-center">
+                      <input
+                        type="checkbox"
+                        className="custom-checkbox w-[30px] h-[30px]"
+                        disabled={isView ? true : false}
+                        checked={media_rule_image}
+                        onChange={(e) => setMediaRuleImage(e.target.checked)}
+                      />
+                    </div>
+                    <div className="col-span-4 ">
+                      <div className="flex">
+                        <div className="font-poppins text-xl">Image</div>
+                      </div>
+                      <div className="flex">
+                        <div className="font-poppins text-xs">{`(*png , *jpg)`}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-2">
+                  <div className="grid grid-cols-5">
+                    <div className="col-span-1 flex justify-center items-center">
+                      <input
+                        type="checkbox"
+                        className="custom-checkbox w-[30px] h-[30px]"
+                        disabled={isView ? true : false}
+                        checked={media_rule_video}
+                        onChange={(e) => setMediaRuleVideo(e.target.checked)}
+                      />
+                    </div>
+                    <div className="col-span-4 ">
+                      <div className="flex">
+                        <div className="font-poppins text-xl">Video</div>
+                      </div>
+                      <div className="flex">
+                        <div className="font-poppins text-xs">{`(*mp4)`}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center items-center mt-10">
+                <div className="font-poppins text-xs">
+                  Choose the appropriate media type for your needs.
+                </div>
+              </div>
+            </div>
+
+            {!isView ? (
+              <>
+                <div className="flex justify-center mt-5">
+                  {media_rule_id ? (
+                    <button
+                      onClick={() => handleSaveNewOrEditMediaRules("edit")}
+                      className={`${
+                        isEdit
+                          ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                          : "bg-gray-500"
+                      }  w-[350px] hover:bg-gray-800 text-md rounded-lg h-[65px] text-white font-bold font-poppins`}
+                    >
+                      Save Change
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleSaveNewOrEditMediaRules("create")}
+                      className="bg-[#6425FE] w-[350px] hover:bg-[#3b1694] text-md rounded-lg h-[65px] text-white font-bold font-poppins"
+                    >
+                      Create
+                    </button>
+                  )}
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

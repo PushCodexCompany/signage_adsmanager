@@ -105,7 +105,7 @@ const New_Static_Booking = ({
   const STEP_OPTIONS = [
     {
       stepIndex: 1,
-      label: "Select Merchandise",
+      label: "Select Customer",
     },
     {
       stepIndex: 2,
@@ -133,7 +133,7 @@ const New_Static_Booking = ({
           Swal.fire({
             icon: "error",
             title: "เกิดข้อผิดพลาด!",
-            text: "กรุณาเลือก Merchandise!",
+            text: "กรุณาเลือก Customer!",
           });
         }
         break;
@@ -307,9 +307,8 @@ const New_Static_Booking = ({
                 Booking For
               </div>
               <div className="text-center text-slate-500 mb-12 font-poppins">
-                Name your booking, select merchandise, and content type to
-                create a New booking. Personalize your campaign for maximum
-                impact.
+                Name your booking, select Customer, and content type to create a
+                New booking. Personalize your campaign for maximum impact.
               </div>
               <div
                 className={` ${
@@ -333,7 +332,7 @@ const New_Static_Booking = ({
                   </div>
                   <button className="w-full">
                     <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                      Add New Merchandise
+                      Add New Customer
                     </div>
                     <div className="text-[14px] text-white font-poppins"></div>
                   </button>
@@ -389,9 +388,8 @@ const New_Static_Booking = ({
             </div>
             <div className="flex items-center justify-center mt-2 text-center">
               <div className="text-sm font-poppins text-[#2F3847]">
-                Name your booking, select merchandise, and content type to
-                create a new booking. Personalize your campaign for maximum
-                impact.
+                Name your booking, select Customer, and content type to create a
+                new booking. Personalize your campaign for maximum impact.
               </div>
             </div>
             <div className="flex items-center justify-center mt-5">
@@ -529,9 +527,8 @@ const New_Static_Booking = ({
             </div>
             <div className="flex items-center justify-center mt-2 text-center">
               <div className="text-sm font-poppins text-[#2F3847]">
-                Name your booking, select merchandise, and content type to
-                create a new booking. Personalize your campaign for maximum
-                impact.
+                Name your booking, select Customer, and content type to create a
+                new booking. Personalize your campaign for maximum impact.
               </div>
             </div>
             <div className="mt-6 h-[450px] overflow-y-auto">
@@ -696,9 +693,8 @@ const New_Static_Booking = ({
             </div>
             <div className="flex items-center justify-center mt-2 text-center">
               <div className="text-sm font-poppins text-[#2F3847]">
-                Name your booking, select merchandise, and content type to
-                create a new booking. Personalize your campaign for maximum
-                impact.
+                Name your booking, select Customer, and content type to create a
+                new booking. Personalize your campaign for maximum impact.
               </div>
             </div>
             <div className="mt-6 h-[350px] overflow-y-auto">
@@ -1043,8 +1039,8 @@ const New_Static_Booking = ({
         if (data_img.code !== 404) {
           Swal.fire({
             icon: "success",
-            title: "สร้าง Merchandise สำเร็จ!",
-            text: `สร้าง Merchandise สำเร็จ!`,
+            title: "สร้าง Customer สำเร็จ!",
+            text: `สร้าง Customer สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -1191,7 +1187,7 @@ const New_Static_Booking = ({
             <div className="p-4 flex space-x-3">
               <div className="flex items-center justify-center">
                 <div className="font-poppins text-2xl font-bold ">
-                  Create Merchandise
+                  Create Customer
                 </div>
               </div>
             </div>
@@ -1200,7 +1196,7 @@ const New_Static_Booking = ({
                 <div className="relative">
                   <div className="flex items-center">
                     <input
-                      placeholder="Merchandise Name"
+                      placeholder="Customer Name"
                       className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
                       value={merchandise_name}
                       onChange={(e) => setMerchandiseName(e.target.value)}
@@ -1237,7 +1233,7 @@ const New_Static_Booking = ({
                 </div>
                 <div className="mt-4 flex items-center justify-center">
                   <div className="font-poppins">
-                    Upload merchandise logo to enhance brand presence
+                    Upload Customer logo to enhance brand presence
                   </div>
                 </div>
               </div>

@@ -14,7 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import plus_brand from "../assets/img/plus_brand.png";
 
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-
+import Filter from "../components/Filter";
 import {
   add,
   eachDayOfInterval,
@@ -58,6 +58,12 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const [contact_person_email, setContactPersonEmail] = useState();
   const [contact_person_phone, setContactPersonPhone] = useState();
 
+  const [company_des, setCompanyDes] = useState();
+  const [company_name, setCompanyName] = useState();
+  const [company_tax_id, setCompanyTaxId] = useState();
+  const [company_tax_address, setCompanyTaxAddress] = useState();
+  const [company_phone, setCompanyPhone] = useState();
+
   const [startDate, setStartDate] = useState(null);
   const [startDateDump, setStartDateDump] = useState(null);
   const [startDateCheck, setStartDateCheck] = useState();
@@ -65,6 +71,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const [endDateDump, setEndDateDump] = useState(null);
   const [dateRange, setDateRange] = useState([]);
   const currentDate = new Date();
+  const [filter_screen, setFilterScreen] = useState([]);
+  const [config, setConfig] = useState();
 
   // calendar
   const today = startOfToday();
@@ -82,6 +90,19 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(async () => {
+    const { token } = User.getCookieData();
+    const {
+      configuration: { brandconfig },
+    } = await User.getConfiguration(token);
+
+    const initialValues = brandconfig.reduce((acc, item) => {
+      acc[item.ParameterKey] = item.ParameterValue;
+      return acc;
+    }, {});
+    setConfig(initialValues.CONTENTPERSLOT_SEC);
+  });
 
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth),
@@ -128,34 +149,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       return sortIndex;
     });
   };
-
-  // const handleDateChange = (date) => {
-  //   if (!startDate || (startDate && endDate && date < startDate)) {
-  //     // If start date is not set or the new date is before the current start date,
-  //     // set new start date and reset end date
-  //     setStartDate(date);
-  //     if (endDate) {
-  //       setEndDate(endDate);
-  //     }
-
-  //     setDateRange([date]);
-  //     setSelectedDates([date]);
-  //   } else if (startDate && date > startDate && date < endDate) {
-  //     // If start date is set and the new date is after the start date,
-  //     // update end date and set date range
-  //     setStartDate(date);
-  //     const range = generateDateRange(date, endDate);
-  //     setDateRange(range);
-  //     setSelectedDates(range);
-  //   } else if (startDate && date > startDate) {
-  //     // If start date is set and the new date is after the start date,
-  //     // update end date and set date range
-  //     setEndDate(date);
-  //     const range = generateDateRange(startDate, date);
-  //     setDateRange(range);
-  //     setSelectedDates(range);
-  //   }
-  // };
 
   const handleStartDate = (date) => {
     if (!endDate) {
@@ -354,6 +347,43 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
 
   const handleSaveMerchandise = async () => {
     const { brand_code } = User.getBrandCode();
+
+    if (!merchandise_name) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Customer",
+      });
+      return;
+    }
+
+    if (!contact_person_name) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Contact Person",
+      });
+      return;
+    }
+
+    if (!contact_person_email) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกอีเมลล์ Contact Person",
+      });
+      return;
+    }
+
+    if (!contact_person_phone) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกเบอร์โทรศัพท์ Contact Person",
+      });
+      return;
+    }
+
     const obj = {
       advertisername: merchandise_name,
       contactname: contact_person_name,
@@ -383,8 +413,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           if (data_img.code !== 404) {
             Swal.fire({
               icon: "success",
-              title: "สร้าง Merchandise สำเร็จ!",
-              text: `สร้าง Merchandise สำเร็จ!`,
+              title: "สร้าง Customer สำเร็จ!",
+              text: `สร้าง Customer สำเร็จ!`,
             }).then((result) => {
               if (
                 result.isConfirmed ||
@@ -404,8 +434,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         } else {
           Swal.fire({
             icon: "success",
-            title: "สร้าง Merchandise สำเร็จ!",
-            text: `สร้าง Merchandise สำเร็จ!`,
+            title: "สร้าง Customer สำเร็จ!",
+            text: `สร้าง Customer สำเร็จ!`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -440,7 +470,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           Swal.fire({
             icon: "error",
             title: "เกิดข้อผิดพลาด!",
-            text: "กรุณาเลือก Merchandise!",
+            text: "กรุณาเลือก Customer!",
           });
         }
         break;
@@ -536,7 +566,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const STEP_OPTIONS = [
     {
       stepIndex: 1,
-      label: "Select Merchandise",
+      label: "Select Customer",
     },
     {
       stepIndex: 2,
@@ -561,71 +591,110 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="text-[50px] font-[700] text-center font-poppins">
                 Booking For
               </div>
-              <div className="text-center text-slate-500 mb-12 font-poppins">
-                Name your booking, select merchandise, and content type to
-                create a New booking. Personalize your campaign for maximum
-                impact.
+              <div className="w-full">
+                <Filter
+                  setFilterScreen={setFilterScreen}
+                  filter_screen={filter_screen}
+                  width={"800"}
+                />
               </div>
-              <div
-                className={` ${
-                  merchandise.length <= 1
-                    ? "grid grid-cols-1 lg:grid-cols-1 "
-                    : "grid grid-cols-2 lg:grid-cols-3"
-                } gap-4 p-4 h-[350px] overflow-y-auto border border-gray-200 rounded-lg`}
-              >
-                <div
-                  onClick={() => setShowCreateMerchandise(true)}
-                  className="h-[400px] p-2 flex flex-col items-center"
-                >
-                  <div className="relative mb-4">
-                    <img
-                      className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-cover border border-[#DFDFDF]"
-                      src={plus_brand}
-                    />
+
+              <div className="grid grid-cols-5 gap-4 mt-3">
+                <div className="col-span-4 flex items-center">
+                  <div className="font-poppins font-semibold text-2xl">
+                    Customers
                   </div>
-                  <button className="w-full">
-                    <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                      Add New Merchandise
-                    </div>
-                    <div className="text-[14px] text-white font-poppins"></div>
+                </div>
+                <div className="col-span-1 flex justify-end">
+                  <button
+                    onClick={() => setShowCreateMerchandise(true)}
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+                  >
+                    New Customer +
                   </button>
                 </div>
-
-                {merchandise.length > 0 &&
-                  merchandise.map((items, key) => (
-                    <div
-                      key={key}
-                      onClick={() => setSelectMerchandise(items)}
-                      className="h-[350px] p-2 flex flex-col items-center"
-                    >
-                      <div className="relative mb-4">
-                        <img
-                          className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer ${
+              </div>
+              <div className="w-auto h-[250px] overflow-auto mt-2">
+                <table className="min-w-full border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                        ID
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                        Customer Name
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                        Customer
+                      </th>
+                      <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                        Contact Name
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {merchandise.map((row, index) => (
+                      <tr
+                        className={`cursor-pointer ${
+                          select_merchandise?.AdvertiserID === row?.AdvertiserID
+                            ? "border-2 border-[#6425FE]"
+                            : "border-gray-200"
+                        }`}
+                        style={{
+                          borderTop:
                             select_merchandise?.AdvertiserID ===
-                            items?.AdvertiserID
-                              ? "border-4 border-[#6425FE] "
-                              : "border border-[#dedede]"
-                          } object-cover `}
-                          src={
-                            items.AdvertiserLogo
-                              ? items.AdvertiserLogo
-                              : `https://ui-avatars.com/api/?name=${
-                                  items.AdvertiserName
-                                }&background=${"000000"}&color=fff`
-                          }
-                          alt={items.AccountName}
-                        />
-                      </div>
-                      <button className="w-full">
-                        <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
-                          {items.AdvertiserName}
-                        </div>
-                        <div className="text-[14px] text-slate-500 font-poppins">
-                          {items.ContactName}
-                        </div>
-                      </button>
-                    </div>
-                  ))}
+                            row?.AdvertiserID
+                              ? "2px solid #6425FE"
+                              : "1px solid gray",
+                          borderBottom:
+                            select_merchandise?.AdvertiserID ===
+                            row?.AdvertiserID
+                              ? "2px solid #6425FE"
+                              : "1px solid gray",
+                        }}
+                        onClick={() => setSelectMerchandise(row)}
+                        key={row.AdvertiserID}
+                      >
+                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="font-poppins text-md flex justify-center">
+                            {row.AdvertiserID}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+                          <div
+                            // onClick={() => handleSelectBooking(row)}
+                            className="font-poppins text-xl  text-[#6425FE]"
+                          >
+                            {row.AdvertiserName}
+                          </div>
+                          <div className="font-poppins text-sm text-gray-500">
+                            {row.AccountCode}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="flex items-center justify-center">
+                            <img
+                              className="w-[60px] h-[60px] rounded-md object-contain border border-gray-300"
+                              src={
+                                row.AdvertiserLogo
+                                  ? row.AdvertiserLogo
+                                  : `https://ui-avatars.com/api/?name=${
+                                      row.AdvertiserName
+                                    }&background=${"000000"}&color=fff`
+                              }
+                              alt={row.AdvertiserName}
+                            />
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <div className="font-poppins text-xl flex justify-center items-center">
+                            {row.ContactName ? row.ContactName : "Not Set"}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
           </>
@@ -637,13 +706,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
             <div className="flex items-center justify-center mt-5">
               <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
                 Booking Period
-              </div>
-            </div>
-            <div className="flex items-center justify-center mt-2 text-center">
-              <div className="text-sm font-poppins text-[#2F3847]">
-                Name your booking, select merchandise, and content type to
-                create a new booking. Personalize your campaign for maximum
-                impact.
               </div>
             </div>
             <div className="flex items-center justify-center mt-5">
@@ -784,13 +846,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Enter Booking Detail
               </div>
             </div>
-            <div className="flex items-center justify-center mt-2 text-center">
-              <div className="text-sm font-poppins text-[#2F3847]">
-                Name your booking, select merchandise, and content type to
-                create a new booking. Personalize your campaign for maximum
-                impact.
-              </div>
-            </div>
             <div className="mt-6 h-[350px] overflow-y-auto">
               <div className="flex flex-row lg:flex-row">
                 <div className="w-full lg:w-1/3 p-4">
@@ -838,6 +893,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       placeholder="Enter Number of Slot"
                     />
                   </div>
+                  <div className="mt-1">
+                    <div className="font-poppins text-xs">
+                      {`** 1 Slot มีความยาว ${config} วินาที หากคลิปที่จะลงมีความยาว ${
+                        config * 2
+                      }
+                      วินาที จะต้องจอง 2 Slot **`}
+                    </div>
+                  </div>
                   <div className="mt-10">
                     <div className="font-poppins font-bold">
                       Booking Period :
@@ -872,13 +935,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
             <div className="flex items-center justify-center mt-5">
               <div className="text-[56px] font-poppins font-bold text-[#2F3847]">
                 Booking is Created
-              </div>
-            </div>
-            <div className="flex items-center justify-center mt-2 text-center">
-              <div className="text-sm font-poppins text-[#2F3847]">
-                Name your booking, select merchandise, and content type to
-                create a new booking. Personalize your campaign for maximum
-                impact.
               </div>
             </div>
             <div className="mt-6 h-[350px] overflow-y-auto">
@@ -917,7 +973,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   </div>
                   <div className="mt-5">
                     <div className="font-poppins font-bold text-2xl">
-                      {booking_slot} Slot Per Day
+                      {booking_slot} Slot
                     </div>
                   </div>
                   <div className="mt-5 flex">
@@ -959,14 +1015,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 className="border-2 border-[#6425FE] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg w-48 h-10 flex items-center justify-center cursor-pointer"
               >
                 <button className="text-white font-poppins">OK</button>
-              </div>
-            </div>
-            <div className="mt-2 flex justify-center items-center">
-              <div className="flex items-center justify-center cursor-pointer">
-                <button className="font-poppins text-xs">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry.
-                </button>
               </div>
             </div>
           </>
@@ -1019,16 +1067,24 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
             <div className="p-4 flex space-x-3">
               <div className="flex items-center justify-center">
                 <div className="font-poppins text-2xl font-bold ">
-                  Create Merchandise
+                  Create Customer
                 </div>
               </div>
             </div>
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-1/2 p-4">
                 <div className="relative">
+                  <label
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      merchandise_name
+                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                        : "top-3 text-gray-300"
+                    }`}
+                  >
+                    Customer Name
+                  </label>
                   <div className="flex items-center">
                     <input
-                      placeholder="Merchandise Name"
                       className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
                       value={merchandise_name}
                       onChange={(e) => setMerchandiseName(e.target.value)}
@@ -1036,56 +1092,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
                   </div>
                 </div>
-                {/* <div className="flex items-center mt-3">
-          <div className="w-1/2 pr-2">
-            <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-              <select
-                name="file_size_type"
-                id="file_size_type"
-                className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                placeholder="Resolution"
-                onChange={(e) => setMerchandiseType(e.target.value)}
-              >
-                <option value="0">Category</option>
-                <option value="1">Department Store</option>
-                <option value="2">Mock 1 </option>
-                <option value="3">Mock 2</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                <svg
-                  width="13"
-                  height="15"
-                  viewBox="0 0 13 21"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                    stroke="#6425FE"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div className="w-1/2 pl-2">
-            <div className="grid grid-cols-4 space-x-2">
-              <div className="col-span-1 flex items-center justify-center">
-                <div className="font-poppins font-bold">Total Slot</div>
-              </div>
-              <div className="col-span-1">
-                <input
-                  onChange={(e) => setMerchandiseSlot(e.target.value)}
-                  value={merchandise_slot}
-                  placeholder="0"
-                  className="border disabled:bg-[#DBDBDB] border-gray-300 rounded-lg p-3 w-full font-bold font-poppins text-center"
-                />
-              </div>
-            </div>
-          </div>
-        </div> */}
+
                 <div className="relative mt-20 flex items-center justify-center">
                   {preview_img ? (
                     <img src={preview_img} className="w-1/2 rounded-xl" />
@@ -1115,7 +1122,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 </div>
                 <div className="mt-4 flex items-center justify-center">
                   <div className="font-poppins">
-                    Upload merchandise logo to enhance brand presence
+                    Upload Customer logo to enhance BU presence333
                   </div>
                 </div>
               </div>
@@ -1124,48 +1131,197 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   Contact Person
                 </div>
                 <div className="flex items-center">
-                  <input
-                    placeholder="Full Name"
-                    value={contact_person_name}
-                    onChange={(e) => setContactPersonName(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
-                  />
-                </div>
-                <div className="flex items-center mt-3">
-                  <div className="w-1/2 pr-2">
+                  <div className="relative w-full">
+                    <label
+                      className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        contact_person_name
+                          ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                          : "top-3 text-gray-300"
+                      }`}
+                    >
+                      Full Name
+                    </label>
                     <input
-                      placeholder="Department"
-                      value={contact_person_dep}
-                      onChange={(e) => setContactPersonDep(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-                    />
-                  </div>
-                  <div className="w-1/2 pl-2">
-                    <input
-                      placeholder="Position"
-                      value={contact_person_pos}
-                      onChange={(e) => setContactPersonPos(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      value={contact_person_name}
+                      onChange={(e) => setContactPersonName(e.target.value)}
+                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
                     />
                   </div>
                 </div>
                 <div className="flex items-center mt-3">
                   <div className="w-1/2 pr-2">
-                    <input
-                      placeholder="Email"
-                      value={contact_person_email}
-                      onChange={(e) => setContactPersonEmail(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
-                    />
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          contact_person_dep
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Department
+                      </label>
+                      <input
+                        value={contact_person_dep}
+                        onChange={(e) => setContactPersonDep(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
                   </div>
                   <div className="w-1/2 pl-2">
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          contact_person_pos
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Position
+                      </label>
+                      <input
+                        value={contact_person_pos}
+                        onChange={(e) => setContactPersonPos(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center mt-3">
+                  <div className="w-1/2 pr-2">
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          contact_person_email
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Email
+                      </label>
+                      <input
+                        value={contact_person_email}
+                        onChange={(e) => setContactPersonEmail(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-1/2 pl-2">
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          contact_person_phone
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Phone
+                      </label>
+                      <input
+                        value={contact_person_phone}
+                        type="number"
+                        onChange={(e) => setContactPersonPhone(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
+                  Company Info for Quotation
+                </div>
+                <div className="flex items-center">
+                  <div className="relative w-full">
+                    <label
+                      className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        company_des
+                          ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                          : "top-3 text-gray-300"
+                      }`}
+                    >
+                      Company Description
+                    </label>
                     <input
-                      placeholder="Phone"
-                      onChange={(e) => setContactPersonPhone(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      onChange={(e) => setCompanyDes(e.target.value)}
+                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
                     />
                   </div>
                 </div>
+                <div className="flex items-center mt-3">
+                  <div className="w-1/2 pr-2">
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          company_name
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Company Name
+                      </label>
+                      <input
+                        value={company_name}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-1/2 pl-2">
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          company_phone
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Company Phone
+                      </label>
+                      <input
+                        value={company_phone}
+                        onChange={(e) => setCompanyPhone(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center mt-3">
+                  <div className="w-1/2 pr-2">
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          company_tax_id
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Tax ID
+                      </label>
+                      <input
+                        value={company_tax_id}
+                        onChange={(e) => setCompanyTaxId(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
+                  </div>
+                  <div className="w-1/2 pl-2">
+                    <div className="relative ">
+                      <label
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          company_tax_address
+                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
+                            : "top-3 text-gray-300"
+                        }`}
+                      >
+                        Tax Address
+                      </label>
+                      <input
+                        value={company_tax_address}
+                        onChange={(e) => setCompanyTaxAddress(e.target.value)}
+                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex items-center mt-3">
                   <div className="font-poppins">
                     Please provide details as they will be used in generating

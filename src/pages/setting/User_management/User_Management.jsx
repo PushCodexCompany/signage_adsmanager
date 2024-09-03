@@ -234,7 +234,8 @@ const User_Management = () => {
                 result.isConfirmed ||
                 result.dismiss === Swal.DismissReason.backdrop
               ) {
-                window.location.reload();
+                fetchUsersList();
+                setModalNewUser(!modalNewUser);
               }
             });
           } else {
@@ -482,7 +483,9 @@ const User_Management = () => {
             {/* Content Container */}
 
             <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">Sign Up</div>
+              <div className="font-poppins text-5xl font-bold">
+                Create New User
+              </div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
@@ -589,7 +592,7 @@ const User_Management = () => {
                 <div className="grid grid-cols-12 space-x-2 mb-4">
                   <div className="col-span-4">
                     <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                      Brand :
+                      BU :
                     </div>
                   </div>
                   <div className="col-span-8">
@@ -599,7 +602,7 @@ const User_Management = () => {
                         name="brand"
                         className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                       >
-                        Select Brand
+                        Select BU
                       </button>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <PiCaretUpDown size={20} color="#6425FE" />
@@ -630,7 +633,7 @@ const User_Management = () => {
                 <div className="grid grid-cols-12 space-x-2 mb-4">
                   <div className="col-span-4">
                     <div className="font-poppins text-[#8A8A8A] text-right mt-2">
-                      Merchandise :
+                      Customer :
                     </div>
                   </div>
                   <div className="col-span-8">
@@ -640,7 +643,7 @@ const User_Management = () => {
                         name="merchandise"
                         className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                       >
-                        Select Merchandise
+                        Select Customer
                       </button>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <PiCaretUpDown size={20} color="#6425FE" />
@@ -698,13 +701,11 @@ const User_Management = () => {
 
             {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">
-                Select Brands
-              </div>
+              <div className="font-poppins text-5xl font-bold">Select BU</div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Brands To Unleash The Power Of Digital Advertising
+                Select BU To Unleash The Power Of Digital Advertising
               </div>
             </div>
 
@@ -794,12 +795,12 @@ const User_Management = () => {
             {/* Content Container */}
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
-                Select Merchandise
+                Select Customer
               </div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Merchandise to unleash the power of digital advertising
+                Select Customer to unleash the power of digital advertising
               </div>
             </div>
 

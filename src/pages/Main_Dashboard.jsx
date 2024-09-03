@@ -70,7 +70,7 @@ const Main_Dashboard = () => {
       <Header title="Home" subtitle="Welcome to Dashboard" />
 
       <div className="text-[50px] font-bold text-center">
-        Select Your Merchandise
+        Select Your Customer
       </div>
       <div className="text-xl text-center text-slate-500 mb-20">
         Press the icon or message to edit it, or press the top right menu to

@@ -46,7 +46,10 @@ const Media_rules = () => {
         </div>
         <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
           {media_rules.length > 0 ? (
-            <GridTable media_rules={media_rules} />
+            <GridTable
+              media_rules={media_rules}
+              getMediaRulesData={getMediaRulesData}
+            />
           ) : (
             <div className="flex justify-center items-center mt-52">
               <div className="font-poppins text-gray-500 text-[52px]">

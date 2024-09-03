@@ -3,7 +3,7 @@ import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import User from "../libs/admin";
 import "../index.css";
 
-const Filter = ({ filter_screen, setFilterScreen }) => {
+const Filter = ({ filter_screen, setFilterScreen, width }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
   const [all_filter_data, SetAllFilterData] = useState([]);
@@ -64,7 +64,9 @@ const Filter = ({ filter_screen, setFilterScreen }) => {
       <div
         className={`flex flex-wrap ${
           all_filter_data.length > 7
-            ? "w-[1500px] overflow-x-auto custom-scrollbar"
+            ? ` ${
+                width ? `w-[${width}px]` : "w-[1500px]"
+              } overflow-x-auto custom-scrollbar`
             : ""
         }`}
       >

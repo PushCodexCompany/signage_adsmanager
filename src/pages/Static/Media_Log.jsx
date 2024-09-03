@@ -65,7 +65,7 @@ const Media_Log = () => {
         [
           "MediaID",
           "Media Name",
-          "Merchandise",
+          "Customer",
           "Screen",
           "Start Time",
           "End Time",

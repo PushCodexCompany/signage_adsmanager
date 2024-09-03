@@ -51,11 +51,11 @@ const Role_permission = () => {
     // Parent Permission
     const default_permission = Permission.convertPermissionValuesToBoolean([
       user,
-    ]).permissions;
+    ])?.permissions;
 
     // Child Permission
     const user_permission = await User.getUserRoles(token);
-    const child_permission = user_permission.map((item) => {
+    const child_permission = user_permission?.map((item) => {
       return {
         ...item,
         permissions: Permission.convertPermissionValuesToBoolean([item])
@@ -66,7 +66,7 @@ const Role_permission = () => {
       };
     });
 
-    const old_role = user_permission.map((permission) => permission.RoleName);
+    const old_role = user_permission?.map((permission) => permission?.RoleName);
     setOldRoleName(old_role);
     setDefaultPermission(default_permission);
     setChildPermission(child_permission);
@@ -210,8 +210,8 @@ const Role_permission = () => {
       if (data.code !== 404) {
         Swal.fire({
           icon: "success",
-          title: "Create User Role Success ...",
-          text: "สร้าง User Role สำเร็จ!",
+          title: "สร้าง User Role สำเร็จ ",
+          text: `สร้าง User Role "${newRole.name}" สำเร็จ!`,
         }).then((result) => {
           if (
             result.isConfirmed ||
@@ -248,8 +248,8 @@ const Role_permission = () => {
     if (data.code !== 404) {
       Swal.fire({
         icon: "success",
-        title: "Edit User Role Success ...",
-        text: "แก้ไข User Role สำเร็จ!",
+        title: "แก้ไข User Role สำเร็จ",
+        text: `แก้ไข User Role "${summary.role}" สำเร็จ`,
       }).then((result) => {
         if (
           result.isConfirmed ||
@@ -269,35 +269,51 @@ const Role_permission = () => {
 
   //Delete
   const handleDeleteRoleName = async (key) => {
-    const { account } = User.getAccount();
-    const obj = {
-      roleid: child_permissions[key].RoleID,
-      accountcode: account.AccountCode,
-    };
+    Swal.fire({
+      text: `คุณต้องการลบ ${child_permissions[key].RoleName} ออกจาก User Role`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { account } = User.getAccount();
+        const obj = {
+          roleid: child_permissions[key].RoleID,
+          accountcode: account.AccountCode,
+        };
 
-    const encrypted = await Encryption.encryption(obj, "delete_role", false);
-    const data = await User.deleteUserRole(encrypted, token);
+        const encrypted = await Encryption.encryption(
+          obj,
+          "delete_role",
+          false
+        );
+        const data = await User.deleteUserRole(encrypted, token);
 
-    if (data.code !== 404) {
-      Swal.fire({
-        icon: "success",
-        title: "Delete User Role Success ...",
-        text: "ลบ User Role สำเร็จ!",
-      }).then((result) => {
-        if (
-          result.isConfirmed ||
-          result.dismiss === Swal.DismissReason.backdrop
-        ) {
-          getPermission();
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "ลบ User Role สำเร็จ",
+            text: `ลบ User Role ${child_permissions[key].RoleName} สำเร็จ`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              getPermission();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "ลบ User Role ไม่สำเร็จ",
+            text: data.message,
+          });
         }
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: data.message,
-      });
-    }
+      }
+    });
   };
 
   const Tabs = ({ roleData, type }) => {
@@ -411,7 +427,8 @@ const Role_permission = () => {
       );
     };
 
-    const OtherBoxGroup = ({ data }) => {
+    const OtherBoxGroup = ({ data = {} }) => {
+      // Provide a default empty object for data
       const [checkboxes, setCheckboxes] = useState(
         Object.keys(data).reduce((acc, item) => {
           acc[item] = data[item]; // Initialize checkboxes based on the provided data
@@ -438,18 +455,16 @@ const Role_permission = () => {
                 <div className="mb-5" key={index}>
                   <div className="grid grid-cols-7 gap-4">
                     <div className="col-span-1 flex items-center justify-center">
-                      <label className="inline-flex items-center ">
+                      <label className="inline-flex items-center">
                         <input
                           type="checkbox"
                           className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                          disabled={
-                            permission.userrole?.update === false ? true : false
-                          }
+                          disabled={permission.userrole?.update === false}
                           checked={checkboxes[item]}
                           onChange={() => toggleCheckbox(item)}
                         />
                         <span
-                          className={`h-5 w-5 border-2 border-[#6425FE] hover:border-[#3b1694]  rounded-sm cursor-pointer flex items-center justify-center ${
+                          className={`h-5 w-5 border-2 border-[#6425FE] hover:border-[#3b1694] rounded-sm cursor-pointer flex items-center justify-center ${
                             checkboxes[item] ? "bg-white" : ""
                           }`}
                         >
@@ -485,7 +500,6 @@ const Role_permission = () => {
                   </div>
                 </div>
               ))}
-
               {/* ------------------ */}
             </div>
           </div>
@@ -600,74 +614,74 @@ const Role_permission = () => {
                     <>
                       {/* 1st */}
                       <div className=" grid grid-cols-6 gap-4 mb-11 mt-5">
-                        {roleData.permissions?.brand && (
+                        {roleData?.permissions?.brand && (
                           // areAllFalse(roleData.permissions?.brand) &&
                           <CheckboxGroup
                             title="brand"
-                            items={Object.keys(roleData.permissions?.brand)}
-                            data={roleData.permissions?.brand}
+                            items={Object.keys(roleData?.permissions?.brand)}
+                            data={roleData?.permissions?.brand}
                           />
                         )}
 
-                        {roleData.permissions?.branch && (
+                        {roleData?.permissions?.branch && (
                           // areAllFalse(roleData.permissions?.branch) &&
                           <CheckboxGroup
                             title="branch"
-                            items={Object.keys(roleData.permissions?.branch)}
-                            data={roleData.permissions?.branch}
+                            items={Object.keys(roleData?.permissions?.branch)}
+                            data={roleData?.permissions?.branch}
                           />
                         )}
 
-                        {roleData.permissions?.screen && (
+                        {roleData?.permissions?.screen && (
                           // areAllFalse(roleData.permissions?.screen) &&
                           <CheckboxGroup
                             title="screen"
-                            items={Object.keys(roleData.permissions?.screen)}
-                            data={roleData.permissions?.screen}
+                            items={Object.keys(roleData?.permissions?.screen)}
+                            data={roleData?.permissions?.screen}
                           />
                         )}
-                        {roleData.permissions?.playlist && (
+                        {roleData?.permissions?.playlist && (
                           // areAllFalse(roleData.permissions?.playlist) &&
                           <CheckboxGroup
                             title="playlist"
-                            items={Object.keys(roleData.permissions?.playlist)}
-                            data={roleData.permissions?.playlist}
+                            items={Object.keys(roleData?.permissions?.playlist)}
+                            data={roleData?.permissions?.playlist}
                           />
                         )}
-                        {roleData.permissions?.media && (
+                        {roleData?.permissions?.media && (
                           // areAllFalse(roleData.permissions?.media) &&
                           <CheckboxGroup
                             title="media"
-                            items={Object.keys(roleData.permissions?.media)}
-                            data={roleData.permissions?.media}
+                            items={Object.keys(roleData?.permissions?.media)}
+                            data={roleData?.permissions?.media}
                           />
                         )}
-                        {roleData.permissions?.user && (
+                        {roleData?.permissions?.user && (
                           // areAllFalse(roleData.permissions?.user) &&
                           <CheckboxGroup
                             title="user"
-                            items={Object.keys(roleData.permissions?.user)}
-                            data={roleData.permissions?.user}
+                            items={Object.keys(roleData?.permissions?.user)}
+                            data={roleData?.permissions?.user}
                           />
                         )}
                       </div>
                       {/* 1st */}
                       {/* 2nd  */}
                       <div className=" grid grid-cols-6 gap-4 mb-2">
-                        {roleData.permissions?.userrole && (
+                        {roleData?.permissions?.userrole && (
                           // areAllFalse(roleData.permissions?.userrole) &&
                           <CheckboxGroup
                             title="userrole"
-                            items={Object.keys(roleData.permissions?.userrole)}
-                            data={roleData.permissions?.userrole}
+                            items={Object.keys(roleData?.permissions?.userrole)}
+                            data={roleData?.permissions?.userrole}
                           />
                         )}
-                        {roleData.permissions?.booking && (
+                        {roleData?.permissions?.booking && (
                           // areAllFalse(roleData.permissions?.booking) &&
                           <CheckboxGroup
                             title="booking"
-                            items={Object.keys(roleData.permissions?.booking)}
-                            data={roleData.permissions?.booking}
+                            items={Object.keys(roleData?.permissions?.booking)}
+                            data={roleData?.permissions?.booking}
                           />
                         )}
                       </div>
@@ -678,7 +692,7 @@ const Role_permission = () => {
               </div>
               <div className={openTab === 2 ? "block" : "hidden"} id="link2">
                 <div className="p-4">
-                  <OtherBoxGroup data={roleData.other_permission} />
+                  <OtherBoxGroup data={roleData?.other_permission} />
                 </div>
               </div>
             </div>
@@ -721,7 +735,11 @@ const Role_permission = () => {
                     <div
                       key={index}
                       className={`grid grid-cols-7 gap-2 mt-5 
-                  ${index === select_role ? "text-[#6425FE]" : ""} 
+                  ${
+                    index === select_role
+                      ? "text-white bg-[#6425FE] h-[55px] border rounded-lg"
+                      : ""
+                  } 
                   cursor-pointer`}
                       onClick={() => tempOldData(index)}
                     >
@@ -757,7 +775,11 @@ const Role_permission = () => {
                             <button onClick={() => handleEditRoleName()}>
                               <RiEditLine
                                 size={20}
-                                className="text-[#6425FE] hover:text-[#3b1694]"
+                                className={`${
+                                  index === select_role
+                                    ? "text-white hover:text-gray-500"
+                                    : "text-[#6425FE] hover:text-[#3b1694]"
+                                }`}
                               />
                             </button>
                           ) : (
@@ -768,7 +790,11 @@ const Role_permission = () => {
                             <button onClick={() => handleDeleteRoleName(index)}>
                               <RiDeleteBin5Line
                                 size={20}
-                                className="text-[#6425FE] hover:text-[#3b1694]"
+                                className={`${
+                                  index === select_role
+                                    ? "text-white hover:text-gray-500"
+                                    : "text-[#6425FE] hover:text-[#3b1694]"
+                                }`}
                               />
                             </button>
                           ) : (

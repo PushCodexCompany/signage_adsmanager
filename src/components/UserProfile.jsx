@@ -231,7 +231,12 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
         />
       )}
 
-      {showUserMng && <User_Management setShowUserMng={setShowUserMng} />}
+      {showUserMng && (
+        <User_Management
+          setShowUserMng={setShowUserMng}
+          showUserMng={showUserMng}
+        />
+      )}
     </>
   );
 };

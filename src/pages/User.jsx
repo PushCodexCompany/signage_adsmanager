@@ -365,6 +365,7 @@ const User = () => {
           {/* Second div (gray background) */}
           <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
             <div className="flex justify-center items-center mt-8">
+              {/* Not Use This Page */}
               <div className="font-poppins text-5xl font-bold">Sign Up</div>
             </div>
             <div className="flex justify-center items-center mt-2">
@@ -415,7 +416,7 @@ const User = () => {
                   name="brand"
                   className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                 >
-                  Select Brand
+                  Select BU
                 </button>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <PiCaretUpDown size={20} color="#6425FE" />
@@ -442,7 +443,7 @@ const User = () => {
                   name="merchandise"
                   className="block appearance-none w-full  text-left  rounded p-1 pr-6 focus:outline-none"
                 >
-                  Select Merchandise
+                  Select Customer
                 </button>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <PiCaretUpDown size={20} color="#6425FE" />
@@ -755,12 +756,12 @@ const User = () => {
           <div className="bg-[#FFFFFF] w-4/5 lg:w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
             <div className="flex justify-center items-center mt-8">
               <div className="font-poppins text-5xl font-bold">
-                Select Merchandise
+                Select Customer
               </div>
             </div>
             <div className="flex justify-center items-center mt-2">
               <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Merchandise to unleash the power of digital advertising
+                Select Customer to unleash the power of digital advertising
               </div>
             </div>
             <div className="mt-2 p-2">
