@@ -49,7 +49,7 @@ const Create_Booking = () => {
   const [checkboxes, setCheckboxes] = useState({});
   const [selectAll, setSelectAll] = useState(false);
 
-  const [deleteModalIndex, setDeleteModalIndex] = useState({});
+  // const [deleteModalIndex, setDeleteModalIndex] = useState({});
 
   const [bookingSelect, setBookingSelect] = useState([]);
 
@@ -403,78 +403,81 @@ const Create_Booking = () => {
     }
   };
 
-  const handleDeleteClick = (index) => {
-    // เปิด modal ของตัว comfirm delete
-    setDeleteModalIndex((prevModal) => {
-      const updatedModal = {
-        ...prevModal,
-        [index]: !prevModal[index],
-      };
+  const handleDeleteClick = (item) => {
+    Swal.fire({
+      text: `คุณต้องการลบจอ ${item.ScreenName} ออกจาก Booking ${bookingName}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const obj = {
+          bookingid: bookingId,
+          screenid: item.ScreenID,
+        };
 
-      return updatedModal;
-    });
-  };
-
-  const handleConfirmDelete = async (index, id) => {
-    // ลบจอที่เลือก
-    const obj = {
-      bookingid: bookingId,
-      screenid: id,
-    };
-
-    try {
-      const data = await User.deleteScreenBooking(obj, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "ลบ Screen สำเร็จ!",
-          text: `ลบ Screen สำเร็จ!`,
-        }).then((result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            setBookingData();
-            setCheckboxes((prevCheckboxes) => {
-              const updatedCheckboxes = {
-                ...prevCheckboxes,
-                [id]: false,
-              };
-              return updatedCheckboxes;
+        try {
+          const data = await User.deleteScreenBooking(obj, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "ลบ Screen สำเร็จ!",
+              text: `ลบ Screen สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                setBookingData();
+                setCheckboxes((prevCheckboxes) => {
+                  const updatedCheckboxes = {
+                    ...prevCheckboxes,
+                    [item.ScreenID]: false,
+                  };
+                  return updatedCheckboxes;
+                });
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
             });
           }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
+        } catch (error) {
+          console.log("error", error);
+        }
       }
-    } catch (error) {
-      console.log("error", error);
-    }
-
-    setDeleteModalIndex((prevModal) => {
-      const updatedModal = {
-        ...prevModal,
-        [index]: !prevModal[index],
-      };
-      return updatedModal;
     });
   };
 
-  const handleCancelDelete = (index) => {
-    // ปิด modal ของตัว comfirm delete
-    setDeleteModalIndex((prevModal) => {
-      const updatedModal = {
-        ...prevModal,
-        [index]: !prevModal[index],
-      };
+  // const handleConfirmDelete = async (index, id) => {
+  //   // ลบจอที่เลือก
 
-      return updatedModal;
-    });
-  };
+  //   setDeleteModalIndex((prevModal) => {
+  //     const updatedModal = {
+  //       ...prevModal,
+  //       [index]: !prevModal[index],
+  //     };
+  //     return updatedModal;
+  //   });
+  // };
+
+  // const handleCancelDelete = (index) => {
+  //   // ปิด modal ของตัว comfirm delete
+  //   setDeleteModalIndex((prevModal) => {
+  //     const updatedModal = {
+  //       ...prevModal,
+  //       [index]: !prevModal[index],
+  //     };
+
+  //     return updatedModal;
+  //   });
+  // };
 
   const handleSelectScreen = (screenIndex, dateIndex, items) => {
     const isDuplicate = bookingSelect.some(
@@ -661,15 +664,66 @@ const Create_Booking = () => {
 
     const handleKeyPress = async (e) => {
       if (e.key === "Enter") {
-        const result = await Swal.fire({
-          title: `คุณต้องการเปลี่ยนชื่อ Booking Name ?`,
+        Swal.fire({
+          text: `คุณต้องการเปลี่ยนชื่อ Booking ${bookingName} เป็น ${value} ?`,
+          icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#d33",
-          confirmButtonText: "ลบข้อมูล",
+          confirmButtonColor: "#3dabeb",
+          confirmButtonText: "ยืนยัน",
           cancelButtonText: "ยกเลิก",
           reverseButtons: true,
-        });
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const obj = {
+              bookingid: bookingId,
+              bookingname: value,
+            };
+            if (bookingName !== value) {
+              try {
+                const data = await User.updateBookingName(obj, token);
 
+                if (data.code !== 404) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "แก้ไขชื่อ Booking name สำเร็จ!",
+                    text: `แก้ไขชื่อ Booking name สำเร็จ!`,
+                  }).then((result) => {
+                    if (
+                      result.isConfirmed ||
+                      result.dismiss === Swal.DismissReason.backdrop
+                    ) {
+                      setEditing(false);
+                      setBookingName(value);
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: data.message,
+                  });
+                }
+              } catch (error) {
+                console.log("error", error);
+              }
+            } else {
+              setEditing(false);
+            }
+          }
+        });
+      }
+    };
+
+    const handleBlur = async () => {
+      Swal.fire({
+        text: `คุณต้องการเปลี่ยนชื่อ Booking ${bookingName} เป็น ${value} ?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3dabeb",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+        reverseButtons: true,
+      }).then(async (result) => {
         if (result.isConfirmed) {
           const obj = {
             bookingid: bookingId,
@@ -690,6 +744,7 @@ const Create_Booking = () => {
                     result.dismiss === Swal.DismissReason.backdrop
                   ) {
                     setEditing(false);
+                    setBookingName(value);
                   }
                 });
               } else {
@@ -706,54 +761,7 @@ const Create_Booking = () => {
             setEditing(false);
           }
         }
-      }
-    };
-
-    const handleBlur = async () => {
-      const result = await Swal.fire({
-        title: `คุณต้องการเปลี่ยนชื่อ Booking Name ?`,
-        showCancelButton: true,
-        confirmButtonText: "ยืนยัน",
-        cancelButtonText: "ยกเลิก",
       });
-
-      if (result.isConfirmed) {
-        const obj = {
-          bookingid: bookingId,
-          bookingname: value,
-        };
-
-        if (bookingName !== value) {
-          try {
-            const data = await User.updateBookingName(obj, token);
-
-            if (data.code !== 404) {
-              Swal.fire({
-                icon: "success",
-                title: "แก้ไขชื่อ Booking name สำเร็จ!",
-                text: `แก้ไขชื่อ Booking name สำเร็จ!`,
-              }).then((result) => {
-                if (
-                  result.isConfirmed ||
-                  result.dismiss === Swal.DismissReason.backdrop
-                ) {
-                  setEditing(false);
-                }
-              });
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "เกิดข้อผิดพลาด!",
-                text: data.message,
-              });
-            }
-          } catch (error) {
-            console.log("error", error);
-          }
-        } else {
-          setEditing(false);
-        }
-      }
     };
 
     return (
@@ -819,7 +827,7 @@ const Create_Booking = () => {
                       onClick={() => handleSaveScreen()}
                       className="w-52 h-10 rounded-md text-white lg:text-base md:text-[12px] bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
                     >
-                      Save Booking
+                      Save Draft
                     </button>
                     <button
                       onClick={() => handleConfirmbooking()}
@@ -936,12 +944,12 @@ const Create_Booking = () => {
                                     <IoMdTrash
                                       onClick={(e) => {
                                         e.stopPropagation();
-                                        handleDeleteClick(index);
+                                        handleDeleteClick(items);
                                       }}
                                       size={22}
                                       className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
                                     />
-                                    {deleteModalIndex[index] && (
+                                    {/* {deleteModalIndex[index] && (
                                       <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
                                         <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
                                           <p className="font-poppins text-xs text-white">
@@ -972,7 +980,7 @@ const Create_Booking = () => {
                                           </div>
                                         </div>
                                       </div>
-                                    )}
+                                    )} */}
                                   </>
                                 ) : (
                                   <></>

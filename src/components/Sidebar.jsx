@@ -48,11 +48,11 @@ export const links = [
             link: "booking",
             icon: <SlScreenDesktop size={27} />,
           },
-          {
-            name: "Static Booking Screen",
-            link: "static_booking",
-            icon: <MdOutlineMarkunreadMailbox size={27} />,
-          },
+          // {
+          //   name: "Static Booking Screen",
+          //   link: "static_booking",
+          //   icon: <MdOutlineMarkunreadMailbox size={27} />,
+          // },
         ],
       },
       {
@@ -66,11 +66,11 @@ export const links = [
             link: "screen",
             icon: <SlScreenDesktop size={27} />,
           },
-          {
-            name: "Static Screen",
-            link: "static_screen",
-            icon: <MdOutlineMarkunreadMailbox size={27} />,
-          },
+          // {
+          //   name: "Static Screen",
+          //   link: "static_screen",
+          //   icon: <MdOutlineMarkunreadMailbox size={27} />,
+          // },
         ],
       },
       {

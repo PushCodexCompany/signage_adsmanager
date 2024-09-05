@@ -368,7 +368,7 @@ export const GridTable = ({
   return (
     <>
       <div>
-        <div className="w-auto h-[550px] overflow-auto">
+        <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr>

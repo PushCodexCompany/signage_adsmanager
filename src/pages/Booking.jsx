@@ -53,14 +53,14 @@ const Booking = () => {
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Booking"} />
-        <div className="grid grid-cols-5 gap-4 mt-10">
-          <div className="col-span-4">
+        <div className="grid grid-cols-10 mt-10">
+          <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl">
               My booking
             </div>
           </div>
           {page_permission?.create ? (
-            <div className="col-span-1 flex justify-end">
+            <div className="col-span-4 flex justify-end">
               <button
                 onClick={() => setShowModalAddNewBooking(true)}
                 className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"

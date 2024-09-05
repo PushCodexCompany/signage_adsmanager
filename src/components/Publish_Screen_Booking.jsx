@@ -99,7 +99,7 @@ const Publish_Screen_Booking = ({
         text: `ยืนยันการ Publish ?`,
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#8CD4F5",
+        confirmButtonColor: "#219ad1",
         confirmButtonText: "ตกลง",
         cancelButtonText: "ยกเลิก",
         reverseButtons: true,

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { IoIosClose } from "react-icons/io";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
@@ -7,27 +6,9 @@ import User from "../libs/admin";
 const Create_Tag_Category = ({
   setModalCreateNewCategory,
   modalCreateNewCategory,
-  select_cat,
   getCategoryTag,
 }) => {
-  useEffect(() => {
-    if (select_cat !== "new") {
-      setEditData();
-      setIsNew(false);
-    }
-  }, [select_cat]);
-
-  const navigate = useNavigate();
-  const [isNew, setIsNew] = useState(true);
   const [new_categoy_name, setNewCategoryName] = useState({});
-
-  const setEditData = () => {
-    setNewCategoryName({
-      name: select_cat.TagCategoryName,
-      id: select_cat.TagCategoryID,
-      description: select_cat.TagDesc,
-    });
-  };
 
   const handleNewCategoryTag = (e, fieldName) => {
     setNewCategoryName({
@@ -36,74 +17,39 @@ const Create_Tag_Category = ({
     });
   };
 
-  const handleCreateOrUpdateTagCategory = async () => {
+  const handleCreateNewTag = async () => {
     if (new_categoy_name.name) {
       const { token } = User.getCookieData();
       // Create
-      if (isNew) {
-        const obj = {
-          tagcategoryname: new_categoy_name.name,
-          tagcategorydesc: new_categoy_name.description || null,
-        };
-        try {
-          const data = await User.createTagCategory(obj, token);
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "Create Tag Category Success ...",
-              text: "สร้าง Tag Category สำเร็จ!",
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                getCategoryTag();
-                setModalCreateNewCategory(!modalCreateNewCategory);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
-          }
-        } catch (error) {
-          console.error("Error:", error);
+      const obj = {
+        tagcategoryname: new_categoy_name.name,
+        tagcategorydesc: new_categoy_name.description || null,
+      };
+      try {
+        const data = await User.createTagCategory(obj, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "Create Tag Category Success ...",
+            text: "สร้าง Tag Category สำเร็จ!",
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              getCategoryTag();
+              setModalCreateNewCategory(!modalCreateNewCategory);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
         }
-      } else {
-        // Update
-        const obj = {
-          tagcategoryid: new_categoy_name.id,
-          tagcategoryname: new_categoy_name.name,
-          tagcategorydesc: new_categoy_name.description || null,
-        };
-        try {
-          const data = await User.updateTagCategory(obj, token);
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "Edit Tag Category Success ...",
-              text: `แก้ไข Tag Category สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                getCategoryTag();
-                setModalCreateNewCategory(!modalCreateNewCategory);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
-          }
-        } catch (error) {
-          console.error("Error:", error);
-        }
+      } catch (error) {
+        console.error("Error:", error);
       }
     } else {
       Swal.fire({
@@ -131,9 +77,7 @@ const Create_Tag_Category = ({
 
         {/* Content  */}
         <div className="flex justify-center items-center mt-8">
-          <div className="font-poppins text-5xl font-bold">
-            {isNew ? "New Tag" : "Edit Tag"}
-          </div>
+          <div className="font-poppins text-5xl font-bold">New Tag</div>
         </div>
         <div className="flex justify-center items-center mt-10">
           <div className="grid grid-cols-6 gap-2">
@@ -167,10 +111,10 @@ const Create_Tag_Category = ({
         </div>
         <div className="flex justify-center items-center mt-10">
           <button
-            onClick={() => handleCreateOrUpdateTagCategory()}
+            onClick={() => handleCreateNewTag()}
             className="bg-[#6425FE] hover:bg-[#3b1694] w-[20%] h-[40px] text-white font-poppins flex justify-center items-center rounded-lg"
           >
-            {isNew ? "Create" : "Save"}
+            Create
           </button>
         </div>
       </div>

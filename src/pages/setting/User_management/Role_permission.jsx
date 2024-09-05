@@ -1,43 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
-import { IoIosClose } from "react-icons/io";
 import useCheckPermission from "../../../libs/useCheckPermission";
 import Encryption from "../../../libs/encryption";
 import User from "../../../libs/admin";
 import Permission from "../../../libs/permission";
 import Swal from "sweetalert2";
+import Create_Role_Permission from "../../../components/Create_Role_Permission";
+import Edit_Role_permission from "../../../components/Edit_Role_permission";
 
 const Role_permission = () => {
   useCheckPermission();
-  const [default_permissions, setDefaultPermission] = useState([]);
   const [child_permissions, setChildPermission] = useState([]);
   const [select_role, setSelectRole] = useState(0);
-  const [editRoleName, setEditRoleName] = useState(true);
-  const [newRoleName, setNewRoleName] = useState("");
-  const [oldRoleName, setOldRoleName] = useState("");
-  const [selectOldRole, setSelectOldRole] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [newRole, setNewRole] = useState({
-    name: null,
-    description: null,
-    permissions: {
-      brand: { view: false, create: false, update: false, delete: false },
-      branch: { view: false, create: false, update: false, delete: false },
-      screen: { view: false, create: false, update: false, delete: false },
-      playlist: { view: false, create: false, update: false, delete: false },
-      media: { view: false, create: false, update: false, delete: false },
-      user: { view: false, create: false, update: false, delete: false },
-      role: { view: false, create: false, update: false, delete: false },
-      userrole: { view: false, create: false, update: false, delete: false },
-      booking: { view: false, create: false, update: false, delete: false },
-    },
-    other_permission: {
-      assign_booking: 0,
-      assign_screen: 0,
-      publish: 0,
-    },
-  });
+  const [modalCreateRole, setModalCreateRole] = useState(false);
+  const [modalEditRole, setModalEditRole] = useState(false);
+
+  const [selectRoleEdit, setSelectRoleEdit] = useState([]);
 
   const { token } = User.getCookieData();
   const { permission } = User.getPermission();
@@ -47,28 +26,30 @@ const Role_permission = () => {
   }, []);
 
   const getPermission = async () => {
-    const { user } = User.getCookieData();
-    // Parent Permission
-    const default_permission = Permission.convertPermissionValuesToBoolean([
-      user,
-    ])?.permissions;
-
-    // Child Permission
     const user_permission = await User.getUserRoles(token);
     const child_permission = user_permission?.map((item) => {
+      const convertedPermissions =
+        Permission.convertPermissionValuesToBooleanForPermissionPage(item);
+
       return {
         ...item,
-        permissions: Permission.convertPermissionValuesToBoolean([item])
-          .permissions,
+        permissions: convertedPermissions.permissions,
         other_permission: item.other_permission
-          ? Permission.convertPermissionValuesToBoolean([item]).other_permission
+          ? convertedPermissions.other_permission
           : [],
       };
     });
 
-    const old_role = user_permission?.map((permission) => permission?.RoleName);
-    setOldRoleName(old_role);
-    setDefaultPermission(default_permission);
+    // const child_permission = user_permission?.map((item) => {
+    //   return {
+    //     ...item,
+    //     permissions: Permission.convertPermissionValuesToBoolean([item])
+    //       .permissions,
+    //     other_permission: item.other_permission
+    //       ? Permission.convertPermissionValuesToBoolean([item]).other_permission
+    //       : [],
+    //   };
+    // });
     setChildPermission(child_permission);
   };
 
@@ -76,195 +57,17 @@ const Role_permission = () => {
     setSelectRole(key);
   };
 
-  const actionToBitIndex = (action) => {
-    switch (action) {
-      case "view":
-        return 1; // 2^1
-      case "create":
-        return 2; // 2^2
-      case "update":
-        return 3; // 2^3
-      case "delete":
-        return 4; // 2^4
-      default:
-        throw new Error(`Invalid action: ${action}`);
-    }
-  };
-
-  const convertBooleanToPermissionSummary = (data) => {
-    const summary = {};
-
-    for (const resource in data.permissions) {
-      let resourceValue = 0;
-      for (const action in data.permissions[resource]) {
-        resourceValue += data.permissions[resource][action]
-          ? 2 ** actionToBitIndex(action)
-          : 0;
-      }
-      summary[resource] = resourceValue;
-    }
-
-    const otherPermissionSummary = {};
-    for (const permissions in data.other_permission) {
-      otherPermissionSummary[permissions] = data.other_permission[permissions]
-        ? 1
-        : 0;
-    }
-
-    return {
-      ...data,
-      permissions: summary,
-      other_permission: otherPermissionSummary,
-    };
-  };
-
-  const handleRoleChange = (e, fieldName) => {
-    setNewRole({
-      ...newRole,
-      [fieldName]: e.target.value,
-    });
-  };
-
   const createNewRole = () => {
-    setShowModal(!showModal);
+    setModalCreateRole(!modalCreateRole);
   };
 
-  const closeModal = () => {
-    setShowModal(!showModal);
+  const handleEditRoleName = (items) => {
+    setSelectRoleEdit(items);
+    setModalEditRole(!modalEditRole);
   };
 
-  const removeZeroPermissions = (data) => {
-    const updatedPermissions = {};
-    for (const key in data.permissions) {
-      if (data.permissions[key] !== 0) {
-        updatedPermissions[key] = data.permissions[key];
-      }
-    }
-
-    // Create a new object with updated permissions
-    const updatedData = {
-      ...data,
-      permissions: updatedPermissions,
-    };
-
-    return updatedData;
-  };
-
-  const handleEditRoleName = () => {
-    setEditRoleName(!editRoleName);
-  };
-
-  const handleOutFocusRoleName = (newName, key) => {
-    setEditRoleName(false);
-    if (newName) {
-      setNewRoleName("");
-      // Update the role value in the state
-      const updatedPermissions = [...child_permissions];
-      updatedPermissions[key].role = newName;
-      setChildPermission(updatedPermissions);
-    }
-  };
-
-  const handleSetNewRoleName = (value) => {
-    setNewRoleName(value);
-  };
-
-  const tempOldData = (key) => {
-    const oldRole = oldRoleName[key];
-    setSelectOldRole(oldRole);
+  const selectRolePermission = (key) => {
     selectRole(key);
-  };
-
-  //Create
-  const handleSaveNewRole = async () => {
-    const summary = convertBooleanToPermissionSummary(newRole);
-
-    const isAnyValueGreaterThanZero = Object.values(summary.permissions).some(
-      (value) => value > 0
-    );
-    let obj;
-
-    const { account } = User.getAccount();
-    if (isAnyValueGreaterThanZero) {
-      obj = {
-        rolename: newRole.name,
-        permissions: summary.permissions,
-        accountcode: account.AccountCode,
-      };
-    } else {
-      obj = {
-        rolename: newRole.name,
-        permissions: "",
-        accountcode: account.AccountCode,
-      };
-    }
-
-    const value = removeZeroPermissions(obj);
-    const encrypted = await Encryption.encryption(
-      value,
-      "add_permission_role",
-      false
-    );
-    try {
-      const data = await User.createUserRole(encrypted, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "สร้าง User Role สำเร็จ ",
-          text: `สร้าง User Role "${newRole.name}" สำเร็จ!`,
-        }).then((result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            getPermission();
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  //Update
-  const handleSave = async (role) => {
-    const summary = convertBooleanToPermissionSummary(role);
-    const { account } = User.getAccount();
-    const obj = {
-      roleid: summary.RoleID,
-      rolename: summary.role ? summary.role : summary.RoleName,
-      permissions: summary.permissions,
-      accountcode: account.AccountCode,
-    };
-    const encrypted = await Encryption.encryption(obj, "edit_role", false);
-    const data = await User.updateUserRole(encrypted, token);
-
-    if (data.code !== 404) {
-      Swal.fire({
-        icon: "success",
-        title: "แก้ไข User Role สำเร็จ",
-        text: `แก้ไข User Role "${summary.role}" สำเร็จ`,
-      }).then((result) => {
-        if (
-          result.isConfirmed ||
-          result.dismiss === Swal.DismissReason.backdrop
-        ) {
-          getPermission();
-        }
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: data.message,
-      });
-    }
   };
 
   //Delete
@@ -386,9 +189,7 @@ const Role_permission = () => {
                         className="opacity-0 absolute h-5 w-5 cursor-pointer"
                         checked={checkboxes[item]}
                         onChange={() => toggleCheckbox(item)}
-                        disabled={
-                          permission.userrole?.update === false ? true : false
-                        }
+                        disabled={true}
                       />
                       <span
                         className={`h-5 w-5 border-2 border-[#6425FE] hover:border-[#3b1694] rounded-sm cursor-pointer flex items-center justify-center ${
@@ -741,28 +542,11 @@ const Role_permission = () => {
                       : ""
                   } 
                   cursor-pointer`}
-                      onClick={() => tempOldData(index)}
+                      onClick={() => selectRolePermission(index)}
                     >
                       <div className="col-span-5 ml-2">
                         <div className={`font-poppins text-2xl`}>
-                          {!editRoleName ? (
-                            <input
-                              type="text"
-                              defaultValue={items.RoleName}
-                              disabled={editRoleName}
-                              onChange={(e) =>
-                                handleSetNewRoleName(e.target.value)
-                              }
-                              onBlur={() =>
-                                handleOutFocusRoleName(newRoleName, index)
-                              }
-                              className={`${
-                                !editRoleName ? "bg-[#e8e8e8]" : ""
-                              } cursor-pointer`}
-                            />
-                          ) : (
-                            <div>{items.RoleName}</div>
-                          )}
+                          <div>{items.RoleName}</div>
                         </div>
                         <div className="text-xs">
                           {`${items.RoleName} Description`}
@@ -772,7 +556,7 @@ const Role_permission = () => {
                       <div className="col-span-2">
                         <div className="flex justify-center items-center mt-3 space-x-4">
                           {permission.userrole?.update ? (
-                            <button onClick={() => handleEditRoleName()}>
+                            <button onClick={() => handleEditRoleName(items)}>
                               <RiEditLine
                                 size={20}
                                 className={`${
@@ -814,98 +598,40 @@ const Role_permission = () => {
             {child_permissions.length > 0 && (
               <Tabs roleData={child_permissions[select_role]} />
             )}
-            {permission.userrole?.update ? (
-              <div className="p-4">
-                <button
-                  className="w-40 h-11 bg-[#6425FE]  hover:bg-[#3b1694] rounded-md text-white font-poppins"
-                  onClick={() => handleSave(child_permissions[select_role])}
-                >
-                  Save
-                </button>
-              </div>
-            ) : (
-              <></>
-            )}
           </div>
           {/* Right Panel */}
         </div>
       </div>
 
-      {showModal && (
+      {modalCreateRole && (
         <a
-          onClick={() => setShowModal(!showModal)}
+          onClick={() => setModalCreateRole(!modalCreateRole)}
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
 
-      {showModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
-          {/* Main centered content container */}
-          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
-            {/* Close button - adjust positioning */}
-            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
-              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
-                <button onClick={() => closeModal()}>
-                  <IoIosClose size={25} color={"#6425FE"} />
-                </button>
-              </div>
-            </div>
-            <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">New Role</div>
-            </div>
-            <div className="flex justify-center items-center mt-10">
-              <div className="grid grid-cols-6 gap-2">
-                <div className="col-span-3 flex items-center justify-start">
-                  <div className="font-poppins">Role Name:</div>
-                </div>
-                <div className="col-span-3 ">
-                  <input
-                    type="text"
-                    value={newRole.name}
-                    onChange={(e) => handleRoleChange(e, "name")}
-                    className="w-full p-2  border rounded"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-center items-center mt-6">
-              <div className="grid grid-cols-6 gap-2">
-                <div className="col-span-3 flex items-center justify-start">
-                  <div className="font-poppins">Role Description:</div>
-                </div>
-                <div className="col-span-3 ">
-                  <input
-                    type="text"
-                    value={newRole.description}
-                    onChange={(e) => handleRoleChange(e, "description")}
-                    className="w-full p-2  border rounded"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="p-10 mt-2 ">
-              <div className="bg-[#FAFAFA]">
-                <Tabs
-                  page_permission={{ update: true }}
-                  roleData={newRole}
-                  type={0}
-                />
-              </div>
-            </div>
-            {permission.userrole?.update ? (
-              <div className="flex justify-center items-center -mt-3">
-                <button
-                  onClick={() => handleSaveNewRole()}
-                  className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg"
-                >
-                  Save
-                </button>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
+      {modalCreateRole && (
+        <Create_Role_Permission
+          setModalCreateRole={setModalCreateRole}
+          modalCreateRole={modalCreateRole}
+          getPermission={getPermission}
+        />
+      )}
+
+      {modalEditRole && (
+        <a
+          onClick={() => setModalEditRole(!modalEditRole)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {modalEditRole && (
+        <Edit_Role_permission
+          setModalEditRole={setModalEditRole}
+          modalEditRole={modalEditRole}
+          getPermission={getPermission}
+          selectRoleEdit={selectRoleEdit}
+        />
       )}
     </>
   );

@@ -129,16 +129,15 @@ const Confirm_Booking = ({
             </div>
             <div className="flex justify-center items-center text-center ">
               <div className="font-poppins text-4xl font-bold">
-                Do you want to Confirm Booking <br /> {bookingName} ?
+                ยืนยัน Confirm Booking?
               </div>
             </div>
             <div className="flex justify-center items-center text-center mt-3">
               <div className="font-poppins text-lg ">
-                Once confirmed, the content management section will be unlocked.{" "}
-                <br /> <b>Important:</b> After this step, editing the booking
-                time won't be possible; only cancellation is allowed. Kindly
-                ensure the correct booking time <br /> then click ‘OK’ to
-                proceed.
+                ยืนยัน Confirm Booking : {bookingName}
+                <br /> <b>Important:</b> เมื่อ Confirm Booking แล้ว
+                จะไม่สามารถแก้ไข Slot ของ Media ได้อีก <br /> กดปุ่ม ‘ยืนยัน’
+                เพื่อดำเนินการต่อไป.
               </div>
             </div>
             <div className="flex justify-center items-center text-center mt-5">
@@ -146,7 +145,7 @@ const Confirm_Booking = ({
                 onClick={() => handleConfirmBookingScreen()}
                 className="bg-[#6425FE] hover:bg-[#3b1694] w-[300px] h-[48px] rounded-lg text-white font-poppins font-bold"
               >
-                OK
+                ยืนยัน
               </button>
             </div>
             <div className="flex justify-center items-center text-center mt-3">
@@ -156,7 +155,7 @@ const Confirm_Booking = ({
                 }
                 className="border-2 border-[#6425FE]  w-[300px] h-[48px] rounded-lg text-[#6425FE] font-poppins font-bold"
               >
-                Cancel
+                ยกเลิก
               </button>
             </div>
           </div>

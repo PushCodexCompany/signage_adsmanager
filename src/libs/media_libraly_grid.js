@@ -175,7 +175,7 @@ export const GridTable = ({
   const renderTableData = () => {
     return (
       <>
-        {data.map((row, index) => (
+        {data?.map((row, index) => (
           <tr key={row.ContentID}>
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="font-poppins text-md font-bold">
@@ -282,7 +282,7 @@ export const GridTable = ({
       }
     }
 
-    return displayPages.map((number, index) => (
+    return displayPages?.map((number, index) => (
       <button
         key={index}
         className={`px-3 py-1 mx-1 ${
@@ -301,7 +301,7 @@ export const GridTable = ({
   return (
     <>
       <div>
-        <div className="w-auto h-[550px] overflow-auto">
+        <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr>

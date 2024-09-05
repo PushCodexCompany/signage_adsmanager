@@ -117,7 +117,7 @@ const Activity_Log = () => {
 
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Log Management"} lv2={"activities_log"} />
-        <div className="grid grid-cols-10 mt-5">
+        <div className="grid grid-cols-10 mt-10">
           <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl ">
               Activities log

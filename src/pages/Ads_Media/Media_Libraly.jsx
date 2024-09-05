@@ -61,10 +61,6 @@ const Media_Libraly = () => {
     }
   };
 
-  const createNewMedia = () => {
-    setShowModal(!showModal);
-  };
-
   const uploadFile = (uploadKey) => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -119,22 +115,13 @@ const Media_Libraly = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"media_libraly"} />
 
-        <div className="grid grid-cols-10 mt-5">
+        <div className="grid grid-cols-10 mt-10">
           <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl ">
               Media Libraly
             </div>
           </div>
-          <div className="col-span-4">
-            {/* <div className="flex justify-end space-x-1">
-              <button
-                onClick={() => createNewMedia()}
-                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white  font-poppins w-full lg:w-[300px] h-[45px] rounded-md"
-              >
-                New Media
-              </button>
-            </div> */}
-          </div>
+          <div className="col-span-4"></div>
         </div>
         <Filter
           setFilterScreen={setFilterScreen}
@@ -157,125 +144,6 @@ const Media_Libraly = () => {
           </div>
         )}
       </div>
-
-      {showModal && (
-        <a
-          onClick={() => setShowModal(!showModal)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
-      )}
-
-      {showModal && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20">
-          {/* First div (circle) */}
-          <div className="absolute right-12 top-14 lg:top-12 lg:right-[350px] m-4 z-30">
-            <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => closeModal()}>
-                <IoIosClose size={25} color={"#6425FE"} />
-              </button>
-            </div>
-          </div>
-          {/* Second div (gray background) */}
-          <div className="bg-[#FFFFFF] w-4/5 lg:w-3/5 h-5/6 rounded-md max-h-screen overflow-y-auto relative">
-            <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">New Media</div>
-            </div>
-            <div className="flex justify-center items-center mt-2">
-              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Your ad will be displayed on 3 screens with 3 different screen
-                media rule sets
-              </div>
-            </div>
-            <div className="grid grid-cols-3 space-x-2 mt-2 p-5">
-              {Array.from({ length: 3 }, (_, index) => {
-                const uploadKey = `upload${index + 1}`;
-                return (
-                  <div
-                    key={uploadKey}
-                    className="col-span-1 border-dashed border-gray-300 border-1"
-                  >
-                    <div className="p-4">
-                      <div className="font-poppins font-bold text-xl">
-                        Screen 1
-                      </div>
-                      <div className="font-poppins text-sm text-[#8A8A8A]">
-                        Central Chidlom F3
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="bg-[#00CB45] border-3 border-black rounded-full w-2 h-2 flex justify-center items-center" />
-                        <div className="font-poppins text-xs">Online</div>
-                      </div>
-                      <div className="flex items-center justify-center mt-2">
-                        <div className="font-poppins text-3xl font-bold">
-                          Rule Set 1
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-center mt-7">
-                        {!uploads[uploadKey].content ? (
-                          <div>
-                            <button onClick={() => uploadFile(uploadKey)}>
-                              <AiOutlineCloudUpload
-                                size={100}
-                                color={"#D9D9D9"}
-                              />
-                            </button>
-                            {uploads[uploadKey].content && (
-                              <div>
-                                <p>File Uploaded:</p>
-                                <img
-                                  src={uploads[uploadKey]}
-                                  alt="Uploaded File"
-                                />
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <BsCheckCircle size={100} color={"#00CB45"} />
-                        )}
-                      </div>
-                      <div className="flex items-center justify-center mt-14">
-                        <div className="font-poppins text-xl font-bold">
-                          {uploads[uploadKey].name}
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-center mt-5">
-                        <div className="font-poppins text-xl font-bold">
-                          Requirements *
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-center ">
-                        <div className="font-poppins text-xl font-bold">
-                          Resolution : 1920 x 1080
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-center mb-16">
-                        <div className="font-poppins text-xl font-bold">
-                          {`Size : <100Mb`}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flex justify-center items-center mt-1">
-              <button
-                onClick={() => console.log(uploads)}
-                className="bg-[#6425FE] w-72 h-10 text-white font-poppins"
-              >
-                Submit
-              </button>
-            </div>
-            <div className="flex justify-center items-center mt-3 mb-3">
-              <div className="text-sm font-poppins">
-                Ensure compliance with predefined media rules for each screen.
-                Your ads must adhere to specific guidelines for seamless display
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

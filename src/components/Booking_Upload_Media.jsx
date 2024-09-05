@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineCloudUpload, AiOutlineCloseCircle } from "react-icons/ai";
-import { IoIosClose } from "react-icons/io";
-import { BsCheckCircle } from "react-icons/bs";
+import { IoIosClose, IoIosAddCircle } from "react-icons/io";
+import { BsCheckCircle, BsUpload, BsTrash } from "react-icons/bs";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
 import { values } from "lodash";
@@ -21,9 +21,10 @@ const Booking_Upload_Media = ({
   media_allocation_upload_index,
 }) => {
   const { token } = User.getCookieData();
-  const [uploads, setUploads] = useState({});
+  const [uploads, setUploads] = useState([]);
   const [forms, setFormData] = useState({});
   const [disableButton, setDisableButton] = useState(false);
+  const [uploads_file, setUploadFile] = useState([]);
 
   const [file_type, setFileTyle] = useState("");
 
@@ -39,30 +40,32 @@ const Booking_Upload_Media = ({
     setFileTyle(extensions);
   }, []);
 
-  const uploadFile = () => {
+  useEffect(() => {
+    setNewMediaPlayList();
+  }, [uploads_file]);
+
+  const uploadFile = (id) => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = file_type;
+
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
-
       if (file) {
         const reader = new FileReader();
+
         reader.onload = (e) => {
           let fileType;
           let fileProperties = {};
+
           if (file.type.includes("video")) {
             fileType = file.type;
             const video = document.createElement("video");
             video.addEventListener("loadedmetadata", () => {
-              // Accessing video properties after it's loaded
-
               const duration = video.duration || 0;
               const width = video.videoWidth;
               const height = video.videoHeight;
-
-              // for convert filesize
-              const fileSize = file.size / (1024 * 1024);
+              const fileSize = file.size / (1024 * 1024); // Convert to MB
 
               fileProperties = {
                 duration: duration.toString(),
@@ -82,9 +85,18 @@ const Booking_Upload_Media = ({
                   "contentproperties",
                   JSON.stringify(fileProperties)
                 );
-
-                setUploads(file);
-                setFormData(form);
+                setUploads((prevUploads) =>
+                  prevUploads.map((upload) =>
+                    upload.id === id
+                      ? {
+                          ...upload,
+                          name: file.name,
+                          size: file.size,
+                          formData: form,
+                        }
+                      : upload
+                  )
+                );
               } else {
                 Swal.fire({
                   icon: "error",
@@ -101,19 +113,16 @@ const Booking_Upload_Media = ({
             }
             const img = new Image();
             img.onload = () => {
-              // Accessing image properties after it's loaded
-              const width = img.width; // Width of the image in pixels
-              const height = img.height; // Height of the image in pixels
+              const width = img.width;
+              const height = img.height;
+              const fileSize = file.size / (1024 * 1024); // Convert to MB
 
-              // for convert filesize
-              const fileSize = file.size / (1024 * 1024);
-
-              // Store the file information along with width and height
               fileProperties = {
                 width: width.toString(),
                 height: height.toString(),
                 size: fileSize.toString(),
               };
+
               if (
                 media_rules_select.width === width &&
                 media_rules_select.height === height
@@ -126,8 +135,18 @@ const Booking_Upload_Media = ({
                   JSON.stringify(fileProperties)
                 );
 
-                setUploads(file);
-                setFormData(form);
+                setUploads((prevUploads) =>
+                  prevUploads.map((upload) =>
+                    upload.id === id
+                      ? {
+                          ...upload,
+                          name: file.name,
+                          size: file.size,
+                          formData: form,
+                        }
+                      : upload
+                  )
+                );
               } else {
                 Swal.fire({
                   icon: "error",
@@ -146,127 +165,144 @@ const Booking_Upload_Media = ({
   };
 
   const handleUploadMediaByBooking = async () => {
-    // if (uploads.name) {
-    //   setDisableButton(!disableButton);
-    //   try {
-    //     // Function to update progress
-    //     const onUploadProgress = (progressEvent) => {
-    //       const { loaded, total } = progressEvent;
-    //       const percentCompleted = Math.floor((loaded * 100) / total);
-    //       console.log(`Upload progress: ${percentCompleted}%`);
-    //       setUploadProgress(percentCompleted); // Update state with the current progress
-    //     };
-
-    //     const data = await User.createContent(
-    //       bookingId,
-    //       advertiserId,
-    //       forms,
-    //       token,
-    //       onUploadProgress // Pass the progress function to the API call
-    //     );
-
-    //     if (data.code !== 404) {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: "เพิ่ม media สำเร็จ!",
-    //         text: `เพิ่ม media สำเร็จ!`,
-    //       }).then((result) => {
-    //         if (
-    //           result.isConfirmed ||
-    //           result.dismiss === Swal.DismissReason.backdrop
-    //         ) {
-    //           setNewMediaPlayList(data.contentids);
-    //           updateMediaPlaylist();
-    //           setOpenModalUploadMedia(!openModalUploadNewMedia);
-    //           setDisableButton(!disableButton);
-    //         }
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         icon: "error",
-    //         title: "เกิดข้อผิดพลาด!",
-    //         text: data.message,
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.log("error", error);
-    //   }
-    // } else {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "เกิดข้อผิดพลาด!",
-    //     text: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
-    //   });
-    // }
-
-    if (uploads.name) {
-      setDisableButton(!disableButton);
+    if (uploads.length > 0) {
+      setDisableButton(true);
 
       const { brand_code } = User.getBrandCode();
+      const filteredItems = uploads.filter((item) => item.name !== null);
 
-      const xhr = new XMLHttpRequest();
-      xhr.upload.addEventListener("progress", (event) => {
-        if (event.lengthComputable) {
-          const percentComplete = (event.loaded / event.total) * 100;
-          document.getElementById("uploadProgress").value = percentComplete;
-        }
-      });
+      // Initialize upload status for all items
+      setUploads((prevUploads) =>
+        prevUploads.map((item) => ({ ...item, status: "waiting" }))
+      );
 
-      xhr.upload.addEventListener("loadstart", () => {
-        document.getElementById("uploadProgressContainer").style.display =
-          "block";
-      });
+      // Function to upload a single file
+      const uploadFile = (upload, index) => {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
 
-      xhr.upload.addEventListener("loadend", () => {
-        document.getElementById("uploadProgressContainer").style.display =
-          "none";
-      });
+          xhr.upload.addEventListener("progress", (event) => {
+            if (event.lengthComputable) {
+              const percentComplete = (event.loaded / event.total) * 100;
+              setUploads((prevUploads) =>
+                prevUploads.map((item, idx) =>
+                  idx === index
+                    ? {
+                        ...item,
+                        progress: percentComplete,
+                        status: "uploading",
+                      }
+                    : item
+                )
+              );
+            }
+          });
 
-      xhr.open(
-        "POST",
-        `https://cds.push-signage.com/adsmanager/api/v1/create_content?bookingid=${bookingId}&advertiserid=${advertiserId}&brandcode=${brand_code}`,
-        true
-      ); // Replace "/upload-endpoint" with your actual upload endpoint
-      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+          xhr.upload.addEventListener("loadstart", () => {
+            const progressContainer = document.getElementById(
+              `uploadProgressContainer-${upload.id}`
+            );
+            if (progressContainer) {
+              progressContainer.style.display = "block";
+            }
+          });
 
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          const data = JSON.parse(xhr.responseText);
-          if (xhr.status !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "เพิ่ม media สำเร็จ!",
-              text: `เพิ่ม media สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                setNewMediaPlayList(data.contentids);
+          xhr.upload.addEventListener("loadend", () => {
+            const progressContainer = document.getElementById(
+              `uploadProgressContainer-${upload.id}`
+            );
+            if (progressContainer) {
+              progressContainer.style.display = "none";
+            }
+          });
+
+          xhr.open(
+            "POST",
+            `https://cds.push-signage.com/adsmanager/api/v1/create_content?bookingid=${bookingId}&advertiserid=${advertiserId}&brandcode=${brand_code}`,
+            true
+          );
+
+          xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+          xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+              const data = JSON.parse(xhr.responseText);
+              if (xhr.status === 200) {
+                setUploadFile((prevItems) => {
+                  const updatedItems = [...prevItems, ...data.contentids];
+                  return updatedItems;
+                });
                 updateMediaPlaylist();
-                setOpenModalUploadMedia(!openModalUploadNewMedia);
-                setDisableButton(!disableButton);
+                setUploads((prevUploads) =>
+                  prevUploads.map((item, idx) =>
+                    idx === index ? { ...item, status: "completed" } : item
+                  )
+                );
+                resolve(); // Resolve the promise when done
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data.message || "Unknown error",
+                });
+                setUploads((prevUploads) =>
+                  prevUploads.map((item, idx) =>
+                    idx === index ? { ...item, status: "error" } : item
+                  )
+                );
+                reject(); // Reject the promise on error
+                setDisableButton(false);
               }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
-            setDisableButton(!disableButton);
-          }
-        }
+            }
+          };
+
+          xhr.send(upload.formData);
+        });
       };
 
-      xhr.send(forms);
+      // Process uploads sequentially
+      const processUploads = async () => {
+        for (let i = 0; i < filteredItems.length; i++) {
+          try {
+            await uploadFile(filteredItems[i], i);
+          } catch {
+            break; // Stop processing further uploads if one fails
+          }
+        }
+        setDisableButton(false);
+      };
+
+      processUploads();
     } else {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
         text: "กรุณาเลือกไฟล์ที่ต้องการอัพโหลด",
       });
+      setDisableButton(false);
     }
+  };
+
+  const bytesToMB = (bytes) => {
+    return bytes / (1024 * 1024);
+  };
+
+  const bytesToGB = (bytes) => {
+    return bytes / (1024 * 1024 * 1024);
+  };
+
+  const convertFileSize = (size) => {
+    let size_file;
+
+    if (size >= 1024 * 1024 * 1024) {
+      const spaceInGB = bytesToGB(size);
+      size_file = `${spaceInGB.toFixed(2)} GB`;
+    } else {
+      const spaceInMB = bytesToMB(size);
+      size_file = `${spaceInMB.toFixed(2)} MB`;
+    }
+
+    return size_file;
   };
 
   const updateMediaPlaylist = async () => {
@@ -274,30 +310,65 @@ const Booking_Upload_Media = ({
     setItemsPanel2(media_list);
   };
 
-  // for update upload media to  Panel1
+  // for update upload media to Panel1
 
-  const setNewMediaPlayList = async (media_id) => {
-    const media_list = await User.getMediaPlaylist(bookingId, token);
-    const media_data = media_list.find(
-      (item) => item.ContentID === parseInt(media_id[0])
-    );
+  const setNewMediaPlayList = async () => {
+    const filteredItems = uploads.filter((item) => item.name !== null);
+    if (uploads_file.length > 0) {
+      if (uploads_file.length === filteredItems.length) {
+        const media_list = await User.getMediaPlaylist(bookingId, token);
+        const updatedMediaList = [...itemsPanel1.value.medias];
 
-    const updatedMediaList = [...itemsPanel1.value.medias];
+        uploads_file.map((items, index) => {
+          const media_data = media_list.find(
+            (item) => item.ContentID === parseInt(items)
+          );
 
-    updatedMediaList[media_allocation_upload_index] = media_data;
-    updatedMediaList[media_allocation_upload_index].duration = 15;
-    updatedMediaList[media_allocation_upload_index].slot_size = 1;
-    setItemsPanel1((prevState) => ({
-      ...prevState,
-      value: {
-        ...prevState.value,
-        medias: updatedMediaList,
-      },
-    }));
+          updatedMediaList[index] = media_data;
+          updatedMediaList[index].duration = 15;
+          updatedMediaList[index].slot_size = 1;
+        });
+
+        setItemsPanel1((prevState) => ({
+          ...prevState,
+          value: {
+            ...prevState.value,
+            medias: updatedMediaList,
+          },
+        }));
+
+        Swal.fire({
+          icon: "success",
+          title: "เพิ่ม media สำเร็จ!",
+          text: `เพิ่ม media สำเร็จสำหรับ Playlist`,
+        }).then((result) => {
+          setOpenModalUploadMedia(false);
+          setDisableButton(false);
+        });
+      }
+    }
   };
 
-  const handleDeleteFile = () => {
-    setUploads({});
+  const addUploadBox = () => {
+    if (uploads.length + 1 > itemsPanel1?.value?.slots) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่สามารถอัพโหลดไฟล์เกินจำนวน Slot ที่จองมาได้",
+      });
+    } else {
+      const newUploadBox = {
+        id: uploads.length + 1,
+        name: null,
+        size: 0,
+        progress: 0,
+      };
+      setUploads([...uploads, newUploadBox]);
+    }
+  };
+
+  const handleDeleteFile = (id) => {
+    setUploads(uploads.filter((upload) => upload.id !== id));
     setDisableButton(false);
   };
 
@@ -324,103 +395,128 @@ const Booking_Upload_Media = ({
         <div className="flex justify-center items-center mt-8">
           <div className="font-poppins text-5xl font-bold">New Media</div>
         </div>
-        <div className="flex justify-center items-center mt-2">
-          {/* <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-      Lorem Ipsum is simply dummy text of the printing and typesetting
-      industry.
-    </div> */}
-        </div>
+        <div className="flex justify-center items-center mt-2"></div>
 
-        <div className="flex justify-center items-center mt-2 p-5">
-          <div className="col-span-1 border-dashed border-gray-300 border-1 relative">
-            {uploads?.name ? (
-              <button
-                className="absolute top-0 right-0 mt-2 mr-2"
-                onClick={() => handleDeleteFile()}
+        <div className="mt-5 p-5 h-[500px] overflow-y-auto space-y-2 ">
+          {uploads.length > 0 ? (
+            uploads.map((upload) => (
+              <div
+                key={upload.id}
+                className="flex flex-col max-w-md mx-auto border shadow-sm rounded-xl "
               >
-                {/* Add delete button with onClick handler */}
-                <AiOutlineCloseCircle size={24} color={"#FF0000"} />
-              </button>
-            ) : (
-              <></>
-            )}
-
-            <div className="p-4">
-              <div className="flex items-center justify-center mt-2">
-                <div className="font-poppins text-3xl font-bold">
-                  Rule Set 1
-                </div>
-              </div>
-              <div className="flex items-center justify-center mt-7">
-                {!uploads.name ? (
-                  <div>
-                    <button onClick={() => uploadFile()}>
-                      <AiOutlineCloudUpload size={100} color={"#D9D9D9"} />
-                    </button>
-                    {uploads.content && (
+                <div className="p-4 md:p-5 space-y-7">
+                  <div className="mb-2 flex justify-between items-center">
+                    <div className="flex items-center gap-x-3">
+                      <span className="size-8 flex justify-center items-center border border-gray-200 text-gray-500 rounded-lg">
+                        <button onClick={() => uploadFile(upload.id)}>
+                          <BsUpload
+                            size={24}
+                            className="text-gray-500 hover:text-gray-300"
+                          />
+                        </button>
+                      </span>
                       <div>
-                        <p>File Uploaded:</p>
-                        <img src={uploads} alt="Uploaded File" />
+                        <div className="text-xl font-poppins text-gray-800">
+                          {upload.name || "No File..."}
+                        </div>
+                        <div className="text-md font-poppins text-gray-500">
+                          {upload.size
+                            ? convertFileSize(upload.size)
+                            : "No File ..."}
+                        </div>
                       </div>
-                    )}
+                    </div>
+                    <div className="inline-flex items-center gap-x-2">
+                      {upload.name ? (
+                        <>
+                          <svg
+                            className="shrink-0 size-4 text-teal-500"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                          >
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                          </svg>
+                          <button
+                            onClick={() => handleDeleteFile(upload.id)}
+                            type="button"
+                            className="relative text-gray-500 hover:text-gray-800 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"
+                          >
+                            <BsTrash
+                              size={24}
+                              className="text-gray-500 hover:text-gray-300"
+                            />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleDeleteFile(upload.id)}
+                            type="button"
+                            className="relative text-gray-500 hover:text-gray-800 focus:outline-none focus:text-gray-800 disabled:opacity-50 disabled:pointer-events-none"
+                          >
+                            <BsTrash
+                              size={24}
+                              className="text-gray-500 hover:text-gray-300"
+                            />
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </div>
-                ) : (
-                  <BsCheckCircle size={100} color={"#00CB45"} />
-                )}
-              </div>
-              <div className="flex items-center justify-center mt-14">
-                <div className="font-poppins text-xl font-bold">
-                  {uploads.name}
+                  <div
+                    id={`uploadProgressContainer-${upload.id}`}
+                    className="w-full"
+                  >
+                    <progress
+                      id={`uploadProgress-${upload.id}`}
+                      value={upload.progress || 0}
+                      max="100"
+                      className="w-full h-3"
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center justify-center mt-5">
-                <div className="font-poppins text-xl font-bold">
-                  Requirements *
-                </div>
-              </div>
-              <div className="flex items-center justify-center ">
-                <div className="font-poppins text-xl font-bold">
-                  Resolution : {media_rules_select?.width} x{" "}
-                  {media_rules_select?.height}
-                </div>
-              </div>
-              <div className="flex items-center justify-center mb-16">
-                <div className="font-poppins text-xl font-bold">
-                  {`Size : <100Mb`}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* <div className="flex justify-center items-center mt-1">
-          {uploadProgress > 0 && (
-            <div id="uploadProgressContainer">
-              <progress id="uploadProgress" value={uploadProgress} max="100">
-                {uploadProgress}%
-              </progress>
-            </div>
+            ))
+          ) : (
+            <></>
           )}
-        </div> */}
-        <div className="flex justify-center items-center mt-1">
-          <div id="uploadProgressContainer" style={{ display: "none" }}>
-            <progress id="uploadProgress" value="0" max="100"></progress>
+          <div className="flex flex-col max-w-md mx-auto border shadow-sm rounded-xl">
+            <div className="p-4 md:p-5 space-y-7">
+              <div className="mb-2 flex justify-between items-center">
+                <div className="flex items-center gap-x-3">
+                  <div className="size-8 flex justify-center items-center text-gray-500 rounded-lg">
+                    <button
+                      onClick={addUploadBox}
+                      className="flex justify-center items-center"
+                    >
+                      <IoIosAddCircle
+                        size={40}
+                        className="text-gray-500 hover:text-gray-300"
+                      />
+                    </button>
+                  </div>
+                  <div>
+                    <div className="text-xl font-poppins text-gray-800">
+                      Add New File ...
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="flex justify-center items-center mt-1">
           <button
             onClick={() => handleUploadMediaByBooking()}
-            className={`bg-[#6425FE] disabled:bg-[#bda5fa] w-72 h-10 text-white font-poppins`}
+            className={`bg-[#6425FE] disabled:bg-[#bda5fa] w-72 h-10 text-white font-poppins rounded-lg`}
             disabled={disableButton}
           >
             Submit
           </button>
-        </div>
-        <div className="flex justify-center items-center mt-3 mb-3">
-          <div className="text-sm font-poppins">
-            Ensure compliance with predefined media rules for each screen. Your
-            ads must adhere to specific guidelines for seamless display
-          </div>
         </div>
       </div>
     </div>

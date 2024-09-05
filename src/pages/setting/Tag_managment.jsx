@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../../components";
 
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
-import { IoIosClose } from "react-icons/io";
 import useCheckPermission from "../../libs/useCheckPermission";
 import User from "../../libs/admin";
 import Permission from "../../libs/permission";
 import Create_Tag_Category from "../../components/Create_Tag_Category";
 import Swal from "sweetalert2";
+import Edit_tag_category from "../../components/Edit_tag_category";
 
 const Tag_managment = () => {
   useCheckPermission();
@@ -18,6 +18,7 @@ const Tag_managment = () => {
   const [tag_data, setTagData] = useState([]);
   const [new_tag, setNewTag] = useState(null);
   const [modalCreateNewCategory, setModalCreateNewCategory] = useState(false);
+  const [modalEditCategory, setModalEditCategory] = useState(false);
   const [modalEditTag, setModalEditTag] = useState(false);
   const [select_tag, setSelectTag] = useState([]);
 
@@ -35,6 +36,7 @@ const Tag_managment = () => {
       tag_category.sort((a, b) =>
         a.TagCategoryName.localeCompare(b.TagCategoryName)
       );
+
       setCategoryData(tag_category);
       setSelectCat(tag_category[0]);
       getTagData(tag_category[0]);
@@ -43,7 +45,7 @@ const Tag_managment = () => {
 
   const getTagData = async (tag_category) => {
     const tag = await User.getTag(tag_category.TagCategoryID, token);
-    tag.sort((a, b) =>
+    tag?.sort((a, b) =>
       a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
     );
     setTagData(tag);
@@ -70,7 +72,6 @@ const Tag_managment = () => {
         a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
       );
     }
-
     setTagData(tag);
   };
 
@@ -113,121 +114,6 @@ const Tag_managment = () => {
         }
       }
     });
-  };
-
-  // Tag Function
-
-  const addNewTag = async () => {
-    if (new_tag) {
-      const obj = {
-        tagname: new_tag,
-        tagcategoryid: select_cat.TagCategoryID,
-      };
-      try {
-        const data = await User.createTag(obj, token);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Add Tag Success ...",
-            text: `เพิ่ม Tag สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              getTagData(select_cat);
-              setNewTag([]);
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
-        }
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-  };
-
-  const removeTag = async (items) => {
-    Swal.fire({
-      title: "คุณต้องการลบ Tag Option?",
-      text: `คุณต้องการลบ Tag Option : ${items.TagName}?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      confirmButtonText: "ลบข้อมูล",
-      cancelButtonText: "ยกเลิก",
-      reverseButtons: true,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const data = await User.deleteTag(items.TagID, token);
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "ลบ Tag Option Success ...",
-              text: `ลบ Tag Option ${items.TagName} สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                getTagData(select_cat);
-              }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
-          }
-        } catch (error) {
-          console.log("error", error);
-        }
-      }
-    });
-  };
-
-  const handleEditTag = (items) => {
-    setModalEditTag(!modalEditTag);
-    setSelectTag(items);
-  };
-
-  const handleEditTagName = async () => {
-    if (select_tag) {
-      try {
-        const data = await User.updateTag(select_tag, token);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Edit Tag Success ...",
-            text: `แก้ไข Tag สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              setSelectTag([]);
-              getTagData(select_tag);
-              setModalEditTag(!modalEditTag);
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
   };
 
   return (
@@ -284,9 +170,7 @@ const Tag_managment = () => {
                             {page_permission.update ? (
                               <button
                                 onClick={() =>
-                                  setModalCreateNewCategory(
-                                    !modalCreateNewCategory
-                                  )
+                                  setModalEditCategory(!modalEditCategory)
                                 }
                               >
                                 <RiEditLine
@@ -334,7 +218,7 @@ const Tag_managment = () => {
                 Tag Options : {select_cat.TagCategoryName}
               </div>
 
-              <div className="grid grid-cols-7 gap-2 mt-5">
+              {/* <div className="grid grid-cols-7 gap-2 mt-5">
                 <div className="col-span-6  h-12">
                   <input
                     type="text"
@@ -361,8 +245,8 @@ const Tag_managment = () => {
                 ) : (
                   <></>
                 )}
-              </div>
-              <div className="col-span-5 mt-5 h-[600px] overflow-y-auto">
+              </div> */}
+              <div className="col-span-5 mt-10 h-[600px] overflow-y-auto">
                 <div className="flex flex-wrap">
                   {tag_data.length > 0 ? (
                     tag_data.map((items, index) => (
@@ -373,7 +257,7 @@ const Tag_managment = () => {
                           flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
                         }}
                       >
-                        {page_permission.delete ? (
+                        {/* {page_permission.delete ? (
                           <div className="flex justify-center items-center mr-1 ml-1">
                             <IoIosClose
                               onClick={() => removeTag(items)}
@@ -382,9 +266,9 @@ const Tag_managment = () => {
                           </div>
                         ) : (
                           <></>
-                        )}
+                        )} */}
 
-                        {page_permission.update ? (
+                        {/* {page_permission.update ? (
                           <div
                             onClick={() => handleEditTag(items)}
                             className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center cursor-pointer"
@@ -395,7 +279,10 @@ const Tag_managment = () => {
                           <div className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center ">
                             {items.TagName}
                           </div>
-                        )}
+                        )} */}
+                        <div className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center ">
+                          {items.TagName}
+                        </div>
                       </div>
                     ))
                   ) : (
@@ -422,65 +309,25 @@ const Tag_managment = () => {
         <Create_Tag_Category
           setModalCreateNewCategory={setModalCreateNewCategory}
           modalCreateNewCategory={modalCreateNewCategory}
-          select_cat={select_cat}
           getCategoryTag={getCategoryTag}
         />
       )}
 
-      {modalEditTag && (
+      {modalEditCategory && (
         <a
-          onClick={() => setModalEditTag(!modalEditTag)}
+          onClick={() => setModalEditCategory(!modalEditCategory)}
           className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
         />
       )}
 
-      {modalEditTag && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
-          {/* Main centered content container */}
-          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
-            {/* Close button - adjust positioning */}
-            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
-              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
-                <button onClick={() => setModalEditTag(!modalEditTag)}>
-                  <IoIosClose size={25} color={"#6425FE"} />
-                </button>
-              </div>
-            </div>
-
-            {/* Content  */}
-            <div className="flex justify-center items-center mt-8">
-              <div className="font-poppins text-5xl font-bold">Edit Tag</div>
-            </div>
-            <div className="flex justify-center items-center mt-10">
-              <div className="grid grid-cols-6 gap-2">
-                <div className="col-span-3 flex items-center justify-start">
-                  <div className="font-poppins">Tag Name:</div>
-                </div>
-                <div className="col-span-3">
-                  <input
-                    type="text"
-                    value={select_tag.TagName}
-                    onChange={(e) =>
-                      setSelectTag({
-                        ...select_tag,
-                        TagName: e.target.value,
-                      })
-                    }
-                    className="w-full p-2  border rounded"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-center items-center mt-10">
-              <button
-                onClick={() => handleEditTagName()}
-                className="bg-[#6425FE] hover:bg-[#3b1694] w-[20%] h-[40px] text-white font-poppins flex justify-center items-center rounded-lg"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
+      {modalEditCategory && (
+        <Edit_tag_category
+          setModalEditCategory={setModalEditCategory}
+          modalEditCategory={modalEditCategory}
+          select_cat={select_cat}
+          getCategoryTag={getCategoryTag}
+          getTagData={getTagData}
+        />
       )}
     </>
   );

@@ -154,7 +154,7 @@ const Add_Screen_Booking = ({
         {/* Content  */}
         <div className="flex justify-center items-center mt-5">
           <div className="font-poppins text-5xl text-[#2F3847] font-bold">
-            Add Screens
+            Select Screen to Booking
           </div>
         </div>
         <div className="mt-1">
@@ -175,7 +175,7 @@ const Add_Screen_Booking = ({
                 onClick={() => setOpenAddNewScreenModal(!openAddNewScreenModal)}
                 className="bg-[#6425FE] hover:bg-[#3b1694] w-[200px] h-[45px] rounded-lg text-white font-poppins mr-10"
               >
-                New Screen
+                Create New Screen
               </button>
             </div>
           </div>
@@ -356,7 +356,7 @@ const Add_Screen_Booking = ({
             onClick={() => handleAddScreen()}
             className="w-[20%] bg-[#6425FE] hover:bg-[#3b1694] text-white text-xl py-2 rounded-lg font-bold font-poppins "
           >
-            Add Screen
+            Select Screen
           </button>
         </div>
       </div>

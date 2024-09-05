@@ -248,7 +248,7 @@ export const GridTable = ({
   return (
     <>
       {oldModal && (
-        <div className="w-auto h-[520px] overflow-auto">
+        <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr>

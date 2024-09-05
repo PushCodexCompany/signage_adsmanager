@@ -231,39 +231,51 @@ const Screen_Info = ({
   };
 
   const handleSaveNewOrderMedia = async () => {
-    const { ScreenID } = selectInfoScreen;
-    const { BookingDate } = mediaScheduleData;
-    const mediaIDs = mediaSchedule.map((item) => item.MediaID).join(",");
-    const obj = {
-      screenid: ScreenID,
-      bookingdate: BookingDate,
-      mediaids: mediaIDs,
-    };
+    Swal.fire({
+      text: `คุณต้องเรียงลำดับ Playlist ของ : ${selectInfoScreen.ScreenName}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { ScreenID } = selectInfoScreen;
+        const { BookingDate } = mediaScheduleData;
+        const mediaIDs = mediaSchedule.map((item) => item.MediaID).join(",");
+        const obj = {
+          screenid: ScreenID,
+          bookingdate: BookingDate,
+          mediaids: mediaIDs,
+        };
 
-    try {
-      const data = await User.updateScreenmediaordering(obj, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "Update Screen Ordering Success ...",
-          text: "แก้ไข Screen Ordering สำเร็จ!",
-        }).then(async (result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
+        try {
+          const data = await User.updateScreenmediaordering(obj, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "Update Screen Ordering Success ...",
+              text: "แก้ไข Screen Ordering สำเร็จ!",
+            }).then(async (result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: "เกิดข้อผิดพลาด",
+            });
           }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: "เกิดข้อผิดพลาด",
-        });
+        } catch (error) {
+          console.error(error);
+        }
       }
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
 
   const onClickPlay = async (media_item) => {

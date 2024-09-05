@@ -10,6 +10,7 @@ import useCheckPermission from "../../../libs/useCheckPermission";
 import Permission from "../../../libs/permission";
 import Encryption from "../../../libs/encryption";
 import Swal from "sweetalert2";
+import Filter from "../../../components/Filter";
 
 const User_Management = () => {
   useCheckPermission();
@@ -38,6 +39,9 @@ const User_Management = () => {
   const [page_permission, setPagePermission] = useState([]);
 
   const [width, setWidth] = useState(window.innerWidth);
+
+  const [searchTerm, setSearchTerm] = useState(null);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   const { token } = User.getCookieData();
 
@@ -300,155 +304,32 @@ const User_Management = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Setting"} lv2={"User Management"} lv3={"user"} />
-        <div className="grid grid-cols-5 gap-4 mt-10">
-          <div className="col-span-4">
+        <div className="grid grid-cols-10 mt-10">
+          <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl">User</div>
           </div>
           {page_permission?.create ? (
-            <button
-              onClick={() => setModalNewUser(!modalNewUser)}
-              className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] h-[45px] rounded-md"
-            >
-              New User +
-            </button>
+            <div className="col-span-4 flex justify-end">
+              <button
+                onClick={() => setModalNewUser(!modalNewUser)}
+                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] h-[45px] rounded-md"
+              >
+                New User +
+              </button>
+            </div>
           ) : (
             <></>
           )}
         </div>
 
-        <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-          {/* Select Menu */}
-          <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
-            <div className="flex flex-col lg:flex-row">
-              <div className="w-full lg:w-3/4 flex justify-between items-center">
-                <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
-                  <select
-                    name="actived"
-                    id="actived"
-                    onClick={toggleStatusSelect}
-                    onChange={(e) => handleStatusChange(e, "Actived")}
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="" disabled selected hidden>
-                      Status
-                    </option>
-                    <option value="Active">Active</option>
-                    <option value="Deactive">Deactive</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                    {isStatusOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
-                  </div>
-                </div>
-                <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">
-                  <select
-                    name="role"
-                    id="role"
-                    onClick={toggleRoleSelect}
-                    onChange={(e) => handleStatusChange(e, "RoleName")}
-                    className="block appearance-none w-full bg-[#f2f2f2] text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  >
-                    <option value="" disabled selected hidden>
-                      Role
-                    </option>
-                    <option value="Admin">Admin</option>
-                    <option value="User">User</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 ">
-                    {isRoleOpen ? (
-                      <IoIosArrowUp size={18} color="#6425FE" />
-                    ) : (
-                      <IoIosArrowDown size={18} color="#6425FE" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* <div className="relative w-full lg:w-full h-[40px] flex items-center justify-end font-bold text-sm lg:text-base ml-3 mb-3">
-              <button
-                onClick={() => showAllFilter()}
-                className=" text-[#6425FE]text-sm font-poppins w-full lg:w-[50px] lg:h-[45px] rounded-md"
-              >
-                <PiSlidersHorizontalFill size={26} color="#6425FE" />
-              </button>
-            </div> */}
-          </div>
-
-          {/* Select Menu */}
-        </div>
-
-        <div className="flex flex-row mt-4">
-          <div className="basis-11/12">
-            {filterActive &&
-              filterActive.map((items) => (
-                <button onClick={() => removeFilter(items, "Actived")}>
-                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
-                    <div className="grid grid-cols-4">
-                      <div className="col-span-1 mt-[6px]">
-                        <div className="flex justify-end items-center">
-                          <IoIosClose size="27" color="#6425FE" />
-                        </div>
-                      </div>
-                      <div className="col-span-3 mt-[8px]">
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-sm">{items}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            {filterRole &&
-              filterRole.map((items) => (
-                <button onClick={() => removeFilter(items, "RoleName")}>
-                  <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full">
-                    <div className="grid grid-cols-4">
-                      <div className="col-span-1 mt-[6px]">
-                        <div className="flex justify-end items-center">
-                          <IoIosClose size="27" color="#6425FE" />
-                        </div>
-                      </div>
-                      <div className="col-span-3 mt-[8px]">
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-sm">{items}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            {filterRole.length > 0 || filterActive.length > 0 ? (
-              <button onClick={() => clearFilter()}>
-                <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE]  hover:bg-[#3b1694] border-gray-300 rounded-full">
-                  <div className="grid grid-cols-12">
-                    <div className="col-span-1 mt-[6px]">
-                      <div className="flex justify-end items-center">
-                        <IoIosClose size="27" color="#6425FE" />
-                      </div>
-                    </div>
-                    <div className="col-span-11 mt-[8px]">
-                      <div className="flex justify-center items-center">
-                        <div className="font-poppins text-sm text-white">
-                          Clear All
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
-
-        <div className="w-auto mt-10 h-[600px] border border-[#DBDBDB] rounded-lg">
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+        />
+        <div className="mt-5">
           {user_lists.length > 0 && (
             <GridTable
               user_lists={user_lists}

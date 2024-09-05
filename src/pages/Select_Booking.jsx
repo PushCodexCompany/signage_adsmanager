@@ -199,6 +199,54 @@ const Select_Booking = () => {
 
     const handleKeyPress = async (e) => {
       if (e.key === "Enter") {
+        Swal.fire({
+          text: `คุณต้องการเปลี่ยนชื่อ Booking ${bookingName} เป็น ${value} ?`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3dabeb",
+          confirmButtonText: "ยืนยัน",
+          cancelButtonText: "ยกเลิก",
+          reverseButtons: true,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const obj = {
+              bookingid: bookingId,
+              bookingname: value,
+            };
+            if (bookingName !== value) {
+              try {
+                const data = await User.updateBookingName(obj, token);
+
+                if (data.code !== 404) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "แก้ไขชื่อ Booking name สำเร็จ!",
+                    text: `แก้ไขชื่อ Booking name สำเร็จ!`,
+                  }).then((result) => {
+                    if (
+                      result.isConfirmed ||
+                      result.dismiss === Swal.DismissReason.backdrop
+                    ) {
+                      setEditing(false);
+                      setBookingName(value);
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: data.message,
+                  });
+                }
+              } catch (error) {
+                console.log("error", error);
+              }
+            } else {
+              setEditing(false);
+            }
+          }
+        });
+
         const result = await Swal.fire({
           title: `คุณต้องการเปลี่ยน Booking name ?`,
           showCancelButton: true,
@@ -208,6 +256,21 @@ const Select_Booking = () => {
           reverseButtons: true,
         });
 
+        if (result.isConfirmed) {
+        }
+      }
+    };
+
+    const handleBlur = async () => {
+      Swal.fire({
+        text: `คุณต้องการเปลี่ยนชื่อ Booking ${bookingName} เป็น ${value} ?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3dabeb",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+        reverseButtons: true,
+      }).then(async (result) => {
         if (result.isConfirmed) {
           const obj = {
             bookingid: bookingId,
@@ -228,6 +291,7 @@ const Select_Booking = () => {
                     result.dismiss === Swal.DismissReason.backdrop
                   ) {
                     setEditing(false);
+                    setBookingName(value);
                   }
                 });
               } else {
@@ -244,83 +308,33 @@ const Select_Booking = () => {
             setEditing(false);
           }
         }
-      }
-    };
-
-    const handleBlur = async () => {
-      const result = await Swal.fire({
-        title: `คุณต้องการเปลี่ยนชื่อ Booking Name ?`,
-        showCancelButton: true,
-        confirmButtonText: "ยืนยัน",
-        cancelButtonText: "ยกเลิก",
       });
-
-      if (result.isConfirmed) {
-        const obj = {
-          bookingid: bookingId,
-          bookingname: value,
-        };
-
-        if (bookingName !== value) {
-          try {
-            const data = await User.updateBookingName(obj, token);
-            if (data.code !== 404) {
-              Swal.fire({
-                icon: "success",
-                title: "แก้ไขชื่อ Booking name สำเร็จ !",
-                text: `แก้ไขชื่อ Booking name สำเร็จ!`,
-              }).then((result) => {
-                if (
-                  result.isConfirmed ||
-                  result.dismiss === Swal.DismissReason.backdrop
-                ) {
-                  setEditing(false);
-                }
-              });
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "เกิดข้อผิดพลาด!",
-                text: data.message,
-              });
-            }
-          } catch (error) {
-            console.log("error", error);
-          }
-        } else {
-          setEditing(false);
-        }
-      }
     };
 
     return (
-      <div className="grid grid-cols-6">
-        <div className="col-span-3">
-          <div className="flex">
-            {editing ? (
-              <input
-                type="text"
-                value={value}
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-                onBlur={handleBlur}
-                autoFocus
-                className="font-poppins font-semibold text-2xl w-[95%] pl-2 border border-gray-200 rounded-lg"
-              />
-            ) : (
-              <div className="font-poppins font-semibold text-2xl w-[95%] pl-2 border border-gray-200 rounded-lg">
-                {value}
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="col-span-3">
-          <div className="flex justify-start items-center">
-            <RiEditLine
-              className="text-[26px] text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
-              onClick={handleClick}
+      <div className="grid grid-cols-10 w-full">
+        <div className="col-span-9">
+          {editing ? (
+            <input
+              type="text"
+              value={value}
+              onChange={handleChange}
+              onKeyPress={handleKeyPress}
+              onBlur={handleBlur}
+              autoFocus
+              className="font-poppins font-semibold text-2xl w-full pl-2 rounded-lg"
             />
-          </div>
+          ) : (
+            <div className="font-poppins font-semibold text-2xl w-full pl-2 rounded-lg">
+              {value}
+            </div>
+          )}
+        </div>
+        <div className="col-span-1">
+          <RiEditLine
+            className="text-[26px] text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+            onClick={handleClick}
+          />
         </div>
       </div>
     );
@@ -404,10 +418,15 @@ const Select_Booking = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Booking"} lv1Url={"/booking"} lv2={bookingName} />
         <div className="grid grid-cols-10 mt-5">
-          <div className="col-span-6">
+          <div className="col-span-3 flex items-center border border-gray-300 rounded-md">
             <EditableText initialValue={bookingName} />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-5 flex justify-start items-center pl-2">
+            <div className="text-center font-poppins text-xl">
+              Latest Publish : DD MMM YY hh:mm:ss by User
+            </div>
+          </div>
+          <div className="col-span-2">
             <div className="flex justify-end space-x-1">
               {page_permission?.create || page_permission?.update ? (
                 <>
@@ -565,10 +584,7 @@ const Select_Booking = () => {
                 <div className="grid grid-cols-12 space-x-1 mt-3">
                   <div className="col-span-3 lg:col-span-1">
                     <div className="min-w-[100%]">
-                      <div
-                        // onClick={() => console.log("Clear Selection")}
-                        className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center"
-                      >
+                      <div className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center">
                         <div className="text-xs font-poppins text-white">
                           Clear
                         </div>
