@@ -18,10 +18,15 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
   const [screen_resolution_dd, setScreenResolutionDD] = useState([]);
   const [screen_physical_size_dd, setScreenPhysicalSize] = useState([]);
 
+  const [resolutionData, setResulotionData] = useState(null);
+  const [adsCapacityData, setAdsCapacityData] = useState(null);
+  const [mediaTypeData, setMediaTypeData] = useState(null);
+
   useEffect(() => {
     getMediaRules();
     getCity();
     getScreenOption();
+    setResolutionAdsCapacity(detailScreen.ScreenRule[0]?.MediaRuleID);
   }, []);
 
   const getMediaRules = async () => {
@@ -38,6 +43,20 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
     const screen_option = await User.getScreensOptions(token);
     setScreenResolutionDD(screen_option.screenresolution);
     setScreenPhysicalSize(screen_option.screenphysicalsize);
+  };
+
+  const setResolutionAdsCapacity = async (id) => {
+    const media_rules = await User.getMediaRules(token);
+    const data = media_rules.find(
+      (items) => items.MediaRuleID === parseInt(id)
+    );
+
+    setResulotionData(
+      `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
+        data.Height
+      ).toString()}`
+    );
+    setAdsCapacityData(data.AdsCapacity);
   };
 
   return (
@@ -79,40 +98,44 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                 />
               </div>
               <div className="mt-2">
-                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                  <select
-                    name="mediaRule"
-                    id="mediaRule"
-                    className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    value={detailScreen.ScreenRule[0].MediaRuleName}
-                    disabled
-                  >
-                    <option value="" disabled selected hidden>
-                      Media Rule
-                    </option>
-                    {media_rules_dd.length > 0 &&
-                      media_rules_dd.map((items) => (
-                        <option value={items.MediaRuleID}>
-                          {items.MediaRuleName}
-                        </option>
-                      ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                <div className="grid grid-cols-12 space-x-2">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold">
+                        Resolution
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center mb-2">
+                      <div className="font-poppins text-sm text-gray-500">
+                        {resolutionData ? resolutionData : "-"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold">
+                        Ads Capacity
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center mb-2">
+                      <div className="font-poppins text-sm text-gray-500">
+                        {adsCapacityData
+                          ? `${adsCapacityData} Slot Per Day`
+                          : "-"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold">
+                        Media Type
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center mb-2">
+                      <div className="font-poppins text-sm text-gray-500">
+                        {mediaTypeData ? mediaTypeData : "-"}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -205,15 +228,6 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2">
-                <div className="p-2 flex items-center justify-center text-center">
-                  <div className="font-poppins text-[15px]">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s
                   </div>
                 </div>
               </div>
@@ -317,6 +331,44 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                       maxLength={255}
                       disabled
                     />
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                    <select
+                      name="mediaRule"
+                      id="mediaRule"
+                      className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                      value={detailScreen.ScreenRule[0].MediaRuleName}
+                      disabled
+                    >
+                      <option value="" disabled selected hidden>
+                        Media Rule
+                      </option>
+                      {media_rules_dd.length > 0 &&
+                        media_rules_dd.map((items) => (
+                          <option value={items.MediaRuleID}>
+                            {items.MediaRuleName}
+                          </option>
+                        ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                      <svg
+                        width="13"
+                        height="15"
+                        viewBox="0 0 13 21"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
+                          stroke="#6425FE"
+                          stroke-width="3"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-4">
@@ -624,15 +676,6 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
             Create Screen
           </button>
         </div> */}
-                </div>
-                <div className="mt-4">
-                  <div className="flex justify-center items-center text-center">
-                    <div className="font-poppins">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

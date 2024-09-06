@@ -905,9 +905,20 @@ const Create_Booking = () => {
                                 )}
                               </div>
                             </div>
-                            <div className="flex justify-start items-center">
-                              <div className="font-poppins text-sm md:text-xs">
-                                {items.ScreenLocation || "No Location ..."}
+                            <div className="flex justify-start items-center group relative">
+                              <div className="font-poppins text-sm md:text-xs text-[#8A8A8A]">
+                                {items.ScreenLocation.length > 25 ? (
+                                  <>
+                                    {items.ScreenLocation.slice(0, 23) + "..."}
+                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                      {items.ScreenLocation}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    {items.ScreenLocation || "No Location ..."}
+                                  </>
+                                )}
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
@@ -1118,9 +1129,9 @@ const Create_Booking = () => {
                                           <>
                                             {items.ScreenName.slice(0, 9) +
                                               "..."}
-                                            <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                               {items.ScreenName}
-                                            </span>
+                                            </div>
                                           </>
                                         ) : (
                                           <>{items.ScreenName}</>

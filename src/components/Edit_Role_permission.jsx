@@ -14,6 +14,7 @@ const Edit_Role_permission = ({
   const [role_id, setRoleId] = useState(null);
   const [role_name, setRoleName] = useState(null);
   const [permission, setPermission] = useState([]);
+  const [isSelectAll, setIsSelectAll] = useState(false);
 
   useEffect(() => {
     setEditRoleData();
@@ -34,6 +35,26 @@ const Edit_Role_permission = ({
 
   const Tabs = ({ roleData }) => {
     const [openTab, setOpenTab] = React.useState(1);
+
+    const handleSelectAllRole = () => {
+      Object.keys(roleData.permissions).forEach((key) => {
+        Object.keys(roleData.permissions[key]).forEach((action) => {
+          roleData.permissions[key][action] = true;
+        });
+      });
+      setPermission(roleData);
+      setIsSelectAll(!isSelectAll);
+    };
+
+    const handleDeSelectAllRole = () => {
+      Object.keys(roleData.permissions).forEach((key) => {
+        Object.keys(roleData.permissions[key]).forEach((action) => {
+          roleData.permissions[key][action] = false;
+        });
+      });
+      setPermission(roleData);
+      setIsSelectAll(!isSelectAll);
+    };
 
     const CheckboxGroup = ({ title, items, data }) => {
       const header = ["create", "delete", "update", "view"];
@@ -225,12 +246,12 @@ const Edit_Role_permission = ({
       <>
         <div className="flex flex-wrap">
           <div className="w-full">
-            <div className="rounded-lg h-[50px] flex items-center mt-3 ">
-              <div className="flex flex-col lg:flex-row">
-                <div className="w-full lg:w-3/4 flex justify-center items-center">
+            <div className="rounded-lg h-[50px] flex items-center mt-3 justify-between">
+              <div className="flex  flex-col lg:flex-row w-full">
+                <div className="w-full lg:w-4/4 flex justify-start items-center">
                   <a
                     className={
-                      "w-[full] lg:w-[300px] font-poppins text-base font-bold  px-5 py-3  rounded block leading-normal " +
+                      "w-[full] lg:w-[300px] font-poppins text-base font-bold px-5 py-3 rounded block leading-normal " +
                       (openTab === 1
                         ? "text-white bg-[#6425FE] border border-gray-300 "
                         : "text-[#6425FE] bg-white border border-gray-300")
@@ -247,7 +268,7 @@ const Edit_Role_permission = ({
                   </a>
                   <a
                     className={
-                      "w-[full] lg:w-[300px] font-poppins text-base font-bold  px-5 py-3  rounded block leading-normal " +
+                      "w-[full] lg:w-[300px] font-poppins text-base font-bold px-5 py-3 rounded block leading-normal " +
                       (openTab === 2
                         ? "text-white bg-[#6425FE] border border-gray-300 "
                         : "text-[#6425FE] bg-white border border-gray-300")
@@ -263,6 +284,23 @@ const Edit_Role_permission = ({
                     Other Permission
                   </a>
                 </div>
+              </div>
+              <div className="flex justify-end items-center ">
+                {!isSelectAll ? (
+                  <button
+                    onClick={() => handleSelectAllRole()}
+                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px]"
+                  >
+                    Select All
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleDeSelectAllRole()}
+                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px]"
+                  >
+                    Deselect All
+                  </button>
+                )}
               </div>
             </div>
             <div className="flex flex-col min-w-0  w-full mb-6 ">
@@ -393,38 +431,50 @@ const Edit_Role_permission = ({
   };
 
   const handleEditData = async () => {
-    const summary = convertBooleanToPermissionSummary(permission);
-    const { account } = User.getAccount();
-    const obj = {
-      roleid: role_id,
-      rolename: role_name,
-      permissions: summary.permissions,
-      accountcode: account.AccountCode,
-    };
+    Swal.fire({
+      text: `คุณต้องการแก้ไข Role : ${role_name} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const summary = convertBooleanToPermissionSummary(permission);
+        const { account } = User.getAccount();
+        const obj = {
+          roleid: role_id,
+          rolename: role_name,
+          permissions: summary.permissions,
+          accountcode: account.AccountCode,
+        };
 
-    const encrypted = await Encryption.encryption(obj, "edit_role", false);
-    const data = await User.updateUserRole(encrypted, token);
-    if (data.code !== 404) {
-      Swal.fire({
-        icon: "success",
-        title: "แก้ไข User Role สำเร็จ",
-        text: `แก้ไข User Role "${role_name}" สำเร็จ`,
-      }).then((result) => {
-        if (
-          result.isConfirmed ||
-          result.dismiss === Swal.DismissReason.backdrop
-        ) {
-          getPermission();
-          setModalEditRole(!modalEditRole);
+        const encrypted = await Encryption.encryption(obj, "edit_role", false);
+        const data = await User.updateUserRole(encrypted, token);
+        if (data.code !== 404) {
+          Swal.fire({
+            icon: "success",
+            title: "แก้ไข User Role สำเร็จ",
+            text: `แก้ไข User Role "${role_name}" สำเร็จ`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              getPermission();
+              setModalEditRole(!modalEditRole);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
         }
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: data.message,
-      });
-    }
+      }
+    });
   };
 
   return (

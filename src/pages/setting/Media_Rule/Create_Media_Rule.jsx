@@ -27,6 +27,7 @@ const Create_Media_Rule = () => {
   const [maNotification, setMaNotification] = useState();
 
   const [isEdit, setIsEdit] = useState(false);
+  const [file_type, setFileType] = useState([]);
 
   useEffect(() => {
     if (location.state.data) {
@@ -194,6 +195,21 @@ const Create_Media_Rule = () => {
     }, {});
 
     setMaNotification(initialValues.CONTENTPERSLOT_SEC);
+
+    const {
+      configuration: { contenttype },
+    } = await User.getConfiguration(token);
+
+    const output = contenttype
+      .filter((item) => item.ContentTypeSub) // Only include items that have a ContentTypeSub
+      .map((item) => ({
+        name: item.ContentTypeName,
+        type: item.ContentTypeSub.map(
+          (sub) => `*${sub.ContentTypeSubName}`
+        ).join(", "),
+      }));
+
+    setFileType(output);
   };
 
   return (
@@ -557,7 +573,9 @@ const Create_Media_Rule = () => {
                         <div className="font-poppins text-xl">Image</div>
                       </div>
                       <div className="flex">
-                        <div className="font-poppins text-xs">{`(*png , *jpg)`}</div>
+                        <div className="font-poppins text-xs">{`(${
+                          file_type.find((item) => item.name === "Image")?.type
+                        })`}</div>
                       </div>
                     </div>
                   </div>
@@ -578,7 +596,9 @@ const Create_Media_Rule = () => {
                         <div className="font-poppins text-xl">Video</div>
                       </div>
                       <div className="flex">
-                        <div className="font-poppins text-xs">{`(*mp4)`}</div>
+                        <div className="font-poppins text-xs">{`(${
+                          file_type.find((item) => item.name === "Video")?.type
+                        })`}</div>
                       </div>
                     </div>
                   </div>

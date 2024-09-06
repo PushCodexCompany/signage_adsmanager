@@ -33,6 +33,8 @@ const Create_Role_Permission = ({
     },
   });
 
+  const [isSelectAll, setIsSelectAll] = useState(false);
+
   const handleRoleChange = (e, fieldName) => {
     setNewRole({
       ...newRole,
@@ -41,60 +43,71 @@ const Create_Role_Permission = ({
   };
 
   const handleSaveNewRole = async () => {
-    const summary = convertBooleanToPermissionSummary(newRole);
+    Swal.fire({
+      text: `คุณต้องการเพิ่ม Role : ${newRole.name} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const summary = convertBooleanToPermissionSummary(newRole);
+        const isAnyValueGreaterThanZero = Object.values(
+          summary.permissions
+        ).some((value) => value > 0);
+        let obj;
 
-    const isAnyValueGreaterThanZero = Object.values(summary.permissions).some(
-      (value) => value > 0
-    );
-    let obj;
+        const { account } = User.getAccount();
+        if (isAnyValueGreaterThanZero) {
+          obj = {
+            rolename: newRole.name,
+            permissions: summary.permissions,
+            accountcode: account.AccountCode,
+          };
+        } else {
+          obj = {
+            rolename: newRole.name,
+            permissions: "",
+            accountcode: account.AccountCode,
+          };
+        }
 
-    const { account } = User.getAccount();
-    if (isAnyValueGreaterThanZero) {
-      obj = {
-        rolename: newRole.name,
-        permissions: summary.permissions,
-        accountcode: account.AccountCode,
-      };
-    } else {
-      obj = {
-        rolename: newRole.name,
-        permissions: "",
-        accountcode: account.AccountCode,
-      };
-    }
-
-    const value = removeZeroPermissions(obj);
-    const encrypted = await Encryption.encryption(
-      value,
-      "add_permission_role",
-      false
-    );
-    try {
-      const data = await User.createUserRole(encrypted, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "สร้าง User Role สำเร็จ ",
-          text: `สร้าง User Role "${newRole.name}" สำเร็จ!`,
-        }).then((result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            getPermission();
-            setModalCreateRole(!modalCreateRole);
+        const value = removeZeroPermissions(obj);
+        const encrypted = await Encryption.encryption(
+          value,
+          "add_permission_role",
+          false
+        );
+        try {
+          const data = await User.createUserRole(encrypted, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "สร้าง User Role สำเร็จ ",
+              text: `สร้าง User Role "${newRole.name}" สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                getPermission();
+                setModalCreateRole(!modalCreateRole);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
           }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
+        } catch (error) {
+          console.error("Error:", error);
+        }
       }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    });
   };
 
   const convertBooleanToPermissionSummary = (data) => {
@@ -159,9 +172,25 @@ const Create_Role_Permission = ({
   const Tabs = ({ roleData }) => {
     const [openTab, setOpenTab] = React.useState(1);
 
-    // const handleSelectAllRole = () => {
-    //   console.log("roleData", roleData);
-    // };
+    const handleSelectAllRole = () => {
+      Object.keys(roleData.permissions).forEach((key) => {
+        Object.keys(roleData.permissions[key]).forEach((action) => {
+          roleData.permissions[key][action] = true;
+        });
+      });
+      setNewRole(roleData);
+      setIsSelectAll(!isSelectAll);
+    };
+
+    const handleDeSelectAllRole = () => {
+      Object.keys(roleData.permissions).forEach((key) => {
+        Object.keys(roleData.permissions[key]).forEach((action) => {
+          roleData.permissions[key][action] = false;
+        });
+      });
+      setNewRole(roleData);
+      setIsSelectAll(!isSelectAll);
+    };
 
     const CheckboxGroup = ({ title, items, data }) => {
       const header = ["create", "delete", "update", "view"];
@@ -398,14 +427,23 @@ const Create_Role_Permission = ({
                   </a>
                 </div>
               </div>
-              {/* <div className="flex justify-end items-center ">
-                <button
-                  onClick={() => handleSelectAllRole()}
-                  className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px]"
-                >
-                  Select All
-                </button>
-              </div> */}
+              <div className="flex justify-end items-center ">
+                {!isSelectAll ? (
+                  <button
+                    onClick={() => handleSelectAllRole()}
+                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px]"
+                  >
+                    Select All
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleDeSelectAllRole()}
+                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px]"
+                  >
+                    Deselect All
+                  </button>
+                )}
+              </div>
             </div>
             <div className="flex flex-col min-w-0  w-full mb-6 ">
               <div className={openTab === 1 ? "block" : "hidden"} id="link1">

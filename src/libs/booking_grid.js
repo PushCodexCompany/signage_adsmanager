@@ -24,7 +24,6 @@ export const GridTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_pages ? all_pages : 0;
-
   const [screen_data, setScreenData] = useState([]);
 
   useEffect(() => {

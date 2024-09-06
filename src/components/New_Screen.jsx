@@ -48,6 +48,10 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
   const [openModalNewTag, setOpenModalNewTag] = useState(false);
   const [maNotification, setMaNotification] = useState();
 
+  const [resolutionData, setResulotionData] = useState(null);
+  const [adsCapacityData, setAdsCapacityData] = useState(null);
+  const [mediaTypeData, setMediaTypeData] = useState(null);
+
   useEffect(() => {
     getCity();
     getMediaRules();
@@ -299,6 +303,21 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
     setCloseTime(time.format("HH:mm:ss"));
   };
 
+  const setMediaRuleDetail = (e) => {
+    const id = e.target.value;
+    const data = media_rules_dd.find(
+      (items) => items.MediaRuleID === parseInt(id)
+    );
+
+    setResulotionData(
+      `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
+        data.Height
+      ).toString()}`
+    );
+    setAdsCapacityData(data.AdsCapacity);
+    setMediaRule(id);
+  };
+
   return (
     <>
       <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
@@ -338,40 +357,44 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                 />
               </div>
               <div className="mt-2">
-                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                  <select
-                    name="mediaRule"
-                    id="mediaRule"
-                    className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    onChange={(e) => setMediaRule(e.target.value)}
-                    value={mediaRule}
-                  >
-                    <option value="" disabled selected hidden>
-                      Media Rule
-                    </option>
-                    {media_rules_dd.length > 0 &&
-                      media_rules_dd.map((items) => (
-                        <option value={items.MediaRuleID}>
-                          {items.MediaRuleName}
-                        </option>
-                      ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                    <svg
-                      width="13"
-                      height="15"
-                      viewBox="0 0 13 21"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                        stroke="#6425FE"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                <div className="grid grid-cols-12 space-x-2">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold">
+                        Resolution
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center mb-2">
+                      <div className="font-poppins text-sm text-gray-500">
+                        {resolutionData ? resolutionData : "-"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold">
+                        Ads Capacity
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center mb-2">
+                      <div className="font-poppins text-sm text-gray-500">
+                        {adsCapacityData
+                          ? `${adsCapacityData} Slot Per Day`
+                          : "-"}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                    <div className="flex justify-center items-center">
+                      <div className="font-poppins text-xl font-bold">
+                        Media Type
+                      </div>
+                    </div>
+                    <div className="flex justify-center items-center mb-2">
+                      <div className="font-poppins text-sm text-gray-500">
+                        {mediaTypeData ? mediaTypeData : "-"}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -600,6 +623,46 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                       }}
                       maxLength={255}
                     />
+                  </div>
+                </div>
+                <div className="mt-2">
+                  <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                    <select
+                      name="mediaRule"
+                      id="mediaRule"
+                      className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                      onChange={(e) => {
+                        setMediaRuleDetail(e);
+                      }}
+                      value={mediaRule}
+                    >
+                      <option value="" disabled selected hidden>
+                        Media Rule
+                      </option>
+                      {media_rules_dd.length > 0 &&
+                        media_rules_dd.map((items) => (
+                          <option value={items.MediaRuleID}>
+                            {items.MediaRuleName}
+                          </option>
+                        ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                      <svg
+                        width="13"
+                        height="15"
+                        viewBox="0 0 13 21"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
+                          stroke="#6425FE"
+                          stroke-width="3"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-4">

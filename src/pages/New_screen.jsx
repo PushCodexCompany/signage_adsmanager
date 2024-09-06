@@ -42,6 +42,10 @@ const New_screen = () => {
   const [IsMaintenanceSwitchOn, setIsMaintenanceSwitchOn] = useState(false);
   const [notificationDelay, setNotificationDelay] = useState();
 
+  const [resolutionData, setResulotionData] = useState(null);
+  const [adsCapacityData, setAdsCapacityData] = useState(null);
+  const [mediaTypeData, setMediaTypeData] = useState(null);
+
   const [media_rules_dd, setMediaRulesDD] = useState([]);
   const [screen_resolution_dd, setScreenResolutionDD] = useState([]);
   const [screen_physical_size_dd, setScreenPhysicalSize] = useState([]);
@@ -90,6 +94,7 @@ const New_screen = () => {
     setScreenId(ScreenID);
     setScreenName(ScreenName);
     setMediaRule(ScreenRule[0]?.MediaRuleID);
+    setResolutionAdsCapacity(ScreenRule[0]?.MediaRuleID);
     setScreenTag(ScreenTag);
     setPreviewImg(ScreenPhoto);
     // setSelectedImage(ScreenPhoto);
@@ -170,6 +175,20 @@ const New_screen = () => {
       // Handle the case where location.state or location.state.screen is undefined
       setNotificationDelay(initialValues.NOTIDELAY_SEC);
     }
+  };
+
+  const setResolutionAdsCapacity = async (id) => {
+    const media_rules = await User.getMediaRules(token);
+    const data = media_rules.find(
+      (items) => items.MediaRuleID === parseInt(id)
+    );
+
+    setResulotionData(
+      `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
+        data.Height
+      ).toString()}`
+    );
+    setAdsCapacityData(data.AdsCapacity);
   };
 
   const handleImageChange = () => {
@@ -547,6 +566,21 @@ const New_screen = () => {
     setCloseTime();
   };
 
+  const setMediaRuleDetail = (e) => {
+    const id = e.target.value;
+    const data = media_rules_dd.find(
+      (items) => items.MediaRuleID === parseInt(id)
+    );
+
+    setResulotionData(
+      `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
+        data.Height
+      ).toString()}`
+    );
+    setAdsCapacityData(data.AdsCapacity);
+    setMediaRule(id);
+  };
+
   return (
     <>
       <Navbar />
@@ -574,47 +608,50 @@ const New_screen = () => {
                 Screen Name
               </label>
               <input
-                className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                 value={screenName}
                 onChange={(e) => setScreenName(e.target.value)}
               />
             </div>
             <div className="mt-2">
-              <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                <select
-                  name="mediaRule"
-                  id="mediaRule"
-                  className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                  onChange={(e) => setMediaRule(e.target.value)}
-                  value={mediaRule}
-                  disabled={screenInUse}
-                >
-                  <option value="" disabled selected hidden>
-                    Media Rule
-                  </option>
-                  {media_rules_dd.length > 0 &&
-                    media_rules_dd.map((items) => (
-                      <option value={items.MediaRuleID}>
-                        {items.MediaRuleName}
-                      </option>
-                    ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                  <svg
-                    width="13"
-                    height="15"
-                    viewBox="0 0 13 21"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                      stroke="#6425FE"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
+              <div className="grid grid-cols-12 space-x-2">
+                <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="flex justify-center items-center">
+                    <div className="font-poppins text-xl font-bold">
+                      Resolution
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center mb-2">
+                    <div className="font-poppins text-sm text-gray-500">
+                      {resolutionData ? resolutionData : "-"}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="flex justify-center items-center">
+                    <div className="font-poppins text-xl font-bold">
+                      Ads Capacity
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center mb-2">
+                    <div className="font-poppins text-sm text-gray-500">
+                      {adsCapacityData
+                        ? `${adsCapacityData} Slot Per Day`
+                        : "-"}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="flex justify-center items-center">
+                    <div className="font-poppins text-xl font-bold">
+                      Media Type
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center mb-2">
+                    <div className="font-poppins text-sm text-gray-500">
+                      {mediaTypeData ? mediaTypeData : "-"}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -840,6 +877,47 @@ const New_screen = () => {
                     }}
                     maxLength={255}
                   />
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                  <select
+                    name="mediaRule"
+                    id="mediaRule"
+                    className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                    onChange={(e) => {
+                      setMediaRuleDetail(e);
+                    }}
+                    value={mediaRule}
+                    disabled={screenInUse}
+                  >
+                    <option value="" disabled selected hidden>
+                      Media Rule
+                    </option>
+                    {media_rules_dd.length > 0 &&
+                      media_rules_dd.map((items) => (
+                        <option value={items.MediaRuleID}>
+                          {items.MediaRuleName}
+                        </option>
+                      ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
+                    <svg
+                      width="13"
+                      height="15"
+                      viewBox="0 0 13 21"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
+                        stroke="#6425FE"
+                        stroke-width="3"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
               <div className="mt-4">
