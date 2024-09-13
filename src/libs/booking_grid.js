@@ -9,6 +9,7 @@ import {
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import firebase_func from "../libs/firebase_func";
+import { format } from "date-fns";
 
 export const GridTable = ({
   booking_data,
@@ -133,6 +134,12 @@ export const GridTable = ({
                 {row.AdvertiserName}
               </div>
             </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+              <div className="font-poppins text-md flex justify-center">
+                {format(row.BookingStartDate, "dd MMM yyyy")} -{" "}
+                {format(row.BookingEndDate, "dd MMM yyyy")}
+              </div>
+            </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="flex items-center justify-center">
                 <img
@@ -162,11 +169,33 @@ export const GridTable = ({
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-2">
                   {page_permission?.view ? (
-                    <button onClick={() => onClickEdit(row)}>
+                    <button
+                      onClick={() => onClickEdit(row)}
+                      className="relative group"
+                    >
                       <RiEditLine
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Complete Booking
+                      </div>
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {page_permission?.delete ? (
+                    <button
+                      onClick={() => alert("del")}
+                      className="relative group"
+                    >
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Cancel Booking
+                      </div>
                     </button>
                   ) : (
                     <></>
@@ -177,11 +206,33 @@ export const GridTable = ({
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-2">
                   {page_permission?.view ? (
-                    <button onClick={() => handleSelectBooking(row)}>
+                    <button
+                      className="relative group"
+                      onClick={() => handleSelectBooking(row)}
+                    >
                       <RiVideoAddLine
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Manage Content
+                      </div>
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {page_permission?.delete ? (
+                    <button
+                      onClick={() => alert("del")}
+                      className="relative group"
+                    >
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694]"
+                      />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Cancel Booking
+                      </div>
                     </button>
                   ) : (
                     <></>
@@ -256,9 +307,9 @@ export const GridTable = ({
                 <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Booking Name
                 </th>
-                {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider ">
-                Content Type
-              </th> */}
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider ">
+                  Start Date - End Date
+                </th>
                 <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Customer
                 </th>

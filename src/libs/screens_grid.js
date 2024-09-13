@@ -237,42 +237,61 @@ export const GridTable = ({
               <td className="px-1 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-2">
                   {isScreenPaired ? (
-                    <button>
+                    <button className="relative group">
                       <BiLinkAlt
                         onClick={() => handleUnpairScreen(row)}
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Unpair Screen
+                      </div>
                     </button>
                   ) : (
-                    <button>
+                    <button className="relative group">
                       <BiLinkAlt
                         onClick={() => handlePairScreen(row)}
                         size={20}
                         className="text-[#ccc] hover:text-[#ccc] cursor-pointer"
                       />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Pair Screen
+                      </div>
                     </button>
                   )}
                   {page_permission?.update ? (
-                    <button onClick={() => handleEditScreen(row)}>
+                    <button
+                      className="relative group"
+                      onClick={() => handleEditScreen(row)}
+                    >
                       <RiEditLine
                         size={20}
-                        className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Edit Screen
+                      </div>
                     </button>
                   ) : (
                     <></>
                   )}
 
-                  <button onClick={() => handleSelectInfoScreen(row)}>
+                  <button
+                    className="relative group"
+                    onClick={() => handleSelectInfoScreen(row)}
+                  >
                     <RiCalendar2Fill
                       size={20}
-                      className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
+                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                     />
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      Screen Detail
+                    </div>
                   </button>
 
                   {page_permission?.delete ? (
                     <button
+                      className="relative group"
                       onClick={() =>
                         handleDeleteScreen(row.ScreenID, row.ScreenName)
                       }
@@ -281,6 +300,9 @@ export const GridTable = ({
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        Delete Screen
+                      </div>
                     </button>
                   ) : (
                     <></>

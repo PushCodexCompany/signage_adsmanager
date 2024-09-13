@@ -206,27 +206,40 @@ export const GridTable = ({
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="space-x-2">
                 {page_permission?.view ? (
-                  <button onClick={() => onClickPlay(row)}>
+                  <button
+                    className="relative group"
+                    onClick={() => onClickPlay(row)}
+                  >
                     <RiPlayCircleLine
                       size={20}
                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                     />
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      Preview Media
+                    </div>
                   </button>
                 ) : (
                   <></>
                 )}
                 {page_permission?.view ? (
-                  <button onClick={() => onClickDownload(row)}>
+                  <button
+                    className="relative group"
+                    onClick={() => onClickDownload(row)}
+                  >
                     <RiDownloadCloud2Line
                       size={20}
                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                     />
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      Download Media
+                    </div>
                   </button>
                 ) : (
                   <></>
                 )}
                 {page_permission?.delete ? (
                   <button
+                    className="relative group"
                     onClick={() => onClickDelete(row)}
                     disabled={row.ActiveStats === 0 ? false : true}
                   >
@@ -238,6 +251,9 @@ export const GridTable = ({
                           : "text-[#dbdbdb] hover:text-[#dbdbdb]"
                       } cursor-pointer`}
                     />
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      Delete Media
+                    </div>
                   </button>
                 ) : (
                   <></>

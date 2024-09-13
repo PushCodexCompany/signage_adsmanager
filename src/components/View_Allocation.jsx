@@ -11,6 +11,7 @@ const View_Allocation = ({
   setOpenViewMediaAllocation,
   itemsPanel1,
   bookingId,
+  selectDateView,
 }) => {
   const [playlist_name, setPlaylistName] = useState(null);
   const [playlist_content, setPlaylistContent] = useState([]);
@@ -26,9 +27,9 @@ const View_Allocation = ({
     const { token } = User.getCookieData();
     const media = await User.getPlaylist(bookingId, token);
     setPlaylistName(media[0]?.PlaylistName);
-
     const obj = {
-      mediaplaylistid: itemsPanel1.value.booking_content[0].mediaplaylistid,
+      mediaplaylistid:
+        itemsPanel1.value.booking_content[selectDateView].mediaplaylistid,
       bookingid: bookingId,
     };
     const playlistcontent = await User.getMediaPlaylistContent(obj, token);

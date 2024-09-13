@@ -920,7 +920,7 @@ const New_screen = () => {
                   </div>
                 </div>
               </div>
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <div className="grid grid-cols-6 space-x-1">
                   <div className="col-span-3">
                     <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
@@ -1071,7 +1071,7 @@ const New_screen = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="mt-4">
                 <div className="grid grid-cols-6 space-x-1">
                   <div className="col-span-3 ml-1">

@@ -325,11 +325,17 @@ export const GridTable = ({
                     </td>
                     <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
                       {page_permission.update ? (
-                        <button onClick={() => onSelectEdit(row.UserID)}>
+                        <button
+                          className="relative group"
+                          onClick={() => onSelectEdit(row.UserID)}
+                        >
                           <RiEditLine
                             size={20}
                             className="text-[#6425FE] hover:text-[#3b1694]"
                           />
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Edit User
+                          </div>
                         </button>
                       ) : (
                         <></>
@@ -339,11 +345,15 @@ export const GridTable = ({
                           onClick={() =>
                             onClickDelete(row.UserID, row.Username)
                           }
+                          className="relative group"
                         >
                           <RiDeleteBin5Line
                             size={20}
                             className="text-[#6425FE] hover:text-[#3b1694]"
                           />
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Delete User
+                          </div>
                         </button>
                       ) : (
                         ""

@@ -76,6 +76,11 @@ const Select_Booking = () => {
 
   const [page_permission, setPagePermission] = useState([]);
 
+  const [lastest_publish_date, setLastestPublishDate] = useState(null);
+  const [lastest_publish_name, setLastestPublishName] = useState(null);
+
+  const [selectDateView, setSelectDateView] = useState(null);
+
   useEffect(() => {
     getBookingData();
     getMediaItemsData();
@@ -93,6 +98,8 @@ const Select_Booking = () => {
       BookingName,
       SlotPerDay,
       BookingID,
+      LastPublish,
+      PublishBy,
     } = location.state.data;
 
     setBookingName(BookingName);
@@ -104,6 +111,9 @@ const Select_Booking = () => {
       AccountCode: await findAccountCode(AdvertiserName),
     });
     setBookingSlot(SlotPerDay);
+
+    setLastestPublishDate(LastPublish);
+    setLastestPublishName(PublishBy);
 
     // get Booking Content
     const booking_content = await User.getBookingContent(BookingID, token);
@@ -407,7 +417,8 @@ const Select_Booking = () => {
     setMediaAdsAllocationTab(tabName);
   };
 
-  const handleViewMediaAllocation = (screen, media_obj) => {
+  const handleViewMediaAllocation = (screen, media_obj, date_index) => {
+    setSelectDateView(date_index);
     setItemsPanel1({ screen, value: media_obj });
     setOpenViewMediaAllocation(!openViewMediaAllocation);
   };
@@ -421,11 +432,18 @@ const Select_Booking = () => {
           <div className="col-span-3 flex items-center border border-gray-300 rounded-md">
             <EditableText initialValue={bookingName} />
           </div>
-          <div className="col-span-5 flex justify-start items-center pl-2">
-            <div className="text-center font-poppins text-xl">
-              Latest Publish : DD MMM YY hh:mm:ss by User
+          {lastest_publish_date ? (
+            <div className="col-span-5 flex justify-start items-center pl-2">
+              <div className="text-center font-poppins text-xl">
+                Latest Publish :{" "}
+                {format(lastest_publish_date, "dd MMM yyyy hh:mm:ss")} by{" "}
+                {lastest_publish_name}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="col-span-5 flex justify-start items-center pl-2" />
+          )}
+
           <div className="col-span-2">
             <div className="flex justify-end space-x-1">
               {page_permission?.create || page_permission?.update ? (
@@ -768,7 +786,7 @@ const Select_Booking = () => {
                                                       handleViewMediaAllocation(
                                                         screenIndex + 1,
                                                         items,
-                                                        items2
+                                                        index
                                                       )
                                                     }
                                                     className="col-span-1 flex justify-center items-center cursor-pointer"
@@ -910,6 +928,7 @@ const Select_Booking = () => {
           setOpenViewMediaAllocation={setOpenViewMediaAllocation}
           itemsPanel1={itemsPanel1}
           bookingId={bookingId}
+          selectDateView={selectDateView}
         />
       )}
       {showRemoveContent && (

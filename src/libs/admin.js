@@ -983,6 +983,19 @@ export default {
     return data;
   },
 
+  getScreenListFromMediaRule: async function (token, page, id) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let url = `api/v1/get_screenlist?brandcode=${brand_code}&perpage=10&page=${page}&mediaruleid=${id}`;
+
+    const { data } = await this._get(url, "", config);
+    return data;
+  },
+
   getScreensWithAdsCapacity: async function (bookingid, slot, token) {
     const { brand_code } = this.getBrandCode();
     const config = {

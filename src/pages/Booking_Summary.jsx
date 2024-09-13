@@ -142,7 +142,7 @@ const Booking_Summary = () => {
                             <PiMonitor size={45} color={"#59606C"} />
                           </div>
                           <div className="col-span-6">
-                            <div className="flex justify-start items-center">
+                            <div className="flex justify-start items-center group relative">
                               <div className="font-poppins md:text-lg lg:text-2xl font-bold">
                                 {items.ScreenName.length > 15 ? (
                                   <>
@@ -156,9 +156,20 @@ const Booking_Summary = () => {
                                 )}
                               </div>
                             </div>
-                            <div className="flex justify-start items-center">
+                            <div className="flex justify-start items-center group relative">
                               <div className="font-poppins text-sm text-[#8A8A8A]">
-                                {items.ScreenLocation}
+                                {items.ScreenLocation.length > 25 ? (
+                                  <>
+                                    {items.ScreenLocation.slice(0, 23) + "..."}
+                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                                      {items.ScreenLocation}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    {items.ScreenLocation || "No Location ..."}
+                                  </>
+                                )}
                               </div>
                             </div>
                             <div className="flex justify-start items-center space-x-1">
