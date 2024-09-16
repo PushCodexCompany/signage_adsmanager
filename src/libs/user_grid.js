@@ -92,54 +92,70 @@ export const GridTable = ({
   };
 
   const handleSaveEdit = async (id) => {
-    try {
-      if (edit_rolename) {
-        const { token } = User.getCookieData();
-        const obj = {
-          userid: id,
-          email: edit_email,
-          activated: edit_activate,
-          roleid: edit_rolename,
-          accesscontent: {
-            brands: reg_brand.map(String),
-            merchandise: reg_merchandise,
-          },
-        };
-        const encrypted = await Encryption.encryption(obj, "edit_user", false);
-        const data = await User.updateUser(encrypted, token);
+    Swal.fire({
+      text: `คุณต้องการแก้ไข User : ${edit_username}`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3dabeb",
+      confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          if (edit_rolename) {
+            const { token } = User.getCookieData();
+            const obj = {
+              userid: id,
+              email: edit_email,
+              activated: edit_activate,
+              roleid: edit_rolename,
+              accesscontent: {
+                brands: reg_brand.map(String),
+                merchandise: reg_merchandise,
+              },
+            };
+            const encrypted = await Encryption.encryption(
+              obj,
+              "edit_user",
+              false
+            );
+            const data = await User.updateUser(encrypted, token);
 
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "แก้ไขผู้ใช้งานสำเร็จ!",
-            text: `แก้ไขผู้ใช้งานสำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              // window.location.reload();
-              setData();
-              // setModalEdit(!modal_edit);
+            if (data.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "แก้ไขผู้ใช้งานสำเร็จ!",
+                text: `แก้ไขผู้ใช้งานสำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  // window.location.reload();
+                  setData();
+                  // setModalEdit(!modal_edit);
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
             }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Register Failed ...",
+              text: "กรุณาเลือก Role!",
+            });
+          }
+        } catch (error) {
+          console.error("Error:", error);
         }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Register Failed ...",
-          text: "กรุณาเลือก Role!",
-        });
       }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    });
   };
 
   const handleCheckboxChange = (id, type) => {

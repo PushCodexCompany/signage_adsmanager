@@ -35,11 +35,12 @@ const Edit_Merchandises = () => {
   const [contact_person_email, setContactPersonEmail] = useState();
   const [contact_person_phone, setContactPersonPhone] = useState();
 
-  const [company_des, setCompanyDes] = useState();
   const [company_name, setCompanyName] = useState();
   const [company_tax_id, setCompanyTaxId] = useState();
   const [company_tax_address, setCompanyTaxAddress] = useState();
   const [company_phone, setCompanyPhone] = useState();
+
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     if (id !== "new") {
@@ -58,6 +59,10 @@ const Edit_Merchandises = () => {
       Email,
       Position,
       ContactNumber,
+      CompanyName,
+      CompanyPhone,
+      TaxID,
+      TaxAddress,
     } = location.state.merchandise;
 
     setMerchandiseId(AdvertiserID);
@@ -69,6 +74,11 @@ const Edit_Merchandises = () => {
     setContactPersonPos(Position);
     setContactPersonEmail(Email);
     setContactPersonPhone(ContactNumber);
+
+    setCompanyName(CompanyName);
+    setCompanyPhone(CompanyPhone);
+    setCompanyTaxId(TaxID);
+    setCompanyTaxAddress(TaxAddress);
   };
 
   const handleButtonClick = () => {
@@ -135,6 +145,10 @@ const Edit_Merchandises = () => {
       email: contact_person_email || null,
       contactnumber: contact_person_phone || null,
       brandcode: brand_code,
+      companyname: company_name || null,
+      taxid: company_tax_id || null,
+      taxaddress: company_tax_address || null,
+      companyphone: company_phone || null,
     };
     const { token } = User.getCookieData();
     const encrypted = await Encryption.encryption(
@@ -209,6 +223,10 @@ const Edit_Merchandises = () => {
       email: contact_person_email || null,
       contactnumber: contact_person_phone || null,
       brandcode: brand_code,
+      companyname: company_name || null,
+      taxid: company_tax_id || null,
+      taxaddress: company_tax_address || null,
+      companyphone: company_phone || null,
     };
 
     const { token } = User.getCookieData();
@@ -350,7 +368,17 @@ const Edit_Merchandises = () => {
                 <input
                   className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
                   value={merchandise_name}
-                  onChange={(e) => setMerchandiseName(e.target.value)}
+                  onChange={(e) => {
+                    if (
+                      location.state?.merchandise?.AdvertiserName !==
+                      e.target.value
+                    ) {
+                      setIsEdit(true);
+                    } else {
+                      setIsEdit(false);
+                    }
+                    setMerchandiseName(e.target.value);
+                  }}
                 />
                 <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
               </div>
@@ -409,7 +437,17 @@ const Edit_Merchandises = () => {
                 </label>
                 <input
                   value={contact_person_name}
-                  onChange={(e) => setContactPersonName(e.target.value)}
+                  onChange={(e) => {
+                    if (
+                      location.state?.merchandise?.ContactName !==
+                      e.target.value
+                    ) {
+                      setIsEdit(true);
+                    } else {
+                      setIsEdit(false);
+                    }
+                    setContactPersonName(e.target.value);
+                  }}
                   className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
                 />
               </div>
@@ -428,8 +466,18 @@ const Edit_Merchandises = () => {
                   </label>
                   <input
                     value={contact_person_dep}
-                    onChange={(e) => setContactPersonDep(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.Department !==
+                        e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setContactPersonDep(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
@@ -446,8 +494,17 @@ const Edit_Merchandises = () => {
                   </label>
                   <input
                     value={contact_person_pos}
-                    onChange={(e) => setContactPersonPos(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.Position !== e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setContactPersonPos(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
@@ -466,8 +523,17 @@ const Edit_Merchandises = () => {
                   </label>
                   <input
                     value={contact_person_email}
-                    onChange={(e) => setContactPersonEmail(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.Email !== e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setContactPersonEmail(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
@@ -485,31 +551,24 @@ const Edit_Merchandises = () => {
                   <input
                     value={contact_person_phone}
                     type="number"
-                    onChange={(e) => setContactPersonPhone(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.ContactNumber !==
+                        e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setContactPersonPhone(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
             </div>
             <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
               Company Info for Quotation
-            </div>
-            <div className="flex items-center">
-              <div className="relative w-full">
-                <label
-                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
-                    company_des
-                      ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                      : "top-3 text-gray-300"
-                  }`}
-                >
-                  Company Description
-                </label>
-                <input
-                  onChange={(e) => setCompanyDes(e.target.value)}
-                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
-                />
-              </div>
             </div>
             <div className="flex items-center mt-3">
               <div className="w-1/2 pr-2">
@@ -525,8 +584,18 @@ const Edit_Merchandises = () => {
                   </label>
                   <input
                     value={company_name}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.CompanyName !==
+                        e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setCompanyName(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
@@ -543,8 +612,18 @@ const Edit_Merchandises = () => {
                   </label>
                   <input
                     value={company_phone}
-                    onChange={(e) => setCompanyPhone(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.CompanyPhone !==
+                        e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setCompanyPhone(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
@@ -563,8 +642,17 @@ const Edit_Merchandises = () => {
                   </label>
                   <input
                     value={company_tax_id}
-                    onChange={(e) => setCompanyTaxId(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.TaxID !== e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setCompanyTaxId(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
@@ -581,8 +669,18 @@ const Edit_Merchandises = () => {
                   </label>
                   <input
                     value={company_tax_address}
-                    onChange={(e) => setCompanyTaxAddress(e.target.value)}
-                    className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    onChange={(e) => {
+                      if (
+                        location.state?.merchandise?.TaxAddress !==
+                        e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setCompanyTaxAddress(e.target.value);
+                    }}
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                   />
                 </div>
               </div>
@@ -598,7 +696,11 @@ const Edit_Merchandises = () => {
               <div className="mt-4 flex items-center justify-center">
                 <button
                   onClick={() => handleEdit()}
-                  className="bg-[#6425FE] text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins"
+                  className={` ${
+                    isEdit
+                      ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                      : "bg-gray-500 hover:bg-gray-800"
+                  } text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins`}
                 >
                   Save
                 </button>

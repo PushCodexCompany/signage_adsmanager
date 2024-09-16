@@ -620,8 +620,8 @@ const Create_Media_Rule = () => {
                       className={`${
                         isEdit
                           ? "bg-[#6425FE] hover:bg-[#6325fe86]"
-                          : "bg-gray-500"
-                      }  w-[350px] hover:bg-gray-800 text-md rounded-lg h-[65px] text-white font-bold font-poppins`}
+                          : "bg-gray-500 hover:bg-gray-800"
+                      }  w-[350px]  text-md rounded-lg h-[65px] text-white font-bold font-poppins`}
                     >
                       Save Change
                     </button>

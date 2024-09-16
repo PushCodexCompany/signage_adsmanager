@@ -392,6 +392,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       email: contact_person_email,
       contactnumber: contact_person_phone,
       brandcode: brand_code,
+      companyname: company_name,
+      taxid: company_tax_id,
+      taxaddress: company_tax_address,
+      companyphone: company_phone,
     };
 
     const { token } = User.getCookieData();
@@ -1163,7 +1167,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_dep}
                         onChange={(e) => setContactPersonDep(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>
@@ -1181,7 +1185,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_pos}
                         onChange={(e) => setContactPersonPos(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>
@@ -1201,7 +1205,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_email}
                         onChange={(e) => setContactPersonEmail(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>
@@ -1220,7 +1224,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         value={contact_person_phone}
                         type="number"
                         onChange={(e) => setContactPersonPhone(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>
@@ -1260,7 +1264,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_name}
                         onChange={(e) => setCompanyName(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>
@@ -1278,7 +1282,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_phone}
                         onChange={(e) => setCompanyPhone(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>
@@ -1298,7 +1302,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_tax_id}
                         onChange={(e) => setCompanyTaxId(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>
@@ -1316,7 +1320,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_tax_address}
                         onChange={(e) => setCompanyTaxAddress(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full text-gray-700 font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
                       />
                     </div>
                   </div>

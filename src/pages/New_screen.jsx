@@ -60,6 +60,8 @@ const New_screen = () => {
 
   const [disableCreateButton, setDisableCreateButton] = useState(false);
 
+  const [isEdit, setIsEdit] = useState(false);
+
   useEffect(() => {
     if (id !== "new") {
       fetchScreen();
@@ -554,10 +556,20 @@ const New_screen = () => {
   };
 
   const handleSetOpenTime = (time) => {
+    if (time.format("HH:mm:ss") !== location.state?.screen?.ScreenOpenTime) {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
     setOpenTime(time.format("HH:mm:ss"));
   };
 
   const handleSetCloseTime = (time) => {
+    if (time.format("HH:mm:ss") !== location.state?.screen?.ScreenCloseTime) {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
     setCloseTime(time.format("HH:mm:ss"));
   };
 
@@ -610,7 +622,14 @@ const New_screen = () => {
               <input
                 className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                 value={screenName}
-                onChange={(e) => setScreenName(e.target.value)}
+                onChange={(e) => {
+                  if (location.state?.screen?.ScreenName !== e.target.value) {
+                    setIsEdit(true);
+                  } else {
+                    setIsEdit(false);
+                  }
+                  setScreenName(e.target.value);
+                }}
               />
             </div>
             <div className="mt-2">
@@ -800,7 +819,17 @@ const New_screen = () => {
                       </label>
                       <input
                         value={screenLocationName}
-                        onChange={(e) => setScreenLocationName(e.target.value)}
+                        onChange={(e) => {
+                          if (
+                            location.state?.screen?.ScreenLocation !==
+                            e.target.value
+                          ) {
+                            setIsEdit(true);
+                          } else {
+                            setIsEdit(false);
+                          }
+                          setScreenLocationName(e.target.value);
+                        }}
                         type="text"
                         placeholder=""
                         className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-blue-500 font-bold"
@@ -822,7 +851,17 @@ const New_screen = () => {
                         name="screenCity"
                         id="screenCity"
                         className={`block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300 font-bold   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins`}
-                        onChange={(e) => setScreenCityName(e.target.value)}
+                        onChange={(e) => {
+                          if (
+                            location.state?.screen?.ScreenCity !==
+                            parseInt(e.target.value)
+                          ) {
+                            setIsEdit(true);
+                          } else {
+                            setIsEdit(false);
+                          }
+                          setScreenCityName(e.target.value);
+                        }}
                         value={screenCityName}
                       >
                         <option value="" disabled selected hidden>
@@ -867,7 +906,16 @@ const New_screen = () => {
                   </label>
                   <textarea
                     value={screenDescription}
-                    onChange={(e) => setScreenDescription(e.target.value)}
+                    onChange={(e) => {
+                      if (
+                        location.state?.screen?.ScreenDesc !== e.target.value
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+                      setScreenDescription(e.target.value);
+                    }}
                     placeholder=""
                     className="w-full h-[147px] font-bold rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-blue-500"
                     style={{
@@ -886,6 +934,15 @@ const New_screen = () => {
                     id="mediaRule"
                     className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     onChange={(e) => {
+                      if (
+                        location.state.screen?.ScreenRule[0]?.MediaRuleID !==
+                        parseInt(e.target.value)
+                      ) {
+                        setIsEdit(true);
+                      } else {
+                        setIsEdit(false);
+                      }
+
                       setMediaRuleDetail(e);
                     }}
                     value={mediaRule}
@@ -1196,6 +1253,14 @@ const New_screen = () => {
                               !IsMaintenanceSwitchOn ? "" : notificationDelay
                             }
                             onChange={(e) => {
+                              if (
+                                location.state?.screen?.MANotifyDelay !==
+                                parseInt(e.target.value)
+                              ) {
+                                setIsEdit(true);
+                              } else {
+                                setIsEdit(false);
+                              }
                               setNotificationDelay(e.target.value);
                             }}
                             disabled={!IsMaintenanceSwitchOn}
@@ -1219,7 +1284,11 @@ const New_screen = () => {
                   ) : (
                     <button
                       onClick={() => handleEditScreen()}
-                      className="w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#3b1694] text-white font-bold font-poppins rounded-lg"
+                      className={`w-[315px] h-[48px]  ${
+                        isEdit
+                          ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                          : "bg-gray-500 hover:bg-gray-800"
+                      } text-white font-bold font-poppins rounded-lg`}
                       disabled={disableCreateButton}
                     >
                       Save Edit Screen
