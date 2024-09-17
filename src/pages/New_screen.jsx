@@ -145,8 +145,8 @@ const New_screen = () => {
 
   const getScreenOption = async () => {
     const screen_option = await User.getScreensOptions(token);
-    setScreenResolutionDD(screen_option.screenresolution);
-    setScreenPhysicalSize(screen_option.screenphysicalsize);
+    setScreenResolutionDD(screen_option?.screenresolution);
+    setScreenPhysicalSize(screen_option?.screenphysicalsize);
   };
 
   const getConfigurationData = async () => {
@@ -167,8 +167,8 @@ const New_screen = () => {
     //   setNotificationDelay(initialValues.NOTIDELAY_SEC);
     // }
 
-    if (location.state && location.state.screen) {
-      const { MANotifyDelay } = location.state.screen;
+    if (location.state && location.state?.screen) {
+      const { MANotifyDelay } = location.state?.screen;
 
       if (!MANotifyDelay) {
         setNotificationDelay(initialValues.NOTIDELAY_SEC);
@@ -238,7 +238,7 @@ const New_screen = () => {
           screenclosetime: closeTime || "",
           manotifydelay: notificationDelay || "",
         };
-        if (obj.screenname) {
+        if (obj?.screenname) {
           if (mediaRule) {
             try {
               const data = await User.createNewScreen(obj, token);
@@ -247,7 +247,7 @@ const New_screen = () => {
                 if (selectedImage) {
                   const form = new FormData();
                   form.append("target", "screenphoto");
-                  form.append("screenid", data.screenid);
+                  form.append("screenid", data?.screenid);
                   form.append("logo", selectedImage);
                   const data_img = await User.saveImgAccountScreens(
                     form,
@@ -935,7 +935,7 @@ const New_screen = () => {
                     className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                     onChange={(e) => {
                       if (
-                        location.state.screen?.ScreenRule[0]?.MediaRuleID !==
+                        location.state?.screen?.ScreenRule[0]?.MediaRuleID !==
                         parseInt(e.target.value)
                       ) {
                         setIsEdit(true);
