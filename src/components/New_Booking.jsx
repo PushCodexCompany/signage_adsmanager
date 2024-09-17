@@ -618,7 +618,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   </button>
                 </div>
               </div>
-              <div className="w-auto h-[250px] overflow-auto mt-2">
+              <div className="w-auto h-[320px] overflow-auto mt-2">
                 <table className="min-w-full border border-gray-300">
                   <thead>
                     <tr>
@@ -850,12 +850,12 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Enter Booking Detail
               </div>
             </div>
-            <div className="mt-6 h-[350px] overflow-y-auto">
+            <div className="mt-6 h-[480px] overflow-y-auto">
               <div className="flex flex-row lg:flex-row">
                 <div className="w-full lg:w-1/3 p-4">
                   <div>
                     <img
-                      className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
+                      className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-xl`}
                       src={select_merchandise.AdvertiserLogo}
                       alt={select_merchandise.AdvertiserName}
                     />
@@ -873,7 +873,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full lg:w-3/5 p-4 lg:pl-8 border border-gray-300">
+                <div className="w-full lg:w-3/5 p-4 lg:pl-8 border border-gray-300 rounded-lg shadow-xl mt-2">
                   <div>
                     <div className="font-poppins font-bold">Booking Name :</div>
                   </div>
@@ -941,12 +941,12 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Booking is Created
               </div>
             </div>
-            <div className="mt-6 h-[350px] overflow-y-auto">
+            <div className="mt-6 h-[400px] overflow-y-auto">
               <div className="flex flex-row lg:flex-row  justify-center items-center">
                 <div className="w-full lg:w-1/3 p-4">
                   <div>
                     <img
-                      className={`block mx-auto mt-30px w-[250px] h-[250px] rounded-3xl object-cover`}
+                      className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-xl`}
                       src={select_merchandise.AdvertiserLogo}
                       alt={select_merchandise.AdvertiserName}
                     />

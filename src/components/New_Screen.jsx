@@ -647,6 +647,19 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                 </div>
                 <div className="mt-2">
                   <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                    {mediaRule ? (
+                      <label
+                        className={`absolute left-3 px-1 transition-all font-poppins duration-200 z-10 pointer-events-none ${
+                          mediaRule
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
+                        }`}
+                      >
+                        Media Rule
+                      </label>
+                    ) : (
+                      <></>
+                    )}
                     <select
                       name="mediaRule"
                       id="mediaRule"

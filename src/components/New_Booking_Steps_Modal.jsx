@@ -71,7 +71,7 @@ const New_Booking_Steps_Modal = (props) => {
         })}
       </div>
       {children}
-      <div className="mt-14 mb-5 flex justify-center items-center space-x-6">
+      <div className="mt-5  flex justify-center items-center space-x-6">
         {HAS_PREV && HAS_NEXT && (
           <div
             onClick={() => handleBackStep(currentStep)}

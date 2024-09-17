@@ -891,6 +891,7 @@ const Ads_Allocation_Booking = ({
 
   const handleSelectToggle = async () => {
     const data = await getMediaPlaylist();
+    data.sort((a, b) => a.PlaylistName.localeCompare(b.PlaylistName));
     setSelectedOption(data);
     setIsExpanded(!isExpanded);
   };
