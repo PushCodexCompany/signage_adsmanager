@@ -511,9 +511,9 @@ const Remove_Content = ({
                     >
                       Confirm
                     </button>
-                    <button className="w-[250px] h-[48px] border border-[#6425FE] rounded-md text-[#6425FE] font-poppins font-bold">
+                    {/* <button className="w-[250px] h-[48px] border border-[#6425FE] rounded-md text-[#6425FE] font-poppins font-bold">
                       Clear Slot
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
