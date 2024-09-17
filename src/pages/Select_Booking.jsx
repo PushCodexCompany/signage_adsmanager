@@ -80,6 +80,7 @@ const Select_Booking = () => {
   const [lastest_publish_name, setLastestPublishName] = useState(null);
 
   const [selectDateView, setSelectDateView] = useState(null);
+  const [fact_panel1, setFactPanel1] = useState([]);
 
   useEffect(() => {
     getBookingData();
@@ -408,6 +409,7 @@ const Select_Booking = () => {
     setMediaRulesSelect(media_rule);
     media_obj.slots = parseInt(booking_slot);
     setScreenSelect({ screen, value: media_obj });
+    setFactPanel1(media_obj);
     setItemsPanel1({ screen, value: media_obj });
     setScreenSelectFromEdit(obj.ScreenID);
     setOpenAdsAllocationModal(!openAdsAllocationModal);
@@ -888,6 +890,7 @@ const Select_Booking = () => {
           allScreenData={allScreenData}
           setFactAllocation={setFactAllocation}
           fact_allocation={fact_allocation}
+          fact_panel1={fact_panel1}
         />
       )}
       {openModalUploadNewMedia && (

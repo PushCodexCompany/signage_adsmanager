@@ -696,7 +696,7 @@ const Edit_Merchandises = () => {
               <div className="mt-4 flex items-center justify-center">
                 <button
                   onClick={() => handleEdit()}
-                  className={` ${
+                  className={`${
                     isEdit
                       ? "bg-[#6425FE] hover:bg-[#6325fe86]"
                       : "bg-gray-500 hover:bg-gray-800"

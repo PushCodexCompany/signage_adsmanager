@@ -59,6 +59,7 @@ const Ads_Allocation_Booking = ({
   allScreenData,
   setFactAllocation,
   fact_allocation,
+  fact_panel1,
 }) => {
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [full_media_items, setFullMediasItems] = useState([]);
@@ -77,6 +78,8 @@ const Ads_Allocation_Booking = ({
 
   const { token } = User.getCookieData();
   const [page_permission, setPagePermission] = useState([]);
+
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     setEditData();
@@ -265,6 +268,43 @@ const Ads_Allocation_Booking = ({
     setDatePickers(newDatePickers);
   };
 
+  const deepEqualArrayForEditMedia = (obj1, obj2) => {
+    if (obj1 === obj2) return true;
+
+    if (
+      typeof obj1 !== "object" ||
+      typeof obj2 !== "object" ||
+      obj1 === null ||
+      obj2 === null
+    ) {
+      return false;
+    }
+
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) return false;
+
+    for (let key of keys1) {
+      if (
+        !keys2.includes(key) ||
+        !deepEqualArrayForEditMedia(obj1[key], obj2[key])
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const checkAreArraysEqual = (arr1, arr2) => {
+    if (arr1.length !== arr2.length) return false;
+
+    return arr1.every((item, index) =>
+      deepEqualArrayForEditMedia(item, arr2[index])
+    );
+  };
+
   const onDragEnd = (result) => {
     if (!result.destination) return;
     const { source, destination } = result;
@@ -276,6 +316,12 @@ const Ads_Allocation_Booking = ({
       updatedMediaList.splice(result.source.index, 1); // Remove item from original position
       updatedMediaList.splice(destination.index, 0, draggedItem); // Insert item at destination index
       if (source.droppableId === "panel-1") {
+        if (!checkAreArraysEqual(fact_panel1.medias, updatedMediaList)) {
+          setIsEdit(true);
+        } else {
+          setIsEdit(false);
+        }
+
         setItemsPanel1({
           ...itemsPanel1,
           value: {
@@ -361,6 +407,12 @@ const Ads_Allocation_Booking = ({
             duration: 15,
           });
 
+          if (!checkAreArraysEqual(fact_panel1.medias, newDestinationItems)) {
+            setIsEdit(true);
+          } else {
+            setIsEdit(false);
+          }
+
           setItemsPanel1({
             ...itemsPanel1,
             value: {
@@ -382,6 +434,13 @@ const Ads_Allocation_Booking = ({
     } else {
       target.slot_size = 2;
     }
+
+    if (fact_panel1.medias !== updatedMediaList) {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
+
     setItemsPanel1((prevState) => ({
       ...prevState,
       value: {
@@ -434,6 +493,13 @@ const Ads_Allocation_Booking = ({
             (item) => item.ContentID === null
           );
           nullItems.forEach((item) => output_data.push(item));
+
+          if (fact_panel1.medias !== output_data) {
+            setIsEdit(true);
+          } else {
+            setIsEdit(false);
+          }
+
           setItemsPanel1((prevState) => ({
             ...prevState,
             value: {
@@ -456,6 +522,13 @@ const Ads_Allocation_Booking = ({
         (item) => item.ContentID === null
       );
       nullItems.forEach((item) => output_data.push(item));
+
+      if (fact_panel1.medias !== output_data) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(false);
+      }
+
       setItemsPanel1((prevState) => ({
         ...prevState,
         value: {
@@ -687,83 +760,104 @@ const Ads_Allocation_Booking = ({
   };
 
   const handleSaveAdsAllocation = async () => {
-    const date_range = handleDateRangeToString(datePickers);
-    const screenIDs = screenAdsAllocation.map((screen) => ({
-      screenid: screen.ScreenID,
-    }));
-    const screenIdsString = screenIDs
-      .map((screen) => screen.screenid)
-      .join(",");
-
-    if (screenIDs.length <= 0) {
+    if (isEdit) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
-        text: "กรุณาเลือกจอที่ต้องการ ...",
-      });
-      return;
-    }
-    if (!date_range) {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: "กรุณาเลือกช่วงเวลา ...",
-      });
-      return;
-    }
-    if (!media_playlist_id) {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: "กรุณาเลือก Media Playlist ...",
+        text: "กรุณาทำการบันทึก Playlist",
       });
       return;
     }
 
-    const obj = {
-      bookingid: bookingId,
-      dates: date_range,
-      screenids: screenIdsString,
-      mediaplaylistid: parseInt(media_playlist_id),
-    };
-    try {
-      const check_screen = await User.getBookingContentScreen(obj, token);
-      const isAnotherScreen = compareScreenID(
-        screenSelectFromEdit,
-        check_screen.screens
-      );
-      if (check_screen.screens.length >= 1 && isAnotherScreen) {
-        // ถ้ามีจออื่นใช้ playlist นี้ด้วย
-        setScreenUsePlaylist(check_screen.screens);
-        setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
-      } else {
-        // ถ้าไม่มีจออื่นใช้
-        const data = await User.updateBookingContent(obj, token);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Update Booking Content Success ...",
-            text: "แก้ไข Booking Content สำเร็จ!",
-          }).then(async (result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              setOpenAdsAllocationModal(!openAdsAllocationModal);
-              setFactAllocation(!fact_allocation);
-            }
-          });
-        } else {
+    Swal.fire({
+      text: `คุณยืนยันการบันทึก Ads Allocation `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const date_range = handleDateRangeToString(datePickers);
+        const screenIDs = screenAdsAllocation.map((screen) => ({
+          screenid: screen.ScreenID,
+        }));
+        const screenIdsString = screenIDs
+          .map((screen) => screen.screenid)
+          .join(",");
+
+        if (screenIDs.length <= 0) {
           Swal.fire({
             icon: "error",
             title: "เกิดข้อผิดพลาด!",
-            text: data.message,
+            text: "กรุณาเลือกจอที่ต้องการ ...",
           });
+          return;
+        }
+        if (!date_range) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: "กรุณาเลือกช่วงเวลา ...",
+          });
+          return;
+        }
+        if (!media_playlist_id) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: "กรุณาเลือก Media Playlist ...",
+          });
+          return;
+        }
+
+        const obj = {
+          bookingid: bookingId,
+          dates: date_range,
+          screenids: screenIdsString,
+          mediaplaylistid: parseInt(media_playlist_id),
+        };
+        try {
+          const check_screen = await User.getBookingContentScreen(obj, token);
+          const isAnotherScreen = compareScreenID(
+            screenSelectFromEdit,
+            check_screen.screens
+          );
+          if (check_screen.screens.length >= 1 && isAnotherScreen) {
+            // ถ้ามีจออื่นใช้ playlist นี้ด้วย
+            setScreenUsePlaylist(check_screen.screens);
+            setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
+          } else {
+            // ถ้าไม่มีจออื่นใช้
+            const data = await User.updateBookingContent(obj, token);
+            if (data.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "Update Booking Content Success ...",
+                text: "แก้ไข Booking Content สำเร็จ!",
+              }).then(async (result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  setOpenAdsAllocationModal(!openAdsAllocationModal);
+                  setFactAllocation(!fact_allocation);
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
+            }
+          }
+        } catch (error) {
+          console.log(error);
         }
       }
-    } catch (error) {
-      console.log(error);
-    }
+    });
   };
 
   const handleCloseModalAdsAllocation = () => {
@@ -883,9 +977,9 @@ const Ads_Allocation_Booking = ({
 
         setItemsPanel1(clonedItemsPanel1);
 
-        setMediaPlaylistId(option.MediaPlaylistID);
-        setPlaylistName(option.PlaylistName);
-        setTempPlaylistName(option.PlaylistName);
+        setMediaPlaylistId(option?.MediaPlaylistID);
+        setPlaylistName(option?.PlaylistName);
+        setTempPlaylistName(option?.PlaylistName);
         setCheckCreateMediaPlaylist(false);
         setIsExpanded(false);
       }
@@ -969,6 +1063,7 @@ const Ads_Allocation_Booking = ({
                       const data = await getMediaPlaylist();
                       setSelectedOption(data);
                       setCheckCreateMediaPlaylist(false);
+                      setIsEdit(false);
                     } else {
                       Swal.fire({
                         icon: "error",
@@ -1016,6 +1111,7 @@ const Ads_Allocation_Booking = ({
               const data = await getMediaPlaylist();
               setSelectedOption(data);
               setTempPlaylistName(playlist_name);
+              setIsEdit(false);
             } else {
               Swal.fire({
                 icon: "error",
@@ -1052,8 +1148,8 @@ const Ads_Allocation_Booking = ({
             if (data.code !== 404) {
               Swal.fire({
                 icon: "success",
-                title: "Edit Media to Playlist Success ...",
-                text: "แก้ไข Media to Playlist สำเร็จ!",
+                title: "แก้ไข Media to Playlist สำเร็จ ...",
+                text: "ดำเนินการแก้ไข Media to Playlist สำเร็จ!",
               }).then(async (result) => {
                 if (
                   result.isConfirmed ||
@@ -1061,6 +1157,7 @@ const Ads_Allocation_Booking = ({
                 ) {
                   const data = await getMediaPlaylist();
                   setSelectedOption(data);
+                  setIsEdit(false);
                 }
               });
             } else {
@@ -1094,8 +1191,8 @@ const Ads_Allocation_Booking = ({
             if (data.code !== 404) {
               Swal.fire({
                 icon: "success",
-                title: "Edit Media to Playlist Success ...",
-                text: "แก้ไข Media to Playlist สำเร็จ!",
+                title: "แก้ไข Media to Playlist สำเร็จ ...",
+                text: "ดำเนินการแก้ไข Media to Playlist สำเร็จ!",
               }).then(async (result) => {
                 if (
                   result.isConfirmed ||
@@ -1103,6 +1200,7 @@ const Ads_Allocation_Booking = ({
                 ) {
                   const data = await getMediaPlaylist();
                   setSelectedOption(data);
+                  setIsEdit(false);
                 }
               });
             } else {
@@ -1552,6 +1650,12 @@ const Ads_Allocation_Booking = ({
                                   value={playlist_name}
                                   onChange={(e) => {
                                     const newName = e.target.value;
+                                    if (temp_playlist_name !== newName) {
+                                      setIsEdit(true);
+                                    } else {
+                                      setIsEdit(false);
+                                    }
+
                                     setPlaylistName(newName);
                                   }}
                                   onBlur={() => setEditPlaylist(!editPlaylist)}
@@ -1566,12 +1670,20 @@ const Ads_Allocation_Booking = ({
                                         setEditPlaylist(!editPlaylist)
                                       }
                                       size={26}
-                                      className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                                      className={`${
+                                        isEdit
+                                          ? "text-[#6425FE] hover:text-[#6325fe86]"
+                                          : "text-gray-500 hover:text-gray-800"
+                                      } ml-2 cursor-pointer`}
                                     />
                                     <RiSave3Line
                                       onClick={() => handleSavePlaylist()}
                                       size={26}
-                                      className="text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
+                                      className={`${
+                                        isEdit
+                                          ? "text-[#6425FE] hover:text-[#6325fe86]"
+                                          : "text-gray-500 hover:text-gray-800"
+                                      } ml-2 cursor-pointer`}
                                       // className="text-red-500 hover:text-red-900 ml-2 cursor-pointer"
                                     />
                                   </>
@@ -2070,10 +2182,10 @@ const Ads_Allocation_Booking = ({
                                                       size={26}
                                                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                                                       onClick={() => {
-                                                        // setModalPlayerOpen(
-                                                        //   !modalPlayerOpen
-                                                        // );
-                                                        // setMediaDisplay(items);
+                                                        setModalPlayerOpen(
+                                                          !modalPlayerOpen
+                                                        );
+                                                        setMediaDisplay(items);
                                                       }}
                                                     />
                                                   </div>
