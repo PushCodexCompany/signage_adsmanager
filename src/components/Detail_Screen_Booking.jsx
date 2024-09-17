@@ -83,7 +83,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
             <div className="w-full lg:w-1/2 p-4">
               <div className="relative">
                 <label
-                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none${
                     detailScreen.ScreenName
                       ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
                       : "top-3 text-gray-300"
@@ -242,7 +242,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                     <div className="col-span-3">
                       <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                             detailScreen.ScreenLocation
                               ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
                               : "top-3 text-gray-300"
@@ -262,7 +262,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                     <div className="col-span-3">
                       <div className="relative flex flex-col justify-center items-center h-full text-sm  ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                          className={`absolute left-3 px-1 transition-all font-poppins duration-200 z-10 pointer-events-none ${
                             detailScreen.ScreenCity
                               ? "-top-2.5 text-xs bg-white"
                               : "top-3 text-white"
@@ -307,7 +307,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                 <div className="mt-4">
                   <div className="relative flex flex-col justify-center items-center h-full text-sm ml-1">
                     <label
-                      className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                      className={`absolute left-3 px-1 transition-all font-poppins duration-200 z-10 pointer-events-none ${
                         detailScreen.ScreenDesc
                           ? "-top-2.5 text-xs bg-white"
                           : "top-3 text-gray-400"

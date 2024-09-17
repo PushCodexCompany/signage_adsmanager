@@ -342,16 +342,16 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
             <div className="w-full lg:w-1/2 p-4">
               <div className="relative">
                 <label
-                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                     screenName
-                      ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                      : "top-3 text-gray-300"
+                      ? "-top-2.5 text-xs bg-white"
+                      : "top-3 text-gray-400"
                   }`}
                 >
                   Screen Name
                 </label>
                 <input
-                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                   value={screenName}
                   onChange={(e) => setScreenName(e.target.value)}
                 />
@@ -488,26 +488,46 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                     <div className="mt-2 flex justify-center items-center">
                       <div className="grid grid-cols-4 space-x-1">
                         <div className="col-span-2">
-                          <input
-                            value={latLong.lat}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, lat: e.target.value })
-                            }
-                            type="text"
-                            placeholder="Lat"
-                            className="w-[157px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
-                          />
+                          <div className="relative flex flex-col justify-left items-center h-full text-sm ml-1">
+                            <label
+                              className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
+                                latLong.lat
+                                  ? "-top-2.5 text-xs bg-white"
+                                  : "top-3 text-gray-400"
+                              }`}
+                            >
+                              Lat
+                            </label>
+                            <input
+                              value={latLong.lat}
+                              onChange={(e) =>
+                                setLatLong({ ...latLong, lat: e.target.value })
+                              }
+                              type="text"
+                              className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                            />
+                          </div>
                         </div>
                         <div className="col-span-2">
-                          <input
-                            value={latLong.long}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, long: e.target.value })
-                            }
-                            type="text"
-                            placeholder="Long"
-                            className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300"
-                          />
+                          <div className="relative flex flex-col justify-left items-center h-full text-sm ml-1">
+                            <label
+                              className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
+                                latLong.long
+                                  ? "-top-2.5 text-xs bg-white"
+                                  : "top-3 text-gray-400"
+                              }`}
+                            >
+                              Long
+                            </label>
+                            <input
+                              value={latLong.long}
+                              onChange={(e) =>
+                                setLatLong({ ...latLong, long: e.target.value })
+                              }
+                              type="text"
+                              className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -531,12 +551,12 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                 <div className="mt-4">
                   <div className="grid grid-cols-6 space-x-1">
                     <div className="col-span-3">
-                      <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
+                      <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                             screenLocationName
-                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                              : "top-3 text-gray-300"
+                              ? "-top-2.5 text-xs bg-white"
+                              : "top-3 text-gray-400"
                           }`}
                         >
                           Location
@@ -547,17 +567,17 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                             setScreenLocationName(e.target.value)
                           }
                           type="text"
-                          className="w-full rounded-lg p-3 font-poppins border border-gray-300"
+                          className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                         />
                       </div>
                     </div>
                     <div className="col-span-3">
                       <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                          className={`absolute left-3 px-1 transition-all font-poppins duration-200 z-10 pointer-events-none ${
                             screenCityName
                               ? "-top-2.5 text-xs bg-white"
-                              : "top-3 text-white"
+                              : "top-3 text-gray-400"
                           }`}
                         >
                           {screenCityName ? "City" : ""}
@@ -565,7 +585,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                         <select
                           name="screenCity"
                           id="screenCity"
-                          className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                          className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                           onChange={(e) => setScreenCityName(e.target.value)}
                           value={screenCityName}
                         >
@@ -603,7 +623,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                 <div className="mt-4">
                   <div className="relative flex flex-col justify-center items-center h-full text-sm  ml-1">
                     <label
-                      className={`absolute left-3 px-1 transition-all font-poppins duration-200 ${
+                      className={`absolute left-3 px-1 transition-all font-poppins duration-200 z-10 pointer-events-none ${
                         screenDescription
                           ? "-top-2.5 text-xs bg-white"
                           : "top-3 text-gray-400"
@@ -615,7 +635,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                       value={screenDescription}
                       onChange={(e) => setScreenDescription(e.target.value)}
                       placeholder=""
-                      className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300"
+                      className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                       style={{
                         whiteSpace: "pre-wrap",
                         wordWrap: "break-word",

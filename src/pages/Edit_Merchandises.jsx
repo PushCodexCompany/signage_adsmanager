@@ -356,17 +356,17 @@ const Edit_Merchandises = () => {
           <div className="w-full lg:w-1/2 p-4">
             <div className="relative">
               <label
-                className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                   merchandise_name
-                    ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                    : "top-3 text-gray-300"
+                    ? "-top-2.5 text-xs bg-white"
+                    : "top-3 text-gray-400"
                 }`}
               >
                 Customer Name
               </label>
               <div className="flex items-center">
                 <input
-                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
+                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                   value={merchandise_name}
                   onChange={(e) => {
                     if (
@@ -427,10 +427,10 @@ const Edit_Merchandises = () => {
             <div className="flex items-center">
               <div className="relative w-full">
                 <label
-                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                     contact_person_name
-                      ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                      : "top-3 text-gray-300"
+                      ? "-top-2.5 text-xs bg-white"
+                      : "top-3 text-gray-400"
                   }`}
                 >
                   Full Name
@@ -448,7 +448,7 @@ const Edit_Merchandises = () => {
                     }
                     setContactPersonName(e.target.value);
                   }}
-                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
+                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                 />
               </div>
             </div>
@@ -456,10 +456,10 @@ const Edit_Merchandises = () => {
               <div className="w-1/2 pr-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       contact_person_dep
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Department
@@ -477,17 +477,17 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonDep(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>
               <div className="w-1/2 pl-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       contact_person_pos
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Position
@@ -504,7 +504,7 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonPos(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>
@@ -513,10 +513,10 @@ const Edit_Merchandises = () => {
               <div className="w-1/2 pr-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       contact_person_email
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Email
@@ -533,17 +533,17 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonEmail(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>
               <div className="w-1/2 pl-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       contact_person_phone
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Phone
@@ -562,7 +562,7 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonPhone(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>
@@ -574,10 +574,10 @@ const Edit_Merchandises = () => {
               <div className="w-1/2 pr-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       company_name
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Company Name
@@ -595,17 +595,17 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyName(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>
               <div className="w-1/2 pl-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       company_phone
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Company Phone
@@ -623,7 +623,7 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyPhone(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>
@@ -632,10 +632,10 @@ const Edit_Merchandises = () => {
               <div className="w-1/2 pr-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       company_tax_id
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Tax ID
@@ -652,17 +652,17 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyTaxId(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>
               <div className="w-1/2 pl-2">
                 <div className="relative ">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       company_tax_address
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Tax Address
@@ -680,7 +680,7 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyTaxAddress(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                   />
                 </div>
               </div>

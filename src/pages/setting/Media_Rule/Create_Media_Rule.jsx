@@ -232,11 +232,19 @@ const Create_Media_Rule = () => {
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-1/2 p-4">
             <div>
-              <div className=" h-10 rounded-sm flex items-center justify-start">
-                <div className="flex-grow h-full w-full border-1 border-gray-300 rounded-sm ">
+              <div className="relative">
+                <label
+                  className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
+                    media_rule_name
+                      ? "-top-2.5 text-xs bg-white"
+                      : "top-3 text-gray-400"
+                  }`}
+                >
+                  Media Rule Name
+                </label>
+                <div className="flex items-center">
                   <input
-                    className="font-bold text-sm w-full h-full font-poppins pl-4"
-                    placeholder="Media Rule Name"
+                    className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                     onChange={(e) => {
                       if (
                         location.state?.data?.MediaRuleName !== e.target.value
@@ -324,14 +332,14 @@ const Create_Media_Rule = () => {
                   </div>
                 </div>
                 <div className="col-span-2">
-                  <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold  rounded-md">
+                  <div className="relative flex flex-col justify-center items-center h-[40px] text-sm rounded-md">
                     {isView ? (
                       <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                             media_rule_width
-                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                              : "top-3 text-gray-300"
+                              ? "-top-2.5 text-xs bg-white"
+                              : "top-3 text-gray-400"
                           }`}
                         >
                           Width
@@ -339,7 +347,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          }`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -356,10 +364,10 @@ const Create_Media_Rule = () => {
                     ) : (
                       <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                             media_rule_width
-                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                              : "top-3 text-gray-300"
+                              ? "-top-2.5 text-xs bg-white"
+                              : "top-3 text-gray-400"
                           }`}
                         >
                           Width
@@ -367,7 +375,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          }`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -393,7 +401,7 @@ const Create_Media_Rule = () => {
                 </div>
                 <div className="col-span-1">
                   <div
-                    className={`flex justify-center items-end font-bold font-poppins mt-1 ${
+                    className={`flex justify-center items-end font-bold font-poppins mt-1  ${
                       toggle_disable ? "text-black" : "text-gray-500"
                     }`}
                   >
@@ -401,14 +409,14 @@ const Create_Media_Rule = () => {
                   </div>
                 </div>
                 <div className="col-span-2">
-                  <div className="relative flex flex-col justify-center items-center h-[40px] text-sm font-bold rounded-md">
+                  <div className="relative flex flex-col justify-center items-center h-[40px] text-sm  rounded-md">
                     {isView ? (
                       <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                             media_rule_height
-                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                              : "top-3 text-gray-300"
+                              ? "-top-2.5 text-xs bg-white"
+                              : "top-3 text-gray-400"
                           }`}
                         >
                           Height
@@ -416,7 +424,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          }`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -433,10 +441,10 @@ const Create_Media_Rule = () => {
                     ) : (
                       <div className="relative flex flex-col justify-left items-center h-full text-sm  ml-1">
                         <label
-                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                          className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                             media_rule_height
-                              ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                              : "top-3 text-gray-300"
+                              ? "-top-2.5 text-xs bg-white"
+                              : "top-3 text-gray-400"
                           }`}
                         >
                           Height
@@ -444,7 +452,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          }`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -501,22 +509,35 @@ const Create_Media_Rule = () => {
               </div>
               <div className="grid grid-cols-6 mt-5 space-x-2">
                 <div className="col-span-2">
-                  <input
-                    onChange={(e) => {
-                      if (
-                        location.state?.data?.AdsCapacity !== e.target.value
-                      ) {
-                        setIsEdit(true);
-                      } else {
-                        setIsEdit(false);
-                      }
-                      setMediaRuleAdsCapacity(e.target.value);
-                    }}
-                    placeholder="Ads Capacity"
-                    value={media_rule_adsCapacity}
-                    disabled={isView}
-                    className="font-poppins  border border-gray-300 h-[40px] rounded-md pl-4"
-                  />
+                  <div className="relative">
+                    <label
+                      className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
+                        media_rule_adsCapacity
+                          ? "-top-2.5 text-xs bg-white"
+                          : "top-3 text-gray-400"
+                      }`}
+                    >
+                      Ads Capacity
+                    </label>
+                    <div className="flex items-center">
+                      <input
+                        onChange={(e) => {
+                          if (
+                            location.state?.data?.AdsCapacity !== e.target.value
+                          ) {
+                            setIsEdit(true);
+                          } else {
+                            setIsEdit(false);
+                          }
+                          setMediaRuleAdsCapacity(e.target.value);
+                        }}
+                        value={media_rule_adsCapacity}
+                        disabled={isView}
+                        // className="font-poppins border border-gray-300 h-[40px] rounded-md pl-4 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                        className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="col-span-4">
                   <div className="flex justify-start items-center">

@@ -1079,17 +1079,17 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
               <div className="w-full lg:w-1/2 p-4">
                 <div className="relative">
                   <label
-                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                    className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                       merchandise_name
-                        ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                        : "top-3 text-gray-300"
+                        ? "-top-2.5 text-xs bg-white"
+                        : "top-3 text-gray-400"
                     }`}
                   >
                     Customer Name
                   </label>
                   <div className="flex items-center">
                     <input
-                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins"
+                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
                       value={merchandise_name}
                       onChange={(e) => setMerchandiseName(e.target.value)}
                     />
@@ -1137,10 +1137,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="flex items-center">
                   <div className="relative w-full">
                     <label
-                      className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                      className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                         contact_person_name
-                          ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                          : "top-3 text-gray-300"
+                          ? "-top-2.5 text-xs bg-white"
+                          : "top-3 text-gray-400"
                       }`}
                     >
                       Full Name
@@ -1148,7 +1148,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <input
                       value={contact_person_name}
                       onChange={(e) => setContactPersonName(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
+                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                     />
                   </div>
                 </div>
@@ -1156,10 +1156,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <div className="w-1/2 pr-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           contact_person_dep
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Department
@@ -1167,17 +1167,17 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_dep}
                         onChange={(e) => setContactPersonDep(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
                   <div className="w-1/2 pl-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           contact_person_pos
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Position
@@ -1185,7 +1185,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_pos}
                         onChange={(e) => setContactPersonPos(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
@@ -1194,10 +1194,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <div className="w-1/2 pr-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           contact_person_email
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Email
@@ -1205,17 +1205,17 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_email}
                         onChange={(e) => setContactPersonEmail(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
                   <div className="w-1/2 pl-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           contact_person_phone
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Phone
@@ -1224,7 +1224,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         value={contact_person_phone}
                         type="number"
                         onChange={(e) => setContactPersonPhone(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
@@ -1232,31 +1232,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
                   Company Info for Quotation
                 </div>
-                <div className="flex items-center">
-                  <div className="relative w-full">
-                    <label
-                      className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
-                        company_des
-                          ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                          : "top-3 text-gray-300"
-                      }`}
-                    >
-                      Company Description
-                    </label>
-                    <input
-                      onChange={(e) => setCompanyDes(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-blue-500 font-poppins"
-                    />
-                  </div>
-                </div>
                 <div className="flex items-center mt-3">
                   <div className="w-1/2 pr-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           company_name
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Company Name
@@ -1264,17 +1247,17 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_name}
                         onChange={(e) => setCompanyName(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
                   <div className="w-1/2 pl-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           company_phone
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Company Phone
@@ -1282,7 +1265,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_phone}
                         onChange={(e) => setCompanyPhone(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
@@ -1291,10 +1274,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <div className="w-1/2 pr-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           company_tax_id
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Tax ID
@@ -1302,17 +1285,17 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_tax_id}
                         onChange={(e) => setCompanyTaxId(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
                   <div className="w-1/2 pl-2">
                     <div className="relative ">
                       <label
-                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins ${
+                        className={`absolute left-3 px-1 transition-all duration-200 font-poppins z-10 pointer-events-none ${
                           company_tax_address
-                            ? "-top-2.5 text-xs bg-white  focus:text-blue-500"
-                            : "top-3 text-gray-300"
+                            ? "-top-2.5 text-xs bg-white"
+                            : "top-3 text-gray-400"
                         }`}
                       >
                         Tax Address
@@ -1320,7 +1303,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_tax_address}
                         onChange={(e) => setCompanyTaxAddress(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-blue-500 font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
                       />
                     </div>
                   </div>
