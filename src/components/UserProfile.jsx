@@ -65,14 +65,14 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
     } else {
       setPercent(0);
     }
-    if (storagebyte?.totalspace >= 1024 * 1024 * 1024) {
+    if (storagebyte?.totalspace >= 1000 * 1000 * 1000) {
       const spaceInGB = bytesToGB(storagebyte?.totalspace);
       setTotalSpace(`${spaceInGB.toFixed(2)} GB`);
     } else {
       const spaceInMB = bytesToMB(storagebyte?.totalspace);
       setTotalSpace(`${spaceInMB.toFixed(2)} MB`);
     }
-    if (storagebyte?.usesapce >= 1024 * 1024 * 1024) {
+    if (storagebyte?.usesapce >= 1000 * 1000 * 1000) {
       const spaceInGB = bytesToGB(storagebyte?.usesapce);
       setUseSpace(`${spaceInGB.toFixed(2)} GB`);
     } else {
@@ -82,11 +82,11 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
   };
 
   const bytesToMB = (bytes) => {
-    return bytes / (1024 * 1024);
+    return bytes / (1000 * 1000);
   };
 
   const bytesToGB = (bytes) => {
-    return bytes / (1024 * 1024 * 1024);
+    return bytes / (1000 * 1000 * 1000);
   };
 
   const handleLogout = async () => {

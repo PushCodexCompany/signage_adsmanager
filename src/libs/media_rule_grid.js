@@ -379,7 +379,7 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                       </div>
                     </button>
                     <button
-                      // disabled={row.TotalInUse > 0 ? true : false}
+                      disabled={row.TotalInUse > 0 ? true : false}
                       onClick={() => onClickEdit(row)}
                       className="relative group"
                     >
