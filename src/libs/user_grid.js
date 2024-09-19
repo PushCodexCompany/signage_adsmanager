@@ -29,6 +29,10 @@ export const GridTable = ({
   const [edit_activate, setEditActivate] = useState(null);
   const [edit_rolename, setEditRolename] = useState(null);
 
+  const [dump_email, setDumpEmail] = useState(null);
+  const [dump_roleName, setDumpRoleName] = useState(null);
+  const [dump_status, setDumpStatus] = useState(null);
+
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [reg_brand, setRegBrand] = useState([]);
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
@@ -36,6 +40,7 @@ export const GridTable = ({
 
   const [oldModal, setOldModal] = useState(true);
   const { token } = User.getCookieData();
+  const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
     fetchRoleData();
@@ -81,8 +86,11 @@ export const GridTable = ({
       AccessContent?.merchandise ? AccessContent.merchandise.map(Number) : []
     );
     setEditEmail(Email);
+    setDumpEmail(Email);
     setEditActivate(Activated);
+    setDumpStatus(Activated);
     setEditRolename(RoleID);
+    setDumpRoleName(RoleID);
     setOldModal(!oldModal);
     setModalEdit(!modal_edit);
   };
@@ -97,7 +105,7 @@ export const GridTable = ({
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3dabeb",
-      confirmButtonText: "ลบข้อมูล",
+      confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
       reverseButtons: true,
     }).then(async (result) => {
@@ -448,7 +456,14 @@ export const GridTable = ({
                   <div className="col-span-8">
                     <input
                       className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
-                      onChange={(e) => setEditEmail(e.target.value)}
+                      onChange={(e) => {
+                        if (dump_email !== e.target.value) {
+                          setIsEdit(true);
+                        } else {
+                          setIsEdit(false);
+                        }
+                        setEditEmail(e.target.value);
+                      }}
                       type="text"
                       placeholder="Your Email"
                       defaultValue={edit_email}
@@ -470,9 +485,14 @@ export const GridTable = ({
                       name="role"
                       id="role"
                       onClick={toggleStatusSelect}
-                      onChange={(e) =>
-                        setEditRolename(parseInt(e.target.value))
-                      }
+                      onChange={(e) => {
+                        if (dump_roleName !== parseInt(e.target.value)) {
+                          setIsEdit(true);
+                        } else {
+                          setIsEdit(false);
+                        }
+                        setEditRolename(parseInt(e.target.value));
+                      }}
                       value={edit_rolename}
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     >
@@ -494,9 +514,14 @@ export const GridTable = ({
                       name="status"
                       id="status"
                       onClick={toggleStatusSelect}
-                      onChange={(e) =>
-                        setEditActivate(parseInt(e.target.value))
-                      }
+                      onChange={(e) => {
+                        if (dump_status !== parseInt(e.target.value)) {
+                          setIsEdit(true);
+                        } else {
+                          setIsEdit(false);
+                        }
+                        setEditActivate(parseInt(e.target.value));
+                      }}
                       value={edit_activate}
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                     >
@@ -593,7 +618,11 @@ export const GridTable = ({
               <button
                 type="submit"
                 onClick={() => handleSaveEdit(edit_id)}
-                className="w-full lg:w-[300px] bg-[#2f3847] hover:bg-[#445066] py-2 rounded-sm text-white font-semibold mb-2 font-poppins"
+                className={`w-[315px] h-[48px]  ${
+                  isEdit
+                    ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                    : "bg-gray-500 hover:bg-gray-800"
+                } text-white font-bold font-poppins rounded-lg`}
               >
                 Save
               </button>

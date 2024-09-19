@@ -7,6 +7,7 @@ const Configuration = () => {
   const { token } = User.getCookieData();
 
   const [config_data, setConfigData] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   const [inputValues, setInputValues] = useState(
     config_data.reduce((acc, item) => {
@@ -31,7 +32,15 @@ const Configuration = () => {
     setInputValues(initialValues);
   };
 
-  const handleInputChange = (key, value) => {
+  const handleInputChange = (key, value, index) => {
+    if (key === Object.keys(inputValues)[index]) {
+      if (value !== config_data[index]?.ParameterValue) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(false);
+      }
+    }
+
     setInputValues({
       ...inputValues,
       [key]: value,
@@ -100,10 +109,14 @@ const Configuration = () => {
                 <div className="col-span-1">
                   <div className="flex text-center justify-center">
                     <input
-                      className="font-poppins h-[35px] text-center border border-[#dedede] rounded-md text-[#A9A9A9]"
+                      className="font-poppins h-[35px] text-center border border-[#dedede] rounded-md shadow-lg"
                       value={inputValues[items.ParameterKey]}
                       onChange={(e) =>
-                        handleInputChange(items.ParameterKey, e.target.value)
+                        handleInputChange(
+                          items.ParameterKey,
+                          e.target.value,
+                          index
+                        )
                       }
                     />
                   </div>
@@ -116,7 +129,11 @@ const Configuration = () => {
               <div className="flex text-center justify-center">
                 <button
                   onClick={() => handleSaveConfiguration()}
-                  className="w-[300px] h-[37px] bg-[#6425FE] hover:bg-[#3b1694] text-white rounded-md font-poppins "
+                  className={`w-[315px] h-[48px]  ${
+                    isEdit
+                      ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                      : "bg-gray-500 hover:bg-gray-800"
+                  } text-white font-bold font-poppins rounded-lg`}
                 >
                   Save
                 </button>

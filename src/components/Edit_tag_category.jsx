@@ -26,6 +26,7 @@ const Edit_tag_category = ({
   const [modalEditTag, setModalEditTag] = useState(false);
 
   const [select_tag, setSelectTag] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   const setEditData = () => {
     setNewCategoryName({
@@ -50,6 +51,20 @@ const Edit_tag_category = ({
   };
 
   const handleNewCategoryTag = (e, fieldName) => {
+    if (fieldName === "name") {
+      if (e.target.value !== select_cat.TagCategoryName) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(false);
+      }
+    } else {
+      if (e.target.value !== select_cat.TagDesc) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(false);
+      }
+    }
+
     setNewCategoryName({
       ...new_categoy_name,
       [fieldName]: e.target.value,
@@ -340,7 +355,11 @@ const Edit_tag_category = ({
           <div className="flex justify-center items-center mt-5">
             <button
               onClick={() => handleCreateOrUpdateTagCategory()}
-              className="bg-[#6425FE] hover:bg-[#3b1694] w-[20%] h-[40px] text-white font-poppins flex justify-center items-center rounded-lg"
+              className={`w-[315px] h-[48px]  ${
+                isEdit
+                  ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                  : "bg-gray-500 hover:bg-gray-800"
+              } text-white font-bold font-poppins rounded-lg`}
             >
               Save
             </button>
