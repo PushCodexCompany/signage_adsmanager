@@ -35,8 +35,10 @@ export const GridTable = ({
 
   const [showBrandModal, setShowBrandModal] = useState(false);
   const [reg_brand, setRegBrand] = useState([]);
+  const [dumb_brand, setDumbBrand] = useState([]);
   const [showMerchandiseModal, setShowMerchandiseModal] = useState(false);
   const [reg_merchandise, setRegMerchandise] = useState([]);
+  const [dumb_merchandise, setDumbMerchandise] = useState([]);
 
   const [oldModal, setOldModal] = useState(true);
   const { token } = User.getCookieData();
@@ -82,7 +84,11 @@ export const GridTable = ({
     // const brandIDs = AccessContent?.brands.map((item) => item.BrandID);
     // setRegBrand(brandIDs);
     setRegBrand(AccessContent?.brands ? AccessContent.brands.map(Number) : []);
+    setDumbBrand(AccessContent?.brands ? AccessContent.brands.map(Number) : []);
     setRegMerchandise(
+      AccessContent?.merchandise ? AccessContent.merchandise.map(Number) : []
+    );
+    setDumbMerchandise(
       AccessContent?.merchandise ? AccessContent.merchandise.map(Number) : []
     );
     setEditEmail(Email);
@@ -188,14 +194,65 @@ export const GridTable = ({
     }
   };
 
+  const deepEqualArrayForEditMedia = (obj1, obj2) => {
+    if (obj1 === obj2) return true;
+
+    if (
+      typeof obj1 !== "object" ||
+      typeof obj2 !== "object" ||
+      obj1 === null ||
+      obj2 === null
+    ) {
+      return false;
+    }
+
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) return false;
+
+    for (let key of keys1) {
+      if (
+        !keys2.includes(key) ||
+        !deepEqualArrayForEditMedia(obj1[key], obj2[key])
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const checkAreArraysEqual = (arr1, arr2) => {
+    if (arr1.length !== arr2.length) return false;
+
+    return arr1.every((item, index) =>
+      deepEqualArrayForEditMedia(item, arr2[index])
+    );
+  };
+
   const saveBrandReg = () => {
     const sortBrand = reg_brand.slice().sort((a, b) => a - b);
+
+    if (!checkAreArraysEqual(sortBrand, dumb_brand)) {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
+
     setRegBrand(sortBrand);
     setShowBrandModal(!showBrandModal);
   };
 
   const saveMerchandiseReg = () => {
     const sortMerch = reg_merchandise.slice().sort((a, b) => a - b);
+
+    if (!checkAreArraysEqual(sortMerch, dumb_merchandise)) {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
+
     setRegMerchandise(sortMerch);
     setShowMerchandiseModal(!showMerchandiseModal);
   };
