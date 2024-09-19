@@ -641,19 +641,19 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <tr
                         className={`cursor-pointer ${
                           select_merchandise?.AdvertiserID === row?.AdvertiserID
-                            ? "border-2 border-[#6425FE]"
+                            ? "border-[3px] border-[#6425FE]"
                             : "border-gray-200"
                         }`}
                         style={{
                           borderTop:
                             select_merchandise?.AdvertiserID ===
                             row?.AdvertiserID
-                              ? "2px solid #6425FE"
+                              ? "3px solid #6425FE"
                               : "1px solid gray",
                           borderBottom:
                             select_merchandise?.AdvertiserID ===
                             row?.AdvertiserID
-                              ? "2px solid #6425FE"
+                              ? "3px solid #6425FE"
                               : "1px solid gray",
                         }}
                         onClick={() => setSelectMerchandise(row)}
