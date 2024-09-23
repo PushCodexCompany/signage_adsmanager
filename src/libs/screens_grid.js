@@ -113,54 +113,16 @@ export const GridTable = ({
 
           return (
             <tr key={row.ScreenID}>
-              {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
-                    <div className="flex items-center">
-                      <label className="inline-flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                          checked={checkboxes[row.ScreenID] || false} // Set default value to false if row.ScreenID is not present
-                          onChange={() =>
-                            toggleCheckboxAddScreen(row.ScreenID, row)
-                          }
-                        />
-                        <span
-                          className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                            checkboxes[row.ScreenID] ? "bg-white" : ""
-                          }`}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className={`h-6 w-6 text-white ${
-                              checkboxes[row.ScreenID]
-                                ? "opacity-100"
-                                : "opacity-0"
-                            } transition-opacity duration-300 ease-in-out`}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="#6425FE"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="3"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        </span>
-                      </label>
-                    </div>
-                  </td> */}
               <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex items-center justify-center">
-                  <div className="font-poppins text-md font-bold">
+                  <div className="font-poppins text-md font-bold ">
                     {row.ScreenID}
                   </div>
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex">
-                  <div className="font-poppins text-md font-bold">
+                  <div className="font-poppins text-md font-bold truncate max-w-[100px]">
                     <div className="flex">
                       {row.ScreenName}
                       {status_screen === 1 ? (
@@ -172,9 +134,20 @@ export const GridTable = ({
                   </div>
                 </div>
               </td>
-              <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
-                <div className="font-poppins text-md text-[#59606C] font-bold">
-                  {row.ScreenLocation || "No Data"}
+              <td className="px-1 py-2 whitespace-nowrap border-b border-gray-200">
+                <div className="flex justify-start items-center group relative">
+                  <div className="font-poppins text-md text-[#59606C] font-medium truncate max-w-[300px]">
+                    {row.ScreenLocation.length > 39 ? (
+                      <>
+                        {row.ScreenLocation.slice(0, 36) + "..."}
+                        <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          {row.ScreenLocation}
+                        </span>
+                      </>
+                    ) : (
+                      <>{row.ScreenLocation}</>
+                    )}
+                  </div>
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
@@ -188,12 +161,12 @@ export const GridTable = ({
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-lg rounded-lg">
                   {row.ScreenRule[0]?.AdsCapacity || "No Data"}
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-lg rounded-lg">
                   {row.loopDuration ? `${row.loopDuration} Second` : "No Data"}
                 </div>
               </td>
@@ -203,7 +176,7 @@ export const GridTable = ({
                     row.ScreenTag.map((items, index) => (
                       <div
                         key={index}
-                        className="border border-gray-300 rounded-xl flex justify-center items-center mb-1 mr-1"
+                        className="border border-gray-300 shadow-lg rounded-lg flex justify-center items-center mb-1 mr-1"
                         style={{ padding: "2px 4px" }}
                       >
                         <div className="p-1">
@@ -259,7 +232,7 @@ export const GridTable = ({
                       </div>
                     </button>
                   )}
-                  {page_permission?.update ? (
+                  {page_permission?.update && (
                     <button
                       className="relative group"
                       onClick={() => handleEditScreen(row)}
@@ -272,8 +245,6 @@ export const GridTable = ({
                         Edit Screen
                       </div>
                     </button>
-                  ) : (
-                    <></>
                   )}
 
                   <button
@@ -289,7 +260,7 @@ export const GridTable = ({
                     </div>
                   </button>
 
-                  {page_permission?.delete ? (
+                  {page_permission?.delete && (
                     <button
                       className="relative group"
                       onClick={() =>
@@ -304,8 +275,6 @@ export const GridTable = ({
                         Delete Screen
                       </div>
                     </button>
-                  ) : (
-                    <></>
                   )}
                 </div>
               </td>
@@ -491,60 +460,28 @@ export const GridTable = ({
     <>
       <div>
         <div className="w-auto h-[480px] overflow-auto">
-          <table className="min-w-full border border-gray-300">
+          <table className="min-w-full table-auto border border-gray-300">
             <thead>
               <tr>
-                {/* <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                <label className="inline-flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                    checked={selectAll}
-                    onChange={toggleAllCheckboxes}
-                  />
-                  <span
-                    className={`h-5 w-5 border-2 border-[#6425FE] rounded-sm cursor-pointer flex items-center justify-center ${
-                      selectAll ? "bg-white" : ""
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`h-6 w-6 text-white ${
-                        selectAll ? "opacity-100" : "opacity-0"
-                      } transition-opacity duration-300 ease-in-out`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="#6425FE"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="3"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </span>
-                </label>
-              </th> */}
                 <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
                   No
                 </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
+                <th className="px-1 py-2 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider w-[130px]">
                   Screen Name
                 </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-2 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[300px]">
                   Location
                 </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Media Rule
                 </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[130px]">
                   Slot Per Day
                 </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[130px]">
                   Loop Duration
                 </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[400px]">
                   Tag
                 </th>
                 <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">

@@ -331,7 +331,7 @@ const Remove_Content = ({
                       </div>
                     </div>
                     <div className="col-span-1" />
-                    <div className="col-span-4 border border-[#D9D9D9] rounded-md">
+                    <div className="col-span-4 border border-[#D9D9D9] rounded-md shadow-lg">
                       <div className="p-2">
                         <div className="grid grid-cols-5">
                           <div className="col-span-4">
@@ -414,7 +414,7 @@ const Remove_Content = ({
                       {datePickers.map((items, index) => (
                         <div
                           key={index}
-                          className="grid grid-cols-6 border border-[#D9D9D9] rounded-md"
+                          className="grid grid-cols-6 border border-[#D9D9D9] rounded-md "
                         >
                           <div className="col-span-2 p-2 flex justify-center items-center">
                             <div className="font-poppins">
@@ -462,7 +462,7 @@ const Remove_Content = ({
                           </div>
                         </div>
                       ))}
-                      <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
+                      <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md shadow-lg">
                         <div className="col-span-4">
                           <div className="p-2">
                             <div className="flex flex-wrap">

@@ -811,7 +811,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         selected_dates.some((date) => isSameDay(date, day))
                           ? "bg-[#6425FE] border-3 border-[#6425FE] text-white"
                           : ""
-                      }`}
+                      } shadow-lg`}
                     >
                       <div className="font-poppins lg:text-lg md:text-xs">
                         {format(day, "d")}
@@ -881,7 +881,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <input
                       onChange={(e) => setBookingName(e.target.value)}
                       value={booking_name}
-                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
+                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300 shadow-lg"
                       placeholder="Enter Booking Name"
                     />
                   </div>
@@ -893,7 +893,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       onChange={(e) => setBookingSlot(e.target.value)}
                       value={booking_slot}
                       type="number"
-                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300"
+                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300 shadow-lg"
                       placeholder="Enter Number of Slot"
                     />
                   </div>

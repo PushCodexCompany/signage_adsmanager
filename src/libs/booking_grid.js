@@ -143,7 +143,7 @@ export const GridTable = ({
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="flex items-center justify-center">
                 <img
-                  className="w-[60px] h-[60px] rounded-md object-cover"
+                  className="w-[60px] h-[60px] rounded-md border border-gray-300 shadow-lg object-cover"
                   src={
                     row.AdvertiserLogo
                       ? row.AdvertiserLogo
@@ -304,7 +304,7 @@ export const GridTable = ({
                 <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   ID
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[200px]">
                   Booking Name
                 </th>
                 <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider ">

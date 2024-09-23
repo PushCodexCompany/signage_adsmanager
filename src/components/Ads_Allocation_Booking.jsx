@@ -627,7 +627,7 @@ const Ads_Allocation_Booking = ({
                   </div>
                   <div className="flex-1">
                     <div
-                      className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[265px] lg:w-[320px]`}
+                      className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[265px] lg:w-[315px] rounded-lg shadow-lg`}
                       style={{ height: `${itemHeight}px` }}
                     >
                       <div className="col-span-2 flex justify-center items-center">
@@ -1344,7 +1344,7 @@ const Ads_Allocation_Booking = ({
                         </div>
                       </div>
                       <div className="col-span-1" />
-                      <div className="col-span-6 border border-[#D9D9D9] rounded-md">
+                      <div className="col-span-6 border border-[#D9D9D9] rounded-md shadow-lg">
                         <div className="p-2">
                           <div className="grid grid-cols-5">
                             <div className="col-span-4">
@@ -1432,7 +1432,7 @@ const Ads_Allocation_Booking = ({
                         {datePickers.map((items, index) => (
                           <div
                             key={index}
-                            className="grid grid-cols-6 border border-[#D9D9D9] rounded-md"
+                            className="grid grid-cols-6 border border-[#D9D9D9] rounded-md shadow-lg"
                           >
                             <div className="col-span-2 p-2 flex justify-center items-center">
                               <div className="font-poppins">
@@ -1484,7 +1484,7 @@ const Ads_Allocation_Booking = ({
                             </div>
                           </div>
                         ))}
-                        <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md">
+                        <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md shadow-lg">
                           <div className="col-span-4">
                             <div className="p-2">
                               <div className="flex flex-wrap">
@@ -1601,7 +1601,7 @@ const Ads_Allocation_Booking = ({
                                 </div>
                               </div>
                               {isExpanded && (
-                                <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2">
+                                <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2 shadow-lg">
                                   {page_permission?.create ||
                                   page_permission?.update ? (
                                     <button
@@ -1617,7 +1617,7 @@ const Ads_Allocation_Booking = ({
                                   {selectedOption.map((option, index) => (
                                     <div
                                       key={option.MediaPlaylistID}
-                                      className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
+                                      className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer "
                                       onClick={() => handleOptionClick(option)}
                                     >
                                       <div
@@ -1644,9 +1644,9 @@ const Ads_Allocation_Booking = ({
                                 <input
                                   className={`w-[80%] text-[#2F3847] mt-2 ${
                                     !editPlaylist
-                                      ? "border border-gray-300 pl-2"
+                                      ? "border border-gray-300 pl-2 "
                                       : ""
-                                  }`}
+                                  } `}
                                   placeholder="Playlist Name"
                                   value={playlist_name}
                                   onChange={(e) => {
@@ -1857,7 +1857,7 @@ const Ads_Allocation_Booking = ({
                                                   ref={provided.innerRef}
                                                   {...provided.draggableProps}
                                                   {...provided.dragHandleProps}
-                                                  className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                                  className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-lg"
                                                 >
                                                   <div className="col-span-2 flex justify-center items-center">
                                                     {items.ContentTypeName ===
@@ -1991,7 +1991,7 @@ const Ads_Allocation_Booking = ({
                                                   ref={provided.innerRef}
                                                   {...provided.draggableProps}
                                                   {...provided.dragHandleProps}
-                                                  className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                                  className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-lg"
                                                 >
                                                   <div className="col-span-2 flex justify-center items-center">
                                                     {items.ContentTypeName ===
@@ -2124,7 +2124,7 @@ const Ads_Allocation_Booking = ({
                                                   ref={provided.innerRef}
                                                   {...provided.draggableProps}
                                                   {...provided.dragHandleProps}
-                                                  className="grid grid-cols-11 h-[80px] border border-gray-300"
+                                                  className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-lg"
                                                 >
                                                   <div className="col-span-2 flex justify-center items-center">
                                                     {items.ContentTypeName ===

@@ -431,14 +431,14 @@ const Create_Role_Permission = ({
                 {!isSelectAll ? (
                   <button
                     onClick={() => handleSelectAllRole()}
-                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px]"
+                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px] shadow-lg"
                   >
                     Select All
                   </button>
                 ) : (
                   <button
                     onClick={() => handleDeSelectAllRole()}
-                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px]"
+                    className="text-white font-poppins rounded-lg bg-[#6425FE] hover:bg-[#3b1694] w-[80px] h-[50px] shadow-lg"
                   >
                     Deselect All
                   </button>
@@ -537,7 +537,7 @@ const Create_Role_Permission = ({
                 type="text"
                 value={newRole.name}
                 onChange={(e) => handleRoleChange(e, "name")}
-                className="w-full p-2  border rounded"
+                className="w-full p-2  border border-gray-300 rounded-lg shadow-lg"
               />
             </div>
           </div>
@@ -552,7 +552,7 @@ const Create_Role_Permission = ({
                 type="text"
                 value={newRole.description}
                 onChange={(e) => handleRoleChange(e, "description")}
-                className="w-full p-2  border rounded"
+                className="w-full p-2  border border-gray-300 rounded-lg shadow-lg"
               />
             </div>
           </div>
@@ -566,7 +566,7 @@ const Create_Role_Permission = ({
           <div className="flex justify-center items-center -mt-3">
             <button
               onClick={() => handleSaveNewRole()}
-              className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg"
+              className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg shadow-lg"
             >
               Save
             </button>

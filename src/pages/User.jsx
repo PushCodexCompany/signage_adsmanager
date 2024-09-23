@@ -284,7 +284,7 @@ const User = () => {
             <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
               <button
                 onClick={() => setShowModal(true)}
-                className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+                className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md shadow-xl"
               >
                 New User +
               </button>

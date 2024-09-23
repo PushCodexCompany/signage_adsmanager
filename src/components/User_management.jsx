@@ -298,7 +298,7 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
                 <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
                   <button
                     onClick={() => setShowRegister(true)}
-                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[200px] lg:w-[300px] h-[45px] rounded-md mr-1"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[200px] lg:w-[300px] h-[45px] rounded-md mr-1 shadow-xl"
                   >
                     New User +
                   </button>

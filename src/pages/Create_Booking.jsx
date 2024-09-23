@@ -853,7 +853,7 @@ const Create_Booking = () => {
           <div className="col-span-2">
             <div>
               <img
-                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300`}
+                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300 shadow-lg`}
                 src={
                   merchandise.AdvertiserLogo
                     ? merchandise.AdvertiserLogo
@@ -883,7 +883,7 @@ const Create_Booking = () => {
                       className="flex justify-center items-center mt-3 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px]`}
+                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] shadow-lg`}
                         // onClick={() => toggleScreenFromAllScreen(items)}
                       >
                         <div className="grid grid-cols-10 md:space-x-1">
@@ -1061,7 +1061,7 @@ const Create_Booking = () => {
                               handleSelectAllAvilable();
                             }
                           }}
-                          className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer"
+                          className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center cursor-pointer shadow-lg"
                         >
                           <div className="text-xs font-poppins text-white">
                             Select all
@@ -1092,7 +1092,7 @@ const Create_Booking = () => {
                         {booking_date.length > 0 &&
                           booking_date.map((items, index) => (
                             <div key={index} className="mt-3 space-x-2">
-                              <div className="lg:min-w-[20px]  min-w-[100px] h-[70px] bg-[#59606C] rounded-lg">
+                              <div className="lg:min-w-[20px]  min-w-[100px] h-[70px] bg-[#59606C] rounded-lg shadow-xl">
                                 <div className="flex items-center justify-center text-xs font-poppins text-white">
                                   {format(items, "EEE")}
                                 </div>

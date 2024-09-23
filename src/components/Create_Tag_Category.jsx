@@ -89,7 +89,7 @@ const Create_Tag_Category = ({
                 type="text"
                 value={new_categoy_name.name}
                 onChange={(e) => handleNewCategoryTag(e, "name")}
-                className="w-full p-2  border rounded"
+                className="w-full p-2  border border-gray-300 rounded-lg shadow-lg "
               />
             </div>
           </div>
@@ -104,7 +104,7 @@ const Create_Tag_Category = ({
                 type="text"
                 value={new_categoy_name.description}
                 onChange={(e) => handleNewCategoryTag(e, "description")}
-                className="w-full p-2  border rounded"
+                className="w-full p-2  border border-gray-300 rounded-lg shadow-lg"
               />
             </div>
           </div>
@@ -112,7 +112,7 @@ const Create_Tag_Category = ({
         <div className="flex justify-center items-center mt-10">
           <button
             onClick={() => handleCreateNewTag()}
-            className="bg-[#6425FE] hover:bg-[#3b1694] w-[20%] h-[40px] text-white font-poppins flex justify-center items-center rounded-lg"
+            className="bg-[#6425FE] hover:bg-[#3b1694] w-[20%] h-[40px] text-white font-poppins flex justify-center items-center rounded-lg shadow-lg"
           >
             Create
           </button>

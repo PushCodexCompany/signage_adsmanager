@@ -63,7 +63,7 @@ const Booking = () => {
             <div className="col-span-4 flex justify-end">
               <button
                 onClick={() => setShowModalAddNewBooking(true)}
-                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md shadow-xl"
               >
                 New Booking +
               </button>

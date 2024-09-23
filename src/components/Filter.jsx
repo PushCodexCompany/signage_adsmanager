@@ -85,7 +85,7 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
                           name={items.TagCategoryName}
                           id={items.TagCategoryName}
                           onChange={handleStatusChange}
-                          className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-200 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                          className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-lg p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                         >
                           <option value="" disabled selected hidden>
                             {items.TagCategoryName}
@@ -114,7 +114,7 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
         {filter &&
           filter.map((items, index) => (
             <button key={index} onClick={() => removeFilter(items, index)}>
-              <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-2 rounded-full">
+              <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full shadow-xl">
                 <div className="grid grid-cols-4">
                   <div className="col-span-1 mt-[6px]">
                     <div className="flex justify-end items-center">
@@ -135,7 +135,7 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
           ))}
         {filter.length > 0 && (
           <button onClick={() => clearFilter()}>
-            <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] hover:bg-[#3b1694] border-gray-2 rounded-full">
+            <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] hover:bg-[#3b1694] border-gray-2 rounded-full shadow-xl">
               <div className="grid grid-cols-12">
                 <div className="col-span-1 mt-[6px]">
                   <div className="flex justify-end items-center">

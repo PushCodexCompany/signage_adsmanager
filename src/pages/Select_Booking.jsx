@@ -385,7 +385,7 @@ const Select_Booking = () => {
                   item.MediaID
                     ? "bg-white border border-[#D9D9D9]"
                     : "bg-[#D9D9D9]"
-                } flex justify-center items-center`}
+                } flex justify-center items-center shadow-lg`}
               >
                 {item.MediaID ? <IoIosPlayCircle color="#6425FE" /> : ""}
                 {item.ContentName && (
@@ -480,7 +480,7 @@ const Select_Booking = () => {
           <div className="col-span-2">
             <div>
               <img
-                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300`}
+                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300 shadow-lg`}
                 src={merchandise.AdvertiserLogo}
                 alt={merchandise.AdvertiserName}
               />
@@ -504,14 +504,14 @@ const Select_Booking = () => {
                       className="flex justify-center items-center mt-3 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] `}
+                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] shadow-lg`}
                       >
                         <div className="grid grid-cols-10">
                           <div className="col-span-2 flex justify-center items-center">
                             <PiMonitor size={40} color={"#59606C"} />
                           </div>
                           <div className="col-span-6">
-                            <div className="flex justify-start items-center">
+                            <div className="flex justify-start items-center group relative">
                               <div className="font-poppins lg:text-xl md:text-md font-bold">
                                 {items.ScreenName.length > 12 ? (
                                   <>

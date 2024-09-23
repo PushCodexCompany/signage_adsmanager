@@ -330,7 +330,7 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                 <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
                   <div className="flex flex-wrap">
                     <div
-                      className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1"
+                      className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1 shadow-lg"
                       style={{ flexBasis: "calc(38% - 8px)" }}
                     >
                       <div className="font-poppins text-sm font-bold text-[#6425FE] ">
@@ -345,7 +345,7 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                       </div>
                     </div>
                     <div
-                      className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1"
+                      className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1 shadow-lg"
                       style={{ flexBasis: "calc(35% - 8px)" }}
                     >
                       <div className="font-poppins text-sm font-bold text-[#6425FE] ">

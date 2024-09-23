@@ -522,7 +522,7 @@ const Role_permission = () => {
               <div className="font-poppins font-bold text-2xl">User Role</div>
               {permission.userrole?.create ? (
                 <button
-                  className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins rounded-lg"
+                  className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins rounded-lg shadow-lg"
                   onClick={() => createNewRole()}
                 >
                   New Role +
@@ -538,7 +538,7 @@ const Role_permission = () => {
                       className={`grid grid-cols-7 gap-2 mt-5 
                   ${
                     index === select_role
-                      ? "text-white bg-[#6425FE] h-[55px] border rounded-lg"
+                      ? "text-white bg-[#6425FE] h-[55px] border rounded-lg shadow-lg"
                       : ""
                   } 
                   cursor-pointer`}
