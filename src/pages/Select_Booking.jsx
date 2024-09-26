@@ -118,7 +118,6 @@ const Select_Booking = () => {
 
     // get Booking Content
     const booking_content = await User.getBookingContent(BookingID, token);
-
     calculateSize(booking_content);
 
     // get Screen Data
@@ -443,7 +442,11 @@ const Select_Booking = () => {
               </div>
             </div>
           ) : (
-            <div className="col-span-5 flex justify-start items-center pl-2" />
+            <div className="col-span-5 flex justify-start items-center pl-2">
+              <div className="text-center font-poppins text-xl">
+                Latest Publish : Non Publish
+              </div>
+            </div>
           )}
 
           <div className="col-span-2">
@@ -481,7 +484,13 @@ const Select_Booking = () => {
             <div>
               <img
                 className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300 shadow-lg`}
-                src={merchandise.AdvertiserLogo}
+                src={
+                  merchandise.AdvertiserLogo
+                    ? merchandise.AdvertiserLogo
+                    : `https://ui-avatars.com/api/?name=${
+                        merchandise.AdvertiserName
+                      }&background=${"000000"}&color=fff`
+                }
                 alt={merchandise.AdvertiserName}
               />
             </div>
@@ -599,7 +608,7 @@ const Select_Booking = () => {
                     </div>
 
                     <div className="font-poppins text-xs">
-                      {`You Select ${booking_slot} Slot(s) Per Day`}
+                      {`You Select ${booking_slot} Slot(s)`}
                     </div>
                   </div>
                 </div>
@@ -608,13 +617,88 @@ const Select_Booking = () => {
               <div className="lg:w-[1140px] w-[520px] h-[630px] overflow-x-auto overflow-y-auto mt-5 scrollbar pb-[10px]">
                 <div className="grid grid-cols-12 space-x-1 mt-3">
                   <div className="col-span-3 lg:col-span-1">
-                    <div className="min-w-[100%]">
-                      <div className="lg:min-w-[20px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center">
-                        <div className="text-xs font-poppins text-white">
-                          Clear
-                        </div>
-                        <div className="text-xs font-poppins text-white">
-                          Selection
+                    <div className="min-w-[100%] ">
+                      <div className="sticky top-0 z-10">
+                        {/* Make it sticky */}
+                        <div className="flex items-center space-x-2">
+                          <div className="lg:min-w-[100px] min-w-[100px] h-[90px] bg-[#6425FE] hover:bg-[#3b1694] rounded-lg flex flex-col items-center justify-center">
+                            <div className="text-xs font-poppins text-white">
+                              Clear
+                            </div>
+                            <div className="text-xs font-poppins text-white">
+                              Selection
+                            </div>
+                          </div>
+
+                          {screen.length > 0 &&
+                            screen.map((items, screenIndex) => (
+                              <div
+                                key={screenIndex}
+                                className="h-[90px] min-w-[250px] rounded-lg bg-white flex items-center border border-gray-300 shadow-lg"
+                              >
+                                <div className="flex justify-start items-center flex-grow">
+                                  <div className="flex justify-center items-center w-1/5">
+                                    <PiMonitor size={40} color={"#59606C"} />
+                                  </div>
+                                  <div className="flex flex-col justify-center w-3/5">
+                                    <div className="font-poppins text-xl font-bold relative group">
+                                      {items.ScreenName.length > 12 ? (
+                                        <>
+                                          {items.ScreenName.slice(0, 9) + "..."}
+                                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            {items.ScreenName}
+                                          </span>
+                                        </>
+                                      ) : (
+                                        <>{items.ScreenName}</>
+                                      )}
+                                    </div>
+                                    <div className="font-poppins text-sm md:text-xs text-[#8A8A8A]">
+                                      {items.ScreenLocation.length > 25 ? (
+                                        <>
+                                          {items.ScreenLocation.slice(0, 23) +
+                                            "..."}
+                                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            {items.ScreenLocation}
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          {items.ScreenLocation ||
+                                            "No Location ..."}
+                                        </>
+                                      )}
+                                    </div>
+                                    <div className="w-full font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px] mt-1">
+                                      <div className="flex items-center justify-center">
+                                        Media Rule
+                                      </div>
+                                      <div className="flex items-center justify-center">
+                                        {items.ScreenRule[0].Width &&
+                                        items.ScreenRule[0].Height
+                                          ? `W ${parseInt(
+                                              items.ScreenRule[0].Width,
+                                              10
+                                            )} x H ${parseInt(
+                                              items.ScreenRule[0].Height,
+                                              10
+                                            )}`
+                                          : "Not Set"}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-center items-center w-1/5">
+                                    <IoIosInformationCircleOutline
+                                      onClick={() =>
+                                        handleScreenInfo(items.ScreenID)
+                                      }
+                                      size={22}
+                                      className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
                         </div>
                       </div>
                       <div>
@@ -655,9 +739,9 @@ const Select_Booking = () => {
                                 key={screenIndex}
                                 className="h-[90px] min-w-[250px] rounded-lg"
                               >
-                                <div className="grid grid-cols-10">
+                                <div className="grid grid-cols-10 ">
                                   <div className="col-span-2 flex justify-center items-center">
-                                    <PiMonitor size={40} color={"#59606C"} />
+                                    {/* <PiMonitor size={40} color={"#59606C"} /> */}
                                   </div>
                                   <div className="col-span-6">
                                     <div className="flex justify-start items-center">
@@ -716,15 +800,16 @@ const Select_Booking = () => {
                                     </div>
                                   </div>
                                   <div className="col-span-2 flex justify-center items-center">
-                                    <IoIosInformationCircleOutline
+                                    {/* <IoIosInformationCircleOutline
                                       onClick={() =>
                                         handleScreenInfo(items.ScreenID)
                                       }
                                       size={22}
                                       className="cursor-pointer text-[#6425FE] hover:text-[#3b1694]"
-                                    />
+                                    /> */}
                                   </div>
                                 </div>
+
                                 {items.booking_content.length > 0 &&
                                   items.booking_content.map((items2, index) => (
                                     <div key={index} className="mt-3 space-x-2">

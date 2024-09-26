@@ -522,7 +522,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     );
 
     const obj_save_booking = {
-      bookingname: booking_name,
+      bookingname: booking_name.trim(),
       advertiserid: select_merchandise.AdvertiserID,
       slotperday: booking_slot,
       bookingperoids: booking_date,

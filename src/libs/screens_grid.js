@@ -120,11 +120,20 @@ export const GridTable = ({
                   </div>
                 </div>
               </td>
-              <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
-                <div className="flex">
-                  <div className="font-poppins text-md font-bold truncate max-w-[100px]">
+              <td className="px-1 py-4 whitespace-no-wrap border-b border-gray-200">
+                <div className="flex group relative">
+                  <div className="font-poppins text-md font-bold truncate max-w-[200px]">
                     <div className="flex">
-                      {row.ScreenName}
+                      {row.ScreenName.length > 20 ? (
+                        <>
+                          {row.ScreenName.slice(0, 17) + "..."}
+                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {row.ScreenName}
+                          </span>
+                        </>
+                      ) : (
+                        <>{row.ScreenName}</>
+                      )}
                       {status_screen === 1 ? (
                         <div className="bg-[#00C32B] w-[5px] h-[5px]  rounded-xl"></div>
                       ) : (
@@ -216,7 +225,10 @@ export const GridTable = ({
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
                         Unpair Screen
                       </div>
                     </button>
@@ -227,7 +239,10 @@ export const GridTable = ({
                         size={20}
                         className="text-[#ccc] hover:text-[#ccc] cursor-pointer"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
                         Pair Screen
                       </div>
                     </button>
@@ -241,7 +256,10 @@ export const GridTable = ({
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
                         Edit Screen
                       </div>
                     </button>
@@ -255,7 +273,10 @@ export const GridTable = ({
                       size={20}
                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                     />
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       Screen Detail
                     </div>
                   </button>
@@ -271,7 +292,10 @@ export const GridTable = ({
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
                         Delete Screen
                       </div>
                     </button>
@@ -340,7 +364,7 @@ export const GridTable = ({
 
   const handleEditScreen = (screen) => {
     navigate(`/screen/create/${screen.ScreenID}`, {
-      state: { screen: screen },
+      state: { screen: screen, tag: screen.ScreenTag },
     });
   };
 
@@ -464,9 +488,9 @@ export const GridTable = ({
             <thead>
               <tr>
                 <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
-                  No
+                  ID
                 </th>
-                <th className="px-1 py-2 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider w-[130px]">
+                <th className="px-1 py-2 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider w-[200px]">
                   Screen Name
                 </th>
                 <th className="px-1 py-2 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[300px]">

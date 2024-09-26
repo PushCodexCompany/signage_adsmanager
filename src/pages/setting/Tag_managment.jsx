@@ -68,7 +68,7 @@ const Tag_managment = () => {
     setSelectCat(items);
     const tag = await User.getTag(items.TagCategoryID, token);
     if (tag.length > 0) {
-      tag.sort((a, b) =>
+      tag?.sort((a, b) =>
         a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
       );
     }

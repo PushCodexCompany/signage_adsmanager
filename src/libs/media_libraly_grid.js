@@ -35,7 +35,7 @@ export const GridTable = ({
     const url = source.ContentSource;
     const link = document.createElement("a");
     link.href = url;
-    link.download = source.ContentName;
+    link.target = "_blank"; // Open in a new tab
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -214,7 +214,10 @@ export const GridTable = ({
                       size={20}
                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                     />
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       Preview Media
                     </div>
                   </button>
@@ -230,7 +233,10 @@ export const GridTable = ({
                       size={20}
                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                     />
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       Download Media
                     </div>
                   </button>
@@ -251,7 +257,10 @@ export const GridTable = ({
                           : "text-[#dbdbdb] hover:text-[#dbdbdb]"
                       } cursor-pointer`}
                     />
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       Delete Media
                     </div>
                   </button>

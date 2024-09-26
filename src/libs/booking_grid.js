@@ -10,6 +10,7 @@ import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import firebase_func from "../libs/firebase_func";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
 
 export const GridTable = ({
   booking_data,
@@ -113,6 +114,22 @@ export const GridTable = ({
     }
   };
 
+  const handleDeleteBooking = (booking_data) => {
+    Swal.fire({
+      text: `คุณต้องการลบ Booking : ${booking_data.BookingName} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      confirmButtonText: "ลบข้อมูล",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        alert("wait function delete");
+      }
+    });
+  };
+
   const renderTableData = () => {
     return (
       <>
@@ -167,17 +184,20 @@ export const GridTable = ({
             </td>
             {row.BookingStatus === 1 ? (
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                <div className="space-x-2">
+                <div className="space-x-3">
                   {page_permission?.view ? (
                     <button
                       onClick={() => onClickEdit(row)}
                       className="relative group"
                     >
                       <RiEditLine
-                        size={20}
+                        size={23}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ pointerEvents: "none" }}
+                      >
                         Complete Booking
                       </div>
                     </button>
@@ -186,14 +206,17 @@ export const GridTable = ({
                   )}
                   {page_permission?.delete ? (
                     <button
-                      onClick={() => alert("del")}
+                      onClick={() => handleDeleteBooking(row)}
                       className="relative group"
                     >
                       <RiDeleteBin5Line
-                        size={20}
+                        size={23}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ pointerEvents: "none" }}
+                      >
                         Cancel Booking
                       </div>
                     </button>
@@ -204,17 +227,20 @@ export const GridTable = ({
               </td>
             ) : (
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
-                <div className="space-x-2">
+                <div className="space-x-3">
                   {page_permission?.view ? (
                     <button
                       className="relative group"
                       onClick={() => handleSelectBooking(row)}
                     >
                       <RiVideoAddLine
-                        size={20}
+                        size={23}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ pointerEvents: "none" }}
+                      >
                         Manage Content
                       </div>
                     </button>
@@ -223,14 +249,17 @@ export const GridTable = ({
                   )}
                   {page_permission?.delete ? (
                     <button
-                      onClick={() => alert("del")}
+                      onClick={() => handleDeleteBooking(row)}
                       className="relative group"
                     >
                       <RiDeleteBin5Line
-                        size={20}
+                        size={23}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ pointerEvents: "none" }}
+                      >
                         Cancel Booking
                       </div>
                     </button>

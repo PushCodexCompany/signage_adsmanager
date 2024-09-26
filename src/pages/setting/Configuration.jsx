@@ -48,40 +48,52 @@ const Configuration = () => {
   };
 
   const handleSaveConfiguration = async () => {
-    const obj = {
-      configs: inputValues,
-    };
-    const newObj = {
-      configs: Object.keys(obj.configs).map((key) => ({
-        ParameterKey: key,
-        ParameterValue: obj.configs[key],
-      })),
-    };
+    Swal.fire({
+      text: `คุณยืนยันการแก้ไข Configuration `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const obj = {
+          configs: inputValues,
+        };
+        const newObj = {
+          configs: Object.keys(obj.configs).map((key) => ({
+            ParameterKey: key,
+            ParameterValue: obj.configs[key],
+          })),
+        };
 
-    try {
-      const data = await User.updateConfiguration(newObj, token);
-      if (data.code !== 404) {
-        Swal.fire({
-          icon: "success",
-          title: "Update Configuration Success ...",
-          text: "แก้ไข Configuration สำเร็จ!",
-        }).then(async (result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
+        try {
+          const data = await User.updateConfiguration(newObj, token);
+          if (data.code !== 404) {
+            Swal.fire({
+              icon: "success",
+              title: "Update Configuration Success ...",
+              text: "แก้ไข Configuration สำเร็จ!",
+            }).then(async (result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
           }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
+        } catch (error) {
+          console.error(error);
+        }
       }
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
 
   return (

@@ -72,46 +72,60 @@ const Edit_tag_category = ({
   };
 
   const handleCreateOrUpdateTagCategory = async () => {
-    if (new_categoy_name.name) {
-      const { token } = User.getCookieData();
-
-      // Update
-      const obj = {
-        tagcategoryid: new_categoy_name.id,
-        tagcategoryname: new_categoy_name.name,
-        tagcategorydesc: new_categoy_name.description || null,
-      };
-      try {
-        const data = await User.updateTagCategory(obj, token);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "Edit Tag Category Success ...",
-            text: `แก้ไข Tag Category สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              getTagCategory();
-              setModalEditCategory(!modalEditCategory);
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    } else {
+    if (isEdit) {
       Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: "กรุณากรอกชื่อ Tag Category !",
+        text: `ยืนยันการแก้ไข Tag  `,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#219ad1",
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+        reverseButtons: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          if (new_categoy_name.name) {
+            const { token } = User.getCookieData();
+
+            // Update
+            const obj = {
+              tagcategoryid: new_categoy_name.id,
+              tagcategoryname: new_categoy_name.name,
+              tagcategorydesc: new_categoy_name.description || null,
+            };
+            try {
+              const data = await User.updateTagCategory(obj, token);
+              if (data.code !== 404) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Edit Tag Category Success ...",
+                  text: `แก้ไข Tag Category สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    getTagCategory();
+                    setModalEditCategory(!modalEditCategory);
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data.message,
+                });
+              }
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: "กรุณากรอกชื่อ Tag Category !",
+            });
+          }
+        }
       });
     }
   };

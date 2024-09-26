@@ -9,9 +9,10 @@ const New_Tag = ({
   openModalNewTag,
   screenTag,
   setScreenTag,
+  setIsEdit,
+  dump_tag,
 }) => {
   const { token } = User.getCookieData();
-
   const [tag_cat, setTagCat] = useState([]);
   const [tag, setTag] = useState([]);
 
@@ -55,12 +56,35 @@ const New_Tag = ({
     setTagSelect(selectedOption);
   };
 
+  const arraysEqualInAnyOrder = (arr1, arr2) => {
+    // First, check if the arrays are the same length
+    if (arr1.length !== arr2.length) return false;
+
+    // Loop through each object in arr1
+    for (let i = 0; i < arr1.length; i++) {
+      const found = arr2.some(
+        (item) =>
+          item.TagID === arr1[i].TagID && item.TagName === arr1[i].TagName
+      );
+
+      // If no match found for arr1[i], return false
+      if (!found) {
+        return false;
+      }
+    }
+
+    // If all objects match, return true
+    return true;
+  };
+
   const handleSaveTag = () => {
     if (tag_select !== undefined && tag_select !== null && tag_select !== "0") {
       // const tag_value = tag.find((items) => items.value === tag_select.value);
       const tag_value = tag_select.map((selectedItem) => {
         return tag.find((item) => item.value === selectedItem.value);
       });
+
+      const new_tag = [...screenTag];
 
       tag_value.forEach((tag) => {
         const isDuplicate = screenTag.some((item) => item.TagID === tag.value);
@@ -72,7 +96,7 @@ const New_Tag = ({
             TagCategoryID: tag.TagCategoryID,
           };
 
-          screenTag.push(transformedTags);
+          new_tag.push(transformedTags);
         } else {
           Swal.fire({
             icon: "error",
@@ -81,8 +105,15 @@ const New_Tag = ({
           });
         }
       });
+      const result = arraysEqualInAnyOrder(new_tag, dump_tag);
 
-      setScreenTag([...screenTag]);
+      if (!result) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(false);
+      }
+
+      setScreenTag(new_tag);
 
       // Close the modal after processing all tags
       setOpenModalNewTag(!openModalNewTag);

@@ -199,7 +199,7 @@ const Add_Screen_Booking = ({
             <table className="min-w-full border border-gray-300">
               <thead>
                 <tr>
-                  <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                     <label className="inline-flex items-center space-x-2">
                       <input
                         type="checkbox"
@@ -231,19 +231,19 @@ const Add_Screen_Booking = ({
                       </span>
                     </label>
                   </th>
-                  <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[200px]">
                     Screen Name
                   </th>
-                  <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[300px]">
                     Location
                   </th>
-                  <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[200px]">
                     Media Rule
                   </th>
-                  <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  <th className="px-4 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                     Tag
                   </th>
-                  <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                     Action
                   </th>
                 </tr>
@@ -265,9 +265,18 @@ const Add_Screen_Booking = ({
                         </div>
                       </td>
                       <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
-                        <div className="flex items-center">
-                          <div className="font-poppins text-xl font-bold">
-                            {row.ScreenName}
+                        <div className="flex items-center group relative">
+                          <div className="font-poppins text-lg font-bold">
+                            {row.ScreenName.length > 20 ? (
+                              <>
+                                {row.ScreenName.slice(0, 17) + "..."}
+                                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                  {row.ScreenName}
+                                </span>
+                              </>
+                            ) : (
+                              <>{row.ScreenName}</>
+                            )}
                           </div>
                           {row.screen_status === 1 ? (
                             <div className="bg-[#00C32B] w-1 h-1 rounded-full ml-2"></div>
@@ -277,8 +286,19 @@ const Add_Screen_Booking = ({
                         </div>
                       </td>
                       <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
-                        <div className="font-poppins text-sm text-[#59606C] font-bold">
-                          {row.ScreenLocation || "No Data"}
+                        <div className="flex justify-start items-center group relative">
+                          <div className="font-poppins text-sm text-[#59606C] font-bold ">
+                            {row.ScreenLocation.length > 39 ? (
+                              <>
+                                {row.ScreenLocation.slice(0, 36) + "..."}
+                                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                  {row.ScreenLocation}
+                                </span>
+                              </>
+                            ) : (
+                              <>{row.ScreenLocation}</>
+                            )}
+                          </div>
                         </div>
                         <div className="font-poppins text-sm font-bold">
                           {CityData.find(
@@ -290,22 +310,26 @@ const Add_Screen_Booking = ({
                         <div className="font-poppins font-bold">
                           {row?.ScreenRule[0]?.Width &&
                           row?.ScreenRule[0]?.Height
-                            ? parseInt(row.ScreenRule[0].Width, 10) +
-                              "x" +
-                              parseInt(row.ScreenRule[0].Height, 10)
+                            ? `W ${parseInt(row.ScreenRule[0].Width, 10)}` +
+                              " x " +
+                              `H ${parseInt(row.ScreenRule[0].Height, 10)}`
                             : "Not Set"}
                         </div>
                       </td>
-                      <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-1 py-4 whitespace-no-wrap border-b border-gray-200">
                         <div className="flex flex-wrap">
                           {row.ScreenTag.length > 0 ? (
                             row.ScreenTag.map((items, index) => (
                               <div
                                 key={index}
-                                className="border border-gray-300 rounded-xl flex justify-center items-center mb-1 mr-1"
+                                className="border border-gray-300 shadow-lg rounded-lg flex justify-center items-center mb-1 mr-1"
+                                style={{ padding: "2px 4px" }}
                               >
-                                <div className="p-2">
-                                  <div className="font-poppins text-xs font-bold">
+                                <div className="p-1">
+                                  <div
+                                    className="font-poppins text-xs font-bold"
+                                    style={{ fontSize: "11px" }}
+                                  >
                                     {items.TagName}
                                   </div>
                                 </div>
@@ -314,9 +338,15 @@ const Add_Screen_Booking = ({
                           ) : (
                             <div
                               className="border border-gray-300 rounded-lg flex justify-center items-center mb-1 mr-1"
-                              style={{ flexBasis: "calc(100% - 8px)" }}
+                              style={{
+                                flexBasis: "calc(100% - 8px)",
+                                padding: "2px 4px",
+                              }}
                             >
-                              <div className="font-poppins text-xs font-bold">
+                              <div
+                                className="font-poppins text-xs font-bold"
+                                style={{ fontSize: "10px" }}
+                              >
                                 No Tag
                               </div>
                             </div>

@@ -208,25 +208,45 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
     return (
       <>
         {screen_data.map((row, key) => {
+          const status_screen = row?.screen_status ? row?.screen_status : false;
+
           return (
             <tr key={row.ScreenID}>
               <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex items-center justify-center">
-                  <div className="font-poppins text-md font-bold">
+                  <div className="font-poppins text-md font-bold ">
                     {row.ScreenID}
                   </div>
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
                 <div className="flex">
-                  <div className="font-poppins text-md font-bold">
-                    <div className="flex">{row.ScreenName || "No Data..."}</div>
+                  <div className="font-poppins text-md font-bold truncate max-w-[100px]">
+                    <div className="flex">
+                      {row.ScreenName}
+                      {status_screen === 1 ? (
+                        <div className="bg-[#00C32B] w-[5px] h-[5px]  rounded-xl"></div>
+                      ) : (
+                        <div className="bg-red-500 w-[5px] h-[5px]  rounded-xl"></div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </td>
-              <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
-                <div className="font-poppins text-md text-[#59606C] font-bold">
-                  {row.ScreenLocation || "No Data ..."}
+              <td className="px-1 py-2 whitespace-nowrap border-b border-gray-200">
+                <div className="flex justify-start items-center group relative">
+                  <div className="font-poppins text-md text-[#59606C] font-medium truncate max-w-[300px]">
+                    {row.ScreenLocation.length > 39 ? (
+                      <>
+                        {row.ScreenLocation.slice(0, 36) + "..."}
+                        <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          {row.ScreenLocation}
+                        </span>
+                      </>
+                    ) : (
+                      <>{row.ScreenLocation}</>
+                    )}
+                  </div>
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
@@ -240,22 +260,22 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-lg rounded-lg">
                   {row.ScreenRule[0]?.AdsCapacity || "No Data"}
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
+                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-lg rounded-lg">
                   {row.loopDuration ? `${row.loopDuration} Second` : "No Data"}
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b border-gray-200">
                 <div className="flex flex-wrap">
-                  {row.ScreenTag?.length > 0 ? (
+                  {row.ScreenTag.length > 0 ? (
                     row.ScreenTag.map((items, index) => (
                       <div
                         key={index}
-                        className="border border-gray-300 rounded-xl flex justify-center items-center mb-1 mr-1"
+                        className="border border-gray-300 shadow-lg rounded-lg flex justify-center items-center mb-1 mr-1"
                         style={{ padding: "2px 4px" }}
                       >
                         <div className="p-1">
@@ -374,7 +394,10 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
                         View Media Rule
                       </div>
                     </button>
@@ -391,7 +414,10 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                             : "text-[#6425FE] hover:text-[#3b1694]"
                         }`}
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
                         Edit Media Rule
                       </div>
                     </button>
@@ -410,7 +436,10 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                             : "text-[#6425FE] hover:text-[#3b1694]"
                         }`}
                       />
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
                         Delete Media Rule
                       </div>
                     </button>
@@ -458,25 +487,25 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                     <table className="min-w-full border border-gray-300">
                       <thead>
                         <tr>
-                          <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
+                          <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider w-[50px]">
                             ID
                           </th>
-                          <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
+                          <th className="px-1 py-2 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider w-[130px]">
                             Screen Name
                           </th>
-                          <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                          <th className="px-1 py-2 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[300px]">
                             Location
                           </th>
-                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                             Media Rule
                           </th>
-                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[130px]">
                             Slot Per Day
                           </th>
-                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[130px]">
                             Loop Duration
                           </th>
-                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                          <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[400px]">
                             Tag
                           </th>
                         </tr>

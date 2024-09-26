@@ -130,7 +130,10 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
                       size={20}
                       className={`${"text-[#6425FE] hover:text-[#3b1694]"} cursor-pointer`}
                     />
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       Edit Customer
                     </div>
                   </button>
@@ -151,7 +154,10 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
                       size={20}
                       className={`${"text-[#6425FE] hover:text-[#3b1694]"} cursor-pointer`}
                     />
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
                       Delete Customer
                     </div>
                   </button>

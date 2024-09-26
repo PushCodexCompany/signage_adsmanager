@@ -214,6 +214,43 @@ const Edit_Merchandises = () => {
 
   const handleEdit = async () => {
     const { brand_code } = User.getBrandCode();
+
+    if (!merchandise_name) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Customer",
+      });
+      return;
+    }
+
+    if (!contact_person_name) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกชื่อ Contact Person",
+      });
+      return;
+    }
+
+    if (!contact_person_email) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกอีเมลล์ Contact Person",
+      });
+      return;
+    }
+
+    if (!contact_person_phone) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "กรุณากรอกเบอร์โทรศัพท์ Contact Person",
+      });
+      return;
+    }
+
     const obj = {
       advertiserid: merchandise_id,
       advertisername: merchandise_name,
@@ -236,108 +273,120 @@ const Edit_Merchandises = () => {
       false
     );
 
-    if (location.state.merchandise.AdvertiserName === merchandise_name) {
-      if (location.state.merchandise.AdvertiserLogo !== merchandise_img) {
-        // เปลี่ยนรูปอย่างเดียว
-        const form = new FormData();
-        form.append("target", "advertiserlogo");
-        form.append("advertiserid", merchandise_id);
-        form.append("logo", merchandise_img);
-        const data_img = await User.saveImgMerchandise(form, token);
-        if (data_img.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "แก้ไข Customer สำเร็จ!",
-            text: `แก้ไข Customer สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              navigate("/merchandise");
+    Swal.fire({
+      text: `คุณยืนยันการแก้ไข Customer : ${merchandise_name} `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (location.state.merchandise.AdvertiserName === merchandise_name) {
+          if (location.state.merchandise.AdvertiserLogo !== merchandise_img) {
+            // เปลี่ยนรูปอย่างเดียว
+            const form = new FormData();
+            form.append("target", "advertiserlogo");
+            form.append("advertiserid", merchandise_id);
+            form.append("logo", merchandise_img);
+            const data_img = await User.saveImgMerchandise(form, token);
+            if (data_img.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "แก้ไข Customer สำเร็จ!",
+                text: `แก้ไข Customer สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  navigate("/merchandise");
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "คุณไม่ได้เลือกรูปที่ต้องการเปลี่ยน!",
+                text: data_img.message,
+              });
             }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "คุณไม่ได้เลือกรูปที่ต้องการเปลี่ยน!",
-            text: data_img.message,
-          });
-        }
-      } else {
-        const data = await User.editMerchandise(encrypted, token);
-        if (data.code !== 404) {
-          Swal.fire({
-            icon: "success",
-            title: "แก้ไข Customer สำเร็จ!",
-            text: `แก้ไข Customer สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              navigate("/merchandise");
+          } else {
+            const data = await User.editMerchandise(encrypted, token);
+            if (data.code !== 404) {
+              Swal.fire({
+                icon: "success",
+                title: "แก้ไข Customer สำเร็จ!",
+                text: `แก้ไข Customer สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  navigate("/merchandise");
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data.message,
+              });
             }
-          });
+          }
         } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data.message,
-          });
-        }
-      }
-    } else {
-      const data = await User.editMerchandise(encrypted, token);
-      if (data.code !== 404) {
-        if (location.state.merchandise.AdvertiserLogo !== merchandise_img) {
-          const form = new FormData();
-          form.append("target", "advertiserlogo");
-          form.append("advertiserid", merchandise_id);
-          form.append("logo", merchandise_img);
-          const data_img = await User.saveImgMerchandise(form, token);
-          if (data_img.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "แก้ไข Customer สำเร็จ!",
-              text: `แก้ไข Customer สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                navigate("/merchandise");
+          const data = await User.editMerchandise(encrypted, token);
+          if (data.code !== 404) {
+            if (location.state.merchandise.AdvertiserLogo !== merchandise_img) {
+              const form = new FormData();
+              form.append("target", "advertiserlogo");
+              form.append("advertiserid", merchandise_id);
+              form.append("logo", merchandise_img);
+              const data_img = await User.saveImgMerchandise(form, token);
+              if (data_img.code !== 404) {
+                Swal.fire({
+                  icon: "success",
+                  title: "แก้ไข Customer สำเร็จ!",
+                  text: `แก้ไข Customer สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    navigate("/merchandise");
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาดในการเปลี่ยนรูป!",
+                  text: data_img.message,
+                });
               }
-            });
+            } else {
+              Swal.fire({
+                icon: "success",
+                title: "แก้ไข Customer สำเร็จ!",
+                text: `แก้ไข Customer สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  navigate("/merchandise");
+                }
+              });
+            }
           } else {
             Swal.fire({
               icon: "error",
-              title: "เกิดข้อผิดพลาดในการเปลี่ยนรูป!",
-              text: data_img.message,
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
             });
           }
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "แก้ไข Customer สำเร็จ!",
-            text: `แก้ไข Customer สำเร็จ!`,
-          }).then((result) => {
-            if (
-              result.isConfirmed ||
-              result.dismiss === Swal.DismissReason.backdrop
-            ) {
-              navigate("/merchandise");
-            }
-          });
         }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data.message,
-        });
       }
-    }
+    });
   };
 
   return (
@@ -362,7 +411,9 @@ const Edit_Merchandises = () => {
                     : "top-3 text-gray-400"
                 }`}
               >
-                Customer Name
+                <div>
+                  Customer Name <span className="text-red-500">*</span>
+                </div>
               </label>
               <div className="flex items-center">
                 <input
@@ -433,7 +484,9 @@ const Edit_Merchandises = () => {
                       : "top-3 text-gray-400"
                   }`}
                 >
-                  Full Name
+                  <div>
+                    Full Name <span className="text-red-500">*</span>
+                  </div>
                 </label>
                 <input
                   value={contact_person_name}
@@ -519,7 +572,9 @@ const Edit_Merchandises = () => {
                         : "top-3 text-gray-400"
                     }`}
                   >
-                    Email
+                    <div>
+                      Email <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     value={contact_person_email}
@@ -546,7 +601,9 @@ const Edit_Merchandises = () => {
                         : "top-3 text-gray-400"
                     }`}
                   >
-                    Phone
+                    <div>
+                      Phone <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     value={contact_person_phone}

@@ -26,6 +26,7 @@ const New_screen = () => {
   const [screenName, setScreenName] = useState();
   const [mediaRule, setMediaRule] = useState();
   const [screenTag, setScreenTag] = useState([]);
+  const [dump_tag, setDumpTag] = useState([]);
   const [locationImg, setLocationImg] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
   const [preview_img, setPreviewImg] = useState(null);
@@ -98,6 +99,7 @@ const New_screen = () => {
     setMediaRule(ScreenRule[0]?.MediaRuleID);
     setResolutionAdsCapacity(ScreenRule[0]?.MediaRuleID);
     setScreenTag(ScreenTag);
+    setDumpTag(location?.state?.tag);
     setPreviewImg(ScreenPhoto);
     // setSelectedImage(ScreenPhoto);
     setLatLong({
@@ -214,8 +216,37 @@ const New_screen = () => {
     setIsMaintenanceSwitchOn(!IsMaintenanceSwitchOn);
   };
 
+  const arraysEqualInAnyOrder = (arr1, arr2) => {
+    // First, check if the arrays are the same length
+    if (arr1.length !== arr2.length) return false;
+
+    // Loop through each object in arr1
+    for (let i = 0; i < arr1.length; i++) {
+      const found = arr2.some(
+        (item) =>
+          item.TagID === arr1[i].TagID && item.TagName === arr1[i].TagName
+      );
+
+      // If no match found for arr1[i], return false
+      if (!found) {
+        return false;
+      }
+    }
+
+    // If all objects match, return true
+    return true;
+  };
+
   const handleDeleteTagInSelectTag = (id) => {
     const tag = screenTag.filter((tag) => tag.TagID !== id);
+    const result = arraysEqualInAnyOrder(tag, dump_tag);
+
+    if (!result) {
+      setIsEdit(true);
+    } else {
+      setIsEdit(false);
+    }
+
     setScreenTag(tag);
   };
 
@@ -223,7 +254,7 @@ const New_screen = () => {
     if (IsMaintenanceSwitchOn) {
       if (notificationDelay >= maNotification) {
         const obj = {
-          screenname: screenName,
+          screenname: screenName.trim(),
           mediaruleid: mediaRule || "",
           tagids: screenTag.map((item) => String(item.TagID)),
           screencoords: `${latLong.lat},${latLong.long}`,
@@ -321,7 +352,7 @@ const New_screen = () => {
       }
     } else {
       const obj = {
-        screenname: screenName,
+        screenname: screenName.trim(),
         mediaruleid: mediaRule || "",
         tagids: screenTag.map((item) => String(item.TagID)),
         screencoords: `${latLong.lat},${latLong.long}`,
@@ -412,147 +443,159 @@ const New_screen = () => {
   };
 
   const handleEditScreen = async () => {
-    if (IsMaintenanceSwitchOn) {
-      if (notificationDelay >= maNotification) {
-        const obj = {
-          screenid: screenId,
-          screenname: screenName,
-          mediaruleid: mediaRule || "",
-          tagids: screenTag.map((item) => String(item.TagID)),
-          screencoords: `${latLong.lat},${latLong.long}`,
-          screenlocation: screenLocationName || "",
-          screencity: parseInt(screenCityName) || "",
-          screendesc: screenDescription || "",
-          screenresolutionid: screenResolution || "",
-          screenphysizeid: screenPhysical || "",
-          screenorientation: orientation || "",
-          screenplacement: inDoorOutdoot || "",
-          screenopentime: openTime || "",
-          screenclosetime: closeTime || "",
-          manotifydelay: notificationDelay || "",
-        };
-        if (selectedImage) {
-          const form = new FormData();
-          form.append("target", "screenphoto");
-          form.append("screenid", screenId);
-          form.append("logo", selectedImage);
-          const data_img = await User.saveImgUserAccount(form, token);
-          if (data_img.code !== 200) {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data_img.message,
-            });
-          }
-        }
+    Swal.fire({
+      text: `คุณยืนยันการแก้ไข Screen : ${location.state?.screen?.ScreenName} `,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (IsMaintenanceSwitchOn) {
+          if (notificationDelay >= maNotification) {
+            const obj = {
+              screenid: screenId,
+              screenname: screenName,
+              mediaruleid: mediaRule || "",
+              tagids: screenTag.map((item) => String(item.TagID)),
+              screencoords: `${latLong.lat},${latLong.long}`,
+              screenlocation: screenLocationName || "",
+              screencity: parseInt(screenCityName) || "",
+              screendesc: screenDescription || "",
+              screenresolutionid: screenResolution || "",
+              screenphysizeid: screenPhysical || "",
+              screenorientation: orientation || "",
+              screenplacement: inDoorOutdoot || "",
+              screenopentime: openTime || "",
+              screenclosetime: closeTime || "",
+              manotifydelay: notificationDelay || "",
+            };
+            if (selectedImage) {
+              const form = new FormData();
+              form.append("target", "screenphoto");
+              form.append("screenid", screenId);
+              form.append("logo", selectedImage);
+              const data_img = await User.saveImgUserAccount(form, token);
+              if (data_img.code !== 200) {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data_img.message,
+                });
+              }
+            }
 
-        if (obj.screenname) {
-          try {
-            const data = await User.editScreen(obj, token);
-            if (data.code !== 404) {
-              Swal.fire({
-                icon: "success",
-                title: "แก้ไข Screen สำเร็จ!",
-                text: `แก้ไข Screen สำเร็จ!`,
-              }).then((result) => {
-                if (
-                  result.isConfirmed ||
-                  result.dismiss === Swal.DismissReason.backdrop
-                ) {
-                  navigate(`/screen`);
+            if (obj.screenname) {
+              try {
+                const data = await User.editScreen(obj, token);
+                if (data.code !== 404) {
+                  Swal.fire({
+                    icon: "success",
+                    title: "แก้ไข Screen สำเร็จ!",
+                    text: `แก้ไข Screen สำเร็จ!`,
+                  }).then((result) => {
+                    if (
+                      result.isConfirmed ||
+                      result.dismiss === Swal.DismissReason.backdrop
+                    ) {
+                      navigate(`/screen`);
+                    }
+                  });
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: data.message,
+                  });
                 }
-              });
+              } catch (error) {
+                console.log("error", error);
+              }
             } else {
               Swal.fire({
                 icon: "error",
                 title: "เกิดข้อผิดพลาด!",
-                text: data.message,
+                text: "กรุณากรอกชื่อ Screen Name",
               });
             }
-          } catch (error) {
-            console.log("error", error);
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: "กรุณากรอกชื่อ Screen Name",
-          });
-        }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: "จำนวน Notification Delay (sec) ผิดพลาด ...",
-        });
-      }
-    } else {
-      const obj = {
-        screenid: screenId,
-        screenname: screenName,
-        mediaruleid: mediaRule || "",
-        tagids: screenTag.map((item) => String(item.TagID)),
-        screencoords: `${latLong.lat},${latLong.long}`,
-        screenlocation: screenLocationName || "",
-        screencity: parseInt(screenCityName) || "",
-        screendesc: screenDescription || "",
-        screenresolutionid: screenResolution || "",
-        screenphysizeid: screenPhysical || "",
-        screenorientation: orientation || "",
-        screenplacement: inDoorOutdoot || "",
-        screenopentime: openTime || "",
-        screenclosetime: closeTime || "",
-        manotifydelay: null,
-      };
-      if (selectedImage) {
-        const form = new FormData();
-        form.append("target", "screenphoto");
-        form.append("screenid", screenId);
-        form.append("logo", selectedImage);
-        const data_img = await User.saveImgUserAccount(form, token);
-        if (data_img.code !== 200) {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data_img.message,
-          });
-        }
-      }
-
-      if (obj.screenname) {
-        try {
-          const data = await User.editScreen(obj, token);
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "แก้ไข Screen สำเร็จ!",
-              text: `แก้ไข Screen สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                navigate(`/screen`);
-              }
-            });
           } else {
             Swal.fire({
               icon: "error",
               title: "เกิดข้อผิดพลาด!",
-              text: data.message,
+              text: "จำนวน Notification Delay (sec) ผิดพลาด ...",
             });
           }
-        } catch (error) {
-          console.log("error", error);
+        } else {
+          const obj = {
+            screenid: screenId,
+            screenname: screenName,
+            mediaruleid: mediaRule || "",
+            tagids: screenTag.map((item) => String(item.TagID)),
+            screencoords: `${latLong.lat},${latLong.long}`,
+            screenlocation: screenLocationName || "",
+            screencity: parseInt(screenCityName) || "",
+            screendesc: screenDescription || "",
+            screenresolutionid: screenResolution || "",
+            screenphysizeid: screenPhysical || "",
+            screenorientation: orientation || "",
+            screenplacement: inDoorOutdoot || "",
+            screenopentime: openTime || "",
+            screenclosetime: closeTime || "",
+            manotifydelay: null,
+          };
+          if (selectedImage) {
+            const form = new FormData();
+            form.append("target", "screenphoto");
+            form.append("screenid", screenId);
+            form.append("logo", selectedImage);
+            const data_img = await User.saveImgUserAccount(form, token);
+            if (data_img.code !== 200) {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: data_img.message,
+              });
+            }
+          }
+
+          if (obj.screenname) {
+            try {
+              const data = await User.editScreen(obj, token);
+              if (data.code !== 404) {
+                Swal.fire({
+                  icon: "success",
+                  title: "แก้ไข Screen สำเร็จ!",
+                  text: `แก้ไข Screen สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    navigate(`/screen`);
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data.message,
+                });
+              }
+            } catch (error) {
+              console.log("error", error);
+            }
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: "กรุณากรอกชื่อ Screen Name",
+            });
+          }
         }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: "กรุณากรอกชื่อ Screen Name",
-        });
       }
-    }
+    });
   };
 
   const handleSetOpenTime = (time) => {
@@ -1357,6 +1400,8 @@ const New_screen = () => {
           openModalNewTag={openModalNewTag}
           screenTag={screenTag}
           setScreenTag={setScreenTag}
+          setIsEdit={setIsEdit}
+          dump_tag={dump_tag}
         />
       )}
     </>

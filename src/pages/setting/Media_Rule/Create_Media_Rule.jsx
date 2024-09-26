@@ -70,7 +70,6 @@ const Create_Media_Rule = () => {
 
     const ratioWidth = width / divisor;
     const ratioHeight = height / divisor;
-
     return (
       <>
         <div className="w-[550px] h-[550px] bg-gray-200 flex justify-center items-center">
@@ -78,8 +77,8 @@ const Create_Media_Rule = () => {
             className={` bg-black text-white p-4`}
             style={{
               aspectRatio: `${ratioWidth}/${ratioHeight}`,
-              width: ratioWidth * 15,
-              height: ratioHeight * 15,
+              width: ratioWidth < 20 ? ratioWidth * 15 : ratioWidth * 5,
+              height: ratioHeight < 20 ? ratioHeight * 15 : ratioHeight * 5,
               backgroundColor: "black",
             }}
           />
@@ -144,40 +143,56 @@ const Create_Media_Rule = () => {
           activeresolution: toggle_disable,
         };
 
-        if (
-          media_rule_width === 0 ||
-          media_rule_height === 0 ||
-          media_rule_width === null ||
-          media_rule_height === null
-        ) {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: "width หรือ height ต้องมีค่ามากกว่า 0",
-          });
-        } else {
-          const data = await User.updateMediaRule(obj, token, toggle_disable);
-          if (data.code !== 404) {
-            Swal.fire({
-              icon: "success",
-              title: "Edit Media Rule Success ...",
-              text: `แก้ไข Media Rule สำเร็จ!`,
-            }).then((result) => {
-              if (
-                result.isConfirmed ||
-                result.dismiss === Swal.DismissReason.backdrop
-              ) {
-                navigate("/setting/media_rule");
+        Swal.fire({
+          text: `คุณยืนยันการแก้ไข Media Rule : ${media_rule_name} `,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#219ad1",
+          confirmButtonText: "ยืนยัน",
+          cancelButtonText: "ยกเลิก",
+          reverseButtons: true,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            if (
+              media_rule_width === 0 ||
+              media_rule_height === 0 ||
+              media_rule_width === null ||
+              media_rule_height === null
+            ) {
+              Swal.fire({
+                icon: "error",
+                title: "เกิดข้อผิดพลาด!",
+                text: "width หรือ height ต้องมีค่ามากกว่า 0",
+              });
+            } else {
+              const data = await User.updateMediaRule(
+                obj,
+                token,
+                toggle_disable
+              );
+              if (data.code !== 404) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Edit Media Rule Success ...",
+                  text: `แก้ไข Media Rule สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    navigate("/setting/media_rule");
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data.message,
+                });
               }
-            });
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: data.message,
-            });
+            }
           }
-        }
+        });
       }
     } catch (error) {
       console.log(error);
