@@ -270,9 +270,12 @@ const Add_Screen_Booking = ({
                             {row.ScreenName.length > 20 ? (
                               <>
                                 {row.ScreenName.slice(0, 17) + "..."}
-                                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                <div
+                                  style={{ pointerEvents: "none" }}
+                                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                                >
                                   {row.ScreenName}
-                                </span>
+                                </div>
                               </>
                             ) : (
                               <>{row.ScreenName}</>

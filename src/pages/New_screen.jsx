@@ -274,7 +274,7 @@ const New_screen = () => {
             try {
               const data = await User.createNewScreen(obj, token);
               setDisableCreateButton(true);
-              if (data.code !== 404) {
+              if (data.code === 200) {
                 if (selectedImage) {
                   const form = new FormData();
                   form.append("target", "screenphoto");
@@ -284,7 +284,7 @@ const New_screen = () => {
                     form,
                     token
                   );
-                  if (data_img.code !== 404) {
+                  if (data_img.code === 200) {
                     Swal.fire({
                       icon: "success",
                       title: "สร้าง Screen สำเร็จ!",
@@ -372,14 +372,14 @@ const New_screen = () => {
           try {
             setDisableCreateButton(true);
             const data = await User.createNewScreen(obj, token);
-            if (data.code !== 404) {
+            if (data.code === 200) {
               if (selectedImage) {
                 const form = new FormData();
                 form.append("target", "screenphoto");
                 form.append("screenid", data.screenid);
                 form.append("logo", selectedImage);
                 const data_img = await User.saveImgAccountScreens(form, token);
-                if (data_img.code !== 404) {
+                if (data_img.code === 200) {
                   Swal.fire({
                     icon: "success",
                     title: "สร้าง Screen สำเร็จ!",
@@ -490,7 +490,7 @@ const New_screen = () => {
             if (obj.screenname) {
               try {
                 const data = await User.editScreen(obj, token);
-                if (data.code !== 404) {
+                if (data.code === 200) {
                   Swal.fire({
                     icon: "success",
                     title: "แก้ไข Screen สำเร็จ!",
@@ -563,7 +563,7 @@ const New_screen = () => {
           if (obj.screenname) {
             try {
               const data = await User.editScreen(obj, token);
-              if (data.code !== 404) {
+              if (data.code === 200) {
                 Swal.fire({
                   icon: "success",
                   title: "แก้ไข Screen สำเร็จ!",

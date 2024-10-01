@@ -107,7 +107,7 @@ const Publish_Screen_Booking = ({
         if (result.isConfirmed) {
           try {
             const data = await User.publishBookingcontent(obj, token);
-            if (data.code !== 404) {
+            if (data.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "Publish Booking สำเร็จ!",

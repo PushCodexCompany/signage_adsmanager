@@ -70,7 +70,7 @@ const Configuration = () => {
 
         try {
           const data = await User.updateConfiguration(newObj, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "Update Configuration Success ...",

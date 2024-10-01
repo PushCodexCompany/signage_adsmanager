@@ -69,13 +69,13 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
     const encrypted = await Encryption.encryption(obj, "create_brand", false);
     try {
       const data = await User.createBrand(encrypted, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         const form = new FormData();
         form.append("target", "brandlogo");
         form.append("brandid", data.brandid);
         form.append("logo", brand_img);
         const data_img = await User.saveImgBrand(form, token);
-        if (data_img.code !== 404) {
+        if (data_img.code === 200) {
           Swal.fire({
             icon: "success",
             title: "สร้าง BU สำเร็จ!",
@@ -131,7 +131,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         form.append("logo", brand_img);
 
         const data_img = await User.saveImgBrand(form, token);
-        if (data_img.code !== 404) {
+        if (data_img.code === 200) {
           Swal.fire({
             icon: "success",
             title: "แก้ไข BU สำเร็จ!",
@@ -153,7 +153,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
         }
       } else {
         const data = await User.editBrand(encrypted, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "แก้ไข BU สำเร็จ!",
@@ -176,14 +176,14 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
       }
     } else {
       const data = await User.editBrand(encrypted, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         if (edit_brand.BrandLogo !== brand_img) {
           const form = new FormData();
           form.append("target", "brandlogo");
           form.append("brandid", edit_brand.BrandID);
           form.append("logo", brand_img);
           const data_img = await User.saveImgBrand(form, token);
-          if (data_img.code !== 404) {
+          if (data_img.code === 200) {
             Swal.fire({
               icon: "success",
               title: "แก้ไข BU สำเร็จ!",

@@ -110,7 +110,7 @@ const Brands = () => {
             false
           );
           const data = await User.deleteBrand(encrypted, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "ลบ BU สำเร็จ!",
@@ -187,7 +187,7 @@ const Brands = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-contain border border-[#DFDFDF]"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-contain border border-[#DFDFDF] shadow-lg"
                     src={
                       items.BrandLogo
                         ? items.BrandLogo

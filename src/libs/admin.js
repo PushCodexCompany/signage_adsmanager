@@ -351,10 +351,9 @@ export default {
       urlString += `?brandcode=${brand_code}`;
     }
 
-    const { data } = await this._get(urlString, "", config);
-
-    if (data.code !== 404) {
-      return data;
+    const data = await this._get(urlString, "", config);
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -432,7 +431,7 @@ export default {
     };
 
     const { data } = await this._get(`api/v1/get_users`, "", config);
-    if (data.code !== 404) {
+    if (data.code === 200) {
       return data.users;
     } else {
       return false;
@@ -447,7 +446,7 @@ export default {
     };
 
     const { data } = await this._get(`api/v1/get_userroles`, "", config);
-    if (data.code !== 404) {
+    if (data.code === 200) {
       return data.roles;
     } else {
       return false;
@@ -552,7 +551,7 @@ export default {
     };
 
     const { data } = await this._get(`api/v1/get_accounts`, "", config);
-    if (data.code !== 404) {
+    if (data.code === 200) {
       return data;
     } else {
       return false;
@@ -636,16 +635,14 @@ export default {
       "get_advertisers",
       false
     );
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_advertisers?hash=${encrypted}`,
       "",
       config
     );
 
-    // console.log("data", data);
-
-    if (data.code !== 404) {
-      return data;
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -723,13 +720,14 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_tagcategories?brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -798,13 +796,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_categorytags?brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -818,13 +817,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_tags?tagcategoryid=${id}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -888,13 +888,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_mediarules?brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -908,7 +909,7 @@ export default {
       },
     };
 
-    let urlString = `api/v1/create_mediarule?mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&activeresolution=${hash.activeresolution}&width=${hash.width}&height=${hash.height}&brandcode=${brand_code}`;
+    let urlString = `api/v1/create_mediarule?mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&activeresolution=${hash.activeresolution}&width=${hash.width}&height=${hash.height}&imagecontenttypeid=${hash.imagecontenttypeid}&videocontenttypeid=${hash.videocontenttypeid}&brandcode=${brand_code}`;
 
     const { data } = await this._post(urlString, "", config);
 
@@ -923,7 +924,7 @@ export default {
       },
     };
 
-    let urlString = `api/v1/update_mediarule?mediaruleid=${hash.mediaruleid}&mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&width=${hash.width}&height=${hash.height}&activeresolution=${hash.activeresolution}&brandcode=${brand_code}`;
+    let urlString = `api/v1/update_mediarule?mediaruleid=${hash.mediaruleid}&mediarulename=${hash.mediarulename}&adscapacity=${hash.adscapacity}&width=${hash.width}&height=${hash.height}&activeresolution=${hash.activeresolution}&imagecontenttypeid=${hash.imagecontenttypeid}&videocontenttypeid=${hash.videocontenttypeid}&brandcode=${brand_code}`;
 
     const { data } = await this._post(urlString, "", config);
 
@@ -954,13 +955,13 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_screens?brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1003,13 +1004,15 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(
+
+    const data = await this._get(
       `api/v1/get_screens?adscapacity=${slot}&bookingid=${bookingid}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1028,13 +1031,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}&bookingid=${bookingid}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1048,13 +1052,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_screenoptions?brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1127,14 +1132,14 @@ export default {
   //       Authorization: `Bearer ${token}`,
   //     },
   //   };
-  //   const { data } = await this._get(
+  //   const data = await this._get(
   //     `api/v1/get_bookings?brandcode=${brand_code}`,
   //     "",
   //     config
   //   );
 
-  //   if (data.code !== 404) {
-  //     return data;
+  //   if (data.status === 200) {
+  //     return data.data;
   //   } else {
   //     return false;
   //   }
@@ -1155,7 +1160,7 @@ export default {
     }
 
     const { data } = await this._get(url, "", config);
-    if (data.code !== 404) {
+    if (data.code === 200) {
       return data;
     } else {
       return false;
@@ -1170,13 +1175,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_bookingslots?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1258,13 +1264,14 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_bookingcontent?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1278,13 +1285,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_content?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1356,13 +1364,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_mediaplaylist?bookingid=${booking_id}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1410,13 +1419,14 @@ export default {
       },
     };
 
-    const { data } = await this._get(
+    const data = await this._get(
       `api/v1/get_mediaplaylistcontent?mediaplaylistid=${obj.mediaplaylistid}&bookingid=${obj.bookingid}&brandcode=${brand_code}`,
       "",
       config
     );
-    if (data.code !== 404) {
-      return data;
+
+    if (data.status === 200) {
+      return data.data;
     } else {
       return false;
     }
@@ -1501,7 +1511,8 @@ export default {
       "",
       config
     );
-    if (data.code !== 404) {
+
+    if (data.code === 200) {
       return data;
     } else {
       return false;
@@ -1592,7 +1603,8 @@ export default {
       "",
       config
     );
-    if (data.code !== 404) {
+
+    if (data.code === 200) {
       return data;
     } else {
       return false;
@@ -1612,8 +1624,7 @@ export default {
       "",
       config
     );
-
-    if (data.code !== 404) {
+    if (data.code == 200) {
       return data;
     } else {
       return false;

@@ -407,14 +407,14 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
 
     try {
       const data = await User.createMerchandise(encrypted, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         if (merchandise_img) {
           const form = new FormData();
           form.append("target", "advertiserlogo");
           form.append("advertiserid", data.advertiserid);
           form.append("logo", merchandise_img);
           const data_img = await User.saveImgMerchandise(form, token);
-          if (data_img.code !== 404) {
+          if (data_img.code === 200) {
             Swal.fire({
               icon: "success",
               title: "สร้าง Customer สำเร็จ!",
@@ -530,7 +530,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
 
     try {
       const data_booking = await User.createBooking(obj_save_booking, token);
-      if (data_booking.code !== 404) {
+      if (data_booking.code === 200) {
         Swal.fire({
           icon: "success",
           title: "สร้าง Booking สำเร็จ!",
@@ -591,10 +591,11 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       case "1":
         return (
           <>
-            <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
+            <div className="m-1 md:m-5 mt-24 p-2 md:p-5 rounded-3xl">
               <div className="text-[50px] font-[700] text-center font-poppins">
                 Booking For
               </div>
+
               <div className="w-full">
                 <Filter
                   setFilterScreen={setFilterScreen}
@@ -618,7 +619,9 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   </button>
                 </div>
               </div>
-              <div className="w-auto h-[320px] overflow-auto mt-2">
+
+              {/* Responsive Table Wrapper */}
+              <div className="w-full lg:h-[330px] h-[480px] overflow-x-auto mt-2">
                 <table className="min-w-full border border-gray-300">
                   <thead>
                     <tr>
@@ -665,10 +668,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
-                          <div
-                            // onClick={() => handleSelectBooking(row)}
-                            className="font-poppins text-xl  text-[#6425FE]"
-                          >
+                          <div className="font-poppins text-xl  text-[#6425FE]">
                             {row.AdvertiserName}
                           </div>
                           <div className="font-poppins text-sm text-gray-500">
@@ -1130,7 +1130,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   </div>
                 </div>
               </div>
-              <div className="w-full lg:w-1/2 p-4 lg:pl-8 border border-gray-300">
+              <div className="w-full lg:w-1/2 p-4 lg:pr-8 mr-5 border border-gray-300">
                 <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
                   Contact Person
                 </div>

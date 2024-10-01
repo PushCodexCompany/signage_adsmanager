@@ -131,7 +131,6 @@ const Select_Booking = () => {
     } else {
       all_screen = await User.getScreens(token);
     }
-
     setAllScreenData(all_screen);
     const filteredOutput = all_screen?.filter((screen) => {
       return output.some((item) => parseInt(item.ScreenID) === screen.ScreenID);
@@ -227,7 +226,7 @@ const Select_Booking = () => {
               try {
                 const data = await User.updateBookingName(obj, token);
 
-                if (data.code !== 404) {
+                if (data.code === 200) {
                   Swal.fire({
                     icon: "success",
                     title: "แก้ไขชื่อ Booking name สำเร็จ!",
@@ -290,7 +289,7 @@ const Select_Booking = () => {
             try {
               const data = await User.updateBookingName(obj, token);
 
-              if (data.code !== 404) {
+              if (data.code === 200) {
                 Swal.fire({
                   icon: "success",
                   title: "แก้ไขชื่อ Booking name สำเร็จ!",
@@ -403,7 +402,10 @@ const Select_Booking = () => {
     const media_rule = {
       width: parseInt(obj.ScreenRule[0].Width),
       height: parseInt(obj.ScreenRule[0].Height),
+      Image: obj.ScreenRule[0].ImageContentTypeID !== 0 ? true : false,
+      Video: obj.ScreenRule[0].VideoContentTypeID !== 0 ? true : false,
     };
+
     setMediaRulesSelectId(obj.ScreenRule[0].MediaRuleID);
     setMediaRulesSelect(media_rule);
     media_obj.slots = parseInt(booking_slot);
@@ -411,6 +413,7 @@ const Select_Booking = () => {
     setFactPanel1(media_obj);
     setItemsPanel1({ screen, value: media_obj });
     setScreenSelectFromEdit(obj.ScreenID);
+    // setScreennAdsAllocation(obj);
     setOpenAdsAllocationModal(!openAdsAllocationModal);
   };
 
@@ -525,7 +528,10 @@ const Select_Booking = () => {
                                 {items.ScreenName.length > 12 ? (
                                   <>
                                     {items.ScreenName.slice(0, 9) + "..."}
-                                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <span
+                                      style={{ pointerEvents: "none" }}
+                                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    >
                                       {items.ScreenName}
                                     </span>
                                   </>
@@ -539,7 +545,10 @@ const Select_Booking = () => {
                                 {items.ScreenLocation.length > 25 ? (
                                   <>
                                     {items.ScreenLocation.slice(0, 23) + "..."}
-                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div
+                                      style={{ pointerEvents: "none" }}
+                                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    >
                                       {items.ScreenLocation}
                                     </div>
                                   </>

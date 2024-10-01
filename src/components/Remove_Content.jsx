@@ -244,7 +244,7 @@ const Remove_Content = ({
             screenids: screenIdsString,
           };
           const data = await User.deleteBookingContent(obj, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: `Delete Playlist สำเร็จ!`,

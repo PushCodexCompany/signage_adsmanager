@@ -127,7 +127,10 @@ export const GridTable = ({
                       {row.ScreenName.length > 20 ? (
                         <>
                           {row.ScreenName.slice(0, 17) + "..."}
-                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <span
+                            style={{ pointerEvents: "none" }}
+                            className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          >
                             {row.ScreenName}
                           </span>
                         </>
@@ -149,7 +152,10 @@ export const GridTable = ({
                     {row.ScreenLocation.length > 39 ? (
                       <>
                         {row.ScreenLocation.slice(0, 36) + "..."}
-                        <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span
+                          style={{ pointerEvents: "none" }}
+                          className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        >
                           {row.ScreenLocation}
                         </span>
                       </>
@@ -381,7 +387,7 @@ export const GridTable = ({
       if (result.isConfirmed) {
         const { token } = User.getCookieData();
         const data = await User.deleteScreen(screen_id, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "Delete Screen Success ...",

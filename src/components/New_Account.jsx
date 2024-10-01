@@ -85,7 +85,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
 
       try {
         const data = await User.createUserAccount(encrypted, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           const form = new FormData();
           form.append("target", "accountlogo");
           form.append("accountid", data.accountid);
@@ -93,7 +93,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
 
           const data_img = await User.saveImgUserAccount(form, token);
 
-          if (data_img.code !== 404) {
+          if (data_img.code === 200) {
             Swal.fire({
               icon: "success",
               title: "สร้าง User Account สำเร็จ!",
@@ -145,7 +145,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
         form.append("accountid", edit_account.AccountID);
         form.append("logo", account_img);
         const data_img = await User.saveImgUserAccount(form, token);
-        if (data_img.code !== 404) {
+        if (data_img.code === 200) {
           Swal.fire({
             icon: "success",
             title: "แก้ไข User Account สำเร็จ!",
@@ -168,14 +168,14 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
       } else {
         const data = await User.editUserAccount(encrypted, token);
 
-        if (data.code !== 404) {
+        if (data.code === 200) {
           if (edit_account.AccountLogo !== account_img) {
             const form = new FormData();
             form.append("target", "accountlogo");
             form.append("accountid", edit_account.AccountID);
             form.append("logo", account_img);
             const data_img = await User.saveImgUserAccount(form, token);
-            if (data_img.code !== 404) {
+            if (data_img.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "แก้ไข User Account สำเร็จ!",

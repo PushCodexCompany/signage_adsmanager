@@ -252,7 +252,7 @@ const Screen_Info = ({
 
         try {
           const data = await User.updateScreenmediaordering(obj, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "Update Screen Ordering Success ...",
@@ -360,7 +360,7 @@ const Screen_Info = ({
                                 {items.TagName}
                               </div>
                               <div className="flex justify-center items-center ml-1 mr-1">
-                                <BsInfoCircle className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" />
+                                {/* <BsInfoCircle className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer" /> */}
                               </div>
                             </div>
                           ))}
@@ -439,7 +439,20 @@ const Screen_Info = ({
                       <div className="col-span-3">
                         <div className="border h-[150%] border-gray-200 flex justify-center items-center rounded-lg">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.ScreenRule[0]?.MediaRuleName}
+                            {selectInfoScreen.ScreenRule[0]?.MediaRuleName
+                              ? `W ${parseInt(
+                                  selectInfoScreen.ScreenRule[0]?.MediaRuleName.split(
+                                    "x"
+                                  )[0]
+                                )}` +
+                                " x " +
+                                `H ${parseInt(
+                                  selectInfoScreen.ScreenRule[0]?.MediaRuleName.split(
+                                    "x"
+                                  )[1]
+                                )}`
+                              : "Not Set"}
+                            {}
                           </div>
                         </div>
                       </div>

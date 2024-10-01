@@ -75,7 +75,7 @@ const Confirm_Allocation = ({
 
     try {
       const data = await User.updateBookingContent(obj, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         Swal.fire({
           icon: "success",
           title: "Update Booking Content Success ...",

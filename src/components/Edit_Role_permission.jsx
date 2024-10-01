@@ -452,7 +452,7 @@ const Edit_Role_permission = ({
 
         const encrypted = await Encryption.encryption(obj, "edit_role", false);
         const data = await User.updateUserRole(encrypted, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "แก้ไข User Role สำเร็จ",

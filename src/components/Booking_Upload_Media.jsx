@@ -32,11 +32,26 @@ const Booking_Upload_Media = ({
     const {
       configuration: { contenttype },
     } = await User.getConfiguration(token);
+    const { Image, Video } = media_rules_select;
 
-    const extensions = contenttype
+    const filterContentTypes = () => {
+      return contenttype.filter((item) => {
+        if (Image && item.ContentTypeName === "Image") {
+          return true;
+        }
+        if (Video && item.ContentTypeName === "Video") {
+          return true;
+        }
+        return false;
+      });
+    };
+
+    const filteredContentTypes = filterContentTypes();
+    const extensions = filteredContentTypes
       .flatMap((type) => type.ContentTypeSub || []) // Flatten the array and filter out items without ContentTypeSub
       .map((sub) => `.${sub.ContentTypeSubName}`) // Format as `.jpg`, `.png`, etc.
       .join(", "); // Join into a single string
+
     setFileTyle(extensions);
   }, []);
 
@@ -226,7 +241,9 @@ const Booking_Upload_Media = ({
 
           xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
+              // console.log("xhr", xhr);
               const data = JSON.parse(xhr.responseText);
+              // console.log("data", data);
               if (xhr.status === 200) {
                 setUploadFile((prevItems) => {
                   const updatedItems = [...prevItems, ...data.contentids];

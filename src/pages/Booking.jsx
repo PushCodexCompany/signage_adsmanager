@@ -77,22 +77,23 @@ const Booking = () => {
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
         />
-        <div className="mt-5">
-          {booking_data.length > 0 ? (
+
+        {booking_data.length > 0 ? (
+          <div className="mt-5">
             <GridTable
               booking_data={booking_data}
               all_pages={all_pages}
               searchTerm={searchTerm}
               page_permission={page_permission}
             />
-          ) : (
-            <div className="flex items-center justify-center h-[550px] text-center ">
-              <div className="font-poppins text-5xl text-[#dedede]">
-                --- No data ---
-              </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-[550px] text-center ">
+            <div className="font-poppins text-5xl text-[#dedede]">
+              --- No data ---
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {showModalAddNewBooking && (

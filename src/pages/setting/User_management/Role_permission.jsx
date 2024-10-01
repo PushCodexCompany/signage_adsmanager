@@ -95,7 +95,7 @@ const Role_permission = () => {
         );
         const data = await User.deleteUserRole(encrypted, token);
 
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "ลบ User Role สำเร็จ",

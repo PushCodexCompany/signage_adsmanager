@@ -80,6 +80,7 @@ const Ads_Allocation_Booking = ({
   const [page_permission, setPagePermission] = useState([]);
 
   const [isEdit, setIsEdit] = useState(false);
+  const [file_config, setFileConfig] = useState([]);
 
   useEffect(() => {
     setEditData();
@@ -87,10 +88,19 @@ const Ads_Allocation_Booking = ({
     setDefaultApplyToScreen();
     setDefaultPanel1(itemsPanel1.value.slots, itemsPanel1.value.medias);
     getPermission();
+    getConfig();
   }, []);
 
   const setTempMediaList = async () => {
     setFullMediasItems(itemsPanel2);
+  };
+
+  const getConfig = async () => {
+    const {
+      configuration: { contenttype },
+    } = await User.getConfiguration(token);
+
+    setFileConfig(contenttype);
   };
 
   const setEditData = async () => {
@@ -101,7 +111,7 @@ const Ads_Allocation_Booking = ({
     );
 
     if (screen_data.length > 0) {
-      getMediaInPlaylist(screen_data[0].MediaPlaylistID);
+      getMediaInPlaylist(screen_data[0].MediaPlaylistID, screen_data[0]);
       setMediaPlaylistId(screen_data[0].MediaPlaylistID);
       setPlaylistName(screen_data[0].PlaylistName);
       setTempPlaylistName(screen_data[0].PlaylistName);
@@ -427,6 +437,14 @@ const Ads_Allocation_Booking = ({
 
   const handleAddMediaPlaylistItem = (index) => {
     const updatedMediaList = [...itemsPanel1.value.medias];
+    if (!media_rules_select[updatedMediaList[index].ContentTypeName]) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: " คุณไม่สามารถลบ Media ได้ตามสิทธิ Media Rule ...",
+      });
+      return;
+    }
     const target = updatedMediaList[index];
     if ("slot_size" in target) {
       target.slot_size = target.slot_size + 1;
@@ -475,13 +493,24 @@ const Ads_Allocation_Booking = ({
         reverseButtons: true,
       }).then(async (result) => {
         if (result.isConfirmed) {
+          if (!media_rules_select[updatedMediaList[index].ContentTypeName]) {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: " คุณไม่สามารถลบ Media ได้ตามสิทธิ Media Rule ...",
+            });
+            return;
+          }
+
           const nullifiedMediaItem = {
             ContentID: null,
             ContentName: null,
             ContentTypeName: null,
             ContentProperties: null,
           }; // Define a nullified media item
+
           updatedMediaList[index] = nullifiedMediaItem; // Update the media item in the list
+
           const output_data = updatedMediaList.reduce((acc, item) => {
             if (item.ContentID !== null) {
               acc.push(item);
@@ -510,6 +539,15 @@ const Ads_Allocation_Booking = ({
         }
       });
     } else {
+      // ลบขนาดของ Media
+      if (!media_rules_select[updatedMediaList[index].ContentTypeName]) {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: " คุณไม่สามารถลบ Media ได้ตามสิทธิ Media Rule ...",
+        });
+        return;
+      }
       updatedMediaList[index] = { ...target };
       const output_data = updatedMediaList.reduce((acc, item) => {
         if (item.ContentID !== null) {
@@ -818,6 +856,36 @@ const Ads_Allocation_Booking = ({
           screenids: screenIdsString,
           mediaplaylistid: parseInt(media_playlist_id),
         };
+
+        const obj_check = {
+          mediaplaylistid: parseInt(media_playlist_id),
+          bookingid: bookingId,
+        };
+
+        const data = await User.getMediaPlaylistContent(obj_check, token);
+
+        const containsImage = data.some(
+          (item) => item.ContentTypeName === "Image"
+        );
+
+        const containsVideo = data.some(
+          (item) => item.ContentTypeName === "Video"
+        );
+        const image_result =
+          containsImage && !media_rules_select.Image ? false : true;
+
+        const video_result =
+          containsVideo && !media_rules_select.Video ? false : true;
+
+        if (!image_result || !video_result) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: " Media ใน Playlist ไม่ถูกต้องตาม Media Rules ...",
+          });
+          return;
+        }
+
         try {
           const check_screen = await User.getBookingContentScreen(obj, token);
           const isAnotherScreen = compareScreenID(
@@ -826,12 +894,13 @@ const Ads_Allocation_Booking = ({
           );
           if (check_screen.screens.length >= 1 && isAnotherScreen) {
             // ถ้ามีจออื่นใช้ playlist นี้ด้วย
+            setScreennAdsAllocation([]);
             setScreenUsePlaylist(check_screen.screens);
             setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
           } else {
             // ถ้าไม่มีจออื่นใช้
             const data = await User.updateBookingContent(obj, token);
-            if (data.code !== 404) {
+            if (data.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "Update Booking Content Success ...",
@@ -841,6 +910,7 @@ const Ads_Allocation_Booking = ({
                   result.isConfirmed ||
                   result.dismiss === Swal.DismissReason.backdrop
                 ) {
+                  setScreennAdsAllocation([]);
                   setOpenAdsAllocationModal(!openAdsAllocationModal);
                   setFactAllocation(!fact_allocation);
                 }
@@ -905,6 +975,7 @@ const Ads_Allocation_Booking = ({
       bookingid: bookingId,
       mediaplaylistid: mediaplaylistid,
     };
+
     try {
       const data = await User.getMediaPlaylistContent(obj, token);
 
@@ -956,9 +1027,9 @@ const Ads_Allocation_Booking = ({
           clonedItemsPanel1.value.medias = updatedObj;
           setItemsPanel1(clonedItemsPanel1);
 
-          setMediaPlaylistId(option.MediaPlaylistID);
-          setPlaylistName(option.PlaylistName);
-          setTempPlaylistName(option.PlaylistName);
+          setMediaPlaylistId(option?.MediaPlaylistID);
+          setPlaylistName(option?.PlaylistName);
+          setTempPlaylistName(option?.PlaylistName);
           setCheckCreateMediaPlaylist(false);
           setIsExpanded(false);
         }
@@ -1026,16 +1097,17 @@ const Ads_Allocation_Booking = ({
 
       const playlist_obj = {
         bookingid: bookingId,
-        playlistname: playlist_name,
+        playlistname: playlist_name.trim(),
         mediaruleid: media_rules_select_id,
       };
+
       if (playlist_name) {
         try {
           const create_return = await User.createMediaplaylist(
             playlist_obj,
             token
           );
-          if (create_return.code !== 404) {
+          if (create_return.code === 200) {
             Swal.fire({
               icon: "success",
               title: "Create Media Playlist Success ...",
@@ -1060,7 +1132,7 @@ const Ads_Allocation_Booking = ({
                       media_obj,
                       token
                     );
-                    if (data.code !== 404) {
+                    if (data.code === 200) {
                       const data = await getMediaPlaylist();
                       setSelectedOption(data);
                       setCheckCreateMediaPlaylist(false);
@@ -1100,15 +1172,16 @@ const Ads_Allocation_Booking = ({
     } else {
       // Edit
       if (playlist_name) {
+        // แก้ชื่อ Playlist
         if (playlist_name !== temp_playlist_name) {
           const playlist_obj = {
             bookingid: bookingId,
             mediaplaylistid: media_playlist_id,
-            playlistname: playlist_name,
+            playlistname: playlist_name.trim(),
           };
           try {
             const data = await User.updateMediaplaylist(playlist_obj, token);
-            if (data.code !== 404) {
+            if (data.code === 200) {
               const data = await getMediaPlaylist();
               setSelectedOption(data);
               setTempPlaylistName(playlist_name);
@@ -1128,6 +1201,8 @@ const Ads_Allocation_Booking = ({
         const isNewMediaInPlaylist = clonedItemsPanel1.value.medias.some(
           (item) => item.MediaID === 0
         );
+
+        // เพิ่มข้อมูล
         if (isNewMediaInPlaylist) {
           const playlist = handleMediaPlaylist(clonedItemsPanel1);
           const media_list = playlist.map((media, index) => ({
@@ -1135,7 +1210,31 @@ const Ads_Allocation_Booking = ({
             contentid: media.ContentID,
             duration: media.duration,
             ordering: index + 1,
+            ContentTypeName: media.ContentTypeName,
           }));
+
+          const containsImage = media_list.some(
+            (item) => item.ContentTypeName === "Image"
+          );
+
+          const containsVideo = media_list.some(
+            (item) => item.ContentTypeName === "Video"
+          );
+          const image_result =
+            containsImage && !media_rules_select.Image ? false : true;
+
+          const video_result =
+            containsVideo && !media_rules_select.Video ? false : true;
+
+          if (!image_result || !video_result) {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: " คุณไม่มีสิทธิในการบันทึก Playlist ตาม Media Rule ...",
+            });
+            return;
+          }
+
           const playlist_obj = {
             bookingid: bookingId,
             mediaplaylistid: media_playlist_id,
@@ -1146,7 +1245,7 @@ const Ads_Allocation_Booking = ({
               playlist_obj,
               token
             );
-            if (data.code !== 404) {
+            if (data.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "แก้ไข Media to Playlist สำเร็จ ...",
@@ -1172,24 +1271,50 @@ const Ads_Allocation_Booking = ({
             console.log("error");
           }
         } else {
+          // เรียงลำดับใหม่ และ ลบ content
           const playlist = handleMediaPlaylist(clonedItemsPanel1);
           const media_list = playlist.map((media, index) => ({
             mediaid: media.MediaID,
             contentid: media.ContentID,
             duration: media.duration,
             ordering: index + 1,
+            ContentTypeName: media.ContentTypeName,
           }));
+
+          const containsImage = media_list.some(
+            (item) => item.ContentTypeName === "Image"
+          );
+
+          const containsVideo = media_list.some(
+            (item) => item.ContentTypeName === "Video"
+          );
+          const image_result =
+            containsImage && !media_rules_select.Image ? false : true;
+
+          const video_result =
+            containsVideo && !media_rules_select.Video ? false : true;
+
+          if (!image_result || !video_result) {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: " คุณไม่มีสิทธิในการบันทึก Playlist ตาม Media Rule ...",
+            });
+            return;
+          }
+
           const playlist_obj = {
             bookingid: bookingId,
             mediaplaylistid: media_playlist_id,
             medias: media_list,
           };
+
           try {
             const data = await User.updateMediaPlaylistContent(
               playlist_obj,
               token
             );
-            if (data.code !== 404) {
+            if (data.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "แก้ไข Media to Playlist สำเร็จ ...",
@@ -1277,6 +1402,41 @@ const Ads_Allocation_Booking = ({
 
       return updatedCheckboxes;
     });
+  };
+
+  const GenerateMediaType = () => {
+    const { Image, Video } = media_rules_select;
+
+    function filterContentTypes() {
+      return file_config.filter((item) => {
+        // Return item if Image is true and ContentTypeName is "Image"
+        if (Image && item.ContentTypeName === "Image") {
+          return true;
+        }
+        // Return item if Video is true and ContentTypeName is "Video"
+        if (Video && item.ContentTypeName === "Video") {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    const filteredContentTypes = filterContentTypes();
+    const formattedOutput = filteredContentTypes
+      .map((type) => {
+        const typeName = type.ContentTypeName;
+        const extensions = type.ContentTypeSub
+          ? type.ContentTypeSub.map((sub) => sub.ContentTypeSubName).join(", ") // Join extensions
+          : "";
+        return `${typeName}: ${extensions}`; // Format as "Type: ext1, ext2"
+      })
+      .join(" | "); // Join types together
+
+    return (
+      <>
+        <div>{formattedOutput}</div>
+      </>
+    );
   };
 
   return (
@@ -1522,6 +1682,22 @@ const Ads_Allocation_Booking = ({
                         <div className="font-poppins font-medium text-lg">
                           W {media_rules_select?.width} x H{" "}
                           {media_rules_select?.height} px
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                    </div>
+
+                    <div className="grid grid-cols-12 mt-3">
+                      <div className="col-span-1" />
+                      <div className="col-span-3 flex justify-end items-center">
+                        <div className="font-poppins font-bold">
+                          Media Rule File Type :
+                        </div>
+                      </div>
+                      <div className="col-span-1" />
+                      <div className="col-span-6">
+                        <div className="font-poppins font-medium text-lg">
+                          <GenerateMediaType />
                         </div>
                       </div>
                       <div className="col-span-1" />
@@ -1831,6 +2007,15 @@ const Ads_Allocation_Booking = ({
                                     >
                                       {itemsPanel2.length > 0 &&
                                         itemsPanel2
+                                          .filter(
+                                            (item) =>
+                                              (item.ContentTypeName ===
+                                                "Image" &&
+                                                media_rules_select.Image) ||
+                                              (item.ContentTypeName ===
+                                                "Video" &&
+                                                media_rules_select.Video)
+                                          )
                                           .filter((item) => {
                                             const contentProperties =
                                               JSON.parse(
@@ -1839,10 +2024,10 @@ const Ads_Allocation_Booking = ({
                                             return (
                                               parseInt(
                                                 contentProperties.width
-                                              ) === media_rules_select.width &&
+                                              ) === media_rules_select?.width &&
                                               parseInt(
                                                 contentProperties.height
-                                              ) === media_rules_select.height
+                                              ) === media_rules_select?.height
                                             );
                                           })
                                           .map((items, index) => (
@@ -1967,18 +2152,27 @@ const Ads_Allocation_Booking = ({
                                         itemsPanel2
                                           .filter(
                                             (item) =>
+                                              (item.ContentTypeName ===
+                                                "Image" &&
+                                                media_rules_select.Image) ||
+                                              (item.ContentTypeName ===
+                                                "Video" &&
+                                                media_rules_select.Video)
+                                          )
+                                          .filter(
+                                            (item) =>
                                               item.ContentTypeName ===
                                                 "Video" &&
                                               parseInt(
                                                 JSON.parse(
                                                   item.ContentProperties
                                                 ).width
-                                              ) === media_rules_select.width &&
+                                              ) === media_rules_select?.width &&
                                               parseInt(
                                                 JSON.parse(
                                                   item.ContentProperties
                                                 ).height
-                                              ) === media_rules_select.height
+                                              ) === media_rules_select?.height
                                           )
                                           .map((items, index) => (
                                             <Draggable
@@ -2100,18 +2294,27 @@ const Ads_Allocation_Booking = ({
                                         itemsPanel2
                                           .filter(
                                             (item) =>
+                                              (item.ContentTypeName ===
+                                                "Image" &&
+                                                media_rules_select.Image) ||
+                                              (item.ContentTypeName ===
+                                                "Video" &&
+                                                media_rules_select.Video)
+                                          )
+                                          .filter(
+                                            (item) =>
                                               item.ContentTypeName ===
                                                 "Image" &&
                                               parseInt(
                                                 JSON.parse(
                                                   item.ContentProperties
                                                 ).width
-                                              ) === media_rules_select.width &&
+                                              ) === media_rules_select?.width &&
                                               parseInt(
                                                 JSON.parse(
                                                   item.ContentProperties
                                                 ).height
-                                              ) === media_rules_select.height
+                                              ) === media_rules_select?.height
                                           )
                                           .map((items, index) => (
                                             <Draggable

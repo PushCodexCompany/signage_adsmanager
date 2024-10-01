@@ -136,7 +136,7 @@ export const GridTable = ({
             );
             const data = await User.updateUser(encrypted, token);
 
-            if (data.code !== 404) {
+            if (data.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "แก้ไขผู้ใช้งานสำเร็จ!",
@@ -302,7 +302,7 @@ export const GridTable = ({
           false
         );
         const data = await User.deleteUser(encrypted, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "ลบผู้ใช้งาน!",

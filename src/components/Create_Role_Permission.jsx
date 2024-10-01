@@ -82,7 +82,7 @@ const Create_Role_Permission = ({
         );
         try {
           const data = await User.createUserRole(encrypted, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "สร้าง User Role สำเร็จ ",

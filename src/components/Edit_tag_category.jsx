@@ -94,7 +94,7 @@ const Edit_tag_category = ({
             };
             try {
               const data = await User.updateTagCategory(obj, token);
-              if (data.code !== 404) {
+              if (data.code === 200) {
                 Swal.fire({
                   icon: "success",
                   title: "Edit Tag Category Success ...",
@@ -138,7 +138,7 @@ const Edit_tag_category = ({
       };
       try {
         const data = await User.createTag(obj, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "Add Tag Success ...",
@@ -180,7 +180,7 @@ const Edit_tag_category = ({
       if (result.isConfirmed) {
         try {
           const data = await User.deleteTag(items.TagID, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "ลบ Tag Option Success ...",
@@ -217,7 +217,7 @@ const Edit_tag_category = ({
     if (select_tag) {
       try {
         const data = await User.updateTag(select_tag, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "Edit Tag Success ...",

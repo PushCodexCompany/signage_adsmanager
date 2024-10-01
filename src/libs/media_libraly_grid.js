@@ -57,7 +57,7 @@ export const GridTable = ({
             contentid: source.ContentID,
           };
           const data = await User.deleteMedia(obj, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: `Delete Media สำเร็จ!`,

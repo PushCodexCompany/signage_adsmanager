@@ -133,7 +133,7 @@ export const GridTable = ({
   const renderTableData = () => {
     return (
       <>
-        {data.map((row, index) => (
+        {data?.map((row, index) => (
           <tr key={row.BookingID}>
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center">
@@ -141,12 +141,27 @@ export const GridTable = ({
               </div>
             </td>
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
-              <div
-                // onClick={() => handleSelectBooking(row)}
-                className="font-poppins text-xl  text-[#6425FE]"
-              >
-                {row.BookingName}
+              <div className="flex group relative">
+                <div
+                  // onClick={() => handleSelectBooking(row)}
+                  className="font-poppins text-xl  text-[#6425FE]"
+                >
+                  {row.BookingName.length > 20 ? (
+                    <>
+                      {row.BookingName.slice(0, 17) + "..."}
+                      <span
+                        style={{ pointerEvents: "none" }}
+                        className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
+                        {row.BookingName}
+                      </span>
+                    </>
+                  ) : (
+                    <>{row.BookingName}</>
+                  )}
+                </div>
               </div>
+
               <div className="font-poppins text-sm text-gray-500">
                 {row.AdvertiserName}
               </div>
@@ -182,6 +197,16 @@ export const GridTable = ({
                 {row.SlotPerDay ? row.SlotPerDay : 0}
               </div>
             </td>
+            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <div className="font-poppins text-md flex justify-center items-center">
+                {row.BookingStatus === 1
+                  ? "Completed Booking"
+                  : row.LastPublish
+                  ? "Published"
+                  : "Non Publish"}
+              </div>
+            </td>
+
             {row.BookingStatus === 1 ? (
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-3">
@@ -330,30 +355,27 @@ export const GridTable = ({
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[10px]">
                   ID
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[200px]">
+                <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
                   Booking Name
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider ">
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[300px]">
                   Start Date - End Date
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Customer
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Screens
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Slots
                 </th>
-                {/* <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Booking Status
-              </th>
-              <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                Content Status
-              </th> */}
+                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
+                  Content Status
+                </th>
                 <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Action
                 </th>

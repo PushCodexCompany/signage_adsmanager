@@ -199,7 +199,7 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
       );
 
       const data = await User.createUser(encrypted, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         Swal.fire({
           icon: "success",
           title: "สร้างผู้ใช้งานสำเร็จ!",

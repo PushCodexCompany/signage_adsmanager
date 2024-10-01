@@ -51,6 +51,8 @@ const Create_Media_Rule = () => {
       Width,
       AdsCapacity,
       ActiveResolution,
+      ImageContentTypeID,
+      VideoContentTypeID,
     } = location.state.data;
 
     setMediaRuleId(MediaRuleID);
@@ -59,6 +61,14 @@ const Create_Media_Rule = () => {
     setMediaRuleWidth(Width);
     setMediaRuleAdsCapacity(AdsCapacity);
     setToggleDisable(ActiveResolution);
+
+    if (ImageContentTypeID) {
+      setMediaRuleImage(!media_rule_image);
+    }
+
+    if (VideoContentTypeID) {
+      setMediaRuleVideo(!media_rule_video);
+    }
   };
 
   const RatioDisplay = ({ width, height }) => {
@@ -87,17 +97,59 @@ const Create_Media_Rule = () => {
     );
   };
 
+  const getConfiguration = async () => {
+    const {
+      configuration: { brandconfig },
+    } = await User.getConfiguration(token);
+    const initialValues = brandconfig.reduce((acc, item) => {
+      acc[item.ParameterKey] = item.ParameterValue;
+      return acc;
+    }, {});
+
+    setMaNotification(initialValues.CONTENTPERSLOT_SEC);
+
+    const {
+      configuration: { contenttype },
+    } = await User.getConfiguration(token);
+
+    const output = contenttype
+      .filter((item) => item.ContentTypeSub) // Only include items that have a ContentTypeSub
+      .map((item) => ({
+        id: item.ContentTypeID,
+        name: item.ContentTypeName,
+        type: item.ContentTypeSub.map(
+          (sub) => `*${sub.ContentTypeSubName}`
+        ).join(", "),
+      }));
+    setFileType(output);
+  };
+
   const handleSaveNewOrEditMediaRules = async (type) => {
     try {
       if (type === "create") {
+        let media_img;
+        let media_video;
+
+        if (media_rule_image) {
+          const imageObject = file_type.find((item) => item.name === "Image");
+          const imageId = imageObject ? imageObject.id : "";
+          media_img = imageId;
+        }
+
+        if (media_rule_video) {
+          const videoObject = file_type.find((item) => item.name === "Video");
+          const videoId = videoObject ? videoObject.id : "";
+          media_video = videoId;
+        }
+
         const obj = {
           mediarulename: media_rule_name,
           adscapacity: media_rule_adsCapacity,
           width: media_rule_width,
           height: media_rule_height,
           activeresolution: toggle_disable,
-          image: media_rule_image || false,
-          video: media_rule_video || false,
+          imagecontenttypeid: media_img,
+          videocontenttypeid: media_video,
         };
         if (
           media_rule_width === 0 ||
@@ -112,7 +164,7 @@ const Create_Media_Rule = () => {
           });
         } else {
           const data = await User.createMediaRule(obj, token, toggle_disable);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "Add Media Rule Success ...",
@@ -134,6 +186,21 @@ const Create_Media_Rule = () => {
           }
         }
       } else {
+        let media_img;
+        let media_video;
+
+        if (media_rule_image) {
+          const imageObject = file_type.find((item) => item.name === "Image");
+          const imageId = imageObject ? imageObject.id : "";
+          media_img = imageId;
+        }
+
+        if (media_rule_video) {
+          const videoObject = file_type.find((item) => item.name === "Video");
+          const videoId = videoObject ? videoObject.id : "";
+          media_video = videoId;
+        }
+
         const obj = {
           mediaruleid: media_rule_id,
           mediarulename: media_rule_name,
@@ -141,8 +208,9 @@ const Create_Media_Rule = () => {
           width: media_rule_width,
           height: media_rule_height,
           activeresolution: toggle_disable,
+          imagecontenttypeid: media_img || null,
+          videocontenttypeid: media_video || null,
         };
-
         Swal.fire({
           text: `คุณยืนยันการแก้ไข Media Rule : ${media_rule_name} `,
           icon: "warning",
@@ -170,7 +238,7 @@ const Create_Media_Rule = () => {
                 token,
                 toggle_disable
               );
-              if (data.code !== 404) {
+              if (data.code === 200) {
                 Swal.fire({
                   icon: "success",
                   title: "Edit Media Rule Success ...",
@@ -197,34 +265,6 @@ const Create_Media_Rule = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const getConfiguration = async () => {
-    const {
-      configuration: { brandconfig },
-    } = await User.getConfiguration(token);
-
-    const initialValues = brandconfig.reduce((acc, item) => {
-      acc[item.ParameterKey] = item.ParameterValue;
-      return acc;
-    }, {});
-
-    setMaNotification(initialValues.CONTENTPERSLOT_SEC);
-
-    const {
-      configuration: { contenttype },
-    } = await User.getConfiguration(token);
-
-    const output = contenttype
-      .filter((item) => item.ContentTypeSub) // Only include items that have a ContentTypeSub
-      .map((item) => ({
-        name: item.ContentTypeName,
-        type: item.ContentTypeSub.map(
-          (sub) => `*${sub.ContentTypeSubName}`
-        ).join(", "),
-      }));
-
-    setFileType(output);
   };
 
   return (
@@ -601,7 +641,19 @@ const Create_Media_Rule = () => {
                         className="custom-checkbox w-[30px] h-[30px]"
                         disabled={isView ? true : false}
                         checked={media_rule_image}
-                        onChange={(e) => setMediaRuleImage(e.target.checked)}
+                        onChange={(e) => {
+                          if (
+                            (location.state?.data?.ImageContentTypeID
+                              ? true
+                              : false) !== e.target.checked
+                          ) {
+                            setIsEdit(true);
+                          } else {
+                            setIsEdit(false);
+                          }
+
+                          setMediaRuleImage(e.target.checked);
+                        }}
                       />
                     </div>
                     <div className="col-span-4 ">
@@ -624,7 +676,18 @@ const Create_Media_Rule = () => {
                         className="custom-checkbox w-[30px] h-[30px]"
                         disabled={isView ? true : false}
                         checked={media_rule_video}
-                        onChange={(e) => setMediaRuleVideo(e.target.checked)}
+                        onChange={(e) => {
+                          if (
+                            (location.state?.data?.VideoContentTypeID
+                              ? true
+                              : false) !== e.target.checked
+                          ) {
+                            setIsEdit(true);
+                          } else {
+                            setIsEdit(false);
+                          }
+                          setMediaRuleVideo(e.target.checked);
+                        }}
                       />
                     </div>
                     <div className="col-span-4 ">

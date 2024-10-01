@@ -89,7 +89,7 @@ const Tag_managment = () => {
       if (result.isConfirmed) {
         try {
           const data = await User.deleteTagCategory(items.TagCategoryID, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "Delete Tag Category Success ...",

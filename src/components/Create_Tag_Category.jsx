@@ -27,7 +27,7 @@ const Create_Tag_Category = ({
       };
       try {
         const data = await User.createTagCategory(obj, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "Create Tag Category Success ...",

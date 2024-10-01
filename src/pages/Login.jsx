@@ -353,7 +353,7 @@ const Login = () => {
               <div className="max-w-lg flex flex-col justify-center items-center mx-auto">
                 <div className="mb-6 w-full">
                   <input
-                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins"
+                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins shadow-lg"
                     onChange={(e) => set_username(e.target.value)}
                     type="text"
                     placeholder="Your Email"
@@ -365,7 +365,7 @@ const Login = () => {
                 </div>
                 <div className="mb-6 w-full">
                   <input
-                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins"
+                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins shadow-lg"
                     type="password"
                     value={password === null ? "" : password}
                     onChange={(e) => set_password(e.target.value)}
@@ -379,7 +379,7 @@ const Login = () => {
                   <button
                     type="submit"
                     onClick={() => handleSubmit()}
-                    className="w-full lg:w-[300px] h-[45px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold font-poppins hover:bg-[#232a36]"
+                    className="w-full lg:w-[300px] h-[45px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold font-poppins hover:bg-[#232a36] shadow-lg"
                   >
                     Login
                   </button>

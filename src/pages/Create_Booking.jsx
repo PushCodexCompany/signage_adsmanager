@@ -305,7 +305,7 @@ const Create_Booking = () => {
 
   //   try {
   //     const data = await User.selectScreenBooking(obj_to_save, token);
-  //     if (data.code !== 404) {
+  //     if (data.code === 200) {
   //       Swal.fire({
   //         icon: "success",
   //         title: "เลือก Screen สำเร็จ!",
@@ -377,7 +377,7 @@ const Create_Booking = () => {
 
     try {
       const data = await User.selectScreenBooking(obj, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         Swal.fire({
           icon: "success",
           title: "เลือก Screen สำเร็จ!",
@@ -421,7 +421,7 @@ const Create_Booking = () => {
 
         try {
           const data = await User.deleteScreenBooking(obj, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "ลบ Screen สำเร็จ!",
@@ -590,7 +590,7 @@ const Create_Booking = () => {
 
       try {
         const data = await User.updateBookingSlots(obj, token);
-        if (data.code !== 404) {
+        if (data.code === 200) {
           Swal.fire({
             icon: "success",
             title: "บันทึกสำเร็จ!",
@@ -682,7 +682,7 @@ const Create_Booking = () => {
               try {
                 const data = await User.updateBookingName(obj, token);
 
-                if (data.code !== 404) {
+                if (data.code === 200) {
                   Swal.fire({
                     icon: "success",
                     title: "แก้ไขชื่อ Booking name สำเร็จ!",
@@ -733,7 +733,7 @@ const Create_Booking = () => {
             try {
               const data = await User.updateBookingName(obj, token);
 
-              if (data.code !== 404) {
+              if (data.code === 200) {
                 Swal.fire({
                   icon: "success",
                   title: "แก้ไขชื่อ Booking name สำเร็จ!",
@@ -891,12 +891,12 @@ const Create_Booking = () => {
                             <PiMonitor size={40} color={"#59606C"} />
                           </div>
                           <div className="col-span-6">
-                            <div className="flex justify-start items-center">
+                            <div className="flex justify-start items-center group relative ">
                               <div className="font-poppins lg:text-xl md:text-md font-bold">
                                 {items.ScreenName.length > 15 ? (
                                   <>
                                     {items.ScreenName.slice(0, 12) + "..."}
-                                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                                       {items.ScreenName}
                                     </span>
                                   </>
@@ -910,7 +910,10 @@ const Create_Booking = () => {
                                 {items.ScreenLocation.length > 25 ? (
                                   <>
                                     {items.ScreenLocation.slice(0, 23) + "..."}
-                                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div
+                                      style={{ pointerEvents: "none" }}
+                                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    >
                                       {items.ScreenLocation}
                                     </div>
                                   </>

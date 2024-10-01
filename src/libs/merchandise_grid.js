@@ -42,7 +42,7 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
             false
           );
           const data = await User.deleteMerchandise(encrypted, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             Swal.fire({
               icon: "success",
               title: "ลบ Customer สำเร็จ!",

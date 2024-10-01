@@ -241,7 +241,7 @@ export const GridTable = ({
     //   if (result.isConfirmed) {
     //     const { token } = User.getCookieData();
     //     const data = await User.deleteScreen(screen_id, token);
-    //     if (data.code !== 404) {
+    //     if (data.code === 200) {
     //       Swal.fire({
     //         icon: "success",
     //         title: "Delete Screen Success ...",

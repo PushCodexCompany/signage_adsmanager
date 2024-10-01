@@ -1030,13 +1030,13 @@ const New_Static_Booking = ({
 
     try {
       const data = await User.createMerchandise(encrypted, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         const form = new FormData();
         form.append("target", "advertiserlogo");
         form.append("advertiserid", data.advertiserid);
         form.append("logo", merchandise_img);
         const data_img = await User.saveImgMerchandise(form, token);
-        if (data_img.code !== 404) {
+        if (data_img.code === 200) {
           Swal.fire({
             icon: "success",
             title: "สร้าง Customer สำเร็จ!",

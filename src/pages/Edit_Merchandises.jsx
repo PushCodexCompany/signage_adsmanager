@@ -158,7 +158,7 @@ const Edit_Merchandises = () => {
     );
     try {
       const data = await User.createMerchandise(encrypted, token);
-      if (data.code !== 404) {
+      if (data.code === 200) {
         if (merchandise_img) {
           const form = new FormData();
           form.append("target", "advertiserlogo");
@@ -166,7 +166,7 @@ const Edit_Merchandises = () => {
           form.append("logo", merchandise_img);
 
           const data_img = await User.saveImgMerchandise(form, token);
-          if (data_img.code !== 404) {
+          if (data_img.code === 200) {
             Swal.fire({
               icon: "success",
               title: "สร้าง Customer สำเร็จ!",
@@ -291,7 +291,7 @@ const Edit_Merchandises = () => {
             form.append("advertiserid", merchandise_id);
             form.append("logo", merchandise_img);
             const data_img = await User.saveImgMerchandise(form, token);
-            if (data_img.code !== 404) {
+            if (data_img.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "แก้ไข Customer สำเร็จ!",
@@ -313,7 +313,7 @@ const Edit_Merchandises = () => {
             }
           } else {
             const data = await User.editMerchandise(encrypted, token);
-            if (data.code !== 404) {
+            if (data.code === 200) {
               Swal.fire({
                 icon: "success",
                 title: "แก้ไข Customer สำเร็จ!",
@@ -336,14 +336,14 @@ const Edit_Merchandises = () => {
           }
         } else {
           const data = await User.editMerchandise(encrypted, token);
-          if (data.code !== 404) {
+          if (data.code === 200) {
             if (location.state.merchandise.AdvertiserLogo !== merchandise_img) {
               const form = new FormData();
               form.append("target", "advertiserlogo");
               form.append("advertiserid", merchandise_id);
               form.append("logo", merchandise_img);
               const data_img = await User.saveImgMerchandise(form, token);
-              if (data_img.code !== 404) {
+              if (data_img.code === 200) {
                 Swal.fire({
                   icon: "success",
                   title: "แก้ไข Customer สำเร็จ!",
