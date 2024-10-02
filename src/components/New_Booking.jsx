@@ -34,6 +34,8 @@ import {
 } from "date-fns";
 import New_Booking_Steps_Modal from "./New_Booking_Steps_Modal";
 
+import useWindowDimensions from "../libs/dimension";
+
 const New_Booking = ({ setShowModalAddNewBooking }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState("1");
@@ -74,10 +76,12 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const [filter_screen, setFilterScreen] = useState([]);
   const [config, setConfig] = useState();
 
+  const { height, width } = useWindowDimensions();
+
   // calendar
   const today = startOfToday();
   const [currMonth, setCurrMonth] = useState(() => format(today, "MMM-yyyy"));
-  const [width, setWidth] = useState(window.innerWidth);
+  const [widthCalendar, setWidth] = useState(window.innerWidth);
 
   let firstDayOfMonth = parse(currMonth, "MMM-yyyy", new Date());
 
@@ -591,8 +595,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       case "1":
         return (
           <>
-            <div className="m-1 md:m-5 mt-24 p-2 md:p-5 rounded-3xl">
-              <div className="text-[50px] font-[700] text-center font-poppins">
+            <div className="m-1 md:m-5 mt-24 p-2 md:p-5 rounded-3xl h-full">
+              <div className="text-[6vw] md:text-[50px] font-[700] text-center font-poppins">
                 Booking For
               </div>
 
@@ -604,24 +608,38 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 />
               </div>
 
-              <div className="grid grid-cols-5 gap-4 mt-3">
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-3">
                 <div className="col-span-4 flex items-center">
-                  <div className="font-poppins font-semibold text-2xl">
+                  <div className="font-poppins font-semibold text-lg md:text-2xl">
                     Customers
                   </div>
                 </div>
                 <div className="col-span-1 flex justify-end">
                   <button
                     onClick={() => setShowCreateMerchandise(true)}
-                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-xs md:text-sm font-poppins w-full md:w-[300px] h-[40px] md:h-[50px] rounded-md"
+                    aria-label="Add New Customer"
                   >
                     New Customer +
                   </button>
                 </div>
               </div>
 
-              {/* Responsive Table Wrapper */}
-              <div className="w-full lg:h-[330px] h-[480px] overflow-x-auto mt-2">
+              <div
+                className={`w-full ${
+                  height <= 911
+                    ? "lg:h-[330px]"
+                    : height <= 1012
+                    ? "h-[400px]"
+                    : height <= 1138
+                    ? "h-[470px]"
+                    : height <= 1214
+                    ? "h-[560px]"
+                    : height <= 1366
+                    ? "h-[670px]"
+                    : "h-[1000px]"
+                } overflow-x-auto mt-2`}
+              >
                 <table className="min-w-full border border-gray-300">
                   <thead>
                     <tr>
@@ -640,57 +658,47 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {merchandise.map((row, index) => (
+                    {merchandise.map((row) => (
                       <tr
-                        className={`cursor-pointer ${
+                        key={row.AdvertiserID}
+                        className={`cursor-pointer hover:bg-purple-300 transition ${
                           select_merchandise?.AdvertiserID === row?.AdvertiserID
                             ? "border-[3px] border-[#6425FE]"
                             : "border-gray-200"
                         }`}
-                        style={{
-                          borderTop:
-                            select_merchandise?.AdvertiserID ===
-                            row?.AdvertiserID
-                              ? "3px solid #6425FE"
-                              : "1px solid gray",
-                          borderBottom:
-                            select_merchandise?.AdvertiserID ===
-                            row?.AdvertiserID
-                              ? "3px solid #6425FE"
-                              : "1px solid gray",
-                        }}
+                        aria-selected={
+                          select_merchandise?.AdvertiserID === row?.AdvertiserID
+                        }
                         onClick={() => setSelectMerchandise(row)}
-                        key={row.AdvertiserID}
                       >
-                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                           <div className="font-poppins text-md flex justify-center">
                             {row.AdvertiserID}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
-                          <div className="font-poppins text-xl  text-[#6425FE]">
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <div className="font-poppins text-xl text-[#6425FE]">
                             {row.AdvertiserName}
                           </div>
                           <div className="font-poppins text-sm text-gray-500">
                             {row.AccountCode}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                           <div className="flex items-center justify-center">
                             <img
+                              loading="lazy"
                               className="w-[60px] h-[60px] rounded-md object-contain border border-gray-300"
                               src={
                                 row.AdvertiserLogo
                                   ? row.AdvertiserLogo
-                                  : `https://ui-avatars.com/api/?name=${
-                                      row.AdvertiserName
-                                    }&background=${"000000"}&color=fff`
+                                  : `https://ui-avatars.com/api/?name=${row.AdvertiserName}&background=000000&color=fff`
                               }
                               alt={row.AdvertiserName}
                             />
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                           <div className="font-poppins text-xl flex justify-center items-center">
                             {row.ContactName ? row.ContactName : "Not Set"}
                           </div>
@@ -850,7 +858,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 Enter Booking Detail
               </div>
             </div>
-            <div className="mt-6 h-[480px] overflow-y-auto">
+            <div className="mt-6 h-[440px] overflow-y-auto">
               <div className="flex flex-row lg:flex-row">
                 <div className="w-full lg:w-1/3 p-4">
                   <div>
