@@ -72,23 +72,18 @@ const Create_Media_Rule = () => {
   };
 
   const RatioDisplay = ({ width, height }) => {
-    const gcd = (a, b) => {
-      return b === 0 ? a : gcd(b, a % b);
-    };
+    const max_size = Math.max(width, height);
+    const new_w = (width / max_size) * 550;
+    const new_h = (height / max_size) * 550;
 
-    const divisor = gcd(width, height);
-
-    const ratioWidth = width / divisor;
-    const ratioHeight = height / divisor;
     return (
       <>
         <div className="w-[550px] h-[550px] bg-gray-200 flex justify-center items-center">
           <div
             className={` bg-black text-white p-4`}
             style={{
-              aspectRatio: `${ratioWidth}/${ratioHeight}`,
-              width: ratioWidth < 20 ? ratioWidth * 15 : ratioWidth * 5,
-              height: ratioHeight < 20 ? ratioHeight * 15 : ratioHeight * 5,
+              width: new_w,
+              height: new_h,
               backgroundColor: "black",
             }}
           />

@@ -59,6 +59,11 @@ const Booking_Upload_Media = ({
     setNewMediaPlayList();
   }, [uploads_file]);
 
+  const getFileExtension = (mimeType) => {
+    const extension = mimeType.split("/")[1].toLowerCase();
+    return extension === "jpeg" ? ".jpg" : `.${extension}`;
+  };
+
   const uploadFile = (id) => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -66,6 +71,17 @@ const Booking_Upload_Media = ({
 
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
+      const trimmedArray = file_type.split(",").map((item) => item.trim());
+
+      if (!trimmedArray.includes(getFileExtension(file.type))) {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "ลักษณะของไฟล์ไม่ถูกต้องต้อง Media Rule.",
+        });
+        return;
+      }
+
       if (file) {
         const reader = new FileReader();
 
