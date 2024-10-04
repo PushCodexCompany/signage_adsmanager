@@ -523,14 +523,14 @@ const Select_Booking = () => {
                             <PiMonitor size={40} color={"#59606C"} />
                           </div>
                           <div className="col-span-6">
-                            <div className="flex justify-start items-center group relative">
+                            <div className="flex justify-start items-center group relative z-20">
                               <div className="font-poppins lg:text-xl md:text-md font-bold">
                                 {items.ScreenName.length > 12 ? (
                                   <>
                                     {items.ScreenName.slice(0, 9) + "..."}
                                     <span
                                       style={{ pointerEvents: "none" }}
-                                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20"
                                     >
                                       {items.ScreenName}
                                     </span>
@@ -547,7 +547,7 @@ const Select_Booking = () => {
                                     {items.ScreenLocation.slice(0, 23) + "..."}
                                     <div
                                       style={{ pointerEvents: "none" }}
-                                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                                     >
                                       {items.ScreenLocation}
                                     </div>
@@ -653,10 +653,13 @@ const Select_Booking = () => {
                                     <div className="font-poppins text-xl font-bold relative group">
                                       {items.ScreenName.length > 12 ? (
                                         <>
-                                          {items.ScreenName.slice(0, 9) + "..."}
-                                          <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                          <div className="cursor-pointer">
+                                            {items.ScreenName.slice(0, 9) +
+                                              "..."}
+                                          </div>
+                                          <div className="absolute left-full top-1/2 transform -translate-x-1/2 mt-2 min-w-[200px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                                             {items.ScreenName}
-                                          </span>
+                                          </div>
                                         </>
                                       ) : (
                                         <>{items.ScreenName}</>
@@ -665,9 +668,11 @@ const Select_Booking = () => {
                                     <div className="font-poppins text-sm md:text-xs text-[#8A8A8A] relative group">
                                       {items.ScreenLocation.length > 25 ? (
                                         <>
-                                          {items.ScreenLocation.slice(0, 23) +
-                                            "..."}
-                                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                          <div className="cursor-pointer">
+                                            {items.ScreenLocation.slice(0, 23) +
+                                              "..."}
+                                          </div>
+                                          <div className="absolute left-full top-1/2 transform -translate-x-1/2 mt-2 min-w-[200px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
                                             {items.ScreenLocation}
                                           </div>
                                         </>
@@ -757,11 +762,12 @@ const Select_Booking = () => {
                                       <div className="font-poppins text-xl font-bold ">
                                         {items.ScreenName.length > 12 ? (
                                           <>
-                                            {items.ScreenName.slice(0, 9) +
+                                            {/* {items.ScreenName.slice(0, 9) +
                                               "..."}
                                             <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                               {items.ScreenName}
-                                            </span>
+                                            </span> */}
+                                            {items.ScreenName}
                                           </>
                                         ) : (
                                           <>{items.ScreenName}</>
@@ -772,11 +778,12 @@ const Select_Booking = () => {
                                       <div className="font-poppins text-sm md:text-xs text-[#8A8A8A]">
                                         {items.ScreenLocation.length > 25 ? (
                                           <>
-                                            {items.ScreenLocation.slice(0, 23) +
+                                            {/* {items.ScreenLocation.slice(0, 23) +
                                               "..."}
                                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                               {items.ScreenLocation}
-                                            </div>
+                                            </div> */}
+                                            {items.ScreenLocation}
                                           </>
                                         ) : (
                                           <>
@@ -787,12 +794,12 @@ const Select_Booking = () => {
                                       </div>
                                     </div>
                                     <div className="flex justify-start items-center">
-                                      <div className="w-full font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
+                                      <div className="w-full font-poppins text-xs bg-white text-white rounded-lg p-[2px]">
                                         <div className="flex items-center justify-center ">
                                           Media Rule
                                         </div>
                                         <div className="flex items-center justify-center">
-                                          {items.ScreenRule[0].Width &&
+                                          {/* {items.ScreenRule[0].Width &&
                                           items.ScreenRule[0].Height
                                             ? `W ${parseInt(
                                                 items.ScreenRule[0].Width,
@@ -803,7 +810,7 @@ const Select_Booking = () => {
                                                 items.ScreenRule[0].Height,
                                                 10
                                               )}`
-                                            : "Not Set"}
+                                            : "Not Set"} */}
                                         </div>
                                       </div>
                                     </div>
