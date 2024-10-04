@@ -22,6 +22,9 @@ const Create_Media_Rule = () => {
   const [media_rule_image, setMediaRuleImage] = useState(null);
   const [media_rule_video, setMediaRuleVideo] = useState(null);
 
+  const [fact_image, setFactImage] = useState(false);
+  const [fact_video, setFactVideo] = useState(false);
+
   const [toggle_disable, setToggleDisable] = useState(true);
   const [isView, setIsView] = useState(false);
   const [maNotification, setMaNotification] = useState();
@@ -62,12 +65,14 @@ const Create_Media_Rule = () => {
     setMediaRuleAdsCapacity(AdsCapacity);
     setToggleDisable(ActiveResolution);
 
-    if (ImageContentTypeID) {
-      setMediaRuleImage(!media_rule_image);
+    if (ImageContentTypeID !== 0) {
+      setMediaRuleImage(true);
+      setFactImage(true);
     }
 
-    if (VideoContentTypeID) {
-      setMediaRuleVideo(!media_rule_video);
+    if (VideoContentTypeID !== 0) {
+      setMediaRuleVideo(true);
+      setFactVideo(true);
     }
   };
 
@@ -259,6 +264,24 @@ const Create_Media_Rule = () => {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleCheckboxChange = (isImage, checked) => {
+    if (isImage) {
+      setMediaRuleImage(checked);
+      if (fact_image !== checked) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(fact_video !== media_rule_video); // Consider the video rule
+      }
+    } else {
+      setMediaRuleVideo(checked);
+      if (fact_video !== checked) {
+        setIsEdit(true);
+      } else {
+        setIsEdit(fact_image !== media_rule_image); // Consider the image rule
+      }
     }
   };
 
@@ -636,19 +659,9 @@ const Create_Media_Rule = () => {
                         className="custom-checkbox w-[30px] h-[30px]"
                         disabled={isView ? true : false}
                         checked={media_rule_image}
-                        onChange={(e) => {
-                          if (
-                            (location.state?.data?.ImageContentTypeID
-                              ? true
-                              : false) !== e.target.checked
-                          ) {
-                            setIsEdit(true);
-                          } else {
-                            setIsEdit(false);
-                          }
-
-                          setMediaRuleImage(e.target.checked);
-                        }}
+                        onChange={(e) =>
+                          handleCheckboxChange(true, e.target.checked)
+                        }
                       />
                     </div>
                     <div className="col-span-4 ">
@@ -671,18 +684,9 @@ const Create_Media_Rule = () => {
                         className="custom-checkbox w-[30px] h-[30px]"
                         disabled={isView ? true : false}
                         checked={media_rule_video}
-                        onChange={(e) => {
-                          if (
-                            (location.state?.data?.VideoContentTypeID
-                              ? true
-                              : false) !== e.target.checked
-                          ) {
-                            setIsEdit(true);
-                          } else {
-                            setIsEdit(false);
-                          }
-                          setMediaRuleVideo(e.target.checked);
-                        }}
+                        onChange={(e) =>
+                          handleCheckboxChange(false, e.target.checked)
+                        }
                       />
                     </div>
                     <div className="col-span-4 ">
@@ -716,6 +720,7 @@ const Create_Media_Rule = () => {
                           ? "bg-[#6425FE] hover:bg-[#6325fe86]"
                           : "bg-gray-500 hover:bg-gray-800"
                       }  w-[350px]  text-md rounded-lg h-[65px] text-white font-bold font-poppins`}
+                      disabled={!isEdit}
                     >
                       Save Change
                     </button>

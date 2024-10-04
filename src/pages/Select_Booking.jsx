@@ -662,7 +662,7 @@ const Select_Booking = () => {
                                         <>{items.ScreenName}</>
                                       )}
                                     </div>
-                                    <div className="font-poppins text-sm md:text-xs text-[#8A8A8A]">
+                                    <div className="font-poppins text-sm md:text-xs text-[#8A8A8A] relative group">
                                       {items.ScreenLocation.length > 25 ? (
                                         <>
                                           {items.ScreenLocation.slice(0, 23) +
@@ -754,7 +754,7 @@ const Select_Booking = () => {
                                   </div>
                                   <div className="col-span-6">
                                     <div className="flex justify-start items-center">
-                                      <div className="font-poppins text-xl font-bold relative group">
+                                      <div className="font-poppins text-xl font-bold ">
                                         {items.ScreenName.length > 12 ? (
                                           <>
                                             {items.ScreenName.slice(0, 9) +
@@ -768,7 +768,7 @@ const Select_Booking = () => {
                                         )}
                                       </div>
                                     </div>
-                                    <div className="flex justify-start items-center group relative">
+                                    <div className="flex justify-start items-center">
                                       <div className="font-poppins text-sm md:text-xs text-[#8A8A8A]">
                                         {items.ScreenLocation.length > 25 ? (
                                           <>
