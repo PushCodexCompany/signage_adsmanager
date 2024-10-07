@@ -322,13 +322,13 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
         <table className="min-w-full border border-gray-300">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[100px]">
                 ID
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[400px]">
                 Rule Name
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[500px]">
                 Rule Properties
               </th>
               <th className="px-6 py-3 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
@@ -354,7 +354,7 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                   <div className="flex flex-wrap">
                     <div
                       className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1 shadow-lg"
-                      style={{ flexBasis: "calc(38% - 8px)" }}
+                      style={{ flexBasis: "calc(45% - 8px)" }}
                     >
                       <div className="font-poppins text-sm font-bold text-[#6425FE] ">
                         Resolution :
