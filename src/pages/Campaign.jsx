@@ -311,7 +311,7 @@ const LeftPanel = ({ is_disable }) => {
   return (
     <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
       {/* Header */}
-      <div className="p-2 flex shadow-lg">
+      <div className="p-2 flex shadow-sm">
         {/* CheckBox */}
         <div className="ml-2">
           <label className="inline-flex items-center space-x-2">
@@ -684,7 +684,7 @@ const RightPanel = () => {
   };
   return (
     <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
-      <div className="p-2 flex shadow-lg">
+      <div className="p-2 flex shadow-sm">
         {/* CheckBox */}
         <div className="ml-2">
           <label className="inline-flex items-center space-x-2">
@@ -1023,7 +1023,7 @@ const Tabs = () => {
     <>
       <div className="flex flex-wrap">
         <div className="w-full">
-          <div className="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+          <div className="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-sm">
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-3/4 flex justify-center items-center">
                 {/* User Manager */}
@@ -1032,7 +1032,7 @@ const Tabs = () => {
                     className={
                       "w-[full] lg:w-[200px] text-base font-bold  px-5 py-3 rounded block leading-normal " +
                       (openTab === 1
-                        ? "text-black bg-white border border-gray-300 shadow-lg"
+                        ? "text-black bg-white border border-gray-300 shadow-sm"
                         : "text-[#6425FE] bg-white")
                     }
                     onClick={(e) => {
@@ -1052,7 +1052,7 @@ const Tabs = () => {
                   className={
                     "w-[full] lg:w-[300px] text-base font-bold  px-5 py-3  rounded block leading-normal " +
                     (openTab === 2
-                      ? "text-black bg-white border border-gray-300 shadow-lg"
+                      ? "text-black bg-white border border-gray-300 shadow-sm"
                       : "text-[#6425FE] bg-white")
                   }
                   onClick={(e) => {
@@ -1071,7 +1071,7 @@ const Tabs = () => {
                   className={
                     "w-[full] lg:w-[300px] text-base font-bold  px-5 py-3  rounded block leading-normal " +
                     (openTab === 3
-                      ? "text-black bg-white border border-gray-300 shadow-lg"
+                      ? "text-black bg-white border border-gray-300 shadow-sm"
                       : "text-[#6425FE] bg-white")
                   }
                   onClick={(e) => {
@@ -1090,7 +1090,7 @@ const Tabs = () => {
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
             <div className={openTab === 1 ? "block" : "hidden"} id="link1">
               {/* Select Menu */}
-              <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+              <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-sm">
                 <div className="flex flex-col lg:flex-row">
                   <div className="w-full lg:w-3/4 flex justify-center items-center">
                     <div className="relative w-full lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3">

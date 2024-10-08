@@ -176,12 +176,12 @@ export const GridTable = ({
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-lg rounded-lg">
+                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-sm rounded-lg">
                   {row.ScreenRule[0]?.AdsCapacity || "No Data"}
                 </div>
               </td>
               <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-lg rounded-lg">
+                <div className="font-poppins font-bold border border-[#DBDBDB] shadow-sm rounded-lg">
                   {row.loopDuration ? `${row.loopDuration} Second` : "No Data"}
                 </div>
               </td>
@@ -191,7 +191,7 @@ export const GridTable = ({
                     row.ScreenTag.map((items, index) => (
                       <div
                         key={index}
-                        className="border border-gray-300 shadow-lg rounded-lg flex justify-center items-center mb-1 mr-1"
+                        className="border border-gray-300 shadow-sm rounded-lg flex justify-center items-center mb-1 mr-1"
                         style={{ padding: "2px 4px" }}
                       >
                         <div className="p-1">

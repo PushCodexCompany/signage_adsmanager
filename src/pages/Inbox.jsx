@@ -15,7 +15,7 @@ const Tabs = () => {
     <>
       <div className="flex flex-wrap">
         <div className="w-full">
-          <div className="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+          <div className="border border-gray-200 rounded-lg h-[50px] flex items-center mt-3 shadow-sm">
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-3/4 flex justify-center items-center">
                 {/* User Manager */}
@@ -24,7 +24,7 @@ const Tabs = () => {
                     className={
                       "w-[full] lg:w-[200px] text-base font-bold  px-5 py-3 rounded block leading-normal " +
                       (openTab === 1
-                        ? "text-black bg-white border border-gray-300 shadow-lg"
+                        ? "text-black bg-white border border-gray-300 shadow-sm"
                         : "text-[#6425FE] bg-white")
                     }
                     onClick={(e) => {
@@ -44,7 +44,7 @@ const Tabs = () => {
                   className={
                     "w-[full] lg:w-[300px] text-base font-bold  px-5 py-3  rounded block leading-normal " +
                     (openTab === 2
-                      ? "text-black bg-white border border-gray-300 shadow-lg"
+                      ? "text-black bg-white border border-gray-300 shadow-sm"
                       : "text-[#6425FE] bg-white")
                   }
                   onClick={(e) => {
@@ -63,7 +63,7 @@ const Tabs = () => {
                   className={
                     "w-[full] lg:w-[300px] text-base font-bold  px-5 py-3  rounded block leading-normal " +
                     (openTab === 3
-                      ? "text-black bg-white border border-gray-300 shadow-lg"
+                      ? "text-black bg-white border border-gray-300 shadow-sm"
                       : "text-[#6425FE] bg-white")
                   }
                   onClick={(e) => {
@@ -81,7 +81,7 @@ const Tabs = () => {
           </div>
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
             <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-              <div className="p-4 mt-10 shadow-md">
+              <div className="p-4 mt-10 shadow-sm">
                 <div className="flex flex-row ">
                   <div className="basis-[50px] font-poppins text-xl text-[#59606C]">
                     ID
@@ -96,7 +96,7 @@ const Tabs = () => {
               </div>
 
               {/* Example 1 */}
-              <div className="p-4 shadow-md">
+              <div className="p-4 shadow-sm">
                 <div className="flex flex-row ">
                   <div className="basis-[50px] font-poppins text-md font-bold">
                     1
@@ -140,7 +140,7 @@ const Tabs = () => {
                 </div>
               </div>
               {/* Example 2 */}
-              <div className="p-4 shadow-md">
+              <div className="p-4 shadow-sm">
                 <div className="flex flex-row ">
                   <div className="basis-[50px] font-poppins text-md font-bold">
                     2
@@ -184,7 +184,7 @@ const Tabs = () => {
                 </div>
               </div>
               {/* Example 3 */}
-              <div className="p-4 shadow-md">
+              <div className="p-4 shadow-sm">
                 <div className="flex flex-row ">
                   <div className="basis-[50px] font-poppins text-md font-bold">
                     3
@@ -229,7 +229,7 @@ const Tabs = () => {
                 </div>
               </div>
               {/* Example 4 */}
-              <div className="p-4 shadow-md">
+              <div className="p-4 shadow-sm">
                 <div className="flex flex-row ">
                   <div className="basis-[50px] font-poppins text-md font-bold">
                     4

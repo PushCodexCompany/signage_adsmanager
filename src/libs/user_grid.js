@@ -382,7 +382,7 @@ export const GridTable = ({
                         row.AccessContent?.brands.length > 0 ? (
                           row.AccessContent.brands.map((items) => (
                             <img
-                              className="w-[50px] h-[50px] rounded-md shadow-lg object-contain border border-[#dedede]"
+                              className="w-[50px] h-[50px] rounded-md shadow-sm object-contain border border-[#dedede]"
                               src={getImgBrand(items)}
                             />
                           ))

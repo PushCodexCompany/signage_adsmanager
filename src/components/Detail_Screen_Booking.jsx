@@ -99,7 +99,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
               </div>
               <div className="mt-2">
                 <div className="grid grid-cols-12 space-x-2">
-                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                     <div className="flex justify-center items-center">
                       <div className="font-poppins text-xl font-bold">
                         Resolution
@@ -111,7 +111,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                     <div className="flex justify-center items-center">
                       <div className="font-poppins text-xl font-bold">
                         Ads Capacity
@@ -125,7 +125,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                     <div className="flex justify-center items-center">
                       <div className="font-poppins text-xl font-bold">
                         Media Type
@@ -619,7 +619,7 @@ const Detail_Screen_Booking = ({ setShowDetailScreen, detailScreen }) => {
                                   detailScreen.MANotifyDelay
                                     ? "bg-[#6425FE]"
                                     : "bg-white border border-[#6425FE]"
-                                }  rounded-full shadow-md transition-transform duration-300 ${
+                                }  rounded-full shadow-sm transition-transform duration-300 ${
                                   detailScreen.MANotifyDelay
                                     ? "translate-x-full"
                                     : ""

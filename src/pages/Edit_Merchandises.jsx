@@ -417,7 +417,7 @@ const Edit_Merchandises = () => {
               </label>
               <div className="flex items-center">
                 <input
-                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                   value={merchandise_name}
                   onChange={(e) => {
                     if (
@@ -501,7 +501,7 @@ const Edit_Merchandises = () => {
                     }
                     setContactPersonName(e.target.value);
                   }}
-                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                  className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                 />
               </div>
             </div>
@@ -530,7 +530,7 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonDep(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>
@@ -557,7 +557,7 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonPos(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>
@@ -588,7 +588,7 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonEmail(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>
@@ -619,7 +619,7 @@ const Edit_Merchandises = () => {
                       }
                       setContactPersonPhone(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>
@@ -652,7 +652,7 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyName(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>
@@ -680,7 +680,7 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyPhone(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>
@@ -709,7 +709,7 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyTaxId(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>
@@ -737,7 +737,7 @@ const Edit_Merchandises = () => {
                       }
                       setCompanyTaxAddress(e.target.value);
                     }}
-                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                    className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                   />
                 </div>
               </div>

@@ -135,7 +135,7 @@ const Booking_Summary = () => {
                       className="flex justify-center items-center mt-2 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg w-[90%] h-[75px] shadow-lg`}
+                        className={`border border-gray-300 rounded-lg w-[90%] h-[75px] shadow-sm`}
                       >
                         <div className="grid grid-cols-10">
                           <div className="col-span-2 flex justify-center items-center">

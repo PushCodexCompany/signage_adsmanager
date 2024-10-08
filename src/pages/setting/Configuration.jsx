@@ -121,7 +121,7 @@ const Configuration = () => {
                 <div className="col-span-1">
                   <div className="flex text-center justify-center">
                     <input
-                      className="font-poppins h-[35px] text-center border border-[#dedede] rounded-md shadow-lg"
+                      className="font-poppins h-[35px] text-center border border-[#dedede] rounded-md shadow-sm"
                       value={inputValues[items.ParameterKey]}
                       onChange={(e) =>
                         handleInputChange(

@@ -383,7 +383,7 @@ const Select_Booking = () => {
                   item.MediaID
                     ? "bg-white border border-[#D9D9D9]"
                     : "bg-[#D9D9D9]"
-                } flex justify-center items-center shadow-lg`}
+                } flex justify-center items-center shadow-sm`}
               >
                 {item.MediaID ? <IoIosPlayCircle color="#6425FE" /> : ""}
                 {item.ContentName && (
@@ -486,7 +486,7 @@ const Select_Booking = () => {
           <div className="col-span-2">
             <div>
               <img
-                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300 shadow-lg`}
+                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300 shadow-sm`}
                 src={
                   merchandise.AdvertiserLogo
                     ? merchandise.AdvertiserLogo
@@ -516,7 +516,7 @@ const Select_Booking = () => {
                       className="flex justify-center items-center mt-3 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] shadow-lg`}
+                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] shadow-sm`}
                       >
                         <div className="grid grid-cols-10">
                           <div className="col-span-2 flex justify-center items-center">
@@ -643,7 +643,7 @@ const Select_Booking = () => {
                             screen.map((items, screenIndex) => (
                               <div
                                 key={screenIndex}
-                                className="h-[90px] min-w-[250px] rounded-lg bg-white flex items-center border border-gray-300 shadow-lg"
+                                className="h-[90px] min-w-[250px] rounded-lg bg-white flex items-center border border-gray-300 shadow-sm"
                               >
                                 <div className="flex justify-start items-center flex-grow">
                                   <div className="flex justify-center items-center w-1/5">

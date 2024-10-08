@@ -244,7 +244,7 @@ const Content_type = () => {
     return (
       <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
         {/* Header */}
-        <div className="p-2 flex shadow-lg">
+        <div className="p-2 flex shadow-sm">
           {/* CheckBox */}
           <div className="ml-2">
             <label className="inline-flex items-center space-x-2">
@@ -617,7 +617,7 @@ const Content_type = () => {
     };
     return (
       <div className="w-[300px] lg:w-3/4 mt-10 ml-5 align-middle">
-        <div className="p-2 flex shadow-lg">
+        <div className="p-2 flex shadow-sm">
           {/* CheckBox */}
           <div className="ml-2">
             <label className="inline-flex items-center space-x-2">

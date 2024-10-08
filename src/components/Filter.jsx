@@ -72,7 +72,7 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
       >
         <div className="w-[50%] lg:w-full h-[70px]">
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-            <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+            <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-sm">
               <div className="flex flex-col lg:flex-row">
                 <div className="w-5/6 flex justify-between items-center ">
                   {all_filter_data.length > 0 &&
@@ -85,7 +85,7 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
                           name={items.TagCategoryName}
                           id={items.TagCategoryName}
                           onChange={handleStatusChange}
-                          className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-lg p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                          className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-sm p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                         >
                           <option value="" disabled selected hidden>
                             {items.TagCategoryName}
@@ -114,7 +114,7 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
         {filter &&
           filter.map((items, index) => (
             <button key={index} onClick={() => removeFilter(items, index)}>
-              <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full shadow-xl">
+              <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full shadow-sm">
                 <div className="grid grid-cols-4">
                   <div className="col-span-1 mt-[6px]">
                     <div className="flex justify-end items-center">
@@ -135,7 +135,7 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
           ))}
         {filter.length > 0 && (
           <button onClick={() => clearFilter()}>
-            <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] hover:bg-[#3b1694] border-gray-2 rounded-full shadow-xl">
+            <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border bg-[#6425FE] hover:bg-[#3b1694] border-gray-2 rounded-full shadow-sm">
               <div className="grid grid-cols-12">
                 <div className="col-span-1 mt-[6px]">
                   <div className="flex justify-end items-center">

@@ -663,7 +663,7 @@ const New_screen = () => {
                 Screen Name
               </label>
               <input
-                className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                 value={screenName}
                 onChange={(e) => {
                   if (location.state?.screen?.ScreenName !== e.target.value) {
@@ -677,7 +677,7 @@ const New_screen = () => {
             </div>
             <div className="mt-2">
               <div className="grid grid-cols-12 space-x-2">
-                <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                   <div className="flex justify-center items-center">
                     <div className="font-poppins text-xl font-bold">
                       Resolution
@@ -689,7 +689,7 @@ const New_screen = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                   <div className="flex justify-center items-center">
                     <div className="font-poppins text-xl font-bold">
                       Ads Capacity
@@ -703,7 +703,7 @@ const New_screen = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                   <div className="flex justify-center items-center">
                     <div className="font-poppins text-xl font-bold">
                       Media Type
@@ -823,7 +823,7 @@ const New_screen = () => {
                               setLatLong({ ...latLong, lat: e.target.value })
                             }
                             type="text"
-                            className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                            className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                           />
                         </div>
                       </div>
@@ -844,7 +844,7 @@ const New_screen = () => {
                               setLatLong({ ...latLong, long: e.target.value })
                             }
                             type="text"
-                            className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                            className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                           />
                         </div>
                       </div>
@@ -895,7 +895,7 @@ const New_screen = () => {
                         }}
                         type="text"
                         placeholder=""
-                        className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-bold"
+                        className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-bold"
                       />
                     </div>
                   </div>
@@ -980,7 +980,7 @@ const New_screen = () => {
                       setScreenDescription(e.target.value);
                     }}
                     placeholder=""
-                    className="w-full h-[147px] font-bold rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                    className="w-full h-[147px] font-bold rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                     style={{
                       whiteSpace: "pre-wrap",
                       wordWrap: "break-word",
@@ -1297,7 +1297,7 @@ const New_screen = () => {
                                 IsMaintenanceSwitchOn
                                   ? "bg-[#6425FE]"
                                   : "bg-white border border-[#6425FE]"
-                              }  rounded-full shadow-md transition-transform duration-300 ${
+                              }  rounded-full shadow-sm transition-transform duration-300 ${
                                 IsMaintenanceSwitchOn ? "translate-x-full" : ""
                               }`}
                             ></div>

@@ -819,7 +819,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         selected_dates.some((date) => isSameDay(date, day))
                           ? "bg-[#6425FE] border-3 border-[#6425FE] text-white"
                           : ""
-                      } shadow-lg`}
+                      } shadow-sm`}
                     >
                       <div className="font-poppins lg:text-lg md:text-xs">
                         {format(day, "d")}
@@ -863,7 +863,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="w-full lg:w-1/3 p-4">
                   <div>
                     <img
-                      className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-xl`}
+                      className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-sm`}
                       src={select_merchandise.AdvertiserLogo}
                       alt={select_merchandise.AdvertiserName}
                     />
@@ -881,7 +881,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full lg:w-3/5 p-4 lg:pl-8 border border-gray-300 rounded-lg shadow-xl mt-2">
+                <div className="w-full lg:w-3/5 p-4 lg:pl-8 border border-gray-300 rounded-lg shadow-sm mt-2">
                   <div>
                     <div className="font-poppins font-bold">Booking Name :</div>
                   </div>
@@ -889,7 +889,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <input
                       onChange={(e) => setBookingName(e.target.value)}
                       value={booking_name}
-                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300 shadow-lg"
+                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300 shadow-sm"
                       placeholder="Enter Booking Name"
                     />
                   </div>
@@ -901,7 +901,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       onChange={(e) => setBookingSlot(e.target.value)}
                       value={booking_slot}
                       type="number"
-                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300 shadow-lg"
+                      className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300 shadow-sm"
                       placeholder="Enter Number of Slot"
                     />
                   </div>
@@ -954,7 +954,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 <div className="w-full lg:w-1/3 p-4">
                   <div>
                     <img
-                      className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-xl`}
+                      className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-sm`}
                       src={select_merchandise.AdvertiserLogo}
                       alt={select_merchandise.AdvertiserName}
                     />
@@ -1097,7 +1097,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   </label>
                   <div className="flex items-center">
                     <input
-                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                       value={merchandise_name}
                       onChange={(e) => setMerchandiseName(e.target.value)}
                     />
@@ -1156,7 +1156,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     <input
                       value={contact_person_name}
                       onChange={(e) => setContactPersonName(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                      className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                     />
                   </div>
                 </div>
@@ -1175,7 +1175,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_dep}
                         onChange={(e) => setContactPersonDep(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>
@@ -1193,7 +1193,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_pos}
                         onChange={(e) => setContactPersonPos(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>
@@ -1213,7 +1213,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_email}
                         onChange={(e) => setContactPersonEmail(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>
@@ -1232,7 +1232,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         value={contact_person_phone}
                         type="number"
                         onChange={(e) => setContactPersonPhone(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>
@@ -1255,7 +1255,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_name}
                         onChange={(e) => setCompanyName(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>
@@ -1273,7 +1273,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_phone}
                         onChange={(e) => setCompanyPhone(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>
@@ -1293,7 +1293,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_tax_id}
                         onChange={(e) => setCompanyTaxId(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>
@@ -1311,7 +1311,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={company_tax_address}
                         onChange={(e) => setCompanyTaxAddress(e.target.value)}
-                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>

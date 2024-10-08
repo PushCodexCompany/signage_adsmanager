@@ -251,7 +251,7 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
           </div>
           {/* Select Menu */}
           <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-            <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+            <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-sm">
               <div className="flex flex-col lg:flex-row">
                 <div className="w-full lg:w-3/4 flex justify-between items-center">
                   <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
@@ -298,7 +298,7 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
                 <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
                   <button
                     onClick={() => setShowRegister(true)}
-                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[200px] lg:w-[300px] h-[45px] rounded-md mr-1 shadow-xl"
+                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[200px] lg:w-[300px] h-[45px] rounded-md mr-1 shadow-sm"
                   >
                     New User +
                   </button>

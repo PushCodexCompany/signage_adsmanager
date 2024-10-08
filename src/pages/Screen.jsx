@@ -200,7 +200,7 @@ const Event = () => {
               <div className="flex justify-end space-x-1">
                 <button
                   onClick={() => navigate("/screen/create/new")}
-                  className="bg-[#6425FE]  hover:bg-[#3b1694]  text-white text-sm font-poppins w-[180px] h-[45px] rounded-md shadow-xl"
+                  className="bg-[#6425FE]  hover:bg-[#3b1694]  text-white text-sm font-poppins w-[180px] h-[45px] rounded-md shadow-sm"
                 >
                   New Screen +
                 </button>

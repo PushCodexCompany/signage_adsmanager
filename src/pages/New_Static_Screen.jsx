@@ -802,7 +802,7 @@ const New_Static_Screen = () => {
                                 IsMaintenanceSwitchOn
                                   ? "bg-[#6425FE]"
                                   : "bg-white border border-[#6425FE]"
-                              }  rounded-full shadow-md transition-transform duration-300 ${
+                              }  rounded-full shadow-sm transition-transform duration-300 ${
                                 IsMaintenanceSwitchOn ? "translate-x-full" : ""
                               }`}
                             ></div>

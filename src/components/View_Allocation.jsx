@@ -83,7 +83,7 @@ const View_Allocation = ({
                       <div className="flex items-center mr-1">
                         <div className="flex-1">
                           <div
-                            className={`grid grid-cols-11 h-[80px] border border-gray-300 w-[265px] lg:w-[320px] shadow-lg rounded-lg`}
+                            className={`grid grid-cols-11 h-[80px] border border-gray-300 w-[265px] lg:w-[320px] shadow-sm rounded-lg`}
                             style={{ height: `80px` }}
                           >
                             <div className="col-span-2 flex justify-center items-center">

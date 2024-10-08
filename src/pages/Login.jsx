@@ -353,7 +353,7 @@ const Login = () => {
               <div className="max-w-lg flex flex-col justify-center items-center mx-auto">
                 <div className="mb-6 w-full">
                   <input
-                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins shadow-lg"
+                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins shadow-sm"
                     onChange={(e) => set_username(e.target.value)}
                     type="text"
                     placeholder="Your Email"
@@ -365,7 +365,7 @@ const Login = () => {
                 </div>
                 <div className="mb-6 w-full">
                   <input
-                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins shadow-lg"
+                    className="w-full py-2 px-3 border-2 rounded-lg outline-none font-poppins shadow-sm"
                     type="password"
                     value={password === null ? "" : password}
                     onChange={(e) => set_password(e.target.value)}
@@ -379,7 +379,7 @@ const Login = () => {
                   <button
                     type="submit"
                     onClick={() => handleSubmit()}
-                    className="w-full lg:w-[300px] h-[45px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold font-poppins hover:bg-[#232a36] shadow-lg"
+                    className="w-full lg:w-[300px] h-[45px] bg-[#2f3847] py-2 rounded-sm text-white font-semibold font-poppins hover:bg-[#232a36] shadow-sm"
                   >
                     Login
                   </button>
@@ -436,7 +436,7 @@ const Login = () => {
               </div>
               <div className="mt-2 p-2">
                 <div className="relative flex flex-col  max-w-0  w-full mb-3 border-b-4 border-gray-600">
-                  <div className="rounded-lg h-[50px] flex items-center shadow-md">
+                  <div className="rounded-lg h-[50px] flex items-center shadow-sm">
                     <div className="flex flex-col lg:flex-row">
                       <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
                         <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
@@ -708,7 +708,7 @@ const Login = () => {
 
               <div className="mt-2 p-2">
                 <div className="relative flex flex-col  max-w-0  w-full mb-3 border-b-4 border-gray-600">
-                  <div className="rounded-lg h-[50px] flex items-center shadow-md">
+                  <div className="rounded-lg h-[50px] flex items-center shadow-sm">
                     <div className="flex flex-col lg:flex-row">
                       <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
                         <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">

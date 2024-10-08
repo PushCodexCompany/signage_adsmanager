@@ -187,7 +187,7 @@ const Brands = () => {
               >
                 <div className="relative mb-4">
                   <img
-                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-contain border border-[#DFDFDF] shadow-lg"
+                    className="block ml-auto mr-auto mt-30px w-[250px] h-[250px] rounded-3xl cursor-pointer object-contain border border-[#DFDFDF] shadow-sm"
                     src={
                       items.BrandLogo
                         ? items.BrandLogo
@@ -213,7 +213,7 @@ const Brands = () => {
                   )}
 
                   {dropdownStates[items.BrandID] && (
-                    <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
+                    <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-sm py-2 px-4">
                       {permission.brand?.update ? (
                         <button
                           onClick={() => {

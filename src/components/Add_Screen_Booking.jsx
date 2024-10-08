@@ -325,7 +325,7 @@ const Add_Screen_Booking = ({
                             row.ScreenTag.map((items, index) => (
                               <div
                                 key={index}
-                                className="border border-gray-300 shadow-lg rounded-lg flex justify-center items-center mb-1 mr-1"
+                                className="border border-gray-300 shadow-sm rounded-lg flex justify-center items-center mb-1 mr-1"
                                 style={{ padding: "2px 4px" }}
                               >
                                 <div className="p-1">

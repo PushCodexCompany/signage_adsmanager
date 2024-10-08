@@ -274,7 +274,7 @@ const Edit_tag_category = ({
                   type="text"
                   value={new_categoy_name.name}
                   onChange={(e) => handleNewCategoryTag(e, "name")}
-                  className="w-full p-2  border border-gray-300 rounded-lg shadow-lg"
+                  className="w-full p-2  border border-gray-300 rounded-lg shadow-sm"
                 />
               </div>
             </div>
@@ -289,7 +289,7 @@ const Edit_tag_category = ({
                   type="text"
                   value={new_categoy_name.description}
                   onChange={(e) => handleNewCategoryTag(e, "description")}
-                  className="w-full p-2  border border-gray-300 rounded-lg shadow-lg"
+                  className="w-full p-2  border border-gray-300 rounded-lg shadow-sm"
                 />
               </div>
             </div>
@@ -300,7 +300,7 @@ const Edit_tag_category = ({
               <div className="col-span-6  h-12">
                 <input
                   type="text"
-                  className="w-[100%] h-[100%] border border-gray-300 rounded-md pl-4 placeholder-ml-2 shadow-lg"
+                  className="w-[100%] h-[100%] border border-gray-300 rounded-md pl-4 placeholder-ml-2 shadow-sm"
                   placeholder="กรอกชื่อ Tag Option"
                   value={new_tag}
                   onChange={(e) => setNewTag(e.target.value)}
@@ -315,7 +315,7 @@ const Edit_tag_category = ({
                 <div className="col-span-1 h-12">
                   <button
                     onClick={() => addNewTag()}
-                    className="w-[100%] h-[100%] rounded-lg bg-[#6425FE]  hover:bg-[#3b1694] font-poppins text-white shadow-xl "
+                    className="w-[100%] h-[100%] rounded-lg bg-[#6425FE]  hover:bg-[#3b1694] font-poppins text-white shadow-sm "
                   >
                     Add Tag Option
                   </button>
@@ -329,7 +329,7 @@ const Edit_tag_category = ({
                 tag_data.map((items, index) => (
                   <div
                     key={index}
-                    className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1  shadow-lg"
+                    className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1  shadow-sm"
                     style={{
                       flexBasis: `calc(25% - 5px)`, // Increased width and adjusted spacing
                     }}

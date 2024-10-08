@@ -317,7 +317,7 @@ const Create_Media_Rule = () => {
                 </label>
                 <div className="flex items-center">
                   <input
-                    className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                    className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                     onChange={(e) => {
                       if (
                         location.state?.data?.MediaRuleName !== e.target.value
@@ -374,7 +374,7 @@ const Create_Media_Rule = () => {
                       } p-1 rounded-full border border-gray-500 transition duration-300`}
                     >
                       <div
-                        className={`w-5 h-5 rounded-full shadow-md transform ${
+                        className={`w-5 h-5 rounded-full shadow-sm transform ${
                           toggle_disable
                             ? "translate-x-1 bg-[#6425FE] "
                             : "translate-x-0 border bg-white border-gray-500"
@@ -420,7 +420,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -448,7 +448,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -497,7 +497,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -525,7 +525,7 @@ const Create_Media_Rule = () => {
                         <input
                           className={`font-bold text-sm w-full h-full font-poppins pl-4 border border-gray-300 rounded-lg ${
                             toggle_disable ? "text-black" : "text-gray-500"
-                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg`}
+                          } focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm`}
                           type="number"
                           onChange={(e) => {
                             const newValue = e.target.value;
@@ -606,8 +606,8 @@ const Create_Media_Rule = () => {
                         }}
                         value={media_rule_adsCapacity}
                         disabled={isView}
-                        // className="font-poppins border border-gray-300 h-[40px] rounded-md pl-4 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
-                        className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                        // className="font-poppins border border-gray-300 h-[40px] rounded-md pl-4 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
+                        className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>
                   </div>

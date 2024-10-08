@@ -331,7 +331,7 @@ const Remove_Content = ({
                       </div>
                     </div>
                     <div className="col-span-1" />
-                    <div className="col-span-4 border border-[#D9D9D9] rounded-md shadow-lg">
+                    <div className="col-span-4 border border-[#D9D9D9] rounded-md shadow-sm">
                       <div className="p-2">
                         <div className="grid grid-cols-5">
                           <div className="col-span-4">
@@ -429,7 +429,7 @@ const Remove_Content = ({
                                 onChange={(date) =>
                                   handleStartDateChange(index, date)
                                 }
-                                className="p-2 rounded-lg shadow-md w-full text-xs"
+                                className="p-2 rounded-lg shadow-sm w-full text-xs"
                               />
                             </div>
                           </div>
@@ -449,7 +449,7 @@ const Remove_Content = ({
                                 onChange={(date) =>
                                   handleEndDateChange(index, date)
                                 }
-                                className="p-2 rounded-lg shadow-md w-full text-xs"
+                                className="p-2 rounded-lg shadow-sm w-full text-xs"
                               />
                             </div>
                           </div>
@@ -462,7 +462,7 @@ const Remove_Content = ({
                           </div>
                         </div>
                       ))}
-                      <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md shadow-lg">
+                      <div className="grid grid-cols-5 border border-[#D9D9D9] rounded-md shadow-sm">
                         <div className="col-span-4">
                           <div className="p-2">
                             <div className="flex flex-wrap">

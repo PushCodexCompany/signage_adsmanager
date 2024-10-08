@@ -351,14 +351,14 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                   Screen Name
                 </label>
                 <input
-                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                  className="border border-[#DBDBDB] rounded-lg p-3 pr-10 w-full font-bold font-poppins focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                   value={screenName}
                   onChange={(e) => setScreenName(e.target.value)}
                 />
               </div>
               <div className="mt-2">
                 <div className="grid grid-cols-12 space-x-2">
-                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                     <div className="flex justify-center items-center">
                       <div className="font-poppins text-xl font-bold">
                         Resolution
@@ -370,7 +370,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                     <div className="flex justify-center items-center">
                       <div className="font-poppins text-xl font-bold">
                         Ads Capacity
@@ -384,7 +384,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-4 border border-gray-300 rounded-md shadow-lg">
+                  <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                     <div className="flex justify-center items-center">
                       <div className="font-poppins text-xl font-bold">
                         Media Type
@@ -504,7 +504,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                                 setLatLong({ ...latLong, lat: e.target.value })
                               }
                               type="text"
-                              className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                              className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                             />
                           </div>
                         </div>
@@ -525,7 +525,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                                 setLatLong({ ...latLong, long: e.target.value })
                               }
                               type="text"
-                              className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                              className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                             />
                           </div>
                         </div>
@@ -567,7 +567,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                             setScreenLocationName(e.target.value)
                           }
                           type="text"
-                          className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                          className="w-full rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                         />
                       </div>
                     </div>
@@ -585,7 +585,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                         <select
                           name="screenCity"
                           id="screenCity"
-                          className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg font-poppins"
+                          className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                           onChange={(e) => setScreenCityName(e.target.value)}
                           value={screenCityName}
                         >
@@ -635,7 +635,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                       value={screenDescription}
                       onChange={(e) => setScreenDescription(e.target.value)}
                       placeholder=""
-                      className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-lg"
+                      className="w-full h-[147px] rounded-lg p-3 resize-none font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                       style={{
                         whiteSpace: "pre-wrap",
                         wordWrap: "break-word",
@@ -940,7 +940,7 @@ const New_screen = ({ setOpenAddNewScreenModal, openAddNewScreenModal }) => {
                                   IsMaintenanceSwitchOn
                                     ? "bg-[#6425FE]"
                                     : "bg-white border border-[#6425FE]"
-                                }  rounded-full shadow-md transition-transform duration-300 ${
+                                }  rounded-full shadow-sm transition-transform duration-300 ${
                                   IsMaintenanceSwitchOn
                                     ? "translate-x-full"
                                     : ""

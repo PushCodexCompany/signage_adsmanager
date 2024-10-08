@@ -238,7 +238,7 @@ const User = () => {
         </div>
         {/* Select Menu */}
         <div className="relative flex flex-col min-w-0  w-full mb-6 ">
-          <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-md">
+          <div className="rounded-lg h-[50px] flex items-center mt-3 shadow-sm">
             <div className="flex flex-col lg:flex-row">
               <div className="w-full lg:w-3/4 flex justify-between items-center">
                 <div className="relative w-[100px] lg:w-[300px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
@@ -284,7 +284,7 @@ const User = () => {
             <div className="relative w-full lg:w-full h-[40px] flex items-end justify-end font-bold text-sm lg:text-base ml-3 mb-3">
               <button
                 onClick={() => setShowModal(true)}
-                className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md shadow-xl"
+                className="bg-[#6425FE] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md shadow-sm"
               >
                 New User +
               </button>
@@ -513,7 +513,7 @@ const User = () => {
             <div className="mt-2 p-2">
               <div className="relative flex flex-col  max-w-0  w-full mb-3 border-b-4 border-gray-600">
                 {/* Select Menu */}
-                <div className="rounded-lg h-[50px] flex items-center shadow-md">
+                <div className="rounded-lg h-[50px] flex items-center shadow-sm">
                   <div className="flex flex-col lg:flex-row">
                     <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
                       <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">
@@ -779,7 +779,7 @@ const User = () => {
             <div className="mt-2 p-2">
               {/* Select Menu */}
               <div className="relative flex flex-col  max-w-0  w-full mb-3 border-b-4 border-gray-600">
-                <div className="rounded-lg h-[50px] flex items-center shadow-md">
+                <div className="rounded-lg h-[50px] flex items-center shadow-sm">
                   <div className="flex flex-col lg:flex-row">
                     <div className="w-full lg:w-4/4 flex justify-center items-center p-6">
                       <div className="relative w-[80px] lg:w-[230px] h-[40px] flex  justify-center font-bold text-sm lg:text-base ml-3 font-poppins">

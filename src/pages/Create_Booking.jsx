@@ -853,7 +853,7 @@ const Create_Booking = () => {
           <div className="col-span-2">
             <div>
               <img
-                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300 shadow-lg`}
+                className={`block mx-auto mt-30px lg:w-[250px] lg:h-[250px] md:w-[150px] md:h-[150px] rounded-3xl object-cover border border-gray-300 shadow-sm`}
                 src={
                   merchandise.AdvertiserLogo
                     ? merchandise.AdvertiserLogo
@@ -883,7 +883,7 @@ const Create_Booking = () => {
                       className="flex justify-center items-center mt-3 "
                     >
                       <div
-                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] shadow-lg`}
+                        className={`border border-gray-300 rounded-lg lg:w-[80%] md:w-[100%] h-[90px] shadow-sm`}
                         // onClick={() => toggleScreenFromAllScreen(items)}
                       >
                         <div className="grid grid-cols-10 md:space-x-1">
@@ -965,7 +965,7 @@ const Create_Booking = () => {
                                     />
                                     {/* {deleteModalIndex[index] && (
                                       <div className="absolute left-[200px] lg:left-[600px] lg:top-[680px] flex items-center">
-                                        <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-md">
+                                        <div className="bg-black bg-opacity-80 w-[400px] h-[130px] p-8 rounded shadow-sm">
                                           <p className="font-poppins text-xs text-white">
                                             Do You Want to Delete This Screen ?
                                           </p>
@@ -1098,7 +1098,7 @@ const Create_Booking = () => {
                               <>
                                 <div
                                   key={screenIndex}
-                                  className="h-[90px] min-w-[250px] rounded-lg bg-white flex items-center border border-gray-300 shadow-lg"
+                                  className="h-[90px] min-w-[250px] rounded-lg bg-white flex items-center border border-gray-300 shadow-sm"
                                 >
                                   <div className="grid grid-cols-12">
                                     <div className="col-span-2 flex justify-center items-center">

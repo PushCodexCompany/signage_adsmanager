@@ -177,7 +177,7 @@ const User_Account = () => {
                     />
                   </div>
                   {dropdownStates[items.AccountID] && (
-                    <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-md py-2 px-4">
+                    <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-sm py-2 px-4">
                       <button
                         onClick={() => {
                           toggleDropdown(items.AccountID);

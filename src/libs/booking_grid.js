@@ -175,7 +175,7 @@ export const GridTable = ({
             <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
               <div className="flex items-center justify-center">
                 <img
-                  className="w-[60px] h-[60px] rounded-md border border-gray-300 shadow-lg object-cover"
+                  className="w-[60px] h-[60px] rounded-md border border-gray-300 shadow-sm object-cover"
                   src={
                     row.AdvertiserLogo
                       ? row.AdvertiserLogo

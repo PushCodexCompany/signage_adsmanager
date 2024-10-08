@@ -133,7 +133,7 @@ const Tag_managment = () => {
               {page_permission.create ? (
                 <div
                   onClick={() => handleNewTagCategory()}
-                  className="w-[150px] h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins flex justify-center items-center rounded-lg cursor-pointer shadow-lg"
+                  className="w-[150px] h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins flex justify-center items-center rounded-lg cursor-pointer shadow-sm"
                 >
                   <button>New Tag +</button>
                 </div>
@@ -150,7 +150,7 @@ const Tag_managment = () => {
                         className={`grid grid-cols-7 gap-2 mt-5 
                   ${
                     items.TagCategoryID === select_cat.TagCategoryID
-                      ? "text-white bg-[#6425FE] h-[55px] border rounded-lg shadow-lg"
+                      ? "text-white bg-[#6425FE] h-[55px] border rounded-lg shadow-sm"
                       : ""
                   } 
                   cursor-pointer`}
@@ -252,7 +252,7 @@ const Tag_managment = () => {
                     tag_data.map((items, index) => (
                       <div
                         key={index}
-                        className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1 shadow-lg"
+                        className="border border-gray-300 h-[35px] rounded-lg flex justify-center items-center mb-1 mr-1 shadow-sm"
                         style={{
                           flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
                         }}
