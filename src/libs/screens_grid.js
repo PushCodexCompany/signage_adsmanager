@@ -491,7 +491,7 @@ export const GridTable = ({
       <div>
         <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full table-auto border border-gray-300">
-            <thead>
+            <thead className="sticky top-0 bg-gray-200 z-10">
               <tr>
                 <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-medium text-[#59606C] tracking-wider">
                   ID

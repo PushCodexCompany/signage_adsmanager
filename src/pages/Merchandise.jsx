@@ -4,6 +4,7 @@ import { Header, Navbar } from "../components";
 import useCheckPermission from "../libs/useCheckPermission";
 import User from "../libs/admin";
 import Permission from "../libs/permission";
+import Swal from "sweetalert2";
 import Filter from "../components/Filter";
 import { GridTable } from "../libs/merchandise_grid";
 
@@ -40,6 +41,15 @@ const Merchandise = () => {
   const getPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    if (!permissions.branch.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
     setPagePermission(permissions.branch);
   };
 

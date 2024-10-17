@@ -63,17 +63,18 @@ const Create_Role_Permission = ({
         if (isAnyValueGreaterThanZero) {
           obj = {
             rolename: newRole.name,
+            roledesc: newRole.description,
             permissions: summary.permissions,
             accountcode: account.AccountCode,
           };
         } else {
           obj = {
             rolename: newRole.name,
+            roledesc: newRole.description,
             permissions: "",
             accountcode: account.AccountCode,
           };
         }
-
         const value = removeZeroPermissions(obj);
         const encrypted = await Encryption.encryption(
           value,
@@ -192,7 +193,7 @@ const Create_Role_Permission = ({
       setIsSelectAll(!isSelectAll);
     };
 
-    const CheckboxGroup = ({ title, items, data }) => {
+    const CheckboxGroup = ({ title, name, items, data }) => {
       const header = ["create", "delete", "update", "view"];
 
       let data_check;
@@ -244,7 +245,7 @@ const Create_Role_Permission = ({
           <div className="col-span-1">
             <div className="grid grid-rows-5 gap-4">
               <div className="font-poppins font-bold">
-                {title[0].toUpperCase() + title.slice(1)}
+                {name[0].toUpperCase() + name.slice(1)}
               </div>
 
               {items.map((item, index) => (
@@ -452,47 +453,55 @@ const Create_Role_Permission = ({
                     <div className="grid grid-cols-8 gap-4 mt-5">
                       <CheckboxGroup
                         title="brand"
+                        name="bu"
                         items={Object.keys(roleData.permissions?.brand)}
                         data={roleData.permissions?.brand}
                       />
 
                       <CheckboxGroup
                         title="branch"
+                        name="customer"
                         items={Object.keys(roleData.permissions?.branch)}
                         data={roleData.permissions?.branch}
                       />
 
                       <CheckboxGroup
                         title="screen"
+                        name="screen"
                         items={Object.keys(roleData.permissions?.screen)}
                         data={roleData.permissions?.screen}
                       />
 
                       <CheckboxGroup
                         title="playlist"
+                        name="playlist"
                         items={Object.keys(roleData.permissions?.playlist)}
                         data={roleData.permissions?.playlist}
                       />
 
                       <CheckboxGroup
                         title="media"
+                        name="media"
                         items={Object.keys(roleData.permissions?.media)}
                         data={roleData.permissions?.media}
                       />
 
                       <CheckboxGroup
                         title="user"
+                        name="user"
                         items={Object.keys(roleData.permissions?.user)}
                         data={roleData.permissions?.user}
                       />
                       <CheckboxGroup
                         title="userrole"
+                        name="userrole"
                         items={Object.keys(roleData.permissions?.userrole)}
                         data={roleData.permissions?.userrole}
                       />
 
                       <CheckboxGroup
                         title="booking"
+                        name="booking"
                         items={Object.keys(roleData.permissions?.booking)}
                         data={roleData.permissions?.booking}
                       />

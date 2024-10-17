@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header, Navbar } from "../../components";
 import { GridTable } from "../../libs/media_libraly_grid";
 import { AiOutlineCloudUpload } from "react-icons/ai";
@@ -8,9 +9,11 @@ import useCheckPermission from "../../libs/useCheckPermission";
 import Filter from "../../components/Filter";
 import User from "../../libs/admin";
 import Permission from "../../libs/permission";
+import Swal from "sweetalert2";
 
 const Media_Libraly = () => {
   useCheckPermission();
+  const navigate = useNavigate();
   const { token } = User.getCookieData();
   const [showModal, setShowModal] = useState(false);
   const [media_libraly_data, setMediaLibralyData] = useState([]);
@@ -105,6 +108,15 @@ const Media_Libraly = () => {
   const getPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    if (!permissions.media.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
     setPagePermission(permissions.media);
   };
 

@@ -15,6 +15,7 @@ import Select_Pair_screen from "../components/Select_Pair_screen";
 import IsPairScreen from "../components/IsPairScreen";
 import firebase_func from "../libs/firebase_func";
 import Permission from "../libs/permission";
+import Swal from "sweetalert2";
 
 const Event = () => {
   const [selectedScreenItems, setSelectedScreenItems] = useState([]);
@@ -182,6 +183,16 @@ const Event = () => {
   const getPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    if (!permissions.screen.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+
     setPagePermission(permissions.screen);
   };
 

@@ -14,6 +14,7 @@ import {
   MdSettings,
 } from "react-icons/md";
 import { GrMultimedia } from "react-icons/gr";
+import Permission from "../libs/permission";
 
 import { SlScreenDesktop, SlChart } from "react-icons/sl";
 import { HiOutlineChartSquareBar, HiOutlineNewspaper } from "react-icons/hi";
@@ -27,6 +28,7 @@ import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
 import { FaRegListAlt } from "react-icons/fa";
+
 export const links = [
   {
     title: "Main menu",
@@ -191,6 +193,8 @@ const SidebarMain = () => {
   const [active_lv2, setActiveLv2] = useState("");
   const [active_lv3, setActiveLv3] = useState("");
 
+  const [menu, setMenu] = useState([]);
+
   const sidebarRef = useRef(null);
   const navigate = useNavigate();
 
@@ -252,6 +256,172 @@ const SidebarMain = () => {
     };
   }, []);
 
+  useEffect(() => {
+    checkPermissionView();
+  }, []);
+
+  const checkPermissionView = () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    const menu = [
+      {
+        title: "Main menu",
+        links: [
+          {
+            name: "Dashboard",
+            link: "dashboard",
+            icon: <HiOutlineChartSquareBar size={27} />,
+            notification: { is_notification: false, amount: 0 },
+          },
+        ],
+      },
+      {
+        title: "Preference",
+        links: [
+          {
+            name: "Setting",
+            link: "setting",
+            icon: <MdOutlineSettings size={27} />,
+            notification: { is_notification: false, amount: 0 },
+            submenu: [
+              {
+                name: "User Managament",
+                icon: <AiOutlineIdcard size={27} />,
+                submenu: [],
+              },
+            ],
+          },
+          {
+            name: "Log Out",
+            link: "logout",
+            icon: <MdOutlineLogout size={27} />,
+            notification: { is_notification: false, amount: 0 },
+          },
+        ],
+      },
+    ];
+
+    if (permissions.booking.view) {
+      menu[0].links.push({
+        name: "Booking",
+        link: "booking",
+        icon: <RiFileEditLine size={27} />,
+        notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "Digital Booking Screen",
+            link: "booking",
+            icon: <SlScreenDesktop size={27} />,
+          },
+          // {
+          //   name: "Static Booking Screen",
+          //   link: "static_booking",
+          //   icon: <MdOutlineMarkunreadMailbox size={27} />,
+          // },
+        ],
+      });
+    }
+
+    if (permissions.screen.view) {
+      menu[0].links.push({
+        name: "Screens",
+        link: "screen",
+        icon: <SlScreenDesktop size={27} />,
+        notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "Digital Screen",
+            link: "screen",
+            icon: <SlScreenDesktop size={27} />,
+          },
+          // {
+          //   name: "Static Screen",
+          //   link: "static_screen",
+          //   icon: <MdOutlineMarkunreadMailbox size={27} />,
+          // },
+        ],
+      });
+    }
+
+    menu[0].links.push({
+      name: "Log Management",
+      link: "logmanagement",
+      icon: <HiOutlineNewspaper size={27} />,
+      notification: { is_notification: false, amount: 0 },
+      submenu: [
+        {
+          name: "Activities Log",
+          link: "log_management/activities_log",
+          icon: <FaRegListAlt size={27} />,
+        },
+        {
+          name: "Media Log",
+          link: "log_management/media_log",
+          icon: <GrMultimedia size={27} />,
+        },
+        {
+          name: "Screen",
+          link: "log_management/screen",
+          icon: <SlScreenDesktop size={27} />,
+        },
+      ],
+    });
+
+    if (permissions.media.view) {
+      menu[0].links.push({
+        name: "Media Libraly",
+        link: "media_libraly",
+        icon: <MdFolderOpen size={27} />,
+        notification: { is_notification: false, amount: 0 },
+      });
+    }
+
+    if (permissions.branch.view) {
+      menu[0].links.push({
+        name: "Customer",
+        link: "merchandise",
+        icon: <IoDocumentTextOutline size={27} />,
+        notification: { is_notification: false, amount: 0 },
+      });
+    }
+
+    if (permissions.user.view) {
+      menu[1].links[0].submenu[0].submenu.push({
+        name: "User",
+        link: "setting/user_management/user",
+        icon: <AiOutlineIdcard size={27} />,
+      });
+    }
+
+    if (permissions.userrole.view) {
+      menu[1].links[0].submenu[0].submenu.push({
+        name: "Role And Permission",
+        link: "setting/user_management/role_permission",
+        icon: <IoPersonOutline size={27} />,
+      });
+    }
+
+    menu[1].links[0].submenu.push({
+      name: "Media Rule",
+      link: "setting/media_rule",
+      icon: <IoShieldOutline size={27} />,
+    });
+
+    menu[1].links[0].submenu.push({
+      name: "Tag Management",
+      link: "setting/tag_management",
+      icon: <BiPurchaseTag size={27} />,
+    });
+
+    menu[1].links[0].submenu.push({
+      name: "Configuration",
+      link: "setting/configuration",
+      icon: <MdSettings size={27} />,
+    });
+
+    setMenu(menu);
+  };
+
   const generateImgHeight = async (img_logo) => {
     return new Promise((resolve) => {
       const img = new Image();
@@ -302,7 +472,7 @@ const SidebarMain = () => {
               </Link>
             </div>
             <div className="mt-10 p-2">
-              {links.map((category, index) => (
+              {menu.map((category, index) => (
                 <div key={index} className="mt-4">
                   <h2 className="px-4 text-gray-400 uppercase  text-sm">
                     {category.title}

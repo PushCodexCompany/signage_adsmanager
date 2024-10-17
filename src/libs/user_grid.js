@@ -25,10 +25,14 @@ export const GridTable = ({
   //edit
   const [edit_id, setEditId] = useState(null);
   const [edit_username, setEditUsername] = useState(null);
+  const [edit_name, setEditName] = useState(null);
+  const [edit_lastname, setEditLastname] = useState(null);
   const [edit_email, setEditEmail] = useState(null);
   const [edit_activate, setEditActivate] = useState(null);
   const [edit_rolename, setEditRolename] = useState(null);
 
+  const [dump_name, setDumpName] = useState(null);
+  const [dump_lastname, setDumpLastname] = useState(null);
   const [dump_email, setDumpEmail] = useState(null);
   const [dump_roleName, setDumpRoleName] = useState(null);
   const [dump_status, setDumpStatus] = useState(null);
@@ -76,10 +80,16 @@ export const GridTable = ({
       RoleName,
       RoleID,
       AccessContent,
+      Firstname,
+      Lastname,
     } = user_data?.find((item) => item.UserID === id);
 
     setEditId(UserID);
     setEditUsername(Username);
+    setEditName(Firstname);
+    setDumpName(Firstname);
+    setEditLastname(Lastname);
+    setDumpLastname(Lastname);
 
     // const brandIDs = AccessContent?.brands.map((item) => item.BrandID);
     // setRegBrand(brandIDs);
@@ -266,7 +276,7 @@ export const GridTable = ({
 
   const getImgMerchandise = (id) => {
     if (merchandise) {
-      const merchandise_data = merchandise?.find(
+      const merchandise_data = merchandise.find(
         (item) => item.AdvertiserID === parseInt(id)
       );
 
@@ -331,7 +341,7 @@ export const GridTable = ({
       {oldModal && (
         <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full border border-gray-300">
-            <thead>
+            <thead className="sticky top-0 bg-gray-200 z-10">
               <tr>
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   ID
@@ -347,6 +357,9 @@ export const GridTable = ({
                 </th>
                 <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   Role
+                </th>
+                <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                  Name/Lastname
                 </th>
                 <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   Action
@@ -402,6 +415,14 @@ export const GridTable = ({
                     <td className="px-7 py-2 whitespace-no-wrap border-b  border-gray-200">
                       <div className="font-poppins">
                         {row.RoleName ? row.RoleName : "-- No Role --"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                      <div className="flex justify-center items-center font-poppins text-lg">
+                        <div>{row.Firstname ? row.Firstname : "No Name"}</div>
+                      </div>
+                      <div className="flex justify-center items-center font-poppins text-sm">
+                        {row.Lastname ? row.Lastname : "No Last Name"}
                       </div>
                     </td>
                     <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
@@ -507,6 +528,58 @@ export const GridTable = ({
                       required
                       disabled
                       autoComplete="username"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Name :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => {
+                        if (dump_name !== e.target.value) {
+                          setIsEdit(true);
+                        } else {
+                          setIsEdit(false);
+                        }
+                        setEditName(e.target.value);
+                      }}
+                      type="text"
+                      placeholder="Your Name"
+                      defaultValue={edit_name}
+                      value={edit_name}
+                      required
+                      autoComplete="name"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Last Name :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => {
+                        if (dump_lastname !== e.target.value) {
+                          setIsEdit(true);
+                        } else {
+                          setIsEdit(false);
+                        }
+                        setEditLastname(e.target.value);
+                      }}
+                      type="text"
+                      placeholder="Your Lastname"
+                      defaultValue={edit_lastname}
+                      value={edit_lastname}
+                      required
+                      autoComplete="lastname"
                     />
                   </div>
                 </div>

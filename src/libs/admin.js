@@ -524,7 +524,6 @@ export default {
       "",
       config
     );
-
     return data;
   },
 
@@ -629,7 +628,7 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const obj = { brandcode: brand_code || null };
+    const obj = { brandcode: brand_code || "YlB55" };
     const encrypted = await Encryption.encryption(
       obj,
       "get_advertisers",

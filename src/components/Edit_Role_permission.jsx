@@ -13,6 +13,7 @@ const Edit_Role_permission = ({
   const { token } = User.getCookieData();
   const [role_id, setRoleId] = useState(null);
   const [role_name, setRoleName] = useState(null);
+  const [role_desc, setRoleDesc] = useState(null);
   const [permission, setPermission] = useState([]);
   const [isSelectAll, setIsSelectAll] = useState(false);
 
@@ -21,7 +22,8 @@ const Edit_Role_permission = ({
   }, [selectRoleEdit]);
 
   const setEditRoleData = () => {
-    const { RoleID, RoleName, other_permission, permissions } = selectRoleEdit;
+    const { RoleID, RoleName, RoleDesc, other_permission, permissions } =
+      selectRoleEdit;
 
     const permission = {
       permissions: permissions,
@@ -30,6 +32,7 @@ const Edit_Role_permission = ({
 
     setRoleId(RoleID);
     setRoleName(RoleName);
+    setRoleDesc(RoleDesc);
     setPermission(permission);
   };
 
@@ -56,7 +59,7 @@ const Edit_Role_permission = ({
       setIsSelectAll(!isSelectAll);
     };
 
-    const CheckboxGroup = ({ title, items, data }) => {
+    const CheckboxGroup = ({ title, name, items, data }) => {
       const header = ["create", "delete", "update", "view"];
 
       let data_check;
@@ -108,7 +111,7 @@ const Edit_Role_permission = ({
           <div className="col-span-1">
             <div className="grid grid-rows-5 gap-4">
               <div className="font-poppins font-bold">
-                {title[0].toUpperCase() + title.slice(1)}
+                {name[0].toUpperCase() + name.slice(1)}
               </div>
 
               {items.map((item, index) => (
@@ -312,6 +315,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.brand) &&
                         <CheckboxGroup
                           title="brand"
+                          name="bu"
                           items={Object.keys(roleData?.permissions?.brand)}
                           data={roleData?.permissions?.brand}
                         />
@@ -320,6 +324,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.branch) &&
                         <CheckboxGroup
                           title="branch"
+                          name="customer"
                           items={Object.keys(roleData?.permissions?.branch)}
                           data={roleData?.permissions?.branch}
                         />
@@ -328,6 +333,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.screen) &&
                         <CheckboxGroup
                           title="screen"
+                          name="screen"
                           items={Object.keys(roleData?.permissions?.screen)}
                           data={roleData?.permissions?.screen}
                         />
@@ -336,6 +342,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.playlist) &&
                         <CheckboxGroup
                           title="playlist"
+                          name="playlist"
                           items={Object.keys(roleData?.permissions?.playlist)}
                           data={roleData?.permissions?.playlist}
                         />
@@ -344,6 +351,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.media) &&
                         <CheckboxGroup
                           title="media"
+                          name="media"
                           items={Object.keys(roleData?.permissions?.media)}
                           data={roleData?.permissions?.media}
                         />
@@ -352,6 +360,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.user) &&
                         <CheckboxGroup
                           title="user"
+                          name="user"
                           items={Object.keys(roleData?.permissions?.user)}
                           data={roleData?.permissions?.user}
                         />
@@ -360,6 +369,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.userrole) &&
                         <CheckboxGroup
                           title="userrole"
+                          name="userrole"
                           items={Object.keys(roleData?.permissions?.userrole)}
                           data={roleData?.permissions?.userrole}
                         />
@@ -368,6 +378,7 @@ const Edit_Role_permission = ({
                         // areAllFalse(roleData.permissions?.booking) &&
                         <CheckboxGroup
                           title="booking"
+                          name="booking"
                           items={Object.keys(roleData?.permissions?.booking)}
                           data={roleData?.permissions?.booking}
                         />
@@ -446,6 +457,7 @@ const Edit_Role_permission = ({
         const obj = {
           roleid: role_id,
           rolename: role_name,
+          roledesc: role_desc,
           permissions: summary.permissions,
           accountcode: account.AccountCode,
         };
@@ -520,8 +532,8 @@ const Edit_Role_permission = ({
             <div className="col-span-3 ">
               <input
                 type="text"
-                // value={newRole.description}
-                // onChange={(e) => handleRoleChange(e, "description")}
+                value={role_desc}
+                onChange={(e) => setRoleDesc(e.target.value)}
                 className="w-full p-2  border border-gray-300 rounded-lg shadow-sm"
               />
             </div>

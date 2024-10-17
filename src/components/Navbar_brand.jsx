@@ -131,8 +131,11 @@ const Navbar = ({ full_brand, setBrand }) => {
                   <p>
                     <span className="">
                       <text className="text-black font-bold text-14 font-poppins">
+                        {/* {user ? `${user.user.username || "UserName"}` : ""} */}
                         {user
-                          ? `${user.user.firstname} ${user.user.lastname}`
+                          ? `${user.user.firstname || "Name"} ${
+                              user.user.lastname || "LastName"
+                            }`
                           : ""}
                       </text>
                       <br />

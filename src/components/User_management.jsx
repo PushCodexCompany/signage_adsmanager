@@ -22,6 +22,8 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
   //Register
   const [reg_username, setRegUserName] = useState(null);
   const [reg_email, setRegEmail] = useState(null);
+  const [reg_name, setRegName] = useState(null);
+  const [reg_lastname, setRegLastname] = useState(null);
   const [reg_password, setRegPassword] = useState(null);
   const [reg_re_password, setRegRePassword] = useState(null);
   const [reg_role, setRegRole] = useState(null);
@@ -181,7 +183,10 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
     if (reg_password === reg_re_password) {
       const value = {
         username: reg_username,
+        firstname: reg_name,
+        lastname: reg_lastname,
         email: reg_email,
+        profileemail: reg_email,
         password: reg_password,
         roleid: reg_role,
         accountcode: reg_account,
@@ -410,6 +415,42 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
                       required
                       autoFocus
                       autoComplete="username"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Name :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => setRegName(e.target.value)}
+                      type="text"
+                      placeholder="Your Name"
+                      value={reg_name === null ? "" : reg_name}
+                      required
+                      autoComplete="name"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Last Name :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => setRegLastname(e.target.value)}
+                      type="text"
+                      placeholder="Your Lastname"
+                      value={reg_lastname === null ? "" : reg_lastname}
+                      required
+                      autoComplete="lastname"
                     />
                   </div>
                 </div>

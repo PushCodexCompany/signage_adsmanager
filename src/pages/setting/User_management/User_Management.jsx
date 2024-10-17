@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { Header, Navbar } from "../../../components";
 import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import { PiCaretUpDown } from "react-icons/pi";
@@ -14,6 +14,7 @@ import Filter from "../../../components/Filter";
 
 const User_Management = () => {
   useCheckPermission();
+  const navigate = useNavigate();
   const [brand, setBrand] = useState([]);
   const [merchandise, setMerchandise] = useState([]);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -30,6 +31,8 @@ const User_Management = () => {
 
   const [reg_username, setRegUserName] = useState(null);
   const [reg_email, setRegEmail] = useState(null);
+  const [reg_name, setRegName] = useState(null);
+  const [reg_lastname, setRegLastname] = useState(null);
   const [reg_password, setRegPassword] = useState(null);
   const [reg_re_password, setRegRePassword] = useState(null);
   const [reg_role, setRegRole] = useState(null);
@@ -110,6 +113,15 @@ const User_Management = () => {
   const setPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    if (!permissions.user.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
     setPagePermission(permissions.user);
   };
 
@@ -185,7 +197,7 @@ const User_Management = () => {
   };
 
   const findMerchImg = (id) => {
-    const merchandise_img = merchandise.find(
+    const merchandise_img = merchandise?.find(
       (item) => item.AdvertiserID === id
     );
 
@@ -212,8 +224,11 @@ const User_Management = () => {
         const value = {
           username: reg_username,
           email: reg_email,
+          profileemail: reg_email,
           password: reg_password,
           roleid: reg_role,
+          firstname: reg_name,
+          lastname: reg_lastname,
           accountcode: account.AccountCode,
           accesscontent: {
             brands: reg_brand.map(String),
@@ -391,6 +406,42 @@ const User_Management = () => {
                       required
                       autoFocus
                       autoComplete="username"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Name :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => setRegName(e.target.value)}
+                      type="text"
+                      placeholder="Your Name"
+                      value={reg_name === null ? "" : reg_name}
+                      required
+                      autoComplete="name"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2">
+                      Last Name :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => setRegLastname(e.target.value)}
+                      type="text"
+                      placeholder="Your Lastname"
+                      value={reg_lastname === null ? "" : reg_lastname}
+                      required
+                      autoComplete="lastname"
                     />
                   </div>
                 </div>

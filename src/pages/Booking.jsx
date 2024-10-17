@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
+import { useNavigate } from "react-router-dom";
 import { GridTable } from "../libs/booking_grid";
 import useCheckPermission from "../libs/useCheckPermission";
 import New_Booking from "../components/New_Booking";
 import Filter from "../components/Filter";
 import User from "../libs/admin";
 import Permission from "../libs/permission";
+import Swal from "sweetalert2";
 
 const Booking = () => {
   useCheckPermission();
@@ -16,6 +18,7 @@ const Booking = () => {
   const [filter_screen, setFilterScreen] = useState([]);
   const [searchTerm, setSearchTerm] = useState(null);
   const [page_permission, setPagePermission] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getBookingData();
@@ -44,6 +47,17 @@ const Booking = () => {
   const getPermission = async () => {
     const { user } = User.getCookieData();
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+
+    if (!permissions.booking.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+
     setPagePermission(permissions.booking);
   };
 

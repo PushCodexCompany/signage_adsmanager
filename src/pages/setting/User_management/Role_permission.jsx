@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header, Navbar } from "../../../components";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import useCheckPermission from "../../../libs/useCheckPermission";
@@ -11,6 +12,7 @@ import Edit_Role_permission from "../../../components/Edit_Role_permission";
 
 const Role_permission = () => {
   useCheckPermission();
+  const navigate = useNavigate();
   const [child_permissions, setChildPermission] = useState([]);
   const [select_role, setSelectRole] = useState(0);
   const [modalCreateRole, setModalCreateRole] = useState(false);
@@ -21,8 +23,11 @@ const Role_permission = () => {
   const { token } = User.getCookieData();
   const { permission } = User.getPermission();
 
+  const [page_permission, setPagePermission] = useState([]);
+
   useEffect(() => {
     getPermission();
+    setPermission();
   }, []);
 
   const getPermission = async () => {
@@ -51,6 +56,21 @@ const Role_permission = () => {
     //   };
     // });
     setChildPermission(child_permission);
+  };
+
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    if (!permissions.userrole.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+    setPagePermission(permissions.userrole);
   };
 
   const selectRole = (key) => {
@@ -364,13 +384,13 @@ const Role_permission = () => {
                     <>
                       <div className=" grid grid-cols-8 gap-4 mt-5">
                         <CheckboxGroup
-                          title="brand"
+                          title="bu"
                           items={Object.keys(roleData.permissions?.brand)}
                           data={roleData.permissions?.brand}
                         />
 
                         <CheckboxGroup
-                          title="branch"
+                          title="customer"
                           items={Object.keys(roleData.permissions?.branch)}
                           data={roleData.permissions?.branch}
                         />
@@ -418,7 +438,7 @@ const Role_permission = () => {
                         {roleData?.permissions?.brand && (
                           // areAllFalse(roleData.permissions?.brand) &&
                           <CheckboxGroup
-                            title="brand"
+                            title="bu"
                             items={Object.keys(roleData?.permissions?.brand)}
                             data={roleData?.permissions?.brand}
                           />
@@ -427,7 +447,7 @@ const Role_permission = () => {
                         {roleData?.permissions?.branch && (
                           // areAllFalse(roleData.permissions?.branch) &&
                           <CheckboxGroup
-                            title="branch"
+                            title="customer"
                             items={Object.keys(roleData?.permissions?.branch)}
                             data={roleData?.permissions?.branch}
                           />
@@ -520,7 +540,7 @@ const Role_permission = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">User Role</div>
-              {permission.userrole?.create ? (
+              {page_permission?.create ? (
                 <button
                   className="lg:w-[40%] w-[60%]  h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins rounded-lg shadow-sm"
                   onClick={() => createNewRole()}
@@ -548,14 +568,14 @@ const Role_permission = () => {
                         <div className={`font-poppins text-2xl`}>
                           <div>{items.RoleName}</div>
                         </div>
-                        <div className="text-xs">
-                          {`${items.RoleName} Description`}
-                        </div>
+                        <div className="text-xs">{`${
+                          items.RoleDesc ? items.RoleDesc : "No Description"
+                        }`}</div>
                       </div>
 
                       <div className="col-span-2">
                         <div className="flex justify-center items-center mt-3 space-x-4">
-                          {permission.userrole?.update ? (
+                          {page_permission?.update ? (
                             <button onClick={() => handleEditRoleName(items)}>
                               <RiEditLine
                                 size={20}
@@ -570,7 +590,7 @@ const Role_permission = () => {
                             ""
                           )}
 
-                          {permission.userrole?.delete ? (
+                          {page_permission?.delete ? (
                             <button onClick={() => handleDeleteRoleName(index)}>
                               <RiDeleteBin5Line
                                 size={20}

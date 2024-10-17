@@ -70,12 +70,33 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
     try {
       const data = await User.createBrand(encrypted, token);
       if (data.code === 200) {
-        const form = new FormData();
-        form.append("target", "brandlogo");
-        form.append("brandid", data.brandid);
-        form.append("logo", brand_img);
-        const data_img = await User.saveImgBrand(form, token);
-        if (data_img.code === 200) {
+        if (brand_img) {
+          const form = new FormData();
+          form.append("target", "brandlogo");
+          form.append("brandid", data.brandid);
+          form.append("logo", brand_img);
+          const data_img = await User.saveImgBrand(form, token);
+          if (data_img.code === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "สร้าง BU สำเร็จ!",
+              text: `สร้าง BU สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                window.location.reload();
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data_img.message,
+            });
+          }
+        } else {
           Swal.fire({
             icon: "success",
             title: "สร้าง BU สำเร็จ!",
@@ -87,12 +108,6 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
             ) {
               window.location.reload();
             }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: data_img.message,
           });
         }
       } else {

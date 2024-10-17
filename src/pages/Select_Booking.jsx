@@ -440,8 +440,20 @@ const Select_Booking = () => {
             <div className="col-span-5 flex justify-start items-center pl-2">
               <div className="text-center font-poppins text-xl">
                 Latest Publish :{" "}
-                {format(lastest_publish_date, "dd MMM yyyy hh:mm:ss")} by{" "}
-                {lastest_publish_name}
+                {/* {format(new Date(lastest_publish_date), "dd MMM yyyy hh:mm:ss")}{" "} */}
+                {`${String(new Date(lastest_publish_date).getDate()).padStart(
+                  2,
+                  "0"
+                )} ${new Date(lastest_publish_date).toLocaleString("en-US", {
+                  month: "short",
+                })} ${new Date(lastest_publish_date).getFullYear()} ${new Date(
+                  lastest_publish_date
+                ).getHours()}:${new Date(
+                  lastest_publish_date
+                ).getMinutes()}:${String(
+                  new Date(lastest_publish_date).getSeconds()
+                ).padStart(2, "0")}`}{" "}
+                by {lastest_publish_name}
               </div>
             </div>
           ) : (
