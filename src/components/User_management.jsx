@@ -367,6 +367,7 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
                 page_permission={page_permission}
                 brand={default_brand}
                 merchandise={default_merchandise}
+                bg={false}
               />
             )}
           </div>

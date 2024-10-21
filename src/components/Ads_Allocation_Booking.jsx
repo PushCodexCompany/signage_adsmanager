@@ -24,6 +24,7 @@ import Create_New_Playlist_Allocation from "../components/Create_New_Playlist_Al
 import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 import "./css/alert.css";
 import Permission from "../libs/permission";
+import permission from "../libs/permission";
 
 const Ads_Allocation_Booking = ({
   setOpenAdsAllocationModal,
@@ -621,7 +622,9 @@ const Ads_Allocation_Booking = ({
           key={`panel1-${index}`}
           draggableId={`panel1-${index}`}
           index={index}
-          // isDragDisabled={true}
+          isDragDisabled={
+            page_permission?.craete || page_permission?.update ? false : true
+          }
         >
           {(provided) => (
             <div
@@ -632,40 +635,45 @@ const Ads_Allocation_Booking = ({
             >
               {items?.ContentID ? (
                 <div className="flex items-center mr-1">
-                  <div>
-                    {processedMediaList.filter(
-                      (item) => item.ContentID === null
-                    ).length > 0 && (
-                      <>
-                        <IoIosAddCircle
-                          size={24}
-                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                          onClick={() => handleAddMediaPlaylistItem(index)}
-                        />
-                      </>
-                    )}
-                    <IoIosRemoveCircle
-                      size={24}
-                      className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                      onClick={() => {
-                        if (
-                          page_permission?.craete ||
-                          page_permission?.update
-                        ) {
-                          handleRemoveMediaPlaylistItem(index);
-                        } else {
-                          Swal.fire({
-                            icon: "error",
-                            title: "เกิดข้อผิดพลาด!",
-                            text: "คุณไม่มีสิทธิ์ในการจัดการ Playlist ...",
-                          });
-                        }
-                      }}
-                    />
-                  </div>
+                  {page_permission?.craete || page_permission?.update ? (
+                    <div>
+                      {processedMediaList.filter(
+                        (item) => item.ContentID === null
+                      ).length > 0 && (
+                        <>
+                          <IoIosAddCircle
+                            size={24}
+                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                            onClick={() => handleAddMediaPlaylistItem(index)}
+                          />
+                        </>
+                      )}
+                      <IoIosRemoveCircle
+                        size={24}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                        onClick={() => {
+                          if (
+                            page_permission?.craete ||
+                            page_permission?.update
+                          ) {
+                            handleRemoveMediaPlaylistItem(index);
+                          } else {
+                            Swal.fire({
+                              icon: "error",
+                              title: "เกิดข้อผิดพลาด!",
+                              text: "คุณไม่มีสิทธิ์ในการจัดการ Playlist ...",
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+
                   <div className="flex-1">
                     <div
-                      className={`grid grid-cols-11 h-[${itemHeight}px] border border-gray-300 w-[265px] lg:w-[315px] rounded-lg shadow-sm`}
+                      className={`grid grid-cols-12 h-[${itemHeight}px] border border-gray-300 w-[265px] lg:w-[335px] rounded-lg shadow-sm`}
                       style={{ height: `${itemHeight}px` }}
                     >
                       <div className="col-span-2 flex justify-center items-center">
@@ -710,9 +718,13 @@ const Ads_Allocation_Booking = ({
                           </div>
                         </div>
                       </div>
-                      <div className="col-span-1 flex justify-start items-center">
-                        <MdDragHandle size={26} className="text-[#6425FE]" />
-                      </div>
+                      {page_permission?.craete || page_permission?.update ? (
+                        <div className="col-span-1 flex justify-start items-center">
+                          <MdDragHandle size={26} className="text-[#6425FE]" />
+                        </div>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1779,7 +1791,7 @@ const Ads_Allocation_Booking = ({
                               {isExpanded && (
                                 <div className="absolute top-[38px] w-full  bg-white border border-gray-200 rounded mt-1 p-2 shadow-sm">
                                   {page_permission?.create ||
-                                  page_permission?.update ? (
+                                  page_permission?.create ? (
                                     <button
                                       className="bg-[#6425FE] hover:bg-[#3b1694] text-white font-poppins h-[36px] w-[110px] rounded-md"
                                       onClick={() => handleButtonNewPlaylist()}
@@ -1839,7 +1851,7 @@ const Ads_Allocation_Booking = ({
                                   disabled={editPlaylist}
                                 />
 
-                                {page_permission?.craete ||
+                                {page_permission?.create ||
                                 page_permission?.update ? (
                                   <>
                                     <RiEditLine

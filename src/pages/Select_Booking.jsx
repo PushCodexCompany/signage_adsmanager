@@ -774,12 +774,11 @@ const Select_Booking = () => {
                                       <div className="font-poppins text-xl font-bold ">
                                         {items.ScreenName.length > 12 ? (
                                           <>
-                                            {/* {items.ScreenName.slice(0, 9) +
+                                            {items.ScreenName.slice(0, 9) +
                                               "..."}
                                             <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                               {items.ScreenName}
-                                            </span> */}
-                                            {items.ScreenName}
+                                            </span>
                                           </>
                                         ) : (
                                           <>{items.ScreenName}</>
@@ -790,12 +789,12 @@ const Select_Booking = () => {
                                       <div className="font-poppins text-sm md:text-xs text-[#8A8A8A]">
                                         {items.ScreenLocation.length > 25 ? (
                                           <>
-                                            {/* {items.ScreenLocation.slice(0, 23) +
+                                            {items.ScreenLocation.slice(0, 23) +
                                               "..."}
                                             <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                               {items.ScreenLocation}
-                                            </div> */}
-                                            {items.ScreenLocation}
+                                            </div>
+                                            {/* {items.ScreenLocation} */}
                                           </>
                                         ) : (
                                           <>

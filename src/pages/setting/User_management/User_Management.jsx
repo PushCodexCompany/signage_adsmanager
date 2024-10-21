@@ -351,6 +351,7 @@ const User_Management = () => {
               page_permission={page_permission}
               brand={brand}
               merchandise={merchandise}
+              bg={true}
             />
           )}
         </div>

@@ -13,6 +13,7 @@ export const GridTable = ({
   page_permission,
   brand,
   merchandise,
+  bg,
 }) => {
   const navigate = useNavigate();
   const [user_data, setUserData] = useState(user_lists);
@@ -131,6 +132,8 @@ export const GridTable = ({
             const { token } = User.getCookieData();
             const obj = {
               userid: id,
+              // firstname: edit_name,
+              // lastname: edit_lastname,
               email: edit_email,
               activated: edit_activate,
               roleid: edit_rolename,
@@ -139,6 +142,9 @@ export const GridTable = ({
                 merchandise: reg_merchandise,
               },
             };
+
+            // console.log("obj", obj);
+
             const encrypted = await Encryption.encryption(
               obj,
               "edit_user",
@@ -475,10 +481,16 @@ export const GridTable = ({
       )}
 
       {modal_edit && (
-        <a
-          onClick={() => setModalEdit(!modal_edit)}
-          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
-        />
+        <>
+          {bg ? (
+            <a
+              onClick={() => setModalEdit(!modal_edit)}
+              className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+            />
+          ) : (
+            <></>
+          )}
+        </>
       )}
 
       {modal_edit && (
