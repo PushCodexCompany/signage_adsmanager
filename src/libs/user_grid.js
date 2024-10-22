@@ -132,8 +132,8 @@ export const GridTable = ({
             const { token } = User.getCookieData();
             const obj = {
               userid: id,
-              // firstname: edit_name,
-              // lastname: edit_lastname,
+              firstname: edit_name,
+              lastname: edit_lastname,
               email: edit_email,
               activated: edit_activate,
               roleid: edit_rolename,
@@ -143,15 +143,12 @@ export const GridTable = ({
               },
             };
 
-            // console.log("obj", obj);
-
             const encrypted = await Encryption.encryption(
               obj,
               "edit_user",
               false
             );
             const data = await User.updateUser(encrypted, token);
-
             if (data.code === 200) {
               Swal.fire({
                 icon: "success",
@@ -164,7 +161,8 @@ export const GridTable = ({
                 ) {
                   // window.location.reload();
                   setData();
-                  // setModalEdit(!modal_edit);
+                  setModalEdit(!modal_edit);
+                  setOldModal(!oldModal);
                 }
               });
             } else {
