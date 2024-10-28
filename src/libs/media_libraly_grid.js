@@ -88,9 +88,9 @@ export const GridTable = ({
       let status;
 
       if (id === 0) {
-        status = ["Inactive", false];
+        status = ["Not In Used", false];
       } else if (id === 1) {
-        status = ["Active", true];
+        status = ["In Use", true];
       }
 
       return status;
@@ -100,7 +100,7 @@ export const GridTable = ({
       <div>
         <div
           className={`text-lg  font-poppins ${
-            getStatus(id)[1] ? "text-[#0CA71B]" : "text-[#FF0000]"
+            getStatus(id)[1] ? "text-[#0CA71B]" : "text-gray-400"
           }`}
         >
           {getStatus(id)[0]}

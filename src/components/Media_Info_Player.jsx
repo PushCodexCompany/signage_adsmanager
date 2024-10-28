@@ -63,8 +63,8 @@ const Media_Player = ({
                 autoplay
                 loop
                 playing
-                width={isHorizontal ? "80%" : "25%"}
-                height={isHorizontal ? "80%" : "25%"}
+                width={isHorizontal ? "60%" : "20%"}
+                height={isHorizontal ? "60%" : "20%"}
                 controls={true}
               />
             )}
