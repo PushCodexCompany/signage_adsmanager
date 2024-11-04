@@ -3,7 +3,7 @@ import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import User from "../libs/admin";
 import "../index.css";
 
-const Filter = ({ filter_screen, setFilterScreen, width }) => {
+const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
   const [all_filter_data, SetAllFilterData] = useState([]);
@@ -13,8 +13,21 @@ const Filter = ({ filter_screen, setFilterScreen, width }) => {
   }, []);
 
   const getFilter = async () => {
-    const data = await User.getCategorytags(token);
-    SetAllFilterData(data);
+    const {
+      configuration: { pagetags },
+    } = await User.getConfiguration(token);
+
+    if (page_name) {
+      const result = pagetags.find((page) => page.page === page_name);
+      const data = await User.getCategorytags(token);
+      const filteredData = data.filter((item) =>
+        result.tags.includes(Number(item.TagCategoryID))
+      );
+      SetAllFilterData(filteredData);
+    } else {
+      const data = await User.getCategorytags(token);
+      SetAllFilterData(data);
+    }
   };
 
   const handleStatusChange = (event) => {

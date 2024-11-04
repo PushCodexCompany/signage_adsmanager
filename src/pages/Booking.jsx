@@ -90,6 +90,7 @@ const Booking = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
+          page_name={"booking"}
         />
 
         {booking_data.length > 0 ? (
