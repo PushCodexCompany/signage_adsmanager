@@ -33,7 +33,9 @@ import {
   Static_Screens,
   New_Static_Screen,
   Configuration,
+  Event_Booking,
 } from "../pages";
+import Create_Event_Booking from "../pages/Create_Event_Booking";
 
 // import User from "../libs/admin";
 
@@ -55,6 +57,7 @@ const Routing = () => {
         {/* <Route path="/campaign" element={<Campaign />} /> */}
         {/* <Route path="/ads_media" element={<Ads_Media />} /> */}
         <Route path="/booking" element={<Booking />} />
+        <Route path="/event_booking" element={<Event_Booking />} />
         <Route path="/static_booking" element={<Static_Booking />} />
         <Route path="/static_screen" element={<Static_Screens />} />
         {/* <Route path="/inbox" element={<Inbox />} /> */}
@@ -78,6 +81,7 @@ const Routing = () => {
           path="/setting/media_rule/create"
           element={<Create_Media_Rule />}
         />
+
         <Route path="/setting/Tag_management" element={<Tag_management />} />
         <Route path="/media_libraly" element={<Media_Libraly />} />
         <Route
@@ -92,6 +96,9 @@ const Routing = () => {
         />
         <Route path="/booking/:name" element={<Create_Booking />} />
         <Route path="/booking/select/:name" element={<Select_Booking />} />
+
+        <Route path="/event_booking/:name" element={<Create_Event_Booking />} />
+
         <Route
           path="/booking/booking_pricing_summary"
           element={<Booking_Summary />}

@@ -533,39 +533,54 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     };
 
     try {
-      const data_booking = await User.createBooking(obj_save_booking, token);
-      if (data_booking.code === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "สร้าง Booking สำเร็จ!",
-          text: `สร้าง Booking สำเร็จ!`,
-        }).then((result) => {
-          if (
-            result.isConfirmed ||
-            result.dismiss === Swal.DismissReason.backdrop
-          ) {
-            const obj = {
-              BookingID: data_booking.bookingid,
-              AdvertiserLogo: select_merchandise.AdvertiserLogo,
-              AdvertiserName: select_merchandise.AdvertiserName,
-              BookingName: booking_name,
-              SlotPerDay: booking_slot,
-              booking_date,
-            };
+      const obj = {
+        BookingID: 123123123123,
+        AdvertiserLogo: select_merchandise.AdvertiserLogo,
+        AdvertiserName: select_merchandise.AdvertiserName,
+        BookingName: booking_name,
+        SlotPerDay: booking_slot,
+        booking_date,
+      };
 
-            const replacedString = obj.BookingName.replace(/\//g, "_");
-            navigate(`/booking/${replacedString}`, {
-              state: { data: obj, isEdited: false },
-            });
-          }
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: data_booking.message,
-        });
-      }
+      const replacedString = obj.BookingName.replace(/\//g, "_");
+      console.log("obj", obj);
+      navigate(`/event_booking/${replacedString}`, {
+        state: { data: obj, isEdited: false },
+      });
+
+      // const data_booking = await User.createBooking(obj_save_booking, token);
+      // if (data_booking.code === 200) {
+      //   Swal.fire({
+      //     icon: "success",
+      //     title: "สร้าง Booking สำเร็จ!",
+      //     text: `สร้าง Booking สำเร็จ!`,
+      //   }).then((result) => {
+      //     if (
+      //       result.isConfirmed ||
+      //       result.dismiss === Swal.DismissReason.backdrop
+      //     ) {
+      //       const obj = {
+      //         BookingID: data_booking.bookingid,
+      //         AdvertiserLogo: select_merchandise.AdvertiserLogo,
+      //         AdvertiserName: select_merchandise.AdvertiserName,
+      //         BookingName: booking_name,
+      //         SlotPerDay: booking_slot,
+      //         booking_date,
+      //       };
+
+      //       const replacedString = obj.BookingName.replace(/\//g, "_");
+      //       navigate(`/booking/${replacedString}`, {
+      //         state: { data: obj, isEdited: false },
+      //       });
+      //     }
+      //   });
+      // } else {
+      //   Swal.fire({
+      //     icon: "error",
+      //     title: "เกิดข้อผิดพลาด!",
+      //     text: data_booking.message,
+      //   });
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -597,7 +612,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           <>
             <div className="m-1 md:m-5 mt-24 p-2 md:p-5 rounded-3xl h-full">
               <div className="text-[6vw] md:text-[50px] font-[700] text-center font-poppins">
-                Digital Booking For
+                Event Booking For
               </div>
 
               <div className="w-full">
@@ -855,7 +870,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           <>
             <div className="flex items-center justify-center mt-5">
               <div className="text-[50px] font-poppins font-bold text-[#2F3847]">
-                Enter Booking Detail
+                Enter Event Booking Detail
               </div>
             </div>
             <div className="mt-6 h-[440px] overflow-y-auto">
@@ -946,7 +961,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
           <>
             <div className="flex items-center justify-center mt-5">
               <div className="text-[56px] font-poppins font-bold text-[#2F3847]">
-                Digital Booking is Created
+                Event Booking is Created
               </div>
             </div>
             <div className="mt-6 h-[400px] overflow-y-auto">

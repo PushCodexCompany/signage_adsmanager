@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
 import { useNavigate } from "react-router-dom";
-import { GridTable } from "../libs/booking_grid";
+import { GridTable } from "../libs/event_booking_grid";
 import useCheckPermission from "../libs/useCheckPermission";
-import New_Booking from "../components/New_Booking";
-import Filter from "../components/Filter";
+import New_Event_Booking from "../components/New_Event_Booking";
 import User from "../libs/admin";
-import Permission from "../libs/permission";
 import Swal from "sweetalert2";
+import Permission from "../libs/permission";
+import Filter from "../components/Filter";
 
-const Booking = () => {
+const Event_Booking = () => {
   useCheckPermission();
   const { token } = User.getCookieData();
   const [showModalAddNewBooking, setShowModalAddNewBooking] = useState(false);
   const [booking_data, setBookingData] = useState([]);
-  const [all_pages, setAllPages] = useState(null);
-  const [filter_screen, setFilterScreen] = useState([]);
   const [searchTerm, setSearchTerm] = useState(null);
+  const [filter_screen, setFilterScreen] = useState([]);
   const [page_permission, setPagePermission] = useState([]);
+  const [all_pages, setAllPages] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,13 +64,12 @@ const Booking = () => {
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
-        <Header lv1={"Digital Booking"} />
+        <Header lv1={"Event Booking"} />
         <div className="grid grid-cols-10 mt-10">
           <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl">
-              Digital Booking
+              Event Booking
             </div>
           </div>
           {page_permission?.create ? (
@@ -79,7 +78,7 @@ const Booking = () => {
                 onClick={() => setShowModalAddNewBooking(true)}
                 className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-full lg:w-[300px] lg:h-[45px] rounded-md shadow-sm"
               >
-                New Booking +
+                New Event Booking +
               </button>
             </div>
           ) : (
@@ -119,10 +118,12 @@ const Booking = () => {
       )}
 
       {showModalAddNewBooking && (
-        <New_Booking setShowModalAddNewBooking={setShowModalAddNewBooking} />
+        <New_Event_Booking
+          setShowModalAddNewBooking={setShowModalAddNewBooking}
+        />
       )}
     </>
   );
 };
 
-export default Booking;
+export default Event_Booking;

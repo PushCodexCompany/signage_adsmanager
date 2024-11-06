@@ -118,6 +118,7 @@ const Select_Booking = () => {
 
     // get Booking Content
     const booking_content = await User.getBookingContent(BookingID, token);
+
     calculateSize(booking_content);
 
     // get Screen Data

@@ -12,6 +12,7 @@ import {
   MdFolderOpen,
   MdOutlineMarkunreadMailbox,
   MdSettings,
+  MdOutlineEmojiEvents,
 } from "react-icons/md";
 import { GrMultimedia } from "react-icons/gr";
 import Permission from "../libs/permission";
@@ -309,14 +310,20 @@ const SidebarMain = () => {
         notification: { is_notification: false, amount: 0 },
         submenu: [
           {
-            name: "Digital Booking Screen",
+            name: "Digital Booking ",
             link: "booking",
             icon: <SlScreenDesktop size={27} />,
           },
+
           // {
-          //   name: "Static Booking Screen",
+          //   name: "Static Booking",
           //   link: "static_booking",
           //   icon: <MdOutlineMarkunreadMailbox size={27} />,
+          // },
+          // {
+          //   name: "Event Booking ",
+          //   link: "event_booking",
+          //   icon: <MdOutlineEmojiEvents size={27} />,
           // },
         ],
       });

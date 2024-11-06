@@ -169,7 +169,7 @@ const Static_Booking = () => {
         <div className="grid grid-cols-10 mt-10">
           <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl ">
-              Booking Static Screen
+              Static Booking
             </div>
           </div>
           <div className="col-span-4">
