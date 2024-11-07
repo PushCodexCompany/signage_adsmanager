@@ -177,7 +177,7 @@ export const GridTable = ({
                           </span>
                         </>
                       ) : (
-                        <>{row.ScreenLocation}</>
+                        <>{row.ScreenLocation || "No Location ...."}</>
                       )}
                     </div>
                   </div>

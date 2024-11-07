@@ -47,7 +47,7 @@ const User_Account = () => {
     const { token } = User.getCookieData();
 
     try {
-      const data = await User.getUserAccount(token);
+      const { data } = await User.getUserAccount(token);
       setAccount(data);
     } catch (error) {
       console.error("Error : ", error);
