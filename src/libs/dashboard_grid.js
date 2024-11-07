@@ -346,6 +346,134 @@ export const dashboardData = [
       percent: 10,
     },
   },
+  {
+    id: 6,
+    store: 1,
+    jan: {
+      value: 22,
+      is_up: true,
+      percent: 10,
+    },
+    feb: {
+      value: 15,
+      is_up: true,
+      percent: 10,
+    },
+    mar: {
+      value: 18,
+      is_up: true,
+      percent: 10,
+    },
+    apr: {
+      value: 25,
+      is_up: true,
+      percent: 10,
+    },
+    may: {
+      value: 32,
+      is_up: true,
+      percent: 10,
+    },
+    jun: {
+      value: 20,
+      is_up: true,
+      percent: 10,
+    },
+    jul: {
+      value: 34,
+      is_up: true,
+      percent: 10,
+    },
+    aug: {
+      value: 36,
+      is_up: true,
+      percent: 10,
+    },
+    sep: {
+      value: 14,
+      is_up: true,
+      percent: 10,
+    },
+    oct: {
+      value: 52,
+      is_up: true,
+      percent: 10,
+    },
+    nov: {
+      value: 55,
+      is_up: true,
+      percent: 10,
+    },
+    dec: {
+      value: 71,
+      is_up: true,
+      percent: 10,
+    },
+  },
+  {
+    id: 7,
+    store: 2,
+    jan: {
+      value: 14,
+      is_up: true,
+      percent: 10,
+    },
+    feb: {
+      value: 36,
+      is_up: true,
+      percent: 10,
+    },
+    mar: {
+      value: 22,
+      is_up: true,
+      percent: 10,
+    },
+    apr: {
+      value: 34,
+      is_up: true,
+      percent: 10,
+    },
+    may: {
+      value: 41,
+      is_up: true,
+      percent: 10,
+    },
+    jun: {
+      value: 11,
+      is_up: true,
+      percent: 10,
+    },
+    jul: {
+      value: 15,
+      is_up: true,
+      percent: 10,
+    },
+    aug: {
+      value: 18,
+      is_up: true,
+      percent: 10,
+    },
+    sep: {
+      value: 22,
+      is_up: true,
+      percent: 10,
+    },
+    oct: {
+      value: 19,
+      is_up: true,
+      percent: 10,
+    },
+    nov: {
+      value: 20,
+      is_up: true,
+      percent: 10,
+    },
+    dec: {
+      value: 10,
+      is_up: true,
+      percent: 10,
+    },
+  },
 ];
 
 export const getImg = (id) => {
@@ -363,46 +491,46 @@ export const GridTable = () => {
   return (
     <>
       <div className="w-auto h-[400px] overflow-auto">
-        <table className="min-w-full border border-gray-300">
+        <table className="min-w-full ">
           <thead>
             <tr>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 ID
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Store
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Jan
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Feb
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Mar
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Apr
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 May
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Jun
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Aug
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Sep
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Oct
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Nov
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 Dec
               </th>
             </tr>

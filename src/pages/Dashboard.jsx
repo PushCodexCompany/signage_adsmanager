@@ -18,7 +18,7 @@ import {
   Legend,
 } from "chart.js";
 import { Doughnut, Line, Bar } from "react-chartjs-2";
-
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
 import { GridTable } from "../libs/dashboard_grid";
@@ -43,6 +43,7 @@ const Dashboard = () => {
   useCheckPermission();
   const [isYearOpen, setIsYearOpen] = useState(false);
   const [isYearAnalyticOpen, setIsYearAnalyticOpen] = useState(false);
+  const [isUniqueCustomerOpen, setIsUniqueCustomerOpen] = useState(false);
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [isUp, setIsUp] = useState(true);
   const navigate = useNavigate();
@@ -59,288 +60,37 @@ const Dashboard = () => {
     setIsBrandOpen((prevIsOpen) => !prevIsOpen);
   };
 
-  const RightPanel = () => {
-    const PieChart = () => {
-      const data = {
-        datasets: [
-          {
-            label: "Total Earning",
-            data: [10, 10, 10],
-            backgroundColor: ["#5125BC", "#706195", "#A47FFE"],
-            borderColor: ["#808080", "#808080", "#808080"],
-            borderWidth: 1,
-          },
-        ],
-      };
-
-      const options = {
-        cutout: 120, // Adjust this value to control the thickness
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-      };
-
-      return (
-        <div className="flex items-center justify-center">
-          <div className="relative w-[150px] h-[150px] lg:w-[280px] lg:h-[280px]">
-            <Doughnut data={data} options={options} />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="lg:text-5xl text-2xl font-bold flex ">500K</div>
-              {isUp ? (
-                <div className="flex lg:h-12 items-end">
-                  <ImArrowUp
-                    color="#05EF00"
-                    className="relative bottom-[3px] lg:bottom-[6px]"
-                  />
-                  <div className="text-[#05EF00] font-poppins font-bold">
-                    10%
-                  </div>
-                </div>
-              ) : (
-                <div className="flex lg:h-12 items-end ">
-                  <ImArrowDown
-                    color="red"
-                    className="relative bottom-[14px] lg:bottom-[6px]"
-                  />
-                  <div className="text-red-600 font-poppins font-bold">10%</div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    const TotalSection = () => {
-      return (
-        <>
-          <div className="flex items-center justify-center mt-2">
-            <img className="w-2/5 rounded-md object-cover" src={central_img} />
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="font-poppins text-sm lg:text-2xl font-bold">
-              CDS
-            </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="font-poppins text-[6px] lg:text-sm text-gray-400">
-              Central Department Store
-            </div>
-          </div>
-          <div className="flex mt-5">
-            <div className="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
-              574
-            </div>
-            <div className="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
-              1245
-            </div>
-            <div className="flex justify-center items-center w-1/3  font-poppins text-xs lg:text-lg">
-              148
-            </div>
-          </div>
-          <div className="flex mb-5">
-            <div className="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
-              Total Screen
-            </div>
-            <div className="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
-              Total Content
-            </div>
-            <div className="flex justify-center items-center w-1/3  font-poppins text-[7px] lg:text-xs text-gray-400">
-              Total Booking
-            </div>
-          </div>
-        </>
-      );
-    };
-
-    return (
-      // <div className="col-span-2 row-span-4 mt-12">
-      //   {/* Top */}
-      //   <div className="border border-gray-200 rounded-lg">
-      //     <TotalSection />
-      //   </div>
-      //   {/* Buttom */}
-      //   <div className="border border-gray-200 rounded-lg mt-8">
-      //     <div className="flex items-center justify-center font-semibold font-poppins lg:text-xl mt-2">
-      //       Total Earning 2023
-      //     </div>
-      //     <div className="flex item-center justify-center mt-10">
-      //       <PieChart />
-      //     </div>
-      //     <div className="space-y-2 mt-3 p-1 mb-5">
-      //       <div className="flex border border-gray-200 rounded-lg ">
-      //         <div className="w-[21px] h-[55px] ml-2 mt-1 bg-[#5125BC] rounded-lg" />
-      //         <div className="space-y-[-3px]">
-      //           <div className="flex justify-start items-center ml-2 text-gray-600 font-poppins text-[18px]">
-      //             YTD Revenue
-      //           </div>
-      //           <div className="flex ml-2">
-      //             <div className="grid grid-cols-5 gap-4 lg:gap-6">
-      //               <div className="flex col-span-4 justify-start items-center font-poppins font-bold text-[26px]">
-      //                 74
-      //               </div>
-      //               <div className="flex justify-end items-center min-w-0">
-      //                 <ImArrowUp color="#008A1E" size={15} />
-      //                 <div className="text-[#008A1E] text-xl font-poppins">
-      //                   10%
-      //                 </div>
-      //               </div>
-      //             </div>
-      //           </div>
-      //         </div>
-      //       </div>
-      //       <div className="flex border border-gray-200 rounded-lg">
-      //         <div className="w-[21px] h-[55px] ml-2 mt-1 bg-[#A47FFE] rounded-lg" />
-      //         <div className="space-y-[-3px]">
-      //           <div className="flex justify-start items-center ml-2 text-gray-600 font-poppins text-[18px]">
-      //             MTD Revenue
-      //           </div>
-      //           <div className="flex ml-2">
-      //             <div className="grid grid-cols-5 gap-6">
-      //               <div className="flex col-span-4 justify-start items-center font-poppins font-bold text-[26px] ">
-      //                 148
-      //               </div>
-      //               <div className="flex justify-end items-center min-w-0">
-      //                 <ImArrowUp color="#008A1E" size={15} />
-      //                 <div className="text-[#008A1E] text-xl font-poppins">
-      //                   10%
-      //                 </div>
-      //               </div>
-      //             </div>
-      //           </div>
-      //         </div>
-      //       </div>
-      //       <div className="flex border border-gray-200 rounded-lg">
-      //         <div className="w-[21px] h-[55px] ml-2 mt-1 bg-[#706195] rounded-lg" />
-      //         <div className="space-y-[-3px]">
-      //           <div className="flex justify-start items-center ml-2 text-gray-600 font-poppins text-[18px]">
-      //             Number of BU Booking
-      //           </div>
-      //           <div className="flex ml-2">
-      //             <div className="grid grid-cols-5 gap-6">
-      //               <div className="flex col-span-4 justify-start items-center font-poppins font-bold text-[26px] ">
-      //                 14
-      //               </div>
-      //               <div className="flex justify-end items-center min-w-0">
-      //                 <ImArrowUp color="#008A1E" size={15} />
-      //                 <div className="text-[#008A1E] text-xl font-poppins">
-      //                   10%
-      //                 </div>
-      //               </div>
-      //             </div>
-      //           </div>
-      //         </div>
-      //       </div>
-      //     </div>
-      //   </div>
-      // </div>
-      <></>
-    );
-  };
-
-  const LeftPanale = () => {
-    return (
-      <>
-        <div className="flex gap-2">
-          <div className="flex items-center p-4 bg-white border rounded-lg shadow-md min-w-[320px] max-w-[300px]">
-            <div className="flex items-center justify-center w-16 h-16 bg-gray-100 rounded-lg mr-4">
-              <img
-                src={central_img}
-                className="flex items-center justify-center w-[315px] h-[315px] object-contain"
-              />
-            </div>
-            <div>
-              <div className="text-3xl font-bold font-poppins">CDS</div>
-              <div className="flex items-center">
-                <h2 className="text-xs text-gray-500 mr-2 font-poppins">
-                  Central Department Store
-                </h2>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center p-4 bg-white border rounded-lg shadow-md min-w-[320px] max-w-[300px]">
-            <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg mr-4">
-              <div className="flex items-center w-[45px] h-[45px] bg-[#6359E9] rounded-lg  justify-center ">
-                <FaArrowDown size={25} className=" text-white " />
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-500  font-poppins">
-                MTD number of booking
-              </div>
-              <div className="flex items-center">
-                <h2 className="text-3xl font-bold mr-2 font-poppins">123</h2>
-                <div
-                  className={`ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-red-100 text-[#EB001B]`}
-                >
-                  {`+${1.29}%`}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center p-4 bg-white border rounded-lg shadow-md min-w-[320px] max-w-[300px]">
-            <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg mr-4">
-              <div className="flex items-center w-[45px] h-[45px] bg-[#64CFF6] rounded-lg  justify-center ">
-                <FaArrowUp size={25} className=" text-white " />
-              </div>
-            </div>
-            <div>
-              <div className="text-sm text-gray-500  font-poppins">
-                YTD number of booking
-              </div>
-              <div className="flex items-center">
-                <h2 className="text-3xl font-bold mr-2 font-poppins">123</h2>
-                <div
-                  className={`ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-green-100 text-[#02B15A]`}
-                >
-                  {`+${1.29}%`}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="gap-6 w-full">
-          <BarChart />
-        </div>
-        {/* <div className="grid grid-cols-8 space-x-1">
-          <div className="col-span-4 lg:col-span-5">
-            <MonthStore />
-          </div>
-          <div className="col-span-4 lg:col-span-3">
-            <MonthYTD />
-          </div>
-        </div>
-        <div className="grid grid-cols-8 space-x-1">
-          <div className="col-span-4 lg:col-span-5">
-            <BarChart />
-          </div>
-          <div className="col-span-4 lg:col-span-3">
-            <CategoryYtd />
-          </div>
-        </div> */}
-      </>
-    );
+  const toggleUniqueCustomerSelect = () => {
+    setIsUniqueCustomerOpen((prevIsOpen) => !prevIsOpen);
   };
 
   const MonthStore = () => {
     return (
       <>
-        <div className="font-poppins font-bold text-lg mb-3">
-          by Month Store
+        <div className="font-poppins font-bold text-lg mb-3 p-2">
+          Number of booking Store
         </div>
         <GridTable />
       </>
     );
   };
 
-  const MonthYTD = () => {
+  const UniqueCustomerBooking = () => {
     const LineChart = () => {
+      const dataValues = [20, 30, 33, 41, 48, 40, 49, 50, 58, 59, 70, 75]; // Data points
+      // Function to calculate percentage change
+      const calculatePercentageChange = (current, previous) => {
+        if (previous === 0) return 0; // Avoid division by zero
+        return ((current - previous) / previous) * 100;
+      };
+
+      // Calculate percentage changes for each data point (except the first)
+      const percentageChanges = dataValues.map((value, index) => {
+        if (index === 0) return null; // No percentage change for the first data point
+        const previousValue = dataValues[index - 1];
+        return calculatePercentageChange(value, previousValue).toFixed(2); // Round to 2 decimal places
+      });
+
       const data = {
         labels: [
           "Jan",
@@ -359,8 +109,29 @@ const Dashboard = () => {
         datasets: [
           {
             label: "YTD",
-            data: [20, 25, 10, 29, 15, 35, 40, 48, 55, 51, 65, 85],
-            borderColor: "#5125BC",
+            data: dataValues,
+            borderColor: function (context) {
+              const chart = context.chart;
+              const ctx = chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, chart.width, 0);
+
+              // Define the custom gradient colors in order
+              const colors = [
+                "#8A2BE2",
+                "#FFA500",
+                "#FFFF00",
+                "#008000",
+                "#00FFFF",
+                "#0000FF",
+              ]; // Purple, Orange, Yellow, Green, Cyan, Blue
+
+              // Distribute the colors evenly across the gradient
+              colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color);
+              });
+
+              return gradient;
+            },
             fill: false,
           },
         ],
@@ -378,7 +149,38 @@ const Dashboard = () => {
             display: false,
             text: "Chart.js Line Chart",
           },
+          tooltip: {
+            enabled: true, // Disable tooltip if you want to show text manually
+          },
+          datalabels: {
+            display: true,
+            font: {
+              family: "Poppins",
+              size: 16, // Font size for data labels
+            },
+            color: "#000000",
+            formatter: (value, context) => {
+              const index = context.dataIndex;
+              if (index === 0) {
+                return value.toFixed(0); // No percentage change for the first data point
+              }
+              const percentageChange = percentageChanges[index]; // Get the percentage change for the current point
+              const direction = percentageChange >= 0 ? "↑" : "↓"; // Determine the direction
+              const color = percentageChange >= 0 ? "green" : "red";
+              return `${value.toFixed(0)}`;
+            },
+            anchor: "center", // Ensure labels are centered horizontally
+            align: (context) => {
+              const index = context.dataIndex;
+              return index % 2 === 0 ? "bottom" : "top"; // Alternating between 'bottom' and 'top'
+            },
+            offset: (context) => {
+              const index = context.dataIndex;
+              return index % 2 === 0 ? 10 : 10; // Offset position (down = +10px, up = -10px)
+            },
+          },
         },
+
         scales: {
           y: {
             display: true, // Hide Y axis labels
@@ -393,7 +195,7 @@ const Dashboard = () => {
           x: {
             display: true, // Hide X axis labels
             grid: {
-              display: false, // Hide X-axis grid lines
+              display: true, // Hide X-axis grid lines
             },
             ticks: {
               font: {
@@ -402,13 +204,242 @@ const Dashboard = () => {
             },
           },
         },
+        elements: {
+          point: {
+            // Customize the point (dot) style
+            pointStyle: "circle", // Use a circle shape
+            radius: 8, // Adjust the size of the dot
+            backgroundColor: "white", // Set the inner color to white (hollow)
+            borderColor: "#5125BC", // Border color
+            borderWidth: 4, // Thickness of the border (makes it look like a donut)
+          },
+        },
       };
 
-      return <Line data={data} options={options} />;
+      return <Line data={data} options={options} plugins={[ChartDataLabels]} />;
     };
     return (
       <>
-        <div className="font-poppins font-bold text-lg mb-3">by Month YTD</div>
+        <div className="flex mt-2 w-full p-4  rounded-lg">
+          <div className="grid grid-cols-12 gap-1 w-full">
+            <div className="col-span-10 p-2">
+              <div className="font-poppins text-2xl font-bold">
+                No. of unique customer booking by month
+              </div>
+            </div>
+            <div className="col-span-2 p-2 mt-2">
+              <div className="relative w-[70px] h-[20px] flex justify-center items-center">
+                <select
+                  name="year"
+                  id="year"
+                  onChange={toggleUniqueCustomerSelect}
+                  className="block w-full appearance-none border border-gray-300 text-xs font-poppins rounded-xl p-2 pr-8 "
+                >
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                </select>
+
+                {/* Arrow container */}
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  {isUniqueCustomerOpen ? (
+                    <IoIosArrowUp size={15} color={"#6425FE"} />
+                  ) : (
+                    <IoIosArrowDown size={15} color={"#6425FE"} />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="h-[445px] border border-gray-200">
+          <div className="h-[80%] mt-5 ">
+            <LineChart />
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const NumberOfBooking = () => {
+    const LineChart = () => {
+      const dataValues = [20, 30, 33, 41, 48, 40, 49, 50, 58, 59, 70, 75]; // Data points
+      // Function to calculate percentage change
+      const calculatePercentageChange = (current, previous) => {
+        if (previous === 0) return 0; // Avoid division by zero
+        return ((current - previous) / previous) * 100;
+      };
+
+      // Calculate percentage changes for each data point (except the first)
+      const percentageChanges = dataValues.map((value, index) => {
+        if (index === 0) return null; // No percentage change for the first data point
+        const previousValue = dataValues[index - 1];
+        return calculatePercentageChange(value, previousValue).toFixed(2); // Round to 2 decimal places
+      });
+
+      const data = {
+        labels: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
+        datasets: [
+          {
+            label: "YTD",
+            data: dataValues,
+            borderColor: function (context) {
+              const chart = context.chart;
+              const ctx = chart.ctx;
+              const gradient = ctx.createLinearGradient(0, 0, chart.width, 0);
+
+              // Define the custom gradient colors in order
+              const colors = [
+                "#8A2BE2",
+                "#FFA500",
+                "#FFFF00",
+                "#008000",
+                "#00FFFF",
+                "#0000FF",
+              ]; // Purple, Orange, Yellow, Green, Cyan, Blue
+
+              // Distribute the colors evenly across the gradient
+              colors.forEach((color, index) => {
+                gradient.addColorStop(index / (colors.length - 1), color);
+              });
+
+              return gradient;
+            },
+            fill: false,
+          },
+        ],
+      };
+
+      const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+            position: "top",
+          },
+          title: {
+            display: false,
+            text: "Chart.js Line Chart",
+          },
+          tooltip: {
+            enabled: true, // Disable tooltip if you want to show text manually
+          },
+          datalabels: {
+            display: true,
+            font: {
+              family: "Poppins",
+              size: 16, // Font size for data labels
+            },
+            color: "#000000",
+            formatter: (value, context) => {
+              const index = context.dataIndex;
+              if (index === 0) {
+                return value.toFixed(0); // No percentage change for the first data point
+              }
+              const percentageChange = percentageChanges[index]; // Get the percentage change for the current point
+              const direction = percentageChange >= 0 ? "↑" : "↓"; // Determine the direction
+              const color = percentageChange >= 0 ? "green" : "red";
+              return `${value.toFixed(0)}`;
+            },
+            anchor: "center", // Ensure labels are centered horizontally
+            align: (context) => {
+              const index = context.dataIndex;
+              return index % 2 === 0 ? "bottom" : "top"; // Alternating between 'bottom' and 'top'
+            },
+            offset: (context) => {
+              const index = context.dataIndex;
+              return index % 2 === 0 ? 10 : 10; // Offset position (down = +10px, up = -10px)
+            },
+          },
+        },
+
+        scales: {
+          y: {
+            display: true, // Hide Y axis labels
+            suggestedMin: 0,
+            suggestedMax: 100,
+            ticks: {
+              font: {
+                family: "Poppins", // Change the font for the y-axis label
+              },
+            },
+          },
+          x: {
+            display: true, // Hide X axis labels
+            grid: {
+              display: true, // Hide X-axis grid lines
+            },
+            ticks: {
+              font: {
+                family: "Poppins", // Change the font for the y-axis label
+              },
+            },
+          },
+        },
+        elements: {
+          point: {
+            // Customize the point (dot) style
+            pointStyle: "circle", // Use a circle shape
+            radius: 8, // Adjust the size of the dot
+            backgroundColor: "white", // Set the inner color to white (hollow)
+            borderColor: "#5125BC", // Border color
+            borderWidth: 4, // Thickness of the border (makes it look like a donut)
+          },
+        },
+      };
+
+      return <Line data={data} options={options} plugins={[ChartDataLabels]} />;
+    };
+    return (
+      <>
+        <div className="flex mt-2 w-full p-4  rounded-lg">
+          <div className="grid grid-cols-12 gap-1 w-full">
+            <div className="col-span-10 p-2">
+              <div className="font-poppins text-2xl font-bold">
+                Number of booking by month YTD
+              </div>
+            </div>
+            <div className="col-span-2 p-2 mt-2">
+              <div className="relative w-[70px] h-[20px] flex justify-center items-center">
+                <select
+                  name="year"
+                  id="year"
+                  onChange={toggleUniqueCustomerSelect}
+                  className="block w-full appearance-none border border-gray-300 text-xs font-poppins rounded-xl p-2 pr-8 "
+                >
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                </select>
+
+                {/* Arrow container */}
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  {isUniqueCustomerOpen ? (
+                    <IoIosArrowUp size={15} color={"#6425FE"} />
+                  ) : (
+                    <IoIosArrowDown size={15} color={"#6425FE"} />
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="h-[445px] border border-gray-200">
           <div className="h-[80%] mt-5 ">
             <LineChart />
@@ -419,14 +450,14 @@ const Dashboard = () => {
   };
 
   const BarChart = () => {
-    const [banner_by_month, setBannerByMonth] = useState([
-      28, 45, 32, 40, 25, 32, 42, 22, 40, 25, 23, 40,
+    const [number_of_booking, setBannerByMonth] = useState([
+      28, 32, 22, 28, 32, 29, 29, 29, 32, 22, 25, 28,
     ]);
     const [booking_by_month, setBookingByMonth] = useState([
-      45, 18, 55, 52, 35, 45, 18, 55, 52, 35, 55, 52,
+      36, 25, 30, 38, 42, 22, 22, 22, 41, 29, 35, 21,
     ]);
     const [booking_by_store, setBookingByStore] = useState([
-      21, 21, 15, 25, 28, 22, 22, 15, 25, 28, 15, 25,
+      21, 28, 25, 32, 25, 35, 28, 25, 21, 23, 22, 22,
     ]);
 
     const BarChart = () => {
@@ -451,24 +482,27 @@ const Dashboard = () => {
             backgroundColor: "#64CFF6",
             borderColor: "#64CFF6",
             borderWidth: 1,
-            data: booking_by_month,
+            data: number_of_booking,
             barThickness: 10,
+            borderRadius: 10,
           },
           {
             label: "Number of booking by month",
-            backgroundColor: "#66BD10",
-            borderColor: "#66BD10",
+            backgroundColor: "#6359E9",
+            borderColor: "#6359E9",
             borderWidth: 1,
             data: booking_by_month,
             barThickness: 10,
+            borderRadius: 10,
           },
           {
             label: "Booking by Store",
-            backgroundColor: "#E02020",
-            borderColor: "#E02020",
+            backgroundColor: "#F6C864",
+            borderColor: "#F6C864",
             borderWidth: 1,
             data: booking_by_store,
             barThickness: 10,
+            borderRadius: 10,
           },
         ],
       };
@@ -491,9 +525,15 @@ const Dashboard = () => {
             beginAtZero: true, // Start the Y-axis from zero
             display: true,
             min: 0, // Set the minimum value for the Y-axis
-            max: 70, // Set the maximum value for the Y-axis
+            max: 50, // Set the maximum value for the Y-axis
             ticks: {
-              display: false,
+              font: {
+                family: "Poppins", // Change the font for the y-axis label
+              },
+              stepSize: 10,
+              callback: function (value) {
+                return value + "k"; // Append " units" to each tick value
+              },
             },
           },
           x: {
@@ -514,7 +554,7 @@ const Dashboard = () => {
     };
     return (
       <>
-        <div className="flex mt-2 w-full p-4 border border-gray-300 rounded-lg">
+        <div className="flex mt-2 w-full p-4  rounded-lg">
           <div className="grid grid-cols-12 gap-1 w-full">
             <div className="col-span-2 p-2">
               <div className="font-poppins text-2xl font-bold">Analytics</div>
@@ -543,12 +583,12 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="col-span-1  p-2">
+            <div className="col-span-1 p-2">
               <div className="relative w-[70px] h-[20px] flex justify-center items-center">
                 <select
                   name="year"
                   id="year"
-                  onClick={toggleYearSelect}
+                  onChange={toggleYearSelect}
                   className="block w-full appearance-none border border-gray-300 text-xs font-poppins rounded-xl p-2 pr-8 "
                 >
                   <option value="2023">2023</option>
@@ -575,110 +615,85 @@ const Dashboard = () => {
     );
   };
 
-  const CategoryYtd = () => {
-    const BarHorizontal = () => {
-      const data = {
-        labels: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-        datasets: [
-          {
-            label: "Banner by  Month",
-            backgroundColor: "#5125BC",
-            borderColor: "#5125BC",
-            borderWidth: 1,
-            data: [98, 65, 38, 60, 48, 25, 38, 48, 35, 52, 65, 88],
-            barThickness: 10,
-          },
-        ],
-      };
-
-      const options = {
-        indexAxis: "y",
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-            position: "top",
-            labels: {
-              font: {
-                family: "Poppins",
-              },
-            },
-          },
-          title: {
-            display: false,
-            text: "Chart.js Line Chart",
-          },
-        },
-        afterDatasetsDraw: (chart) => {
-          const ctx = chart.ctx;
-          const xAxis = chart.scales.x;
-          const yAxis = chart.scales.y;
-          chart.data.datasets.forEach((dataset, datasetIndex) => {
-            const data = dataset.data;
-            const meta = chart.getDatasetMeta(datasetIndex);
-            meta.data.forEach((bar, index) => {
-              const barValue = data[index];
-              const x = bar.x;
-              const y = bar.y;
-              ctx.fillStyle = "black"; // Customize the text color
-              ctx.textAlign = "center";
-              ctx.textBaseline = "bottom";
-              ctx.fillText(`Value: ${barValue}`, x, y - 10);
-            });
-          });
-        },
-        scales: {
-          y: {
-            beginAtZero: true, // Start the Y-axis from zero
-            display: true,
-            min: 0, // Set the minimum value for the Y-axis
-            max: 100, // Set the maximum value for the Y-axis
-            grid: {
-              display: false, // Hide X-axis grid lines
-            },
-            ticks: {
-              font: {
-                family: "Poppins", // Change the font for the y-axis label
-              },
-            },
-          },
-          x: {
-            beginAtZero: true,
-            display: true, // Hide X axis labels
-            ticks: {
-              font: {
-                family: "Poppins", // Change the font for the y-axis label
-              },
-            },
-          },
-        },
-      };
-
-      return <Bar data={data} options={options} />;
-    };
+  const RightPanel = () => {
     return (
       <>
-        <div className="font-poppins font-bold text-lg mb-3">
-          by Category YTD
+        <div className="gap-6 w-full border border-gray-300 rounded-lg mt-2 p-2">
+          <UniqueCustomerBooking />
         </div>
-        <div className="h-[445px] border border-gray-200">
-          <div className="h-[110%] mt-5 ">
-            <BarHorizontal />
+        <div className="gap-6 w-full border border-gray-300 rounded-lg mt-2 p-2">
+          <NumberOfBooking />
+        </div>
+      </>
+    );
+  };
+
+  const LeftPanale = () => {
+    return (
+      <>
+        <div className="flex flex-wrap justify-center items-center gap-4 p-4">
+          {/* First Card */}
+          <div className="flex items-center p-3 bg-white border rounded-lg shadow-md min-w-[250px] max-w-[250px]">
+            <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg mr-3">
+              <img
+                src={central_img}
+                alt="Central Department Store"
+                className="w-[40px] h-[40px] object-contain"
+              />
+            </div>
+            <div>
+              <div className="text-xl font-bold font-poppins">CDS</div>
+              <div className="text-xs text-gray-500 font-poppins">
+                Central Department Store
+              </div>
+            </div>
           </div>
+
+          {/* Second Card */}
+          <div className="flex items-center p-3 bg-white border rounded-lg shadow-md min-w-[250px] max-w-[250px]">
+            <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg mr-3">
+              <div className="flex items-center justify-center w-[35px] h-[35px] bg-[#6359E9] rounded-lg">
+                <FaArrowDown size={18} className="text-white" />
+              </div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 font-poppins">
+                MTD number of booking
+              </div>
+              <div className="flex items-center">
+                <h2 className="text-xl font-bold mr-2 font-poppins">123</h2>
+                <div className="ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-red-100 text-[#EB001B]">
+                  {`+1.29%`}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Third Card */}
+          <div className="flex items-center p-3 bg-white border rounded-lg shadow-md min-w-[250px] max-w-[250px]">
+            <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg mr-3">
+              <div className="flex items-center justify-center w-[35px] h-[35px] bg-[#64CFF6] rounded-lg">
+                <FaArrowUp size={18} className="text-white" />
+              </div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-500 font-poppins">
+                YTD number of booking
+              </div>
+              <div className="flex items-center">
+                <h2 className="text-xl font-bold mr-2 font-poppins">123</h2>
+                <div className="ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-green-100 text-[#02B15A]">
+                  {`+1.29%`}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="gap-6 w-full border border-gray-300 rounded-lg">
+          <BarChart />
+        </div>
+        <div className="gap-6 w-full border border-gray-300 rounded-lg">
+          <MonthStore />
         </div>
       </>
     );
@@ -699,7 +714,7 @@ const Dashboard = () => {
             <select
               name="brand"
               id="brand"
-              onClick={toggleBrandSelect}
+              onChange={toggleBrandSelect}
               className="block w-full appearance-none border border-gray-300 text-md font-poppins rounded-xl p-2 pr-8 "
             >
               <option value="CDS">CDS</option>
@@ -718,7 +733,7 @@ const Dashboard = () => {
             <select
               name="year"
               id="year"
-              onClick={toggleYearSelectAnalytic}
+              onChange={toggleYearSelectAnalytic}
               className="block w-full appearance-none border border-gray-300 text-md font-poppins rounded-xl p-2 pr-8 "
             >
               <option value="2023">2023</option>
@@ -736,11 +751,13 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-8 mt-3">
+        <div className="grid grid-cols-9 mt-3 space-x-2">
           <div className="col-span-5 mt-2 space-y-2">
             <LeftPanale />
           </div>
-          <div className="col-span-3">{/* <RightPanel /> */}</div>
+          <div className="col-span-4">
+            <RightPanel />
+          </div>
         </div>
       </div>
     </>
