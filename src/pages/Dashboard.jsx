@@ -366,6 +366,39 @@ const Dashboard = () => {
               return index % 2 === 0 ? 10 : 10; // Offset position (down = +10px, up = -10px)
             },
           },
+          // datalabels: {
+          //   display: true,
+          //   font: {
+          //     family: "Poppins",
+          //     weight: "bold",
+          //     size: 14, // Font size for data labels
+          //   },
+          //   color: (context) => {
+          //     const index = context.dataIndex;
+          //     const percentageChange = percentageChanges[index]; // Get the percentage change for the current point
+          //     return percentageChange >= 0 ? "green" : "red"; // Green for up, Red for down
+          //   },
+          //   formatter: (value, context) => {
+          //     const index = context.dataIndex;
+          //     if (index === 0) {
+          //       return value.toFixed(0); // No percentage change for the first data point
+          //     }
+          //     const percentageChange = percentageChanges[index]; // Get the percentage change for the current point
+          //     const direction = percentageChange >= 0 ? "↑" : "↓"; // Determine the direction
+          //     return `${value.toFixed(0)} ${direction} ${Math.abs(
+          //       percentageChange
+          //     )}%`;
+          //   },
+          //   anchor: "center", // Ensure labels are centered horizontally
+          //   align: (context) => {
+          //     const index = context.dataIndex;
+          //     return index % 2 === 0 ? "bottom" : "top"; // Alternating between 'bottom' and 'top'
+          //   },
+          //   offset: (context) => {
+          //     const index = context.dataIndex;
+          //     return index % 2 === 0 ? 14 : 14; // Offset position (down = +10px, up = -10px)
+          //   },
+          // },
         },
 
         scales: {
@@ -440,7 +473,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="h-[445px] border border-gray-200">
+        <div className="h-[445px] border border-gray-200 overflow-y-auto">
           <div className="h-[80%] mt-5 ">
             <LineChart />
           </div>
