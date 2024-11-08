@@ -236,7 +236,7 @@ const Role_permission = () => {
                         disabled={true}
                       />
                       <span
-                        className={`h-5 w-5 border-2 border-[#6425FE] hover:border-[#3b1694] rounded-sm cursor-pointer flex items-center justify-center ${
+                        className={`h-5 w-5 border-2 border-gray-300 hover:border-gray-500 rounded-sm cursor-pointer flex items-center justify-center ${
                           checkboxes[item] ? "bg-white" : ""
                         }`}
                       >
@@ -247,7 +247,7 @@ const Role_permission = () => {
                           } transition-opacity duration-300 ease-in-out`}
                           fill="none"
                           viewBox="0 0 24 24"
-                          stroke="#6425FE"
+                          stroke="#828087"
                         >
                           <path
                             strokeLinecap="round"
