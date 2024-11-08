@@ -30,6 +30,8 @@ import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
 import { FaRegListAlt } from "react-icons/fa";
 
+import default_logo from "../assets/img/codex_logo.png";
+
 export const links = [
   {
     title: "Main menu",
@@ -227,7 +229,7 @@ const SidebarMain = () => {
     const { brand_id } = User.getCampaign();
     const data = await User.getBrand(token);
     const brand = data.find((items) => items.BrandCode === brand_id);
-    setLogoImg(brand.BrandLogo);
+    setLogoImg(brand.BrandLogo || default_logo);
     // if (brand_id === 1) {
     //   setLogoImg(Central_Logo);
     // } else {

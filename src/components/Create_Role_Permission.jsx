@@ -16,15 +16,37 @@ const Create_Role_Permission = ({
     name: null,
     description: null,
     permissions: {
-      brand: { view: false, create: false, update: false, delete: false },
-      branch: { view: false, create: false, update: false, delete: false },
-      screen: { view: false, create: false, update: false, delete: false },
-      playlist: { view: false, create: false, update: false, delete: false },
-      media: { view: false, create: false, update: false, delete: false },
-      user: { view: false, create: false, update: false, delete: false },
-      role: { view: false, create: false, update: false, delete: false },
-      userrole: { view: false, create: false, update: false, delete: false },
-      booking: { view: false, create: false, update: false, delete: false },
+      userMgt: { view: false, create: false, update: false, delete: false },
+      roleMgt: { view: false, create: false, update: false, delete: false },
+      brandMgt: { view: false, create: false, update: false, delete: false },
+      digiScrnMgt: { view: false, create: false, update: false, delete: false },
+      conf: { view: false, create: false, update: false, delete: false },
+      tagMgt: { view: false, create: false, update: false, delete: false },
+      mdRule: { view: false, create: false, update: false, delete: false },
+      adMerch: { view: false, create: false, update: false, delete: false },
+      mdLib: { view: false, create: false, update: false, delete: false },
+      actLog: { view: false, create: false, update: false, delete: false },
+      mdLog: { view: false, create: false, update: false, delete: false },
+      scrLog: { view: false, create: false, update: false, delete: false },
+      digiBookingMgt: {
+        view: false,
+        create: false,
+        update: false,
+        delete: false,
+      },
+      digiBookContMgt: {
+        view: false,
+        create: false,
+        update: false,
+        delete: false,
+      },
+      digiPlaylistMgt: {
+        view: false,
+        create: false,
+        update: false,
+        delete: false,
+      },
+      dBoard: { view: false, create: false, update: false, delete: false },
     },
     other_permission: {
       assign_booking: 0,
@@ -76,13 +98,16 @@ const Create_Role_Permission = ({
           };
         }
         const value = removeZeroPermissions(obj);
+
         const encrypted = await Encryption.encryption(
           value,
           "add_permission_role",
           false
         );
+
         try {
           const data = await User.createUserRole(encrypted, token);
+
           if (data.code === 200) {
             Swal.fire({
               icon: "success",
@@ -193,7 +218,7 @@ const Create_Role_Permission = ({
       setIsSelectAll(!isSelectAll);
     };
 
-    const CheckboxGroup = ({ title, name, items, data }) => {
+    const CheckboxGroup = ({ title, name, fullname, items, data }) => {
       const header = ["create", "delete", "update", "view"];
 
       let data_check;
@@ -244,8 +269,19 @@ const Create_Role_Permission = ({
         <>
           <div className="col-span-1">
             <div className="grid grid-rows-5 gap-4">
-              <div className="font-poppins font-bold">
-                {name[0].toUpperCase() + name.slice(1)}
+              <div className="flex justify-start items-center group relative">
+                <div className="font-poppins text-md  font-bold ">
+                  {fullname ? (
+                    <>
+                      {name}
+                      <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[200px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                        {fullname[0].toUpperCase() + fullname.slice(1)}
+                      </span>
+                    </>
+                  ) : (
+                    <>{name[0].toUpperCase() + name.slice(1)}</>
+                  )}
+                </div>
               </div>
 
               {items.map((item, index) => (
@@ -446,64 +482,115 @@ const Create_Role_Permission = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col min-w-0  w-full mb-6 ">
+            <div className="flex flex-col min-w-0 w-full mb-6 ">
               <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                 <div className="p-4">
                   <>
-                    <div className="grid grid-cols-8 gap-4 mt-5">
+                    <div className=" grid grid-cols-4 gap-4 mb-11 mt-5">
                       <CheckboxGroup
-                        title="brand"
-                        name="bu"
-                        items={Object.keys(roleData.permissions?.brand)}
-                        data={roleData.permissions?.brand}
-                      />
-
-                      <CheckboxGroup
-                        title="branch"
-                        name="customer"
-                        items={Object.keys(roleData.permissions?.branch)}
-                        data={roleData.permissions?.branch}
-                      />
-
-                      <CheckboxGroup
-                        title="screen"
-                        name="screen"
-                        items={Object.keys(roleData.permissions?.screen)}
-                        data={roleData.permissions?.screen}
-                      />
-
-                      <CheckboxGroup
-                        title="playlist"
-                        name="playlist"
-                        items={Object.keys(roleData.permissions?.playlist)}
-                        data={roleData.permissions?.playlist}
-                      />
-
-                      <CheckboxGroup
-                        title="media"
-                        name="media"
-                        items={Object.keys(roleData.permissions?.media)}
-                        data={roleData.permissions?.media}
-                      />
-
-                      <CheckboxGroup
-                        title="user"
-                        name="user"
-                        items={Object.keys(roleData.permissions?.user)}
-                        data={roleData.permissions?.user}
+                        title="userMgt"
+                        name="User Management"
+                        items={Object.keys(roleData.permissions?.userMgt)}
+                        data={roleData.permissions?.userMgt}
                       />
                       <CheckboxGroup
-                        title="userrole"
-                        name="userrole"
-                        items={Object.keys(roleData.permissions?.userrole)}
-                        data={roleData.permissions?.userrole}
+                        title="roleMgt"
+                        name="User Role"
+                        items={Object.keys(roleData.permissions?.roleMgt)}
+                        data={roleData.permissions?.roleMgt}
                       />
-
                       <CheckboxGroup
-                        title="booking"
-                        name="booking"
-                        items={Object.keys(roleData.permissions?.booking)}
-                        data={roleData.permissions?.booking}
+                        title="brandMgt"
+                        name="BU"
+                        items={Object.keys(roleData.permissions?.brandMgt)}
+                        data={roleData.permissions?.brandMgt}
+                      />
+                      <CheckboxGroup
+                        title="digiScrnMgt"
+                        name="Digital Screen"
+                        items={Object.keys(roleData.permissions?.digiScrnMgt)}
+                        data={roleData.permissions?.digiScrnMgt}
+                      />
+                      <CheckboxGroup
+                        title="conf"
+                        name="Configuration"
+                        items={Object.keys(roleData.permissions?.conf)}
+                        data={roleData.permissions?.conf}
+                      />
+                      <CheckboxGroup
+                        title="tagMgt"
+                        name="Tag Management"
+                        items={Object.keys(roleData.permissions?.tagMgt)}
+                        data={roleData.permissions?.tagMgt}
+                      />
+                      <CheckboxGroup
+                        title="mdRule"
+                        name="Media Rule"
+                        items={Object.keys(roleData.permissions?.mdRule)}
+                        data={roleData.permissions?.mdRule}
+                      />
+                      <CheckboxGroup
+                        title="adMerch"
+                        name="Customer"
+                        items={Object.keys(roleData.permissions?.adMerch)}
+                        data={roleData.permissions?.adMerch}
+                      />
+                      <CheckboxGroup
+                        title="mdLib"
+                        name="Media library"
+                        items={Object.keys(roleData.permissions?.mdLib)}
+                        data={roleData.permissions?.mdLib}
+                      />
+                      <CheckboxGroup
+                        title="actLog"
+                        name="Activities Log"
+                        items={Object.keys(roleData.permissions?.actLog)}
+                        data={roleData.permissions?.actLog}
+                      />
+                      <CheckboxGroup
+                        title="mdLog"
+                        name="Media Log"
+                        items={Object.keys(roleData.permissions?.mdLog)}
+                        data={roleData.permissions?.mdLog}
+                      />
+                      <CheckboxGroup
+                        title="scrLog"
+                        name="Screen Log"
+                        items={Object.keys(roleData.permissions?.scrLog)}
+                        data={roleData.permissions?.scrLog}
+                      />
+                      <CheckboxGroup
+                        title="digiBookingMgt"
+                        name="DBM"
+                        fullname="Digital Booking Management"
+                        items={Object.keys(
+                          roleData.permissions?.digiBookingMgt
+                        )}
+                        data={roleData.permissions?.digiBookingMgt}
+                      />
+                      <CheckboxGroup
+                        title="digiBookContMgt"
+                        name="DBCM"
+                        fullname="Digital Booking Content Management"
+                        items={Object.keys(
+                          roleData.permissions?.digiBookContMgt
+                        )}
+                        data={roleData.permissions?.digiBookContMgt}
+                      />
+                      <CheckboxGroup
+                        title="digiPlaylistMgt"
+                        name="DPM"
+                        fullname="Digital Playlist Management"
+                        items={Object.keys(
+                          roleData.permissions?.digiPlaylistMgt
+                        )}
+                        data={roleData.permissions?.digiPlaylistMgt}
+                      />
+                      <CheckboxGroup
+                        title="dBoard"
+                        name="Dashboard"
+                        items={Object.keys(roleData.permissions?.dBoard)}
+                        data={roleData.permissions?.dBoard}
                       />
                     </div>
                   </>
@@ -566,8 +653,8 @@ const Create_Role_Permission = ({
             </div>
           </div>
         </div>
-        <div className="p-10 mt-2 ">
-          <div className="bg-[#FAFAFA]">
+        <div className="p-5 mt-2">
+          <div className="bg-[#FAFAFA">
             <Tabs page_permission={{ update: true }} roleData={newRole} />
           </div>
         </div>

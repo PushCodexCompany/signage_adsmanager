@@ -38,6 +38,72 @@ export default {
     return convertedData;
   },
 
+  convertNewPermissionValuesToBooleanForPermissionPage: function (item) {
+    const convertedData = { permissions: {}, other_permission: {} };
+
+    // Default permissions to ensure missing ones return 0
+    // const defaultPermissions = [
+    //   "branch",
+    //   "screen",
+    //   "user",
+    //   "userrole",
+    //   "playlist",
+    //   "media",
+    //   "booking",
+    //   "brand",
+    // ];
+
+    const defaultPermissions = [
+      "accMgt",
+      "brandMgt",
+      "branchMgt",
+      "digiScrnMgt",
+      "userMgt",
+      "roleMgt",
+      "digiPlaylistMgt",
+      "mdLib",
+      "digiBookingMgt",
+      "actLog",
+      "conf",
+      "tagMgt",
+      "mdRule",
+      "adMerch",
+      "mdLog",
+      "scrLog",
+      "digiBookContMgt",
+      "dBoard",
+    ];
+
+    // Handle permissions using UserPermissions array
+    defaultPermissions.forEach((resource) => {
+      // Find the corresponding entry in UserPermissions
+      const userPermission = item.UserPermissions.find(
+        (perm) => perm.PermissionKey === resource
+      );
+
+      // Use the Permission value if available, or default to 0
+      const value = userPermission ? userPermission.Permission : 0;
+
+      const resourcePermissions = {
+        view: (value & (2 ** 1)) !== 0, // Check if the "view" bit is set
+        create: (value & (2 ** 2)) !== 0, // Check if the "create" bit is set
+        update: (value & (2 ** 3)) !== 0, // Check if the "update" bit is set
+        delete: (value & (2 ** 4)) !== 0, // Check if the "delete" bit is set
+      };
+
+      convertedData.permissions[resource] = resourcePermissions;
+    });
+
+    // Handle other permissions if they exist
+    for (const permission in item.other_permission) {
+      const value = item.other_permission[permission];
+      convertedData.other_permission[permission] =
+        value === 1 || value === true;
+    }
+
+    return convertedData;
+  },
+
   convertPermissionValuesToBoolean: function (data) {
     const convertedData = { permissions: {}, other_permission: {} };
 

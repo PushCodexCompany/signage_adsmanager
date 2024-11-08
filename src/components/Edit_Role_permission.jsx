@@ -24,7 +24,6 @@ const Edit_Role_permission = ({
   const setEditRoleData = () => {
     const { RoleID, RoleName, RoleDesc, other_permission, permissions } =
       selectRoleEdit;
-
     const permission = {
       permissions: permissions,
       other_permission: other_permission,
@@ -59,7 +58,7 @@ const Edit_Role_permission = ({
       setIsSelectAll(!isSelectAll);
     };
 
-    const CheckboxGroup = ({ title, name, items, data }) => {
+    const CheckboxGroup = ({ title, name, fullname, items, data }) => {
       const header = ["create", "delete", "update", "view"];
 
       let data_check;
@@ -110,8 +109,19 @@ const Edit_Role_permission = ({
         <>
           <div className="col-span-1">
             <div className="grid grid-rows-5 gap-4">
-              <div className="font-poppins font-bold">
-                {name[0].toUpperCase() + name.slice(1)}
+              <div className="flex justify-start items-center group relative">
+                <div className="font-poppins text-md  font-bold ">
+                  {fullname ? (
+                    <>
+                      {name}
+                      <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[200px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                        {fullname[0].toUpperCase() + fullname.slice(1)}
+                      </span>
+                    </>
+                  ) : (
+                    <>{name[0].toUpperCase() + name.slice(1)}</>
+                  )}
+                </div>
               </div>
 
               {items.map((item, index) => (
@@ -306,81 +316,148 @@ const Edit_Role_permission = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col min-w-0  w-full mb-6 ">
+            <div className="flex flex-col min-w-0 w-full mb-6 ">
               <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                 <div className="p-4">
                   <>
-                    <div className="grid grid-cols-8 gap-4 mt-5">
-                      {roleData?.permissions?.brand && (
-                        // areAllFalse(roleData.permissions?.brand) &&
+                    <div className=" grid grid-cols-4 gap-4 mb-11 mt-5">
+                      {roleData?.permissions?.userMgt && (
                         <CheckboxGroup
-                          title="brand"
-                          name="bu"
-                          items={Object.keys(roleData?.permissions?.brand)}
-                          data={roleData?.permissions?.brand}
+                          title="userMgt"
+                          name="User Management"
+                          items={Object.keys(roleData?.permissions?.userMgt)}
+                          data={roleData?.permissions?.userMgt}
                         />
                       )}
-                      {roleData?.permissions?.branch && (
-                        // areAllFalse(roleData.permissions?.branch) &&
+                      {roleData?.permissions?.roleMgt && (
                         <CheckboxGroup
-                          title="branch"
-                          name="customer"
-                          items={Object.keys(roleData?.permissions?.branch)}
-                          data={roleData?.permissions?.branch}
+                          title="roleMgt"
+                          name="User Role"
+                          items={Object.keys(roleData?.permissions?.roleMgt)}
+                          data={roleData?.permissions?.roleMgt}
                         />
                       )}
-                      {roleData?.permissions?.screen && (
-                        // areAllFalse(roleData.permissions?.screen) &&
+                      {roleData?.permissions?.brandMgt && (
                         <CheckboxGroup
-                          title="screen"
-                          name="screen"
-                          items={Object.keys(roleData?.permissions?.screen)}
-                          data={roleData?.permissions?.screen}
+                          title="brandMgt"
+                          name="BU"
+                          items={Object.keys(roleData?.permissions?.brandMgt)}
+                          data={roleData?.permissions?.brandMgt}
                         />
                       )}
-                      {roleData?.permissions?.playlist && (
-                        // areAllFalse(roleData.permissions?.playlist) &&
+                      {roleData?.permissions?.digiScrnMgt && (
                         <CheckboxGroup
-                          title="playlist"
-                          name="playlist"
-                          items={Object.keys(roleData?.permissions?.playlist)}
-                          data={roleData?.permissions?.playlist}
+                          title="digiScrnMgt"
+                          name="Digital Screen"
+                          items={Object.keys(
+                            roleData?.permissions?.digiScrnMgt
+                          )}
+                          data={roleData?.permissions?.digiScrnMgt}
                         />
                       )}
-                      {roleData?.permissions?.media && (
-                        // areAllFalse(roleData.permissions?.media) &&
+                      {roleData?.permissions?.conf && (
                         <CheckboxGroup
-                          title="media"
-                          name="media"
-                          items={Object.keys(roleData?.permissions?.media)}
-                          data={roleData?.permissions?.media}
+                          title="conf"
+                          name="Configuration"
+                          items={Object.keys(roleData?.permissions?.conf)}
+                          data={roleData?.permissions?.conf}
                         />
                       )}
-                      {roleData?.permissions?.user && (
-                        // areAllFalse(roleData.permissions?.user) &&
+                      {roleData?.permissions?.tagMgt && (
                         <CheckboxGroup
-                          title="user"
-                          name="user"
-                          items={Object.keys(roleData?.permissions?.user)}
-                          data={roleData?.permissions?.user}
+                          title="tagMgt"
+                          name="Tag Management"
+                          items={Object.keys(roleData?.permissions?.tagMgt)}
+                          data={roleData?.permissions?.tagMgt}
                         />
                       )}
-                      {roleData?.permissions?.userrole && (
-                        // areAllFalse(roleData.permissions?.userrole) &&
+                      {roleData?.permissions?.mdRule && (
                         <CheckboxGroup
-                          title="userrole"
-                          name="userrole"
-                          items={Object.keys(roleData?.permissions?.userrole)}
-                          data={roleData?.permissions?.userrole}
+                          title="mdRule"
+                          name="Media Rule"
+                          items={Object.keys(roleData?.permissions?.mdRule)}
+                          data={roleData?.permissions?.mdRule}
                         />
                       )}
-                      {roleData?.permissions?.booking && (
-                        // areAllFalse(roleData.permissions?.booking) &&
+                      {roleData?.permissions?.adMerch && (
                         <CheckboxGroup
-                          title="booking"
-                          name="booking"
-                          items={Object.keys(roleData?.permissions?.booking)}
-                          data={roleData?.permissions?.booking}
+                          title="adMerch"
+                          name="Customer"
+                          items={Object.keys(roleData?.permissions?.adMerch)}
+                          data={roleData?.permissions?.adMerch}
+                        />
+                      )}
+                      {roleData?.permissions?.mdLib && (
+                        <CheckboxGroup
+                          title="mdLib"
+                          name="Media library"
+                          items={Object.keys(roleData?.permissions?.mdLib)}
+                          data={roleData?.permissions?.mdLib}
+                        />
+                      )}
+                      {roleData?.permissions?.actLog && (
+                        <CheckboxGroup
+                          title="actLog"
+                          name="Activities Log"
+                          items={Object.keys(roleData?.permissions?.actLog)}
+                          data={roleData?.permissions?.actLog}
+                        />
+                      )}
+                      {roleData?.permissions?.mdLog && (
+                        <CheckboxGroup
+                          title="mdLog"
+                          name="Media Log"
+                          items={Object.keys(roleData?.permissions?.mdLog)}
+                          data={roleData?.permissions?.mdLog}
+                        />
+                      )}
+                      {roleData?.permissions?.scrLog && (
+                        <CheckboxGroup
+                          title="scrLog"
+                          name="Screen Log"
+                          items={Object.keys(roleData?.permissions?.scrLog)}
+                          data={roleData?.permissions?.scrLog}
+                        />
+                      )}
+                      {roleData?.permissions?.digiBookingMgt && (
+                        <CheckboxGroup
+                          title="digiBookingMgt"
+                          name="DBM"
+                          fullname="Digital Booking Management"
+                          items={Object.keys(
+                            roleData?.permissions?.digiBookingMgt
+                          )}
+                          data={roleData?.permissions?.digiBookingMgt}
+                        />
+                      )}
+                      {roleData?.permissions?.digiBookContMgt && (
+                        <CheckboxGroup
+                          title="digiBookContMgt"
+                          name="DBCM"
+                          fullname="Digital Booking Content Management"
+                          items={Object.keys(
+                            roleData?.permissions?.digiBookContMgt
+                          )}
+                          data={roleData?.permissions?.digiBookContMgt}
+                        />
+                      )}
+                      {roleData?.permissions?.digiPlaylistMgt && (
+                        <CheckboxGroup
+                          title="digiPlaylistMgt"
+                          name="DPM"
+                          fullname="Digital Playlist Management"
+                          items={Object.keys(
+                            roleData?.permissions?.digiPlaylistMgt
+                          )}
+                          data={roleData?.permissions?.digiPlaylistMgt}
+                        />
+                      )}
+                      {roleData?.permissions?.dBoard && (
+                        <CheckboxGroup
+                          title="dBoard"
+                          name="Dashboard"
+                          items={Object.keys(roleData?.permissions?.dBoard)}
+                          data={roleData?.permissions?.dBoard}
                         />
                       )}
                     </div>
@@ -461,9 +538,10 @@ const Edit_Role_permission = ({
           permissions: summary.permissions,
           accountcode: account.AccountCode,
         };
-
+        console.log("obj", obj);
         const encrypted = await Encryption.encryption(obj, "edit_role", false);
         const data = await User.updateUserRole(encrypted, token);
+        console.log("data", data);
         if (data.code === 200) {
           Swal.fire({
             icon: "success",
@@ -539,7 +617,7 @@ const Edit_Role_permission = ({
             </div>
           </div>
         </div>
-        <div className="p-10 mt-2 ">
+        <div className="p-5 mt-2 ">
           <div className="bg-[#FAFAFA]">
             <Tabs roleData={permission} />
           </div>
