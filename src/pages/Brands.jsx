@@ -13,10 +13,10 @@ import Swal from "sweetalert2";
 import plus_brand from "../assets/img/plus_brand.png";
 
 import Navbar from "../components/Navbar_brand";
+import Permission from "../libs/permission";
 
 const Brands = () => {
   const { user } = User.getCookieData();
-  const { permission } = User.getPermission();
   const select_campaign = User.getCampaign();
   const select_account = User.getAccount();
 
@@ -28,6 +28,8 @@ const Brands = () => {
 
   const [brand, setBrand] = useState([]);
   const [full_brand, setFullBrand] = useState([]);
+
+  const [page_permission, setPagePermission] = useState([]);
 
   useEffect(() => {
     if (!user) {
@@ -49,6 +51,27 @@ const Brands = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setPermission();
+  }, []);
+
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.brandMgt.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/");
+      return;
+    }
+    setPagePermission(permissions.brandMgt);
+  };
 
   const fetchData = async () => {
     const { token } = User.getCookieData();
@@ -157,7 +180,7 @@ const Brands = () => {
               : "grid grid-cols-2 lg:grid-cols-3"
           } gap-4 p-4 h-[620px] overflow-y-auto border border-gray-200 rounded-lg`}
         >
-          {permission.brand?.create ? (
+          {page_permission?.create ? (
             <div
               onClick={() => handleNewBrand()}
               className="h-[400px] p-2 flex flex-col items-center"
@@ -198,7 +221,7 @@ const Brands = () => {
                     alt={items.AccountName}
                     onClick={() => selectCampaign(items)}
                   />
-                  {!permission.brand?.update && !permission.brand?.delete ? (
+                  {!page_permission?.update && !page_permission?.delete ? (
                     <></>
                   ) : (
                     <div
@@ -214,7 +237,7 @@ const Brands = () => {
 
                   {dropdownStates[items.BrandID] && (
                     <div className="absolute top-8 right-0 bg-white border border-gray-200 rounded shadow-sm py-2 px-4">
-                      {permission.brand?.update ? (
+                      {page_permission?.update ? (
                         <button
                           onClick={() => {
                             toggleDropdown(items.BrandID);
@@ -228,7 +251,7 @@ const Brands = () => {
                       ) : (
                         <></>
                       )}
-                      {permission.brand?.delete ? (
+                      {page_permission?.delete ? (
                         <button
                           onClick={() => {
                             handleDeleteBrand(items.BrandID);

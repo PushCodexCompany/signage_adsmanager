@@ -38,9 +38,12 @@ const Edit_tag_category = ({
 
   const getTagCategory = async (TagCategoryID) => {
     const tag = await User.getTag(TagCategoryID, token);
-    tag?.sort((a, b) =>
-      a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
-    );
+    if (tag.length > 0) {
+      tag?.sort((a, b) =>
+        a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
+      );
+    }
+
     setTagData(tag);
   };
 

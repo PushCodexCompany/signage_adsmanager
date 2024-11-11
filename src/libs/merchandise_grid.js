@@ -245,6 +245,7 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
               <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Content Status
               </th> */}
+                {page_permission?.update || page_permission?.delete}
                 <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Action
                 </th>

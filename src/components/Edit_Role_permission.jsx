@@ -9,6 +9,7 @@ const Edit_Role_permission = ({
   modalEditRole,
   selectRoleEdit,
   getPermission,
+  page_permission,
 }) => {
   const { token } = User.getCookieData();
   const [role_id, setRoleId] = useState(null);
@@ -58,20 +59,39 @@ const Edit_Role_permission = ({
       setIsSelectAll(!isSelectAll);
     };
 
-    const CheckboxGroup = ({ title, name, fullname, items, data }) => {
+    const CheckboxGroup = ({
+      title,
+      name,
+      fullname,
+      items,
+      data,
+      conf,
+      isLog,
+    }) => {
       const header = ["create", "delete", "update", "view"];
 
-      let data_check;
-      if (data) {
-        data_check = data;
-      } else {
-        data_check = {
-          create: false,
-          delete: false,
-          update: false,
-          view: false,
-        };
-      }
+      const [filteredItems, setFilteredItems] = useState(items);
+
+      useEffect(() => {
+        if (conf) {
+          const result = items.filter(
+            (item) => item === "view" || item === "update"
+          );
+          setFilteredItems(result);
+        } else if (isLog) {
+          const result = items.filter((item) => item === "view");
+          setFilteredItems(result);
+        } else {
+          setFilteredItems(items);
+        }
+      }, [items, conf]);
+
+      let data_check = data || {
+        create: false,
+        delete: false,
+        update: false,
+        view: false,
+      };
 
       const [checkboxes, setCheckboxes] = useState(
         header.reduce((acc, item) => {
@@ -124,7 +144,7 @@ const Edit_Role_permission = ({
                 </div>
               </div>
 
-              {items.map((item, index) => (
+              {filteredItems.map((item, index) => (
                 <div
                   className="grid grid-cols-4 space-x-4 lg:space-x-2"
                   key={index}
@@ -361,6 +381,7 @@ const Edit_Role_permission = ({
                           name="Configuration"
                           items={Object.keys(roleData?.permissions?.conf)}
                           data={roleData?.permissions?.conf}
+                          conf={true}
                         />
                       )}
                       {roleData?.permissions?.tagMgt && (
@@ -401,6 +422,7 @@ const Edit_Role_permission = ({
                           name="Activities Log"
                           items={Object.keys(roleData?.permissions?.actLog)}
                           data={roleData?.permissions?.actLog}
+                          isLog={true}
                         />
                       )}
                       {roleData?.permissions?.mdLog && (
@@ -409,6 +431,7 @@ const Edit_Role_permission = ({
                           name="Media Log"
                           items={Object.keys(roleData?.permissions?.mdLog)}
                           data={roleData?.permissions?.mdLog}
+                          isLog={true}
                         />
                       )}
                       {roleData?.permissions?.scrLog && (
@@ -417,6 +440,7 @@ const Edit_Role_permission = ({
                           name="Screen Log"
                           items={Object.keys(roleData?.permissions?.scrLog)}
                           data={roleData?.permissions?.scrLog}
+                          isLog={true}
                         />
                       )}
                       {roleData?.permissions?.digiBookingMgt && (
@@ -458,6 +482,7 @@ const Edit_Role_permission = ({
                           name="Dashboard"
                           items={Object.keys(roleData?.permissions?.dBoard)}
                           data={roleData?.permissions?.dBoard}
+                          isLog={true}
                         />
                       )}
                     </div>
@@ -623,14 +648,18 @@ const Edit_Role_permission = ({
           </div>
         </div>
 
-        <div className="flex justify-center items-center -mt-3">
-          <button
-            onClick={() => handleEditData()}
-            className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg shadow-sm"
-          >
-            Save
-          </button>
-        </div>
+        {page_permission.update ? (
+          <div className="flex justify-center items-center -mt-3">
+            <button
+              onClick={() => handleEditData()}
+              className="bg-[#6425FE] hover:bg-[#3b1694] text-white w-36 h-10 font-poppins rounded-lg shadow-sm"
+            >
+              Save
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

@@ -864,7 +864,11 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <div>
                     <img
                       className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-sm`}
-                      src={select_merchandise.AdvertiserLogo}
+                      src={
+                        select_merchandise.AdvertiserLogo
+                          ? select_merchandise.AdvertiserLogo
+                          : `https://ui-avatars.com/api/?name=${select_merchandise.AdvertiserName}&background=000000&color=fff`
+                      }
                       alt={select_merchandise.AdvertiserName}
                     />
                   </div>
@@ -955,7 +959,11 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   <div>
                     <img
                       className={`block mx-auto mt-30px w-[250px] h-[250px]  object-cover border border-gray-300 rounded-lg shadow-sm`}
-                      src={select_merchandise.AdvertiserLogo}
+                      src={
+                        select_merchandise.AdvertiserLogo
+                          ? select_merchandise.AdvertiserLogo
+                          : `https://ui-avatars.com/api/?name=${select_merchandise.AdvertiserName}&background=000000&color=fff`
+                      }
                       alt={select_merchandise.AdvertiserName}
                     />
                   </div>

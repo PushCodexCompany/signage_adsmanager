@@ -26,6 +26,8 @@ import "./css/dashboard.css";
 
 import User from "../libs/admin";
 import useCheckPermission from "../libs/useCheckPermission";
+import Permission from "../libs/permission";
+import Swal from "sweetalert2";
 
 ChartJS.register(
   ArcElement,
@@ -47,6 +49,20 @@ const Dashboard = () => {
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [isUp, setIsUp] = useState(true);
   const navigate = useNavigate();
+
+  const [page_permission, setPagePermission] = useState([]);
+
+  useEffect(() => {
+    setPermission();
+  }, []);
+
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    setPagePermission(permissions.dBoard);
+  };
 
   const toggleYearSelect = () => {
     setIsYearOpen((prevIsOpen) => !prevIsOpen);
@@ -739,59 +755,66 @@ const Dashboard = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Dashboard"} />
 
-        <div className="flex space-x-2 mt-10">
-          <div className="font-poppins font-semibold text-3xl lg:text-2x p-2">
-            Dashboard
-          </div>
-          <div className="relative  w-[120px] flex justify-center items-center">
-            <select
-              name="brand"
-              id="brand"
-              onChange={toggleBrandSelect}
-              className="block w-full appearance-none border border-gray-300 text-md font-poppins rounded-xl p-2 pr-8 "
-            >
-              <option value="CDS">CDS</option>
-            </select>
+        {page_permission.view ? (
+          <>
+            {" "}
+            <div className="flex space-x-2 mt-10">
+              <div className="font-poppins font-semibold text-3xl lg:text-2x p-2">
+                Dashboard
+              </div>
+              <div className="relative  w-[120px] flex justify-center items-center">
+                <select
+                  name="brand"
+                  id="brand"
+                  onChange={toggleBrandSelect}
+                  className="block w-full appearance-none border border-gray-300 text-md font-poppins rounded-xl p-2 pr-8 "
+                >
+                  <option value="CDS">CDS</option>
+                </select>
 
-            {/* Arrow container */}
-            <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-              {isBrandOpen ? (
-                <IoIosArrowUp size={20} color={"#6425FE"} />
-              ) : (
-                <IoIosArrowDown size={20} color={"#6425FE"} />
-              )}
-            </div>
-          </div>
-          <div className="relative  w-[120px] flex justify-center items-center">
-            <select
-              name="year"
-              id="year"
-              onChange={toggleYearSelectAnalytic}
-              className="block w-full appearance-none border border-gray-300 text-md font-poppins rounded-xl p-2 pr-8 "
-            >
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-            </select>
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  {isBrandOpen ? (
+                    <IoIosArrowUp size={20} color={"#6425FE"} />
+                  ) : (
+                    <IoIosArrowDown size={20} color={"#6425FE"} />
+                  )}
+                </div>
+              </div>
+              <div className="relative  w-[120px] flex justify-center items-center">
+                <select
+                  name="year"
+                  id="year"
+                  onChange={toggleYearSelectAnalytic}
+                  className="block w-full appearance-none border border-gray-300 text-md font-poppins rounded-xl p-2 pr-8 "
+                >
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                </select>
 
-            {/* Arrow container */}
-            <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-              {isBrandOpen ? (
-                <IoIosArrowUp size={20} color={"#6425FE"} />
-              ) : (
-                <IoIosArrowDown size={20} color={"#6425FE"} />
-              )}
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  {isBrandOpen ? (
+                    <IoIosArrowUp size={20} color={"#6425FE"} />
+                  ) : (
+                    <IoIosArrowDown size={20} color={"#6425FE"} />
+                  )}
+                </div>
+              </div>
             </div>
+            <div className="grid grid-cols-9 mt-3 space-x-2">
+              <div className="col-span-5 mt-2 space-y-2">
+                <LeftPanale />
+              </div>
+              <div className="col-span-4">
+                <RightPanel />
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="font-poppins text-3xl text-gray-300 mt-14 italic">
+            Welcome to Ads Manager
           </div>
-        </div>
-        <div className="grid grid-cols-9 mt-3 space-x-2">
-          <div className="col-span-5 mt-2 space-y-2">
-            <LeftPanale />
-          </div>
-          <div className="col-span-4">
-            <RightPanel />
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

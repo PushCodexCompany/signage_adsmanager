@@ -182,8 +182,10 @@ const Event = () => {
 
   const getPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    if (!permissions.screen.view) {
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.digiScrnMgt.view) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -193,7 +195,7 @@ const Event = () => {
       return;
     }
 
-    setPagePermission(permissions.screen);
+    setPagePermission(permissions.digiScrnMgt);
   };
 
   return (

@@ -265,7 +265,9 @@ const SidebarMain = () => {
 
   const checkPermissionView = () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
     const menu = [
       {
         title: "Main menu",
@@ -304,7 +306,7 @@ const SidebarMain = () => {
       },
     ];
 
-    if (permissions.booking.view) {
+    if (permissions.digiBookingMgt?.view) {
       menu[0].links.push({
         name: "Booking",
         link: "booking",
@@ -331,7 +333,7 @@ const SidebarMain = () => {
       });
     }
 
-    if (permissions.screen.view) {
+    if (permissions.digiScrnMgt?.view) {
       menu[0].links.push({
         name: "Screens",
         link: "screen",
@@ -352,31 +354,43 @@ const SidebarMain = () => {
       });
     }
 
-    menu[0].links.push({
+    let logManagementEntry = {
       name: "Log Management",
       link: "logmanagement",
       icon: <HiOutlineNewspaper size={27} />,
       notification: { is_notification: false, amount: 0 },
-      submenu: [
-        {
-          name: "Activities Log",
-          link: "log_management/activities_log",
-          icon: <FaRegListAlt size={27} />,
-        },
-        {
-          name: "Media Log",
-          link: "log_management/media_log",
-          icon: <GrMultimedia size={27} />,
-        },
-        {
-          name: "Screen",
-          link: "log_management/screen",
-          icon: <SlScreenDesktop size={27} />,
-        },
-      ],
-    });
+      submenu: [],
+    };
 
-    if (permissions.media.view) {
+    if (permissions.actLog?.view) {
+      logManagementEntry.submenu.push({
+        name: "Activities Log",
+        link: "log_management/activities_log",
+        icon: <FaRegListAlt size={27} />,
+      });
+    }
+
+    if (permissions.mdLog?.view) {
+      logManagementEntry.submenu.push({
+        name: "Media Log",
+        link: "log_management/media_log",
+        icon: <GrMultimedia size={27} />,
+      });
+    }
+
+    if (permissions.scrLog?.view) {
+      logManagementEntry.submenu.push({
+        name: "Screen",
+        link: "log_management/screen",
+        icon: <SlScreenDesktop size={27} />,
+      });
+    }
+
+    if (logManagementEntry.submenu.length > 0) {
+      menu[0].links.push(logManagementEntry);
+    }
+
+    if (permissions.mdLib?.view) {
       menu[0].links.push({
         name: "Media Libraly",
         link: "media_libraly",
@@ -385,7 +399,7 @@ const SidebarMain = () => {
       });
     }
 
-    if (permissions.branch.view) {
+    if (permissions.adMerch?.view) {
       menu[0].links.push({
         name: "Customer",
         link: "merchandise",
@@ -394,7 +408,7 @@ const SidebarMain = () => {
       });
     }
 
-    if (permissions.user.view) {
+    if (permissions.userMgt?.view) {
       menu[1].links[0].submenu[0].submenu.push({
         name: "User",
         link: "setting/user_management/user",
@@ -402,7 +416,7 @@ const SidebarMain = () => {
       });
     }
 
-    if (permissions.userrole.view) {
+    if (permissions.roleMgt?.view) {
       menu[1].links[0].submenu[0].submenu.push({
         name: "Role And Permission",
         link: "setting/user_management/role_permission",
@@ -410,23 +424,29 @@ const SidebarMain = () => {
       });
     }
 
-    menu[1].links[0].submenu.push({
-      name: "Media Rule",
-      link: "setting/media_rule",
-      icon: <IoShieldOutline size={27} />,
-    });
+    if (permissions.mdRule?.view) {
+      menu[1].links[0].submenu.push({
+        name: "Media Rule",
+        link: "setting/media_rule",
+        icon: <IoShieldOutline size={27} />,
+      });
+    }
 
-    menu[1].links[0].submenu.push({
-      name: "Tag Management",
-      link: "setting/tag_management",
-      icon: <BiPurchaseTag size={27} />,
-    });
+    if (permissions.tagMgt?.view) {
+      menu[1].links[0].submenu.push({
+        name: "Tag Management",
+        link: "setting/tag_management",
+        icon: <BiPurchaseTag size={27} />,
+      });
+    }
 
-    menu[1].links[0].submenu.push({
-      name: "Configuration",
-      link: "setting/configuration",
-      icon: <MdSettings size={27} />,
-    });
+    if (permissions.conf?.view) {
+      menu[1].links[0].submenu.push({
+        name: "Configuration",
+        link: "setting/configuration",
+        icon: <MdSettings size={27} />,
+      });
+    }
 
     setMenu(menu);
   };

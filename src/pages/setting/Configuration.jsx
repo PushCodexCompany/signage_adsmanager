@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../../components";
+import { useNavigate } from "react-router-dom";
 import User from "../../libs/admin";
 import Swal from "sweetalert2";
+import Permission from "../../libs/permission";
 
 const Configuration = () => {
   const { token } = User.getCookieData();
-
+  const navigate = useNavigate();
   const [config_data, setConfigData] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -16,8 +18,11 @@ const Configuration = () => {
     }, {})
   );
 
+  const [page_permission, setPagePermission] = useState([]);
+
   useEffect(() => {
     getConfigurationData();
+    setPermission();
   }, []);
 
   const getConfigurationData = async () => {
@@ -30,6 +35,23 @@ const Configuration = () => {
       return acc;
     }, {});
     setInputValues(initialValues);
+  };
+
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.conf.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/");
+      return;
+    }
+    setPagePermission(permissions.conf);
   };
 
   const handleInputChange = (key, value, index) => {
@@ -130,35 +152,39 @@ const Configuration = () => {
                           index
                         )
                       }
+                      disabled={page_permission.update ? false : true}
                     />
                   </div>
                 </div>
               </div>
             ))}
-
-          <div className="grid grid-cols-12 mt-20">
-            <div className="col-span-5">
-              <div className="flex text-center justify-center">
-                <button
-                  onClick={() => handleSaveConfiguration()}
-                  className={`w-[315px] h-[48px]  ${
-                    isEdit
-                      ? "bg-[#6425FE] hover:bg-[#6325fe86]"
-                      : "bg-gray-500 hover:bg-gray-800"
-                  } text-white font-bold font-poppins rounded-lg`}
-                >
-                  Save
-                </button>
-              </div>
-              <div className="flex text-center justify-center mt-3">
-                <div className="font-poppins text-xs">
-                  Add screen details for precise ad targeting. Enter size,
-                  resolution, and operating hours to optimize your advertising
-                  strategy.
+          {page_permission.update ? (
+            <div className="grid grid-cols-12 mt-20">
+              <div className="col-span-5">
+                <div className="flex text-center justify-center">
+                  <button
+                    onClick={() => handleSaveConfiguration()}
+                    className={`w-[315px] h-[48px]  ${
+                      isEdit
+                        ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                        : "bg-gray-500 hover:bg-gray-800"
+                    } text-white font-bold font-poppins rounded-lg`}
+                  >
+                    Save
+                  </button>
+                </div>
+                <div className="flex text-center justify-center mt-3">
+                  <div className="font-poppins text-xs">
+                    Add screen details for precise ad targeting. Enter size,
+                    resolution, and operating hours to optimize your advertising
+                    strategy.
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </>

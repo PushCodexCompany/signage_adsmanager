@@ -72,9 +72,11 @@ const Role_permission = () => {
 
   const setPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
 
-    if (!permissions.userrole.view) {
+    if (!permissions.roleMgt.view) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -83,7 +85,7 @@ const Role_permission = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.userrole);
+    setPagePermission(permissions.roleMgt);
   };
 
   const selectRole = (key) => {
@@ -155,20 +157,31 @@ const Role_permission = () => {
   const Tabs = ({ roleData }) => {
     const [openTab, setOpenTab] = React.useState(1);
 
-    const CheckboxGroup = ({ title, fullTitle, items, data }) => {
+    const CheckboxGroup = ({ title, fullTitle, items, data, conf, isLog }) => {
       const header = ["create", "delete", "update", "view"];
 
-      let data_check;
-      if (data) {
-        data_check = data;
-      } else {
-        data_check = {
-          create: false,
-          delete: false,
-          update: false,
-          view: false,
-        };
-      }
+      const [filteredItems, setFilteredItems] = useState(items);
+
+      useEffect(() => {
+        if (conf) {
+          const result = items.filter(
+            (item) => item === "view" || item === "update"
+          );
+          setFilteredItems(result);
+        } else if (isLog) {
+          const result = items.filter((item) => item === "view");
+          setFilteredItems(result);
+        } else {
+          setFilteredItems(items);
+        }
+      }, [items, conf]);
+
+      let data_check = data || {
+        create: false,
+        delete: false,
+        update: false,
+        view: false,
+      };
 
       const [checkboxes, setCheckboxes] = useState(
         header.reduce((acc, item) => {
@@ -203,72 +216,69 @@ const Role_permission = () => {
       };
 
       return (
-        <>
-          <div className="col-span-1">
-            <div className="grid grid-rows-5 gap-4">
-              <div className="flex justify-start items-center group relative">
-                <div className="font-poppins text-md  font-bold ">
-                  {fullTitle ? (
-                    <>
-                      {title}
-                      <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[200px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                        {fullTitle[0].toUpperCase() + fullTitle.slice(1)}
-                      </span>
-                    </>
-                  ) : (
-                    <>{title[0].toUpperCase() + title.slice(1)}</>
-                  )}
+        <div className="col-span-1">
+          <div className="grid grid-rows-5 gap-4">
+            <div className="flex justify-start items-center group relative">
+              <div className="font-poppins text-md font-bold">
+                {fullTitle ? (
+                  <>
+                    {title}
+                    <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[200px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                      {fullTitle[0].toUpperCase() + fullTitle.slice(1)}
+                    </span>
+                  </>
+                ) : (
+                  <>{title[0].toUpperCase() + title.slice(1)}</>
+                )}
+              </div>
+            </div>
+            {filteredItems.map((item, index) => (
+              <div
+                className="grid grid-cols-4 space-x-4 lg:space-x-2"
+                key={index}
+              >
+                <div className="col-span-1">
+                  <label className="inline-flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      className="opacity-0 absolute h-5 w-5 cursor-pointer"
+                      checked={checkboxes[item]}
+                      onChange={() => toggleCheckbox(item)}
+                      disabled={true}
+                    />
+                    <span
+                      className={`h-5 w-5 border-2 border-gray-300 hover:border-gray-500 rounded-sm cursor-pointer flex items-center justify-center ${
+                        checkboxes[item] ? "bg-white" : ""
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className={`h-6 w-6 text-white ${
+                          checkboxes[item] ? "opacity-100" : "opacity-0"
+                        } transition-opacity duration-300 ease-in-out`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="#828087"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="3"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+                  </label>
+                </div>
+                <div className="col-span-3">
+                  <div className="font-poppins md:text-xs md:mt-[2px] lg:mt-0 lg:text-base">
+                    {item[0].toUpperCase() + item.slice(1)}
+                  </div>
                 </div>
               </div>
-
-              {items.map((item, index) => (
-                <div
-                  className="grid grid-cols-4 space-x-4 lg:space-x-2"
-                  key={index}
-                >
-                  <div className="col-span-1">
-                    <label className="inline-flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                        checked={checkboxes[item]}
-                        onChange={() => toggleCheckbox(item)}
-                        disabled={true}
-                      />
-                      <span
-                        className={`h-5 w-5 border-2 border-gray-300 hover:border-gray-500 rounded-sm cursor-pointer flex items-center justify-center ${
-                          checkboxes[item] ? "bg-white" : ""
-                        }`}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className={`h-6 w-6 text-white ${
-                            checkboxes[item] ? "opacity-100" : "opacity-0"
-                          } transition-opacity duration-300 ease-in-out`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="#828087"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </span>
-                    </label>
-                  </div>
-                  <div className="col-span-3">
-                    <div className="font-poppins md:text-xs md:mt-[2px] lg:mt-0 lg:text-base">
-                      {item[0].toUpperCase() + item.slice(1)}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
-        </>
+        </div>
       );
     };
 
@@ -443,13 +453,13 @@ const Role_permission = () => {
                           data={roleData?.permissions?.digiScrnMgt}
                         />
                       )}
-
                       {roleData?.permissions?.conf && (
                         // areAllFalse(roleData.permissions?.brand) &&
                         <CheckboxGroup
                           title="Configuration"
                           items={Object.keys(roleData?.permissions?.conf)}
                           data={roleData?.permissions?.conf}
+                          conf={true}
                         />
                       )}
 
@@ -467,7 +477,7 @@ const Role_permission = () => {
                         <CheckboxGroup
                           title="Media Rule"
                           items={Object.keys(roleData?.permissions?.mdRule)}
-                          data={roleData?.permissions?.conf}
+                          data={roleData?.permissions?.mdRule}
                         />
                       )}
 
@@ -476,7 +486,7 @@ const Role_permission = () => {
                         <CheckboxGroup
                           title="Customer"
                           items={Object.keys(roleData?.permissions?.adMerch)}
-                          data={roleData?.permissions?.conf}
+                          data={roleData?.permissions?.adMerch}
                         />
                       )}
 
@@ -485,7 +495,7 @@ const Role_permission = () => {
                         <CheckboxGroup
                           title="Media library"
                           items={Object.keys(roleData?.permissions?.mdLib)}
-                          data={roleData?.permissions?.conf}
+                          data={roleData?.permissions?.mdLib}
                         />
                       )}
 
@@ -495,6 +505,7 @@ const Role_permission = () => {
                           title="Activities Log"
                           items={Object.keys(roleData?.permissions?.actLog)}
                           data={roleData?.permissions?.actLog}
+                          isLog={true}
                         />
                       )}
 
@@ -504,6 +515,7 @@ const Role_permission = () => {
                           title="Media Log"
                           items={Object.keys(roleData?.permissions?.mdLog)}
                           data={roleData?.permissions?.mdLog}
+                          isLog={true}
                         />
                       )}
 
@@ -513,6 +525,7 @@ const Role_permission = () => {
                           title="Screen Log"
                           items={Object.keys(roleData?.permissions?.scrLog)}
                           data={roleData?.permissions?.scrLog}
+                          isLog={true}
                         />
                       )}
 
@@ -558,6 +571,7 @@ const Role_permission = () => {
                           title="Dashboard"
                           items={Object.keys(roleData?.permissions?.dBoard)}
                           data={roleData?.permissions?.dBoard}
+                          isLog={true}
                         />
                       )}
                     </div>
@@ -689,6 +703,7 @@ const Role_permission = () => {
           setModalCreateRole={setModalCreateRole}
           modalCreateRole={modalCreateRole}
           getPermission={getPermission}
+          page_permission={page_permission}
         />
       )}
 
@@ -705,6 +720,7 @@ const Role_permission = () => {
           modalEditRole={modalEditRole}
           getPermission={getPermission}
           selectRoleEdit={selectRoleEdit}
+          page_permission={page_permission}
         />
       )}
     </>

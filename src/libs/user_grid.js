@@ -272,10 +272,8 @@ export const GridTable = ({
   };
 
   const getImgBrand = (id) => {
-    // const brand_img = brand.find((item) => item.BrandID === parseInt(id));
-    // return brand_img ? brand_img.BrandLogo : empty_img;
     const brand_img = brand?.find((item) => item.BrandID === parseInt(id));
-    return brand_img ? brand_img.BrandLogo : empty_img;
+    return brand_img?.BrandLogo ? brand_img.BrandLogo : empty_img;
   };
 
   const getImgMerchandise = (id) => {
@@ -365,9 +363,13 @@ export const GridTable = ({
                 <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   Name/Lastname
                 </th>
-                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  Action
-                </th>
+                {page_permission.update || page_permission.delete ? (
+                  <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Action
+                  </th>
+                ) : (
+                  <> </>
+                )}
               </tr>
             </thead>
             <tbody>

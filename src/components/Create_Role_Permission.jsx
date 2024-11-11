@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosClose } from "react-icons/io";
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
@@ -8,8 +8,8 @@ const Create_Role_Permission = ({
   setModalCreateRole,
   modalCreateRole,
   getPermission,
+  page_permission,
 }) => {
-  const { permission } = User.getPermission();
   const { token } = User.getCookieData();
 
   const [newRole, setNewRole] = useState({
@@ -98,7 +98,6 @@ const Create_Role_Permission = ({
           };
         }
         const value = removeZeroPermissions(obj);
-
         const encrypted = await Encryption.encryption(
           value,
           "add_permission_role",
@@ -218,20 +217,39 @@ const Create_Role_Permission = ({
       setIsSelectAll(!isSelectAll);
     };
 
-    const CheckboxGroup = ({ title, name, fullname, items, data }) => {
+    const CheckboxGroup = ({
+      title,
+      name,
+      fullname,
+      items,
+      data,
+      conf,
+      isLog,
+    }) => {
       const header = ["create", "delete", "update", "view"];
 
-      let data_check;
-      if (data) {
-        data_check = data;
-      } else {
-        data_check = {
-          create: false,
-          delete: false,
-          update: false,
-          view: false,
-        };
-      }
+      const [filteredItems, setFilteredItems] = useState(items);
+
+      useEffect(() => {
+        if (conf) {
+          const result = items.filter(
+            (item) => item === "view" || item === "update"
+          );
+          setFilteredItems(result);
+        } else if (isLog) {
+          const result = items.filter((item) => item === "view");
+          setFilteredItems(result);
+        } else {
+          setFilteredItems(items);
+        }
+      }, [items, conf]);
+
+      let data_check = data || {
+        create: false,
+        delete: false,
+        update: false,
+        view: false,
+      };
 
       const [checkboxes, setCheckboxes] = useState(
         header.reduce((acc, item) => {
@@ -284,7 +302,7 @@ const Create_Role_Permission = ({
                 </div>
               </div>
 
-              {items.map((item, index) => (
+              {filteredItems.map((item, index) => (
                 <div
                   className="grid grid-cols-4 space-x-4 lg:space-x-2"
                   key={index}
@@ -297,7 +315,7 @@ const Create_Role_Permission = ({
                         checked={checkboxes[item]}
                         onChange={() => toggleCheckbox(item)}
                         disabled={
-                          permission.userrole?.update === false ? true : false
+                          page_permission.create === false ? true : false
                         }
                       />
                       <span
@@ -369,7 +387,7 @@ const Create_Role_Permission = ({
                         <input
                           type="checkbox"
                           className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                          disabled={permission.userrole?.update === false}
+                          disabled={page_permission.create === false}
                           checked={checkboxes[item]}
                           onChange={() => toggleCheckbox(item)}
                         />
@@ -516,6 +534,7 @@ const Create_Role_Permission = ({
                         name="Configuration"
                         items={Object.keys(roleData.permissions?.conf)}
                         data={roleData.permissions?.conf}
+                        conf={true}
                       />
                       <CheckboxGroup
                         title="tagMgt"
@@ -546,18 +565,21 @@ const Create_Role_Permission = ({
                         name="Activities Log"
                         items={Object.keys(roleData.permissions?.actLog)}
                         data={roleData.permissions?.actLog}
+                        isLog={true}
                       />
                       <CheckboxGroup
                         title="mdLog"
                         name="Media Log"
                         items={Object.keys(roleData.permissions?.mdLog)}
                         data={roleData.permissions?.mdLog}
+                        isLog={true}
                       />
                       <CheckboxGroup
                         title="scrLog"
                         name="Screen Log"
                         items={Object.keys(roleData.permissions?.scrLog)}
                         data={roleData.permissions?.scrLog}
+                        isLog={true}
                       />
                       <CheckboxGroup
                         title="digiBookingMgt"
@@ -591,6 +613,7 @@ const Create_Role_Permission = ({
                         name="Dashboard"
                         items={Object.keys(roleData.permissions?.dBoard)}
                         data={roleData.permissions?.dBoard}
+                        isLog={true}
                       />
                     </div>
                   </>
@@ -658,7 +681,7 @@ const Create_Role_Permission = ({
             <Tabs page_permission={{ update: true }} roleData={newRole} />
           </div>
         </div>
-        {permission.userrole?.update ? (
+        {page_permission.create ? (
           <div className="flex justify-center items-center -mt-3">
             <button
               onClick={() => handleSaveNewRole()}

@@ -7,7 +7,11 @@ import Swal from "sweetalert2";
 import { IoIosClose } from "react-icons/io";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-export const GridTable = ({ media_rules, getMediaRulesData }) => {
+export const GridTable = ({
+  media_rules,
+  getMediaRulesData,
+  page_permission,
+}) => {
   const { token } = User.getCookieData();
   const [modalViewScreen, setModalViewScreen] = useState(false);
 
@@ -399,53 +403,62 @@ export const GridTable = ({ media_rules, getMediaRulesData }) => {
                       />
                       <div
                         style={{ pointerEvents: "none" }}
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                       >
                         View Media Rule
                       </div>
                     </button>
-                    <button
-                      disabled={row.TotalInUse > 0 ? true : false}
-                      onClick={() => onClickEdit(row)}
-                      className="relative group"
-                    >
-                      <RiEditLine
-                        size={20}
-                        className={`${
-                          row.TotalInUse > 0
-                            ? "text-[#B9B7BD] hover:text-[#6e6d70]"
-                            : "text-[#6425FE] hover:text-[#3b1694]"
-                        }`}
-                      />
-                      <div
-                        style={{ pointerEvents: "none" }}
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    {page_permission.update ? (
+                      <button
+                        disabled={row.TotalInUse > 0 ? true : false}
+                        onClick={() => onClickEdit(row)}
+                        className="relative group"
                       >
-                        Edit Media Rule
-                      </div>
-                    </button>
-                    <button
-                      disabled={row.TotalInUse > 0 ? true : false}
-                      onClick={() =>
-                        onClickDelete(row.MediaRuleName, row.MediaRuleID)
-                      }
-                      className="relative group"
-                    >
-                      <RiDeleteBin5Line
-                        size={20}
-                        className={`${
-                          row.TotalInUse > 0
-                            ? "text-[#B9B7BD] hover:text-[#6e6d70]"
-                            : "text-[#6425FE] hover:text-[#3b1694]"
-                        }`}
-                      />
-                      <div
-                        style={{ pointerEvents: "none" }}
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        <RiEditLine
+                          size={20}
+                          className={`${
+                            row.TotalInUse > 0
+                              ? "text-[#B9B7BD] hover:text-[#6e6d70]"
+                              : "text-[#6425FE] hover:text-[#3b1694]"
+                          }`}
+                        />
+                        <div
+                          style={{ pointerEvents: "none" }}
+                          className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                        >
+                          Edit Media Rule
+                        </div>
+                      </button>
+                    ) : (
+                      <></>
+                    )}
+
+                    {page_permission.delete ? (
+                      <button
+                        disabled={row.TotalInUse > 0 ? true : false}
+                        onClick={() =>
+                          onClickDelete(row.MediaRuleName, row.MediaRuleID)
+                        }
+                        className="relative group"
                       >
-                        Delete Media Rule
-                      </div>
-                    </button>
+                        <RiDeleteBin5Line
+                          size={20}
+                          className={`${
+                            row.TotalInUse > 0
+                              ? "text-[#B9B7BD] hover:text-[#6e6d70]"
+                              : "text-[#6425FE] hover:text-[#3b1694]"
+                          }`}
+                        />
+                        <div
+                          style={{ pointerEvents: "none" }}
+                          className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                        >
+                          Delete Media Rule
+                        </div>
+                      </button>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 </td>
               </tr>

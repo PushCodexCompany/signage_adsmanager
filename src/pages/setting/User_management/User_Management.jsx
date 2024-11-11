@@ -112,8 +112,10 @@ const User_Management = () => {
 
   const setPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    if (!permissions.user.view) {
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.userMgt.view) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -122,7 +124,7 @@ const User_Management = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.user);
+    setPagePermission(permissions.userMgt);
   };
 
   const getBrandAndMerch = async () => {

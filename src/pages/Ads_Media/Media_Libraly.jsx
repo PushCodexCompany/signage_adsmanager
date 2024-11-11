@@ -107,8 +107,10 @@ const Media_Libraly = () => {
 
   const getPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    if (!permissions.media.view) {
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.mdLib.view) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -117,7 +119,7 @@ const Media_Libraly = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.media);
+    setPagePermission(permissions.mdLib);
   };
 
   return (

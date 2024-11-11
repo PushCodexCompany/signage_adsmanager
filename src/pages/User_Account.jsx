@@ -6,7 +6,7 @@ import User, {
 import { useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import { FaPlus } from "react-icons/fa";
-import { Navbar } from "../components";
+import Navbar from "../components/Navbar_Account";
 import New_Account from "../components/New_Account";
 import { TbDots } from "react-icons/tb";
 import Encryption from "../libs/encryption";

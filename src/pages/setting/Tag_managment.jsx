@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../../components";
-
+import { useNavigate } from "react-router-dom";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
 import useCheckPermission from "../../libs/useCheckPermission";
 import User from "../../libs/admin";
@@ -21,7 +21,7 @@ const Tag_managment = () => {
   const [modalEditCategory, setModalEditCategory] = useState(false);
   const [modalEditTag, setModalEditTag] = useState(false);
   const [select_tag, setSelectTag] = useState([]);
-
+  const navigate = useNavigate();
   const { token } = User.getCookieData();
 
   // Setup Data
@@ -33,7 +33,7 @@ const Tag_managment = () => {
   const getCategoryTag = async () => {
     const tag_category = await User.getTagCatagory(token);
     if (tag_category.length > 0) {
-      tag_category.sort((a, b) =>
+      tag_category?.sort((a, b) =>
         a.TagCategoryName.localeCompare(b.TagCategoryName)
       );
 
@@ -45,16 +45,31 @@ const Tag_managment = () => {
 
   const getTagData = async (tag_category) => {
     const tag = await User.getTag(tag_category.TagCategoryID, token);
-    tag?.sort((a, b) =>
-      a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
-    );
+    console.log("tag", tag);
+    if (tag.length > 0) {
+      tag?.sort((a, b) =>
+        a.TagName.localeCompare(b.TagName, undefined, { sensitivity: "base" })
+      );
+    }
+
     setTagData(tag);
   };
 
   const setPermissionPage = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    setPagePermission(permissions.user);
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.tagMgt.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+    setPagePermission(permissions.tagMgt);
   };
 
   //Category function
@@ -217,35 +232,6 @@ const Tag_managment = () => {
               <div className="font-poppins font-bold text-2xl">
                 Tag Options : {select_cat.TagCategoryName}
               </div>
-
-              {/* <div className="grid grid-cols-7 gap-2 mt-5">
-                <div className="col-span-6  h-12">
-                  <input
-                    type="text"
-                    className="w-[100%] h-[100%] border border-gray-300 rounded-md pl-4 placeholder-ml-2"
-                    placeholder="กรอกชื่อ Tag Option"
-                    value={new_tag}
-                    onChange={(e) => setNewTag(e.target.value)}
-                    disabled={
-                      page_permission.create || page_permission.update
-                        ? false
-                        : true
-                    }
-                  />
-                </div>
-                {page_permission.create || page_permission.update ? (
-                  <div className="col-span-1 h-12">
-                    <button
-                      onClick={() => addNewTag()}
-                      className="w-[100%] h-[100%] rounded-lg bg-[#6425FE]  hover:bg-[#3b1694] font-poppins text-white"
-                    >
-                      Add Tag Option
-                    </button>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div> */}
               <div className="col-span-5 mt-10 h-[600px] overflow-y-auto">
                 <div className="flex flex-wrap">
                   {tag_data.length > 0 ? (
@@ -257,29 +243,6 @@ const Tag_managment = () => {
                           flexBasis: `calc(30% - 5px)`, // Increased width and adjusted spacing
                         }}
                       >
-                        {/* {page_permission.delete ? (
-                          <div className="flex justify-center items-center mr-1 ml-1">
-                            <IoIosClose
-                              onClick={() => removeTag(items)}
-                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                            />
-                          </div>
-                        ) : (
-                          <></>
-                        )} */}
-
-                        {/* {page_permission.update ? (
-                          <div
-                            onClick={() => handleEditTag(items)}
-                            className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center cursor-pointer"
-                          >
-                            {items.TagName}
-                          </div>
-                        ) : (
-                          <div className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center ">
-                            {items.TagName}
-                          </div>
-                        )} */}
                         <div className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center ">
                           {items.TagName}
                         </div>

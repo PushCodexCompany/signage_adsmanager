@@ -113,7 +113,13 @@ const Booking_Summary = () => {
                   <div className="col-span-2">
                     <img
                       className={`block mx-auto mt-30px w-[100px] h-[100px] lg:w-[75px] lg:h-[75px] rounded-lg object-cover`}
-                      src={merchandise.AdvertiserLogo}
+                      src={
+                        merchandise.AdvertiserLogo
+                          ? merchandise.AdvertiserLogo
+                          : `https://ui-avatars.com/api/?name=${
+                              merchandise.AdvertiserName
+                            }&background=${"000000"}&color=fff`
+                      }
                       alt={merchandise.AdvertiserName}
                     />
                   </div>
@@ -271,7 +277,13 @@ const Booking_Summary = () => {
                   <div className="col-span-4 flex justify-start items-center">
                     <img
                       className={`block mt-30px w-[56px] h-[56px] rounded-lg object-cover`}
-                      src={merchandise.AdvertiserLogo}
+                      src={
+                        merchandise.AdvertiserLogo
+                          ? merchandise.AdvertiserLogo
+                          : `https://ui-avatars.com/api/?name=${
+                              merchandise.AdvertiserName
+                            }&background=${"000000"}&color=fff`
+                      }
                       alt={merchandise.AdvertiserName}
                     />
                   </div>

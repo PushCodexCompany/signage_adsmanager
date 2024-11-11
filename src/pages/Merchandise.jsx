@@ -40,8 +40,10 @@ const Merchandise = () => {
 
   const getPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    if (!permissions.branch.view) {
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.adMerch.view) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -50,7 +52,7 @@ const Merchandise = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.branch);
+    setPagePermission(permissions.adMerch);
   };
 
   const handleNewMerchandise = () => {

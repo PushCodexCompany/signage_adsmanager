@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Header, Navbar } from "../../components";
 import { GridTable } from "../../libs/media_logs_grid";
+import { useNavigate } from "react-router-dom";
 import useCheckPermission from "../../libs/useCheckPermission";
 import Filter from "../../components/Filter";
 import User from "../../libs/admin";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import Permission from "../../libs/permission";
+import Swal from "sweetalert2";
 
 const Media_Log = () => {
   useCheckPermission();
+  const navigate = useNavigate();
   const { token } = User.getCookieData();
   const [log_data, setLogData] = useState([]);
   const [all_pages, setAllPages] = useState(null);
@@ -20,17 +24,43 @@ const Media_Log = () => {
   const [searchTerm, setSearchTerm] = useState(null);
   const [exportData, setExportData] = useState([]);
   const [currentPagePdf, setCurrentPagePdf] = useState();
+  const [page_permission, setPagePermission] = useState([]);
 
   useEffect(() => {
     getLogData();
   }, [searchTerm]);
+
+  useEffect(() => {
+    setPermission();
+  }, []);
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.mdLog.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+    setPagePermission(permissions.mdLog);
+  };
 
   const getLogData = async () => {
     if (searchTerm === null) {
       const data = await User.getMedialog(token, 1);
       setLogData(data.medialog);
       setExportData(data.medialog);
-      setCurrentPagePdf(data.pagination[0].currentpage);
+      if (data.pagination.length > 0) {
+        setCurrentPagePdf(data.pagination[0].currentpage);
+      } else {
+        setCurrentPagePdf(0);
+      }
+
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
@@ -38,7 +68,12 @@ const Media_Log = () => {
       const data = await User.getMedialog(token, 1, searchTerm);
       setLogData(data.medialog);
       setExportData(data.medialog);
-      setCurrentPagePdf(data.pagination[0].currentpage);
+      if (data.pagination.length > 0) {
+        setCurrentPagePdf(data.pagination[0].currentpage);
+      } else {
+        setCurrentPagePdf(0);
+      }
+
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }

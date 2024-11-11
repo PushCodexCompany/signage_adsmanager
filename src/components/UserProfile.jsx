@@ -65,19 +65,29 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
     } else {
       setPercent(0);
     }
-    if (storagebyte?.totalspace >= 1000 * 1000 * 1000) {
-      const spaceInGB = bytesToGB(storagebyte?.totalspace);
-      setTotalSpace(`${spaceInGB.toFixed(2)} GB`);
+
+    if (storagebyte?.totalspace) {
+      if (storagebyte?.totalspace >= 1000 * 1000 * 1000) {
+        const spaceInGB = bytesToGB(storagebyte?.totalspace);
+        setTotalSpace(`${spaceInGB.toFixed(2)} GB`);
+      } else {
+        const spaceInMB = bytesToMB(storagebyte?.totalspace);
+        setTotalSpace(`${spaceInMB.toFixed(2)} MB`);
+      }
     } else {
-      const spaceInMB = bytesToMB(storagebyte?.totalspace);
-      setTotalSpace(`${spaceInMB.toFixed(2)} MB`);
+      setTotalSpace(`0 MB`);
     }
-    if (storagebyte?.usesapce >= 1000 * 1000 * 1000) {
-      const spaceInGB = bytesToGB(storagebyte?.usesapce);
-      setUseSpace(`${spaceInGB.toFixed(2)} GB`);
+
+    if (storagebyte?.usesapce) {
+      if (storagebyte?.usesapce >= 1000 * 1000 * 1000) {
+        const spaceInGB = bytesToGB(storagebyte?.usesapce);
+        setUseSpace(`${spaceInGB.toFixed(2)} GB`);
+      } else {
+        const spaceInMB = bytesToMB(storagebyte?.usesapce);
+        setUseSpace(`${spaceInMB.toFixed(2)} MB`);
+      }
     } else {
-      const spaceInMB = bytesToMB(storagebyte?.usesapce);
-      setUseSpace(`${spaceInMB.toFixed(2)} MB`);
+      setUseSpace(`0 MB`);
     }
   };
 
