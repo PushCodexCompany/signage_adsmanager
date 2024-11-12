@@ -533,9 +533,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     };
 
     try {
-      console.log("obj_save_booking", obj_save_booking);
+      // console.log("obj_save_booking", obj_save_booking);
       // const data_booking = await User.createBooking(obj_save_booking, token);
-
       // if (data_booking.code === 200) {
       //   Swal.fire({
       //     icon: "success",
@@ -554,7 +553,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       //         SlotPerDay: booking_slot,
       //         booking_date,
       //       };
-
       //       const replacedString = obj.BookingName.replace(/\//g, "_");
       //       navigate(`/booking/${replacedString}`, {
       //         state: { data: obj, isEdited: false },

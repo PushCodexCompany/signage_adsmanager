@@ -71,9 +71,9 @@ const Pair_Screen = ({
     const isScreenWithPairingCodeAvailable = await User.checkScreenAvailable(
       pairingCode
     );
-    console.log(
-      "isScreenWithPairingCodeAvailable " + isScreenWithPairingCodeAvailable
-    );
+    // console.log(
+    //   "isScreenWithPairingCodeAvailable " + isScreenWithPairingCodeAvailable
+    // );
 
     const pairScreenResult = await User.pairScreen(
       screenData.AccountCode,

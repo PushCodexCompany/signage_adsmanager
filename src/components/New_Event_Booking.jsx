@@ -543,7 +543,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       };
 
       const replacedString = obj.BookingName.replace(/\//g, "_");
-      console.log("obj", obj);
+      // console.log("obj", obj);
       navigate(`/event_booking/${replacedString}`, {
         state: { data: obj, isEdited: false },
       });

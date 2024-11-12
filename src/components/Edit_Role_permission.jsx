@@ -570,10 +570,8 @@ const Edit_Role_permission = ({
           permissions: summary.permissions,
           accountcode: account.AccountCode,
         };
-        console.log("obj", obj);
         const encrypted = await Encryption.encryption(obj, "edit_role", false);
         const data = await User.updateUserRole(encrypted, token);
-        console.log("data", data);
         if (data.code === 200) {
           Swal.fire({
             icon: "success",
