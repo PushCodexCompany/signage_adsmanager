@@ -17,6 +17,7 @@ export const GridTable = ({
   all_pages,
   searchTerm,
   page_permission,
+  page_permission_content,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
@@ -210,7 +211,7 @@ export const GridTable = ({
             {row.BookingStatus === 1 ? (
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-3">
-                  {page_permission?.update ? (
+                  {page_permission?.view ? (
                     <button
                       onClick={() => onClickEdit(row)}
                       className="relative group"
@@ -253,7 +254,7 @@ export const GridTable = ({
             ) : (
               <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
                 <div className="space-x-3">
-                  {page_permission?.update ? (
+                  {page_permission_content?.view ? (
                     <button
                       className="relative group"
                       onClick={() => handleSelectBooking(row)}

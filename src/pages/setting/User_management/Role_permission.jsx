@@ -157,7 +157,15 @@ const Role_permission = () => {
   const Tabs = ({ roleData }) => {
     const [openTab, setOpenTab] = React.useState(1);
 
-    const CheckboxGroup = ({ title, fullTitle, items, data, conf, isLog }) => {
+    const CheckboxGroup = ({
+      title,
+      fullTitle,
+      items,
+      data,
+      conf,
+      isLog,
+      isBookingContMng,
+    }) => {
       const header = ["create", "delete", "update", "view"];
 
       const [filteredItems, setFilteredItems] = useState(items);
@@ -170,6 +178,11 @@ const Role_permission = () => {
           setFilteredItems(result);
         } else if (isLog) {
           const result = items.filter((item) => item === "view");
+          setFilteredItems(result);
+        } else if (isBookingContMng) {
+          const result = items.filter(
+            (item) => item === "view" || item === "update" || item === "delete"
+          );
           setFilteredItems(result);
         } else {
           setFilteredItems(items);
@@ -550,6 +563,7 @@ const Role_permission = () => {
                             roleData?.permissions?.digiBookContMgt
                           )}
                           data={roleData?.permissions?.digiBookContMgt}
+                          isBookingContMng={true}
                         />
                       )}
 

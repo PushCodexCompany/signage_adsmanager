@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import User from "../libs/admin";
 import { RiEditLine } from "react-icons/ri";
@@ -27,6 +28,7 @@ import Remove_Content from "../components/Remove_Content";
 
 const Select_Booking = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { token } = User.getCookieData();
   const [bookingName, setBookingName] = useState();
   const [bookingId, setBookingId] = useState();
@@ -165,8 +167,21 @@ const Select_Booking = () => {
 
   const getPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    setPagePermission(permissions.booking);
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+
+    if (!permissions.digiBookContMgt.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+
+    setPagePermission(permissions.digiBookContMgt);
   };
 
   const calculateSize = (screen) => {
@@ -467,7 +482,7 @@ const Select_Booking = () => {
 
           <div className="col-span-2">
             <div className="flex justify-end space-x-1">
-              {page_permission?.create || page_permission?.update ? (
+              {page_permission?.update ? (
                 <>
                   <button
                     onClick={() => setShowRemoveContent(!showRemoveContent)}
@@ -875,26 +890,21 @@ const Select_Booking = () => {
                                                     items2.BookingDate
                                                   ).getDate()
                                                 ) ? (
-                                                  page_permission?.create ||
-                                                  page_permission?.update ? (
-                                                    <div
-                                                      onClick={() =>
-                                                        handleSelectScreenAddmedia(
-                                                          screenIndex + 1,
-                                                          items,
-                                                          items2
-                                                        )
-                                                      }
-                                                      className="col-span-1 flex justify-center items-center cursor-pointer"
-                                                    >
-                                                      <MdOutlineModeEditOutline
-                                                        size={26}
-                                                        className="text-[#6425FE] hover:text-[#3b1694]"
-                                                      />
-                                                    </div>
-                                                  ) : (
-                                                    <></>
-                                                  )
+                                                  <div
+                                                    onClick={() =>
+                                                      handleSelectScreenAddmedia(
+                                                        screenIndex + 1,
+                                                        items,
+                                                        items2
+                                                      )
+                                                    }
+                                                    className="col-span-1 flex justify-center items-center cursor-pointer"
+                                                  >
+                                                    <MdOutlineModeEditOutline
+                                                      size={26}
+                                                      className="text-[#6425FE] hover:text-[#3b1694]"
+                                                    />
+                                                  </div>
                                                 ) : (
                                                   <div
                                                     onClick={() =>

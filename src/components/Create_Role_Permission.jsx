@@ -225,6 +225,7 @@ const Create_Role_Permission = ({
       data,
       conf,
       isLog,
+      isBookingContMng,
     }) => {
       const header = ["create", "delete", "update", "view"];
 
@@ -238,6 +239,11 @@ const Create_Role_Permission = ({
           setFilteredItems(result);
         } else if (isLog) {
           const result = items.filter((item) => item === "view");
+          setFilteredItems(result);
+        } else if (isBookingContMng) {
+          const result = items.filter(
+            (item) => item === "view" || item === "update" || item === "delete"
+          );
           setFilteredItems(result);
         } else {
           setFilteredItems(items);
@@ -598,6 +604,7 @@ const Create_Role_Permission = ({
                           roleData.permissions?.digiBookContMgt
                         )}
                         data={roleData.permissions?.digiBookContMgt}
+                        isBookingContMng={true}
                       />
                       <CheckboxGroup
                         title="digiPlaylistMgt"

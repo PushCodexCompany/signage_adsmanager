@@ -18,6 +18,7 @@ const Booking = () => {
   const [filter_screen, setFilterScreen] = useState([]);
   const [searchTerm, setSearchTerm] = useState(null);
   const [page_permission, setPagePermission] = useState([]);
+  const [page_permission_content, setPagePermissionContent] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,9 +47,11 @@ const Booking = () => {
 
   const getPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
 
-    if (!permissions.booking.view) {
+    if (!permissions.digiBookingMgt.view) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -58,7 +61,8 @@ const Booking = () => {
       return;
     }
 
-    setPagePermission(permissions.booking);
+    setPagePermission(permissions.digiBookingMgt);
+    setPagePermissionContent(permissions.digiBookContMgt);
   };
 
   return (
@@ -100,6 +104,7 @@ const Booking = () => {
               all_pages={all_pages}
               searchTerm={searchTerm}
               page_permission={page_permission}
+              page_permission_content={page_permission_content}
             />
           </div>
         ) : (

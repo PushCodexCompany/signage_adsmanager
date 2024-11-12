@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Header, Navbar } from "../components";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import {
   IoIosPlayCircle,
@@ -30,6 +31,7 @@ import Permission from "../libs/permission";
 const Create_Booking = () => {
   const location = useLocation();
   useCheckPermission();
+  const navigate = useNavigate();
 
   const { token } = User.getCookieData();
 
@@ -275,8 +277,21 @@ const Create_Booking = () => {
 
   const getPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    setPagePermission(permissions.booking);
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+
+    if (!permissions.digiBookingMgt.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+
+    setPagePermission(permissions.digiBookingMgt);
   };
 
   const toggleCheckboxAddScreen = (rowId) => {
@@ -787,7 +802,7 @@ const Create_Booking = () => {
         </div>
         <div className="col-span-3">
           <div className="flex justify-start items-center">
-            {page_permission?.update ? (
+            {page_permission?.update || page_permission?.create ? (
               <RiEditLine
                 className="text-[26px] text-[#6425FE] hover:text-[#3b1694] ml-2 cursor-pointer"
                 onClick={handleClick}
@@ -953,7 +968,8 @@ const Create_Booking = () => {
                               (screen) => screen.ScreenID === items.ScreenID
                             ) && (
                               <>
-                                {page_permission?.delete ? (
+                                {page_permission?.create ||
+                                page_permission?.update ? (
                                   <>
                                     <IoMdTrash
                                       onClick={(e) => {
