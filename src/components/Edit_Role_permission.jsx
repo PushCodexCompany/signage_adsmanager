@@ -653,7 +653,7 @@ const Edit_Role_permission = ({
           </div>
         </div>
 
-        {page_permission.update ? (
+        {page_permission?.update ? (
           <div className="flex justify-center items-center -mt-3">
             <button
               onClick={() => handleEditData()}

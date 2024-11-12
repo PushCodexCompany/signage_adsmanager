@@ -195,7 +195,7 @@ const Event = () => {
       return;
     }
 
-    setPagePermission(permissions.digiScrnMgt);
+    setPagePermission(permissions?.digiScrnMgt);
   };
 
   return (

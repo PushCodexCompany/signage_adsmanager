@@ -181,7 +181,7 @@ const Select_Booking = () => {
       return;
     }
 
-    setPagePermission(permissions.digiBookContMgt);
+    setPagePermission(permissions?.digiBookContMgt);
   };
 
   const calculateSize = (screen) => {

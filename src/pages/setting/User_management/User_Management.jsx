@@ -124,7 +124,7 @@ const User_Management = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.userMgt);
+    setPagePermission(permissions?.userMgt);
   };
 
   const getBrandAndMerch = async () => {

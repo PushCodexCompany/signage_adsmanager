@@ -143,7 +143,7 @@ const Activity_Log = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.actLog);
+    setPagePermission(permissions?.actLog);
   };
 
   return (

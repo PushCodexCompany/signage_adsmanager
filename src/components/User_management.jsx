@@ -84,7 +84,7 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
       setIsSuperAdmin(true);
     }
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    setPagePermission(permissions.user);
+    setPagePermission(permissions?.user);
   };
 
   const toggleStatusSelect = () => {

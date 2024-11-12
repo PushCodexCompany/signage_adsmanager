@@ -72,7 +72,7 @@ const Screen = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.scrLog);
+    setPagePermission(permissions?.scrLog);
   };
 
   const handleExport = () => {

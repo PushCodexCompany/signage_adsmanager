@@ -52,7 +52,7 @@ const Merchandise = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.adMerch);
+    setPagePermission(permissions?.adMerch);
   };
 
   const handleNewMerchandise = () => {

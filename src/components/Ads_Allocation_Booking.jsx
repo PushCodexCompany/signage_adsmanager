@@ -129,8 +129,8 @@ const Ads_Allocation_Booking = ({
       user,
     ]);
 
-    setPagePermission(permissions.digiBookContMgt);
-    setPlaylistPermission(permissions.digiPlaylistMgt);
+    setPagePermission(permissions?.digiBookContMgt);
+    setPlaylistPermission(permissions?.digiPlaylistMgt);
   };
 
   const setDefaultApplyToScreen = () => {
@@ -746,8 +746,8 @@ const Ads_Allocation_Booking = ({
                     <div
                       onClick={() => {
                         if (
-                          playlist_permission.update ||
-                          playlist_permission.create
+                          playlist_permission?.update ||
+                          playlist_permission?.create
                         ) {
                           setOpenModalUploadMedia(!openModalUploadNewMedia);
                           // setOpenAdsAllocationModal(!openAdsAllocationModal);
@@ -1487,7 +1487,7 @@ const Ads_Allocation_Booking = ({
             <div className="flex flex-col lg:flex-row">
               <div
                 className={`w-full ${
-                  playlist_permission.view ? "lg:w-1/2" : "lg:w-2/2"
+                  playlist_permission?.view ? "lg:w-1/2" : "lg:w-2/2"
                 }  p-1`}
               >
                 <div className="mt-10">
@@ -1769,7 +1769,7 @@ const Ads_Allocation_Booking = ({
                       </div>
                       <div className="col-span-1" />
                     </div>
-                    {page_permission.update ? (
+                    {page_permission?.update ? (
                       <div className="flex justify-center items-center space-x-2 mt-3">
                         <button
                           onClick={() => handleSaveAdsAllocation()}
@@ -1789,7 +1789,7 @@ const Ads_Allocation_Booking = ({
               </div>
 
               {/* Playlist Zone */}
-              {playlist_permission.view ? (
+              {playlist_permission?.view ? (
                 <div className="w-full  lg:w-1/2 p-1 lg:pl-8 ">
                   <div className="grid grid-cols-6 space-x-2">
                     <DragDropContext onDragEnd={onDragEnd}>

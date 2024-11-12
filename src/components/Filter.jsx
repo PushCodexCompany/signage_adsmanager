@@ -17,6 +17,7 @@ const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
       configuration: { pagetags },
     } = await User.getConfiguration(token);
 
+    console.log("pagetags", pagetags);
     if (page_name) {
       const result = pagetags.find((page) => page.page === page_name);
       const data = await User.getCategorytags(token);

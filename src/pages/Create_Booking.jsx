@@ -291,7 +291,7 @@ const Create_Booking = () => {
       return;
     }
 
-    setPagePermission(permissions.digiBookingMgt);
+    setPagePermission(permissions?.digiBookingMgt);
   };
 
   const toggleCheckboxAddScreen = (rowId) => {

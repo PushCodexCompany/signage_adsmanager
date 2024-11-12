@@ -50,7 +50,7 @@ const Edit_tag_category = ({
   const setPermissionPage = async () => {
     const { user } = User.getCookieData();
     const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-    setPagePermission(permissions.user);
+    setPagePermission(permissions?.user);
   };
 
   const handleNewCategoryTag = (e, fieldName) => {
@@ -308,13 +308,13 @@ const Edit_tag_category = ({
                   value={new_tag}
                   onChange={(e) => setNewTag(e.target.value)}
                   disabled={
-                    page_permission.create || page_permission.update
+                    page_permission?.create || page_permission?.update
                       ? false
                       : true
                   }
                 />
               </div>
-              {page_permission.create || page_permission.update ? (
+              {page_permission?.create || page_permission?.update ? (
                 <div className="col-span-1 h-12">
                   <button
                     onClick={() => addNewTag()}
@@ -337,7 +337,7 @@ const Edit_tag_category = ({
                       flexBasis: `calc(25% - 5px)`, // Increased width and adjusted spacing
                     }}
                   >
-                    {page_permission.delete ? (
+                    {page_permission?.delete ? (
                       <div className="flex justify-center items-center mr-1 ml-1">
                         <IoIosClose
                           onClick={() => removeTag(items)}
@@ -348,7 +348,7 @@ const Edit_tag_category = ({
                       <></>
                     )}
 
-                    {page_permission.update ? (
+                    {page_permission?.update ? (
                       <div
                         onClick={() => handleEditTag(items)}
                         className="flex-grow lg:text-sm md:text-xs font-poppins flex justify-center cursor-pointer"

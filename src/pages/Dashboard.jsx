@@ -61,7 +61,8 @@ const Dashboard = () => {
     const { permissions } = Permission.convertNewPermissionValuesToBoolean([
       user,
     ]);
-    setPagePermission(permissions.dBoard);
+
+    setPagePermission(permissions?.dBoard);
   };
 
   const toggleYearSelect = () => {
@@ -755,7 +756,7 @@ const Dashboard = () => {
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Dashboard"} />
 
-        {page_permission.view ? (
+        {page_permission?.view ? (
           <>
             {" "}
             <div className="flex space-x-2 mt-10">

@@ -408,7 +408,7 @@ export const GridTable = ({
                         View Media Rule
                       </div>
                     </button>
-                    {page_permission.update ? (
+                    {page_permission?.update ? (
                       <button
                         disabled={row.TotalInUse > 0 ? true : false}
                         onClick={() => onClickEdit(row)}
@@ -433,7 +433,7 @@ export const GridTable = ({
                       <></>
                     )}
 
-                    {page_permission.delete ? (
+                    {page_permission?.delete ? (
                       <button
                         disabled={row.TotalInUse > 0 ? true : false}
                         onClick={() =>

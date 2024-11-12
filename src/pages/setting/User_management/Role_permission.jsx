@@ -85,7 +85,7 @@ const Role_permission = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.roleMgt);
+    setPagePermission(permissions?.roleMgt);
   };
 
   const selectRole = (key) => {

@@ -70,7 +70,7 @@ const Brands = () => {
       navigate("/");
       return;
     }
-    setPagePermission(permissions.brandMgt);
+    setPagePermission(permissions?.brandMgt);
   };
 
   const fetchData = async () => {

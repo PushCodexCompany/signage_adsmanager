@@ -363,7 +363,7 @@ export const GridTable = ({
                 <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   Name/Lastname
                 </th>
-                {page_permission.update || page_permission.delete ? (
+                {page_permission?.update || page_permission?.delete ? (
                   <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                     Action
                   </th>
@@ -380,7 +380,7 @@ export const GridTable = ({
                       <div className="font-poppins text-xl">{row.UserID}</div>
                     </td>
                     <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
-                      {page_permission.update ? (
+                      {page_permission?.update ? (
                         <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
                           <a onClick={() => onSelectEdit(row.UserID)}>
                             {row.Username}
@@ -432,7 +432,7 @@ export const GridTable = ({
                       </div>
                     </td>
                     <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
-                      {page_permission.update ? (
+                      {page_permission?.update ? (
                         <button
                           className="relative group"
                           onClick={() => onSelectEdit(row.UserID)}
@@ -451,7 +451,7 @@ export const GridTable = ({
                       ) : (
                         <></>
                       )}
-                      {page_permission.delete ? (
+                      {page_permission?.delete ? (
                         <button
                           onClick={() =>
                             onClickDelete(row.UserID, row.Username)

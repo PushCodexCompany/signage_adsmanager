@@ -69,7 +69,7 @@ const Tag_managment = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.tagMgt);
+    setPagePermission(permissions?.tagMgt);
   };
 
   //Category function
@@ -145,7 +145,7 @@ const Tag_managment = () => {
           <div className="bg-[#E8E8E8] col-span-2 h-[800px]">
             <div className="p-3">
               <div className="font-poppins font-bold text-2xl">Tag</div>
-              {page_permission.create ? (
+              {page_permission?.create ? (
                 <div
                   onClick={() => handleNewTagCategory()}
                   className="w-[150px] h-[40px] mt-3 bg-[#6425FE]  hover:bg-[#3b1694] text-white font-poppins flex justify-center items-center rounded-lg cursor-pointer shadow-sm"
@@ -182,7 +182,7 @@ const Tag_managment = () => {
 
                         <div className="col-span-2">
                           <div className="flex justify-center items-center mt-3 space-x-4">
-                            {page_permission.update ? (
+                            {page_permission?.update ? (
                               <button
                                 onClick={() =>
                                   setModalEditCategory(!modalEditCategory)
@@ -201,7 +201,7 @@ const Tag_managment = () => {
                             ) : (
                               <></>
                             )}
-                            {page_permission.delete ? (
+                            {page_permission?.delete ? (
                               <button>
                                 <RiDeleteBin5Line
                                   onClick={() => handleDeleteCategoryTag(items)}

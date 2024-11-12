@@ -61,8 +61,8 @@ const Booking = () => {
       return;
     }
 
-    setPagePermission(permissions.digiBookingMgt);
-    setPagePermissionContent(permissions.digiBookContMgt);
+    setPagePermission(permissions?.digiBookingMgt);
+    setPagePermissionContent(permissions?.digiBookContMgt);
   };
 
   return (

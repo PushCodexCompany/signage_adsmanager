@@ -321,7 +321,7 @@ const Create_Role_Permission = ({
                         checked={checkboxes[item]}
                         onChange={() => toggleCheckbox(item)}
                         disabled={
-                          page_permission.create === false ? true : false
+                          page_permission?.create === false ? true : false
                         }
                       />
                       <span
@@ -393,7 +393,7 @@ const Create_Role_Permission = ({
                         <input
                           type="checkbox"
                           className="opacity-0 absolute h-5 w-5 cursor-pointer"
-                          disabled={page_permission.create === false}
+                          disabled={page_permission?.create === false}
                           checked={checkboxes[item]}
                           onChange={() => toggleCheckbox(item)}
                         />
@@ -688,7 +688,7 @@ const Create_Role_Permission = ({
             <Tabs page_permission={{ update: true }} roleData={newRole} />
           </div>
         </div>
-        {page_permission.create ? (
+        {page_permission?.create ? (
           <div className="flex justify-center items-center -mt-3">
             <button
               onClick={() => handleSaveNewRole()}

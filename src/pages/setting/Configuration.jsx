@@ -51,7 +51,7 @@ const Configuration = () => {
       navigate("/");
       return;
     }
-    setPagePermission(permissions.conf);
+    setPagePermission(permissions?.conf);
   };
 
   const handleInputChange = (key, value, index) => {
@@ -152,13 +152,13 @@ const Configuration = () => {
                           index
                         )
                       }
-                      disabled={page_permission.update ? false : true}
+                      disabled={page_permission?.update ? false : true}
                     />
                   </div>
                 </div>
               </div>
             ))}
-          {page_permission.update ? (
+          {page_permission?.update ? (
             <div className="grid grid-cols-12 mt-20">
               <div className="col-span-5">
                 <div className="flex text-center justify-center">

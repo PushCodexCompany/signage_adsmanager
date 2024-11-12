@@ -47,7 +47,7 @@ const Media_Log = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.mdLog);
+    setPagePermission(permissions?.mdLog);
   };
 
   const getLogData = async () => {

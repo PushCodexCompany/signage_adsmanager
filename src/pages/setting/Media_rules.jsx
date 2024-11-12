@@ -39,7 +39,7 @@ const Media_rules = () => {
       navigate("/");
       return;
     }
-    setPagePermission(permissions.mdRule);
+    setPagePermission(permissions?.mdRule);
   };
 
   return (
@@ -53,7 +53,7 @@ const Media_rules = () => {
               Media Rule
             </div>
           </div>
-          {page_permission.create ? (
+          {page_permission?.create ? (
             <div className="col-span-4 flex justify-end">
               <button
                 onClick={() =>

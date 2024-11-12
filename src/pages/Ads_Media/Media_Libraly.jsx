@@ -119,7 +119,7 @@ const Media_Libraly = () => {
       navigate("/dashboard");
       return;
     }
-    setPagePermission(permissions.mdLib);
+    setPagePermission(permissions?.mdLib);
   };
 
   return (
