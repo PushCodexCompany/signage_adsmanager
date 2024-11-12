@@ -130,6 +130,7 @@ const Screen = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
+          page_name={"scrLog"}
         />
         <div className="mt-5">
           {log_data.length > 0 ? (

@@ -172,7 +172,7 @@ const Activity_Log = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
-          page_name={"activitylog"}
+          page_name={"actLog"}
         />
         <div className="mt-5">
           {log_data.length > 0 ? (

@@ -3,7 +3,15 @@ import { IoIosArrowDown, IoIosClose, IoIosArrowUp } from "react-icons/io";
 import User from "../libs/admin";
 import "../index.css";
 
-const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
+const Filter = ({
+  filter_screen,
+  setFilterScreen,
+  width,
+  page_name,
+  setBookingData,
+  setAllPages,
+  getBookingData,
+}) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
   const [all_filter_data, SetAllFilterData] = useState([]);
@@ -16,24 +24,22 @@ const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
     const {
       configuration: { pagetags },
     } = await User.getConfiguration(token);
-
-    console.log("pagetags", pagetags);
     if (page_name) {
       const result = pagetags.find((page) => page.page === page_name);
+
       const data = await User.getCategorytags(token);
       const filteredData = data.filter((item) =>
         result.tags.includes(Number(item.TagCategoryID))
       );
       SetAllFilterData(filteredData);
     } else {
-      const data = await User.getCategorytags(token);
-      SetAllFilterData(data);
+      SetAllFilterData([]);
     }
   };
 
-  const handleStatusChange = (event) => {
+  const handleStatusChange = async (event) => {
     const selectedValue = event.target.value;
-    const [tagID, tagName] = selectedValue.split("-");
+    const [tagID, tagName] = selectedValue.split("/");
     if (selectedValue === "0") {
       alert("Please select a valid status.");
     } else {
@@ -44,6 +50,7 @@ const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
           return [...prevFilter, tagName]; // Add the selected value to the filter state
         }
       });
+
       setFilterScreen((prevFilter) => {
         if (prevFilter.includes(tagID)) {
           return prevFilter; // Already selected, no change
@@ -51,12 +58,46 @@ const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
           return [...prevFilter, tagID]; // Add the selected value to the filter state
         }
       });
+
+      if (filter_screen.length > 0) {
+        // more than 1 filter
+        const output = [...filter_screen, tagID].join(",");
+
+        const obj = {
+          tagids: output,
+        };
+
+        const data = await User.getBooking(token, 1, "", obj);
+        if (data.code === 200) {
+          if (page_name === "digiBookingMgt") {
+            setBookingData(data.booking);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
+        }
+      } else {
+        //  1 filter
+        const obj = {
+          tagids: tagID,
+        };
+
+        const data = await User.getBooking(token, 1, "", obj);
+        if (data.code === 200) {
+          if (page_name === "digiBookingMgt") {
+            setBookingData(data.booking);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
+        }
+      }
     }
   };
 
-  const removeFilter = (event, index) => {
-    const selectedValue = `${filter_screen[index]}-${event}`;
-    const [tagID, tagName] = selectedValue.split("-");
+  const removeFilter = async (event, index) => {
+    const selectedValue = `${filter_screen[index]}/${event}`;
+    const [tagID, tagName] = selectedValue.split("/");
 
     const updatedFilterOutSide = filter_screen.filter(
       (value) => value !== tagID
@@ -65,11 +106,38 @@ const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
 
     setFilter(updatedFilterInside);
     setFilterScreen(updatedFilterOutSide);
+
+    const updatedFilterScreen = filter_screen.filter((item) => item !== tagID);
+
+    if (updatedFilterScreen.length > 0) {
+      // any left
+      const obj = {
+        tagids: updatedFilterScreen,
+      };
+      const data = await User.getBooking(token, 1, "", obj);
+      if (data.code === 200) {
+        if (page_name === "digiBookingMgt") {
+          setBookingData(data.booking);
+          if (data.pagination.length > 0) {
+            setAllPages(data.pagination[0].totalpage);
+          }
+        }
+      }
+    } else {
+      // no filter left
+      if (page_name === "digiBookingMgt") {
+        getBookingData();
+      }
+    }
   };
 
   const clearFilter = () => {
     setFilter([]);
     setFilterScreen([]);
+
+    if (page_name === "digiBookingMgt") {
+      getBookingData();
+    }
   };
 
   return (
@@ -105,7 +173,7 @@ const Filter = ({ filter_screen, setFilterScreen, width, page_name }) => {
                             {items.TagCategoryName}
                           </option>
                           {items.tags.map((items) => (
-                            <option value={`${items.TagID}-${items.TagName}`}>
+                            <option value={`${items.TagID}/${items.TagName}`}>
                               {items.TagName}
                             </option>
                           ))}

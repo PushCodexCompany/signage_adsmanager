@@ -1144,7 +1144,7 @@ export default {
   //   }
   // },
 
-  getBooking: async function (token, page, booking_name) {
+  getBooking: async function (token, page, booking_name, filter) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1156,6 +1156,10 @@ export default {
 
     if (booking_name) {
       url += `&bookingname=${booking_name}`;
+    }
+
+    if (filter) {
+      url += `&tagids=${filter.tagids}`;
     }
 
     const { data } = await this._get(url, "", config);

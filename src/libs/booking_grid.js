@@ -18,6 +18,7 @@ export const GridTable = ({
   searchTerm,
   page_permission,
   page_permission_content,
+  filter_screen,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
@@ -39,8 +40,17 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.getBooking(token, page, searchTerm);
-      return data;
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          tagids: result,
+        };
+        const data = await User.getBooking(token, page, searchTerm, obj);
+        return data;
+      } else {
+        const data = await User.getBooking(token, page, searchTerm);
+        return data;
+      }
     }
   };
 

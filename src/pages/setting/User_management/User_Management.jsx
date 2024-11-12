@@ -345,6 +345,7 @@ const User_Management = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
+          page_name={"userMgt"}
         />
         <div className="mt-5">
           {user_lists.length > 0 && (

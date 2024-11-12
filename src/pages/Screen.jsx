@@ -237,7 +237,7 @@ const Event = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
-          page_name={"digitalscreen"}
+          page_name={"digiScrnMgt"}
         />
         <div className="mt-5">
           {screens_data.length > 0 && screens_options_data.length > 0 ? (

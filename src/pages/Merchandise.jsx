@@ -85,6 +85,7 @@ const Merchandise = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
+          page_name={"adMerch"}
         />
         <div className="mt-5">
           {merchandise.length > 0 ? (

@@ -6,6 +6,7 @@ import useCheckPermission from "../../libs/useCheckPermission";
 import User from "../../libs/admin";
 import Permission from "../../libs/permission";
 import Swal from "sweetalert2";
+import Filter from "../../components/Filter";
 
 const Media_rules = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Media_rules = () => {
 
   const [media_rules, setMediaRulesData] = useState([]);
   const [page_permission, setPagePermission] = useState([]);
+  const [filter_screen, setFilterScreen] = useState([]);
 
   useEffect(() => {
     getMediaRulesData();
@@ -70,6 +72,11 @@ const Media_rules = () => {
             <></>
           )}
         </div>
+        <Filter
+          setFilterScreen={setFilterScreen}
+          filter_screen={filter_screen}
+          page_name={"mdRule"}
+        />
         <div className="mt-5">
           {media_rules.length > 0 ? (
             <GridTable

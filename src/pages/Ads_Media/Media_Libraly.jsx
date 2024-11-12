@@ -140,6 +140,7 @@ const Media_Libraly = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
+          page_name={"mdLib"}
         />
         {media_libraly_data.length > 0 ? (
           <div className="mt-5">

@@ -50,7 +50,6 @@ const Booking = () => {
     const { permissions } = Permission.convertNewPermissionValuesToBoolean([
       user,
     ]);
-
     if (!permissions.digiBookingMgt.view) {
       Swal.fire({
         icon: "error",
@@ -94,7 +93,10 @@ const Booking = () => {
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
-          page_name={"booking"}
+          page_name={"digiBookingMgt"}
+          setBookingData={setBookingData}
+          setAllPages={setAllPages}
+          getBookingData={getBookingData}
         />
 
         {booking_data.length > 0 ? (
@@ -105,6 +107,7 @@ const Booking = () => {
               searchTerm={searchTerm}
               page_permission={page_permission}
               page_permission_content={page_permission_content}
+              filter_screen={filter_screen}
             />
           </div>
         ) : (
