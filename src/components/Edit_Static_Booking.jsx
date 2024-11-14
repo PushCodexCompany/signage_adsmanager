@@ -49,7 +49,7 @@ const Edit_Static_Booking = ({
   return (
     <>
       <div className="fixed top-1 left-0 right-0 bottom-0 flex items-center justify-center z-20 h-[900px] lg:h-[950px] lg:w-[2000px] overflow-x-auto">
-        <div className="absolute right-12 top-12 lg:top-12 lg:right-[160px] m-4 z-30">
+        <div className="sticky top-0 right-0 z-30 flex justify-end">
           <div className="bg-[#E8E8E8] border-3 border-black  rounded-full w-10 h-10 flex justify-center items-center">
             <button onClick={() => setModalEditBooking(!modalEditBooking)}>
               <IoIosClose size={25} color={"#6425FE"} />

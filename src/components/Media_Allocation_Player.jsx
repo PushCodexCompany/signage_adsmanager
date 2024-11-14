@@ -33,7 +33,7 @@ const Media_Player = ({
       {/* Main centered content container */}
       <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
         {/* Close button - adjust positioning */}
-        <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+        <div className="sticky top-0 right-0 z-30 flex justify-end">
           <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
             <button
               onClick={() => {

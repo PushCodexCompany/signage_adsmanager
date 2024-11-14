@@ -373,6 +373,7 @@ export const GridTable = ({
               </tr>
             </thead>
             <tbody>
+              {console.log("data", user_data)}
               {user_data.length > 0 &&
                 user_data.map((row, key) => (
                   <tr key={key}>
@@ -397,8 +398,7 @@ export const GridTable = ({
                     </td>
                     <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
                       <div className="flex space-x-1 ">
-                        {row.AccessContent?.brands &&
-                        row.AccessContent?.brands.length > 0 ? (
+                        {row.AccessContent?.brands.length > 0 ? (
                           row.AccessContent.brands.map((items) => (
                             <img
                               className="w-[50px] h-[50px] rounded-md shadow-sm object-contain border border-[#dedede]"
@@ -406,10 +406,7 @@ export const GridTable = ({
                             />
                           ))
                         ) : (
-                          <img
-                            className="w-[50px] h-[50px] rounded-md"
-                            src={empty_img}
-                          />
+                          <></>
                         )}
                       </div>
                     </td>
@@ -784,7 +781,7 @@ export const GridTable = ({
           {/* Main centered content container */}
           <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
             {/* Close button - adjust positioning */}
-            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+            <div className="sticky top-0 right-0 z-30 flex justify-end">
               <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
                 <button onClick={() => setShowBrandModal(!showBrandModal)}>
                   <IoIosClose size={25} color={"#6425FE"} />
@@ -875,7 +872,7 @@ export const GridTable = ({
           {/* Main centered content container */}
           <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
             {/* Close button - adjust positioning */}
-            <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+            <div className="sticky top-0 right-0 z-30 flex justify-end">
               <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
                 <button
                   onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}

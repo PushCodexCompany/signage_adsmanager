@@ -601,8 +601,8 @@ const Edit_Role_permission = ({
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
       {/* Main centered content container */}
       <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
-        {/* Close button - adjust positioning */}
-        <div className={`absolute -top-4 -right-4 m-4 z-30`}>
+        {/* Close button - sticky positioning */}
+        <div className="sticky top-0 right-0 z-30 flex justify-end">
           <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
             <button
               onClick={() => {
@@ -614,6 +614,7 @@ const Edit_Role_permission = ({
             </button>
           </div>
         </div>
+
         <div className="flex justify-center items-center mt-8">
           <div className="font-poppins text-5xl font-bold">Edit Role</div>
         </div>
@@ -622,12 +623,12 @@ const Edit_Role_permission = ({
             <div className="col-span-3 flex items-center justify-start">
               <div className="font-poppins">Role Name:</div>
             </div>
-            <div className="col-span-3 ">
+            <div className="col-span-3">
               <input
                 type="text"
                 value={role_name}
                 onChange={(e) => setRoleName(e.target.value)}
-                className="w-full p-2  border border-gray-300 rounded-lg shadow-sm"
+                className="w-full p-2 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
           </div>
@@ -637,17 +638,17 @@ const Edit_Role_permission = ({
             <div className="col-span-3 flex items-center justify-start">
               <div className="font-poppins">Role Description:</div>
             </div>
-            <div className="col-span-3 ">
+            <div className="col-span-3">
               <input
                 type="text"
                 value={role_desc}
                 onChange={(e) => setRoleDesc(e.target.value)}
-                className="w-full p-2  border border-gray-300 rounded-lg shadow-sm"
+                className="w-full p-2 border border-gray-300 rounded-lg shadow-sm"
               />
             </div>
           </div>
         </div>
-        <div className="p-5 mt-2 ">
+        <div className="p-5 mt-2">
           <div className="bg-[#FAFAFA]">
             <Tabs roleData={permission} />
           </div>
