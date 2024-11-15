@@ -29,6 +29,7 @@ export const GridTable = ({
   setOpenInfoScreenModal,
   page_permission,
   screens_status,
+  filter_screen,
 }) => {
   const navigate = useNavigate();
 
@@ -44,6 +45,10 @@ export const GridTable = ({
 
   useEffect(() => {
     generateStatus();
+  }, [screens_data]);
+
+  useEffect(() => {
+    setData(screens_data);
   }, [screens_data]);
 
   const generateStatus = async () => {
@@ -68,8 +73,17 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.getScreenList(token, page, searchTerm);
-      return data;
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          tagids: result,
+        };
+        const data = await User.getScreenList(token, page, searchTerm, obj);
+        return data;
+      } else {
+        const data = await User.getScreenList(token, page, searchTerm);
+        return data;
+      }
     }
   };
 

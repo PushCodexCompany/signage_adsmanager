@@ -163,7 +163,17 @@ const Event = () => {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
-      const data = await User.getScreenList(token, 1, searchTerm);
+      let data;
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          tagids: result,
+        };
+        data = await User.getScreenList(token, 1, searchTerm, obj);
+      } else {
+        data = await User.getScreenList(token, 1, searchTerm);
+      }
+
       data.screens.map(async (items) => {
         const screen_status = await firebase_func.getStatusScreen(items);
         items.screen_status = screen_status;
@@ -238,6 +248,9 @@ const Event = () => {
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
           page_name={"digiScrnMgt"}
+          setScreensData={setScreensData}
+          setAllPages={setAllPages}
+          fetchScreenData={fetchScreenData}
         />
         <div className="mt-5">
           {screens_data.length > 0 && screens_options_data.length > 0 ? (
@@ -261,6 +274,7 @@ const Event = () => {
               // checkboxes={checkboxes}
               // screen_checkbox_select={screen_checkbox_select}
               // setScreenCheckboxSelect={setScreenCheckboxSelect}
+              filter_screen={filter_screen}
             />
           ) : (
             <div className="flex items-center justify-center h-[550px] text-center ">

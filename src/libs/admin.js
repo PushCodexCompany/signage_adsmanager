@@ -966,7 +966,7 @@ export default {
     }
   },
 
-  getScreenList: async function (token, page, screen_name) {
+  getScreenList: async function (token, page, screen_name, filter) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -977,6 +977,10 @@ export default {
 
     if (screen_name) {
       url += `&screenname=${screen_name}`;
+    }
+
+    if (filter) {
+      url += `&tagids=${filter.tagids}`;
     }
 
     const { data } = await this._get(url, "", config);

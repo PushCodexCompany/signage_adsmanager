@@ -37,7 +37,17 @@ const Booking = () => {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
-      const data = await User.getBooking(token, 1, searchTerm);
+      let data;
+
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          tagids: result,
+        };
+        data = await User.getBooking(token, 1, searchTerm, obj);
+      } else {
+        data = await User.getBooking(token, 1, searchTerm);
+      }
       setBookingData(data.booking);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);

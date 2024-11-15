@@ -11,6 +11,8 @@ const Filter = ({
   setBookingData,
   setAllPages,
   getBookingData,
+  setScreensData,
+  fetchScreenData,
 }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
@@ -39,7 +41,7 @@ const Filter = ({
 
   const handleStatusChange = async (event) => {
     const selectedValue = event.target.value;
-    const [tagID, tagName] = selectedValue.split("/");
+    const [tagID, tagName] = selectedValue.split("+");
     if (selectedValue === "0") {
       alert("Please select a valid status.");
     } else {
@@ -67,10 +69,18 @@ const Filter = ({
           tagids: output,
         };
 
-        const data = await User.getBooking(token, 1, "", obj);
-        if (data.code === 200) {
-          if (page_name === "digiBookingMgt") {
+        if (page_name === "digiBookingMgt") {
+          const data = await User.getBooking(token, 1, "", obj);
+          if (data.code === 200) {
             setBookingData(data.booking);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
+        } else if (page_name === "digiScrnMgt") {
+          const data = await User.getScreenList(token, 1, "", obj);
+          if (data.code === 200) {
+            setScreensData(data.screens);
             if (data.pagination.length > 0) {
               setAllPages(data.pagination[0].totalpage);
             }
@@ -82,22 +92,32 @@ const Filter = ({
           tagids: tagID,
         };
 
-        const data = await User.getBooking(token, 1, "", obj);
-        if (data.code === 200) {
-          if (page_name === "digiBookingMgt") {
+        if (page_name === "digiBookingMgt") {
+          const data = await User.getBooking(token, 1, "", obj);
+          if (data.code === 200) {
             setBookingData(data.booking);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
+        } else if (page_name === "digiScrnMgt") {
+          const data = await User.getScreenList(token, 1, "", obj);
+          if (data.code === 200) {
+            setScreensData(data.screens);
             if (data.pagination.length > 0) {
               setAllPages(data.pagination[0].totalpage);
             }
           }
         }
       }
+
+      event.target.value = "";
     }
   };
 
   const removeFilter = async (event, index) => {
-    const selectedValue = `${filter_screen[index]}/${event}`;
-    const [tagID, tagName] = selectedValue.split("/");
+    const selectedValue = `${filter_screen[index]}+${event}`;
+    const [tagID, tagName] = selectedValue.split("+");
 
     const updatedFilterOutSide = filter_screen.filter(
       (value) => value !== tagID
@@ -114,10 +134,19 @@ const Filter = ({
       const obj = {
         tagids: updatedFilterScreen,
       };
-      const data = await User.getBooking(token, 1, "", obj);
-      if (data.code === 200) {
-        if (page_name === "digiBookingMgt") {
+
+      if (page_name === "digiBookingMgt") {
+        const data = await User.getBooking(token, 1, "", obj);
+        if (data.code === 200) {
           setBookingData(data.booking);
+          if (data.pagination.length > 0) {
+            setAllPages(data.pagination[0].totalpage);
+          }
+        }
+      } else if (page_name === "digiScrnMgt") {
+        const data = await User.getScreenList(token, 1, "", obj);
+        if (data.code === 200) {
+          setScreensData(data.screens);
           if (data.pagination.length > 0) {
             setAllPages(data.pagination[0].totalpage);
           }
@@ -127,6 +156,8 @@ const Filter = ({
       // no filter left
       if (page_name === "digiBookingMgt") {
         getBookingData();
+      } else if (page_name === "digiScrnMgt") {
+        fetchScreenData();
       }
     }
   };
@@ -137,6 +168,8 @@ const Filter = ({
 
     if (page_name === "digiBookingMgt") {
       getBookingData();
+    } else if (page_name === "digiScrnMgt") {
+      fetchScreenData();
     }
   };
 
@@ -173,7 +206,7 @@ const Filter = ({
                             {items.TagCategoryName}
                           </option>
                           {items.tags.map((items) => (
-                            <option value={`${items.TagID}/${items.TagName}`}>
+                            <option value={`${items.TagID}+${items.TagName}`}>
                               {items.TagName}
                             </option>
                           ))}
@@ -196,7 +229,7 @@ const Filter = ({
         {filter &&
           filter.map((items, index) => (
             <button key={index} onClick={() => removeFilter(items, index)}>
-              <div className="w-[100px] lg:w-[130px] h-[40px] ml-3 border border-gray-300 rounded-full shadow-sm">
+              <div className="w-fit h-[40px] ml-3 border border-gray-300 rounded-full shadow-sm">
                 <div className="grid grid-cols-4">
                   <div className="col-span-1 mt-[6px]">
                     <div className="flex justify-end items-center">
