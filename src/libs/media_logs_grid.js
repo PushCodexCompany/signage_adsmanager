@@ -150,7 +150,7 @@ export const GridTable = ({
   const renderTableData = () => {
     return data.map((item, index) => (
       <tr key={item.id}>
-        {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+        {/* <td className="px-3 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="flex items-center">
             <label className="inline-flex items-center space-x-2">
               <input
@@ -184,42 +184,42 @@ export const GridTable = ({
             </label>
           </div>
         </td> */}
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
             {item.MediaLogID}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
             {item.ContentName}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
             {item.AdvertiserName}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
             {item.ScreenName}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
             {convertTimestampToFormattedDate(item.StartTime)}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
             {convertTimestampToFormattedDate(item.EndTime)}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="font-poppins text-md font-bold">
             {secondsToTime(item.Duration)}
           </div>
         </td>
-        {/* <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        {/* <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
           <ImBin
             onClick={(e) => {
               e.stopPropagation();

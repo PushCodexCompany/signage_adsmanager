@@ -377,10 +377,10 @@ export const GridTable = ({
               {user_data.length > 0 &&
                 user_data.map((row, key) => (
                   <tr key={key}>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
                       <div className="font-poppins text-xl">{row.UserID}</div>
                     </td>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
                       {page_permission?.update ? (
                         <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
                           <a onClick={() => onSelectEdit(row.UserID)}>
@@ -396,7 +396,7 @@ export const GridTable = ({
                         {row.Email ? row.Email : "-- No Email --"}
                       </div>
                     </td>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
                       <div className="flex space-x-1 ">
                         {row.AccessContent?.brands.length > 0 ? (
                           row.AccessContent.brands.map((items) => (
@@ -410,17 +410,17 @@ export const GridTable = ({
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
                       <div className="font-poppins">
                         {row.Activated === 1 ? "Active" : "Inactive"}
                       </div>
                     </td>
-                    <td className="px-7 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <td className="px-7 py-2 whitespace-nowrap border-b  border-gray-200">
                       <div className="font-poppins">
                         {row.RoleName ? row.RoleName : "-- No Role --"}
                       </div>
                     </td>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200">
+                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
                       <div className="flex justify-center items-center font-poppins text-lg">
                         <div>{row.Firstname ? row.Firstname : "No Name"}</div>
                       </div>
@@ -428,7 +428,7 @@ export const GridTable = ({
                         {row.Lastname ? row.Lastname : "No Last Name"}
                       </div>
                     </td>
-                    <td className="px-6 py-2 whitespace-no-wrap border-b  border-gray-200 space-x-5">
+                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200 space-x-5">
                       {page_permission?.update ? (
                         <button
                           className="relative group"

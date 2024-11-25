@@ -50,10 +50,18 @@ const Dashboard = () => {
   const [isUp, setIsUp] = useState(true);
   const navigate = useNavigate();
 
-  const [page_permission, setPagePermission] = useState([]);
+  const [total_booking_mtd, setTotalBookingMtd] = useState([]);
+  const [total_booking_ytd, setTotalBookingYtd] = useState([]);
+  const [customer_by_mtd, setCustomerByMtd] = useState([]);
+  const [booking_by_mtd, setBookingByMtd] = useState([]);
+  const [total_screen_booking_by_store, setTotalScreenBookingByStore] =
+    useState([]);
+
+  const [page_permission, setPagePermission] = useState();
 
   useEffect(() => {
     setPermission();
+    getDBoardData();
   }, []);
 
   const setPermission = async () => {
@@ -63,6 +71,20 @@ const Dashboard = () => {
     ]);
 
     setPagePermission(permissions?.dBoard);
+  };
+
+  const getDBoardData = async () => {
+    const { token } = User.getCookieData();
+    try {
+      const { dashboard } = await User.getDBoard(token);
+      setTotalBookingMtd(dashboard?.totalbooking_mtd);
+      setTotalBookingYtd(dashboard?.totalbooking_ytd);
+      setCustomerByMtd(dashboard?.customerbymonth);
+      setBookingByMtd(dashboard?.bookingbymonth);
+      setTotalScreenBookingByStore(dashboard?.totalscreenbookingbystore);
+    } catch (error) {
+      console.error("Error : ", error);
+    }
   };
 
   const toggleYearSelect = () => {
@@ -87,14 +109,17 @@ const Dashboard = () => {
         <div className="font-poppins font-bold text-lg mb-3 p-2">
           Number of booking Store
         </div>
-        <GridTable />
+        <GridTable
+          total_screen_booking_by_store={total_screen_booking_by_store}
+        />
       </>
     );
   };
 
   const UniqueCustomerBooking = () => {
     const LineChart = () => {
-      const dataValues = [20, 30, 33, 41, 48, 40, 49, 50, 58, 59, 70, 75]; // Data points
+      // const dataValues = [20, 30, 33, 41, 48, 40, 49, 50, 58, 59, 70, 75];
+      const dataValues = customer_by_mtd;
       // Function to calculate percentage change
       const calculatePercentageChange = (current, previous) => {
         if (previous === 0) return 0; // Avoid division by zero
@@ -189,8 +214,10 @@ const Dashboard = () => {
             anchor: "center", // Ensure labels are centered horizontally
             align: (context) => {
               const index = context.dataIndex;
-              return index % 2 === 0 ? "bottom" : "top"; // Alternating between 'bottom' and 'top'
+              //   return index % 2 === 0 ? "bottom" : "top"; // Alternating between 'bottom' and 'top'
+              return index % 2 === 0 ? "top" : "top"; // Alternating between 'bottom' and 'top'
             },
+            // },
             offset: (context) => {
               const index = context.dataIndex;
               return index % 2 === 0 ? 10 : 10; // Offset position (down = +10px, up = -10px)
@@ -281,7 +308,11 @@ const Dashboard = () => {
 
   const NumberOfBooking = () => {
     const LineChart = () => {
-      const dataValues = [20, 30, 33, 41, 48, 40, 49, 50, 58, 59, 70, 75]; // Data points
+      const dataValues = booking_by_mtd;
+      // const dataValues = [
+      //   20, 30, 33, 41, 48, 40, 49, 50, 58, 59, 70, 75, 2, 1, 2, 3, 43, 2, 3, 4,
+      //   32, 2, 1, 2, 3, 2, 3, 2, 3,
+      // ]; // Data points
       // Function to calculate percentage change
       const calculatePercentageChange = (current, previous) => {
         if (previous === 0) return 0; // Avoid division by zero
@@ -297,22 +328,41 @@ const Dashboard = () => {
 
       const data = {
         labels: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
         ],
         datasets: [
           {
-            label: "YTD",
+            label: "MTD",
             data: dataValues,
             borderColor: function (context) {
               const chart = context.chart;
@@ -376,7 +426,8 @@ const Dashboard = () => {
             anchor: "center", // Ensure labels are centered horizontally
             align: (context) => {
               const index = context.dataIndex;
-              return index % 2 === 0 ? "bottom" : "top"; // Alternating between 'bottom' and 'top'
+              // return index % 2 === 0 ? "bottom" : "top"; // Alternating between 'bottom' and 'top'
+              return index % 2 === 0 ? "top" : "top"; // Alternating between 'bottom' and 'top'
             },
             offset: (context) => {
               const index = context.dataIndex;
@@ -424,6 +475,7 @@ const Dashboard = () => {
             suggestedMin: 0,
             suggestedMax: 100,
             ticks: {
+              callback: (value, index) => index + 1,
               font: {
                 family: "Poppins", // Change the font for the y-axis label
               },
@@ -459,9 +511,41 @@ const Dashboard = () => {
       <>
         <div className="flex mt-2 w-full p-4  rounded-lg">
           <div className="grid grid-cols-12 gap-1 w-full">
-            <div className="col-span-10 p-2">
+            <div className="col-span-8 p-2">
               <div className="font-poppins text-2xl font-bold">
                 Number of booking by month YTD
+              </div>
+            </div>
+            <div className="col-span-2 p-2 mt-2">
+              <div className="relative w-[70px] h-[20px] flex justify-center items-center">
+                <select
+                  name="month"
+                  id="month"
+                  onChange={toggleUniqueCustomerSelect}
+                  className="block w-full appearance-none border border-gray-300 text-xs font-poppins rounded-xl p-2 pr-8 "
+                >
+                  <option value="1">Jan</option>
+                  <option value="2">Feb</option>
+                  <option value="3">Mar</option>
+                  <option value="4">Apr</option>
+                  <option value="5">May</option>
+                  <option value="6">Jun</option>
+                  <option value="7">Jul</option>
+                  <option value="8">Aug</option>
+                  <option value="9">Sep</option>
+                  <option value="10">Oct</option>
+                  <option value="11">Nov</option>
+                  <option value="12">Dec</option>
+                </select>
+
+                {/* Arrow container */}
+                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                  {isUniqueCustomerOpen ? (
+                    <IoIosArrowUp size={15} color={"#6425FE"} />
+                  ) : (
+                    <IoIosArrowDown size={15} color={"#6425FE"} />
+                  )}
+                </div>
               </div>
             </div>
             <div className="col-span-2 p-2 mt-2">
@@ -665,19 +749,6 @@ const Dashboard = () => {
     );
   };
 
-  const RightPanel = () => {
-    return (
-      <>
-        <div className="gap-6 w-full border border-gray-300 rounded-lg mt-2 p-2">
-          <UniqueCustomerBooking />
-        </div>
-        <div className="gap-6 w-full border border-gray-300 rounded-lg mt-2 p-2">
-          <NumberOfBooking />
-        </div>
-      </>
-    );
-  };
-
   const LeftPanale = () => {
     return (
       <>
@@ -711,10 +782,12 @@ const Dashboard = () => {
                 MTD number of booking
               </div>
               <div className="flex items-center">
-                <h2 className="text-xl font-bold mr-2 font-poppins">123</h2>
-                <div className="ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-red-100 text-[#EB001B]">
+                <h2 className="text-xl font-bold mr-2 font-poppins">
+                  {total_booking_mtd}
+                </h2>
+                {/* <div className="ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-red-100 text-[#EB001B]">
                   {`+1.29%`}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -731,10 +804,12 @@ const Dashboard = () => {
                 YTD number of booking
               </div>
               <div className="flex items-center">
-                <h2 className="text-xl font-bold mr-2 font-poppins">123</h2>
-                <div className="ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-green-100 text-[#02B15A]">
+                <h2 className="text-xl font-bold mr-2 font-poppins">
+                  {total_booking_ytd}
+                </h2>
+                {/* <div className="ml-auto text-xs font-poppins px-2 py-1 rounded-md bg-green-100 text-[#02B15A]">
                   {`+1.29%`}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -744,6 +819,19 @@ const Dashboard = () => {
         </div>
         <div className="gap-6 w-full border border-gray-300 rounded-lg">
           <MonthStore />
+        </div>
+      </>
+    );
+  };
+
+  const RightPanel = () => {
+    return (
+      <>
+        <div className="gap-6 w-full border border-gray-300 rounded-lg mt-2 p-2">
+          <UniqueCustomerBooking />
+        </div>
+        <div className="gap-6 w-full border border-gray-300 rounded-lg mt-2 p-2">
+          <NumberOfBooking />
         </div>
       </>
     );

@@ -177,33 +177,33 @@ export const GridTable = ({
       <>
         {data?.map((row, index) => (
           <tr key={row.ContentID}>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md font-bold">
                 {row.ContentID}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md font-bold">
                 {row.ContentName}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md font-bold">
                 {row.MerchandiseName}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md font-bold">
                 {parseFloat(JSON.parse(row.ContentProperties).size).toFixed(2)}{" "}
                 MB
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md font-bold">
                 {generateStatus(row.ActiveStats)}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="space-x-2">
                 {page_permission?.view ? (
                   <button

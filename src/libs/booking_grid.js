@@ -146,12 +146,12 @@ export const GridTable = ({
       <>
         {data?.map((row, index) => (
           <tr key={row.BookingID}>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center">
                 {row.BookingID}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
               <div className="flex group relative">
                 <div
                   // onClick={() => handleSelectBooking(row)}
@@ -177,13 +177,13 @@ export const GridTable = ({
                 {row.AdvertiserName}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
               <div className="font-poppins text-md flex justify-center">
                 {format(row.BookingStartDate, "dd MMM yyyy")} -{" "}
                 {format(row.BookingEndDate, "dd MMM yyyy")}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="flex items-center justify-center">
                 <img
                   className="w-[60px] h-[60px] rounded-md border border-gray-300 shadow-sm object-cover"
@@ -198,17 +198,17 @@ export const GridTable = ({
                 />
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-xl flex justify-center items-center">
                 {row.TotalScreen ? row.TotalScreen : 0}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-xl flex justify-center items-center">
                 {row.SlotPerDay ? row.SlotPerDay : 0}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center items-center">
                 {row.BookingStatus === 1
                   ? "Completed Booking"
@@ -219,7 +219,7 @@ export const GridTable = ({
             </td>
 
             {row.BookingStatus === 1 ? (
-              <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                 <div className="space-x-3">
                   {page_permission?.view ? (
                     <button
@@ -262,7 +262,7 @@ export const GridTable = ({
                 </div>
               </td>
             ) : (
-              <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                 <div className="space-x-3">
                   {page_permission_content?.view ? (
                     <button

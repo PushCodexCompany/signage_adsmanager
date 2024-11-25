@@ -256,7 +256,7 @@ const Publish_Screen_Booking = ({
                 {screen_filter.length > 0 &&
                   screen_filter.map((row) => (
                     <tr key={row.ScreenID}>
-                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="flex items-center">
                           <input
                             type="checkbox"
@@ -270,7 +270,7 @@ const Publish_Screen_Booking = ({
                           />
                         </div>
                       </td>
-                      <td className="px-2 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-2 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="flex items-center">
                           <div className="font-poppins text-xl font-bold">
                             {row.ScreenName}
@@ -282,7 +282,7 @@ const Publish_Screen_Booking = ({
                           )}
                         </div>
                       </td>
-                      <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-3 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="font-poppins text-sm text-[#59606C] font-bold">
                           {row.ScreenLocation || "No Data"}
                         </div>
@@ -290,7 +290,7 @@ const Publish_Screen_Booking = ({
                           {row.province || "No Data"}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="font-poppins font-bold">
                           {row?.ScreenRule[0]?.Width &&
                           row?.ScreenRule[0]?.Height
@@ -300,7 +300,7 @@ const Publish_Screen_Booking = ({
                             : "Not Set"}
                         </div>
                       </td>
-                      <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-4 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="flex flex-wrap">
                           {row.ScreenTag.length > 0 ? (
                             row.ScreenTag.map((items, index) => (

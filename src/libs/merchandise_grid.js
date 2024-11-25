@@ -80,12 +80,12 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
       <>
         {data.map((row, index) => (
           <tr key={row.AdvertiserID}>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center">
                 {row.AdvertiserID}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
               <div
                 // onClick={() => handleSelectBooking(row)}
                 className="font-poppins text-xl  text-[#6425FE]"
@@ -96,7 +96,7 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
                 {row.AccountCode}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="flex items-center justify-center">
                 <img
                   className="w-[60px] h-[60px] border border-gray-300 shadow-sm rounded-md object-contain"
@@ -111,12 +111,12 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
                 />
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-xl flex justify-center items-center">
                 {row.ContactName ? row.ContactName : "Not Set"}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 text-center">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 text-center">
               <div className="space-x-2">
                 {page_permission?.update ? (
                   <button

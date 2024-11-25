@@ -22,21 +22,21 @@ export const GridTable = ({ screenUsePlaylist }) => {
             {screenUsePlaylist.length > 0 &&
               screenUsePlaylist.map((row, key) => (
                 <tr key={row.ScreenID}>
-                  <td className="px-2 py-5 whitespace-no-wrap border-b  border-gray-200">
+                  <td className="px-2 py-5 whitespace-nowrap border-b  border-gray-200">
                     <div className="flex items-center justify-center">
                       <div className="font-poppins text-xl font-bold">
                         {row.ScreenID}
                       </div>
                     </div>
                   </td>
-                  <td className="px-7 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <td className="px-7 py-4 whitespace-nowrap border-b  border-gray-200">
                     <div className="flex">
                       <div className="font-poppins text-xl font-bold cursor-pointer">
                         {row.ScreenName}
                       </div>
                     </div>
                   </td>
-                  <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                  <td className="px-2 py-4 whitespace-nowrap border-b  border-gray-200">
                     <div className="font-poppins text-sm font-bold ">
                       <div className="text-[#59606C]">
                         {" "}

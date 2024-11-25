@@ -247,7 +247,7 @@ export const GridTable = ({
   const renderTableData = () => {
     return data.map((row, index) => (
       <tr key={row.id}>
-        {/* <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+        {/* <td className="px-3 py-4 whitespace-nowrap border-b border-gray-200">
           <div className="flex items-center">
             <label className="inline-flex items-center space-x-2">
               <input
@@ -281,51 +281,51 @@ export const GridTable = ({
             </label>
           </div>
         </td> */}
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.ActivitiyID}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {generateActionString(row.Action)}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.TargetField ? row.TargetField : "-"}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.OnTable ? row.OnTable : "-"}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.IndexValue ? row.IndexValue : "-"}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.OldvValue ? row.OldvValue : "-"}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.NewValue ? row.NewValue : "-"}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">{row.ByUser}</div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {convertTimestampToFormattedDate(row.ActionDate)}
           </div>
         </td>
 
-        {/* <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        {/* <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <ImBin
             onClick={(e) => {
               e.stopPropagation();

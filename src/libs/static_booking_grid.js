@@ -107,12 +107,12 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
       <>
         {data.map((row, index) => (
           <tr key={row.BookingID}>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center">
                 {row.BookingID}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
               <div className="font-poppins text-xl  text-[#6425FE]">
                 {row.BookingName}
               </div>
@@ -120,7 +120,7 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
                 {row.BookingCode}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="flex items-center justify-center">
                 <img
                   className="w-[60px] h-[60px] rounded-md object-cover"
@@ -129,43 +129,43 @@ export const GridTable = ({ booking_data, all_pages, searchTerm }) => {
                 />
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-xl flex justify-center items-center">
                 {row.TotalScreen ? row.TotalScreen : 0}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center items-center">
                 {formatBookingPeriod(row.BookingPeriod)}
               </div>
             </td>
             {row.Media ? (
-              <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                 <div className="font-poppins text-md flex justify-center items-center">
                   <IoImageOutline size={24} className="text-[#6425FE]" />
                 </div>
               </td>
             ) : (
-              <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                 <div className="font-poppins text-md flex justify-center items-center">
                   <IoImageOutline size={24} className="text-[#D1CFD6]" />
                 </div>
               </td>
             )}
             {row.BookingStatus === 2 ? (
-              <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                 <div className="font-poppins font-bold text-[#00CB45] text-md flex justify-center items-center">
                   Expire in {row.BookingExpire} Day
                 </div>
               </td>
             ) : (
-              <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                 <div className="font-poppins font-bold text-md text-[#FF0000] flex justify-center items-center">
                   Expired
                 </div>
               </td>
             )}
-            <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div
                 onClick={() => handleEditBooking(row)}
                 className="font-poppins text-md flex justify-center items-center"

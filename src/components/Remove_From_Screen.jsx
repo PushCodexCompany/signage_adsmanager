@@ -206,7 +206,7 @@ const Remove_From_Screen = ({
                 {screen_filter.length > 0 ? (
                   screen_filter.map((row, key) => (
                     <tr key={row.ScreenID}>
-                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="flex items-center">
                           <input
                             type="checkbox"
@@ -223,7 +223,7 @@ const Remove_From_Screen = ({
                           />
                         </div>
                       </td>
-                      <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <td className="px-2 py-4 whitespace-nowrap border-b  border-gray-200">
                         <div className="flex items-center">
                           <div className="font-poppins text-xl font-bold">
                             {row.ScreenName}
@@ -235,7 +235,7 @@ const Remove_From_Screen = ({
                           )}
                         </div>
                       </td>
-                      <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <td className="px-3 py-4 whitespace-nowrap border-b  border-gray-200">
                         <div className="font-poppins text-sm text-[#59606C] font-bold">
                           {row.ScreenLocation || "No Data"}
                         </div>
@@ -243,7 +243,7 @@ const Remove_From_Screen = ({
                           {row.province || "No Data"}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                         <div className="font-poppins font-bold">
                           {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
                           {row?.ScreenRule[0]?.Width &&
@@ -254,7 +254,7 @@ const Remove_From_Screen = ({
                             : "Not Set"}
                         </div>
                       </td>
-                      <td className="px-4 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-4 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="flex flex-wrap">
                           {row.ScreenTag.length > 0 ? (
                             row.ScreenTag.map((items, index) => (
@@ -284,7 +284,7 @@ const Remove_From_Screen = ({
                           )}
                         </div>
                       </td>
-                      {/* <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                      {/* <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                   <div className="space-x-2">
                     <button
                       className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"

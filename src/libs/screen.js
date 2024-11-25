@@ -252,13 +252,13 @@ export const ListTable = () => {
         <tbody>
           {eventData.map((row) => (
             <tr key={row.id}>
-              <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                 <div className="font-poppins text-md">{row.event_name}</div>
               </td>
-              <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200 ">
+              <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
                 <div className="font-poppins text-md">{row.des}</div>
               </td>
-              <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+              <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                 <div className="space-x-2">
                   <button onClick={() => onClickEdit(row.id)}>
                     <RiEditLine size={20} className="text-[#6425FE]" />

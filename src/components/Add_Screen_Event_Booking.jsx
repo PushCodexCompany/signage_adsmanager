@@ -240,7 +240,7 @@ const Add_Screen_Booking = ({
                 {screen.length > 0 ? (
                   screen.map((row, key) => (
                     <tr key={row.id}>
-                      <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="flex items-center">
                           <input
                             type="checkbox"
@@ -252,7 +252,7 @@ const Add_Screen_Booking = ({
                           />
                         </div>
                       </td>
-                      <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <td className="px-2 py-4 whitespace-nowrap border-b  border-gray-200">
                         <div className="flex items-center group relative">
                           <div className="font-poppins text-lg font-bold">
                             {row.ScreenName.length > 20 ? (
@@ -276,7 +276,7 @@ const Add_Screen_Booking = ({
                           )}
                         </div>
                       </td>
-                      <td className="px-3 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <td className="px-3 py-4 whitespace-nowrap border-b  border-gray-200">
                         <div className="flex justify-start items-center group relative">
                           <div className="font-poppins text-sm text-[#59606C] font-bold ">
                             {row.ScreenLocation.length > 39 ? (
@@ -297,7 +297,7 @@ const Add_Screen_Booking = ({
                           )?.NameEN || "No Data"}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+                      <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                         <div className="font-poppins font-bold">
                           {row?.ScreenRule[0]?.Width &&
                           row?.ScreenRule[0]?.Height
@@ -307,7 +307,7 @@ const Add_Screen_Booking = ({
                             : "Not Set"}
                         </div>
                       </td>
-                      <td className="px-1 py-4 whitespace-no-wrap border-b border-gray-200">
+                      <td className="px-1 py-4 whitespace-nowrap border-b border-gray-200">
                         <div className="flex flex-wrap">
                           {row.ScreenTag.length > 0 ? (
                             row.ScreenTag.map((items, index) => (
@@ -344,7 +344,7 @@ const Add_Screen_Booking = ({
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                      <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                         <div className="space-x-2">
                           <button
                             className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"

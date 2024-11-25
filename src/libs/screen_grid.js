@@ -96,20 +96,20 @@ export const GridTable = ({
   const renderTableData = () => {
     return data.map((row, index) => (
       <tr key={row.id}>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.SceenStatusID}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">{row.ScreenName}</div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {convertTimestampToFormattedDate(row.SceenDateTime)}
           </div>
         </td>
-        <td className="px-6 py-4 whitespace-no-wrap border-b  border-gray-200">
+        <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
           <div className="font-poppins text-md font-bold">
             {row.ScreenStatus === 1 ? "UP" : "DOWN"}
           </div>

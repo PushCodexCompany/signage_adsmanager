@@ -621,6 +621,26 @@ export default {
 
   ///////////////////////////////////////////////
 
+  getDBoard: async function (token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const data = await this._get(
+      `api/v1/get_dashboard?brandcode=${brand_code}`,
+      "",
+      config
+    );
+
+    if (data.status === 200) {
+      return data.data;
+    } else {
+      return false;
+    }
+  },
+
   getMerchandiseList: async function (token) {
     const { brand_code } = this.getBrandCode();
     const config = {

@@ -144,14 +144,14 @@ export const GridTable = ({
 
             return (
               <tr key={row.ScreenID}>
-                <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
+                <td className="px-1 py-4 whitespace-nowrap border-b  border-gray-200">
                   <div className="flex items-center justify-center">
                     <div className="font-poppins text-md font-bold ">
                       {row.ScreenID}
                     </div>
                   </div>
                 </td>
-                <td className="px-1 py-4 whitespace-no-wrap border-b border-gray-200">
+                <td className="px-1 py-4 whitespace-nowrap border-b border-gray-200">
                   <div className="flex group relative">
                     <div className="font-poppins text-md font-bold truncate max-w-[200px]">
                       <div className="flex">
@@ -196,7 +196,7 @@ export const GridTable = ({
                     </div>
                   </div>
                 </td>
-                <td className="px-1 py-4 whitespace-no-wrap border-b  border-gray-200">
+                <td className="px-1 py-4 whitespace-nowrap border-b  border-gray-200">
                   <div className="flex justify-center items-center font-poppins font-bold">
                     {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
                     {row?.ScreenRule[0]?.Width && row?.ScreenRule[0]?.Height
@@ -206,19 +206,19 @@ export const GridTable = ({
                       : "Not Set"}
                   </div>
                 </td>
-                <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                <td className="px-1 py-4 whitespace-nowrap border-b text-center  border-gray-200">
                   <div className="font-poppins font-bold border border-[#DBDBDB] shadow-sm rounded-lg">
                     {row.ScreenRule[0]?.AdsCapacity || "No Data"}
                   </div>
                 </td>
-                <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                <td className="px-1 py-4 whitespace-nowrap border-b text-center  border-gray-200">
                   <div className="font-poppins font-bold border border-[#DBDBDB] shadow-sm rounded-lg">
                     {row.loopDuration
                       ? `${row.loopDuration} Second`
                       : "No Data"}
                   </div>
                 </td>
-                <td className="px-1 py-4 whitespace-no-wrap border-b border-gray-200">
+                <td className="px-1 py-4 whitespace-nowrap border-b border-gray-200">
                   <div className="flex flex-wrap">
                     {row.ScreenTag.length > 0 ? (
                       row.ScreenTag.map((items, index) => (
@@ -255,7 +255,7 @@ export const GridTable = ({
                     )}
                   </div>
                 </td>
-                <td className="px-1 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                <td className="px-1 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                   <div className="space-x-2">
                     {isScreenPaired ? (
                       <button className="relative group">

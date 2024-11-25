@@ -145,14 +145,14 @@ const Select_Pair_screen = ({
                     {screen_checkbox_select.length > 0 ? (
                       screen_checkbox_select.map((row, key) => (
                         <tr key={row.id}>
-                          <td className="px-2 py-5 whitespace-no-wrap border-b  border-gray-200">
+                          <td className="px-2 py-5 whitespace-nowrap border-b  border-gray-200">
                             <div className="flex items-center justify-center">
                               <div className="font-poppins text-xl font-bold">
                                 {key + 1}
                               </div>
                             </div>
                           </td>
-                          <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <td className="px-2 py-4 whitespace-nowrap border-b  border-gray-200">
                             <div className="flex items-center">
                               <div className="font-poppins text-xl font-bold">
                                 {row.ScreenName}
@@ -164,7 +164,7 @@ const Select_Pair_screen = ({
                               )}
                             </div>
                           </td>
-                          <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <td className="px-2 py-4 whitespace-nowrap border-b  border-gray-200">
                             <div className="font-poppins text-sm text-[#59606C] font-bold">
                               {row.ScreenLocation || "No Data"}
                             </div>
@@ -174,7 +174,7 @@ const Select_Pair_screen = ({
                               )?.NameEN || "No Data"}
                             </div>
                           </td>
-                          <td className="px-2 py-4 whitespace-no-wrap border-b  border-gray-200">
+                          <td className="px-2 py-4 whitespace-nowrap border-b  border-gray-200">
                             <div className="font-poppins font-bold text-center">
                               {row?.ScreenRule[0]?.Width &&
                               row?.ScreenRule[0]?.Height
@@ -184,19 +184,19 @@ const Select_Pair_screen = ({
                                 : "Not Set"}
                             </div>
                           </td>
-                          <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                          <td className="px-1 py-4 whitespace-nowrap border-b text-center  border-gray-200">
                             <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
                               {row.ScreenRule[0]?.AdsCapacity || "No Data"}
                             </div>
                           </td>
-                          <td className="px-1 py-4 whitespace-no-wrap border-b text-center  border-gray-200">
+                          <td className="px-1 py-4 whitespace-nowrap border-b text-center  border-gray-200">
                             <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
                               {row.loopDuration
                                 ? `${row.loopDuration} Second`
                                 : "No Data"}
                             </div>
                           </td>
-                          <td className="px-3 py-4 whitespace-no-wrap border-b border-gray-200">
+                          <td className="px-3 py-4 whitespace-nowrap border-b border-gray-200">
                             <div className="flex flex-wrap ">
                               {row.ScreenTag.length > 0 ? (
                                 row.ScreenTag.map((items, index) => (
@@ -223,7 +223,7 @@ const Select_Pair_screen = ({
                               )}
                             </div>
                           </td>
-                          <td className="px-6 py-4 text-center whitespace-no-wrap border-b  border-gray-200">
+                          <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                             <div className="space-x-2">
                               <button
                                 className="w-36 h-6 bg-[#6425FE] text-white text-sm font-poppins rounded-md"

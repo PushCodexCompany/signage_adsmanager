@@ -671,12 +671,12 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                         }
                         onClick={() => setSelectMerchandise(row)}
                       >
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                           <div className="font-poppins text-md flex justify-center">
                             {row.AdvertiserID}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                           <div className="font-poppins text-xl text-[#6425FE]">
                             {row.AdvertiserName}
                           </div>
@@ -684,7 +684,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                             {row.AccountCode}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                           <div className="flex items-center justify-center">
                             <img
                               loading="lazy"
@@ -698,7 +698,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                             />
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <td className="px-6 py-4 whitespace-nowrap border-b border-gray-200">
                           <div className="font-poppins text-xl flex justify-center items-center">
                             {row.ContactName ? row.ContactName : "Not Set"}
                           </div>

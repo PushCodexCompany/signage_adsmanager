@@ -487,17 +487,17 @@ export const getImg = (id) => {
   return img;
 };
 
-export const GridTable = () => {
+export const GridTable = ({ total_screen_booking_by_store }) => {
   return (
     <>
       <div className="w-auto h-[400px] overflow-auto">
-        <table className="min-w-full ">
-          <thead>
+        <table className="min-w-full border border-gray-300">
+          <thead className="sticky top-0 bg-gray-200 z-10">
             <tr>
               <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 ID
               </th>
-              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider w-[400px]">
                 Store
               </th>
               <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
@@ -536,49 +536,46 @@ export const GridTable = () => {
             </tr>
           </thead>
           <tbody>
-            {dashboardData.map((row) => (
-              <tr key={row.id}>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  {row.id}
+            {total_screen_booking_by_store.map((row) => (
+              <tr key={row.ID}>
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  {row.ID}
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b border-gray-200">
-                  <img
-                    className="w-[40px] h-[40px] rounded-md"
-                    src={getImg(row.store)}
-                  />
+                <td className="px-6 py-2 whitespace-nowrap border-b border-gray-200">
+                  <div className="font-poppins text-sm">{row.Store}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.jan} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.JAN}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.feb} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.FEB}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.mar} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.MAR}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.apr} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.APR}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.may} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.MAY}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.jun} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.JUN}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.aug} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.AUG}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.sep} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.SEP}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.oct} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.OCT}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.nov} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.NOV}</div>
                 </td>
-                <td className="px-6 py-2 whitespace-no-wrap border-b font-poppins border-gray-200">
-                  <GenerateMonth month={row.dec} />
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins text-sm">{row.DEC}</div>
                 </td>
               </tr>
             ))}
