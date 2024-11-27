@@ -98,6 +98,14 @@ const Remove_Content = ({
     const today = new Date();
     today.setHours(7, 0, 0, 0); // Set the time to 07:00:00
 
+    let setToDay;
+
+    if (today > booking_date[1] || booking_date.length < 2) {
+      setToDay = booking_date[0];
+    } else {
+      setToDay = today;
+    }
+
     if (datePickers.length > 0) {
       const nextStartDate = new Date(
         datePickers[datePickers.length - 1].endDate
@@ -128,7 +136,7 @@ const Remove_Content = ({
       setDatePickers([
         ...datePickers,
         {
-          startDate: today,
+          startDate: setToDay,
           endDate: new Date(booking_date[booking_date.length - 1]),
           dateRange: filteredDates,
         },
@@ -139,7 +147,6 @@ const Remove_Content = ({
   const handleStartDateChange = (index, date) => {
     const newDatePickers = [...datePickers];
     newDatePickers[index].startDate = date;
-
     setDatePickers(newDatePickers);
     generateDateRange(index);
   };

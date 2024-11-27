@@ -851,7 +851,7 @@ const Dashboard = () => {
               <div className="font-poppins font-semibold text-3xl lg:text-2x p-2">
                 Dashboard
               </div>
-              <div className="relative  w-[120px] flex justify-center items-center">
+              {/* <div className="relative  w-[120px] flex justify-center items-center">
                 <select
                   name="brand"
                   id="brand"
@@ -888,7 +888,7 @@ const Dashboard = () => {
                     <IoIosArrowDown size={20} color={"#6425FE"} />
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="grid grid-cols-9 mt-3 space-x-2">
               <div className="col-span-5 mt-2 space-y-2">
