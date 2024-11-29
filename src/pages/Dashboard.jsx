@@ -1019,7 +1019,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="col-span-3 p-2">
+              {/* <div className="col-span-3 p-2">
                 <div className="relative w-full h-[20px] flex justify-center items-center">
                   <select
                     name="store"
@@ -1031,12 +1031,11 @@ const Dashboard = () => {
                     <option value="2022">Super Sport</option>
                   </select>
 
-                  {/* Arrow container */}
-                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                 <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                     <IoIosArrowDown size={15} color={"#6425FE"} />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
