@@ -280,12 +280,12 @@ const Dashboard = () => {
       <>
         <div className="flex mt-2 w-full p-4  rounded-lg">
           <div className="grid grid-cols-12 gap-1 w-full">
-            <div className="col-span-10 p-2">
+            <div className="col-span-11 p-2">
               <div className="font-poppins text-2xl font-bold">
                 No. of unique customer booking by month
               </div>
             </div>
-            <div className="col-span-2 p-2 mt-2">
+            {/* <div className="col-span-2 p-2 mt-2">
               <div className="relative w-[70px] h-[20px] flex justify-center items-center">
                 <select
                   name="year"
@@ -298,7 +298,6 @@ const Dashboard = () => {
                   <option value="2021">2021</option>
                 </select>
 
-                {/* Arrow container */}
                 <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                   {isUniqueCustomerOpen ? (
                     <IoIosArrowUp size={15} color={"#6425FE"} />
@@ -307,7 +306,7 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -525,12 +524,12 @@ const Dashboard = () => {
       <>
         <div className="flex mt-2 w-full p-4  rounded-lg">
           <div className="grid grid-cols-12 gap-1 w-full">
-            <div className="col-span-8 p-2">
+            <div className="col-span-9 p-2">
               <div className="font-poppins text-2xl font-bold">
                 Number of booking by month YTD
               </div>
             </div>
-            <div className="col-span-2 p-2 mt-2">
+            {/* <div className="col-span-2 p-2 mt-2">
               <div className="relative w-[70px] h-[20px] flex justify-center items-center">
                 <select
                   name="month"
@@ -552,7 +551,6 @@ const Dashboard = () => {
                   <option value="12">Dec</option>
                 </select>
 
-                {/* Arrow container */}
                 <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                   {isUniqueCustomerOpen ? (
                     <IoIosArrowUp size={15} color={"#6425FE"} />
@@ -561,8 +559,8 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-            </div>
-            <div className="col-span-2 p-2 mt-2">
+            </div> */}
+            {/* <div className="col-span-2 p-2 mt-2">
               <div className="relative w-[70px] h-[20px] flex justify-center items-center">
                 <select
                   name="year"
@@ -575,7 +573,6 @@ const Dashboard = () => {
                   <option value="2021">2021</option>
                 </select>
 
-                {/* Arrow container */}
                 <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                   {isUniqueCustomerOpen ? (
                     <IoIosArrowUp size={15} color={"#6425FE"} />
@@ -584,7 +581,7 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -608,7 +605,6 @@ const Dashboard = () => {
 
     const DataBarChart = ({ dataType, dataSet }) => {
       if (dataType === "numberOfBookingByDay") {
-        console.log("dataSet", dataSet);
         const data = {
           labels: dataSet.map((item, index) => `${index + 1}`),
           datasets: [
@@ -967,7 +963,7 @@ const Dashboard = () => {
               ))}
 
               {/* Year Selector */}
-              <div className="col-span-1 p-2">
+              {/* <div className="col-span-1 p-2">
                 <div className="relative w-[70px] h-[20px] flex justify-center items-center">
                   <select
                     name="year"
@@ -980,12 +976,11 @@ const Dashboard = () => {
                     <option value="2021">2021</option>
                   </select>
 
-                  {/* Arrow container */}
                   <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                     <IoIosArrowDown size={15} color={"#6425FE"} />
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* <div className="col-span-3 p-2">
                 <div className="relative w-full h-[20px] flex justify-center items-center">
