@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Header, Navbar } from "../components";
 import { MdOutlineCalendarToday, MdCalendarToday } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
@@ -18,6 +18,7 @@ import {
   Legend,
 } from "chart.js";
 import { Doughnut, Line, Bar } from "react-chartjs-2";
+import zoomPlugin from "chartjs-plugin-zoom";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
@@ -28,6 +29,7 @@ import User from "../libs/admin";
 import useCheckPermission from "../libs/useCheckPermission";
 import Permission from "../libs/permission";
 import Swal from "sweetalert2";
+import "../../src/components/css/scrollbar_dashboard.css";
 
 ChartJS.register(
   ArcElement,
@@ -44,6 +46,7 @@ ChartJS.register(
 const Dashboard = () => {
   useCheckPermission();
   const [isYearOpen, setIsYearOpen] = useState(false);
+  const [isStoreOpen, setIsStoreOpen] = useState(false);
   const [isYearAnalyticOpen, setIsYearAnalyticOpen] = useState(false);
   const [isUniqueCustomerOpen, setIsUniqueCustomerOpen] = useState(false);
   const [isBrandOpen, setIsBrandOpen] = useState(false);
@@ -56,6 +59,10 @@ const Dashboard = () => {
   const [booking_by_mtd, setBookingByMtd] = useState([]);
   const [total_screen_booking_by_store, setTotalScreenBookingByStore] =
     useState([]);
+
+  const [number_booking_by_day, setNumberBookingByDay] = useState([]);
+  const [percent_booking_by_month, setPercentBookingByMonth] = useState([]);
+  const [percent_booking_by_store, setPercentBookingByStore] = useState([]);
 
   const [page_permission, setPagePermission] = useState();
 
@@ -82,6 +89,9 @@ const Dashboard = () => {
       setCustomerByMtd(dashboard?.customerbymonth);
       setBookingByMtd(dashboard?.bookingbymonth);
       setTotalScreenBookingByStore(dashboard?.totalscreenbookingbystore);
+      setNumberBookingByDay(dashboard?.numberofbookingsbyday);
+      setPercentBookingByMonth(dashboard?.percentbookingbymonth);
+      setPercentBookingByStore(dashboard?.percentbookingbystore);
     } catch (error) {
       console.error("Error : ", error);
     }
@@ -89,6 +99,10 @@ const Dashboard = () => {
 
   const toggleYearSelect = () => {
     setIsYearOpen((prevIsOpen) => !prevIsOpen);
+  };
+
+  const toggleStoreSelect = () => {
+    setIsStoreOpen((prevIsOpen) => !prevIsOpen);
   };
 
   const toggleYearSelectAnalytic = () => {
@@ -584,166 +598,469 @@ const Dashboard = () => {
   };
 
   const BarChart = () => {
-    const [number_of_booking, setBannerByMonth] = useState([
-      28, 32, 22, 28, 32, 29, 29, 29, 32, 22, 25, 28,
-    ]);
-    const [booking_by_month, setBookingByMonth] = useState([
-      36, 25, 30, 38, 42, 22, 22, 22, 41, 29, 35, 21,
-    ]);
-    const [booking_by_store, setBookingByStore] = useState([
-      21, 28, 25, 32, 25, 35, 28, 25, 21, 23, 22, 22,
-    ]);
+    const [activeTab, setActiveTab] = useState(0);
 
-    const BarChart = () => {
-      const data = {
-        labels: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ],
-        datasets: [
-          {
-            label: "Booking by month",
-            backgroundColor: "#64CFF6",
-            borderColor: "#64CFF6",
-            borderWidth: 1,
-            data: number_of_booking,
-            barThickness: 10,
-            borderRadius: 10,
-          },
-          {
-            label: "Number of booking by month",
-            backgroundColor: "#6359E9",
-            borderColor: "#6359E9",
-            borderWidth: 1,
-            data: booking_by_month,
-            barThickness: 10,
-            borderRadius: 10,
-          },
-          {
-            label: "Booking by Store",
-            backgroundColor: "#F6C864",
-            borderColor: "#F6C864",
-            borderWidth: 1,
-            data: booking_by_store,
-            barThickness: 10,
-            borderRadius: 10,
-          },
-        ],
-      };
+    const tabs = [
+      { label: "Number of booking by day", color: "#6359E9" },
+      { label: "% Booking by month", color: "#64CFF6" },
+      { label: "% Booking by Store", color: "#F6C864" },
+    ];
 
-      const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-            position: "top",
-          },
-          title: {
-            display: false,
-            text: "Chart.js Line Chart",
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true, // Start the Y-axis from zero
-            display: true,
-            min: 0, // Set the minimum value for the Y-axis
-            max: 50, // Set the maximum value for the Y-axis
-            ticks: {
-              font: {
-                family: "Poppins", // Change the font for the y-axis label
+    const DataBarChart = ({ dataType, dataSet }) => {
+      if (dataType === "numberOfBookingByDay") {
+        const data = {
+          labels: [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+          ],
+          datasets: [
+            {
+              label: "Booking by month",
+              borderWidth: 1,
+              data: dataSet,
+              backgroundColor: function (context) {
+                const chart = context.chart;
+                const ctx = chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, chart.width, 0);
+
+                // Define the custom gradient colors in order
+                const colors = ["#64CFF6", "#6359E9", "#F6C864"];
+
+                // Distribute the colors evenly across the gradient
+                colors.forEach((color, index) => {
+                  gradient.addColorStop(index / (colors.length - 1), color);
+                });
+
+                return gradient;
               },
-              stepSize: 10,
-              callback: function (value) {
-                return value + "k"; // Append " units" to each tick value
-              },
+              barThickness: 10,
+              borderRadius: 10,
             },
-          },
-          x: {
-            display: true, // Hide X axis labels
-            grid: {
-              display: false, // Hide X-axis grid lines
+          ],
+        };
+
+        const options = {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+              position: "top",
             },
-            ticks: {
-              font: {
-                family: "Poppins", // Change the font for the y-axis label
+            title: {
+              display: false,
+              text: "Chart.js Line Chart",
+            },
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  const dataIndex = tooltipItem.dataIndex; // Get the index of the hovered bar
+                  const dataPoint = dataSet[dataIndex]; // Access the corresponding dataset item
+
+                  return `Amount of Booking : ${dataPoint} Booking`;
+                },
               },
             },
           },
-        },
-      };
+          scales: {
+            y: {
+              beginAtZero: true, // Start the Y-axis from zero
+              display: true,
+              min: 0, // Set the minimum value for the Y-axis
+              max: 100, // Set the maximum value for the Y-axis
+              ticks: {
+                font: {
+                  family: "Poppins", // Change the font for the y-axis label
+                },
+                stepSize: 10,
+                callback: function (value) {
+                  return value; // Append " units" to each tick value
+                },
+              },
+            },
+            x: {
+              display: true, // Hide X axis labels
+              grid: {
+                display: false, // Hide X-axis grid lines
+              },
+              ticks: {
+                font: {
+                  family: "Poppins", // Change the font for the y-axis label
+                },
+              },
+            },
+          },
+        };
 
-      return <Bar data={data} options={options} />;
+        return (
+          <div
+            style={{
+              width: "100%",
+              overflowX: "auto", // Enable horizontal scrolling
+            }}
+            className="scrollable-chart-container"
+          >
+            <div
+              style={{
+                minWidth: `${data.labels.length * 100}px`, // Set the minimum width dynamically
+                height: "400px", // Set desired height for the chart
+              }}
+            >
+              <Bar data={data} options={options} />
+            </div>
+          </div>
+        );
+      } else if (dataType === "percentageByMonth") {
+        const result = dataSet.map((item) => item.BookingPercentage.toString());
+        const data = {
+          labels: dataSet.map(
+            (item) =>
+              `${new Date(2024, item.Month - 1).toLocaleString("en-US", {
+                month: "short",
+              })}/${item.TotalCapacity}`
+          ),
+          datasets: [
+            {
+              label: "% Booking by month",
+              borderWidth: 1,
+              data: result,
+              backgroundColor: function (context) {
+                const chart = context.chart;
+                const ctx = chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, chart.width, 0);
+
+                // Define the custom gradient colors in order
+                const colors = ["#64CFF6", "#6359E9", "#F6C864"];
+
+                // Distribute the colors evenly across the gradient
+                colors.forEach((color, index) => {
+                  gradient.addColorStop(index / (colors.length - 1), color);
+                });
+
+                return gradient;
+              },
+              barThickness: 10,
+              borderRadius: 10,
+            },
+          ],
+        };
+
+        const options = {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+              position: "top",
+            },
+            title: {
+              display: false,
+              text: "Chart.js Line Chart",
+            },
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  const dataIndex = tooltipItem.dataIndex; // Get the index of the hovered bar
+                  const dataPoint = dataSet[dataIndex]; // Access the corresponding dataset item
+
+                  // Extract BookingPercentage and TotalCapacity
+                  const bookingPercentage = dataPoint.BookingPercentage;
+                  const totalCapacity = dataPoint.TotalCapacity;
+                  const TotalBooked = dataPoint.TotalBooked;
+                  return `${bookingPercentage}% (${TotalBooked}/${totalCapacity}) `;
+                },
+              },
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true, // Start the Y-axis from zero
+              display: true,
+              min: 0, // Set the minimum value for the Y-axis
+              max: 100, // Set the maximum value for the Y-axis
+              ticks: {
+                font: {
+                  family: "Poppins", // Change the font for the y-axis label
+                },
+                stepSize: 10,
+                callback: function (value) {
+                  return value + "%"; // Append " units" to each tick value
+                },
+              },
+            },
+            x: {
+              display: true, // Hide X axis labels
+              grid: {
+                display: false, // Hide X-axis grid lines
+              },
+              ticks: {
+                font: {
+                  family: "Poppins", // Change the font for the y-axis label
+                },
+              },
+            },
+          },
+        };
+
+        return (
+          <div
+            style={{
+              width: "100%",
+              overflowX: "auto", // Enable horizontal scrolling
+            }}
+            className="scrollable-chart-container"
+          >
+            <div
+              style={{
+                minWidth: `${data.labels.length * 100}px`, // Set the minimum width dynamically
+                height: "400px", // Set desired height for the chart
+              }}
+            >
+              <Bar data={data} options={options} />
+            </div>
+          </div>
+        );
+      } else if (dataType === "percentageByStore") {
+        console.log(dataSet);
+        const result = dataSet.map((item) => item.PercentageBooked.toString());
+        const data = {
+          labels: dataSet.map((item) => `${item.StoreName}`),
+          datasets: [
+            {
+              label: "% Booking by Store",
+              borderWidth: 1,
+              data: result,
+              backgroundColor: function (context) {
+                const chart = context.chart;
+                const ctx = chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, chart.width, 0);
+                // Define the custom gradient colors in order
+                const colors = ["#64CFF6", "#6359E9", "#F6C864"];
+                // Distribute the colors evenly across the gradient
+                colors.forEach((color, index) => {
+                  gradient.addColorStop(index / (colors.length - 1), color);
+                });
+                return gradient;
+              },
+              barThickness: 10,
+              borderRadius: 10,
+            },
+          ],
+        };
+        const options = {
+          indexAxis: "y", // Swap X and Y axes for horizontal bars
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+              position: "top",
+            },
+            title: {
+              display: false,
+              text: "Chart.js Bar Chart",
+            },
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  const dataIndex = tooltipItem.dataIndex; // Get the index of the hovered bar
+                  const dataPoint = dataSet[dataIndex]; // Access the corresponding dataset item
+                  // Extract BookingPercentage and TotalCapacity
+                  const bookingPercentage = dataPoint.PercentageBooked;
+                  const totalCapacity = dataPoint.TotalCapacity;
+                  const totalBooking = dataPoint.TotalBookings;
+                  return `${bookingPercentage}% (${totalBooking}/${totalCapacity})`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              // Percentage axis
+              beginAtZero: true,
+              display: true,
+              min: 0,
+              max: 100,
+              ticks: {
+                font: {
+                  family: "Poppins", // Change the font for the x-axis label
+                },
+                stepSize: 10,
+                callback: function (value) {
+                  return value + "%"; // Append "%" to each tick value
+                },
+              },
+            },
+            y: {
+              // Store names
+              display: true,
+              grid: {
+                display: false,
+              },
+              ticks: {
+                font: {
+                  family: "Poppins", // Change the font for the y-axis label
+                },
+              },
+            },
+          },
+          elements: {
+            bar: {
+              barPercentage: 0.8, // Adjust bar thickness as a percentage of available space
+              categoryPercentage: 0.7, // Add space between bars
+            },
+          },
+        };
+        return (
+          <div
+            style={{
+              width: "100%",
+              overflowY: "auto", // Enable vertical scrolling for the chart
+              maxHeight: "400px", // Limit the height for the scrollable chart
+            }}
+            className="scrollable-chart-container"
+          >
+            <div
+              style={{
+                minHeight: `${data.labels.length * 20}px`, // Dynamic height based on the number of labels
+                height: "auto", // Adjust height to fit content
+              }}
+            >
+              <Bar data={data} options={options} />
+            </div>
+          </div>
+        );
+      }
     };
+
     return (
       <>
-        <div className="flex mt-2 w-full p-4  rounded-lg">
-          <div className="grid grid-cols-12 gap-1 w-full">
-            <div className="col-span-2 p-2">
-              <div className="font-poppins text-2xl font-bold">Analytics</div>
-            </div>
-            <div className="col-span-3  p-2">
-              <div className="flex items-center space-x-2 mt-1">
-                <div className="rounded-full bg-[#6359E9] w-2 h-2 flex items-center justify-center"></div>
-                <div className="font-poppins font-bold text-xs flex items-center justify-center">
-                  Number of booking by month
-                </div>
+        <div>
+          {/* Header Section */}
+          <div className="flex mt-2 w-full p-4 rounded-lg">
+            <div className="grid grid-cols-12 gap-1 w-full">
+              {/* Title */}
+              <div className="col-span-2 p-2">
+                <div className="font-poppins text-2xl font-bold">Analytics</div>
               </div>
-            </div>
-            <div className="col-span-3  p-2">
-              <div className="flex items-center space-x-2 mt-1">
-                <div className="rounded-full bg-[#64CFF6] w-2 h-2 flex items-center justify-center"></div>
-                <div className="font-poppins font-bold text-xs flex items-center justify-center">
-                  % Booking by month
-                </div>
-              </div>
-            </div>
-            <div className="col-span-3  p-2">
-              <div className="flex items-center space-x-2 mt-1">
-                <div className="rounded-full bg-[#F6C864] w-2 h-2 flex items-center justify-center"></div>
-                <div className="font-poppins font-bold text-xs flex items-center justify-center">
-                  % Booking by Store
-                </div>
-              </div>
-            </div>
-            <div className="col-span-1 p-2">
-              <div className="relative w-[70px] h-[20px] flex justify-center items-center">
-                <select
-                  name="year"
-                  id="year"
-                  onChange={toggleYearSelect}
-                  className="block w-full appearance-none border border-gray-300 text-xs font-poppins rounded-xl p-2 pr-8 "
-                >
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
-                  <option value="2021">2021</option>
-                </select>
 
-                {/* Arrow container */}
-                <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                  {isBrandOpen ? (
-                    <IoIosArrowUp size={15} color={"#6425FE"} />
-                  ) : (
+              {/* Tabs */}
+              {tabs.map((tab, index) => (
+                <div
+                  key={index}
+                  className={`col-span-3 p-2 cursor-pointer ${
+                    activeTab === index ? "bg-gray-200 rounded-lg" : ""
+                  }`}
+                  onClick={() => setActiveTab(index)}
+                >
+                  <div className="flex items-center space-x-2 mt-1">
+                    {/* <div
+                      className="rounded-full w-2 h-2 flex items-center justify-center"
+                      style={{ backgroundColor: tab.color }}
+                    ></div> */}
+                    <div
+                      className={`font-poppins font-bold text-xs flex items-center justify-center ${
+                        activeTab === index ? "text-black" : "text-[#6359E9]"
+                      }`}
+                    >
+                      {tab.label}
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Year Selector */}
+              <div className="col-span-1 p-2">
+                <div className="relative w-[70px] h-[20px] flex justify-center items-center">
+                  <select
+                    name="year"
+                    id="year"
+                    onChange={toggleYearSelect}
+                    className="block w-full appearance-none border border-gray-300 text-xs font-poppins rounded-xl p-2 pr-8"
+                  >
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                  </select>
+
+                  {/* Arrow container */}
+                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
                     <IoIosArrowDown size={15} color={"#6425FE"} />
-                  )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-3 p-2">
+                <div className="relative w-full h-[20px] flex justify-center items-center">
+                  <select
+                    name="store"
+                    id="store"
+                    onChange={toggleStoreSelect}
+                    className="block w-full appearance-none border border-gray-300 text-xs font-poppins rounded-lg p-2 pr-8"
+                  >
+                    <option value="2023">B2S</option>
+                    <option value="2022">Super Sport</option>
+                  </select>
+
+                  {/* Arrow container */}
+                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                    <IoIosArrowDown size={15} color={"#6425FE"} />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="h-[445px]">
-          <BarChart />
+
+          {/* Chart Section */}
+          <div className="h-[445px]">
+            {activeTab === 0 && (
+              <DataBarChart
+                dataType="numberOfBookingByDay"
+                dataSet={number_booking_by_day}
+              />
+            )}
+            {activeTab === 1 && (
+              <DataBarChart
+                dataType="percentageByMonth"
+                dataSet={percent_booking_by_month}
+              />
+            )}
+            {activeTab === 2 && (
+              <DataBarChart
+                dataType="percentageByStore"
+                dataSet={percent_booking_by_store}
+              />
+            )}
+          </div>
         </div>
       </>
     );

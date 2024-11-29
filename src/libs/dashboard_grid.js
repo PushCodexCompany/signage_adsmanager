@@ -490,7 +490,7 @@ export const getImg = (id) => {
 export const GridTable = ({ total_screen_booking_by_store }) => {
   return (
     <>
-      <div className="w-auto h-[400px] overflow-auto">
+      <div className="w-auto h-[400px] overflow-auto scrollable-chart-container">
         <table className="min-w-full border border-gray-300">
           <thead className="sticky top-0 bg-gray-200 z-10">
             <tr>
