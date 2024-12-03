@@ -41,7 +41,7 @@ const Filter = ({
 
   const handleStatusChange = async (event) => {
     const selectedValue = event.target.value;
-    const [tagID, tagName] = selectedValue.split("+");
+    const [tagID, tagName] = selectedValue.split("!");
     if (selectedValue === "0") {
       alert("Please select a valid status.");
     } else {
@@ -116,8 +116,8 @@ const Filter = ({
   };
 
   const removeFilter = async (event, index) => {
-    const selectedValue = `${filter_screen[index]}+${event}`;
-    const [tagID, tagName] = selectedValue.split("+");
+    const selectedValue = `${filter_screen[index]}!${event}`;
+    const [tagID, tagName] = selectedValue.split("!");
 
     const updatedFilterOutSide = filter_screen.filter(
       (value) => value !== tagID
@@ -206,7 +206,7 @@ const Filter = ({
                             {items.TagCategoryName}
                           </option>
                           {items.tags.map((items) => (
-                            <option value={`${items.TagID}+${items.TagName}`}>
+                            <option value={`${items.TagID}!${items.TagName}`}>
                               {items.TagName}
                             </option>
                           ))}

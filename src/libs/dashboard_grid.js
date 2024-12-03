@@ -492,7 +492,7 @@ export const GridTable = ({ total_screen_booking_by_store }) => {
     <>
       <div className="w-auto h-[400px] overflow-auto scrollable-chart-container">
         <table className="min-w-full border border-gray-300">
-          <thead className="sticky top-0 bg-gray-200 z-10">
+          <thead className="sticky -top-1 bg-gray-200 z-10">
             <tr>
               <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
                 ID
