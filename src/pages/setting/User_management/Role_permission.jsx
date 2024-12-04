@@ -481,7 +481,7 @@ const Role_permission = () => {
                         <CheckboxGroup
                           title="Tag Management"
                           items={Object.keys(roleData?.permissions?.tagMgt)}
-                          data={roleData?.permissions?.conf}
+                          data={roleData?.permissions?.tagMgt}
                         />
                       )}
 
