@@ -148,6 +148,7 @@ export const GridTable = ({
               "edit_user",
               false
             );
+
             const data = await User.updateUser(encrypted, token);
             if (data.code === 200) {
               Swal.fire({
@@ -373,7 +374,6 @@ export const GridTable = ({
               </tr>
             </thead>
             <tbody>
-              {console.log("data", user_data)}
               {user_data.length > 0 &&
                 user_data.map((row, key) => (
                   <tr key={key}>

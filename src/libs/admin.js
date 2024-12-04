@@ -1692,7 +1692,7 @@ export default {
     return data;
   },
 
-  getScreenlog: async function (token, page, content_name) {
+  getScreenlog: async function (token, page, content_name, filter) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1703,6 +1703,10 @@ export default {
 
     if (content_name) {
       url += `&screenname=${content_name}`;
+    }
+
+    if (filter) {
+      url += `&tagids=${filter.tagids}`;
     }
 
     const { data } = await this._get(url, "", config);

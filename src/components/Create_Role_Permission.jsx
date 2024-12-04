@@ -18,7 +18,7 @@ const Create_Role_Permission = ({
     permissions: {
       userMgt: { view: false, create: false, update: false, delete: false },
       roleMgt: { view: false, create: false, update: false, delete: false },
-      brandMgt: { view: false, create: false, update: false, delete: false },
+      brandMgt: { view: true, create: false, update: false, delete: false },
       digiScrnMgt: { view: false, create: false, update: false, delete: false },
       conf: { view: false, create: false, update: false, delete: false },
       tagMgt: { view: false, create: false, update: false, delete: false },

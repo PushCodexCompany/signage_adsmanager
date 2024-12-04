@@ -211,10 +211,12 @@ export const GridTable = ({
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center items-center">
                 {row.BookingStatus === 1
-                  ? "Completed Booking"
-                  : row.LastPublish
+                  ? "Incomplete Booking"
+                  : row.BookingStatus === 2
+                  ? "Non Publish"
+                  : row.BookingStatus === 3
                   ? "Published"
-                  : "Non Publish"}
+                  : "No Status"}
               </div>
             </td>
 

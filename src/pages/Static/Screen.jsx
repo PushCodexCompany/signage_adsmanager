@@ -131,6 +131,9 @@ const Screen = () => {
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
           page_name={"scrLog"}
+          getLogData={getLogData}
+          setLogData={setLogData}
+          setAllPages={setAllPages}
         />
         <div className="mt-5">
           {log_data.length > 0 ? (
@@ -140,6 +143,7 @@ const Screen = () => {
               searchTerm={searchTerm}
               setExportData={setExportData}
               setCurrentPagePdf={setCurrentPagePdf}
+              filter_screen={filter_screen}
             />
           ) : (
             <div className="flex items-center justify-center h-[550px] text-center ">

@@ -13,6 +13,8 @@ const Filter = ({
   getBookingData,
   setScreensData,
   fetchScreenData,
+  getLogData,
+  setLogData,
 }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
@@ -33,6 +35,7 @@ const Filter = ({
       const filteredData = data.filter((item) =>
         result.tags.includes(Number(item.TagCategoryID))
       );
+
       SetAllFilterData(filteredData);
     } else {
       SetAllFilterData([]);
@@ -85,6 +88,14 @@ const Filter = ({
               setAllPages(data.pagination[0].totalpage);
             }
           }
+        } else if (page_name === "scrLog") {
+          const data = await User.getScreenlog(token, 1, "", obj);
+          if (data.code === 200) {
+            setLogData(data.screenlog);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
         }
       } else {
         //  1 filter
@@ -104,6 +115,14 @@ const Filter = ({
           const data = await User.getScreenList(token, 1, "", obj);
           if (data.code === 200) {
             setScreensData(data.screens);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
+        } else if (page_name === "scrLog") {
+          const data = await User.getScreenlog(token, 1, "", obj);
+          if (data.code === 200) {
+            setLogData(data.screenlog);
             if (data.pagination.length > 0) {
               setAllPages(data.pagination[0].totalpage);
             }
@@ -151,6 +170,14 @@ const Filter = ({
             setAllPages(data.pagination[0].totalpage);
           }
         }
+      } else if (page_name === "scrLog") {
+        const data = await User.getScreenlog(token, 1, "", obj);
+        if (data.code === 200) {
+          setLogData(data.screenlog);
+          if (data.pagination.length > 0) {
+            setAllPages(data.pagination[0].totalpage);
+          }
+        }
       }
     } else {
       // no filter left
@@ -158,6 +185,8 @@ const Filter = ({
         getBookingData();
       } else if (page_name === "digiScrnMgt") {
         fetchScreenData();
+      } else if (page_name === "scrLog") {
+        getLogData();
       }
     }
   };
@@ -170,6 +199,8 @@ const Filter = ({
       getBookingData();
     } else if (page_name === "digiScrnMgt") {
       fetchScreenData();
+    } else if (page_name === "scrLog") {
+      getLogData();
     }
   };
 
@@ -229,22 +260,12 @@ const Filter = ({
         {filter &&
           filter.map((items, index) => (
             <button key={index} onClick={() => removeFilter(items, index)}>
-              <div className="w-fit h-[40px] ml-3 border border-gray-300 rounded-full shadow-sm">
-                <div className="grid grid-cols-4">
-                  <div className="col-span-1 mt-[6px]">
-                    <div className="flex justify-end items-center">
-                      <IoIosClose
-                        size="27"
-                        className="text-[#6425FE] hover:text-[#3b1694]"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-3 mt-[8px]">
-                    <div className="flex justify-center items-center">
-                      <div className="font-poppins text-sm">{items}</div>
-                    </div>
-                  </div>
-                </div>
+              <div className="inline-flex items-center ml-3 px-3 py-1 border border-gray-300 rounded-full shadow-sm">
+                <IoIosClose
+                  size="20"
+                  className="text-[#6425FE] hover:text-[#3b1694] mr-2"
+                />
+                <div className="font-poppins text-sm">{items}</div>
               </div>
             </button>
           ))}

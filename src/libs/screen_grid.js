@@ -23,6 +23,7 @@ export const GridTable = ({
   searchTerm,
   setExportData,
   setCurrentPagePdf,
+  filter_screen,
 }) => {
   const [data, setData] = useState(log_data);
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,8 +37,17 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.getScreenlog(token, page, searchTerm);
-      return data;
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          tagids: result,
+        };
+        const data = await User.getScreenlog(token, page, searchTerm, obj);
+        return data;
+      } else {
+        const data = await User.getScreenlog(token, page, searchTerm);
+        return data;
+      }
     }
   };
 

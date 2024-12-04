@@ -328,6 +328,7 @@ const User_Management = () => {
           <div className="col-span-6">
             <div className="font-poppins font-semibold text-2xl">User</div>
           </div>
+          {/* Main page */}
           {page_permission?.create ? (
             <div className="col-span-4 flex justify-end">
               <button
@@ -382,7 +383,7 @@ const User_Management = () => {
 
             {/* Content Container */}
 
-            <div className="flex justify-center items-center mt-8">
+            <div className="flex justify-center items-center mt-5">
               <div className="font-poppins text-5xl font-bold">
                 Create New User
               </div>
