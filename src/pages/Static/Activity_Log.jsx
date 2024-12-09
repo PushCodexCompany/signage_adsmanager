@@ -3,7 +3,7 @@ import { Header, Navbar } from "../../components";
 import { GridTable } from "../../libs/activities_log_grid";
 import { useNavigate } from "react-router-dom";
 import useCheckPermission from "../../libs/useCheckPermission";
-import Filter from "../../components/Filter";
+import Filter from "../../components/Custom_Filter";
 import User from "../../libs/admin";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -26,6 +26,9 @@ const Activity_Log = () => {
   const [currentPagePdf, setCurrentPagePdf] = useState();
   const [page_permission, setPagePermission] = useState([]);
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   useEffect(() => {
     getLogData();
   }, [searchTerm]);
@@ -39,7 +42,6 @@ const Activity_Log = () => {
       const data = await User.getActivitylog(token, 1);
       setLogData(data.activitylog);
       setExportData(data.activitylog);
-
       if (data.pagination.length > 0) {
         setCurrentPagePdf(data.pagination[0].currentpage);
       } else {
@@ -169,11 +171,18 @@ const Activity_Log = () => {
             </div>
           </div>
         </div>
+
         <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
           page_name={"actLog"}
+          getLogData={getLogData}
+          setLogData={setLogData}
+          setAllPages={setAllPages}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
         />
+
         <div className="mt-5">
           {log_data.length > 0 ? (
             <GridTable
@@ -188,6 +197,9 @@ const Activity_Log = () => {
               searchTerm={searchTerm}
               setExportData={setExportData}
               setCurrentPagePdf={setCurrentPagePdf}
+              filter_screen={filter_screen}
+              startDate={startDate}
+              endDate={endDate}
             />
           ) : (
             <div className="flex items-center justify-center h-[550px] text-center ">

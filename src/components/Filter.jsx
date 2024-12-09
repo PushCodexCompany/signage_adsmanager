@@ -28,6 +28,7 @@ const Filter = ({
     const {
       configuration: { pagetags },
     } = await User.getConfiguration(token);
+
     if (page_name) {
       const result = pagetags.find((page) => page.page === page_name);
 

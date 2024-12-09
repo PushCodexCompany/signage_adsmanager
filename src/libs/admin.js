@@ -1713,7 +1713,7 @@ export default {
     return data;
   },
 
-  getActivitylog: async function (token, page, content_name) {
+  getActivitylog: async function (token, page, content_name, filter) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1726,6 +1726,9 @@ export default {
       url += `&activityname=${content_name}`;
     }
 
+    if (filter) {
+      url += `&optionkey=${filter}`;
+    }
     const { data } = await this._get(url, "", config);
     return data;
   },

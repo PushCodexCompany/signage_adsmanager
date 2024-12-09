@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { ImBin } from "react-icons/im";
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-
+import { format } from "date-fns";
 const convertTimestampToFormattedDate = (timestamp) => {
   const date = new Date(timestamp);
 
@@ -17,90 +17,6 @@ const convertTimestampToFormattedDate = (timestamp) => {
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
 
-const activity_log_mockup = [
-  {
-    id: 1,
-    user: "Admin01",
-    page: "Requests",
-    time: 1658469600000,
-    action: "Approve",
-    action_on: "Booking",
-    value: "#001",
-  },
-  {
-    id: 2,
-    user: "Admin02",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Content",
-    value: "#002",
-  },
-  {
-    id: 3,
-    user: "Sale01",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Content",
-    value: "#003",
-  },
-  {
-    id: 4,
-    user: "Supachai4",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Content",
-    value: "#004",
-  },
-  {
-    id: 5,
-    user: "Nidarat_ssu",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Content",
-    value: "#005",
-  },
-  {
-    id: 6,
-    user: "Admin_sale",
-    page: "Request",
-    time: 1658468700000,
-    action: "Approve",
-    action_on: "Booking",
-    value: "#006",
-  },
-  {
-    id: 7,
-    user: "Admin05",
-    page: "Content",
-    time: 1658468700000,
-    action: "Reject",
-    action_on: "Booking",
-    value: "#007",
-  },
-  {
-    id: 8,
-    user: "Admin010",
-    page: "Booking",
-    time: 1658468700000,
-    action: "Approve",
-    action_on: "Content",
-    value: "#008",
-  },
-  {
-    id: 9,
-    user: "Admin12",
-    page: "Requests",
-    time: 1658468700000,
-    action: "Submit Request",
-    action_on: "Booking",
-    value: "#009",
-  },
-];
-
 export const GridTable = ({
   log_data,
   all_pages,
@@ -113,44 +29,10 @@ export const GridTable = ({
   searchTerm,
   setExportData,
   setCurrentPagePdf,
+  filter_screen,
+  startDate,
+  endDate,
 }) => {
-  const toggleCheckboxAddScreen = (rowId) => {
-    setCheckboxes((prevCheckboxes) => {
-      const updatedCheckboxes = {
-        ...prevCheckboxes,
-        [rowId]: !prevCheckboxes[rowId],
-      };
-
-      const checkedRowIds = Object.keys(updatedCheckboxes).filter(
-        (id) => updatedCheckboxes[id]
-      );
-
-      const intArray = checkedRowIds.map((str) => parseInt(str, 10));
-      setSelectedScreenItems(intArray);
-
-      return updatedCheckboxes;
-    });
-  };
-
-  const toggleAllCheckboxes = () => {
-    const newCheckboxes = {};
-    const newSelectAll = !selectAll;
-
-    // Set all checkboxes to the new state
-    activity_log_mockup.forEach((row) => {
-      newCheckboxes[row.id] = newSelectAll;
-    });
-
-    setCheckboxes(newCheckboxes);
-    setSelectAll(newSelectAll);
-
-    // Do something with the checkedRowIds array (e.g., store it in state)
-    const checkedRowIds = newSelectAll
-      ? activity_log_mockup.map((row) => row.id)
-      : [];
-    setSelectedScreenItems(checkedRowIds);
-  };
-
   const [data, setData] = useState(log_data);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
@@ -163,8 +45,24 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.getActivitylog(token, page, searchTerm);
-      return data;
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          filterfields: result,
+          startDate: format(new Date(startDate), "yyyy-MM-dd"),
+          endDate: format(new Date(endDate), "yyyy-MM-dd"),
+        };
+        const data = await User.getActivitylog(
+          token,
+          page,
+          searchTerm,
+          JSON.stringify(obj)
+        );
+        return data;
+      } else {
+        const data = await User.getActivitylog(token, page, searchTerm);
+        return data;
+      }
     }
   };
 
@@ -340,7 +238,6 @@ export const GridTable = ({
 
   const renderPageNumbers = () => {
     let displayPages = [];
-
     if (totalPages <= 4) {
       for (let i = 1; i <= totalPages; i++) {
         displayPages.push(i);
@@ -391,7 +288,7 @@ export const GridTable = ({
       <div>
         <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full border border-gray-300">
-            <thead className="sticky -top-1 bg-gray-200 z-10">
+            <thead className="sticky -top-1 bg-gray-200 z-9">
               <tr>
                 {/* <th className="px-3 py-4 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                   <label className="inline-flex items-center space-x-2">

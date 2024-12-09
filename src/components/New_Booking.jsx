@@ -35,6 +35,7 @@ import {
 import New_Booking_Steps_Modal from "./New_Booking_Steps_Modal";
 
 import useWindowDimensions from "../libs/dimension";
+import Permission from "../libs/permission";
 
 const New_Booking = ({ setShowModalAddNewBooking }) => {
   const navigate = useNavigate();
@@ -78,6 +79,8 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
 
   const { height, width } = useWindowDimensions();
 
+  const [page_permission, setPagePermission] = useState([]);
+
   // calendar
   const today = startOfToday();
   const [currMonth, setCurrMonth] = useState(() => format(today, "MMM-yyyy"));
@@ -107,6 +110,18 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     }, {});
     setConfig(initialValues.CONTENTPERSLOT_SEC);
   });
+
+  useEffect(() => {
+    setPermission();
+  }, []);
+
+  const setPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    setPagePermission(permissions?.digiScrnMgt);
+  };
 
   const daysInMonth = eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth),
@@ -614,15 +629,19 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     Customers
                   </div>
                 </div>
-                <div className="col-span-1 flex justify-end">
-                  <button
-                    onClick={() => setShowCreateMerchandise(true)}
-                    className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-xs md:text-sm font-poppins w-full md:w-[300px] h-[40px] md:h-[50px] rounded-md"
-                    aria-label="Add New Customer"
-                  >
-                    New Customer +
-                  </button>
-                </div>
+                {page_permission?.create ? (
+                  <div className="col-span-1 flex justify-end">
+                    <button
+                      onClick={() => setShowCreateMerchandise(true)}
+                      className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-xs md:text-sm font-poppins w-full md:w-[300px] h-[40px] md:h-[50px] rounded-md"
+                      aria-label="Add New Customer"
+                    >
+                      New Customer +
+                    </button>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
 
               <div
