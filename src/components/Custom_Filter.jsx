@@ -20,6 +20,8 @@ const Custom_Filter = ({
   setAllPages,
   setStartDate,
   setEndDate,
+  getMediaLibralyData,
+  setMediaLibralyData,
 }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
@@ -77,12 +79,13 @@ const Custom_Filter = ({
         );
         const formattedEndDate = format(new Date(endDatePickers), "yyyy-MM-dd");
 
-        const obj = {
-          filterfields: output,
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        };
         if (page_name === "actLog") {
+          const obj = {
+            filterfields: output,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          };
+
           const data = await User.getActivitylog(
             token,
             1,
@@ -95,22 +98,37 @@ const Custom_Filter = ({
               setAllPages(data.pagination[0].totalpage);
             }
           }
+        } else if (page_name === "mdLib") {
+          const obj = {
+            filterfields: output,
+          };
+
+          const data = await User.getMedias(token, 1, "", JSON.stringify(obj));
+          if (data.code === 200) {
+            setMediaLibralyData(data.media);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
         }
       } else {
         //  1 filter
 
-        const formattedStartDate = format(
-          new Date(startDatePickers),
-          "yyyy-MM-dd"
-        );
-        const formattedEndDate = format(new Date(endDatePickers), "yyyy-MM-dd");
-
-        const obj = {
-          filterfields: `${tagID}-${tagName}`,
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        };
         if (page_name === "actLog") {
+          const formattedStartDate = format(
+            new Date(startDatePickers),
+            "yyyy-MM-dd"
+          );
+          const formattedEndDate = format(
+            new Date(endDatePickers),
+            "yyyy-MM-dd"
+          );
+
+          const obj = {
+            filterfields: `${tagID}-${tagName}`,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          };
           const data = await User.getActivitylog(
             token,
             1,
@@ -119,6 +137,17 @@ const Custom_Filter = ({
           );
           if (data.code === 200) {
             setLogData(data.activitylog);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
+        } else if (page_name === "mdLib") {
+          const obj = {
+            filterfields: `${tagID}-${tagName}`,
+          };
+          const data = await User.getMedias(token, 1, "", JSON.stringify(obj));
+          if (data.code === 200) {
+            setMediaLibralyData(data.media);
             if (data.pagination.length > 0) {
               setAllPages(data.pagination[0].totalpage);
             }
@@ -145,19 +174,19 @@ const Custom_Filter = ({
     const updatedFilterScreen = filter_screen.filter((item) => item !== tagID);
     if (updatedFilterScreen.length > 0) {
       // any left
-      const formattedStartDate = format(
-        new Date(startDatePickers),
-        "yyyy-MM-dd"
-      );
-      const formattedEndDate = format(new Date(endDatePickers), "yyyy-MM-dd");
-
-      const obj = {
-        filterfields: updatedFilterScreen.join(","),
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      };
 
       if (page_name === "actLog") {
+        const formattedStartDate = format(
+          new Date(startDatePickers),
+          "yyyy-MM-dd"
+        );
+        const formattedEndDate = format(new Date(endDatePickers), "yyyy-MM-dd");
+
+        const obj = {
+          filterfields: updatedFilterScreen.join(","),
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        };
         const data = await User.getActivitylog(
           token,
           1,
@@ -170,11 +199,24 @@ const Custom_Filter = ({
             setAllPages(data.pagination[0].totalpage);
           }
         }
+      } else if (page_name === "mdLib") {
+        const obj = {
+          filterfields: updatedFilterScreen.join(","),
+        };
+        const data = await User.getMedias(token, 1, "", JSON.stringify(obj));
+        if (data.code === 200) {
+          setMediaLibralyData(data.media);
+          if (data.pagination.length > 0) {
+            setAllPages(data.pagination[0].totalpage);
+          }
+        }
       }
     } else {
       // no filter left
       if (page_name === "actLog") {
         getLogData();
+      } else if (page_name === "mdLib") {
+        getMediaLibralyData();
       }
     }
   };
@@ -185,6 +227,8 @@ const Custom_Filter = ({
 
     if (page_name === "actLog") {
       getLogData();
+    } else if (page_name === "mdLib") {
+      getMediaLibralyData();
     }
   };
 
@@ -308,41 +352,48 @@ const Custom_Filter = ({
                       </div>
                     ))}
                 </div>
-                <div className="w-5/6 flex justify-between items-center ">
-                  <div className="relative w-[95px] lg:w-[200px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
-                    <DatePicker
-                      selected={startDatePickers}
-                      selectsStart
-                      startDate={new Date()}
-                      dateFormat="dd-MM-yyyy"
-                      onChange={(date) => handleStartDateChange(date)}
-                      className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-sm p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    />
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <IoIosCalendar size={18} color="#6425FE" />
+                {page_name === "actLog" ? (
+                  <>
+                    {" "}
+                    <div className="w-5/6 flex justify-between items-center ">
+                      <div className="relative w-[95px] lg:w-[200px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+                        <DatePicker
+                          selected={startDatePickers}
+                          selectsStart
+                          startDate={new Date()}
+                          dateFormat="dd-MM-yyyy"
+                          onChange={(date) => handleStartDateChange(date)}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-sm p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                        />
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <IoIosCalendar size={18} color="#6425FE" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="w-1/6 flex justify-between items-center ">
-                  <div className="relative  h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
-                    -
-                  </div>
-                </div>
-                <div className="w-5/6 flex justify-between items-center ">
-                  <div className="relative w-[95px] lg:w-[200px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
-                    <DatePicker
-                      selected={endDatePickers}
-                      selectsStart
-                      startDate={new Date()}
-                      dateFormat="dd-MM-yyyy"
-                      onChange={(date) => handleEndDateChange(date)}
-                      className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-sm p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                    />
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <IoIosCalendar size={18} color="#6425FE" />
+                    <div className="w-1/6 flex justify-between items-center ">
+                      <div className="relative  h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+                        -
+                      </div>
                     </div>
-                  </div>
-                </div>
+                    <div className="w-5/6 flex justify-between items-center ">
+                      <div className="relative w-[95px] lg:w-[200px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
+                        <DatePicker
+                          selected={endDatePickers}
+                          selectsStart
+                          startDate={new Date()}
+                          dateFormat="dd-MM-yyyy"
+                          onChange={(date) => handleEndDateChange(date)}
+                          className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-sm p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                        />
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <IoIosCalendar size={18} color="#6425FE" />
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>

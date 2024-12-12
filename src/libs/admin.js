@@ -1559,7 +1559,7 @@ export default {
     return data;
   },
 
-  getMedias: async function (token, page, content_name) {
+  getMedias: async function (token, page, content_name, filter) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1570,6 +1570,10 @@ export default {
 
     if (content_name) {
       url += `&contentname=${content_name}`;
+    }
+
+    if (filter) {
+      url += `&optionkey=${filter}`;
     }
 
     const { data } = await this._get(url, "", config);

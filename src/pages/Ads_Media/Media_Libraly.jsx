@@ -6,7 +6,7 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { IoIosClose } from "react-icons/io";
 import { BsCheckCircle } from "react-icons/bs";
 import useCheckPermission from "../../libs/useCheckPermission";
-import Filter from "../../components/Filter";
+import Filter from "../../components/Custom_Filter";
 import User from "../../libs/admin";
 import Permission from "../../libs/permission";
 import Swal from "sweetalert2";
@@ -141,6 +141,9 @@ const Media_Libraly = () => {
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
           page_name={"mdLib"}
+          getMediaLibralyData={getMediaLibralyData}
+          setMediaLibralyData={setMediaLibralyData}
+          setAllPages={setAllPages}
         />
         {media_libraly_data.length > 0 ? (
           <div className="mt-5">
@@ -149,6 +152,7 @@ const Media_Libraly = () => {
               all_pages={all_pages}
               searchTerm={searchTerm}
               page_permission={page_permission}
+              filter_screen={filter_screen}
             />
           </div>
         ) : (

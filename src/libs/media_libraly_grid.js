@@ -14,6 +14,7 @@ export const GridTable = ({
   all_pages,
   searchTerm,
   page_permission,
+  filter_screen,
 }) => {
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaDisplay, setMediaDisplay] = useState([]);
@@ -122,8 +123,22 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.getMedias(token, page, searchTerm);
-      return data;
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          filterfields: result,
+        };
+        const data = await User.getMedias(
+          token,
+          page,
+          searchTerm,
+          JSON.stringify(obj)
+        );
+        return data;
+      } else {
+        const data = await User.getMedias(token, page, searchTerm);
+        return data;
+      }
     }
   };
 
