@@ -10,7 +10,7 @@ import useCheckPermission from "../../../libs/useCheckPermission";
 import Permission from "../../../libs/permission";
 import Encryption from "../../../libs/encryption";
 import Swal from "sweetalert2";
-import Filter from "../../../components/Filter";
+import Filter from "../../../components/Custom_Filter";
 
 const User_Management = () => {
   useCheckPermission();
@@ -45,6 +45,8 @@ const User_Management = () => {
 
   const [searchTerm, setSearchTerm] = useState(null);
   const [filter_screen, setFilterScreen] = useState([]);
+
+  const [all_pages, setAllPages] = useState(null);
 
   const { token } = User.getCookieData();
 
@@ -100,9 +102,22 @@ const User_Management = () => {
   };
 
   const fetchUsersList = async () => {
-    const lists = await User.getUsersList(token);
-    set_default_user_lists(lists);
-    setUserLists(lists);
+    if (searchTerm === null) {
+      const data = await User.getUsersList(token, 1);
+      console.log("data", data);
+      set_default_user_lists(data.users);
+      setUserLists(data.users);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    } else {
+      const data = await User.getUsersList(token, 1, searchTerm);
+      set_default_user_lists(data.users);
+      setUserLists(data.users);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    }
   };
 
   const fetchRoleData = async () => {
@@ -347,6 +362,10 @@ const User_Management = () => {
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
           page_name={"userMgt"}
+          searchTerm={searchTerm}
+          fetchUsersList={fetchUsersList}
+          setUserLists={setUserLists}
+          setAllPages={setAllPages}
         />
         <div className="mt-5">
           {user_lists.length > 0 && (
@@ -356,6 +375,8 @@ const User_Management = () => {
               brand={brand}
               merchandise={merchandise}
               bg={true}
+              filter_screen={filter_screen}
+              all_pages={all_pages}
             />
           )}
         </div>

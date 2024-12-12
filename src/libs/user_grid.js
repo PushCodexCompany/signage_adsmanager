@@ -7,6 +7,7 @@ import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 import empty_img from "../assets/img/empty_img.png";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export const GridTable = ({
   user_lists,
@@ -14,9 +15,12 @@ export const GridTable = ({
   brand,
   merchandise,
   bg,
+  filter_screen,
+  searchTerm,
+  all_pages,
 }) => {
   const navigate = useNavigate();
-  const [user_data, setUserData] = useState(user_lists);
+  const [data, setData] = useState(user_lists);
   const [modal_edit, setModalEdit] = useState(false);
   const [default_brand, setDefaultBrand] = useState([]);
   const [default_merchandise, setDefaultMerchandise] = useState([]);
@@ -49,13 +53,83 @@ export const GridTable = ({
   const { token } = User.getCookieData();
   const [isEdit, setIsEdit] = useState(false);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageInput, setPageInput] = useState("");
+  const totalPages = all_pages ? all_pages : 0;
+
   useEffect(() => {
     fetchRoleData();
   }, []);
 
   useEffect(() => {
-    setData();
+    setData(user_lists);
   }, [user_lists]);
+
+  const fetchDataForPage = async (page) => {
+    if (page) {
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          filterfields: result,
+        };
+        const data = await User.getUsersList(
+          token,
+          page,
+          searchTerm,
+          JSON.stringify(obj)
+        );
+        return data;
+      } else {
+        const data = await User.getUsersList(token, page, searchTerm);
+        return data;
+      }
+    }
+  };
+
+  const handleClick = async (page) => {
+    setCurrentPage(page);
+    setPageInput("");
+    const data = await fetchDataForPage(page);
+    setData(data.users);
+  };
+
+  const handlePrevPage = async () => {
+    if (currentPage > 1) {
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.users);
+    }
+  };
+
+  const handleNextPage = async () => {
+    if (currentPage < totalPages) {
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      const data = await fetchDataForPage(newPage);
+      setData(data.users);
+    }
+  };
+
+  const handlePageInputChange = (e) => {
+    setPageInput(parseInt(e.target.value));
+  };
+
+  const handlePageInputBlur = async () => {
+    const page = Number(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      const data = await fetchDataForPage(page);
+      setData(data.users);
+    }
+    setPageInput("");
+  };
+
+  const handlePageInputKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handlePageInputBlur();
+    }
+  };
 
   const fetchRoleData = async () => {
     const { token } = User.getCookieData();
@@ -65,11 +139,6 @@ export const GridTable = ({
     setDefaultBrand(brands);
     setDefaultRoles(roles);
     setDefaultMerchandise(merchandises);
-  };
-
-  const setData = async () => {
-    const lists = await User.getUsersList(token);
-    setUserData(lists);
   };
 
   const onSelectEdit = (id) => {
@@ -83,7 +152,7 @@ export const GridTable = ({
       AccessContent,
       Firstname,
       Lastname,
-    } = user_data?.find((item) => item.UserID === id);
+    } = data?.find((item) => item.UserID === id);
 
     setEditId(UserID);
     setEditUsername(Username);
@@ -339,141 +408,227 @@ export const GridTable = ({
     });
   };
 
+  const renderTableData = () => {
+    return (
+      <>
+        {data.length > 0 &&
+          data.map((row, key) => (
+            <tr key={key}>
+              <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
+                <div className="font-poppins text-xl">{row.UserID}</div>
+              </td>
+              <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
+                {page_permission?.update ? (
+                  <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
+                    <a onClick={() => onSelectEdit(row.UserID)}>
+                      {row.Username}
+                    </a>
+                  </div>
+                ) : (
+                  <div className="font-poppins text-xl font-bold">
+                    <div>{row.Username}</div>
+                  </div>
+                )}
+                <div className="font-poppins text-sm text-gray-500">
+                  {row.Email ? row.Email : "-- No Email --"}
+                </div>
+              </td>
+              <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
+                <div className="flex space-x-1 ">
+                  {row.AccessContent?.brands.length > 0 ? (
+                    row.AccessContent.brands.map((items) => (
+                      <img
+                        className="w-[50px] h-[50px] rounded-md shadow-sm object-contain border border-[#dedede]"
+                        src={getImgBrand(items)}
+                      />
+                    ))
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </td>
+              <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
+                <div className="font-poppins">
+                  {row.Activated === 1 ? "Active" : "Inactive"}
+                </div>
+              </td>
+              <td className="px-7 py-2 whitespace-nowrap border-b  border-gray-200">
+                <div className="font-poppins">
+                  {row.RoleName ? row.RoleName : "-- No Role --"}
+                </div>
+              </td>
+              <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
+                <div className="flex justify-center items-center font-poppins text-lg">
+                  <div>{row.Firstname ? row.Firstname : "No Name"}</div>
+                </div>
+                <div className="flex justify-center items-center font-poppins text-sm">
+                  {row.Lastname ? row.Lastname : "No Last Name"}
+                </div>
+              </td>
+              <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200 space-x-5">
+                {page_permission?.update ? (
+                  <button
+                    className="relative group"
+                    onClick={() => onSelectEdit(row.UserID)}
+                  >
+                    <RiEditLine
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694]"
+                    />
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                      Edit User
+                    </div>
+                  </button>
+                ) : (
+                  <></>
+                )}
+                {page_permission?.delete ? (
+                  <button
+                    onClick={() => onClickDelete(row.UserID, row.Username)}
+                    className="relative group"
+                  >
+                    <RiDeleteBin5Line
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694]"
+                    />
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                      Delete User
+                    </div>
+                  </button>
+                ) : (
+                  ""
+                )}
+              </td>
+            </tr>
+          ))}
+      </>
+    );
+  };
+
+  const renderPageNumbers = () => {
+    let displayPages = [];
+
+    if (totalPages <= 4) {
+      for (let i = 1; i <= totalPages; i++) {
+        displayPages.push(i);
+      }
+    } else {
+      if (currentPage <= 4) {
+        displayPages = [1, 2, 3, 4, "...", totalPages];
+      } else if (currentPage >= totalPages - 3) {
+        displayPages = [
+          1,
+          "...",
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages,
+        ];
+      } else {
+        displayPages = [
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          totalPages,
+        ];
+      }
+    }
+
+    return displayPages?.map((number, index) => (
+      <button
+        key={index}
+        className={`px-3 py-1 mx-1 ${
+          currentPage === number
+            ? "text-[#6425FE] rounded-md border border-[#6425FE]"
+            : "text-[#bfbfbf]"
+        }  font-poppins font-bold`}
+        onClick={() => number !== "..." && handleClick(number)}
+        disabled={number === "..."}
+      >
+        {number}
+      </button>
+    ));
+  };
+
   return (
     <>
       {oldModal && (
-        <div className="w-auto h-[480px] overflow-auto">
-          <table className="min-w-full border border-gray-300">
-            <thead className="sticky -top-1 bg-gray-200 z-10">
-              <tr>
-                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  Username
-                </th>
-                <th className="lg:px-6 px-8 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  BU
-                </th>
-                <th className="lg:px-6 px-9 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  Status
-                </th>
-                <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  Role
-                </th>
-                <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                  Name/Lastname
-                </th>
-                {page_permission?.update || page_permission?.delete ? (
+        <div>
+          <div className="w-auto h-[480px] overflow-auto">
+            <table className="min-w-full border border-gray-300">
+              <thead className="sticky -top-1 bg-gray-200 z-10">
+                <tr>
                   <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
-                    Action
+                    ID
                   </th>
-                ) : (
-                  <> </>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {user_data.length > 0 &&
-                user_data.map((row, key) => (
-                  <tr key={key}>
-                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
-                      <div className="font-poppins text-xl">{row.UserID}</div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
-                      {page_permission?.update ? (
-                        <div className="font-poppins text-xl font-bold hover:text-[#6425FE] cursor-pointer">
-                          <a onClick={() => onSelectEdit(row.UserID)}>
-                            {row.Username}
-                          </a>
-                        </div>
-                      ) : (
-                        <div className="font-poppins text-xl font-bold">
-                          <div>{row.Username}</div>
-                        </div>
-                      )}
-                      <div className="font-poppins text-sm text-gray-500">
-                        {row.Email ? row.Email : "-- No Email --"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
-                      <div className="flex space-x-1 ">
-                        {row.AccessContent?.brands.length > 0 ? (
-                          row.AccessContent.brands.map((items) => (
-                            <img
-                              className="w-[50px] h-[50px] rounded-md shadow-sm object-contain border border-[#dedede]"
-                              src={getImgBrand(items)}
-                            />
-                          ))
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
-                      <div className="font-poppins">
-                        {row.Activated === 1 ? "Active" : "Inactive"}
-                      </div>
-                    </td>
-                    <td className="px-7 py-2 whitespace-nowrap border-b  border-gray-200">
-                      <div className="font-poppins">
-                        {row.RoleName ? row.RoleName : "-- No Role --"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200">
-                      <div className="flex justify-center items-center font-poppins text-lg">
-                        <div>{row.Firstname ? row.Firstname : "No Name"}</div>
-                      </div>
-                      <div className="flex justify-center items-center font-poppins text-sm">
-                        {row.Lastname ? row.Lastname : "No Last Name"}
-                      </div>
-                    </td>
-                    <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200 space-x-5">
-                      {page_permission?.update ? (
-                        <button
-                          className="relative group"
-                          onClick={() => onSelectEdit(row.UserID)}
-                        >
-                          <RiEditLine
-                            size={20}
-                            className="text-[#6425FE] hover:text-[#3b1694]"
-                          />
-                          <div
-                            style={{ pointerEvents: "none" }}
-                            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          >
-                            Edit User
-                          </div>
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                      {page_permission?.delete ? (
-                        <button
-                          onClick={() =>
-                            onClickDelete(row.UserID, row.Username)
-                          }
-                          className="relative group"
-                        >
-                          <RiDeleteBin5Line
-                            size={20}
-                            className="text-[#6425FE] hover:text-[#3b1694]"
-                          />
-                          <div
-                            style={{ pointerEvents: "none" }}
-                            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          >
-                            Delete User
-                          </div>
-                        </button>
-                      ) : (
-                        ""
-                      )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+                  <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Username
+                  </th>
+                  <th className="lg:px-6 px-8 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    BU
+                  </th>
+                  <th className="lg:px-6 px-9 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Status
+                  </th>
+                  <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Role
+                  </th>
+                  <th className="lg:px-7 px-12 py-3 border-b border-gray-300 text-center leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                    Name/Lastname
+                  </th>
+                  {page_permission?.update || page_permission?.delete ? (
+                    <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
+                      Action
+                    </th>
+                  ) : (
+                    <> </>
+                  )}
+                </tr>
+              </thead>
+              <tbody>{renderTableData()}</tbody>
+            </table>
+          </div>
+          <div className="flex justify-center items-center mt-6">
+            <IoIosArrowBack
+              onClick={handlePrevPage}
+              size={26}
+              className={`${
+                currentPage === 1
+                  ? "text-[#bfbfbf]"
+                  : "cursor-pointer hover:text-[#bfbfbf]"
+              }`}
+            />
+            {renderPageNumbers()}
+            <IoIosArrowForward
+              onClick={handleNextPage}
+              size={26}
+              className={`${
+                currentPage === totalPages
+                  ? "text-[#bfbfbf]"
+                  : "cursor-pointer hover:text-[#bfbfbf]"
+              }`}
+            />
+            <div className="font-poppins font-bold ml-2">Go to</div>
+            <input
+              type="number"
+              min={1}
+              value={pageInput}
+              onKeyPress={handlePageInputKeyPress}
+              onChange={handlePageInputChange}
+              onBlur={handlePageInputBlur}
+              className="w-[50px] h-[35px] ml-1 mr-1 border border-gray-300 rounded-sm pl-1 font-poppins"
+            />
+            <div className="font-poppins font-bold">Page</div>
+          </div>
         </div>
       )}
 

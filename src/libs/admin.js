@@ -423,19 +423,27 @@ export default {
 
   ///////////////////////////////////////////////
 
-  getUsersList: async function (token) {
+  getUsersList: async function (token, page, content_name, filter) {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
 
-    const { data } = await this._get(`api/v1/get_users`, "", config);
-    if (data.code === 200) {
-      return data.users;
-    } else {
-      return false;
+    let url = `api/v1/get_users?&perpage=10&page=${page}`;
+
+    if (content_name) {
+      url += `&contentname=${content_name}`;
     }
+
+    if (filter) {
+      url += `&optionkey=${filter}`;
+    }
+
+    console.log(url);
+
+    const { data } = await this._get(url, "", config);
+    return data;
   },
 
   getUserRoles: async function (token) {

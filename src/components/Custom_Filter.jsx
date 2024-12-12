@@ -22,6 +22,8 @@ const Custom_Filter = ({
   setEndDate,
   getMediaLibralyData,
   setMediaLibralyData,
+  fetchUsersList,
+  setUserLists,
 }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
@@ -37,7 +39,6 @@ const Custom_Filter = ({
     const {
       configuration: { pagefilters },
     } = await User.getConfiguration(token);
-
     if (page_name) {
       const result = pagefilters.find((page) => page.page === page_name);
       SetAllFilterData(result.options);
@@ -110,6 +111,23 @@ const Custom_Filter = ({
               setAllPages(data.pagination[0].totalpage);
             }
           }
+        } else if (page_name === "userMgt") {
+          const obj = {
+            filterfields: output,
+          };
+
+          const data = await User.getUsersList(
+            token,
+            1,
+            "",
+            JSON.stringify(obj)
+          );
+          if (data.code === 200) {
+            setUserLists(data.users);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
         }
       } else {
         //  1 filter
@@ -148,6 +166,23 @@ const Custom_Filter = ({
           const data = await User.getMedias(token, 1, "", JSON.stringify(obj));
           if (data.code === 200) {
             setMediaLibralyData(data.media);
+            if (data.pagination.length > 0) {
+              setAllPages(data.pagination[0].totalpage);
+            }
+          }
+        } else if (page_name === "userMgt") {
+          const obj = {
+            filterfields: `${tagID}-${tagName}`,
+          };
+          const data = await User.getUsersList(
+            token,
+            1,
+            "",
+            JSON.stringify(obj)
+          );
+          console.log("data", data);
+          if (data.code === 200) {
+            setUserLists(data.users);
             if (data.pagination.length > 0) {
               setAllPages(data.pagination[0].totalpage);
             }
@@ -210,6 +245,17 @@ const Custom_Filter = ({
             setAllPages(data.pagination[0].totalpage);
           }
         }
+      } else if (page_name === "userMgt") {
+        const obj = {
+          filterfields: updatedFilterScreen.join(","),
+        };
+        const data = await User.getUsersList(token, 1, "", JSON.stringify(obj));
+        if (data.code === 200) {
+          setUserLists(data.users);
+          if (data.pagination.length > 0) {
+            setAllPages(data.pagination[0].totalpage);
+          }
+        }
       }
     } else {
       // no filter left
@@ -217,6 +263,8 @@ const Custom_Filter = ({
         getLogData();
       } else if (page_name === "mdLib") {
         getMediaLibralyData();
+      } else if (page_name === "userMgt") {
+        fetchUsersList();
       }
     }
   };
@@ -229,6 +277,8 @@ const Custom_Filter = ({
       getLogData();
     } else if (page_name === "mdLib") {
       getMediaLibralyData();
+    } else if (page_name === "userMgt") {
+      fetchUsersList();
     }
   };
 

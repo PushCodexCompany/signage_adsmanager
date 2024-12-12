@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import Permission from "../libs/permission";
 import Encryption from "../libs/encryption";
 import User from "../libs/admin";
-import Filter from "../components/Filter";
+import Filter from "../components/Custom_Filter";
 
 const User_Management = ({ setShowUserMng, showUserMng }) => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -39,6 +39,8 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
 
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [filter_screen, setFilterScreen] = useState([]);
+  const [all_pages, setAllPages] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   const { token } = User.getCookieData();
 
@@ -54,8 +56,19 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
   }, []);
 
   const fetchUsersList = async () => {
-    const lists = await User.getUsersList(token);
-    setUserLists(lists);
+    if (searchTerm === null) {
+      const data = await User.getUsersList(token, 1);
+      setUserLists(data.users);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    } else {
+      const data = await User.getUsersList(token, 1, searchTerm);
+      setUserLists(data.users);
+      if (data.pagination.length > 0) {
+        setAllPages(data.pagination[0].totalpage);
+      }
+    }
   };
 
   const findBrandByID = (brandID, brand) => {
@@ -281,6 +294,10 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
             setFilterScreen={setFilterScreen}
             filter_screen={filter_screen}
             page_name={"userMgt"}
+            searchTerm={searchTerm}
+            fetchUsersList={fetchUsersList}
+            setUserLists={setUserLists}
+            setAllPages={setAllPages}
           />
           {/* Filter */}
           <div className="w-auto   rounded-lg p-2">
@@ -291,6 +308,8 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
                 brand={default_brand}
                 merchandise={default_merchandise}
                 bg={false}
+                filter_screen={filter_screen}
+                all_pages={all_pages}
               />
             )}
           </div>
