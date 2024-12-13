@@ -43,9 +43,10 @@ const Filter = ({
     }
   };
 
-  const handleStatusChange = async (event) => {
+  const handleStatusChange = async (event, type) => {
     const selectedValue = event.target.value;
     const [tagID, tagName] = selectedValue.split("!");
+
     if (selectedValue === "0") {
       alert("Please select a valid status.");
     } else {
@@ -231,7 +232,7 @@ const Filter = ({
                         <select
                           name={items.TagCategoryName}
                           id={items.TagCategoryName}
-                          onChange={handleStatusChange}
+                          onChange={(e) => handleStatusChange(e)}
                           className="block appearance-none w-full bg-[#f2f2f2] text-xs lg:text-sm border border-gray-300 rounded-lg shadow-sm p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
                         >
                           <option value="" disabled selected hidden>
