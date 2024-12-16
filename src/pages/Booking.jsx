@@ -118,6 +118,7 @@ const Booking = () => {
               page_permission={page_permission}
               page_permission_content={page_permission_content}
               filter_screen={filter_screen}
+              getBookingData={getBookingData}
             />
           </div>
         ) : (

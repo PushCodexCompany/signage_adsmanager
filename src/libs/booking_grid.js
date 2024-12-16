@@ -19,6 +19,7 @@ export const GridTable = ({
   page_permission,
   page_permission_content,
   filter_screen,
+  getBookingData,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
@@ -136,7 +137,31 @@ export const GridTable = ({
       reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        alert("wait function delete");
+        const obj = {
+          bookingid: booking_data.BookingID,
+        };
+
+        const data = await User.deleteBooking(obj, token);
+        if (data.code === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "ลบ Digital Booking สำเร็จ",
+            text: `ลบ Digital Booking ${booking_data.BookingName} สำเร็จ`,
+          }).then((result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              getBookingData();
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "ลบ Digital Booking ไม่สำเร็จ",
+            text: data.message,
+          });
+        }
       }
     });
   };

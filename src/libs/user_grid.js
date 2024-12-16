@@ -224,13 +224,14 @@ export const GridTable = ({
                 icon: "success",
                 title: "แก้ไขผู้ใช้งานสำเร็จ!",
                 text: `แก้ไขผู้ใช้งานสำเร็จ!`,
-              }).then((result) => {
+              }).then(async (result) => {
                 if (
                   result.isConfirmed ||
                   result.dismiss === Swal.DismissReason.backdrop
                 ) {
                   // window.location.reload();
-                  setData();
+                  const data = await fetchDataForPage(currentPage);
+                  setData(data.users);
                   setModalEdit(!modal_edit);
                   setOldModal(!oldModal);
                 }
