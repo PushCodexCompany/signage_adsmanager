@@ -246,7 +246,6 @@ const Booking_Upload_Media = ({
               progressContainer.style.display = "none";
             }
           });
-
           xhr.open(
             "POST",
             `https://cds.push-signage.com/adsmanager/api/v1/create_content?bookingid=${bookingId}&advertiserid=${advertiserId}&brandcode=${brand_code}`,
@@ -257,9 +256,9 @@ const Booking_Upload_Media = ({
 
           xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-              // console.log("xhr", xhr);
+              console.log("xhr", xhr);
               const data = JSON.parse(xhr.responseText);
-              // console.log("data", data);
+              console.log("data", data);
               if (xhr.status === 200) {
                 setUploadFile((prevItems) => {
                   const updatedItems = [...prevItems, ...data.contentids];

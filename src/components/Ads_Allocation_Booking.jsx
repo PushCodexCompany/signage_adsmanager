@@ -919,7 +919,7 @@ const Ads_Allocation_Booking = ({
           );
           if (check_screen.screens.length >= 1 && isAnotherScreen) {
             // ถ้ามีจออื่นใช้ playlist นี้ด้วย
-            setScreennAdsAllocation([]);
+            // setScreennAdsAllocation([]);
             setScreenUsePlaylist(check_screen.screens);
             setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
           } else {
@@ -935,7 +935,7 @@ const Ads_Allocation_Booking = ({
                   result.isConfirmed ||
                   result.dismiss === Swal.DismissReason.backdrop
                 ) {
-                  setScreennAdsAllocation([]);
+                  // setScreennAdsAllocation([]);
                   setOpenAdsAllocationModal(!openAdsAllocationModal);
                   setFactAllocation(!fact_allocation);
                 }
@@ -2522,6 +2522,7 @@ const Ads_Allocation_Booking = ({
           fact_allocation={fact_allocation}
           setOpenAdsAllocationModal={setOpenAdsAllocationModal}
           openAdsAllocationModal={openAdsAllocationModal}
+          setScreennAdsAllocation={setScreennAdsAllocation}
         />
       )}
 

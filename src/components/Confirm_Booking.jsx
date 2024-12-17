@@ -4,6 +4,7 @@ import { IoIosClose } from "react-icons/io";
 import { PiWarningCircleFill } from "react-icons/pi";
 import _ from "lodash";
 import Swal from "sweetalert2";
+import User from "../libs/admin";
 
 const Confirm_Booking = ({
   setOpenConfirmBookingModal,
@@ -18,7 +19,7 @@ const Confirm_Booking = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleConfirmBookingScreen = () => {
+  const handleConfirmBookingScreen = async () => {
     if (bookingSelect.length > 0) {
       const screen_with_booking_value = [...screenData];
       const group_data = GroupedData(bookingSelect);
@@ -69,14 +70,24 @@ const Confirm_Booking = ({
         publish_data: obj,
       };
 
+      const { token } = User.getCookieData();
+      const data = await User.getMerchandiseList(token);
+
+      const advertiser = data.find(
+        (item) => item.AdvertiserName === merchandise.AdvertiserName
+      );
+      const advertiserID = advertiser ? advertiser.AdvertiserID : null;
+
       const select_obj = {
         BookingID: parseInt(booking_id),
         BookingName: bookingName,
+        AdvertiserID: advertiserID,
         AdvertiserName: merchandise.AdvertiserName,
         AdvertiserLogo: merchandise.AdvertiserLogo,
         TotalScreen: screen_with_booking_value.length,
         SlotPerDay: booking_slot.toString(),
       };
+
       navigate(`/booking/booking_pricing_summary`, {
         state: { data: booking_obj, select: select_obj },
       });

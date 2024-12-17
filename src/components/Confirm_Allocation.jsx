@@ -20,6 +20,7 @@ const Confirm_Allocation = ({
   fact_allocation,
   setOpenAdsAllocationModal,
   openAdsAllocationModal,
+  setScreennAdsAllocation,
 }) => {
   const [screen, setScreen] = useState([]);
   const { token } = User.getCookieData();
@@ -62,6 +63,7 @@ const Confirm_Allocation = ({
     const screenIDs = screenAdsAllocation.map((screen) => ({
       screenid: screen.ScreenID,
     }));
+
     const screenIdsString = screenIDs
       .map((screen) => screen.screenid)
       .join(",");
@@ -72,6 +74,8 @@ const Confirm_Allocation = ({
       screenids: screenIdsString,
       mediaplaylistid: parseInt(media_playlist_id),
     };
+
+    console.log("obj", obj);
 
     try {
       const data = await User.updateBookingContent(obj, token);
@@ -85,6 +89,7 @@ const Confirm_Allocation = ({
             result.isConfirmed ||
             result.dismiss === Swal.DismissReason.backdrop
           ) {
+            setScreennAdsAllocation([]);
             setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
             setOpenAdsAllocationModal(!openAdsAllocationModal);
             setFactAllocation(!fact_allocation);
