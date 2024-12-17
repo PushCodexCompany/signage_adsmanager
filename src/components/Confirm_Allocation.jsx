@@ -21,6 +21,9 @@ const Confirm_Allocation = ({
   setOpenAdsAllocationModal,
   openAdsAllocationModal,
   setScreennAdsAllocation,
+  setCheckboxes,
+  setIsEdit,
+  isEdit,
 }) => {
   const [screen, setScreen] = useState([]);
   const { token } = User.getCookieData();
@@ -75,8 +78,6 @@ const Confirm_Allocation = ({
       mediaplaylistid: parseInt(media_playlist_id),
     };
 
-    console.log("obj", obj);
-
     try {
       const data = await User.updateBookingContent(obj, token);
       if (data.code === 200) {
@@ -89,6 +90,7 @@ const Confirm_Allocation = ({
             result.isConfirmed ||
             result.dismiss === Swal.DismissReason.backdrop
           ) {
+            setCheckboxes({});
             setScreennAdsAllocation([]);
             setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
             setOpenAdsAllocationModal(!openAdsAllocationModal);
@@ -152,6 +154,7 @@ const Confirm_Allocation = ({
                   onClick={() => {
                     setIsOpenCreateNewPlaylist(!isOpenCreateNewPlaylist);
                     setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
+                    setIsEdit(!isEdit);
                   }}
                   className="bg-[#6425FE] hover:bg-[#3b1694] w-[300px] h-[48px] rounded-lg text-white font-poppins font-bold"
                 >

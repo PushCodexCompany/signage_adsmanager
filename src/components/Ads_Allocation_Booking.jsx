@@ -935,7 +935,8 @@ const Ads_Allocation_Booking = ({
                   result.isConfirmed ||
                   result.dismiss === Swal.DismissReason.backdrop
                 ) {
-                  // setScreennAdsAllocation([]);
+                  setCheckboxes({});
+                  setScreennAdsAllocation([]);
                   setOpenAdsAllocationModal(!openAdsAllocationModal);
                   setFactAllocation(!fact_allocation);
                 }
@@ -2523,6 +2524,9 @@ const Ads_Allocation_Booking = ({
           setOpenAdsAllocationModal={setOpenAdsAllocationModal}
           openAdsAllocationModal={openAdsAllocationModal}
           setScreennAdsAllocation={setScreennAdsAllocation}
+          setCheckboxes={setCheckboxes}
+          setIsEdit={setIsEdit}
+          isEdit={isEdit}
         />
       )}
 

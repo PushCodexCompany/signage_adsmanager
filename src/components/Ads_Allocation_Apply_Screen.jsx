@@ -38,6 +38,7 @@ const Ads_Allocation_Apply_Screen = ({
     getScreenOption();
     filterByMediaRules();
     handleSetDefaultCheckbox();
+    console.log(checkboxes);
   }, []);
 
   const getScreenOption = async () => {
