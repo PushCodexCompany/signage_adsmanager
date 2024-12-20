@@ -220,6 +220,7 @@ const Login = () => {
         const status = await User.login(encrypted);
         if (status) {
           const user_data = User.getCookieData();
+          console.log("user_data", user_data);
           const { storagebyte } = await User.getAccountStorage(user_data.token);
           User.saveStorage(storagebyte);
           const { permissions } = Permission.convertPermissionValuesToBoolean([

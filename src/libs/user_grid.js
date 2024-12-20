@@ -7,7 +7,7 @@ import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 import empty_img from "../assets/img/empty_img.png";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoMdKey } from "react-icons/io";
 
 export const GridTable = ({
   user_lists,
@@ -22,6 +22,7 @@ export const GridTable = ({
   const navigate = useNavigate();
   const [data, setData] = useState(user_lists);
   const [modal_edit, setModalEdit] = useState(false);
+  const [modal_change_password, setModalChangePassword] = useState(false);
   const [default_brand, setDefaultBrand] = useState([]);
   const [default_merchandise, setDefaultMerchandise] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
@@ -56,6 +57,13 @@ export const GridTable = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_pages ? all_pages : 0;
+
+  // Change Password
+  const [chg_userid, setChgUserId] = useState();
+  const [chg_username, setChgUserName] = useState();
+  const [chg_oldPassword, setChgOldPassword] = useState();
+  const [chg_password, setChgPassword] = useState();
+  const [chg_confirmPassword, setChgConfirmPassword] = useState();
 
   useEffect(() => {
     fetchRoleData();
@@ -179,6 +187,14 @@ export const GridTable = ({
     setDumpRoleName(RoleID);
     setOldModal(!oldModal);
     setModalEdit(!modal_edit);
+  };
+
+  const onSelectChangePassword = (id) => {
+    const { UserID, Username } = data?.find((item) => item.UserID === id);
+    setChgUserId(UserID);
+    setChgUserName(Username);
+    setOldModal(!oldModal);
+    setModalChangePassword(!modal_change_password);
   };
 
   const toggleStatusSelect = () => {
@@ -470,6 +486,25 @@ export const GridTable = ({
                 {page_permission?.update ? (
                   <button
                     className="relative group"
+                    onClick={() => onSelectChangePassword(row.UserID)}
+                  >
+                    <IoMdKey
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694]"
+                    />
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                    >
+                      Chang Password
+                    </div>
+                  </button>
+                ) : (
+                  <></>
+                )}
+                {page_permission?.update ? (
+                  <button
+                    className="relative group"
                     onClick={() => onSelectEdit(row.UserID)}
                   >
                     <RiEditLine
@@ -478,7 +513,7 @@ export const GridTable = ({
                     />
                     <div
                       style={{ pointerEvents: "none" }}
-                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                     >
                       Edit User
                     </div>
@@ -497,7 +532,7 @@ export const GridTable = ({
                     />
                     <div
                       style={{ pointerEvents: "none" }}
-                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                     >
                       Delete User
                     </div>
@@ -558,6 +593,70 @@ export const GridTable = ({
         {number}
       </button>
     ));
+  };
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      text: `คุณต้องการเปลี่ยนรหัสผ่านของ user : ${chg_username} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (chg_password !== chg_confirmPassword) {
+          Swal.fire({
+            icon: "error",
+            title: "รหัสผ่านไม่ตรงกัน",
+            text: "กรุณากรอกรหัสผ่านให้เหมือนกัน!",
+          });
+          return;
+        }
+
+        try {
+          const obj = {
+            userid: chg_userid,
+            currentpassword: chg_oldPassword,
+            newpassword: chg_password,
+          };
+
+          const encrypted = await Encryption.encryption(
+            obj,
+            "updateUserpassword",
+            false
+          );
+
+          const data = await User.updateUserpassword(encrypted, token);
+          if (data.code === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "เปลี่ยนรหัสผ่าน!",
+              text: `เปลี่ยนรหัสผ่าน ${chg_username} สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                setOldModal(!oldModal);
+                setModalChangePassword(!modal_change_password);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
   };
 
   return (
@@ -926,6 +1025,143 @@ export const GridTable = ({
                 } text-white font-bold font-poppins rounded-lg`}
               >
                 Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modal_change_password && (
+        <>
+          {bg ? (
+            <a
+              onClick={() => setModalChangePassword(!modal_change_password)}
+              className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+            />
+          ) : (
+            <></>
+          )}
+        </>
+      )}
+
+      {modal_change_password && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-40`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button
+                  onClick={() => {
+                    setOldModal(!oldModal);
+                    setModalChangePassword(!modal_change_password);
+                  }}
+                >
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
+            </div>
+
+            {/* Content Container */}
+
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">
+                Change Password
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Edit User Password
+              </div>
+            </div>
+            <div className="h-[550px] overflow-y-auto">
+              <div className="mt-10 mx-40">
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Username :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      type="text"
+                      placeholder="Your Username"
+                      defaultValue={chg_username}
+                      value={chg_username}
+                      required
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Current Password :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => {
+                        setChgOldPassword(e.target.value);
+                      }}
+                      type="text"
+                      placeholder="Your Old Password"
+                      value={chg_oldPassword}
+                      required
+                      autoComplete="oldPassword"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      New Password :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => {
+                        setChgPassword(e.target.value);
+                      }}
+                      type="text"
+                      placeholder="Your New Password"
+                      value={chg_password}
+                      required
+                      autoComplete="newPassword"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Confirm New Password :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => {
+                        setChgConfirmPassword(e.target.value);
+                      }}
+                      type="text"
+                      placeholder="Confirm your Password"
+                      value={chg_confirmPassword}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="text-center mt-5">
+              <button
+                type="submit"
+                onClick={(e) => handleChangePassword(e)}
+                className={`w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#6325fe86] text-white font-bold font-poppins rounded-lg`}
+              >
+                Change Password
               </button>
             </div>
           </div>

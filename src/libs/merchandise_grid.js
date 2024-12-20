@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
+import { FiExternalLink } from "react-icons/fi";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
 import Encryption from "../libs/encryption";
@@ -118,6 +119,21 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
             </td>
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 text-center">
               <div className="space-x-2">
+                <button
+                  className="relative group"
+                  onClick={() => onClickView(row)}
+                >
+                  <FiExternalLink
+                    size={20}
+                    className="text-[#6425FE] hover:text-[#3b1694]"
+                  />
+                  <div
+                    style={{ pointerEvents: "none" }}
+                    className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                  >
+                    View Customer
+                  </div>
+                </button>
                 {page_permission?.update ? (
                   <button
                     className="relative group"
@@ -132,7 +148,7 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
                     />
                     <div
                       style={{ pointerEvents: "none" }}
-                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                     >
                       Edit Customer
                     </div>
@@ -156,7 +172,7 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
                     />
                     <div
                       style={{ pointerEvents: "none" }}
-                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                     >
                       Delete Customer
                     </div>
@@ -170,6 +186,13 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
         ))}
       </>
     );
+  };
+
+  const onClickView = (merchandise) => {
+    console.log("data", merchandise);
+    navigate(`/edit_merchandise/${merchandise.AdvertiserID}`, {
+      state: { merchandise: merchandise, isView: true },
+    });
   };
 
   //   const renderPageNumbers = () => {

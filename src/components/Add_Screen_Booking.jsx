@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import User from "../libs/admin";
 import firebase_func from "../libs/firebase_func";
+import Permission from "../libs/permission";
 
 const Add_Screen_Booking = ({
   showAddScreen,
@@ -32,6 +33,8 @@ const Add_Screen_Booking = ({
   const [filter_screen, setFilterScreen] = useState([]);
   const [searchTerm, setSearchTerm] = useState(null);
 
+  const [page_permission, setPagePermission] = useState([]);
+
   useEffect(() => {
     getScreenData();
     getScreenOption();
@@ -45,6 +48,10 @@ const Add_Screen_Booking = ({
   useEffect(() => {
     FilterScreen();
   }, [searchTerm]);
+
+  useEffect(() => {
+    getPermission();
+  }, []);
 
   const getScreenData = async (filter) => {
     try {
@@ -88,6 +95,15 @@ const Add_Screen_Booking = ({
     } else {
       setScreens(temp_screen);
     }
+  };
+
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    console.log(permissions?.digiScrnMgt);
+    setPagePermission(permissions?.digiScrnMgt);
   };
 
   const getScreenOption = async () => {
@@ -171,12 +187,18 @@ const Add_Screen_Booking = ({
               </div>
             </div>
             <div className="flex justify-end items-center col-span-1 ">
-              <button
-                onClick={() => setOpenAddNewScreenModal(!openAddNewScreenModal)}
-                className="bg-[#6425FE] hover:bg-[#3b1694] w-[200px] h-[45px] rounded-lg text-white font-poppins mr-10"
-              >
-                Create New Screen
-              </button>
+              {page_permission?.create ? (
+                <button
+                  onClick={() =>
+                    setOpenAddNewScreenModal(!openAddNewScreenModal)
+                  }
+                  className="bg-[#6425FE] hover:bg-[#3b1694] w-[200px] h-[45px] rounded-lg text-white font-poppins mr-10"
+                >
+                  Create New Screen
+                </button>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

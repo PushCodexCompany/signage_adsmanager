@@ -258,7 +258,7 @@ export const GridTable = ({
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                       <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                         style={{ pointerEvents: "none" }}
                       >
                         Complete Booking
@@ -277,7 +277,7 @@ export const GridTable = ({
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                       <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                         style={{ pointerEvents: "none" }}
                       >
                         Cancel Booking
@@ -301,7 +301,7 @@ export const GridTable = ({
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                       <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                         style={{ pointerEvents: "none" }}
                       >
                         Manage Content
@@ -320,7 +320,7 @@ export const GridTable = ({
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                       <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                         style={{ pointerEvents: "none" }}
                       >
                         Cancel Booking

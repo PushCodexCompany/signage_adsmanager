@@ -119,10 +119,12 @@ const Screen_Info = ({
   const [modalPlayerOpen, setModalPlayerOpen] = useState(false);
   const [mediaSource, setMediaSource] = useState([]);
   const [mediaDisplay, setMediaDisplay] = useState([]);
+  const [city, setCity] = useState([]);
 
   useEffect(() => {
     getScreenData();
     getSchulde();
+    getCityData();
   }, []);
 
   useEffect(() => {
@@ -158,6 +160,17 @@ const Screen_Info = ({
       setSchedule(screenschedule);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const getCityData = async () => {
+    try {
+      const {
+        configuration: { cities },
+      } = await User.getConfiguration(token);
+      setCity(cities);
+    } catch (error) {
+      console.error("Error fetching city name:", error);
     }
   };
 
@@ -294,6 +307,11 @@ const Screen_Info = ({
     setOpenMediaScheduleModal(!openMediaScheduleModal);
   };
 
+  const convertIdToCityName = (city_id) => {
+    const cityName = city.find((city) => city.CityID === city_id)?.NameEN;
+    return <>{cityName}</>;
+  };
+
   // const toggleYearSelect = () => {
   //   setIsYearOpen((prevIsOpen) => !prevIsOpen);
   // };
@@ -405,7 +423,7 @@ const Screen_Info = ({
                       <div className="col-span-3">
                         <div className="border h-[150%] border-gray-200 flex justify-center items-center rounded-lg">
                           <div className="font-poppins font-bold">
-                            {selectInfoScreen.ScreenLocation}
+                            {convertIdToCityName(selectInfoScreen.ScreenCity)}
                           </div>
                         </div>
                       </div>
@@ -463,13 +481,14 @@ const Screen_Info = ({
                       <div className="col-span-3">
                         <div className="border h-[150%] border-gray-200 flex justify-center items-center rounded-lg">
                           <div className="font-poppins font-bold">
-                            {findPhysicalSizeID(
-                              selectInfoScreen.ScreenPhySizeID
-                            )}
+                            Ads Capacity :{" "}
+                            {selectInfoScreen.ScreenRule[0]?.AdsCapacity
+                              ? selectInfoScreen.ScreenRule[0].AdsCapacity
+                              : "No Adscapacity"}
                           </div>
                         </div>
                       </div>
-                      <div className="col-span-3">
+                      {/* <div className="col-span-3">
                         <div className="border h-[150%] border-gray-200 flex justify-center items-center rounded-lg">
                           <div className="font-poppins font-bold">
                             {findScreenResolutionID(
@@ -477,10 +496,10 @@ const Screen_Info = ({
                             )}
                           </div>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
-                  <div className="mt-8">
+                  {/* <div className="mt-8">
                     <div className="grid grid-cols-6 space-x-2">
                       <div className="col-span-3">
                         <div className="border h-[150%] border-gray-200 flex justify-center items-center rounded-lg">
@@ -503,8 +522,8 @@ const Screen_Info = ({
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="mt-8">
+                  </div> */}
+                  {/* <div className="mt-8">
                     <div className="grid grid-cols-6 space-x-2">
                       <div className="col-span-3">
                         <div className="border h-[150%] border-gray-200 flex justify-center items-center rounded-lg">
@@ -518,7 +537,7 @@ const Screen_Info = ({
                       </div>
                       <div className="col-span-3"></div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 

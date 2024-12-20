@@ -1763,4 +1763,23 @@ export default {
       return false;
     }
   },
+
+  updateUserpassword: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/update_userpassword?brandcode=${brand_code}&hash=${hash}`,
+      "",
+      config
+    );
+    if (data.code === 200) {
+      return data;
+    } else {
+      return false;
+    }
+  },
 };

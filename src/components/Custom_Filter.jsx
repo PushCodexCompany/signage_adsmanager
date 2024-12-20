@@ -180,7 +180,6 @@ const Custom_Filter = ({
             "",
             JSON.stringify(obj)
           );
-          console.log("data", data);
           if (data.code === 200) {
             setUserLists(data.users);
             if (data.pagination.length > 0) {

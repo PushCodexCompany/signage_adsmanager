@@ -104,7 +104,6 @@ const User_Management = () => {
   const fetchUsersList = async () => {
     if (searchTerm === null) {
       const data = await User.getUsersList(token, 1);
-      console.log("data", data);
       set_default_user_lists(data.users);
       setUserLists(data.users);
       if (data.pagination.length > 0) {

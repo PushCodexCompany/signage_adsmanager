@@ -41,10 +41,14 @@ const Edit_Merchandises = () => {
   const [company_phone, setCompanyPhone] = useState();
 
   const [isEdit, setIsEdit] = useState(false);
+  const [isView, setIsView] = useState(false);
 
   useEffect(() => {
     if (id !== "new") {
       fetchMerchandise();
+      if (location.state.isView) {
+        setIsView(location.state.isView);
+      }
     }
   }, [id]);
 
@@ -399,7 +403,11 @@ const Edit_Merchandises = () => {
           lv2={"Create/Edit Customer"}
         />
         <div className="mt-10 mb-5 font-bold text-2xl font-poppins">
-          {id === "new" ? "Create Customer" : "Edit Customer"}
+          {isView
+            ? "View Customer"
+            : id !== "new"
+            ? "Edit Customer"
+            : "New Customer"}
         </div>
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-1/2 p-4">
@@ -430,6 +438,7 @@ const Edit_Merchandises = () => {
                     }
                     setMerchandiseName(e.target.value);
                   }}
+                  disabled={isView}
                 />
                 <MdOutlineModeEditOutline className="absolute right-2 w-10 text-[#6425FE]" />
               </div>
@@ -450,26 +459,34 @@ const Edit_Merchandises = () => {
                 </div>
               )}
             </div>
-            <div className="mt-4 flex items-center justify-center">
-              <button
-                onClick={() => handleButtonClick()}
-                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white font-bold w-[300px] h-[45px] rounded-lg font-poppins"
-              >
-                Upload New Image
-              </button>
-              <input
-                type="file"
-                accept=".png, .jpg"
-                style={{ display: "none" }}
-                ref={fileInputRef}
-                onChange={handleFileUpload}
-              />
-            </div>
-            <div className="mt-4 flex items-center justify-center">
-              <div className="font-poppins">
-                Upload Customer logo to enhance brand presence222
+            {!isView ? (
+              <div className="mt-4 flex items-center justify-center">
+                <button
+                  onClick={() => handleButtonClick()}
+                  className="bg-[#6425FE]  hover:bg-[#3b1694] text-white font-bold w-[300px] h-[45px] rounded-lg font-poppins"
+                >
+                  Upload New Image
+                </button>
+                <input
+                  type="file"
+                  accept=".png, .jpg"
+                  style={{ display: "none" }}
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                />
               </div>
-            </div>
+            ) : (
+              <></>
+            )}
+            {!isView ? (
+              <div className="mt-4 flex items-center justify-center">
+                <div className="font-poppins">
+                  Upload Customer logo to enhance brand presence
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="w-full lg:w-1/2 p-4 lg:pl-8 border border-gray-300">
             <div className="mt-3 mb-5 font-bold text-2xl font-poppins">
@@ -502,6 +519,7 @@ const Edit_Merchandises = () => {
                     setContactPersonName(e.target.value);
                   }}
                   className="border border-gray-300 rounded-lg p-3 pr-10 w-full font-bold focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                  disabled={isView}
                 />
               </div>
             </div>
@@ -531,6 +549,7 @@ const Edit_Merchandises = () => {
                       setContactPersonDep(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
@@ -558,6 +577,7 @@ const Edit_Merchandises = () => {
                       setContactPersonPos(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
@@ -589,6 +609,7 @@ const Edit_Merchandises = () => {
                       setContactPersonEmail(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
@@ -620,6 +641,7 @@ const Edit_Merchandises = () => {
                       setContactPersonPhone(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
@@ -653,6 +675,7 @@ const Edit_Merchandises = () => {
                       setCompanyName(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
@@ -681,6 +704,7 @@ const Edit_Merchandises = () => {
                       setCompanyPhone(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
@@ -710,6 +734,7 @@ const Edit_Merchandises = () => {
                       setCompanyTaxId(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
@@ -738,30 +763,41 @@ const Edit_Merchandises = () => {
                       setCompanyTaxAddress(e.target.value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
+                    disabled={isView}
                   />
                 </div>
               </div>
             </div>
+            {!isView ? (
+              <div className="flex items-center mt-3">
+                <div className="font-poppins">
+                  Please provide details as they will be used in generating
+                  quotations for your campaigns
+                </div>
+              </div>
+            ) : (
+              <></>
+            )}
 
-            <div className="flex items-center mt-3">
-              <div className="font-poppins">
-                Please provide details as they will be used in generating
-                quotations for your campaigns
-              </div>
-            </div>
             {merchandise_id ? (
-              <div className="mt-4 flex items-center justify-center">
-                <button
-                  onClick={() => handleEdit()}
-                  className={`${
-                    isEdit
-                      ? "bg-[#6425FE] hover:bg-[#6325fe86]"
-                      : "bg-gray-500 hover:bg-gray-800"
-                  } text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins`}
-                >
-                  Save
-                </button>
-              </div>
+              <>
+                {!isView ? (
+                  <div className="mt-4 flex items-center justify-center">
+                    <button
+                      onClick={() => handleEdit()}
+                      className={`${
+                        isEdit
+                          ? "bg-[#6425FE] hover:bg-[#6325fe86]"
+                          : "bg-gray-500 hover:bg-gray-800"
+                      } text-white font-bold w-[300px] h-[45px] rounded-lg mt-10 font-poppins`}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
             ) : (
               <div className="mt-4 flex items-center justify-center">
                 <button

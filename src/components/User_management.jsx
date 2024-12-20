@@ -9,7 +9,12 @@ import Encryption from "../libs/encryption";
 import User from "../libs/admin";
 import Filter from "../components/Custom_Filter";
 
-const User_Management = ({ setShowUserMng, showUserMng }) => {
+const User_Management = ({
+  setShowUserMng,
+  showUserMng,
+  setFactChgPassword,
+  fact_chgPassword,
+}) => {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isRoleOpen, setIsRoleOpen] = useState(false);
   const [filter, setFilter] = useState([]);
@@ -259,7 +264,12 @@ const User_Management = ({ setShowUserMng, showUserMng }) => {
           {/* Close button - adjust positioning */}
           <div className={`absolute -top-4 -right-4 m-4 z-20`}>
             <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
-              <button onClick={() => setShowUserMng(!showUserMng)}>
+              <button
+                onClick={() => {
+                  setShowUserMng(!showUserMng);
+                  setFactChgPassword(!fact_chgPassword);
+                }}
+              >
                 <IoIosClose size={25} color={"#6425FE"} />
               </button>
             </div>
