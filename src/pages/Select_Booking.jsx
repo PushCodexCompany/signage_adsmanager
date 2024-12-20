@@ -464,9 +464,9 @@ const Select_Booking = () => {
                   month: "short",
                 })} ${new Date(lastest_publish_date).getFullYear()} ${new Date(
                   lastest_publish_date
-                ).getHours()}:${new Date(
-                  lastest_publish_date
-                ).getMinutes()}:${String(
+                ).getHours()}:${String(
+                  new Date(lastest_publish_date).getMinutes()
+                ).padStart(2, "0")}:${String(
                   new Date(lastest_publish_date).getSeconds()
                 ).padStart(2, "0")}`}{" "}
                 by {lastest_publish_name}
