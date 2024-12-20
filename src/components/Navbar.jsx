@@ -104,7 +104,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
           </div>
           <div className="basis-4/12 lg:basis-2/12">
             <div className="flex divide-x-1 divide-gray-300">
-              {select_campaign && (
+              {/* {select_campaign && (
                 <NavButton
                   title="Notification"
                   dotColor="red"
@@ -112,7 +112,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
                   color={"#000000"}
                   icon={<RiNotification3Line />}
                 />
-              )}
+              )} */}
 
               <TooltipComponent content="Profile" position="BottomCenter">
                 <div

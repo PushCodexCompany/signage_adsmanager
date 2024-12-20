@@ -275,7 +275,7 @@ const Brands = () => {
                     {items.BrandName}
                   </div>
                   <div className="text-[14px] text-slate-500 font-poppins">
-                    {items.BrandCode}
+                    Brand Code :{items.BrandCode}
                   </div>
                 </button>
               </div>

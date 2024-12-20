@@ -226,6 +226,7 @@ const Create_Role_Permission = ({
       conf,
       isLog,
       isBookingContMng,
+      isDPM,
     }) => {
       const header = ["create", "delete", "update", "view"];
 
@@ -243,6 +244,11 @@ const Create_Role_Permission = ({
         } else if (isBookingContMng) {
           const result = items.filter(
             (item) => item === "view" || item === "update" || item === "delete"
+          );
+          setFilteredItems(result);
+        } else if (isDPM) {
+          const result = items.filter(
+            (item) => item === "view" || item === "create" || item === "update"
           );
           setFilteredItems(result);
         } else {
@@ -614,6 +620,7 @@ const Create_Role_Permission = ({
                           roleData.permissions?.digiPlaylistMgt
                         )}
                         data={roleData.permissions?.digiPlaylistMgt}
+                        isDPM={true}
                       />
                       <CheckboxGroup
                         title="dBoard"

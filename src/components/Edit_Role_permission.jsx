@@ -68,6 +68,7 @@ const Edit_Role_permission = ({
       conf,
       isLog,
       isBookingContMng,
+      isDPM,
     }) => {
       const header = ["create", "delete", "update", "view"];
 
@@ -85,6 +86,11 @@ const Edit_Role_permission = ({
         } else if (isBookingContMng) {
           const result = items.filter(
             (item) => item === "view" || item === "update" || item === "delete"
+          );
+          setFilteredItems(result);
+        } else if (isDPM) {
+          const result = items.filter(
+            (item) => item === "view" || item === "create" || item === "update"
           );
           setFilteredItems(result);
         } else {
@@ -481,6 +487,7 @@ const Edit_Role_permission = ({
                             roleData?.permissions?.digiPlaylistMgt
                           )}
                           data={roleData?.permissions?.digiPlaylistMgt}
+                          isDPM={true}
                         />
                       )}
                       {roleData?.permissions?.dBoard && (

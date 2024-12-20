@@ -130,6 +130,8 @@ const Ads_Allocation_Booking = ({
     ]);
 
     setPagePermission(permissions?.digiBookContMgt);
+    console.log("digiBookContMgt", permissions?.digiBookContMgt);
+    console.log("digiPlaylistMgt", permissions?.digiPlaylistMgt);
     setPlaylistPermission(permissions?.digiPlaylistMgt);
   };
 
@@ -631,7 +633,9 @@ const Ads_Allocation_Booking = ({
           draggableId={`panel1-${index}`}
           index={index}
           isDragDisabled={
-            page_permission?.craete || page_permission?.update ? false : true
+            playlist_permission?.craete || playlist_permission?.update
+              ? false
+              : true
           }
         >
           {(provided) => (
@@ -643,37 +647,48 @@ const Ads_Allocation_Booking = ({
             >
               {items?.ContentID ? (
                 <div className="flex items-center mr-1">
-                  {page_permission?.craete || page_permission?.update ? (
+                  {playlist_permission?.craete ||
+                  playlist_permission?.update ? (
                     <div>
                       {processedMediaList.filter(
                         (item) => item.ContentID === null
                       ).length > 0 && (
                         <>
-                          <IoIosAddCircle
-                            size={24}
-                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                            onClick={() => handleAddMediaPlaylistItem(index)}
-                          />
+                          {playlist_permission?.create ||
+                          playlist_permission?.update ? (
+                            <IoIosAddCircle
+                              size={24}
+                              className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                              onClick={() => handleAddMediaPlaylistItem(index)}
+                            />
+                          ) : (
+                            <></>
+                          )}
                         </>
                       )}
-                      <IoIosRemoveCircle
-                        size={24}
-                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                        onClick={() => {
-                          if (
-                            page_permission?.craete ||
-                            page_permission?.update
-                          ) {
-                            handleRemoveMediaPlaylistItem(index);
-                          } else {
-                            Swal.fire({
-                              icon: "error",
-                              title: "เกิดข้อผิดพลาด!",
-                              text: "คุณไม่มีสิทธิ์ในการจัดการ Playlist ...",
-                            });
-                          }
-                        }}
-                      />
+                      {playlist_permission.create ||
+                      playlist_permission.update ? (
+                        <IoIosRemoveCircle
+                          size={24}
+                          className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                          onClick={() => {
+                            if (
+                              playlist_permission?.create ||
+                              playlist_permission?.update
+                            ) {
+                              handleRemoveMediaPlaylistItem(index);
+                            } else {
+                              Swal.fire({
+                                icon: "error",
+                                title: "เกิดข้อผิดพลาด!",
+                                text: "คุณไม่มีสิทธิ์ในการจัดการ Playlist ...",
+                              });
+                            }
+                          }}
+                        />
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   ) : (
                     <></>
@@ -726,7 +741,8 @@ const Ads_Allocation_Booking = ({
                           </div>
                         </div>
                       </div>
-                      {page_permission?.craete || page_permission?.update ? (
+                      {playlist_permission?.craete ||
+                      playlist_permission?.update ? (
                         <div className="col-span-1 flex justify-start items-center">
                           <MdDragHandle size={26} className="text-[#6425FE]" />
                         </div>
@@ -740,7 +756,7 @@ const Ads_Allocation_Booking = ({
                 <div className="flex items-center" key={`empty${currentIndex}`}>
                   <IoIosRemoveCircle
                     size={24}
-                    className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0"
+                    className={`text-[#6425FE] hover:text-[#3b1694] cursor-pointer opacity-0`}
                   />
                   <div className="flex-1">
                     <div
@@ -754,7 +770,12 @@ const Ads_Allocation_Booking = ({
                           setMediaAllocatonUploadIndex(index);
                         }
                       }}
-                      className="grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847] cursor-pointer w-[265px] lg:w-[320px]"
+                      className={`grid grid-cols-11 h-[80px] border border-dashed border-[#2F3847]  w-[265px] lg:w-[320px] ${
+                        playlist_permission?.create ||
+                        playlist_permission?.update
+                          ? "cursor-pointer"
+                          : ""
+                      }`}
                     >
                       <div className="col-span-2 flex justify-center items-center">
                         <div className="font-poppins text-[#2F3847] text-[40px] font-bold">
@@ -1588,14 +1609,19 @@ const Ads_Allocation_Booking = ({
                                     className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
                                   />
                                 )}
-
-                                <div className="relative">
-                                  <IoIosAdd
-                                    size={24}
-                                    className="mt-1 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                    onClick={handleToggleDropdownApplyToScreen}
-                                  />
-                                </div>
+                                {page_permission.update ? (
+                                  <div className="relative">
+                                    <IoIosAdd
+                                      size={24}
+                                      className="mt-1 text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                      onClick={
+                                        handleToggleDropdownApplyToScreen
+                                      }
+                                    />
+                                  </div>
+                                ) : (
+                                  <></>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -1686,13 +1712,17 @@ const Ads_Allocation_Booking = ({
                           </div>
                           <div className="col-span-1">
                             <div className="p-2">
-                              <div className="flex justify-center items-center">
-                                <IoIosAddCircle
-                                  size={24}
-                                  onClick={handleAddDatePicker}
-                                  className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
-                                />
-                              </div>
+                              {page_permission?.update ? (
+                                <div className="flex justify-center items-center">
+                                  <IoIosAddCircle
+                                    size={24}
+                                    onClick={handleAddDatePicker}
+                                    className="mt-1 text-[#6425FE] hover:text-[#3b1694]"
+                                  />
+                                </div>
+                              ) : (
+                                <></>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -2081,7 +2111,12 @@ const Ads_Allocation_Booking = ({
                                                 key={`panel2-${index}`}
                                                 draggableId={`panel2-${items.ContentID}`}
                                                 index={index}
-                                                // isDragDisabled={true}
+                                                isDragDisabled={
+                                                  playlist_permission?.craete ||
+                                                  playlist_permission?.update
+                                                    ? false
+                                                    : true
+                                                }
                                               >
                                                 {(provided) => (
                                                   <div
@@ -2230,6 +2265,12 @@ const Ads_Allocation_Booking = ({
                                                 key={`panel2-${index}`}
                                                 draggableId={`panel2-${items.ContentID}`}
                                                 index={index}
+                                                isDragDisabled={
+                                                  playlist_permission?.craete ||
+                                                  playlist_permission?.update
+                                                    ? false
+                                                    : true
+                                                }
                                               >
                                                 {(provided) => (
                                                   <div
@@ -2377,6 +2418,12 @@ const Ads_Allocation_Booking = ({
                                                 key={`panel2-${index}`}
                                                 draggableId={`panel2-${items.ContentID}`}
                                                 index={index}
+                                                isDragDisabled={
+                                                  playlist_permission?.craete ||
+                                                  playlist_permission?.update
+                                                    ? false
+                                                    : true
+                                                }
                                               >
                                                 {(provided) => (
                                                   <div

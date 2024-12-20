@@ -9,6 +9,7 @@ const Edit_tag_category = ({
   modalEditCategory,
   select_cat,
   getTagData,
+  getCategoryTag,
 }) => {
   const { token } = User.getCookieData();
 
@@ -109,6 +110,7 @@ const Edit_tag_category = ({
                   ) {
                     getTagCategory();
                     setModalEditCategory(!modalEditCategory);
+                    getCategoryTag();
                   }
                 });
               } else {

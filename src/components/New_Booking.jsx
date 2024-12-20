@@ -660,7 +660,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                 } overflow-x-auto mt-2`}
               >
                 <table className="min-w-full border border-gray-300">
-                  <thead className="sticky -top-1 bg-gray-200 z-10">
+                  <thead className="sticky -top-1 bg-gray-200 z-5">
                     <tr>
                       <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                         ID

@@ -462,9 +462,9 @@ const Select_Booking = () => {
                   "0"
                 )} ${new Date(lastest_publish_date).toLocaleString("en-US", {
                   month: "short",
-                })} ${new Date(lastest_publish_date).getFullYear()} ${new Date(
-                  lastest_publish_date
-                ).getHours()}:${String(
+                })} ${new Date(lastest_publish_date).getFullYear()} ${String(
+                  new Date(lastest_publish_date).getHours()
+                ).padStart(2, "0")}:${String(
                   new Date(lastest_publish_date).getMinutes()
                 ).padStart(2, "0")}:${String(
                   new Date(lastest_publish_date).getSeconds()
@@ -551,7 +551,7 @@ const Select_Booking = () => {
                             <PiMonitor size={40} color={"#59606C"} />
                           </div>
                           <div className="col-span-6">
-                            <div className="flex justify-start items-center group relative z-20">
+                            <div className="flex justify-start items-center group relative">
                               <div className="font-poppins lg:text-xl md:text-md font-bold">
                                 {items.ScreenName.length > 12 ? (
                                   <>
@@ -957,6 +957,9 @@ const Select_Booking = () => {
           showPublishScreen={showPublishScreen}
           bookingId={bookingId}
           screen={screen}
+          bookingName={bookingName}
+          setLastestPublishDate={setLastestPublishDate}
+          setLastestPublishName={setLastestPublishName}
         />
       )}
       {openInfoScreenModal && (

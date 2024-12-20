@@ -10,6 +10,9 @@ const Publish_Screen_Booking = ({
   showPublishScreen,
   bookingId,
   screen,
+  bookingName = { bookingName },
+  setLastestPublishDate,
+  setLastestPublishName,
 }) => {
   const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
     <TooltipComponent content={title} position="BottomCenter">
@@ -112,11 +115,17 @@ const Publish_Screen_Booking = ({
                 icon: "success",
                 title: "Publish Booking สำเร็จ!",
                 text: `Publish Booking สำเร็จ!`,
-              }).then((result) => {
+              }).then(async (result) => {
                 if (
                   result.isConfirmed ||
                   result.dismiss === Swal.DismissReason.backdrop
                 ) {
+                  const data = await User.getBooking(token, 1, bookingName);
+                  if (data.code === 200) {
+                    setLastestPublishName(data.booking[0].PublishBy);
+                    setLastestPublishDate(data.booking[0].LastPublish);
+                  }
+
                   setShowPublishScreen(!showPublishScreen);
                 }
               });
