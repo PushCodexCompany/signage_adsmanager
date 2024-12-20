@@ -189,7 +189,6 @@ export const GridTable = ({ merchandise, page_permission, getMerchendise }) => {
   };
 
   const onClickView = (merchandise) => {
-    console.log("data", merchandise);
     navigate(`/edit_merchandise/${merchandise.AdvertiserID}`, {
       state: { merchandise: merchandise, isView: true },
     });
