@@ -24,6 +24,8 @@ const Custom_Filter = ({
   setMediaLibralyData,
   fetchUsersList,
   setUserLists,
+  setExportData,
+  setTotalPage,
 }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
@@ -95,7 +97,9 @@ const Custom_Filter = ({
           );
           if (data.code === 200) {
             setLogData(data.activitylog);
+            setExportData(data.activitylog);
             if (data.pagination.length > 0) {
+              setTotalPage(data.pagination[0].totalpage);
               setAllPages(data.pagination[0].totalpage);
             }
           }
@@ -155,7 +159,9 @@ const Custom_Filter = ({
           );
           if (data.code === 200) {
             setLogData(data.activitylog);
+            setExportData(data.activitylog);
             if (data.pagination.length > 0) {
+              setTotalPage(data.pagination[0].totalpage);
               setAllPages(data.pagination[0].totalpage);
             }
           }
@@ -229,7 +235,9 @@ const Custom_Filter = ({
         );
         if (data.code === 200) {
           setLogData(data.activitylog);
+          setExportData(data.activitylog);
           if (data.pagination.length > 0) {
+            setTotalPage(data.pagination[0].totalpage);
             setAllPages(data.pagination[0].totalpage);
           }
         }
@@ -302,7 +310,9 @@ const Custom_Filter = ({
         );
         if (data.code === 200) {
           setLogData(data.activitylog);
+          setExportData(data.activitylog);
           if (data.pagination.length > 0) {
+            setTotalPage(data.pagination[0].totalpage);
             setAllPages(data.pagination[0].totalpage);
           }
         }
@@ -342,7 +352,9 @@ const Custom_Filter = ({
         );
         if (data.code === 200) {
           setLogData(data.activitylog);
+          setExportData(data.activitylog);
           if (data.pagination.length > 0) {
+            setTotalPage(data.pagination[0].totalpage);
             setAllPages(data.pagination[0].totalpage);
           }
         }

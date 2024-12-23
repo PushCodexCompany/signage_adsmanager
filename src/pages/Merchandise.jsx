@@ -22,7 +22,7 @@ const Merchandise = () => {
 
   useEffect(() => {
     getMerchendise();
-  }, []);
+  }, [searchTerm]);
 
   useEffect(() => {
     getPermission();
@@ -30,11 +30,13 @@ const Merchandise = () => {
 
   const getMerchendise = async () => {
     const { token } = User.getCookieData();
-    try {
+
+    if (searchTerm === null) {
       const data = await User.getMerchandiseList(token);
       setMerchandise(data);
-    } catch (error) {
-      console.error("Error : ", error);
+    } else {
+      const data = await User.getMerchandiseList(token, searchTerm);
+      setMerchandise(data);
     }
   };
 
@@ -88,7 +90,7 @@ const Merchandise = () => {
           page_name={"adMerch"}
         />
         <div className="mt-5">
-          {merchandise.length > 0 ? (
+          {merchandise?.length > 0 ? (
             <GridTable
               merchandise={merchandise}
               // all_pages={all_pages}

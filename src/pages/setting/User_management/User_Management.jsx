@@ -18,8 +18,8 @@ const User_Management = () => {
   const [brand, setBrand] = useState([]);
   const [merchandise, setMerchandise] = useState([]);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
-  const [isRoleOpen, setIsRoleOpen] = useState(false);
-  const [filterActive, setFilterActive] = useState([]);
+  // const [isRoleOpen, setIsRoleOpen] = useState(false);
+  // const [filterActive, setFilterActive] = useState([]);
   const [filterRole, setFilterRole] = useState([]);
 
   const [user_lists, setUserLists] = useState([]);
@@ -57,13 +57,13 @@ const User_Management = () => {
     getBrandAndMerch();
   }, []);
 
-  useEffect(() => {
-    if (filterActive.length > 0 || filterRole.length > 0) {
-      filterList();
-    } else {
-      fetchUsersList();
-    }
-  }, [filterActive, filterRole]);
+  // useEffect(() => {
+  //   if (filterActive?.length > 0 || filterRole?.length > 0) {
+  //     filterList();
+  //   } else {
+  //     fetchUsersList();
+  //   }
+  // }, [filterActive, filterRole]);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -75,49 +75,55 @@ const User_Management = () => {
     };
   }, []);
 
-  const filterList = () => {
-    const mapFilterValues = (value) => {
-      if (value === "Deactive") return 0;
-      if (value === "Active") return 1;
-      return value;
-    };
-
-    const filter = {
-      Actived: filterActive.map(mapFilterValues),
-      RoleName: filterRole,
-    };
-
-    const filterLists = default_user_lists.filter((user) => {
-      const mappedActivated = mapFilterValues(user.Activated);
-
-      const filterActived =
-        filter.Actived.length === 0 || filter.Actived.includes(mappedActivated);
-      const filterRoleName =
-        filter.RoleName.length === 0 || filter.RoleName.includes(user.RoleName);
-
-      return filterActived && filterRoleName;
-    });
-
-    setUserLists(filterLists);
-  };
+  useEffect(() => {
+    fetchUsersList();
+  }, [searchTerm]);
 
   const fetchUsersList = async () => {
     if (searchTerm === null) {
       const data = await User.getUsersList(token, 1);
       set_default_user_lists(data.users);
       setUserLists(data.users);
-      if (data.pagination.length > 0) {
+      if (data.pagination?.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
       const data = await User.getUsersList(token, 1, searchTerm);
       set_default_user_lists(data.users);
       setUserLists(data.users);
-      if (data.pagination.length > 0) {
+      if (data.pagination?.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
     }
   };
+
+  // const filterList = () => {
+  //   const mapFilterValues = (value) => {
+  //     if (value === "Deactive") return 0;
+  //     if (value === "Active") return 1;
+  //     return value;
+  //   };
+
+  //   const filter = {
+  //     Actived: filterActive.map(mapFilterValues),
+  //     RoleName: filterRole,
+  //   };
+
+  //   const filterLists = default_user_lists.filter((user) => {
+  //     const mappedActivated = mapFilterValues(user.Activated);
+
+  //     const filterActived =
+  //       filter.Actived?.length === 0 ||
+  //       filter.Actived.includes(mappedActivated);
+  //     const filterRoleName =
+  //       filter.RoleName?.length === 0 ||
+  //       filter.RoleName.includes(user.RoleName);
+
+  //     return filterActived && filterRoleName;
+  //   });
+
+  //   setUserLists(filterLists);
+  // };
 
   const fetchRoleData = async () => {
     const roles = await User.getUserRoles(token);
@@ -151,55 +157,6 @@ const User_Management = () => {
 
   const toggleStatusSelect = () => {
     setIsStatusOpen((prevIsOpen) => !prevIsOpen);
-  };
-
-  const toggleRoleSelect = () => {
-    setIsRoleOpen((prevIsOpen) => !prevIsOpen);
-  };
-
-  const handleStatusChange = (event, type) => {
-    const selectedValue = event.target.value;
-    if (selectedValue === "0") {
-      alert("Please select a valid status.");
-    } else {
-      if (type === "Actived") {
-        setFilterActive((prevFilter) => {
-          if (prevFilter.includes(selectedValue)) {
-            return prevFilter; // Already selected, no change
-          } else {
-            return [...prevFilter, selectedValue]; // Add the selected value to the filter state
-          }
-        });
-      } else if (type === "RoleName") {
-        setFilterRole((prevFilter) => {
-          if (prevFilter.includes(selectedValue)) {
-            return prevFilter; // Already selected, no change
-          } else {
-            return [...prevFilter, selectedValue]; // Add the selected value to the filter state
-          }
-        });
-      }
-    }
-  };
-
-  const removeFilter = (event, type) => {
-    const selectedValue = event;
-    if (type === "Actived") {
-      const updatedFilter = filterActive.filter(
-        (value) => value !== selectedValue
-      );
-      setFilterActive(updatedFilter);
-    } else if (type === "RoleName") {
-      const updatedFilter = filterRole.filter(
-        (value) => value !== selectedValue
-      );
-      setFilterRole(updatedFilter);
-    }
-  };
-
-  const clearFilter = () => {
-    setFilterActive([]);
-    setFilterRole([]);
   };
 
   const findBrandImg = (id) => {
@@ -366,8 +323,9 @@ const User_Management = () => {
           setUserLists={setUserLists}
           setAllPages={setAllPages}
         />
-        <div className="mt-5">
-          {user_lists.length > 0 && (
+
+        {user_lists?.length > 0 ? (
+          <div className="mt-5">
             <GridTable
               user_lists={user_lists}
               page_permission={page_permission}
@@ -377,8 +335,14 @@ const User_Management = () => {
               filter_screen={filter_screen}
               all_pages={all_pages}
             />
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-[550px] text-center ">
+            <div className="font-poppins text-5xl text-[#dedede]">
+              --- No data ---
+            </div>
+          </div>
+        )}
       </div>
 
       {modalNewUser && (
@@ -572,7 +536,7 @@ const User_Management = () => {
                     <div className="font-poppins text-[#8A8A8A] text-right"></div>
                   </div>
                   <div className="col-span-8">
-                    {reg_brand.length > 0 && (
+                    {reg_brand?.length > 0 && (
                       <div className="flex items-center space-x-4">
                         {reg_brand.map((item, index) => (
                           <div key={index} className="flex">
@@ -613,7 +577,7 @@ const User_Management = () => {
                     <div className="font-poppins text-[#8A8A8A] text-right"></div>
                   </div>
                   <div className="col-span-8">
-                    {reg_merchandise.length > 0 && (
+                    {reg_merchandise?.length > 0 && (
                       <div className="flex  items-center space-x-4 ">
                         {reg_merchandise.map((item, index) => (
                           <div key={index} className="flex items-center">
@@ -670,7 +634,7 @@ const User_Management = () => {
               <div className="h-[500px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
-                    {brand.length > 0 &&
+                    {brand?.length > 0 &&
                       brand.map((item, index) => (
                         <div key={index}>
                           <div className="h-64 w-64 relative">
@@ -765,7 +729,7 @@ const User_Management = () => {
               <div className="h-[500px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
-                    {merchandise.length > 0 &&
+                    {merchandise?.length > 0 &&
                       merchandise.map((item, index) => (
                         <div key={index}>
                           <div className="h-64 w-64 relative">

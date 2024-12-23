@@ -15,9 +15,13 @@ const Media_rules = () => {
   const [media_rules, setMediaRulesData] = useState([]);
   const [page_permission, setPagePermission] = useState([]);
   const [filter_screen, setFilterScreen] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   useEffect(() => {
     getMediaRulesData();
+  }, [searchTerm]);
+
+  useEffect(() => {
     setPermission();
   }, []);
 
@@ -25,6 +29,14 @@ const Media_rules = () => {
     const { token } = User.getCookieData();
     const media_rules = await User.getMediaRules(token);
     setMediaRulesData(media_rules);
+
+    if (searchTerm === null) {
+      const media_rules = await User.getMediaRules(token);
+      setMediaRulesData(media_rules);
+    } else {
+      const media_rules = await User.getMediaRules(token, searchTerm);
+      setMediaRulesData(media_rules);
+    }
   };
 
   const setPermission = async () => {
@@ -46,7 +58,7 @@ const Media_rules = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Setting"} lv2={"media_rule"} />
         <div className="grid grid-cols-10 mt-10">

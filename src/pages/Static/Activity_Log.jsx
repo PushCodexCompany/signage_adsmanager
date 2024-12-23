@@ -9,6 +9,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import Permission from "../../libs/permission";
 import Swal from "sweetalert2";
+import { format } from "date-fns";
 
 const Activity_Log = () => {
   useCheckPermission();
@@ -28,6 +29,7 @@ const Activity_Log = () => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [total_page, setTotalPage] = useState([]);
 
   useEffect(() => {
     getLogData();
@@ -43,12 +45,11 @@ const Activity_Log = () => {
       setLogData(data.activitylog);
       setExportData(data.activitylog);
       if (data.pagination.length > 0) {
+        setTotalPage(data.pagination[0].totalpage);
         setCurrentPagePdf(data.pagination[0].currentpage);
+        setAllPages(data.pagination[0].totalpage);
       } else {
         setCurrentPagePdf(0);
-      }
-      if (data.pagination.length > 0) {
-        setAllPages(data.pagination[0].totalpage);
       }
     } else {
       const data = await User.getActivitylog(token, 1, searchTerm);
@@ -56,11 +57,9 @@ const Activity_Log = () => {
       setExportData(data.activitylog);
       if (data.pagination.length > 0) {
         setCurrentPagePdf(data.pagination[0].currentpage);
+        setAllPages(data.pagination[0].totalpage);
       } else {
         setCurrentPagePdf(0);
-      }
-      if (data.pagination.length > 0) {
-        setAllPages(data.pagination[0].totalpage);
       }
     }
   };
@@ -88,47 +87,137 @@ const Activity_Log = () => {
     }
   };
 
-  const handleExport = () => {
-    const doc = new jsPDF();
-
-    // Convert log_data to an array of objects for the table
-    const logs = exportData.map((entry) => [
-      entry.ActivitiyID.toString(),
-      generateActionString(entry.Action),
-      entry.TargetField,
-      entry.OnTable,
-      entry.IndexValue,
-      entry.OldvValue,
-      entry.NewValue,
-      entry.ByUser,
-      entry.ActionDate,
-    ]);
-
-    // Add table to the PDF
-    doc.autoTable({
-      head: [
-        [
-          "Activitiy ID",
-          "Action",
-          "Target Field",
-          "On Table",
-          "Index Value",
-          "Old Value",
-          "New Value",
-          "By User",
-          "Action Date",
-        ],
-      ],
-      body: logs,
-      startY: 20,
-      margin: { top: 30 },
-      styles: { fontSize: 10 }, // Adjust font size if needed
+  const handleExportAllPage = async () => {
+    Swal.fire({
+      title: "กำลังรวบรวมข้อมูล...",
+      html: "กรุณารอสักครู่...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
     });
-    // Save the PDF
-    const date = new Date().getDate();
-    const month = new Date().getMonth() + 1;
-    const year = new Date().getFullYear();
-    doc.save(`activity_log_page${currentPagePdf}_${date}/${month}/${year}`);
+
+    try {
+      const result = filter_screen.join(",");
+      const obj = {
+        filterfields: result,
+        startDate: format(new Date(startDate), "yyyy-MM-dd"),
+        endDate: format(new Date(endDate), "yyyy-MM-dd"),
+      };
+
+      const export_data = [];
+
+      for (let i = 1; i <= total_page; i++) {
+        try {
+          const data = await User.getActivitylog(
+            token,
+            i,
+            searchTerm,
+            JSON.stringify(obj)
+          );
+          export_data.push(...data.activitylog); // Append to the array
+        } catch (error) {
+          console.error(`Error fetching activity log for page ${i}:`, error);
+        }
+      }
+
+      const doc = new jsPDF();
+
+      const logs = export_data.map((entry) => [
+        entry.ActivitiyID.toString(),
+        generateActionString(entry.Action),
+        entry.TargetField,
+        entry.OnTable,
+        entry.IndexValue,
+        entry.OldvValue,
+        entry.NewValue,
+        entry.ByUser,
+        entry.ActionDate,
+      ]);
+
+      doc.autoTable({
+        head: [
+          [
+            "Activitiy ID",
+            "Action",
+            "Target Field",
+            "On Table",
+            "Index Value",
+            "Old Value",
+            "New Value",
+            "By User",
+            "Action Date",
+          ],
+        ],
+        body: logs,
+        startY: 20,
+        margin: { top: 30 },
+        styles: { fontSize: 10 }, // Adjust font size if needed
+      });
+      const date = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      doc.save(`activity_log_${date}/${month}/${year}`);
+    } finally {
+      Swal.close();
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Export Data!",
+      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+    });
+  };
+
+  const handleExportCurrent = async () => {
+    try {
+      const doc = new jsPDF();
+
+      const logs = exportData.map((entry) => [
+        entry.ActivitiyID.toString(),
+        generateActionString(entry.Action),
+        entry.TargetField,
+        entry.OnTable,
+        entry.IndexValue,
+        entry.OldvValue,
+        entry.NewValue,
+        entry.ByUser,
+        entry.ActionDate,
+      ]);
+
+      doc.autoTable({
+        head: [
+          [
+            "Activitiy ID",
+            "Action",
+            "Target Field",
+            "On Table",
+            "Index Value",
+            "Old Value",
+            "New Value",
+            "By User",
+            "Action Date",
+          ],
+        ],
+        body: logs,
+        startY: 20,
+        margin: { top: 30 },
+        styles: { fontSize: 10 }, // Adjust font size if needed
+      });
+      const date = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      doc.save(`activity_log_page${currentPagePdf}_${date}/${month}/${year}`);
+    } finally {
+      Swal.close();
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Export Data!",
+      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+    });
   };
 
   const setPermission = async () => {
@@ -163,10 +252,16 @@ const Activity_Log = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               <button
-                onClick={handleExport}
-                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+                onClick={handleExportCurrent}
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
-                Export
+                Export Current Page
+              </button>
+              <button
+                onClick={handleExportAllPage}
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+              >
+                Export All Page
               </button>
             </div>
           </div>
@@ -181,6 +276,8 @@ const Activity_Log = () => {
           setAllPages={setAllPages}
           setStartDate={setStartDate}
           setEndDate={setEndDate}
+          setTotalPage={setTotalPage}
+          setExportData={setExportData}
         />
 
         <div className="mt-5">

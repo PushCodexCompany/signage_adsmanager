@@ -356,13 +356,13 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
         <>
           <a
             onClick={() => setModalChangePassword(!modal_change_password)}
-            className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+            className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-30 backdrop-blur"
           />
         </>
       )}
 
       {modal_change_password && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 overflow-x-auto">
           {/* Main centered content container */}
           <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
             {/* Close button - adjust positioning */}

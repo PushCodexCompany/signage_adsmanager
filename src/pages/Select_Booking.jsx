@@ -39,6 +39,7 @@ const Select_Booking = () => {
   const [booking_date, setBookingDate] = useState([]);
   const [booking_slot, setBookingSlot] = useState([]);
   const [booking_col, setBookingCol] = useState();
+  const [booking_status, setBookingStatus] = useState();
 
   const [showPublishScreen, setShowPublishScreen] = useState(false);
   const [showRemoveContent, setShowRemoveContent] = useState(false);
@@ -103,6 +104,7 @@ const Select_Booking = () => {
       BookingID,
       LastPublish,
       PublishBy,
+      BookingStatus,
     } = location.state.data;
 
     setBookingName(BookingName);
@@ -122,6 +124,7 @@ const Select_Booking = () => {
     const booking_content = await User.getBookingContent(BookingID, token);
 
     calculateSize(booking_content);
+    setBookingStatus(BookingStatus);
 
     // get Screen Data
     const uniqueScreenIDs = [
@@ -450,7 +453,13 @@ const Select_Booking = () => {
         <Header lv1={"Booking"} lv1Url={"/booking"} lv2={bookingName} />
         <div className="grid grid-cols-10 mt-5">
           <div className="col-span-3 flex items-center border border-gray-300 rounded-md">
-            <EditableText initialValue={bookingName} />
+            {booking_status !== 3 ? (
+              <EditableText initialValue={bookingName} />
+            ) : (
+              <div className="font-poppins h-[32px] font-semibold text-2xl w-full pl-2 rounded-lg">
+                {bookingName}
+              </div>
+            )}
           </div>
           {lastest_publish_date ? (
             <div className="col-span-5 flex justify-start items-center pl-2">
@@ -484,18 +493,24 @@ const Select_Booking = () => {
             <div className="flex justify-end space-x-1">
               {page_permission?.update ? (
                 <>
-                  <button
-                    onClick={() => setShowRemoveContent(!showRemoveContent)}
-                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                  >
-                    Remove Content
-                  </button>
-                  <button
-                    onClick={() => setShowPublishScreen(!showPublishScreen)}
-                    className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                  >
-                    Publish
-                  </button>
+                  {booking_status !== 3 ? (
+                    <>
+                      <button
+                        onClick={() => setShowRemoveContent(!showRemoveContent)}
+                        className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                      >
+                        Remove Content
+                      </button>
+                      <button
+                        onClick={() => setShowPublishScreen(!showPublishScreen)}
+                        className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                      >
+                        Publish
+                      </button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </>
               ) : (
                 <></>
@@ -890,21 +905,30 @@ const Select_Booking = () => {
                                                     items2.BookingDate
                                                   ).getDate()
                                                 ) ? (
-                                                  <div
-                                                    onClick={() =>
-                                                      handleSelectScreenAddmedia(
-                                                        screenIndex + 1,
-                                                        items,
-                                                        items2
-                                                      )
-                                                    }
-                                                    className="col-span-1 flex justify-center items-center cursor-pointer"
-                                                  >
-                                                    <MdOutlineModeEditOutline
-                                                      size={26}
-                                                      className="text-[#6425FE] hover:text-[#3b1694]"
-                                                    />
-                                                  </div>
+                                                  <>
+                                                    {booking_status !== 3 ? (
+                                                      <div
+                                                        onClick={() =>
+                                                          handleSelectScreenAddmedia(
+                                                            screenIndex + 1,
+                                                            items,
+                                                            items2
+                                                          )
+                                                        }
+                                                        className="col-span-1 flex justify-center items-center cursor-pointer"
+                                                      >
+                                                        <MdOutlineModeEditOutline
+                                                          size={26}
+                                                          className="text-[#6425FE] hover:text-[#3b1694]"
+                                                        />
+                                                      </div>
+                                                    ) : (
+                                                      <MdOutlineModeEditOutline
+                                                        size={26}
+                                                        className="text-white"
+                                                      />
+                                                    )}
+                                                  </>
                                                 ) : (
                                                   <div
                                                     onClick={() =>

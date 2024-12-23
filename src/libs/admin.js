@@ -433,7 +433,7 @@ export default {
     let url = `api/v1/get_users?&perpage=10&page=${page}`;
 
     if (content_name) {
-      url += `&contentname=${content_name}`;
+      url += `&username=${content_name}`;
     }
 
     if (filter) {
@@ -647,19 +647,24 @@ export default {
     }
   },
 
-  getMerchandiseList: async function (token) {
+  getMerchandiseList: async function (token, searchTerm) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const obj = { brandcode: brand_code || "YlB55" };
+    const obj = {
+      brandcode: brand_code || "YlB55",
+      advertisername: searchTerm,
+    };
+
     const encrypted = await Encryption.encryption(
       obj,
       "get_advertisers",
       false
     );
+
     const data = await this._get(
       `api/v1/get_advertisers?hash=${encrypted}`,
       "",
@@ -905,7 +910,7 @@ export default {
     return data;
   },
 
-  getMediaRules: async function (token) {
+  getMediaRules: async function (token, searchTerm) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -913,17 +918,14 @@ export default {
       },
     };
 
-    const data = await this._get(
-      `api/v1/get_mediarules?brandcode=${brand_code}`,
-      "",
-      config
-    );
+    let url = `api/v1/get_mediarules?brandcode=${brand_code}`;
 
-    if (data.status === 200) {
-      return data.data;
-    } else {
-      return false;
+    if (searchTerm) {
+      url += `&mediarulename=${searchTerm}`;
     }
+
+    const { data } = await this._get(url, "", config);
+    return data;
   },
 
   createMediaRule: async function (hash, token, isToggle) {
@@ -1193,6 +1195,7 @@ export default {
     }
 
     const { data } = await this._get(url, "", config);
+    console.log("data", data);
     if (data.code === 200) {
       return data;
     } else {

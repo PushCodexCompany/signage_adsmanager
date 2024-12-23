@@ -235,12 +235,14 @@ export const GridTable = ({
             </td>
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center items-center">
-                {row.BookingStatus === 1
+                {row.BookingStatus === 0
+                  ? "Published"
+                  : row.BookingStatus === 1
                   ? "Incomplete Booking"
                   : row.BookingStatus === 2
                   ? "Non Publish"
                   : row.BookingStatus === 3
-                  ? "Published"
+                  ? "Inactive"
                   : "No Status"}
               </div>
             </td>
@@ -268,21 +270,27 @@ export const GridTable = ({
                     <></>
                   )}
                   {page_permission?.delete ? (
-                    <button
-                      onClick={() => handleDeleteBooking(row)}
-                      className="relative group"
-                    >
-                      <RiDeleteBin5Line
-                        size={23}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
-                      />
-                      <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                        style={{ pointerEvents: "none" }}
-                      >
-                        Cancel Booking
-                      </div>
-                    </button>
+                    <>
+                      {row.BookingStatus !== 3 ? (
+                        <button
+                          onClick={() => handleDeleteBooking(row)}
+                          className="relative group"
+                        >
+                          <RiDeleteBin5Line
+                            size={23}
+                            className="text-[#6425FE] hover:text-[#3b1694]"
+                          />
+                          <div
+                            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                            style={{ pointerEvents: "none" }}
+                          >
+                            Cancel Booking
+                          </div>
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   ) : (
                     <></>
                   )}
@@ -311,21 +319,27 @@ export const GridTable = ({
                     <></>
                   )}
                   {page_permission?.delete ? (
-                    <button
-                      onClick={() => handleDeleteBooking(row)}
-                      className="relative group"
-                    >
-                      <RiDeleteBin5Line
-                        size={23}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
-                      />
-                      <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                        style={{ pointerEvents: "none" }}
-                      >
-                        Cancel Booking
-                      </div>
-                    </button>
+                    <>
+                      {row.BookingStatus !== 3 ? (
+                        <button
+                          onClick={() => handleDeleteBooking(row)}
+                          className="relative group"
+                        >
+                          <RiDeleteBin5Line
+                            size={23}
+                            className="text-[#6425FE] hover:text-[#3b1694]"
+                          />
+                          <div
+                            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                            style={{ pointerEvents: "none" }}
+                          >
+                            Cancel Booking
+                          </div>
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   ) : (
                     <></>
                   )}
@@ -391,30 +405,30 @@ export const GridTable = ({
       <div>
         <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full border border-gray-300">
-            <thead className="sticky -top-1 bg-gray-200 z-5">
+            <thead className="sticky -top-1  bg-gray-200 z-10">
               <tr>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[10px]">
+                <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[10px]">
                   ID
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
+                <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
                   Booking Name
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[300px]">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[300px]">
                   Start Date - End Date
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Customer
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Screens
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Slots
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
                   Content Status
                 </th>
-                <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Action
                 </th>
               </tr>

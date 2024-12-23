@@ -21,6 +21,7 @@ const Screen = () => {
   const [exportData, setExportData] = useState([]);
   const [currentPagePdf, setCurrentPagePdf] = useState();
   const [page_permission, setPagePermission] = useState([]);
+  const [total_page, setTotalPage] = useState([]);
 
   useEffect(() => {
     getLogData();
@@ -37,11 +38,10 @@ const Screen = () => {
       setExportData(data.screenlog);
       if (data.pagination.length > 0) {
         setCurrentPagePdf(data.pagination[0].currentpage);
+        setAllPages(data.pagination[0]?.totalpage);
+        setTotalPage(data.pagination[0].totalpage);
       } else {
         setCurrentPagePdf(0);
-      }
-      if (data.pagination.length > 0) {
-        setAllPages(data.pagination[0]?.totalpage);
       }
     } else {
       const data = await User.getScreenlog(token, 1, searchTerm);
@@ -49,11 +49,10 @@ const Screen = () => {
       setExportData(data.screenlog);
       if (data.pagination.length > 0) {
         setCurrentPagePdf(data.pagination[0].currentpage);
+        setAllPages(data.pagination[0]?.totalpage);
+        setTotalPage(data.pagination[0].totalpage);
       } else {
         setCurrentPagePdf(0);
-      }
-      if (data.pagination.length > 0) {
-        setAllPages(data.pagination[0]?.totalpage);
       }
     }
   };
@@ -75,32 +74,111 @@ const Screen = () => {
     setPagePermission(permissions?.scrLog);
   };
 
-  const handleExport = () => {
-    const doc = new jsPDF();
-
-    // Convert log_data to an array of objects for the table
-    const logs = exportData.map((entry) => [
-      entry.SceenStatusID.toString(),
-      entry.ScreenName,
-      entry.SceenDateTime,
-      entry.ScreenStatus === 1 ? "UP" : "DOWN",
-    ]);
-
-    // Add table to the PDF
-    doc.autoTable({
-      head: [
-        ["Sceen Status ID", "Screen Name", "Sceen Date Time", "Screen Status"],
-      ],
-      body: logs,
-      startY: 20,
-      margin: { top: 30 },
-      styles: { fontSize: 10 }, // Adjust font size if needed
+  const handleExportAllPage = async () => {
+    Swal.fire({
+      title: "กำลังรวบรวมข้อมูล...",
+      html: "กรุณารอสักครู่...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
     });
-    // Save the PDF
-    const date = new Date().getDate();
-    const month = new Date().getMonth() + 1;
-    const year = new Date().getFullYear();
-    doc.save(`screenlog_page${currentPagePdf}_${date}/${month}/${year}`);
+
+    try {
+      const result = filter_screen.join(",");
+      const obj = {
+        tagids: result,
+      };
+      const export_data = [];
+      for (let i = 1; i <= total_page; i++) {
+        try {
+          const data = await User.getScreenlog(token, i, searchTerm, obj);
+          export_data.push(...data.screenlog); // Append to the array
+        } catch (error) {
+          console.error(`Error fetching screen log for page ${i}:`, error);
+        }
+      }
+      const doc = new jsPDF();
+      // Convert log_data to an array of objects for the table
+      const logs = export_data.map((entry) => [
+        entry.SceenStatusID.toString(),
+        entry.ScreenName,
+        entry.SceenDateTime,
+        entry.ScreenStatus === 1 ? "UP" : "DOWN",
+      ]);
+      // Add table to the PDF
+      doc.autoTable({
+        head: [
+          [
+            "Sceen Status ID",
+            "Screen Name",
+            "Sceen Date Time",
+            "Screen Status",
+          ],
+        ],
+        body: logs,
+        startY: 20,
+        margin: { top: 30 },
+        styles: { fontSize: 10 }, // Adjust font size if needed
+      });
+      // Save the PDF
+      const date = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      doc.save(`screenlog_${date}/${month}/${year}`);
+    } finally {
+      Swal.close();
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Export Data!",
+      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+    });
+  };
+
+  const handleExportCurrent = () => {
+    try {
+      const doc = new jsPDF();
+
+      // Convert log_data to an array of objects for the table
+      const logs = exportData.map((entry) => [
+        entry.SceenStatusID.toString(),
+        entry.ScreenName,
+        entry.SceenDateTime,
+        entry.ScreenStatus === 1 ? "UP" : "DOWN",
+      ]);
+
+      // Add table to the PDF
+      doc.autoTable({
+        head: [
+          [
+            "Sceen Status ID",
+            "Screen Name",
+            "Sceen Date Time",
+            "Screen Status",
+          ],
+        ],
+        body: logs,
+        startY: 20,
+        margin: { top: 30 },
+        styles: { fontSize: 10 }, // Adjust font size if needed
+      });
+      // Save the PDF
+      const date = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      doc.save(`screenlog_page_${currentPagePdf}_${date}/${month}/${year}`);
+    } finally {
+      Swal.close();
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Export Data!",
+      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+    });
   };
 
   return (
@@ -119,10 +197,16 @@ const Screen = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               <button
-                onClick={handleExport}
-                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+                onClick={handleExportCurrent}
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
-                Export
+                Export Current Page
+              </button>
+              <button
+                onClick={handleExportAllPage}
+                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+              >
+                Export All Page
               </button>
             </div>
           </div>
@@ -134,6 +218,8 @@ const Screen = () => {
           getLogData={getLogData}
           setLogData={setLogData}
           setAllPages={setAllPages}
+          setExportData={setExportData}
+          setTotalPage={setTotalPage}
         />
         <div className="mt-5">
           {log_data.length > 0 ? (

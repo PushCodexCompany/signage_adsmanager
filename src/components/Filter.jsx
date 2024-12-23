@@ -15,6 +15,8 @@ const Filter = ({
   fetchScreenData,
   getLogData,
   setLogData,
+  setExportData,
+  setTotalPage,
 }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
@@ -75,6 +77,7 @@ const Filter = ({
         };
 
         if (page_name === "digiBookingMgt") {
+          console.log("obj", obj);
           const data = await User.getBooking(token, 1, "", obj);
           if (data.code === 200) {
             setBookingData(data.booking);
@@ -94,8 +97,10 @@ const Filter = ({
           const data = await User.getScreenlog(token, 1, "", obj);
           if (data.code === 200) {
             setLogData(data.screenlog);
+            setExportData(data.screenlog);
             if (data.pagination.length > 0) {
               setAllPages(data.pagination[0].totalpage);
+              setTotalPage(data.pagination[0].totalpage);
             }
           }
         }
@@ -125,8 +130,10 @@ const Filter = ({
           const data = await User.getScreenlog(token, 1, "", obj);
           if (data.code === 200) {
             setLogData(data.screenlog);
+            setExportData(data.screenlog);
             if (data.pagination.length > 0) {
               setAllPages(data.pagination[0].totalpage);
+              setTotalPage(data.pagination[0].totalpage);
             }
           }
         }
@@ -176,8 +183,10 @@ const Filter = ({
         const data = await User.getScreenlog(token, 1, "", obj);
         if (data.code === 200) {
           setLogData(data.screenlog);
+          setExportData(data.screenlog);
           if (data.pagination.length > 0) {
             setAllPages(data.pagination[0].totalpage);
+            setTotalPage(data.pagination[0].totalpage);
           }
         }
       }
