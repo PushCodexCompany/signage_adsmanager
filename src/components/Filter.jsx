@@ -77,7 +77,6 @@ const Filter = ({
         };
 
         if (page_name === "digiBookingMgt") {
-          console.log("obj", obj);
           const data = await User.getBooking(token, 1, "", obj);
           if (data.code === 200) {
             setBookingData(data.booking);
