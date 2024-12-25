@@ -32,7 +32,6 @@ const Tag_managment = () => {
 
   const getCategoryTag = async () => {
     const tag_category = await User.getTagCatagory(token);
-    console.log("tag_category", tag_category);
     if (tag_category.length > 0) {
       tag_category?.sort((a, b) =>
         a.TagCategoryName.localeCompare(b.TagCategoryName)

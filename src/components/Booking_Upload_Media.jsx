@@ -256,9 +256,7 @@ const Booking_Upload_Media = ({
 
           xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-              console.log("xhr", xhr);
               const data = JSON.parse(xhr.responseText);
-              console.log("data", data);
               if (xhr.status === 200) {
                 setUploadFile((prevItems) => {
                   const updatedItems = [...prevItems, ...data.contentids];

@@ -102,7 +102,6 @@ const Add_Screen_Booking = ({
     const { permissions } = Permission.convertNewPermissionValuesToBoolean([
       user,
     ]);
-    console.log(permissions?.digiScrnMgt);
     setPagePermission(permissions?.digiScrnMgt);
   };
 
