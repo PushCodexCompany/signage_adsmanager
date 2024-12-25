@@ -137,6 +137,7 @@ export const GridTable = ({
     if (currentPage < totalPages) {
       const newPage = currentPage + 1;
       setCurrentPage(newPage);
+      console.log("newPage", newPage);
       const data = await fetchDataForPage(newPage);
       setData(data.users);
     }
