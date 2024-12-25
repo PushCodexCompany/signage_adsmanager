@@ -20,7 +20,7 @@ import User, {
 } from "../libs/admin";
 import { BiBookContent } from "react-icons/bi";
 import User_Management from "../components/User_management";
-import { IoIosClose } from "react-icons/io";
+import { IoIosClose, IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
   const navigate = useNavigate();
@@ -36,6 +36,10 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
   const [useSpace, setUseSpace] = useState(null);
 
   //chg password
+  const [chg_oldpasswordVisible, setChgOldPasswordVisible] = useState(false);
+  const [chg_passwordVisible, setChgPasswordVisible] = useState(false);
+  const [chg_confirmPasswordVisible, setChgConfirmPasswordVisible] =
+    useState(false);
   const [chg_userid, setChgUserId] = useState();
   const [chg_username, setChgUserName] = useState();
   const [chg_oldPassword, setChgOldPassword] = useState();
@@ -417,18 +421,37 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
                       Current Password :
                     </div>
                   </div>
-                  <div className="col-span-8">
+                  <div className="col-span-8 flex items-center">
                     <input
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       onChange={(e) => {
                         setChgOldPassword(e.target.value);
                       }}
-                      type="text"
+                      type={chg_oldpasswordVisible ? "text" : "password"}
                       placeholder="Your Old Password"
                       value={chg_oldPassword}
                       required
                       autoComplete="oldPassword"
                     />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() =>
+                        setChgOldPasswordVisible(!chg_oldpasswordVisible)
+                      }
+                    >
+                      {chg_oldpasswordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">
@@ -437,18 +460,37 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
                       New Password :
                     </div>
                   </div>
-                  <div className="col-span-8">
+                  <div className="col-span-8 flex items-center">
                     <input
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       onChange={(e) => {
                         setChgPassword(e.target.value);
                       }}
-                      type="text"
+                      type={chg_passwordVisible ? "text" : "password"}
                       placeholder="Your New Password"
                       value={chg_password}
                       required
                       autoComplete="newPassword"
                     />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() =>
+                        setChgPasswordVisible(!chg_passwordVisible)
+                      }
+                    >
+                      {chg_passwordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">
@@ -457,17 +499,38 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
                       Confirm New Password :
                     </div>
                   </div>
-                  <div className="col-span-8">
+                  <div className="col-span-8 flex items-center">
                     <input
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       onChange={(e) => {
                         setChgConfirmPassword(e.target.value);
                       }}
-                      type="text"
+                      type={chg_confirmPasswordVisible ? "text" : "password"}
                       placeholder="Confirm your Password"
                       value={chg_confirmPassword}
                       required
                     />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() =>
+                        setChgConfirmPasswordVisible(
+                          !chg_confirmPasswordVisible
+                        )
+                      }
+                    >
+                      {chg_confirmPasswordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>

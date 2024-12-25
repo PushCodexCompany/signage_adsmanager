@@ -72,6 +72,8 @@ export default {
       "scrLog",
       "digiBookContMgt",
       "dBoard",
+      "chpassMgt",
+      "repassMgt",
     ];
 
     // Handle permissions using UserPermissions array

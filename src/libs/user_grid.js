@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { IoIosClose } from "react-icons/io";
 import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
+import { MdLockReset } from "react-icons/md";
 import { PiCaretUpDown } from "react-icons/pi";
 import User from "../libs/admin";
 import Encryption from "../libs/encryption";
 import Swal from "sweetalert2";
 import empty_img from "../assets/img/empty_img.png";
-import { IoIosArrowBack, IoIosArrowForward, IoMdKey } from "react-icons/io";
+import {
+  IoIosArrowBack,
+  IoIosArrowForward,
+  IoMdKey,
+  IoMdEye,
+  IoMdEyeOff,
+} from "react-icons/io";
 
 export const GridTable = ({
   user_lists,
@@ -18,11 +25,14 @@ export const GridTable = ({
   filter_screen,
   searchTerm,
   all_pages,
+  permission_reset_password,
+  permission_change_password,
 }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(user_lists);
   const [modal_edit, setModalEdit] = useState(false);
   const [modal_change_password, setModalChangePassword] = useState(false);
+  const [modal_reset_password, setModalResetPassword] = useState(false);
   const [default_brand, setDefaultBrand] = useState([]);
   const [default_merchandise, setDefaultMerchandise] = useState([]);
   const [default_roles, setDefaultRoles] = useState([]);
@@ -59,11 +69,24 @@ export const GridTable = ({
   const totalPages = all_pages ? all_pages : 0;
 
   // Change Password
+  const [chg_oldpasswordVisible, setChgOldPasswordVisible] = useState(false);
+  const [chg_passwordVisible, setChgPasswordVisible] = useState(false);
+  const [chg_confirmPasswordVisible, setChgConfirmPasswordVisible] =
+    useState(false);
   const [chg_userid, setChgUserId] = useState();
   const [chg_username, setChgUserName] = useState();
   const [chg_oldPassword, setChgOldPassword] = useState();
   const [chg_password, setChgPassword] = useState();
   const [chg_confirmPassword, setChgConfirmPassword] = useState();
+
+  // Reset Password
+  const [re_passwordVisible, setRePasswordVisible] = useState(false);
+  const [re_confirmPasswordVisible, setReConfirmPasswordVisible] =
+    useState(false);
+  const [re_userid, setReUserId] = useState();
+  const [re_username, setReUserName] = useState();
+  const [re_password, setRePassword] = useState();
+  const [re_confirmPassword, setReConfirmPassword] = useState();
 
   useEffect(() => {
     fetchRoleData();
@@ -195,6 +218,14 @@ export const GridTable = ({
     setChgUserName(Username);
     setOldModal(!oldModal);
     setModalChangePassword(!modal_change_password);
+  };
+
+  const onSelectResetPassword = (id) => {
+    const { UserID, Username } = data?.find((item) => item.UserID === id);
+    setReUserId(UserID);
+    setReUserName(Username);
+    setOldModal(!oldModal);
+    setModalResetPassword(!modal_reset_password);
   };
 
   const toggleStatusSelect = () => {
@@ -483,7 +514,26 @@ export const GridTable = ({
                 </div>
               </td>
               <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200 space-x-5">
-                {page_permission?.update ? (
+                {permission_reset_password?.update ? (
+                  <button
+                    className="relative group"
+                    onClick={() => onSelectResetPassword(row.UserID)}
+                  >
+                    <MdLockReset
+                      size={20}
+                      className="text-[#6425FE] hover:text-[#3b1694]"
+                    />
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                    >
+                      Reset Password
+                    </div>
+                  </button>
+                ) : (
+                  <></>
+                )}
+                {permission_change_password?.update ? (
                   <button
                     className="relative group"
                     onClick={() => onSelectChangePassword(row.UserID)}
@@ -496,7 +546,7 @@ export const GridTable = ({
                       style={{ pointerEvents: "none" }}
                       className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                     >
-                      Chang Password
+                      Change Password
                     </div>
                   </button>
                 ) : (
@@ -659,13 +709,76 @@ export const GridTable = ({
     });
   };
 
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      text: `คุณต้องการรีเซ็ตรหัสผ่านของ user : ${re_username} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#219ad1",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (re_password !== re_confirmPassword) {
+          Swal.fire({
+            icon: "error",
+            title: "รหัสผ่านไม่ตรงกัน",
+            text: "กรุณากรอกรหัสผ่านให้เหมือนกัน!",
+          });
+          return;
+        }
+
+        try {
+          const obj = {
+            userid: re_userid,
+            newpassword: re_password,
+          };
+
+          const encrypted = await Encryption.encryption(
+            obj,
+            "resetUserpassword",
+            false
+          );
+
+          const data = await User.resetUserpassword(encrypted, token);
+          if (data.code === 200) {
+            Swal.fire({
+              icon: "success",
+              title: "รีเซ็ตรหัสผ่าน!",
+              text: `รีเซ็ตรหัสผ่าน ${re_username} สำเร็จ!`,
+            }).then((result) => {
+              if (
+                result.isConfirmed ||
+                result.dismiss === Swal.DismissReason.backdrop
+              ) {
+                setOldModal(!oldModal);
+                setModalResetPassword(!modal_reset_password);
+              }
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
+
   return (
     <>
       {oldModal && (
         <div>
           <div className="w-auto h-[480px] overflow-auto">
             <table className="min-w-full border border-gray-300">
-              <thead className="sticky -top-1 bg-gray-200 z-5">
+              <thead className="sticky -top-1 bg-gray-200 z-10">
                 <tr>
                   <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-lg font-poppins font-normal text-[#59606C] tracking-wider">
                     ID
@@ -1094,24 +1207,43 @@ export const GridTable = ({
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-12 space-x-2 mb-4">
+                <div className="grid grid-cols-12 space-x-2 mb-4 ">
                   <div className="col-span-4">
                     <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
                       Current Password :
                     </div>
                   </div>
-                  <div className="col-span-8">
+                  <div className="col-span-8 flex items-center">
                     <input
-                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      className="lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins"
                       onChange={(e) => {
                         setChgOldPassword(e.target.value);
                       }}
-                      type="text"
+                      type={chg_oldpasswordVisible ? "text" : "password"}
                       placeholder="Your Old Password"
                       value={chg_oldPassword}
                       required
                       autoComplete="oldPassword"
                     />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() =>
+                        setChgOldPasswordVisible(!chg_oldpasswordVisible)
+                      }
+                    >
+                      {chg_oldpasswordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">
@@ -1120,18 +1252,37 @@ export const GridTable = ({
                       New Password :
                     </div>
                   </div>
-                  <div className="col-span-8">
+                  <div className="col-span-8 flex items-center">
                     <input
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       onChange={(e) => {
                         setChgPassword(e.target.value);
                       }}
-                      type="text"
+                      type={chg_passwordVisible ? "text" : "password"}
                       placeholder="Your New Password"
                       value={chg_password}
                       required
                       autoComplete="newPassword"
                     />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() =>
+                        setChgPasswordVisible(!chg_passwordVisible)
+                      }
+                    >
+                      {chg_passwordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">
@@ -1140,17 +1291,38 @@ export const GridTable = ({
                       Confirm New Password :
                     </div>
                   </div>
-                  <div className="col-span-8">
+                  <div className="col-span-8 flex items-center">
                     <input
                       className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       onChange={(e) => {
                         setChgConfirmPassword(e.target.value);
                       }}
-                      type="text"
+                      type={chg_confirmPasswordVisible ? "text" : "password"}
                       placeholder="Confirm your Password"
                       value={chg_confirmPassword}
                       required
                     />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() =>
+                        setChgConfirmPasswordVisible(
+                          !chg_confirmPasswordVisible
+                        )
+                      }
+                    >
+                      {chg_confirmPasswordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1162,6 +1334,157 @@ export const GridTable = ({
                 className={`w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#6325fe86] text-white font-bold font-poppins rounded-lg`}
               >
                 Change Password
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modal_reset_password && (
+        <>
+          {bg ? (
+            <a
+              onClick={() => setModalResetPassword(!modal_reset_password)}
+              className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+            />
+          ) : (
+            <></>
+          )}
+        </>
+      )}
+
+      {modal_reset_password && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-20 overflow-x-auto">
+          {/* Main centered content container */}
+          <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
+            {/* Close button - adjust positioning */}
+            <div className={`absolute -top-4 -right-4 m-4 z-40`}>
+              <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
+                <button
+                  onClick={() => {
+                    setOldModal(!oldModal);
+                    setModalResetPassword(!modal_reset_password);
+                  }}
+                >
+                  <IoIosClose size={25} color={"#6425FE"} />
+                </button>
+              </div>
+            </div>
+
+            {/* Content Container */}
+
+            <div className="flex justify-center items-center mt-8">
+              <div className="font-poppins text-5xl font-bold">
+                Reset Password
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-2">
+              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                Reset User Password
+              </div>
+            </div>
+            <div className="h-[550px] overflow-y-auto">
+              <div className="mt-10 mx-40">
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Username :
+                    </div>
+                  </div>
+                  <div className="col-span-8">
+                    <input
+                      className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      type="text"
+                      placeholder="Your Username"
+                      defaultValue={re_username}
+                      value={re_username}
+                      required
+                      disabled
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      New Password :
+                    </div>
+                  </div>
+                  <div className="col-span-8 flex items-center">
+                    <input
+                      className="lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins"
+                      type={re_passwordVisible ? "text" : "password"}
+                      placeholder="Your New Password"
+                      onChange={(e) => setRePassword(e.target.value)}
+                      value={re_password}
+                      required
+                      autoComplete="newPassword"
+                    />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() => setRePasswordVisible(!re_passwordVisible)}
+                    >
+                      {re_passwordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-12 space-x-2 mb-4">
+                  <div className="col-span-4">
+                    <div className="font-poppins text-[#8A8A8A] text-right mt-2 ">
+                      Confirm New Password :
+                    </div>
+                  </div>
+                  <div className="col-span-8 flex items-center">
+                    <input
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                      onChange={(e) => {
+                        setReConfirmPassword(e.target.value);
+                      }}
+                      type={re_confirmPasswordVisible ? "text" : "password"}
+                      placeholder="Confirm your Password"
+                      value={re_confirmPassword}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="ml-2"
+                      onClick={() =>
+                        setReConfirmPasswordVisible(!re_confirmPasswordVisible)
+                      }
+                    >
+                      {re_confirmPasswordVisible ? (
+                        <IoMdEyeOff
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      ) : (
+                        <IoMdEye
+                          className="text-[#6425FE] hover:text-[#3b1694]"
+                          size={26}
+                        />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="text-center mt-5">
+              <button
+                type="submit"
+                onClick={(e) => handleResetPassword(e)}
+                className={`w-[315px] h-[48px] bg-[#6425FE] hover:bg-[#6325fe86] text-white font-bold font-poppins rounded-lg`}
+              >
+                Reset Password
               </button>
             </div>
           </div>

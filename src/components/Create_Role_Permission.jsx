@@ -47,6 +47,8 @@ const Create_Role_Permission = ({
         delete: false,
       },
       dBoard: { view: false, create: false, update: false, delete: false },
+      chpassMgt: { view: false, create: false, update: false, delete: false },
+      repassMgt: { view: false, create: false, update: false, delete: false },
     },
     other_permission: {
       assign_booking: 0,
@@ -227,6 +229,7 @@ const Create_Role_Permission = ({
       isLog,
       isBookingContMng,
       isDPM,
+      isChgPassword,
     }) => {
       const header = ["create", "delete", "update", "view"];
 
@@ -250,6 +253,9 @@ const Create_Role_Permission = ({
           const result = items.filter(
             (item) => item === "view" || item === "create" || item === "update"
           );
+          setFilteredItems(result);
+        } else if (isChgPassword) {
+          const result = items.filter((item) => item === "update");
           setFilteredItems(result);
         } else {
           setFilteredItems(items);
@@ -628,6 +634,20 @@ const Create_Role_Permission = ({
                         items={Object.keys(roleData.permissions?.dBoard)}
                         data={roleData.permissions?.dBoard}
                         isLog={true}
+                      />
+                      <CheckboxGroup
+                        title="chpassMgt"
+                        name="Change Password"
+                        items={Object.keys(roleData.permissions?.chpassMgt)}
+                        data={roleData.permissions?.chpassMgt}
+                        isChgPassword={true}
+                      />
+                      <CheckboxGroup
+                        title="repassMgt"
+                        name="Reset Password"
+                        items={Object.keys(roleData.permissions?.repassMgt)}
+                        data={roleData.permissions?.repassMgt}
+                        isChgPassword={true}
                       />
                     </div>
                   </>

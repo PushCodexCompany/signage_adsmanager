@@ -69,6 +69,7 @@ const Edit_Role_permission = ({
       isLog,
       isBookingContMng,
       isDPM,
+      isChgPassword,
     }) => {
       const header = ["create", "delete", "update", "view"];
 
@@ -92,6 +93,9 @@ const Edit_Role_permission = ({
           const result = items.filter(
             (item) => item === "view" || item === "create" || item === "update"
           );
+          setFilteredItems(result);
+        } else if (isChgPassword) {
+          const result = items.filter((item) => item === "update");
           setFilteredItems(result);
         } else {
           setFilteredItems(items);
@@ -497,6 +501,24 @@ const Edit_Role_permission = ({
                           items={Object.keys(roleData?.permissions?.dBoard)}
                           data={roleData?.permissions?.dBoard}
                           isLog={true}
+                        />
+                      )}
+                      {roleData?.permissions?.chpassMgt && (
+                        <CheckboxGroup
+                          title="chpassMgt"
+                          name="Change Password"
+                          items={Object.keys(roleData?.permissions?.chpassMgt)}
+                          data={roleData?.permissions?.chpassMgt}
+                          isChgPassword={true}
+                        />
+                      )}
+                      {roleData?.permissions?.repassMgt && (
+                        <CheckboxGroup
+                          title="repassMgt"
+                          name="Reset Password"
+                          items={Object.keys(roleData?.permissions?.repassMgt)}
+                          data={roleData?.permissions?.repassMgt}
+                          isChgPassword={true}
                         />
                       )}
                     </div>

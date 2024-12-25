@@ -491,23 +491,26 @@ const Select_Booking = () => {
 
           <div className="col-span-2">
             <div className="flex justify-end space-x-1">
-              {page_permission?.update ? (
+              {booking_status !== 3 ? (
                 <>
-                  {booking_status !== 3 ? (
-                    <>
-                      <button
-                        onClick={() => setShowRemoveContent(!showRemoveContent)}
-                        className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                      >
-                        Remove Content
-                      </button>
-                      <button
-                        onClick={() => setShowPublishScreen(!showPublishScreen)}
-                        className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
-                      >
-                        Publish
-                      </button>
-                    </>
+                  {page_permission?.delete ? (
+                    <button
+                      onClick={() => setShowRemoveContent(!showRemoveContent)}
+                      className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    >
+                      Remove Content
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+
+                  {page_permission?.update ? (
+                    <button
+                      onClick={() => setShowPublishScreen(!showPublishScreen)}
+                      className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
+                    >
+                      Publish
+                    </button>
                   ) : (
                     <></>
                   )}

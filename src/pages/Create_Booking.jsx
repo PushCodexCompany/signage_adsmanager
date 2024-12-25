@@ -830,7 +830,7 @@ const Create_Booking = () => {
           <div className="col-span-4">
             <div className="flex justify-end space-x-1">
               <>
-                {page_permission?.create || page_permission?.update ? (
+                {page_permission?.update ? (
                   <>
                     <button
                       onClick={() => setShowAddScreen(true)}

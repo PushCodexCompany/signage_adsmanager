@@ -130,8 +130,7 @@ const Ads_Allocation_Booking = ({
     ]);
 
     setPagePermission(permissions?.digiBookContMgt);
-    console.log("digiBookContMgt", permissions?.digiBookContMgt);
-    console.log("digiPlaylistMgt", permissions?.digiPlaylistMgt);
+
     setPlaylistPermission(permissions?.digiPlaylistMgt);
   };
 

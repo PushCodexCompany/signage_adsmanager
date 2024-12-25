@@ -32,7 +32,6 @@ const Role_permission = () => {
 
   const getPermission = async () => {
     const user_permission = await User.getUserRoles(token);
-
     // const child_permission = user_permission?.map((item) => {
     //   const convertedPermissions =
     //     Permission.convertPermissionValuesToBooleanForPermissionPage(item);
@@ -166,6 +165,7 @@ const Role_permission = () => {
       isLog,
       isBookingContMng,
       isDPM,
+      isChgPassword,
     }) => {
       const header = ["create", "delete", "update", "view"];
 
@@ -189,6 +189,9 @@ const Role_permission = () => {
           const result = items.filter(
             (item) => item === "view" || item === "create" || item === "update"
           );
+          setFilteredItems(result);
+        } else if (isChgPassword) {
+          const result = items.filter((item) => item === "update");
           setFilteredItems(result);
         } else {
           setFilteredItems(items);
@@ -593,6 +596,24 @@ const Role_permission = () => {
                           items={Object.keys(roleData?.permissions?.dBoard)}
                           data={roleData?.permissions?.dBoard}
                           isLog={true}
+                        />
+                      )}
+                      {roleData?.permissions?.chpassMgt && (
+                        // areAllFalse(roleData.permissions?.userrole) &&
+                        <CheckboxGroup
+                          title="Change Password"
+                          items={Object.keys(roleData?.permissions?.chpassMgt)}
+                          data={roleData?.permissions?.chpassMgt}
+                          isChgPassword={true}
+                        />
+                      )}
+                      {roleData?.permissions?.repassMgt && (
+                        // areAllFalse(roleData.permissions?.userrole) &&
+                        <CheckboxGroup
+                          title="Reset Password"
+                          items={Object.keys(roleData?.permissions?.repassMgt)}
+                          data={roleData?.permissions?.repassMgt}
+                          isChgPassword={true}
                         />
                       )}
                     </div>

@@ -40,6 +40,10 @@ const User_Management = () => {
   const [reg_merchandise, setRegMerchandise] = useState([]);
 
   const [page_permission, setPagePermission] = useState([]);
+  const [permission_reset_password, setPermissionResetPassword] = useState([]);
+  const [permission_change_password, setPermissionChangePassword] = useState(
+    []
+  );
 
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -135,6 +139,7 @@ const User_Management = () => {
     const { permissions } = Permission.convertNewPermissionValuesToBoolean([
       user,
     ]);
+
     if (!permissions.userMgt.view) {
       Swal.fire({
         icon: "error",
@@ -144,6 +149,8 @@ const User_Management = () => {
       navigate("/dashboard");
       return;
     }
+    setPermissionResetPassword(permissions?.repassMgt);
+    setPermissionChangePassword(permissions?.chpassMgt);
     setPagePermission(permissions?.userMgt);
   };
 
@@ -334,6 +341,8 @@ const User_Management = () => {
               bg={true}
               filter_screen={filter_screen}
               all_pages={all_pages}
+              permission_reset_password={permission_reset_password}
+              permission_change_password={permission_change_password}
             />
           </div>
         ) : (

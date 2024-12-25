@@ -84,7 +84,6 @@ export default {
       "Content-Type": "application/x-www-form-urlencoded",
     });
 
-    // console.log("checkScreenAvailable data " + JSON.stringify(data));
     if ("result" in data && data.result === 1) {
       return true;
     } else {
@@ -1195,7 +1194,6 @@ export default {
     }
 
     const { data } = await this._get(url, "", config);
-    console.log("data", data);
     if (data.code === 200) {
       return data;
     } else {
@@ -1776,6 +1774,25 @@ export default {
     };
     const { data } = await this._post(
       `api/v1/update_userpassword?brandcode=${brand_code}&hash=${hash}`,
+      "",
+      config
+    );
+    if (data.code === 200) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
+  resetUserpassword: async function (hash, token) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await this._post(
+      `api/v1/reset_userpassword?brandcode=${brand_code}&hash=${hash}`,
       "",
       config
     );
