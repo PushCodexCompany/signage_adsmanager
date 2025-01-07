@@ -77,6 +77,117 @@ const Media_Log = () => {
     }
   };
 
+  // const handleExportAllPage = async () => {
+  //   Swal.fire({
+  //     title: "กำลังรวบรวมข้อมูล...",
+  //     html: "กรุณารอสักครู่...",
+  //     allowEscapeKey: true,
+  //     allowOutsideClick: false,
+  //     didOpen: () => {
+  //       Swal.showLoading();
+  //     },
+  //   });
+  //   try {
+  //     const export_data = [];
+  //     for (let i = 1; i <= total_page; i++) {
+  //       try {
+  //         const data = await User.getMedialog(token, i);
+  //         export_data.push(...data.medialog); // Append to the array
+  //       } catch (error) {
+  //         console.error(`Error fetching media log for page ${i}:`, error);
+  //       }
+  //     }
+
+  //     const doc = new jsPDF();
+
+  //     const logs = export_data.map((entry) => [
+  //       entry.MediaLogID.toString(),
+  //       entry.ContentName,
+  //       entry.AdvertiserName,
+  //       entry.ScreenName,
+  //       entry.EndTime,
+  //       entry.StartTime,
+  //       entry.Duration,
+  //     ]);
+
+  //     doc.autoTable({
+  //       head: [
+  //         [
+  //           "MediaID",
+  //           "Media Name",
+  //           "Customer",
+  //           "Screen",
+  //           "Start Time",
+  //           "End Time",
+  //           "Duration",
+  //         ],
+  //       ],
+  //       body: logs,
+  //       startY: 20,
+  //       margin: { top: 30 },
+  //       styles: { fontSize: 10 },
+  //     });
+  //     const date = new Date().getDate();
+  //     const month = new Date().getMonth() + 1;
+  //     const year = new Date().getFullYear();
+  //     doc.save(`medialog_${date}/${month}/${year}`);
+  //   } finally {
+  //     Swal.close();
+  //   }
+
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Export Data!",
+  //     text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+  //   });
+  // };
+
+  // const handleExportCurrent = async () => {
+  //   try {
+  //     const doc = new jsPDF();
+
+  //     const logs = exportData.map((entry) => [
+  //       entry.MediaLogID.toString(),
+  //       entry.ContentName,
+  //       entry.AdvertiserName,
+  //       entry.ScreenName,
+  //       entry.EndTime,
+  //       entry.StartTime,
+  //       entry.Duration,
+  //     ]);
+
+  //     doc.autoTable({
+  //       head: [
+  //         [
+  //           "MediaID",
+  //           "Media Name",
+  //           "Customer",
+  //           "Screen",
+  //           "Start Time",
+  //           "End Time",
+  //           "Duration",
+  //         ],
+  //       ],
+  //       body: logs,
+  //       startY: 20,
+  //       margin: { top: 30 },
+  //       styles: { fontSize: 10 },
+  //     });
+  //     const date = new Date().getDate();
+  //     const month = new Date().getMonth() + 1;
+  //     const year = new Date().getFullYear();
+  //     doc.save(`medialog_page${currentPagePdf}_${date}/${month}/${year}`);
+  //   } finally {
+  //     Swal.close();
+  //   }
+
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Export Data!",
+  //     text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+  //   });
+  // };
+
   const handleExportAllPage = async () => {
     Swal.fire({
       title: "กำลังรวบรวมข้อมูล...",
@@ -87,6 +198,7 @@ const Media_Log = () => {
         Swal.showLoading();
       },
     });
+
     try {
       const export_data = [];
       for (let i = 1; i <= total_page; i++) {
@@ -98,39 +210,43 @@ const Media_Log = () => {
         }
       }
 
-      const doc = new jsPDF();
-
       const logs = export_data.map((entry) => [
         entry.MediaLogID.toString(),
         entry.ContentName,
         entry.AdvertiserName,
         entry.ScreenName,
-        entry.EndTime,
         entry.StartTime,
+        entry.EndTime,
         entry.Duration,
       ]);
 
-      doc.autoTable({
-        head: [
-          [
-            "MediaID",
-            "Media Name",
-            "Customer",
-            "Screen",
-            "Start Time",
-            "End Time",
-            "Duration",
-          ],
-        ],
-        body: logs,
-        startY: 20,
-        margin: { top: 30 },
-        styles: { fontSize: 10 },
-      });
+      const csvHeader = [
+        "MediaID",
+        "Media Name",
+        "Customer",
+        "Screen",
+        "Start Time",
+        "End Time",
+        "Duration",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
       const date = new Date().getDate();
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
-      doc.save(`medialog_${date}/${month}/${year}`);
+      link.download = `medialog_${date}-${month}-${year}.csv`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } finally {
       Swal.close();
     }
@@ -144,39 +260,44 @@ const Media_Log = () => {
 
   const handleExportCurrent = async () => {
     try {
-      const doc = new jsPDF();
-
       const logs = exportData.map((entry) => [
         entry.MediaLogID.toString(),
         entry.ContentName,
         entry.AdvertiserName,
         entry.ScreenName,
-        entry.EndTime,
         entry.StartTime,
+        entry.EndTime,
         entry.Duration,
       ]);
 
-      doc.autoTable({
-        head: [
-          [
-            "MediaID",
-            "Media Name",
-            "Customer",
-            "Screen",
-            "Start Time",
-            "End Time",
-            "Duration",
-          ],
-        ],
-        body: logs,
-        startY: 20,
-        margin: { top: 30 },
-        styles: { fontSize: 10 },
-      });
+      const csvHeader = [
+        "MediaID",
+        "Media Name",
+        "Customer",
+        "Screen",
+        "Start Time",
+        "End Time",
+        "Duration",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+
+      // Add BOM for UTF-8 compatibility
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
       const date = new Date().getDate();
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
-      doc.save(`medialog_page${currentPagePdf}_${date}/${month}/${year}`);
+      link.download = `medialog_page${currentPagePdf}_${date}-${month}-${year}.csv`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } finally {
       Swal.close();
     }

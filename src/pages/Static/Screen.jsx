@@ -74,6 +74,113 @@ const Screen = () => {
     setPagePermission(permissions?.scrLog);
   };
 
+  // const handleExportAllPage = async () => {
+  //   Swal.fire({
+  //     title: "กำลังรวบรวมข้อมูล...",
+  //     html: "กรุณารอสักครู่...",
+  //     allowEscapeKey: false,
+  //     allowOutsideClick: false,
+  //     didOpen: () => {
+  //       Swal.showLoading();
+  //     },
+  //   });
+
+  //   try {
+  //     const result = filter_screen.join(",");
+  //     const obj = {
+  //       tagids: result,
+  //     };
+  //     const export_data = [];
+  //     for (let i = 1; i <= total_page; i++) {
+  //       try {
+  //         const data = await User.getScreenlog(token, i, searchTerm, obj);
+  //         export_data.push(...data.screenlog); // Append to the array
+  //       } catch (error) {
+  //         console.error(`Error fetching screen log for page ${i}:`, error);
+  //       }
+  //     }
+  //     const doc = new jsPDF();
+  //     // Convert log_data to an array of objects for the table
+  //     const logs = export_data.map((entry) => [
+  //       entry.SceenStatusID.toString(),
+  //       entry.ScreenName,
+  //       entry.SceenDateTime,
+  //       entry.ScreenStatus === 1 ? "UP" : "DOWN",
+  //     ]);
+  //     // Add table to the PDF
+  //     doc.autoTable({
+  //       head: [
+  //         [
+  //           "Sceen Status ID",
+  //           "Screen Name",
+  //           "Sceen Date Time",
+  //           "Screen Status",
+  //         ],
+  //       ],
+  //       body: logs,
+  //       startY: 20,
+  //       margin: { top: 30 },
+  //       styles: { fontSize: 10 }, // Adjust font size if needed
+  //     });
+  //     // Save the PDF
+  //     const date = new Date().getDate();
+  //     const month = new Date().getMonth() + 1;
+  //     const year = new Date().getFullYear();
+  //     doc.save(`screenlog_${date}/${month}/${year}`);
+  //   } finally {
+  //     Swal.close();
+  //   }
+
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Export Data!",
+  //     text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+  //   });
+  // };
+
+  // const handleExportCurrent = () => {
+  //   try {
+  //     const doc = new jsPDF();
+
+  //     // Convert log_data to an array of objects for the table
+  //     const logs = exportData.map((entry) => [
+  //       entry.SceenStatusID.toString(),
+  //       entry.ScreenName,
+  //       entry.SceenDateTime,
+  //       entry.ScreenStatus === 1 ? "UP" : "DOWN",
+  //     ]);
+
+  //     // Add table to the PDF
+  //     doc.autoTable({
+  //       head: [
+  //         [
+  //           "Sceen Status ID",
+  //           "Screen Name",
+  //           "Sceen Date Time",
+  //           "Screen Status",
+  //         ],
+  //       ],
+  //       body: logs,
+  //       startY: 20,
+  //       margin: { top: 30 },
+  //       styles: { fontSize: 10 }, // Adjust font size if needed
+  //     });
+  //     // Save the PDF
+  //     const date = new Date().getDate();
+  //     const month = new Date().getMonth() + 1;
+  //     const year = new Date().getFullYear();
+  //     doc.save(`screenlog_page_${currentPagePdf}_${date}/${month}/${year}`);
+  //   } finally {
+  //     Swal.close();
+  //   }
+
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Export Data!",
+  //     text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+  //   });
+  // };
+
   const handleExportAllPage = async () => {
     Swal.fire({
       title: "กำลังรวบรวมข้อมูล...",
@@ -99,34 +206,39 @@ const Screen = () => {
           console.error(`Error fetching screen log for page ${i}:`, error);
         }
       }
-      const doc = new jsPDF();
-      // Convert log_data to an array of objects for the table
+
       const logs = export_data.map((entry) => [
         entry.SceenStatusID.toString(),
         entry.ScreenName,
         entry.SceenDateTime,
         entry.ScreenStatus === 1 ? "UP" : "DOWN",
       ]);
-      // Add table to the PDF
-      doc.autoTable({
-        head: [
-          [
-            "Sceen Status ID",
-            "Screen Name",
-            "Sceen Date Time",
-            "Screen Status",
-          ],
-        ],
-        body: logs,
-        startY: 20,
-        margin: { top: 30 },
-        styles: { fontSize: 10 }, // Adjust font size if needed
-      });
-      // Save the PDF
+
+      const csvHeader = [
+        "Sceen Status ID",
+        "Screen Name",
+        "Sceen Date Time",
+        "Screen Status",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+
+      // Add BOM for UTF-8 compatibility
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
       const date = new Date().getDate();
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
-      doc.save(`screenlog_${date}/${month}/${year}`);
+      link.download = `screenlog_${date}-${month}-${year}.csv`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } finally {
       Swal.close();
     }
@@ -140,36 +252,37 @@ const Screen = () => {
 
   const handleExportCurrent = () => {
     try {
-      const doc = new jsPDF();
-
-      // Convert log_data to an array of objects for the table
       const logs = exportData.map((entry) => [
         entry.SceenStatusID.toString(),
         entry.ScreenName,
         entry.SceenDateTime,
         entry.ScreenStatus === 1 ? "UP" : "DOWN",
       ]);
+      const csvHeader = [
+        "Sceen Status ID",
+        "Screen Name",
+        "Sceen Date Time",
+        "Screen Status",
+      ].join(",");
 
-      // Add table to the PDF
-      doc.autoTable({
-        head: [
-          [
-            "Sceen Status ID",
-            "Screen Name",
-            "Sceen Date Time",
-            "Screen Status",
-          ],
-        ],
-        body: logs,
-        startY: 20,
-        margin: { top: 30 },
-        styles: { fontSize: 10 }, // Adjust font size if needed
-      });
-      // Save the PDF
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+
+      // Add BOM for UTF-8 compatibility
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
       const date = new Date().getDate();
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
-      doc.save(`screenlog_page_${currentPagePdf}_${date}/${month}/${year}`);
+      link.download = `screenlog_page_${currentPagePdf}_${date}-${month}-${year}.csv`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } finally {
       Swal.close();
     }
@@ -180,7 +293,6 @@ const Screen = () => {
       text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
     });
   };
-
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />

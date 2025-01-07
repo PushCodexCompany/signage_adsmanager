@@ -53,6 +53,7 @@ export const GridTable = ({
 
   const handleClick = async (page) => {
     setCurrentPage(page);
+    setCurrentPagePdf(page);
     setPageInput("");
     const data = await fetchDataForPage(page);
     setData(data.screenlog);

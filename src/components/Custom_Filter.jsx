@@ -26,6 +26,7 @@ const Custom_Filter = ({
   setUserLists,
   setExportData,
   setTotalPage,
+  setFact_changeDate,
 }) => {
   const { token } = User.getCookieData();
   const [filter, setFilter] = useState([]);
@@ -302,6 +303,7 @@ const Custom_Filter = ({
         endDate: formattedEndDate,
       };
       if (page_name === "actLog") {
+        setFact_changeDate(true);
         const data = await User.getActivitylog(
           token,
           1,
@@ -344,6 +346,7 @@ const Custom_Filter = ({
       };
 
       if (page_name === "actLog") {
+        setFact_changeDate(true);
         const data = await User.getActivitylog(
           token,
           1,

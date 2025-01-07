@@ -31,6 +31,8 @@ const Activity_Log = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [total_page, setTotalPage] = useState([]);
 
+  const [fact_changeDate, setFact_changeDate] = useState(false);
+
   useEffect(() => {
     getLogData();
   }, [searchTerm]);
@@ -87,6 +89,139 @@ const Activity_Log = () => {
     }
   };
 
+  // const handleExportAllPage = async () => {
+  //   Swal.fire({
+  //     title: "กำลังรวบรวมข้อมูล...",
+  //     html: "กรุณารอสักครู่...",
+  //     allowEscapeKey: false,
+  //     allowOutsideClick: false,
+  //     didOpen: () => {
+  //       Swal.showLoading();
+  //     },
+  //   });
+
+  //   try {
+  //     const result = filter_screen.join(",");
+  //     const obj = {
+  //       filterfields: result,
+  //       startDate: format(new Date(startDate), "yyyy-MM-dd"),
+  //       endDate: format(new Date(endDate), "yyyy-MM-dd"),
+  //     };
+
+  //     const export_data = [];
+
+  //     for (let i = 1; i <= total_page; i++) {
+  //       try {
+  //         const data = await User.getActivitylog(
+  //           token,
+  //           i,
+  //           searchTerm,
+  //           JSON.stringify(obj)
+  //         );
+  //         export_data.push(...data.activitylog); // Append to the array
+  //       } catch (error) {
+  //         console.error(`Error fetching activity log for page ${i}:`, error);
+  //       }
+  //     }
+
+  //     const doc = new jsPDF();
+
+  //     const logs = export_data.map((entry) => [
+  //       entry.ActivitiyID.toString(),
+  //       generateActionString(entry.Action),
+  //       entry.TargetField,
+  //       entry.OnTable,
+  //       entry.IndexValue,
+  //       entry.OldvValue,
+  //       entry.NewValue,
+  //       entry.ByUser,
+  //       entry.ActionDate,
+  //     ]);
+
+  //     doc.autoTable({
+  //       head: [
+  //         [
+  //           "Activitiy ID",
+  //           "Action",
+  //           "Target Field",
+  //           "On Table",
+  //           "Index Value",
+  //           "Old Value",
+  //           "New Value",
+  //           "By User",
+  //           "Action Date",
+  //         ],
+  //       ],
+  //       body: logs,
+  //       startY: 20,
+  //       margin: { top: 30 },
+  //       styles: { fontSize: 10 }, // Adjust font size if needed
+  //     });
+  //     const date = new Date().getDate();
+  //     const month = new Date().getMonth() + 1;
+  //     const year = new Date().getFullYear();
+  //     doc.save(`activity_log_${date}/${month}/${year}`);
+  //   } finally {
+  //     Swal.close();
+  //   }
+
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Export Data!",
+  //     text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+  //   });
+  // };
+
+  // const handleExportCurrent = async () => {
+  //   try {
+  //     const doc = new jsPDF();
+
+  //     const logs = exportData.map((entry) => [
+  //       entry.ActivitiyID.toString(),
+  //       generateActionString(entry.Action),
+  //       entry.TargetField,
+  //       entry.OnTable,
+  //       entry.IndexValue,
+  //       entry.OldvValue,
+  //       entry.NewValue,
+  //       entry.ByUser,
+  //       entry.ActionDate,
+  //     ]);
+
+  //     doc.autoTable({
+  //       head: [
+  //         [
+  //           "Activitiy ID",
+  //           "Action",
+  //           "Target Field",
+  //           "On Table",
+  //           "Index Value",
+  //           "Old Value",
+  //           "New Value",
+  //           "By User",
+  //           "Action Date",
+  //         ],
+  //       ],
+  //       body: logs,
+  //       startY: 20,
+  //       margin: { top: 30 },
+  //       styles: { fontSize: 10 }, // Adjust font size if needed
+  //     });
+  //     const date = new Date().getDate();
+  //     const month = new Date().getMonth() + 1;
+  //     const year = new Date().getFullYear();
+  //     doc.save(`activity_log_page${currentPagePdf}_${date}/${month}/${year}`);
+  //   } finally {
+  //     Swal.close();
+  //   }
+
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Export Data!",
+  //     text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+  //   });
+  // };
+
   const handleExportAllPage = async () => {
     Swal.fire({
       title: "กำลังรวบรวมข้อมูล...",
@@ -100,12 +235,18 @@ const Activity_Log = () => {
 
     try {
       const result = filter_screen.join(",");
-      const obj = {
-        filterfields: result,
-        startDate: format(new Date(startDate), "yyyy-MM-dd"),
-        endDate: format(new Date(endDate), "yyyy-MM-dd"),
-      };
-
+      let obj;
+      if (fact_changeDate) {
+        obj = {
+          filterfields: result,
+          startDate: format(new Date(startDate), "yyyy-MM-dd"),
+          endDate: format(new Date(endDate), "yyyy-MM-dd"),
+        };
+      } else {
+        obj = {
+          filterfields: result,
+        };
+      }
       const export_data = [];
 
       for (let i = 1; i <= total_page; i++) {
@@ -122,8 +263,6 @@ const Activity_Log = () => {
         }
       }
 
-      const doc = new jsPDF();
-
       const logs = export_data.map((entry) => [
         entry.ActivitiyID.toString(),
         generateActionString(entry.Action),
@@ -136,29 +275,35 @@ const Activity_Log = () => {
         entry.ActionDate,
       ]);
 
-      doc.autoTable({
-        head: [
-          [
-            "Activitiy ID",
-            "Action",
-            "Target Field",
-            "On Table",
-            "Index Value",
-            "Old Value",
-            "New Value",
-            "By User",
-            "Action Date",
-          ],
-        ],
-        body: logs,
-        startY: 20,
-        margin: { top: 30 },
-        styles: { fontSize: 10 }, // Adjust font size if needed
-      });
+      const csvHeader = [
+        "Activitiy ID",
+        "Action",
+        "Target Field",
+        "On Table",
+        "Index Value",
+        "Old Value",
+        "New Value",
+        "By User",
+        "Action Date",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+
+      const csvContent = `${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
       const date = new Date().getDate();
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
-      doc.save(`activity_log_${date}/${month}/${year}`);
+      link.download = `activity_log_${date}-${month}-${year}.csv`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } finally {
       Swal.close();
     }
@@ -172,8 +317,6 @@ const Activity_Log = () => {
 
   const handleExportCurrent = async () => {
     try {
-      const doc = new jsPDF();
-
       const logs = exportData.map((entry) => [
         entry.ActivitiyID.toString(),
         generateActionString(entry.Action),
@@ -186,29 +329,35 @@ const Activity_Log = () => {
         entry.ActionDate,
       ]);
 
-      doc.autoTable({
-        head: [
-          [
-            "Activitiy ID",
-            "Action",
-            "Target Field",
-            "On Table",
-            "Index Value",
-            "Old Value",
-            "New Value",
-            "By User",
-            "Action Date",
-          ],
-        ],
-        body: logs,
-        startY: 20,
-        margin: { top: 30 },
-        styles: { fontSize: 10 }, // Adjust font size if needed
-      });
+      const csvHeader = [
+        "Activitiy ID",
+        "Action",
+        "Target Field",
+        "On Table",
+        "Index Value",
+        "Old Value",
+        "New Value",
+        "By User",
+        "Action Date",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+
+      const csvContent = `${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
       const date = new Date().getDate();
       const month = new Date().getMonth() + 1;
       const year = new Date().getFullYear();
-      doc.save(`activity_log_page${currentPagePdf}_${date}/${month}/${year}`);
+      link.download = `activity_log_page${currentPagePdf}_${date}-${month}-${year}.csv`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } finally {
       Swal.close();
     }
@@ -278,6 +427,7 @@ const Activity_Log = () => {
           setEndDate={setEndDate}
           setTotalPage={setTotalPage}
           setExportData={setExportData}
+          setFact_changeDate={setFact_changeDate}
         />
 
         <div className="mt-5">
