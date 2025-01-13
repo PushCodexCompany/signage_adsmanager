@@ -1,7 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Header, Navbar } from "../components";
-import { MdOutlineCalendarToday, MdCalendarToday } from "react-icons/md";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import central_img from "../assets/img/central.png";
@@ -17,10 +15,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Doughnut, Line, Bar } from "react-chartjs-2";
-import zoomPlugin from "chartjs-plugin-zoom";
+import { Line, Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
 import { GridTable } from "../libs/dashboard_grid";
 import "./css/dashboard.css";
@@ -28,7 +24,7 @@ import "./css/dashboard.css";
 import User from "../libs/admin";
 import useCheckPermission from "../libs/useCheckPermission";
 import Permission from "../libs/permission";
-import Swal from "sweetalert2";
+
 import "../../src/components/css/scrollbar_dashboard.css";
 
 ChartJS.register(
@@ -45,6 +41,7 @@ ChartJS.register(
 
 const Dashboard = () => {
   useCheckPermission();
+  const { token } = User.getCookieData();
   const [isYearOpen, setIsYearOpen] = useState(false);
   const [isStoreOpen, setIsStoreOpen] = useState(false);
   const [isYearAnalyticOpen, setIsYearAnalyticOpen] = useState(false);
@@ -1127,7 +1124,7 @@ const Dashboard = () => {
           <>
             {" "}
             <div className="flex space-x-2 mt-10">
-              <div className="font-poppins font-semibold text-3xl lg:text-2x p-2">
+              <div className="font-poppins font-semibold text-2xl lg:text-2x p-2">
                 Dashboard
               </div>
               {/* <div className="relative  w-[120px] flex justify-center items-center">

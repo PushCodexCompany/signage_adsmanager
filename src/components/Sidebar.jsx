@@ -29,6 +29,7 @@ import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
 import { FaRegListAlt } from "react-icons/fa";
+import { TbReport } from "react-icons/tb";
 
 import default_logo from "../assets/img/codex_logo.png";
 
@@ -41,6 +42,18 @@ export const links = [
         link: "dashboard",
         icon: <HiOutlineChartSquareBar size={27} />,
         notification: { is_notification: false, amount: 0 },
+        submenu: [
+          {
+            name: "Dashboard",
+            link: "dashboard",
+            icon: <HiOutlineChartSquareBar size={27} />,
+          },
+          {
+            name: "Report",
+            link: "report",
+            icon: <TbReport size={27} />,
+          },
+        ],
       },
       {
         name: "Booking",
@@ -277,6 +290,29 @@ const SidebarMain = () => {
             link: "dashboard",
             icon: <HiOutlineChartSquareBar size={27} />,
             notification: { is_notification: false, amount: 0 },
+            submenu: [
+              {
+                name: "Dashboard ",
+                link: "dashboard",
+                icon: <HiOutlineChartSquareBar size={27} />,
+              },
+              {
+                name: "Report ",
+                link: "report",
+                icon: <TbReport size={27} />,
+              },
+
+              // {
+              //   name: "Static Booking",
+              //   link: "static_booking",
+              //   icon: <MdOutlineMarkunreadMailbox size={27} />,
+              // },
+              // {
+              //   name: "Event Booking ",
+              //   link: "event_booking",
+              //   icon: <MdOutlineEmojiEvents size={27} />,
+              // },
+            ],
           },
         ],
       },

@@ -34,6 +34,7 @@ import {
   New_Static_Screen,
   Configuration,
   Event_Booking,
+  Report,
 } from "../pages";
 import Create_Event_Booking from "../pages/Create_Event_Booking";
 
@@ -50,6 +51,7 @@ const Routing = () => {
         <Route path="/brand" element={<Brands />} />
         <Route path="/user_account" element={<User_Account />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/report" element={<Report />} />
         {/* <Route path="/pdf" element={<Pdf />} /> */}
         <Route path="/merchandise" element={<Merchandise />} />
         <Route path="/edit_merchandise/:id" element={<Edit_Merchandises />} />

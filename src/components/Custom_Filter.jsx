@@ -52,7 +52,6 @@ const Custom_Filter = ({
 
   const handleStatusChange = async (event) => {
     const selectedValue = event.target.value;
-
     const [tagID, tagName] = selectedValue.split("!");
     if (selectedValue === "0") {
       alert("Please select a valid status.");

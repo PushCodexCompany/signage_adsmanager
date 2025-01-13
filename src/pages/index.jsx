@@ -33,3 +33,4 @@ export { default as Static_Screens } from "./Static_Screen";
 export { default as New_Static_Screen } from "./New_Static_Screen";
 export { default as Configuration } from "./setting/Configuration";
 export { default as Event_Booking } from "./Event_Booking";
+export { default as Report } from "./Report";
