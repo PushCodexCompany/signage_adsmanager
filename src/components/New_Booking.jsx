@@ -80,6 +80,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
   const { height, width } = useWindowDimensions();
 
   const [page_permission, setPagePermission] = useState([]);
+  const [page_permission_customer, setPagePermissionCustomer] = useState([]);
 
   // calendar
   const today = startOfToday();
@@ -121,6 +122,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       user,
     ]);
     setPagePermission(permissions?.digiScrnMgt);
+    setPagePermissionCustomer(permissions?.adMerch);
   };
 
   const daysInMonth = eachDayOfInterval({
@@ -629,7 +631,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                     Customers
                   </div>
                 </div>
-                {page_permission?.create ? (
+                {page_permission_customer?.create ? (
                   <div className="col-span-1 flex justify-end">
                     <button
                       onClick={() => setShowCreateMerchandise(true)}
