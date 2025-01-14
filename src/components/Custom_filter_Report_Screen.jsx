@@ -36,6 +36,7 @@ const Custom_filter_Report_Screen = ({
   setDateTricker,
   date_tricker,
   setTotalPageBooking,
+  setExportBookingData,
 }) => {
   const { token } = User.getCookieData();
   //   const [filter, setFilter] = useState([]);
@@ -143,6 +144,7 @@ const Custom_filter_Report_Screen = ({
           const data = await User.getDashboardBooking(token, 1, obj);
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
+            setExportBookingData(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
               setTotalPageBooking(data.pagination[0].totalpage);
@@ -190,6 +192,7 @@ const Custom_filter_Report_Screen = ({
           const data = await User.getDashboardBooking(token, 1, obj);
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
+            setExportBookingData(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
               setTotalPageBooking(data.pagination[0].totalpage);
@@ -273,6 +276,7 @@ const Custom_filter_Report_Screen = ({
           const data = await User.getDashboardBooking(token, 1, obj);
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
+            setExportBookingData(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
               setTotalPageBooking(data.pagination[0].totalpage);
@@ -321,6 +325,7 @@ const Custom_filter_Report_Screen = ({
           const data = await User.getDashboardBooking(token, 1, obj);
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
+            setExportBookingData(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
               setTotalPageBooking(data.pagination[0].totalpage);
@@ -412,6 +417,7 @@ const Custom_filter_Report_Screen = ({
         const data = await User.getDashboardBooking(token, 1, obj);
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
+          setExportBookingData(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
             setTotalPageBooking(data.pagination[0].totalpage);
@@ -505,6 +511,7 @@ const Custom_filter_Report_Screen = ({
         const data = await User.getDashboardBooking(token, 1, obj);
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
+          setExportBookingData(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
             setTotalPageBooking(data.pagination[0].totalpage);
@@ -584,6 +591,7 @@ const Custom_filter_Report_Screen = ({
         const data = await User.getDashboardBooking(token, 1, obj);
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
+          setExportBookingData(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
             setTotalPageBooking(data.pagination[0].totalpage);
@@ -657,6 +665,7 @@ const Custom_filter_Report_Screen = ({
         const data = await User.getDashboardBooking(token, 1, obj);
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
+          setExportBookingData(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
             setTotalPageBooking(data.pagination[0].totalpage);

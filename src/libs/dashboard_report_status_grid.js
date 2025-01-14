@@ -1,41 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import {
-  RiDeleteBin5Line,
-  RiEditLine,
-  RiShareBoxLine,
-  RiVideoAddLine,
-} from "react-icons/ri";
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import firebase_func from "../libs/firebase_func";
-import { format } from "date-fns";
-import Swal from "sweetalert2";
 
 export const GridTableReportStatus = ({
   report_status_booking,
+  setReportStatusBooking,
   all_report_booking_pages,
-  getReportData,
   filter_tag_screen,
   filter_option_screen,
   startDate,
   endDate,
   date_tricker,
+  setExportBookingData,
+  setCurrentPageBooking,
+  currentPageBooking,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
 
   // Pagination Table
-  const [data, setData] = useState(report_status_booking);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [data] = useState(report_status_booking);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_report_booking_pages ? all_report_booking_pages : 0;
   const [screen_data, setScreenData] = useState([]);
-
-  useEffect(() => {
-    setData(report_status_booking);
-  }, [report_status_booking]);
 
   const fetchDataForPage = async (page) => {
     if (page) {
@@ -98,27 +86,30 @@ export const GridTableReportStatus = ({
   };
 
   const handleClick = async (page) => {
-    setCurrentPage(page);
+    setCurrentPageBooking(page);
     setPageInput("");
     const data = await fetchDataForPage(page);
-    setData(data.booking);
+    setReportStatusBooking(data.booking);
+    setExportBookingData(data.booking);
   };
 
   const handlePrevPage = async () => {
-    if (currentPage > 1) {
-      const newPage = currentPage - 1;
-      setCurrentPage(newPage);
+    if (currentPageBooking > 1) {
+      const newPage = currentPageBooking - 1;
+      setCurrentPageBooking(newPage);
       const data = await fetchDataForPage(newPage);
-      setData(data.booking);
+      setReportStatusBooking(data.booking);
+      setExportBookingData(data.booking);
     }
   };
 
   const handleNextPage = async () => {
-    if (currentPage < totalPages) {
-      const newPage = currentPage + 1;
-      setCurrentPage(newPage);
+    if (currentPageBooking < totalPages) {
+      const newPage = currentPageBooking + 1;
+      setCurrentPageBooking(newPage);
       const data = await fetchDataForPage(newPage);
-      setData(data.booking);
+      setReportStatusBooking(data.booking);
+      setExportBookingData(data.booking);
     }
   };
 
@@ -129,9 +120,10 @@ export const GridTableReportStatus = ({
   const handlePageInputBlur = async () => {
     const page = Number(pageInput);
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+      setCurrentPageBooking(page);
       const data = await fetchDataForPage(page);
-      setData(data.booking);
+      setReportStatusBooking(data.booking);
+      setExportBookingData(data.booking);
     }
     setPageInput("");
   };
@@ -145,33 +137,13 @@ export const GridTableReportStatus = ({
   const renderTableData = () => {
     return (
       <>
-        {data?.map((row, index) => (
+        {report_status_booking?.map((row, index) => (
           <tr key={row.BookingID}>
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center">
                 {row.BookingID}
               </div>
             </td>
-            {/* <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
-              <div className="flex group relative">
-                <div className="font-poppins text-xl ">
-                  {row.BookingName.length > 20 ? (
-                    <>
-                      {row.BookingName.slice(0, 17) + "..."}
-                      <span
-                        style={{ pointerEvents: "none" }}
-                        className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      >
-                        {row.BookingName}
-                      </span>
-                    </>
-                  ) : (
-                    <>{row.BookingName}</>
-                  )}
-                  {row.BookingName}
-                </div>
-              </div>
-            </td> */}
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="flex group relative">
                 <div className="font-poppins ">
@@ -234,9 +206,9 @@ export const GridTableReportStatus = ({
         displayPages.push(i);
       }
     } else {
-      if (currentPage <= 4) {
+      if (currentPageBooking <= 4) {
         displayPages = [1, 2, 3, 4, "...", totalPages];
-      } else if (currentPage >= totalPages - 3) {
+      } else if (currentPageBooking >= totalPages - 3) {
         displayPages = [
           1,
           "...",
@@ -249,9 +221,9 @@ export const GridTableReportStatus = ({
         displayPages = [
           1,
           "...",
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
+          currentPageBooking - 1,
+          currentPageBooking,
+          currentPageBooking + 1,
           "...",
           totalPages,
         ];
@@ -262,7 +234,7 @@ export const GridTableReportStatus = ({
       <button
         key={index}
         className={`px-3 py-1 mx-1 ${
-          currentPage === number
+          currentPageBooking === number
             ? "text-[#6425FE] rounded-md border border-[#6425FE]"
             : "text-[#bfbfbf]"
         }  font-poppins font-bold`}
@@ -303,7 +275,7 @@ export const GridTableReportStatus = ({
             onClick={handlePrevPage}
             size={26}
             className={`${
-              currentPage === 1
+              currentPageBooking === 1
                 ? "text-[#bfbfbf]"
                 : "cursor-pointer hover:text-[#bfbfbf]"
             }`}
@@ -313,7 +285,7 @@ export const GridTableReportStatus = ({
             onClick={handleNextPage}
             size={26}
             className={`${
-              currentPage === totalPages
+              currentPageBooking === totalPages
                 ? "text-[#bfbfbf]"
                 : "cursor-pointer hover:text-[#bfbfbf]"
             }`}

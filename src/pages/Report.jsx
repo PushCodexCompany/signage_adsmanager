@@ -26,8 +26,9 @@ const Report = () => {
   // Report
   const [report_status_booking, setReportStatusBooking] = useState([]);
   const [all_report_booking_pages, setAllReportBookingPages] = useState(null);
-  const [export_booking_data, setExportBookingData] = useState([]);
 
+  const [export_booking_data, setExportBookingData] = useState([]);
+  const [currentPageBooking, setCurrentPageBooking] = useState();
   const [filterTag, setFilterTag] = useState([]);
   const [filterOption, setFilterOption] = useState([]);
 
@@ -61,8 +62,13 @@ const Report = () => {
     const data = await User.getDashboardBooking(token, 1);
     setReportStatusBooking(data?.booking);
     setExportBookingData(data?.booking);
-    setAllReportBookingPages(data?.pagination[0].totalpage);
-    setTotalPageBooking(data?.pagination[0].totalpage);
+    if (data.pagination.length > 0) {
+      setAllReportBookingPages(data?.pagination[0].totalpage);
+      setTotalPageBooking(data?.pagination[0].totalpage);
+      setCurrentPageBooking(data?.pagination[0].currentpage);
+    } else {
+      setCurrentPageBooking(1);
+    }
   };
 
   const getReportScreenData = async () => {
@@ -327,18 +333,22 @@ const Report = () => {
           setDateTricker={setDateTricker}
           date_tricker={date_tricker}
           setTotalPageBooking={setTotalPageBooking}
+          setExportBookingData={setExportBookingData}
         />
         {report_status_booking.length > 0 ? (
           <div className="mt-5">
             <GridTableReportStatus
               report_status_booking={report_status_booking}
+              setReportStatusBooking={setReportStatusBooking}
               all_report_booking_pages={all_report_booking_pages}
-              getReportData={getReportData}
               filter_tag_screen={filter_tag_screen}
               filter_option_screen={filter_option_screen}
               startDate={startDate}
               endDate={endDate}
               date_tricker={date_tricker}
+              setExportBookingData={setExportBookingData}
+              setCurrentPageBooking={setCurrentPageBooking}
+              currentPageBooking={currentPageBooking}
             />
           </div>
         ) : (
@@ -376,7 +386,69 @@ const Report = () => {
     );
   };
 
-  const exportListBookingCurrent = async () => {};
+  const exportListBookingCurrent = async () => {
+    Swal.fire({
+      title: "กำลังรวบรวมข้อมูล...",
+      html: "กรุณารอสักครู่...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      export_booking_data.forEach((item) => {
+        item.BookingStatus =
+          item.BookingStatus === 0
+            ? "Published"
+            : item.BookingStatus === 1
+            ? "Incomplete Booking"
+            : item.BookingStatus === 2
+            ? "Non Publish"
+            : item.BookingStatus === 3
+            ? "Inactive"
+            : "No status";
+      });
+
+      const logs = export_booking_data.map((entry) =>
+        [
+          entry.BookingID.toString(),
+          entry.BookingName,
+          entry.AdvertiserName,
+          entry.BookingStatus,
+        ].map((field) => `"${String(field).replace(/"/g, '""')}"`)
+      );
+
+      const csvHeader = [
+        "Booking ID",
+        "Booking Name",
+        "Customer Name",
+        "Booking Status",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+      const csvContent = `${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const date = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      link.download = `list_booking_status_page${currentPageBooking}_${date}-${month}-${year}.csv`;
+      document.body.appendChild(link);
+      link.click();
+    } finally {
+      Swal.close();
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Export Data!",
+      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+    });
+  };
 
   const exportListBookingAllPage = async () => {
     Swal.fire({
@@ -461,7 +533,6 @@ const Report = () => {
           console.error(`Error fetching activity log for page ${i}:`, error);
         }
       }
-      console.log(export_data);
       export_data.forEach((item) => {
         item.BookingStatus =
           item.BookingStatus === 0
@@ -475,12 +546,15 @@ const Report = () => {
             : "No status";
       });
 
-      const logs = export_data.map((entry) => [
-        entry.BookingID.toString(),
-        entry.BookingName,
-        entry.AdvertiserName,
-        entry.BookingStatus,
-      ]);
+      const logs = export_data.map((entry) =>
+        [
+          entry.BookingID.toString(),
+          entry.BookingName,
+          entry.AdvertiserName,
+          entry.BookingStatus,
+        ].map((field) => `"${String(field).replace(/"/g, '""')}"`)
+      );
+
       const csvHeader = [
         "Booking ID",
         "Booking Name",

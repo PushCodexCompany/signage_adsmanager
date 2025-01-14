@@ -51,7 +51,7 @@ const Activity_Log = () => {
         setCurrentPagePdf(data.pagination[0].currentpage);
         setAllPages(data.pagination[0].totalpage);
       } else {
-        setCurrentPagePdf(0);
+        setCurrentPagePdf(1);
       }
     } else {
       const data = await User.getActivitylog(token, 1, searchTerm);
@@ -61,7 +61,7 @@ const Activity_Log = () => {
         setCurrentPagePdf(data.pagination[0].currentpage);
         setAllPages(data.pagination[0].totalpage);
       } else {
-        setCurrentPagePdf(0);
+        setCurrentPagePdf(1);
       }
     }
   };
@@ -316,6 +316,16 @@ const Activity_Log = () => {
   };
 
   const handleExportCurrent = async () => {
+    Swal.fire({
+      title: "กำลังรวบรวมข้อมูล...",
+      html: "กรุณารอสักครู่...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       const logs = exportData.map((entry) => [
         entry.ActivitiyID.toString(),
