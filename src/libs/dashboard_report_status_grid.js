@@ -39,9 +39,9 @@ export const GridTableReportStatus = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      if (filter_tag_screen || filter_option_screen) {
+      if (filter_tag_screen.length > 0 || filter_option_screen.length > 0) {
         let obj;
-        if (filter_tag_screen && filter_option_screen) {
+        if (filter_tag_screen.length > 0 && filter_option_screen.length > 0) {
           if (date_tricker) {
             obj = {
               tagids: filter_tag_screen,
@@ -57,7 +57,7 @@ export const GridTableReportStatus = ({
               optionkey: {},
             };
           }
-        } else if (filter_tag_screen) {
+        } else if (filter_tag_screen.length > 0) {
           if (date_tricker) {
             obj = {
               tagids: filter_tag_screen,
@@ -71,7 +71,7 @@ export const GridTableReportStatus = ({
               tagids: filter_tag_screen,
             };
           }
-        } else if (filter_option_screen) {
+        } else if (filter_option_screen.length > 0) {
           if (date_tricker) {
             obj = {
               optionkey: {
@@ -152,9 +152,29 @@ export const GridTableReportStatus = ({
                 {row.BookingID}
               </div>
             </td>
-            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
+            {/* <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200 ">
               <div className="flex group relative">
                 <div className="font-poppins text-xl ">
+                  {row.BookingName.length > 20 ? (
+                    <>
+                      {row.BookingName.slice(0, 17) + "..."}
+                      <span
+                        style={{ pointerEvents: "none" }}
+                        className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
+                        {row.BookingName}
+                      </span>
+                    </>
+                  ) : (
+                    <>{row.BookingName}</>
+                  )}
+                  {row.BookingName}
+                </div>
+              </div>
+            </td> */}
+            <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
+              <div className="flex group relative">
+                <div className="font-poppins ">
                   {row.BookingName.length > 20 ? (
                     <>
                       {row.BookingName.slice(0, 17) + "..."}
@@ -259,7 +279,7 @@ export const GridTableReportStatus = ({
       <div>
         <div className="w-auto h-[480px] overflow-auto">
           <table className="min-w-full border border-gray-300">
-            <thead className="sticky -top-1  bg-gray-200 z-9">
+            <thead className="sticky -top-1  bg-gray-200 z-10">
               <tr>
                 <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[10px]">
                   ID

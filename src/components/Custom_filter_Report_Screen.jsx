@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
 import { format } from "date-fns";
 import { filter } from "lodash";
+import "./css/datepicker.css";
 
 const Custom_filter_Report_Screen = ({
   page_name,
@@ -34,6 +35,7 @@ const Custom_filter_Report_Screen = ({
   endDatePickers,
   setDateTricker,
   date_tricker,
+  setTotalPageBooking,
 }) => {
   const { token } = User.getCookieData();
   //   const [filter, setFilter] = useState([]);
@@ -143,6 +145,7 @@ const Custom_filter_Report_Screen = ({
             setReportStatusBooking(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
+              setTotalPageBooking(data.pagination[0].totalpage);
             }
           }
         }
@@ -189,6 +192,7 @@ const Custom_filter_Report_Screen = ({
             setReportStatusBooking(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
+              setTotalPageBooking(data.pagination[0].totalpage);
             }
           }
         }
@@ -271,6 +275,7 @@ const Custom_filter_Report_Screen = ({
             setReportStatusBooking(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
+              setTotalPageBooking(data.pagination[0].totalpage);
             }
           }
         }
@@ -318,6 +323,7 @@ const Custom_filter_Report_Screen = ({
             setReportStatusBooking(data.booking);
             if (data.pagination.length > 0) {
               setAllReportBookingPages(data.pagination[0].totalpage);
+              setTotalPageBooking(data.pagination[0].totalpage);
             }
           }
         }
@@ -408,6 +414,7 @@ const Custom_filter_Report_Screen = ({
           setReportStatusBooking(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
+            setTotalPageBooking(data.pagination[0].totalpage);
           }
         }
       }
@@ -500,6 +507,7 @@ const Custom_filter_Report_Screen = ({
           setReportStatusBooking(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
+            setTotalPageBooking(data.pagination[0].totalpage);
           }
         }
       }
@@ -578,6 +586,7 @@ const Custom_filter_Report_Screen = ({
           setReportStatusBooking(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
+            setTotalPageBooking(data.pagination[0].totalpage);
           }
         }
       }
@@ -650,6 +659,7 @@ const Custom_filter_Report_Screen = ({
           setReportStatusBooking(data.booking);
           if (data.pagination.length > 0) {
             setAllReportBookingPages(data.pagination[0].totalpage);
+            setTotalPageBooking(data.pagination[0].totalpage);
           }
         }
       }
@@ -734,9 +744,8 @@ const Custom_filter_Report_Screen = ({
                 </div>
                 {page_name === "dashBookingRpt" ? (
                   <>
-                    {" "}
                     <div className="w-5/6 flex justify-between items-center ">
-                      <div className="relative w-[95px] lg:w-[200px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 z-11">
+                      <div className="relative w-[95px] lg:w-[200px] h-[40px] flex items-center justify-center font-bold text-sm lg:text-base ml-3 ">
                         <DatePicker
                           selected={startDatePickers}
                           selectsStart
