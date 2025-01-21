@@ -20,10 +20,8 @@ export const GridTableReportStatus = ({
   const { token } = User.getCookieData();
 
   // Pagination Table
-  const [data] = useState(report_status_booking);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_report_booking_pages ? all_report_booking_pages : 0;
-  const [screen_data, setScreenData] = useState([]);
 
   const fetchDataForPage = async (page) => {
     if (page) {

@@ -389,6 +389,17 @@ export const GridTable = ({
     setShowMerchandiseModal(!showMerchandiseModal);
   };
 
+  const toggleSelectAllCustomers = () => {
+    if (reg_merchandise.length === merchandise.length) {
+      // Deselect All
+      setRegMerchandise([]);
+    } else {
+      // Select All
+      const allCustomer = merchandise.map((item) => item.AdvertiserID);
+      setRegMerchandise(allCustomer);
+    }
+  };
+
   const getImgBrand = (id) => {
     const brand_img = brand?.find((item) => item.BrandID === parseInt(id));
     return brand_img?.BrandLogo ? brand_img.BrandLogo : empty_img;
@@ -1515,7 +1526,7 @@ export const GridTable = ({
             </div>
 
             <div className="mt-2 p-2">
-              <div className="h-[500px]  mt-8 overflow-y-auto">
+              <div className="h-[450px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {default_brand.length > 0 &&
@@ -1590,7 +1601,9 @@ export const GridTable = ({
             <div className="sticky top-0 right-0 z-30 flex justify-end">
               <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
                 <button
-                  onClick={() => setShowMerchandiseModal(!showMerchandiseModal)}
+                  onClick={() => {
+                    setShowMerchandiseModal(!showMerchandiseModal);
+                  }}
                 >
                   <IoIosClose size={25} color={"#6425FE"} />
                 </button>
@@ -1603,14 +1616,27 @@ export const GridTable = ({
                 Select Customer
               </div>
             </div>
-            <div className="flex justify-center items-center mt-2">
-              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Customer to unleash the power of digital advertising
+            <div className="relative mt-2 flex items-center">
+              {/* Centered Text */}
+              <div className="absolute left-1/2 transform -translate-x-1/2">
+                <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                  Select Customer to unleash the power of digital advertising
+                </div>
               </div>
+
+              {/* Right-Aligned Button */}
+              <button
+                onClick={toggleSelectAllCustomers}
+                className="ml-auto mr-4 w-52 h-10 bg-blue-600 hover:bg-blue-900 rounded-lg text-white font-poppins"
+              >
+                {reg_merchandise.length === merchandise.length
+                  ? "Deselect All"
+                  : "Select All"}
+              </button>
             </div>
 
             <div className="mt-2 p-2">
-              <div className="h-[500px]  mt-8 overflow-y-auto">
+              <div className="h-[450px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {default_merchandise.length > 0 &&

@@ -17,76 +17,62 @@ import Swal from "sweetalert2";
 export const GridTableReportScreen = ({
   report_screen_booking,
   all_report_screen_pages,
-  //   filter_screen,
   getReportScreenData,
+  setExportScreenData,
+  filter_tag_screen_page,
+  setReportScreenBooking,
+  setCurrentPageScreen,
+  currentPageScreen,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
 
   // Pagination Table
-  const [data, setData] = useState(report_screen_booking);
-  const [currentPage, setCurrentPage] = useState(1);
   const [pageInput, setPageInput] = useState("");
   const totalPages = all_report_screen_pages ? all_report_screen_pages : 0;
-  const [screen_data, setScreenData] = useState([]);
-
-  useEffect(() => {
-    setData(report_screen_booking);
-  }, [report_screen_booking]);
 
   const fetchDataForPage = async (page) => {
-    // if (page) {
-    //   if (filter_screen.length > 0) {
-    //     const result = filter_screen.join(",");
-    //     const obj = {
-    //       tagids: result,
-    //     };
-    //     const data = await User.getBooking(token, page, searchTerm, obj);
-    //     return data;
-    //   } else {
-    //     const data = await User.getBooking(token, page, searchTerm);
-    //     return data;
-    //   }
-    // }
-  };
-
-  const onClickEdit = async (obj) => {
-    // const replacedString = obj.BookingName.replace(/\//g, "_");
-    // navigate(`/booking/${replacedString}`, {
-    //   state: { data: obj, screen_data },
-    // });
-  };
-
-  const handleSelectBooking = (obj) => {
-    // const replacedString = obj.BookingName.replace(/\//g, "_");
-    // navigate(`/booking/select/${replacedString}`, {
-    //   state: { data: obj, screen_data },
-    // });
+    if (page) {
+      if (filter_tag_screen_page.length > 0) {
+        const result = filter_tag_screen_page.join(",");
+        const obj = {
+          tagids: result,
+        };
+        const data = await User.getBooking(token, page, obj);
+        return data;
+      } else {
+        const data = await User.getDashboardScreen(token, page);
+        return data;
+      }
+    }
   };
 
   const handleClick = async (page) => {
-    // setCurrentPage(page);
-    // setPageInput("");
-    // const data = await fetchDataForPage(page);
-    // setData(data.booking);
+    setCurrentPageScreen(page);
+    setPageInput("");
+    const data = await fetchDataForPage(page);
+    setReportScreenBooking(data.screens);
+    setExportScreenData(data.screens);
   };
 
   const handlePrevPage = async () => {
-    // if (currentPage > 1) {
-    //   const newPage = currentPage - 1;
-    //   setCurrentPage(newPage);
-    //   const data = await fetchDataForPage(newPage);
-    //   setData(data.booking);
-    // }
+    if (currentPageScreen > 1) {
+      const newPage = currentPageScreen - 1;
+      setCurrentPageScreen(newPage);
+      const data = await fetchDataForPage(newPage);
+      setReportScreenBooking(data.screens);
+      setExportScreenData(data.screens);
+    }
   };
 
   const handleNextPage = async () => {
-    // if (currentPage < totalPages) {
-    //   const newPage = currentPage + 1;
-    //   setCurrentPage(newPage);
-    //   const data = await fetchDataForPage(newPage);
-    //   setData(data.booking);
-    // }
+    if (currentPageScreen < totalPages) {
+      const newPage = currentPageScreen + 1;
+      setCurrentPageScreen(newPage);
+      const data = await fetchDataForPage(newPage);
+      setReportScreenBooking(data.screens);
+      setExportScreenData(data.screens);
+    }
   };
 
   const handlePageInputChange = (e) => {
@@ -94,38 +80,39 @@ export const GridTableReportScreen = ({
   };
 
   const handlePageInputBlur = async () => {
-    // const page = Number(pageInput);
-    // if (page >= 1 && page <= totalPages) {
-    //   setCurrentPage(page);
-    //   const data = await fetchDataForPage(page);
-    //   setData(data.booking);
-    // }
-    // setPageInput("");
+    const page = Number(pageInput);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPageScreen(page);
+      const data = await fetchDataForPage(page);
+      setReportScreenBooking(data.screens);
+      setExportScreenData(data.screens);
+    }
+    setPageInput("");
   };
 
   const handlePageInputKeyPress = (e) => {
-    // if (e.key === "Enter") {
-    //   handlePageInputBlur();
-    // }
+    if (e.key === "Enter") {
+      handlePageInputBlur();
+    }
   };
 
   const renderTableData = () => {
     return (
       <>
-        {data?.map((row, index) => (
+        {report_screen_booking?.map((row, index) => (
           <tr key={row.ScreenID}>
             <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
               {row.ScreenID}
             </td>
             <td className="px-6 py-2 whitespace-nowrap border-b  border-gray-200 ">
               <div className="flex group relative">
-                <div className="font-poppins text-sm">
+                <div className="font-poppins">
                   {row.ScreenName.length > 20 ? (
                     <>
                       {row.ScreenName.slice(0, 17) + "..."}
                       <span
                         style={{ pointerEvents: "none" }}
-                        className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                        className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white  rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                       >
                         {row.ScreenName}
                       </span>
@@ -137,16 +124,20 @@ export const GridTableReportScreen = ({
               </div>
             </td>
             <td className="px-20 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
-              <div className="font-poppins text-sm">
-                {row.ScreenRule[0].MediaRuleName}
+              <div className="font-poppins flex justify-center items-center ">
+                {row?.ScreenRule[0]?.Width && row?.ScreenRule[0]?.Height
+                  ? `W ${parseInt(row.ScreenRule[0].Width, 10)}` +
+                    " x " +
+                    `H ${parseInt(row.ScreenRule[0].Height, 10)}`
+                  : "Not Set"}
               </div>
             </td>
             <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
-              <div className="font-poppins text-sm">{row.ScreenLocation}</div>
+              <div className="font-poppins ">{row.ScreenLocation}</div>
             </td>
             <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
-              <div className="font-poppins text-sm">
-                {row.ScreenSupport.image === true ? (
+              <div className="font-poppins flex justify-center items-center">
+                {row.ScreenRule[0].ImageContentTypeID !== 0 ? (
                   <FaCheck className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
                 ) : (
                   <FaXmark className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
@@ -154,8 +145,8 @@ export const GridTableReportScreen = ({
               </div>
             </td>
             <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
-              <div className="font-poppins text-sm">
-                {row.ScreenSupport.video === true ? (
+              <div className="font-poppins flex justify-center items-center">
+                {row.ScreenRule[0].VideoContentTypeID !== 0 ? (
                   <FaCheck className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
                 ) : (
                   <FaXmark className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
@@ -176,9 +167,9 @@ export const GridTableReportScreen = ({
         displayPages.push(i);
       }
     } else {
-      if (currentPage <= 4) {
+      if (currentPageScreen <= 4) {
         displayPages = [1, 2, 3, 4, "...", totalPages];
-      } else if (currentPage >= totalPages - 3) {
+      } else if (currentPageScreen >= totalPages - 3) {
         displayPages = [
           1,
           "...",
@@ -191,9 +182,9 @@ export const GridTableReportScreen = ({
         displayPages = [
           1,
           "...",
-          currentPage - 1,
-          currentPage,
-          currentPage + 1,
+          currentPageScreen - 1,
+          currentPageScreen,
+          currentPageScreen + 1,
           "...",
           totalPages,
         ];
@@ -204,7 +195,7 @@ export const GridTableReportScreen = ({
       <button
         key={index}
         className={`px-3 py-1 mx-1 ${
-          currentPage === number
+          currentPageScreen === number
             ? "text-[#6425FE] rounded-md border border-[#6425FE]"
             : "text-[#bfbfbf]"
         }  font-poppins font-bold`}
@@ -219,26 +210,26 @@ export const GridTableReportScreen = ({
   return (
     <>
       <div>
-        <div className="w-auto h-[380px] overflow-auto scrollable-chart-container">
+        <div className="w-auto h-[480px] overflow-auto scrollable-chart-container">
           <table className="min-w-full border border-gray-300">
             <thead className="sticky -top-1  bg-gray-200 z-10">
               <tr>
-                <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-5 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[10px]">
                   ID
                 </th>
-                <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider ">
+                <th className="px-1 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[150px]">
                   Screen Name
                 </th>
-                <th className="px-6 py-3  text-center leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider ">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
                   Size (from media rule)
                 </th>
-                <th className="px-6 py-3  text-center leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
                   Location
                 </th>
-                <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider ">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
                   Image Type
                 </th>
-                <th className="px-6 py-3  text-left leading-4 text-sm font-poppins font-normal text-[#59606C] tracking-wider ">
+                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
                   Video Type
                 </th>
               </tr>
@@ -251,7 +242,7 @@ export const GridTableReportScreen = ({
             onClick={handlePrevPage}
             size={26}
             className={`${
-              currentPage === 1
+              currentPageScreen === 1
                 ? "text-[#bfbfbf]"
                 : "cursor-pointer hover:text-[#bfbfbf]"
             }`}
@@ -261,7 +252,7 @@ export const GridTableReportScreen = ({
             onClick={handleNextPage}
             size={26}
             className={`${
-              currentPage === totalPages
+              currentPageScreen === totalPages
                 ? "text-[#bfbfbf]"
                 : "cursor-pointer hover:text-[#bfbfbf]"
             }`}

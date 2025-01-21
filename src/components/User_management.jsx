@@ -174,6 +174,17 @@ const User_Management = ({
     setShowMerchandiseModal(!showMerchandiseModal);
   };
 
+  const toggleSelectAllCustomers = () => {
+    if (reg_merchandise.length === default_merchandise.length) {
+      // Deselect All
+      setRegMerchandise([]);
+    } else {
+      // Select All
+      const allCustomer = default_merchandise.map((item) => item.AdvertiserID);
+      setRegMerchandise(allCustomer);
+    }
+  };
+
   const findBrandImg = (id) => {
     const brand = default_brand?.find((item) => item.BrandID === id);
     return brand
@@ -338,6 +349,8 @@ const User_Management = ({
                 </button>
               </div>
             </div>
+
+            {/* Modal Page*/}
 
             {/* Content  */}
             <div className="flex justify-center items-center mt-5">
@@ -636,7 +649,7 @@ const User_Management = ({
             </div>
 
             <div className="mt-2 p-2">
-              <div className="h-[550px]  mt-8 overflow-y-auto">
+              <div className="h-[450px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {default_brand.length > 0 &&
@@ -725,13 +738,26 @@ const User_Management = ({
                 Select Customer
               </div>
             </div>
-            <div className="flex justify-center items-center mt-2">
-              <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
-                Select Customer to unleash the power of digital advertising
+            <div className="relative mt-2 flex items-center">
+              {/* Centered Text */}
+              <div className="absolute left-1/2 transform -translate-x-1/2">
+                <div className="font-poppins text-xs lg:text-lg text-[#8A8A8A]">
+                  Select Customer to unleash the power of digital advertising
+                </div>
               </div>
+
+              {/* Right-Aligned Button */}
+              <button
+                onClick={toggleSelectAllCustomers}
+                className="ml-auto mr-4 w-52 h-10 bg-blue-600 hover:bg-blue-900 rounded-lg text-white font-poppins"
+              >
+                {reg_merchandise.length === default_merchandise.length
+                  ? "Deselect All"
+                  : "Select All"}
+              </button>
             </div>
             <div className="mt-2 p-2">
-              <div className="h-[550px]  mt-8 overflow-y-auto">
+              <div className="h-[450px]  mt-8 overflow-y-auto">
                 <div className="h-[250px] flex items-start justify-center mt-3">
                   <div className="grid grid-cols-4 gap-8">
                     {default_merchandise.length > 0 &&

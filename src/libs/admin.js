@@ -1227,6 +1227,28 @@ export default {
     }
   },
 
+  getDashboardScreen: async function (token, page, filter) {
+    const { brand_code } = this.getBrandCode();
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let url = `api/v1/get_screendashboard?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (filter) {
+      url += `&tagids=${filter?.tagids}`;
+    }
+    // console.log("url", url);
+    const { data } = await this._get(url, "", config);
+    if (data.code === 200) {
+      return data;
+    } else {
+      return false;
+    }
+  },
+
   getBookingById: async function (booking_id, token) {
     const { brand_code } = this.getBrandCode();
     const config = {

@@ -64,18 +64,24 @@ const Custom_Filter = ({
         }
       });
 
+      const result = all_filter_data
+        .map((option) => option.optionvalue) // Get the optionvalue arrays
+        .flat() // Flatten the nested arrays into a single array
+        .find((option) => option.text === tagName); // Find the object where text matches
+
+      const value = result ? result.value : null;
+
       setFilterScreen((prevFilter) => {
         if (prevFilter.includes(`${tagID}-${tagName}`)) {
           return prevFilter; // Already selected, no change
         } else {
-          return [...prevFilter, `${tagID}-${tagName}`]; // Add the selected value to the filter state
+          return [...prevFilter, `${tagID}-${value}`]; // Add the selected value to the filter state
         }
       });
 
       if (filter_screen.length > 0) {
         // more than 1 filter
-        const output = [...filter_screen, `${tagID}-${tagName}`].join(",");
-
+        const output = [...filter_screen, `${tagID}-${value}`].join(",");
         const formattedStartDate = format(
           new Date(startDatePickers),
           "yyyy-MM-dd"
@@ -147,10 +153,11 @@ const Custom_Filter = ({
           );
 
           const obj = {
-            filterfields: `${tagID}-${tagName}`,
+            filterfields: `${tagID}-${value}`,
             startDate: formattedStartDate,
             endDate: formattedEndDate,
           };
+
           const data = await User.getActivitylog(
             token,
             1,
@@ -167,7 +174,7 @@ const Custom_Filter = ({
           }
         } else if (page_name === "mdLib") {
           const obj = {
-            filterfields: `${tagID}-${tagName}`,
+            filterfields: `${tagID}-${value}`,
           };
           const data = await User.getMedias(token, 1, "", JSON.stringify(obj));
           if (data.code === 200) {
@@ -178,7 +185,7 @@ const Custom_Filter = ({
           }
         } else if (page_name === "userMgt") {
           const obj = {
-            filterfields: `${tagID}-${tagName}`,
+            filterfields: `${tagID}-${value}`,
           };
           const data = await User.getUsersList(
             token,
@@ -201,12 +208,12 @@ const Custom_Filter = ({
 
   const removeFilter = async (event, index) => {
     const selectedValue = `${filter_screen[index]}!${event}`;
-    const [tagID, tagName] = selectedValue.split("!");
+    const [tagID, value] = selectedValue.split("!");
 
     const updatedFilterOutSide = filter_screen.filter(
       (value) => value !== tagID
     );
-    const updatedFilterInside = filter.filter((value) => value !== tagName);
+    const updatedFilterInside = filter.filter((option) => option !== value);
 
     setFilter(updatedFilterInside);
     setFilterScreen(updatedFilterOutSide);

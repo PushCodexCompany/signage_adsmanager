@@ -274,9 +274,9 @@ const Brands = () => {
                   <div className="font-bold text-[20px] mt-[10px] font-poppins hover:text-[#6425FE]">
                     {items.BrandName}
                   </div>
-                  <div className="text-[14px] text-slate-500 font-poppins">
+                  {/* <div className="text-[14px] text-slate-500 font-poppins">
                     Brand Code :{items.BrandCode}
-                  </div>
+                  </div> */}
                 </button>
               </div>
             ))}

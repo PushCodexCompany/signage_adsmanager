@@ -9,7 +9,8 @@ import Swal from "sweetalert2";
 import { GridTableReportStatus } from "../libs/dashboard_report_status_grid";
 import { GridTableReportScreen } from "../libs/dashboard_report_screen_grid";
 
-import Filter from "../../src/components/Custom_filter_Report_Screen";
+import Filter from "../components/Custom_filter_Report_Booking";
+import Tag_Filter from "../../src/components/Custom_filter_Report_Screen";
 
 const Report = () => {
   useCheckPermission();
@@ -25,20 +26,17 @@ const Report = () => {
 
   // Report
   const [report_status_booking, setReportStatusBooking] = useState([]);
+  const [report_screen_booking, setReportScreenBooking] = useState([]);
   const [all_report_booking_pages, setAllReportBookingPages] = useState(null);
+  const [all_report_screen_pages, setAllReportScreenPages] = useState(null);
 
   const [export_booking_data, setExportBookingData] = useState([]);
   const [currentPageBooking, setCurrentPageBooking] = useState();
   const [filterTag, setFilterTag] = useState([]);
   const [filterOption, setFilterOption] = useState([]);
 
-  const [filter_screen, setFilterScreen] = useState([]);
-
   const [filter_option_screen, setFilterOptionScreen] = useState([]);
   const [filter_tag_screen, setFilterTagScreen] = useState([]);
-
-  const [report_screen_booking, setReportScreenBooking] = useState([]);
-  const [all_report_screen_pages, setAllReportScreengPages] = useState(null);
 
   const [startDatePickers, setStartDatePickers] = useState(new Date());
   const [endDatePickers, setEndDatePickers] = useState(new Date());
@@ -48,6 +46,13 @@ const Report = () => {
   const [date_tricker, setDateTricker] = useState(false);
   const [total_page_booking, setTotalPageBooking] = useState([]);
   const [searchTerm, setSearchTerm] = useState(null);
+
+  // Screen Tab
+  const [filter_screen_page, setFilterScreenPage] = useState([]);
+  const [filter_tag_screen_page, setFilterTagScreenPage] = useState([]);
+  const [export_screen_data, setExportScreenData] = useState([]);
+  const [currentPageScreen, setCurrentPageScreen] = useState();
+  const [totalPageScreen, setTotalPageScreen] = useState();
 
   useEffect(() => {
     getReportData();
@@ -72,223 +77,15 @@ const Report = () => {
   };
 
   const getReportScreenData = async () => {
-    //  const data = await User.getBooking(token, 1);
-    const data = {
-      status: "success",
-      code: 200,
-      pagination: [
-        {
-          totalrecords: 30,
-          currentpage: 1,
-          totalpage: 3,
-        },
-      ],
-      screens: [
-        {
-          ScreenID: 1,
-          ScreenName: "Supers Sport New Year Sale 2024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: false,
-          },
-        },
-        {
-          ScreenID: 2,
-          ScreenName: "B2S Back to School 012024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: true,
-          },
-        },
-        {
-          ScreenID: 3,
-          ScreenName: "Power Buy Mid Night Sale 2/10",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: true,
-          },
-        },
-        {
-          ScreenID: 4,
-          ScreenName: "New Menu Moon Fes 2024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: false,
-          },
-        },
-        {
-          ScreenID: 5,
-          ScreenName: "New Promo 2/2024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: false,
-            video: true,
-          },
-        },
-        {
-          ScreenID: 6,
-          ScreenName: "Supers Sport New Year Sale 2024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: false,
-          },
-        },
-        {
-          ScreenID: 7,
-          ScreenName: "B2S Back to School 012024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: true,
-          },
-        },
-        {
-          ScreenID: 8,
-          ScreenName: "Power Buy Mid Night Sale 2/10",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: true,
-          },
-        },
-        {
-          ScreenID: 9,
-          ScreenName: "New Menu Moon Fes 2024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: true,
-            video: false,
-          },
-        },
-        {
-          ScreenID: 10,
-          ScreenName: "New Promo 2/2024",
-          ScreenPhoto: "",
-          ScreenLocation: "Mall Entrance (B)  ชั้น 1 ทางเชื่อมCPN test",
-          ScreenRule: [
-            {
-              MediaRuleID: 1,
-              MediaRuleName: "1920 x 1080",
-              AdsCapacity: "20",
-              Width: "1920.00",
-              Height: "1080.00",
-              ActiveResolution: 1,
-            },
-          ],
-          ScreenSupport: {
-            image: false,
-            video: true,
-          },
-        },
-      ],
-    };
-    setReportScreenBooking(data.screens);
+    const data = await User.getDashboardScreen(token, 1);
+    setReportScreenBooking(data?.screens);
+    setExportScreenData(data?.screens);
     if (data.pagination.length > 0) {
-      setAllReportScreengPages(data.pagination[0].totalpage);
+      setCurrentPageScreen(data?.pagination[0].currentpage);
+      setAllReportScreenPages(data?.pagination[0]?.totalpage);
+      setTotalPageScreen(data?.pagination[0].totalpage);
+    } else {
+      setCurrentPageScreen(1);
     }
   };
 
@@ -365,14 +162,29 @@ const Report = () => {
   const ListOfDigitalScreen = () => {
     return (
       <>
-        {/* <Filter page_name={"db_list_screen"} /> */}
-        {report_status_booking.length > 0 ? (
+        <Tag_Filter
+          getReportScreenData={getReportScreenData}
+          page_name={"dashScreenRpt"}
+          filter_screen_page={filter_screen_page}
+          filter_tag_screen_page={filter_tag_screen_page}
+          setFilterScreenPage={setFilterScreenPage}
+          setFilterTagScreenPage={setFilterTagScreenPage}
+          setAllReportScreenPages={setAllReportScreenPages}
+          setReportScreenBooking={setReportScreenBooking}
+          setExportScreenData={setExportScreenData}
+          setTotalPageScreen={setTotalPageScreen}
+        />
+        {report_screen_booking.length > 0 ? (
           <div className="mt-5">
             <GridTableReportScreen
               report_screen_booking={report_screen_booking}
               all_report_screen_pages={all_report_screen_pages}
-              // filter_screen={filter_screen}
               getReportScreenData={getReportScreenData}
+              setExportScreenData={setExportScreenData}
+              filter_tag_screen_page={filter_tag_screen_page}
+              setReportScreenBooking={setReportScreenBooking}
+              setCurrentPageScreen={setCurrentPageScreen}
+              currentPageScreen={currentPageScreen}
             />
           </div>
         ) : (
@@ -586,6 +398,177 @@ const Report = () => {
     });
   };
 
+  const exportScreenCurrent = async () => {
+    if (export_screen_data.length <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่มีข้อมูลในการ export",
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: "กำลังรวบรวมข้อมูล...",
+      html: "กรุณารอสักครู่...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const updated_screen_data = export_screen_data.map((screen) => {
+        return {
+          ...screen,
+          ScreenRule: screen.ScreenRule.map((rule) => ({
+            ...rule,
+            ImageContentTypeID: rule.ImageContentTypeID !== 0 ? true : false,
+            VideoContentTypeID: rule.VideoContentTypeID !== 0 ? true : false,
+          })),
+        };
+      });
+
+      const logs = updated_screen_data.map((entry) =>
+        [
+          entry.ScreenID.toString(),
+          entry.ScreenName,
+          `W ${parseInt(entry.ScreenRule[0].Width, 10)} x H ${parseInt(
+            entry.ScreenRule[0].Height,
+            10
+          )}`,
+          entry.ScreenLocation,
+          entry.ScreenRule[0].ImageContentTypeID,
+          entry.ScreenRule[0].VideoContentTypeID,
+        ].map((field) => `"${String(field).replace(/"/g, '""')}"`)
+      );
+
+      const csvHeader = [
+        "Screen ID",
+        "Screen Name",
+        "Size (from media rule)",
+        "location",
+        "Image Type",
+        "Video Type",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+      const csvContent = `${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const date = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      link.download = `list_screen_page${currentPageScreen}_${date}-${month}-${year}.csv`;
+      document.body.appendChild(link);
+      link.click();
+    } finally {
+      Swal.close();
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Export Data!",
+      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+    });
+  };
+
+  const exportScreenAll = async () => {
+    if (export_screen_data.length <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่มีข้อมูลในการ export",
+      });
+      return;
+    }
+
+    Swal.fire({
+      title: "กำลังรวบรวมข้อมูล...",
+      html: "กรุณารอสักครู่...",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    try {
+      const result = filter_tag_screen_page.join(",");
+      const obj = {
+        tagids: result,
+      };
+
+      const export_data = [];
+      for (let i = 1; i <= totalPageScreen; i++) {
+        try {
+          const data = await User.getDashboardScreen(token, i, searchTerm, obj);
+          export_data.push(...data.screens); // Append to the array
+        } catch (error) {
+          console.error(`Error fetching screen log for page ${i}:`, error);
+        }
+      }
+
+      const updated_screen_data = export_data.map((screen) => {
+        return {
+          ...screen,
+          ScreenRule: screen.ScreenRule.map((rule) => ({
+            ...rule,
+            ImageContentTypeID: rule.ImageContentTypeID !== 0 ? true : false,
+            VideoContentTypeID: rule.VideoContentTypeID !== 0 ? true : false,
+          })),
+        };
+      });
+
+      const logs = updated_screen_data.map((entry) =>
+        [
+          entry.ScreenID.toString(),
+          entry.ScreenName,
+          `W ${parseInt(entry.ScreenRule[0].Width, 10)} x H ${parseInt(
+            entry.ScreenRule[0].Height,
+            10
+          )}`,
+          entry.ScreenLocation,
+          entry.ScreenRule[0].ImageContentTypeID,
+          entry.ScreenRule[0].VideoContentTypeID,
+        ].map((field) => `"${String(field).replace(/"/g, '""')}"`)
+      );
+
+      const csvHeader = [
+        "Screen ID",
+        "Screen Name",
+        "Size (from media rule)",
+        "location",
+        "Image Type",
+        "Video Type",
+      ].join(",");
+
+      const csvBody = logs.map((row) => row.join(",")).join("\n");
+      const csvContent = `${csvHeader}\n${csvBody}`;
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      const date = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
+      link.download = `list_screen_${date}-${month}-${year}.csv`;
+      document.body.appendChild(link);
+      link.click();
+    } finally {
+      Swal.close();
+    }
+
+    Swal.fire({
+      icon: "success",
+      title: "Export Data!",
+      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+    });
+  };
+
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
@@ -636,12 +619,20 @@ const Report = () => {
             </div>
           ) : (
             <div className="col-span-4 flex items-center justify-end">
-              <button
-                onClick={() => alert("export list of digital screen")}
-                className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
-              >
-                Export
-              </button>
+              <div className="flex justify-end space-x-1">
+                <button
+                  onClick={() => exportScreenCurrent()}
+                  className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+                >
+                  Export Current Page
+                </button>
+                <button
+                  onClick={() => exportScreenAll()}
+                  className="bg-[#6425FE] hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+                >
+                  Export All Page
+                </button>
+              </div>
             </div>
           )}
         </div>

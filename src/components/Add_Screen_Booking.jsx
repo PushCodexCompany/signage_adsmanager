@@ -218,7 +218,7 @@ const Add_Screen_Booking = ({
         <div className="p-4">
           <div className="w-auto h-[300px] overflow-y-auto">
             <table className="min-w-full border border-gray-300">
-              <thead className="sticky -top-1 bg-gray-200 z-5">
+              <thead className="sticky -top-1 bg-gray-200 z-10">
                 <tr>
                   <th className="px-6 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                     <label className="inline-flex items-center space-x-2">
@@ -293,7 +293,7 @@ const Add_Screen_Booking = ({
                                 {row.ScreenName.slice(0, 17) + "..."}
                                 <div
                                   style={{ pointerEvents: "none" }}
-                                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                                  className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 "
                                 >
                                   {row.ScreenName}
                                 </div>
