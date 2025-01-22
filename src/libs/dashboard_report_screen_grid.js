@@ -48,11 +48,13 @@ export const GridTableReportScreen = ({
   };
 
   const handleClick = async (page) => {
-    setCurrentPageScreen(page);
-    setPageInput("");
-    const data = await fetchDataForPage(page);
-    setReportScreenBooking(data.screens);
-    setExportScreenData(data.screens);
+    if (currentPageScreen !== page) {
+      setCurrentPageScreen(page);
+      setPageInput("");
+      const data = await fetchDataForPage(page);
+      setReportScreenBooking(data.screens);
+      setExportScreenData(data.screens);
+    }
   };
 
   const handlePrevPage = async () => {

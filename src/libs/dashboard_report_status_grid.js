@@ -27,12 +27,16 @@ export const GridTableReportStatus = ({
     if (page) {
       if (filter_tag_screen.length > 0 || filter_option_screen.length > 0) {
         let obj;
+        const filter_option_screen_output = filter_option_screen
+          .map((item) => `${item}`)
+          .join(",");
+
         if (filter_tag_screen.length > 0 && filter_option_screen.length > 0) {
           if (date_tricker) {
             obj = {
               tagids: filter_tag_screen,
               optionkey: {
-                filterfields: filter_option_screen,
+                filterfields: filter_option_screen_output,
                 startDate: startDate,
                 endDate: endDate,
               },
@@ -61,7 +65,7 @@ export const GridTableReportStatus = ({
           if (date_tricker) {
             obj = {
               optionkey: {
-                filterfields: filter_option_screen,
+                filterfields: filter_option_screen_output,
                 startDate: startDate,
                 endDate: endDate,
               },
@@ -69,7 +73,7 @@ export const GridTableReportStatus = ({
           } else {
             obj = {
               optionkey: {
-                filterfields: filter_option_screen,
+                filterfields: filter_option_screen_output,
               },
             };
           }
@@ -84,11 +88,13 @@ export const GridTableReportStatus = ({
   };
 
   const handleClick = async (page) => {
-    setCurrentPageBooking(page);
-    setPageInput("");
-    const data = await fetchDataForPage(page);
-    setReportStatusBooking(data.booking);
-    setExportBookingData(data.booking);
+    if (currentPageBooking !== page) {
+      setCurrentPageBooking(page);
+      setPageInput("");
+      const data = await fetchDataForPage(page);
+      setReportStatusBooking(data.booking);
+      setExportBookingData(data.booking);
+    }
   };
 
   const handlePrevPage = async () => {
