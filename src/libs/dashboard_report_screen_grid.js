@@ -38,7 +38,7 @@ export const GridTableReportScreen = ({
         const obj = {
           tagids: result,
         };
-        const data = await User.getBooking(token, page, obj);
+        const data = await User.getDashboardScreen(token, page, obj);
         return data;
       } else {
         const data = await User.getDashboardScreen(token, page);

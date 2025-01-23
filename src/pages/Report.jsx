@@ -255,11 +255,13 @@ const Report = () => {
       Swal.close();
     }
 
-    Swal.fire({
-      icon: "success",
-      title: "Export Data!",
-      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
-    });
+    setTimeout(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Export Data!",
+        text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+      });
+    }, 300); // Adjust delay as needed
   };
 
   const exportListBookingAllPage = async () => {
@@ -399,15 +401,6 @@ const Report = () => {
   };
 
   const exportScreenCurrent = async () => {
-    if (export_screen_data.length <= 0) {
-      Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด!",
-        text: "ไม่มีข้อมูลในการ export",
-      });
-      return;
-    }
-
     Swal.fire({
       title: "กำลังรวบรวมข้อมูล...",
       html: "กรุณารอสักครู่...",
@@ -448,7 +441,7 @@ const Report = () => {
         "Screen ID",
         "Screen Name",
         "Size (from media rule)",
-        "location",
+        "Location",
         "Image Type",
         "Video Type",
       ].join(",");
@@ -467,13 +460,16 @@ const Report = () => {
       link.click();
     } finally {
       Swal.close();
-    }
 
-    Swal.fire({
-      icon: "success",
-      title: "Export Data!",
-      text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
-    });
+      // Add a small delay before showing the success modal
+      setTimeout(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Export Data!",
+          text: "ดาวน์โหลดไฟล์เรียบร้อยแล้ว",
+        });
+      }, 300); // Adjust delay as needed
+    }
   };
 
   const exportScreenAll = async () => {
