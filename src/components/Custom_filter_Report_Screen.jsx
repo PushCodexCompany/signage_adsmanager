@@ -15,6 +15,8 @@ const Custom_filter_Report_Screen = ({
   filter_tag_screen_page,
   setExportScreenData,
   setTotalPageScreen,
+  setSearchTermScreen,
+  searchTermScreen,
 }) => {
   const { token } = User.getCookieData();
 
@@ -70,7 +72,18 @@ const Custom_filter_Report_Screen = ({
           tagids: output,
         };
         if (page_name === "dashScreenRpt") {
-          const data = await User.getDashboardScreen(token, 1, obj);
+          let data;
+          if (searchTermScreen === null) {
+            data = await User.getDashboardScreen(token, 1, obj);
+          } else {
+            data = await User.getDashboardScreen(
+              token,
+              1,
+              obj,
+              searchTermScreen
+            );
+          }
+
           if (data.code === 200) {
             setReportScreenBooking(data.screens);
             setExportScreenData(data.screens);
@@ -87,7 +100,17 @@ const Custom_filter_Report_Screen = ({
         };
 
         if (page_name === "dashScreenRpt") {
-          const data = await User.getDashboardScreen(token, 1, obj);
+          let data;
+          if (searchTermScreen === null) {
+            data = await User.getDashboardScreen(token, 1, obj);
+          } else {
+            data = await User.getDashboardScreen(
+              token,
+              1,
+              obj,
+              searchTermScreen
+            );
+          }
           if (data.code === 200) {
             setReportScreenBooking(data.screens);
             setExportScreenData(data.screens);
@@ -126,7 +149,12 @@ const Custom_filter_Report_Screen = ({
       };
 
       if (page_name === "dashScreenRpt") {
-        const data = await User.getDashboardScreen(token, 1, obj);
+        let data;
+        if (searchTermScreen === null) {
+          data = await User.getDashboardScreen(token, 1, obj);
+        } else {
+          data = await User.getDashboardScreen(token, 1, obj, searchTermScreen);
+        }
         if (data.code === 200) {
           setReportScreenBooking(data.screens);
           setExportScreenData(data.screens);
@@ -149,6 +177,7 @@ const Custom_filter_Report_Screen = ({
     setFilterTagScreenPage([]);
 
     if (page_name === "dashScreenRpt") {
+      setSearchTermScreen(null);
       getReportScreenData();
     }
   };

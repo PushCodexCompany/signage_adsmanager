@@ -1200,7 +1200,7 @@ export default {
     }
   },
 
-  getDashboardBooking: async function (token, page, filter) {
+  getDashboardBooking: async function (token, page, filter, booking_name) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1209,6 +1209,11 @@ export default {
     };
 
     let url = `api/v1/get_bookingdashboard?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (booking_name) {
+      url += `&bookingname=${booking_name}`;
+    }
+
     if (filter) {
       if (filter.tagids) {
         url += `&tagids=${filter?.tagids}`;
@@ -1226,7 +1231,7 @@ export default {
     }
   },
 
-  getDashboardScreen: async function (token, page, filter) {
+  getDashboardScreen: async function (token, page, filter, screen_name) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1235,6 +1240,10 @@ export default {
     };
 
     let url = `api/v1/get_screendashboard?brandcode=${brand_code}&perpage=10&page=${page}`;
+
+    if (screen_name) {
+      url += `&screenname=${screen_name}`;
+    }
 
     if (filter) {
       url += `&tagids=${filter?.tagids}`;

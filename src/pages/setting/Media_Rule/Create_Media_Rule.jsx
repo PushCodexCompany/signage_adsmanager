@@ -19,8 +19,12 @@ const Create_Media_Rule = () => {
   const [media_rule_width, setMediaRuleWidth] = useState(null);
   const [media_rule_adsCapacity, setMediaRuleAdsCapacity] = useState(null);
 
-  const [media_rule_image, setMediaRuleImage] = useState(null);
-  const [media_rule_video, setMediaRuleVideo] = useState(null);
+  const [media_rule_image, setMediaRuleImage] = useState(
+    location.state.data ? null : true
+  );
+  const [media_rule_video, setMediaRuleVideo] = useState(
+    location.state.data ? null : true
+  );
 
   const [fact_image, setFactImage] = useState(false);
   const [fact_video, setFactVideo] = useState(false);
@@ -148,8 +152,8 @@ const Create_Media_Rule = () => {
           width: media_rule_width,
           height: media_rule_height,
           activeresolution: toggle_disable,
-          imagecontenttypeid: media_img,
-          videocontenttypeid: media_video,
+          imagecontenttypeid: media_img || null,
+          videocontenttypeid: media_video || null,
         };
         if (
           media_rule_width === 0 ||

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Header, Navbar } from "../components";
+import { Header } from "../components";
+import Navbar_Booking_Report from "../components/Navbar_Booking_Report";
+import Navbar_Screen_Report from "../components/Navbar_Screen_Report";
 import { useNavigate } from "react-router-dom";
 import useCheckPermission from "../libs/useCheckPermission";
 import Permission from "../libs/permission";
@@ -45,7 +47,9 @@ const Report = () => {
 
   const [date_tricker, setDateTricker] = useState(false);
   const [total_page_booking, setTotalPageBooking] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(null);
+
+  const [searchTermBooking, setSearchTermBooking] = useState(null);
+  const [searchTermScreen, setSearchTermScreen] = useState(null);
 
   // Screen Tab
   const [filter_screen_page, setFilterScreenPage] = useState([]);
@@ -63,29 +67,134 @@ const Report = () => {
     getPermission();
   }, []);
 
+  useEffect(() => {
+    getReportData();
+  }, [searchTermBooking]);
+
+  useEffect(() => {
+    getReportScreenData();
+  }, [searchTermScreen]);
+
   const getReportData = async () => {
-    const data = await User.getDashboardBooking(token, 1);
-    setReportStatusBooking(data?.booking);
-    setExportBookingData(data?.booking);
-    if (data.pagination.length > 0) {
-      setAllReportBookingPages(data?.pagination[0].totalpage);
-      setTotalPageBooking(data?.pagination[0].totalpage);
-      setCurrentPageBooking(data?.pagination[0].currentpage);
+    if (searchTermBooking === null) {
+      const data = await User.getDashboardBooking(token, 1);
+      setReportStatusBooking(data?.booking);
+      setExportBookingData(data?.booking);
+      if (data.pagination.length > 0) {
+        setAllReportBookingPages(data?.pagination[0].totalpage);
+        setTotalPageBooking(data?.pagination[0].totalpage);
+        setCurrentPageBooking(data?.pagination[0].currentpage);
+      } else {
+        setCurrentPageBooking(1);
+      }
     } else {
-      setCurrentPageBooking(1);
+      let data;
+      if (filter_tag_screen.length > 0 || filter_option_screen.length > 0) {
+        let obj;
+        const filter_option_screen_output = filter_option_screen
+          .map((item) => `${item}`)
+          .join(",");
+
+        if (filter_tag_screen.length > 0 && filter_option_screen.length > 0) {
+          if (date_tricker) {
+            obj = {
+              tagids: filter_tag_screen,
+              optionkey: {
+                filterfields: filter_option_screen_output,
+                startDate: startDate,
+                endDate: endDate,
+              },
+            };
+          } else {
+            obj = {
+              tagids: filter_tag_screen,
+              optionkey: {
+                filterfields: filter_option_screen_output,
+              },
+            };
+          }
+        } else if (filter_tag_screen.length > 0) {
+          if (date_tricker) {
+            obj = {
+              tagids: filter_tag_screen,
+              optionkey: {
+                startDate: startDate,
+                endDate: endDate,
+              },
+            };
+          } else {
+            obj = {
+              tagids: filter_tag_screen,
+            };
+          }
+        } else if (filter_option_screen.length > 0) {
+          if (date_tricker) {
+            obj = {
+              optionkey: {
+                filterfields: filter_option_screen_output,
+                startDate: startDate,
+                endDate: endDate,
+              },
+            };
+          } else {
+            obj = {
+              optionkey: {
+                filterfields: filter_option_screen_output,
+              },
+            };
+          }
+        }
+        data = await User.getDashboardBooking(token, 1, obj, searchTermBooking);
+      } else {
+        data = await User.getDashboardBooking(token, 1, "", searchTermBooking);
+      }
+
+      setReportStatusBooking(data?.booking);
+      setExportBookingData(data?.booking);
+      if (data.pagination.length > 0) {
+        setAllReportBookingPages(data?.pagination[0].totalpage);
+        setTotalPageBooking(data?.pagination[0].totalpage);
+        setCurrentPageBooking(data?.pagination[0].currentpage);
+      } else {
+        setCurrentPageBooking(1);
+      }
     }
   };
 
   const getReportScreenData = async () => {
-    const data = await User.getDashboardScreen(token, 1);
-    setReportScreenBooking(data?.screens);
-    setExportScreenData(data?.screens);
-    if (data.pagination.length > 0) {
-      setCurrentPageScreen(data?.pagination[0].currentpage);
-      setAllReportScreenPages(data?.pagination[0]?.totalpage);
-      setTotalPageScreen(data?.pagination[0].totalpage);
+    if (searchTermScreen === null) {
+      const data = await User.getDashboardScreen(token, 1);
+      setReportScreenBooking(data?.screens);
+      setExportScreenData(data?.screens);
+      if (data.pagination.length > 0) {
+        setCurrentPageScreen(data?.pagination[0].currentpage);
+        setAllReportScreenPages(data?.pagination[0]?.totalpage);
+        setTotalPageScreen(data?.pagination[0].totalpage);
+      } else {
+        setCurrentPageScreen(1);
+      }
     } else {
-      setCurrentPageScreen(1);
+      let data;
+      if (filter_tag_screen_page.length > 0) {
+        const result = filter_tag_screen_page.join(",");
+        const obj = {
+          tagids: result,
+        };
+
+        data = await User.getDashboardScreen(token, 1, obj, searchTermScreen);
+      } else {
+        data = await User.getDashboardScreen(token, 1, "", searchTermScreen);
+      }
+
+      setReportScreenBooking(data?.screens);
+      setExportScreenData(data?.screens);
+      if (data.pagination.length > 0) {
+        setCurrentPageScreen(data?.pagination[0].currentpage);
+        setAllReportScreenPages(data?.pagination[0]?.totalpage);
+        setTotalPageScreen(data?.pagination[0].totalpage);
+      } else {
+        setCurrentPageScreen(1);
+      }
     }
   };
 
@@ -131,6 +240,8 @@ const Report = () => {
           date_tricker={date_tricker}
           setTotalPageBooking={setTotalPageBooking}
           setExportBookingData={setExportBookingData}
+          setSearchTermBooking={setSearchTermBooking}
+          searchTermBooking={searchTermBooking}
         />
         {report_status_booking.length > 0 ? (
           <div className="mt-5">
@@ -146,6 +257,7 @@ const Report = () => {
               setExportBookingData={setExportBookingData}
               setCurrentPageBooking={setCurrentPageBooking}
               currentPageBooking={currentPageBooking}
+              searchTermBooking={searchTermBooking}
             />
           </div>
         ) : (
@@ -173,6 +285,8 @@ const Report = () => {
           setReportScreenBooking={setReportScreenBooking}
           setExportScreenData={setExportScreenData}
           setTotalPageScreen={setTotalPageScreen}
+          setSearchTermScreen={setSearchTermScreen}
+          searchTermScreen={searchTermScreen}
         />
         {report_screen_booking.length > 0 ? (
           <div className="mt-5">
@@ -185,6 +299,7 @@ const Report = () => {
               setReportScreenBooking={setReportScreenBooking}
               setCurrentPageScreen={setCurrentPageScreen}
               currentPageScreen={currentPageScreen}
+              searchTermScreen={searchTermScreen}
             />
           </div>
         ) : (
@@ -501,7 +616,7 @@ const Report = () => {
       const export_data = [];
       for (let i = 1; i <= totalPageScreen; i++) {
         try {
-          const data = await User.getDashboardScreen(token, i, searchTerm, obj);
+          const data = await User.getDashboardScreen(token, i, obj);
           export_data.push(...data.screens); // Append to the array
         } catch (error) {
           console.error(`Error fetching screen log for page ${i}:`, error);
@@ -567,7 +682,19 @@ const Report = () => {
 
   return (
     <>
-      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+      {activeTab === 0 && (
+        <Navbar_Booking_Report
+          setSearchTermBooking={setSearchTermBooking}
+          searchTermBooking={searchTermBooking}
+        />
+      )}
+      {activeTab === 1 && (
+        <Navbar_Screen_Report
+          setSearchTermScreen={setSearchTermScreen}
+          searchTermScreen={searchTermScreen}
+        />
+      )}
+
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Report"} />
         <div className="grid grid-cols-12 mt-10">

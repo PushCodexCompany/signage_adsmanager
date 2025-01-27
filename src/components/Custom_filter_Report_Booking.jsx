@@ -36,6 +36,8 @@ const Custom_filter_Report_Booking = ({
   date_tricker,
   setTotalPageBooking,
   setExportBookingData,
+  setSearchTermBooking,
+  searchTermBooking,
 }) => {
   const { token } = User.getCookieData();
   //   const [filter, setFilter] = useState([]);
@@ -140,7 +142,18 @@ const Custom_filter_Report_Booking = ({
         }
 
         if (page_name === "dashBookingRpt") {
-          const data = await User.getDashboardBooking(token, 1, obj);
+          let data;
+          if (searchTermBooking === null) {
+            data = await User.getDashboardBooking(token, 1, obj);
+          } else {
+            data = await User.getDashboardBooking(
+              token,
+              1,
+              obj,
+              searchTermBooking
+            );
+          }
+
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
             setExportBookingData(data.booking);
@@ -188,7 +201,17 @@ const Custom_filter_Report_Booking = ({
         }
 
         if (page_name === "dashBookingRpt") {
-          const data = await User.getDashboardBooking(token, 1, obj);
+          let data;
+          if (searchTermBooking === null) {
+            data = await User.getDashboardBooking(token, 1, obj);
+          } else {
+            data = await User.getDashboardBooking(
+              token,
+              1,
+              obj,
+              searchTermBooking
+            );
+          }
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
             setExportBookingData(data.booking);
@@ -272,7 +295,17 @@ const Custom_filter_Report_Booking = ({
         }
 
         if (page_name === "dashBookingRpt") {
-          const data = await User.getDashboardBooking(token, 1, obj);
+          let data;
+          if (searchTermBooking === null) {
+            data = await User.getDashboardBooking(token, 1, obj);
+          } else {
+            data = await User.getDashboardBooking(
+              token,
+              1,
+              obj,
+              searchTermBooking
+            );
+          }
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
             setExportBookingData(data.booking);
@@ -321,7 +354,17 @@ const Custom_filter_Report_Booking = ({
         }
 
         if (page_name === "dashBookingRpt") {
-          const data = await User.getDashboardBooking(token, 1, obj);
+          let data;
+          if (searchTermBooking === null) {
+            data = await User.getDashboardBooking(token, 1, obj);
+          } else {
+            data = await User.getDashboardBooking(
+              token,
+              1,
+              obj,
+              searchTermBooking
+            );
+          }
           if (data.code === 200) {
             setReportStatusBooking(data.booking);
             setExportBookingData(data.booking);
@@ -413,7 +456,17 @@ const Custom_filter_Report_Booking = ({
       }
 
       if (page_name === "dashBookingRpt") {
-        const data = await User.getDashboardBooking(token, 1, obj);
+        let data;
+        if (searchTermBooking === null) {
+          data = await User.getDashboardBooking(token, 1, obj);
+        } else {
+          data = await User.getDashboardBooking(
+            token,
+            1,
+            obj,
+            searchTermBooking
+          );
+        }
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
           setExportBookingData(data.booking);
@@ -507,7 +560,17 @@ const Custom_filter_Report_Booking = ({
       }
 
       if (page_name === "dashBookingRpt") {
-        const data = await User.getDashboardBooking(token, 1, obj);
+        let data;
+        if (searchTermBooking === null) {
+          data = await User.getDashboardBooking(token, 1, obj);
+        } else {
+          data = await User.getDashboardBooking(
+            token,
+            1,
+            obj,
+            searchTermBooking
+          );
+        }
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
           setExportBookingData(data.booking);
@@ -534,6 +597,7 @@ const Custom_filter_Report_Booking = ({
     setEndDatePickers(new Date());
     setDateTricker(false);
     if (page_name === "dashBookingRpt") {
+      setSearchTermBooking(null);
       getReportData();
     }
   };
@@ -587,7 +651,17 @@ const Custom_filter_Report_Booking = ({
       }
       if (page_name === "dashBookingRpt") {
         setDateTricker(true);
-        const data = await User.getDashboardBooking(token, 1, obj);
+        let data;
+        if (searchTermBooking === null) {
+          data = await User.getDashboardBooking(token, 1, obj);
+        } else {
+          data = await User.getDashboardBooking(
+            token,
+            1,
+            obj,
+            searchTermBooking
+          );
+        }
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
           setExportBookingData(data.booking);
@@ -661,7 +735,17 @@ const Custom_filter_Report_Booking = ({
 
       if (page_name === "dashBookingRpt") {
         setDateTricker(true);
-        const data = await User.getDashboardBooking(token, 1, obj);
+        let data;
+        if (searchTermBooking === null) {
+          data = await User.getDashboardBooking(token, 1, obj);
+        } else {
+          data = await User.getDashboardBooking(
+            token,
+            1,
+            obj,
+            searchTermBooking
+          );
+        }
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
           setExportBookingData(data.booking);

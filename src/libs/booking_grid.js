@@ -6,6 +6,9 @@ import {
   RiShareBoxLine,
   RiVideoAddLine,
 } from "react-icons/ri";
+
+import { MdDoNotDisturb } from "react-icons/md";
+
 import User from "../libs/admin";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import firebase_func from "../libs/firebase_func";
@@ -128,11 +131,11 @@ export const GridTable = ({
 
   const handleDeleteBooking = (booking_data) => {
     Swal.fire({
-      text: `คุณต้องการลบ Booking : ${booking_data.BookingName} ?`,
+      text: `คุณต้องการยกเลิกการใช้งาน Booking : ${booking_data.BookingName} ?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
-      confirmButtonText: "ลบข้อมูล",
+      confirmButtonText: "ยืนยัน",
       cancelButtonText: "ยกเลิก",
       reverseButtons: true,
     }).then(async (result) => {
@@ -276,7 +279,7 @@ export const GridTable = ({
                           onClick={() => handleDeleteBooking(row)}
                           className="relative group"
                         >
-                          <RiDeleteBin5Line
+                          <MdDoNotDisturb
                             size={23}
                             className="text-[#6425FE] hover:text-[#3b1694]"
                           />
@@ -284,7 +287,7 @@ export const GridTable = ({
                             className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                             style={{ pointerEvents: "none" }}
                           >
-                            Cancel Booking
+                            Inactive Booking
                           </div>
                         </button>
                       ) : (
@@ -325,7 +328,7 @@ export const GridTable = ({
                           onClick={() => handleDeleteBooking(row)}
                           className="relative group"
                         >
-                          <RiDeleteBin5Line
+                          <MdDoNotDisturb
                             size={23}
                             className="text-[#6425FE] hover:text-[#3b1694]"
                           />
@@ -333,7 +336,7 @@ export const GridTable = ({
                             className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                             style={{ pointerEvents: "none" }}
                           >
-                            Cancel Booking
+                            Inactive Booking
                           </div>
                         </button>
                       ) : (

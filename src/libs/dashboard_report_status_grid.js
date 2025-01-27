@@ -15,6 +15,7 @@ export const GridTableReportStatus = ({
   setExportBookingData,
   setCurrentPageBooking,
   currentPageBooking,
+  searchTermBooking,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
@@ -78,11 +79,31 @@ export const GridTableReportStatus = ({
             };
           }
         }
-        const data = await User.getDashboardBooking(token, page, obj);
-        return data;
+        if (searchTermBooking === null) {
+          const data = await User.getDashboardBooking(token, page, obj);
+          return data;
+        } else {
+          const data = await User.getDashboardBooking(
+            token,
+            page,
+            searchTermBooking,
+            obj
+          );
+          return data;
+        }
       } else {
-        const data = await User.getDashboardBooking(token, page);
-        return data;
+        if (searchTermBooking === null) {
+          const data = await User.getDashboardBooking(token, page);
+          return data;
+        } else {
+          const data = await User.getDashboardBooking(
+            token,
+            page,
+            "",
+            searchTermBooking
+          );
+          return data;
+        }
       }
     }
   };

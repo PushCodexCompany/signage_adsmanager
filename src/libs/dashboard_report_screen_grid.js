@@ -23,6 +23,7 @@ export const GridTableReportScreen = ({
   setReportScreenBooking,
   setCurrentPageScreen,
   currentPageScreen,
+  searchTermScreen,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
@@ -38,10 +39,32 @@ export const GridTableReportScreen = ({
         const obj = {
           tagids: result,
         };
-        const data = await User.getDashboardScreen(token, page, obj);
+        let data;
+        if (searchTermScreen === null) {
+          data = await User.getDashboardScreen(token, page, obj);
+        } else {
+          data = await User.getDashboardScreen(
+            token,
+            page,
+            obj,
+            searchTermScreen
+          );
+        }
+
         return data;
       } else {
-        const data = await User.getDashboardScreen(token, page);
+        let data;
+        if (searchTermScreen === null) {
+          data = await User.getDashboardScreen(token, page);
+        } else {
+          data = await User.getDashboardScreen(
+            token,
+            page,
+            "",
+            searchTermScreen
+          );
+        }
+
         return data;
       }
     }
