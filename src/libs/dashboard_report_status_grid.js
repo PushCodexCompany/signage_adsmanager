@@ -86,8 +86,8 @@ export const GridTableReportStatus = ({
           const data = await User.getDashboardBooking(
             token,
             page,
-            searchTermBooking,
-            obj
+            obj,
+            searchTermBooking
           );
           return data;
         }

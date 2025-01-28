@@ -75,7 +75,7 @@ const Report = () => {
     getReportScreenData();
   }, [searchTermScreen]);
 
-  const getReportData = async () => {
+  const getReportData = async (type) => {
     if (searchTermBooking === null) {
       const data = await User.getDashboardBooking(token, 1);
       setReportStatusBooking(data?.booking);
@@ -89,62 +89,76 @@ const Report = () => {
       }
     } else {
       let data;
-      if (filter_tag_screen.length > 0 || filter_option_screen.length > 0) {
-        let obj;
-        const filter_option_screen_output = filter_option_screen
-          .map((item) => `${item}`)
-          .join(",");
+      if (!type) {
+        if (filter_tag_screen.length > 0 || filter_option_screen.length > 0) {
+          let obj;
+          const filter_option_screen_output = filter_option_screen
+            .map((item) => `${item}`)
+            .join(",");
 
-        if (filter_tag_screen.length > 0 && filter_option_screen.length > 0) {
-          if (date_tricker) {
-            obj = {
-              tagids: filter_tag_screen,
-              optionkey: {
-                filterfields: filter_option_screen_output,
-                startDate: startDate,
-                endDate: endDate,
-              },
-            };
-          } else {
-            obj = {
-              tagids: filter_tag_screen,
-              optionkey: {
-                filterfields: filter_option_screen_output,
-              },
-            };
+          if (filter_tag_screen.length > 0 && filter_option_screen.length > 0) {
+            if (date_tricker) {
+              obj = {
+                tagids: filter_tag_screen,
+                optionkey: {
+                  filterfields: filter_option_screen_output,
+                  startDate: startDate,
+                  endDate: endDate,
+                },
+              };
+            } else {
+              obj = {
+                tagids: filter_tag_screen,
+                optionkey: {
+                  filterfields: filter_option_screen_output,
+                },
+              };
+            }
+          } else if (filter_tag_screen.length > 0) {
+            if (date_tricker) {
+              obj = {
+                tagids: filter_tag_screen,
+                optionkey: {
+                  startDate: startDate,
+                  endDate: endDate,
+                },
+              };
+            } else {
+              obj = {
+                tagids: filter_tag_screen,
+              };
+            }
+          } else if (filter_option_screen.length > 0) {
+            if (date_tricker) {
+              obj = {
+                optionkey: {
+                  filterfields: filter_option_screen_output,
+                  startDate: startDate,
+                  endDate: endDate,
+                },
+              };
+            } else {
+              obj = {
+                optionkey: {
+                  filterfields: filter_option_screen_output,
+                },
+              };
+            }
           }
-        } else if (filter_tag_screen.length > 0) {
-          if (date_tricker) {
-            obj = {
-              tagids: filter_tag_screen,
-              optionkey: {
-                startDate: startDate,
-                endDate: endDate,
-              },
-            };
-          } else {
-            obj = {
-              tagids: filter_tag_screen,
-            };
-          }
-        } else if (filter_option_screen.length > 0) {
-          if (date_tricker) {
-            obj = {
-              optionkey: {
-                filterfields: filter_option_screen_output,
-                startDate: startDate,
-                endDate: endDate,
-              },
-            };
-          } else {
-            obj = {
-              optionkey: {
-                filterfields: filter_option_screen_output,
-              },
-            };
-          }
+          data = await User.getDashboardBooking(
+            token,
+            1,
+            obj,
+            searchTermBooking
+          );
+        } else {
+          data = await User.getDashboardBooking(
+            token,
+            1,
+            "",
+            searchTermBooking
+          );
         }
-        data = await User.getDashboardBooking(token, 1, obj, searchTermBooking);
       } else {
         data = await User.getDashboardBooking(token, 1, "", searchTermBooking);
       }
@@ -161,7 +175,7 @@ const Report = () => {
     }
   };
 
-  const getReportScreenData = async () => {
+  const getReportScreenData = async (type) => {
     if (searchTermScreen === null) {
       const data = await User.getDashboardScreen(token, 1);
       setReportScreenBooking(data?.screens);
@@ -175,13 +189,17 @@ const Report = () => {
       }
     } else {
       let data;
-      if (filter_tag_screen_page.length > 0) {
-        const result = filter_tag_screen_page.join(",");
-        const obj = {
-          tagids: result,
-        };
+      if (!type) {
+        if (filter_tag_screen_page.length > 0) {
+          const result = filter_tag_screen_page.join(",");
+          const obj = {
+            tagids: result,
+          };
 
-        data = await User.getDashboardScreen(token, 1, obj, searchTermScreen);
+          data = await User.getDashboardScreen(token, 1, obj, searchTermScreen);
+        } else {
+          data = await User.getDashboardScreen(token, 1, "", searchTermScreen);
+        }
       } else {
         data = await User.getDashboardScreen(token, 1, "", searchTermScreen);
       }

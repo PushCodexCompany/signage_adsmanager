@@ -167,7 +167,7 @@ const Custom_filter_Report_Screen = ({
     } else {
       // no filter left
       if (page_name === "dashScreenRpt") {
-        getReportScreenData();
+        getReportScreenData("clear");
       }
     }
   };
@@ -177,8 +177,8 @@ const Custom_filter_Report_Screen = ({
     setFilterTagScreenPage([]);
 
     if (page_name === "dashScreenRpt") {
-      setSearchTermScreen(null);
-      getReportScreenData();
+      // setSearchTermScreen(null);
+      getReportScreenData("clear");
     }
   };
 

@@ -202,6 +202,7 @@ const Custom_filter_Report_Booking = ({
 
         if (page_name === "dashBookingRpt") {
           let data;
+
           if (searchTermBooking === null) {
             data = await User.getDashboardBooking(token, 1, obj);
           } else {
@@ -479,7 +480,7 @@ const Custom_filter_Report_Booking = ({
     } else {
       // no filter left
       if (page_name === "dashBookingRpt") {
-        getReportData();
+        getReportData("clear");
       }
     }
   };
@@ -583,7 +584,7 @@ const Custom_filter_Report_Booking = ({
     } else {
       // no filter left
       if (page_name === "dashBookingRpt") {
-        getReportData();
+        getReportData("clear");
       }
     }
   };
@@ -597,8 +598,7 @@ const Custom_filter_Report_Booking = ({
     setEndDatePickers(new Date());
     setDateTricker(false);
     if (page_name === "dashBookingRpt") {
-      setSearchTermBooking(null);
-      getReportData();
+      getReportData("clear");
     }
   };
 
