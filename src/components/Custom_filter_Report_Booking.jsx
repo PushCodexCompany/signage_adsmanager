@@ -746,6 +746,7 @@ const Custom_filter_Report_Booking = ({
             searchTermBooking
           );
         }
+        console.log(data);
         if (data.code === 200) {
           setReportStatusBooking(data.booking);
           setExportBookingData(data.booking);

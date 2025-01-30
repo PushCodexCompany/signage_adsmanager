@@ -93,15 +93,45 @@ export const GridTableReportStatus = ({
         }
       } else {
         if (searchTermBooking === null) {
-          const data = await User.getDashboardBooking(token, page);
+          let obj;
+          let data;
+          if (date_tricker) {
+            obj = {
+              optionkey: {
+                startDate: startDate,
+                endDate: endDate,
+              },
+            };
+            data = await User.getDashboardBooking(token, page, obj);
+          } else {
+            data = await User.getDashboardBooking(token, page);
+          }
           return data;
         } else {
-          const data = await User.getDashboardBooking(
-            token,
-            page,
-            "",
-            searchTermBooking
-          );
+          let obj;
+          let data;
+          if (date_tricker) {
+            obj = {
+              optionkey: {
+                startDate: startDate,
+                endDate: endDate,
+              },
+            };
+            data = await User.getDashboardBooking(
+              token,
+              page,
+              obj,
+              searchTermBooking
+            );
+          } else {
+            data = await User.getDashboardBooking(
+              token,
+              page,
+              "",
+              searchTermBooking
+            );
+          }
+
           return data;
         }
       }
@@ -113,6 +143,7 @@ export const GridTableReportStatus = ({
       setCurrentPageBooking(page);
       setPageInput("");
       const data = await fetchDataForPage(page);
+      console.log("cik", data);
       setReportStatusBooking(data.booking);
       setExportBookingData(data.booking);
     }
