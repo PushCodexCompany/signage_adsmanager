@@ -73,7 +73,6 @@ export const GridTable = ({
             bookingId,
             booking_slot,
             page,
-            "",
             obj
           );
           return data;
