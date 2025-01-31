@@ -50,7 +50,7 @@ const Add_Screen_Booking = ({
     try {
       let data;
       if (filter && filter?.length > 0) {
-        data = await User.getScreensWithAdsCapacityAndTag(
+        data = await User.getScreensWithAdsCapacity(
           bookingId,
           booking_slot,
           filter,

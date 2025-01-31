@@ -58,8 +58,15 @@ const Dashboard = () => {
     useState([]);
 
   const [number_booking_by_day, setNumberBookingByDay] = useState([]);
+  const [max_booking_by_day, setMaxBookingByDay] = useState([]);
   const [percent_booking_by_month, setPercentBookingByMonth] = useState([]);
+  const [max_percent_booking_by_month, setMaxPercentBookingByMonth] = useState(
+    []
+  );
   const [percent_booking_by_store, setPercentBookingByStore] = useState([]);
+  const [max_percent_booking_by_store, setMaxPercentBookingByStore] = useState(
+    []
+  );
 
   const [page_permission, setPagePermission] = useState();
 
@@ -87,11 +94,24 @@ const Dashboard = () => {
       setBookingByMtd(dashboard?.bookingbymonth);
       setTotalScreenBookingByStore(dashboard?.totalscreenbookingbystore);
       setNumberBookingByDay(dashboard?.numberofbookingsbyday);
+      setMaxBookingByDay(findMaxValue(dashboard?.numberofbookingsbyday));
+
       setPercentBookingByMonth(dashboard?.percentbookingbymonth);
+      setMaxPercentBookingByMonth(
+        findMaxValue(dashboard?.percentbookingbymonth)
+      );
       setPercentBookingByStore(dashboard?.percentbookingbystore);
+      setMaxPercentBookingByStore(
+        findMaxValue(dashboard?.percentbookingbystore)
+      );
     } catch (error) {
       console.error("Error : ", error);
     }
+  };
+
+  const findMaxValue = (obj) => {
+    const maxValue = Math.max(...obj);
+    return maxValue;
   };
 
   const toggleYearSelect = () => {
@@ -595,12 +615,11 @@ const Dashboard = () => {
     const [activeTab, setActiveTab] = useState(0);
 
     const tabs = [
-      { label: "Number of booking by day", color: "#6359E9" },
-      { label: "% Booking by month", color: "#64CFF6" },
+      { label: "Confirmed of booking by day", color: "#6359E9" },
+      { label: "%All Booking by month", color: "#64CFF6" },
       { label: "% Booking by Store", color: "#F6C864" },
     ];
-
-    const DataBarChart = ({ dataType, dataSet }) => {
+    const DataBarChart = ({ dataType, dataSet, maxValue }) => {
       if (dataType === "numberOfBookingByDay") {
         const data = {
           labels: dataSet.map((item, index) => `${index + 1}`),
@@ -658,7 +677,7 @@ const Dashboard = () => {
               beginAtZero: true, // Start the Y-axis from zero
               display: true,
               min: 0, // Set the minimum value for the Y-axis
-              max: 100, // Set the maximum value for the Y-axis
+              max: maxValue <= 100 ? 100 : maxValue, // Set the maximum value for the Y-axis
               ticks: {
                 font: {
                   family: "Poppins", // Change the font for the y-axis label
@@ -1005,18 +1024,21 @@ const Dashboard = () => {
               <DataBarChart
                 dataType="numberOfBookingByDay"
                 dataSet={number_booking_by_day}
+                maxValue={max_booking_by_day}
               />
             )}
             {activeTab === 1 && (
               <DataBarChart
                 dataType="percentageByMonth"
                 dataSet={percent_booking_by_month}
+                maxValue={max_percent_booking_by_month}
               />
             )}
             {activeTab === 2 && (
               <DataBarChart
                 dataType="percentageByStore"
                 dataSet={percent_booking_by_store}
+                maxValue={max_percent_booking_by_store}
               />
             )}
           </div>

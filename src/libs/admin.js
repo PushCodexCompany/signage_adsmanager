@@ -1034,24 +1034,19 @@ export default {
       },
     };
 
-    const data = await this._get(
-      `api/v1/get_screens?adscapacity=${slot}&bookingid=${bookingid}&brandcode=${brand_code}`,
-      "",
-      config
-    );
+    let url = `api/v1/get_screens?adscapacity=${slot}&bookingid=${bookingid}&brandcode=${brand_code}`;
 
-    if (data.status === 200) {
-      return data.data;
-    } else {
-      return false;
-    }
+    const { data } = await this._get(url, "", config);
+    return data;
   },
 
-  getScreensWithAdsCapacityAndTag: async function (
+  getScreensInAddScreen: async function (
+    token,
     bookingid,
     slot,
-    tags,
-    token
+    page,
+    filter,
+    screenname
   ) {
     const { brand_code } = this.getBrandCode();
     const config = {
@@ -1060,18 +1055,45 @@ export default {
       },
     };
 
-    const data = await this._get(
-      `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}&bookingid=${bookingid}&brandcode=${brand_code}`,
-      "",
-      config
-    );
+    let url = `api/v1/get_addscreens?adscapacity=${slot}&bookingid=${bookingid}&brandcode=${brand_code}&perpage=10&page=${page}`;
 
-    if (data.status === 200) {
-      return data.data;
-    } else {
-      return false;
+    if (filter) {
+      url += `&tagids=${filter.tagids}`;
     }
+
+    if (screenname) {
+      url += `&screenname=${screenname}`;
+    }
+    // console.log(url);
+    const { data } = await this._get(url, "", config);
+    return data;
   },
+
+  // getScreensWithAdsCapacityAndTag: async function (
+  //   bookingid,
+  //   slot,
+  //   tags,
+  //   token
+  // ) {
+  //   const { brand_code } = this.getBrandCode();
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   };
+
+  //   const data = await this._get(
+  //     `api/v1/get_screens?adscapacity=${slot}&tagids=${tags}&bookingid=${bookingid}&brandcode=${brand_code}`,
+  //     "",
+  //     config
+  //   );
+
+  //   if (data.status === 200) {
+  //     return data.data;
+  //   } else {
+  //     return false;
+  //   }
+  // },
 
   getScreensOptions: async function (token) {
     const { brand_code } = this.getBrandCode();

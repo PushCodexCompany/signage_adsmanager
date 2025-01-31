@@ -82,9 +82,7 @@ const Ads_Allocation_Apply_Screen = ({
     </TooltipComponent>
   );
 
-  const search = () => {
-    alert("search");
-  };
+  const search = () => {};
 
   const handleAddScreenAllocation = () => {
     const screensToReturn = screen_filter.filter((screen) =>
@@ -97,6 +95,19 @@ const Ads_Allocation_Apply_Screen = ({
   const handleClickViewDetail = (data) => {
     setDetailScreen(data);
     setShowDetailScreen(!showDetailScreen);
+  };
+
+  const onchangeInput = (e) => {
+    const value = e.target.value;
+
+    if (value.length <= 0) {
+      filterByMediaRules();
+    } else {
+      const filtered = screen_filter.filter((screen) => {
+        return screen.ScreenName.toLowerCase().includes(value.toLowerCase());
+      });
+      setScreenFilter(filtered);
+    }
   };
 
   return (
@@ -159,15 +170,16 @@ const Ads_Allocation_Apply_Screen = ({
                 type="text"
                 name="name"
                 placeholder="Search..."
+                onChange={(e) => onchangeInput(e)}
               />
             </div>
           </div>
         </div>
         {/* Search Box */}
-        <Filter
+        {/* <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
-        />
+        /> */}
         <div className="mt-5 p-6">
           <div className="font-poppins">
             *Search result displays only screens available in your booking
