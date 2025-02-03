@@ -533,21 +533,19 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     };
 
     try {
-      const obj = {
-        BookingID: 123123123123,
-        AdvertiserLogo: select_merchandise.AdvertiserLogo,
-        AdvertiserName: select_merchandise.AdvertiserName,
-        BookingName: booking_name,
-        SlotPerDay: booking_slot,
-        booking_date,
-      };
-
-      const replacedString = obj.BookingName.replace(/\//g, "_");
-      // console.log("obj", obj);
-      navigate(`/event_booking/${replacedString}`, {
-        state: { data: obj, isEdited: false },
-      });
-
+      // const obj = {
+      //   BookingID: 123123123123,
+      //   AdvertiserLogo: select_merchandise.AdvertiserLogo,
+      //   AdvertiserName: select_merchandise.AdvertiserName,
+      //   BookingName: booking_name,
+      //   SlotPerDay: booking_slot,
+      //   booking_date,
+      // };
+      // const replacedString = obj.BookingName.replace(/\//g, "_");
+      // // console.log("obj", obj);
+      // navigate(`/event_booking/${replacedString}`, {
+      //   state: { data: obj, isEdited: false },
+      // });
       // const data_booking = await User.createBooking(obj_save_booking, token);
       // if (data_booking.code === 200) {
       //   Swal.fire({
@@ -567,11 +565,10 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       //         SlotPerDay: booking_slot,
       //         booking_date,
       //       };
-
       //       const replacedString = obj.BookingName.replace(/\//g, "_");
-      //       navigate(`/booking/${replacedString}`, {
-      //         state: { data: obj, isEdited: false },
-      //       });
+      // navigate(`/event_booking/${replacedString}`, {
+      //   state: { data: obj, isEdited: false },
+      // });
       //     }
       //   });
       // } else {

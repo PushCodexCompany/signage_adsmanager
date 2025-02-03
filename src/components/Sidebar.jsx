@@ -301,17 +301,6 @@ const SidebarMain = () => {
                 link: "report",
                 icon: <TbReport size={27} />,
               },
-
-              // {
-              //   name: "Static Booking",
-              //   link: "static_booking",
-              //   icon: <MdOutlineMarkunreadMailbox size={27} />,
-              // },
-              // {
-              //   name: "Event Booking ",
-              //   link: "event_booking",
-              //   icon: <MdOutlineEmojiEvents size={27} />,
-              // },
             ],
           },
         ],

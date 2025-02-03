@@ -358,18 +358,44 @@ const Report = () => {
 
       const logs = export_booking_data.map((entry) =>
         [
-          entry.BookingID.toString(),
+          entry.ScreenName,
+          entry.BranchName,
+          entry.ScreenType,
+          entry.Resolution.replace(
+            /(\d+)(?:\.\d+)? x (\d+)(?:\.\d+)?/,
+            "W $1 x H $2"
+          ),
+          entry.ScreenLocation,
+          entry.BookingID,
           entry.BookingName,
           entry.AdvertiserName,
           entry.BookingStatus,
+          new Date(entry.BookingDate)
+            .toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "2-digit",
+            })
+            .replace(" ", "-")
+            .replace(" ", "-"),
+          entry.SlotPerDay,
+          entry.TimePerSlot,
         ].map((field) => `"${String(field).replace(/"/g, '""')}"`)
       );
 
       const csvHeader = [
+        "รหัสจอ",
+        "ชื่อสาขา",
+        "Screen Type",
+        "Size from media rule",
+        "Location",
         "Booking ID",
         "Booking Name",
-        "Customer Name",
+        "Customer",
         "Booking Status",
+        "Live Date",
+        "Slots",
+        "Time Per Slot",
       ].join(",");
 
       const csvBody = logs.map((row) => row.join(",")).join("\n");
@@ -495,18 +521,44 @@ const Report = () => {
 
       const logs = export_data.map((entry) =>
         [
-          entry.BookingID.toString(),
+          entry.ScreenName,
+          entry.BranchName,
+          entry.ScreenType,
+          entry.Resolution.replace(
+            /(\d+)(?:\.\d+)? x (\d+)(?:\.\d+)?/,
+            "W $1 x H $2"
+          ),
+          entry.ScreenLocation,
+          entry.BookingID,
           entry.BookingName,
           entry.AdvertiserName,
           entry.BookingStatus,
+          new Date(entry.BookingDate)
+            .toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "2-digit",
+            })
+            .replace(" ", "-")
+            .replace(" ", "-"),
+          entry.SlotPerDay,
+          entry.TimePerSlot,
         ].map((field) => `"${String(field).replace(/"/g, '""')}"`)
       );
 
       const csvHeader = [
+        "รหัสจอ",
+        "ชื่อสาขา",
+        "Screen Type",
+        "Size from media rule",
+        "Location",
         "Booking ID",
         "Booking Name",
-        "Customer Name",
+        "Customer",
         "Booking Status",
+        "Live Date",
+        "Slots",
+        "Time Per Slot",
       ].join(",");
 
       const csvBody = logs.map((row) => row.join(",")).join("\n");
