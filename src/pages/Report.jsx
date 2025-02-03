@@ -399,7 +399,7 @@ const Report = () => {
       ].join(",");
 
       const csvBody = logs.map((row) => row.join(",")).join("\n");
-      const csvContent = `${csvHeader}\n${csvBody}`;
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -562,7 +562,7 @@ const Report = () => {
       ].join(",");
 
       const csvBody = logs.map((row) => row.join(",")).join("\n");
-      const csvContent = `${csvHeader}\n${csvBody}`;
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -632,7 +632,7 @@ const Report = () => {
       ].join(",");
 
       const csvBody = logs.map((row) => row.join(",")).join("\n");
-      const csvContent = `${csvHeader}\n${csvBody}`;
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -728,7 +728,7 @@ const Report = () => {
       ].join(",");
 
       const csvBody = logs.map((row) => row.join(",")).join("\n");
-      const csvContent = `${csvHeader}\n${csvBody}`;
+      const csvContent = `\uFEFF${csvHeader}\n${csvBody}`;
       const blob = new Blob([csvContent], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
