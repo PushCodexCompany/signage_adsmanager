@@ -493,14 +493,9 @@ const Report = () => {
       }
 
       const export_data = [];
-
       for (let i = 1; i <= total_page_booking; i++) {
         try {
-          const data = await User.getDashboardBooking(
-            token,
-            i,
-            JSON.stringify(obj)
-          );
+          const data = await User.getDashboardBooking(token, i, obj);
           export_data.push(...data.booking); // Append to the array
         } catch (error) {
           console.error(`Error fetching activity log for page ${i}:`, error);
