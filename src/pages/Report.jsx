@@ -89,6 +89,7 @@ const Report = () => {
       }
     } else {
       let data;
+
       if (!type) {
         if (filter_tag_screen.length > 0 || filter_option_screen.length > 0) {
           let obj;
@@ -102,8 +103,8 @@ const Report = () => {
                 tagids: filter_tag_screen,
                 optionkey: {
                   filterfields: filter_option_screen_output,
-                  startDate: startDate,
-                  endDate: endDate,
+                  startDate: startDate.toISOString().split("T")[0],
+                  endDate: endDate.toISOString().split("T")[0],
                 },
               };
             } else {
@@ -119,8 +120,8 @@ const Report = () => {
               obj = {
                 tagids: filter_tag_screen,
                 optionkey: {
-                  startDate: startDate,
-                  endDate: endDate,
+                  startDate: startDate.toISOString().split("T")[0],
+                  endDate: endDate.toISOString().split("T")[0],
                 },
               };
             } else {
@@ -133,8 +134,8 @@ const Report = () => {
               obj = {
                 optionkey: {
                   filterfields: filter_option_screen_output,
-                  startDate: startDate,
-                  endDate: endDate,
+                  startDate: startDate.toISOString().split("T")[0],
+                  endDate: endDate.toISOString().split("T")[0],
                 },
               };
             } else {
@@ -445,8 +446,8 @@ const Report = () => {
               tagids: tag_result,
               optionkey: {
                 filterfields: option_result,
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
           } else {
@@ -462,8 +463,8 @@ const Report = () => {
             obj = {
               tagids: tag_result,
               optionkey: {
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
           } else {
@@ -476,8 +477,8 @@ const Report = () => {
             obj = {
               optionkey: {
                 filterfields: option_result,
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
           } else {
@@ -489,9 +490,18 @@ const Report = () => {
           }
         }
       } else {
-        obj = null;
+        if (date_tricker) {
+          obj = {
+            optionkey: {
+              startDate: startDate.toISOString().split("T")[0],
+              endDate: endDate.toISOString().split("T")[0],
+            },
+          };
+        } else {
+          obj = null;
+        }
       }
-
+      console.log(obj);
       const export_data = [];
       for (let i = 1; i <= total_page_booking; i++) {
         try {

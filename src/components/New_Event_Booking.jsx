@@ -533,15 +533,15 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     };
 
     try {
-      // const obj = {
-      //   BookingID: 123123123123,
-      //   AdvertiserLogo: select_merchandise.AdvertiserLogo,
-      //   AdvertiserName: select_merchandise.AdvertiserName,
-      //   BookingName: booking_name,
-      //   SlotPerDay: booking_slot,
-      //   booking_date,
-      // };
-      // const replacedString = obj.BookingName.replace(/\//g, "_");
+      const obj = {
+        BookingID: 123123123123,
+        AdvertiserLogo: select_merchandise.AdvertiserLogo,
+        AdvertiserName: select_merchandise.AdvertiserName,
+        BookingName: booking_name,
+        SlotPerDay: booking_slot,
+        booking_date,
+      };
+      const replacedString = obj.BookingName.replace(/\//g, "_");
       // // console.log("obj", obj);
       // navigate(`/event_booking/${replacedString}`, {
       //   state: { data: obj, isEdited: false },
@@ -566,9 +566,9 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
       //         booking_date,
       //       };
       //       const replacedString = obj.BookingName.replace(/\//g, "_");
-      // navigate(`/event_booking/${replacedString}`, {
-      //   state: { data: obj, isEdited: false },
-      // });
+      navigate(`/event_booking/${replacedString}`, {
+        state: { data: obj, isEdited: false },
+      });
       //     }
       //   });
       // } else {

@@ -38,8 +38,8 @@ export const GridTableReportStatus = ({
               tagids: filter_tag_screen,
               optionkey: {
                 filterfields: filter_option_screen_output,
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
           } else {
@@ -53,8 +53,8 @@ export const GridTableReportStatus = ({
             obj = {
               tagids: filter_tag_screen,
               optionkey: {
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
           } else {
@@ -67,8 +67,8 @@ export const GridTableReportStatus = ({
             obj = {
               optionkey: {
                 filterfields: filter_option_screen_output,
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
           } else {
@@ -98,8 +98,8 @@ export const GridTableReportStatus = ({
           if (date_tricker) {
             obj = {
               optionkey: {
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
             data = await User.getDashboardBooking(token, page, obj);
@@ -113,8 +113,8 @@ export const GridTableReportStatus = ({
           if (date_tricker) {
             obj = {
               optionkey: {
-                startDate: startDate,
-                endDate: endDate,
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
               },
             };
             data = await User.getDashboardBooking(
@@ -143,7 +143,6 @@ export const GridTableReportStatus = ({
       setCurrentPageBooking(page);
       setPageInput("");
       const data = await fetchDataForPage(page);
-      console.log("cik", data);
       setReportStatusBooking(data.booking);
       setExportBookingData(data.booking);
     }

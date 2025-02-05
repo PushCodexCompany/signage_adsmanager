@@ -1064,7 +1064,7 @@ export default {
     if (screenname) {
       url += `&screenname=${screenname}`;
     }
-    // console.log(url);
+    console.log(url);
     const { data } = await this._get(url, "", config);
     return data;
   },
