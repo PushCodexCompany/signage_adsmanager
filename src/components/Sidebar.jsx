@@ -349,11 +349,11 @@ const SidebarMain = () => {
           //   link: "static_booking",
           //   icon: <MdOutlineMarkunreadMailbox size={27} />,
           // },
-          {
-            name: "Event Booking ",
-            link: "event_booking",
-            icon: <MdOutlineEmojiEvents size={27} />,
-          },
+          // {
+          //   name: "Event Booking ",
+          //   link: "event_booking",
+          //   icon: <MdOutlineEmojiEvents size={27} />,
+          // },
         ],
       });
     }
