@@ -77,7 +77,20 @@ const Report = () => {
 
   const getReportData = async (type) => {
     if (searchTermBooking === null) {
-      const data = await User.getDashboardBooking(token, 1);
+      let obj;
+
+      if (date_tricker) {
+        obj = {
+          optionkey: {
+            startDate: startDate.toISOString().split("T")[0],
+            endDate: endDate.toISOString().split("T")[0],
+          },
+        };
+      } else {
+        obj = null;
+      }
+
+      const data = await User.getDashboardBooking(token, 1, obj);
       setReportStatusBooking(data?.booking);
       setExportBookingData(data?.booking);
       if (data.pagination.length > 0) {
@@ -89,7 +102,6 @@ const Report = () => {
       }
     } else {
       let data;
-
       if (!type) {
         if (filter_tag_screen.length > 0 || filter_option_screen.length > 0) {
           let obj;
@@ -153,15 +165,39 @@ const Report = () => {
             searchTermBooking
           );
         } else {
+          let obj;
+          if (date_tricker) {
+            obj = {
+              optionkey: {
+                startDate: startDate.toISOString().split("T")[0],
+                endDate: endDate.toISOString().split("T")[0],
+              },
+            };
+          } else {
+            obj = null;
+          }
+
           data = await User.getDashboardBooking(
             token,
             1,
-            "",
+            obj,
             searchTermBooking
           );
         }
       } else {
-        data = await User.getDashboardBooking(token, 1, "", searchTermBooking);
+        let obj;
+        if (date_tricker) {
+          obj = {
+            optionkey: {
+              startDate: startDate.toISOString().split("T")[0],
+              endDate: endDate.toISOString().split("T")[0],
+            },
+          };
+        } else {
+          obj = null;
+        }
+
+        data = await User.getDashboardBooking(token, 1, obj, searchTermBooking);
       }
 
       setReportStatusBooking(data?.booking);
@@ -501,11 +537,20 @@ const Report = () => {
           obj = null;
         }
       }
-      console.log(obj);
       const export_data = [];
       for (let i = 1; i <= total_page_booking; i++) {
         try {
-          const data = await User.getDashboardBooking(token, i, obj);
+          let data;
+          if (searchTermBooking === null) {
+            data = await User.getDashboardBooking(token, i, obj);
+          } else {
+            data = await User.getDashboardBooking(
+              token,
+              i,
+              obj,
+              searchTermBooking
+            );
+          }
           export_data.push(...data.booking); // Append to the array
         } catch (error) {
           console.error(`Error fetching activity log for page ${i}:`, error);
@@ -691,7 +736,18 @@ const Report = () => {
       const export_data = [];
       for (let i = 1; i <= totalPageScreen; i++) {
         try {
-          const data = await User.getDashboardScreen(token, i, obj);
+          let data;
+          if (searchTermScreen === null) {
+            data = await User.getDashboardScreen(token, i, obj);
+          } else {
+            data = await User.getDashboardScreen(
+              token,
+              i,
+              obj,
+              searchTermScreen
+            );
+          }
+
           export_data.push(...data.screens); // Append to the array
         } catch (error) {
           console.error(`Error fetching screen log for page ${i}:`, error);
