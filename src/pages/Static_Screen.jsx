@@ -27,13 +27,13 @@ const Static_Screen = () => {
 
   const fetchScreenData = async () => {
     if (searchTerm === null) {
-      const data = await User.getScreenList(token, 1);
+      const data = await User.getScreenList(token, 1, "", "", 2);
       setScreensData(data.screens);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
-      const data = await User.getScreenList(token, 1, searchTerm);
+      const data = await User.getScreenList(token, 1, "", "", 2);
       setScreensData(data.screens);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
@@ -63,7 +63,7 @@ const Static_Screen = () => {
                 onClick={() => navigate("/static_screen/create/new")}
                 className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
               >
-                New Screen +
+                New Static Screen +
               </button>
               {/* <button
                 onClick={() => {
@@ -79,11 +79,11 @@ const Static_Screen = () => {
           </div>
         </div>
 
-        <Filter
+        {/* <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
           page_name={"staticscreen"}
-        />
+        /> */}
         <div className="mt-5">
           {screens_data.length > 0 && screens_options_data.length > 0 ? (
             <GridTable

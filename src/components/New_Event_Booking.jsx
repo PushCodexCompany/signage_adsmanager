@@ -541,43 +541,38 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         SlotPerDay: booking_slot,
         booking_date,
       };
-      const replacedString = obj.BookingName.replace(/\//g, "_");
-      // // console.log("obj", obj);
-      // navigate(`/event_booking/${replacedString}`, {
-      //   state: { data: obj, isEdited: false },
-      // });
-      // const data_booking = await User.createBooking(obj_save_booking, token);
-      // if (data_booking.code === 200) {
-      //   Swal.fire({
-      //     icon: "success",
-      //     title: "สร้าง Booking สำเร็จ!",
-      //     text: `สร้าง Booking สำเร็จ!`,
-      //   }).then((result) => {
-      //     if (
-      //       result.isConfirmed ||
-      //       result.dismiss === Swal.DismissReason.backdrop
-      //     ) {
-      //       const obj = {
-      //         BookingID: data_booking.bookingid,
-      //         AdvertiserLogo: select_merchandise.AdvertiserLogo,
-      //         AdvertiserName: select_merchandise.AdvertiserName,
-      //         BookingName: booking_name,
-      //         SlotPerDay: booking_slot,
-      //         booking_date,
-      //       };
-      //       const replacedString = obj.BookingName.replace(/\//g, "_");
-      navigate(`/event_booking/${replacedString}`, {
-        state: { data: obj, isEdited: false },
-      });
-      //     }
-      //   });
-      // } else {
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "เกิดข้อผิดพลาด!",
-      //     text: data_booking.message,
-      //   });
-      // }
+      const data_booking = await User.createBooking(obj_save_booking, token, 2);
+      if (data_booking.code === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "สร้าง Event Booking สำเร็จ!",
+          text: `สร้าง Event Booking สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            const obj = {
+              BookingID: data_booking.bookingid,
+              AdvertiserLogo: select_merchandise.AdvertiserLogo,
+              AdvertiserName: select_merchandise.AdvertiserName,
+              BookingName: booking_name,
+              SlotPerDay: booking_slot,
+              booking_date,
+            };
+            const replacedString = obj.BookingName.replace(/\//g, "_");
+            navigate(`/event_booking/${replacedString}`, {
+              state: { data: obj, isEdited: false },
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data_booking.message,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -1053,7 +1048,7 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
         {/* Main centered content container */}
         <div className="relative bg-[#FFFFFF] w-4/5 h-5/6 rounded-md max-h-screen overflow-y-auto">
           {/* Close button - adjust positioning */}
-          <div className="sticky top-0 right-0 z-30 flex justify-end">
+          <div className={`absolute -top-4 -right-4 m-4 z-30`}>
             <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
               <button onClick={() => setShowModalAddNewBooking(false)}>
                 <IoIosClose size={25} color={"#6425FE"} />

@@ -35,6 +35,11 @@ import {
   Configuration,
   Event_Booking,
   Report,
+  Booking_Event_Summary,
+  Booking_Static_Summary,
+  Event_Select_Booking,
+  Create_Static_Booking,
+  Static_Select_Booking,
 } from "../pages";
 import Create_Event_Booking from "../pages/Create_Event_Booking";
 
@@ -100,10 +105,34 @@ const Routing = () => {
         <Route path="/booking/select/:name" element={<Select_Booking />} />
 
         <Route path="/event_booking/:name" element={<Create_Event_Booking />} />
+        <Route
+          path="/static_booking/:name"
+          element={<Create_Static_Booking />}
+        />
 
         <Route
           path="/booking/booking_pricing_summary"
           element={<Booking_Summary />}
+        />
+
+        <Route
+          path="/event_booking/booking_event_pricing_summary"
+          element={<Booking_Event_Summary />}
+        />
+
+        <Route
+          path="/static_booking/booking_static_pricing_summary"
+          element={<Booking_Static_Summary />}
+        />
+
+        <Route
+          path="/event_booking/select/:name"
+          element={<Event_Select_Booking />}
+        />
+
+        <Route
+          path="/static_booking/select/:name"
+          element={<Static_Select_Booking />}
         />
 
         <Route

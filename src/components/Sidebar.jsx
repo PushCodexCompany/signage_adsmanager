@@ -28,7 +28,7 @@ import { RiFileEditLine, RiFileList2Line } from "react-icons/ri";
 import { AiOutlineIdcard, AiOutlineFileText } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiShapeSquare, BiPurchaseTag } from "react-icons/bi";
-import { FaRegListAlt } from "react-icons/fa";
+import { FaRegListAlt, FaRegCalendarCheck } from "react-icons/fa";
 import { TbReport } from "react-icons/tb";
 
 import default_logo from "../assets/img/codex_logo.png";
@@ -343,17 +343,16 @@ const SidebarMain = () => {
             link: "booking",
             icon: <SlScreenDesktop size={27} />,
           },
-
-          // {
-          //   name: "Static Booking",
-          //   link: "static_booking",
-          //   icon: <MdOutlineMarkunreadMailbox size={27} />,
-          // },
-          // {
-          //   name: "Event Booking ",
-          //   link: "event_booking",
-          //   icon: <MdOutlineEmojiEvents size={27} />,
-          // },
+          {
+            name: "Static Booking",
+            link: "static_booking",
+            icon: <MdOutlineMarkunreadMailbox size={27} />,
+          },
+          {
+            name: "Event Booking ",
+            link: "event_booking",
+            icon: <FaRegCalendarCheck size={27} />,
+          },
         ],
       });
     }
@@ -370,11 +369,11 @@ const SidebarMain = () => {
             link: "screen",
             icon: <SlScreenDesktop size={27} />,
           },
-          // {
-          //   name: "Static Screen",
-          //   link: "static_screen",
-          //   icon: <MdOutlineMarkunreadMailbox size={27} />,
-          // },
+          {
+            name: "Static Screen",
+            link: "static_screen",
+            icon: <MdOutlineMarkunreadMailbox size={27} />,
+          },
         ],
       });
     }

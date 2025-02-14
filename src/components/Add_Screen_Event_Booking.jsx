@@ -67,7 +67,9 @@ const Add_Screen_Booking = ({
               bookingId,
               booking_slot,
               1,
-              obj
+              obj,
+              "",
+              2
             );
           } else {
             // console.log("no filter no search term");
@@ -75,7 +77,10 @@ const Add_Screen_Booking = ({
               token,
               bookingId,
               booking_slot,
-              1
+              1,
+              "",
+              "",
+              2
             );
           }
           const updatedData = await Promise.all(
@@ -107,7 +112,8 @@ const Add_Screen_Booking = ({
             booking_slot,
             1,
             obj,
-            searchTerm
+            searchTerm,
+            2
           );
         } else {
           // console.log("have search term no filter");
@@ -117,7 +123,8 @@ const Add_Screen_Booking = ({
             booking_slot,
             1,
             "",
-            searchTerm
+            searchTerm,
+            2
           );
         }
 
@@ -142,7 +149,10 @@ const Add_Screen_Booking = ({
           token,
           bookingId,
           booking_slot,
-          1
+          1,
+          "",
+          "",
+          2
         );
       } else {
         data = await User.getScreensInAddScreen(
@@ -151,7 +161,8 @@ const Add_Screen_Booking = ({
           booking_slot,
           1,
           "",
-          searchTerm
+          searchTerm,
+          2
         );
       }
 
@@ -244,7 +255,7 @@ const Add_Screen_Booking = ({
           </div>
         </div>
         <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-        <Filter
+        {/* <Filter
           page_name={"digiScrnMgt"}
           filter_screen={filter_screen}
           setFilterScreen={setFilterScreen}
@@ -254,7 +265,7 @@ const Add_Screen_Booking = ({
           setAllPages={setAllPages}
           searchTerm={searchTerm}
           getScreenData={getScreenData}
-        />
+        /> */}
 
         <div className="mt-5 p-6">
           <div className="font-poppins">

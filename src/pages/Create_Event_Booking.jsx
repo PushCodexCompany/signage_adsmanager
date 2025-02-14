@@ -21,11 +21,11 @@ import User from "../libs/admin";
 
 import Filter from "../components/Filter";
 import Add_Screen_Event_Booking from "../components/Add_Screen_Event_Booking";
-import Confirm_Booking from "../components/Confirm_Booking";
 import Swal from "sweetalert2";
 import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 import firebase_func from "../libs/firebase_func";
 import Permission from "../libs/permission";
+import Confirm_Event_Booking from "../components/Confirm_Event_Booking";
 
 const Create_Event_Booking = () => {
   const location = useLocation();
@@ -110,11 +110,10 @@ const Create_Event_Booking = () => {
     setBookingId(BookingID);
 
     const booking_data = await User.getBookingById(BookingID, token);
-    // const booking_date = [
-    //   ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
-    // ];
+    const booking_date = [
+      ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
+    ];
 
-    const booking_date = [1728345600000, 1728432000000, 1728518400000];
     setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
     setBookingSlot(parseInt(SlotPerDay));
     let all_screens_data;
@@ -378,30 +377,28 @@ const Create_Event_Booking = () => {
     };
 
     try {
-      console.log("add Screen");
-
-      //   const data = await User.selectScreenBooking(obj, token);
-      //   if (data.code === 200) {
-      //     Swal.fire({
-      //       icon: "success",
-      //       title: "เลือก Screen สำเร็จ!",
-      //       text: `เลือก Screen สำเร็จ!`,
-      //     }).then((result) => {
-      //       if (
-      //         result.isConfirmed ||
-      //         result.dismiss === Swal.DismissReason.backdrop
-      //       ) {
-      //         setBookingData();
-      //         setShowAddScreen(!showAddScreen);
-      //       }
-      //     });
-      //   } else {
-      //     Swal.fire({
-      //       icon: "error",
-      //       title: "เกิดข้อผิดพลาด!",
-      //       text: data.message,
-      //     });
-      //   }
+      const data = await User.selectScreenBooking(obj, token, 2);
+      if (data.code === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "เลือก Screen สำเร็จ!",
+          text: `เลือก Screen สำเร็จ!`,
+        }).then((result) => {
+          if (
+            result.isConfirmed ||
+            result.dismiss === Swal.DismissReason.backdrop
+          ) {
+            setBookingData();
+            setShowAddScreen(!showAddScreen);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: data.message,
+        });
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -593,7 +590,7 @@ const Create_Event_Booking = () => {
       });
 
       try {
-        const data = await User.updateBookingSlots(obj, token);
+        const data = await User.updateBookingSlots(obj, token, 2);
         if (data.code === 200) {
           Swal.fire({
             icon: "success",
@@ -1453,7 +1450,7 @@ const Create_Event_Booking = () => {
       )}
 
       {openConfirmBookingModal && (
-        <Confirm_Booking
+        <Confirm_Event_Booking
           setOpenConfirmBookingModal={setOpenConfirmBookingModal}
           openConfirmBookingModal={openConfirmBookingModal}
           bookingName={bookingName}

@@ -992,7 +992,7 @@ export default {
     }
   },
 
-  getScreenList: async function (token, page, screen_name, filter) {
+  getScreenList: async function (token, page, screen_name, filter, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1008,6 +1008,12 @@ export default {
     if (filter) {
       url += `&tagids=${filter.tagids}`;
     }
+
+    if (type) {
+      url += `&screentypeid=${type}`;
+    }
+
+    // console.log(url);
 
     const { data } = await this._get(url, "", config);
     return data;
@@ -1046,7 +1052,8 @@ export default {
     slot,
     page,
     filter,
-    screenname
+    screenname,
+    type
   ) {
     const { brand_code } = this.getBrandCode();
     const config = {
@@ -1063,6 +1070,10 @@ export default {
 
     if (screenname) {
       url += `&screenname=${screenname}`;
+    }
+
+    if (type) {
+      url += `&bookingtypeid=${type}`;
     }
     // console.log(url);
     const { data } = await this._get(url, "", config);
@@ -1116,7 +1127,7 @@ export default {
     }
   },
 
-  createNewScreen: async function (hash, token) {
+  createNewScreen: async function (hash, token, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1125,6 +1136,12 @@ export default {
     };
 
     let urlString = `api/v1/create_screen?screenname=${hash.screenname}&mediaruleid=${hash.mediaruleid}&tagids=${hash.tagids}&screencoords=${hash.screencoords}&screencity=${hash.screencity}&screenlocation=${hash.screenlocation}&screendesc=${hash.screendesc}&screenresolutionid=${hash.screenresolutionid}&screenphysizeid=${hash.screenphysizeid}&screenorientation=${hash.screenorientation}&screenplacement=${hash.screenplacement}&screenopentime=${hash.screenopentime}&screenclosetime=${hash.screenclosetime}&manotifydelay=${hash.manotifydelay}&brandcode=${brand_code}`;
+
+    if (type) {
+      urlString += `&screentypeid=${type}`;
+    }
+
+    console.log("urlString", urlString);
     const { data } = await this._post(urlString, "", config);
 
     return data;
@@ -1196,7 +1213,7 @@ export default {
   //   }
   // },
 
-  getBooking: async function (token, page, booking_name, filter) {
+  getBooking: async function (token, page, booking_name, filter, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1208,6 +1225,10 @@ export default {
 
     if (booking_name) {
       url += `&bookingname=${booking_name}`;
+    }
+
+    if (type) {
+      url += `&bookingtypeid=${type}`;
     }
 
     if (filter) {
@@ -1300,7 +1321,7 @@ export default {
     }
   },
 
-  createBooking: async function (hash, token) {
+  createBooking: async function (hash, token, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1308,13 +1329,22 @@ export default {
       },
     };
 
-    let urlString = `api/v1/create_booking?bookingname=${hash.bookingname}&advertiserid=${hash.advertiserid}&slotperday=${hash.slotperday}&bookingperoids=${hash.bookingperoids}&brandcode=${brand_code}`;
-    const { data } = await this._post(urlString, "", config);
+    let url = `api/v1/create_booking?bookingname=${hash.bookingname}&advertiserid=${hash.advertiserid}&slotperday=${hash.slotperday}&bookingperoids=${hash.bookingperoids}&brandcode=${brand_code}`;
 
-    return data;
+    if (type) {
+      url += `&bookingtypeid=${type}`;
+    }
+    // console.log(url);
+    const { data } = await this._post(url, "", config);
+    // console.log("data", data);
+    if (data.code === 200) {
+      return data;
+    } else {
+      return data;
+    }
   },
 
-  selectScreenBooking: async function (hash, token) {
+  selectScreenBooking: async function (hash, token, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1322,13 +1352,16 @@ export default {
       },
     };
 
-    let urlString = `api/v1/create_bookingscreen?bookingid=${hash.bookingid}&screenids=${hash.screenids}&brandcode=${brand_code}`;
-    const { data } = await this._post(urlString, "", config);
+    let url = `api/v1/create_bookingscreen?bookingid=${hash.bookingid}&screenids=${hash.screenids}&brandcode=${brand_code}`;
 
+    if (type) {
+      url += `&bookingtypeid=${type}`;
+    }
+    const { data } = await this._post(url, "", config);
     return data;
   },
 
-  deleteScreenBooking: async function (hash, token) {
+  deleteScreenBooking: async function (hash, token, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1337,8 +1370,12 @@ export default {
     };
 
     let urlString = `api/v1/delete_bookingscreen?bookingid=${hash.bookingid}&screenid=${hash.screenid}&brandcode=${brand_code}`;
-    const { data } = await this._post(urlString, "", config);
 
+    if (type) {
+      urlString += `&bookingtypeid=${type}`;
+    }
+
+    const { data } = await this._post(urlString, "", config);
     return data;
   },
 
@@ -1356,7 +1393,7 @@ export default {
     return data;
   },
 
-  updateBookingSlots: async function (hash, token) {
+  updateBookingSlots: async function (hash, token, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1365,6 +1402,11 @@ export default {
     };
 
     let urlString = `api/v1/update_bookingslots?bookingid=${hash.bookingid}&bookingaction=${hash.bookingaction}&brandcode=${brand_code}`;
+
+    if (type) {
+      urlString += `&bookingtypeid=${type}`;
+    }
+
     const { data } = await this._post(urlString, hash, config);
     return data;
   },

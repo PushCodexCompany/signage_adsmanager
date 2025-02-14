@@ -25,12 +25,17 @@ export { default as Role_permission } from "./setting/User_management/Role_permi
 export { default as User_Page } from "./User";
 export { default as Create_Booking } from "./Create_Booking";
 export { default as Select_Booking } from "./Select_Booking";
+export { default as Event_Select_Booking } from "./Event_Select_Booking";
 export { default as User_Account } from "./User_Account";
 export { default as New_screen } from "./New_screen";
 export { default as Booking_Summary } from "./Booking_Summary";
+export { default as Booking_Event_Summary } from "./Booking_Event_Summary";
 export { default as Static_Booking } from "./Static_Booking";
 export { default as Static_Screens } from "./Static_Screen";
 export { default as New_Static_Screen } from "./New_Static_Screen";
 export { default as Configuration } from "./setting/Configuration";
 export { default as Event_Booking } from "./Event_Booking";
 export { default as Report } from "./Report";
+export { default as Create_Static_Booking } from "./Create_Static_Booking";
+export { default as Booking_Static_Summary } from "./Booking_Static_Summary";
+export { default as Static_Select_Booking } from "./Static_Select_Booking";

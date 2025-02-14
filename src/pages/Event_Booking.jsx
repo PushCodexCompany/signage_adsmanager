@@ -18,6 +18,7 @@ const Event_Booking = () => {
   const [filter_screen, setFilterScreen] = useState([]);
   const [page_permission, setPagePermission] = useState([]);
   const [all_pages, setAllPages] = useState(null);
+  const [page_permission_content, setPagePermissionContent] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,13 +31,23 @@ const Event_Booking = () => {
 
   const getBookingData = async () => {
     if (searchTerm === null) {
-      const data = await User.getBooking(token, 1);
+      const data = await User.getBooking(token, 1, "", "", 2);
       setBookingData(data.booking);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
       }
     } else {
-      const data = await User.getBooking(token, 1, searchTerm);
+      let data;
+
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          tagids: result,
+        };
+        data = await User.getBooking(token, 1, searchTerm, obj, 2);
+      } else {
+        data = await User.getBooking(token, 1, searchTerm, "", 2);
+      }
       setBookingData(data.booking);
       if (data.pagination.length > 0) {
         setAllPages(data.pagination[0].totalpage);
@@ -46,9 +57,10 @@ const Event_Booking = () => {
 
   const getPermission = async () => {
     const { user } = User.getCookieData();
-    const { permissions } = Permission.convertPermissionValuesToBoolean([user]);
-
-    if (!permissions.booking.view) {
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.digiBookingMgt.view) {
       Swal.fire({
         icon: "error",
         title: "เกิดข้อผิดพลาด!",
@@ -58,7 +70,8 @@ const Event_Booking = () => {
       return;
     }
 
-    setPagePermission(permissions.booking);
+    setPagePermission(permissions?.digiBookingMgt);
+    setPagePermissionContent(permissions?.digiBookContMgt);
   };
 
   return (
@@ -86,11 +99,14 @@ const Event_Booking = () => {
           )}
         </div>
 
-        <Filter
+        {/* <Filter
           setFilterScreen={setFilterScreen}
           filter_screen={filter_screen}
-          // page_name={"booking"}
-        />
+          page_name={"digiBookingMgt"}
+          setBookingData={setBookingData}
+          setAllPages={setAllPages}
+          getBookingData={getBookingData}
+        /> */}
 
         {booking_data.length > 0 ? (
           <div className="mt-5">
@@ -99,6 +115,9 @@ const Event_Booking = () => {
               all_pages={all_pages}
               searchTerm={searchTerm}
               page_permission={page_permission}
+              page_permission_content={page_permission_content}
+              filter_screen={filter_screen}
+              getBookingData={getBookingData}
             />
           </div>
         ) : (

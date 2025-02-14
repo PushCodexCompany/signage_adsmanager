@@ -11,12 +11,16 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import firebase_func from "../libs/firebase_func";
 import { format } from "date-fns";
 import Swal from "sweetalert2";
+import { MdDoNotDisturb } from "react-icons/md";
 
 export const GridTable = ({
   booking_data,
   all_pages,
   searchTerm,
   page_permission,
+  page_permission_content,
+  filter_screen,
+  getBookingData,
 }) => {
   const navigate = useNavigate();
   const { token } = User.getCookieData();
@@ -38,8 +42,17 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.getBooking(token, page, searchTerm);
-      return data;
+      if (filter_screen.length > 0) {
+        const result = filter_screen.join(",");
+        const obj = {
+          tagids: result,
+        };
+        const data = await User.getBooking(token, page, searchTerm, obj, 2);
+        return data;
+      } else {
+        const data = await User.getBooking(token, page, searchTerm, "", 2);
+        return data;
+      }
     }
   };
 
@@ -54,14 +67,14 @@ export const GridTable = ({
 
   const onClickEdit = async (obj) => {
     const replacedString = obj.BookingName.replace(/\//g, "_");
-    navigate(`/booking/${replacedString}`, {
+    navigate(`/event_booking/${replacedString}`, {
       state: { data: obj, screen_data },
     });
   };
 
   const handleSelectBooking = (obj) => {
     const replacedString = obj.BookingName.replace(/\//g, "_");
-    navigate(`/booking/select/${replacedString}`, {
+    navigate(`/event_booking/select/${replacedString}`, {
       state: { data: obj, screen_data },
     });
   };
@@ -199,18 +212,22 @@ export const GridTable = ({
             </td>
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
               <div className="font-poppins text-md flex justify-center items-center">
-                {row.BookingStatus === 1
-                  ? "Completed Booking"
-                  : row.LastPublish
+                {row.BookingStatus === 0
                   ? "Published"
-                  : "Non Publish"}
+                  : row.BookingStatus === 1
+                  ? "Incomplete Booking"
+                  : row.BookingStatus === 2
+                  ? "Non Publish"
+                  : row.BookingStatus === 3
+                  ? "Inactive"
+                  : "No Status"}
               </div>
             </td>
 
             {row.BookingStatus === 1 ? (
               <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                 <div className="space-x-3">
-                  {page_permission?.update ? (
+                  {page_permission?.view ? (
                     <button
                       onClick={() => onClickEdit(row)}
                       className="relative group"
@@ -220,7 +237,7 @@ export const GridTable = ({
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                       <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                         style={{ pointerEvents: "none" }}
                       >
                         Complete Booking
@@ -230,21 +247,27 @@ export const GridTable = ({
                     <></>
                   )}
                   {page_permission?.delete ? (
-                    <button
-                      onClick={() => handleDeleteBooking(row)}
-                      className="relative group"
-                    >
-                      <RiDeleteBin5Line
-                        size={23}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
-                      />
-                      <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{ pointerEvents: "none" }}
-                      >
-                        Cancel Booking
-                      </div>
-                    </button>
+                    <>
+                      {row.BookingStatus !== 3 ? (
+                        <button
+                          onClick={() => handleDeleteBooking(row)}
+                          className="relative group"
+                        >
+                          <MdDoNotDisturb
+                            size={23}
+                            className="text-[#6425FE] hover:text-[#3b1694]"
+                          />
+                          <div
+                            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                            style={{ pointerEvents: "none" }}
+                          >
+                            Inactive Booking
+                          </div>
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   ) : (
                     <></>
                   )}
@@ -253,7 +276,7 @@ export const GridTable = ({
             ) : (
               <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                 <div className="space-x-3">
-                  {page_permission?.update ? (
+                  {page_permission_content?.view ? (
                     <button
                       className="relative group"
                       onClick={() => handleSelectBooking(row)}
@@ -263,7 +286,7 @@ export const GridTable = ({
                         className="text-[#6425FE] hover:text-[#3b1694]"
                       />
                       <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                         style={{ pointerEvents: "none" }}
                       >
                         Manage Content
@@ -273,21 +296,27 @@ export const GridTable = ({
                     <></>
                   )}
                   {page_permission?.delete ? (
-                    <button
-                      onClick={() => handleDeleteBooking(row)}
-                      className="relative group"
-                    >
-                      <RiDeleteBin5Line
-                        size={23}
-                        className="text-[#6425FE] hover:text-[#3b1694]"
-                      />
-                      <div
-                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{ pointerEvents: "none" }}
-                      >
-                        Cancel Booking
-                      </div>
-                    </button>
+                    <>
+                      {row.BookingStatus !== 3 ? (
+                        <button
+                          onClick={() => handleDeleteBooking(row)}
+                          className="relative group"
+                        >
+                          <MdDoNotDisturb
+                            size={23}
+                            className="text-[#6425FE] hover:text-[#3b1694]"
+                          />
+                          <div
+                            className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                            style={{ pointerEvents: "none" }}
+                          >
+                            Inactive Booking
+                          </div>
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   ) : (
                     <></>
                   )}
