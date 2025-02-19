@@ -85,6 +85,8 @@ const Select_Booking = () => {
   const [selectDateView, setSelectDateView] = useState(null);
   const [fact_panel1, setFactPanel1] = useState([]);
 
+  const [is_Static, setIsStatic] = useState(false);
+
   useEffect(() => {
     getBookingData();
     getMediaItemsData();
@@ -419,13 +421,14 @@ const Select_Booking = () => {
 
   const handleSelectScreenAddmedia = async (screen, obj, media_obj) => {
     const media_rule = {
-      width: parseInt(obj.ScreenRule[0].Width),
-      height: parseInt(obj.ScreenRule[0].Height),
-      Image: obj.ScreenRule[0].ImageContentTypeID !== 0 ? true : false,
-      Video: obj.ScreenRule[0].VideoContentTypeID !== 0 ? true : false,
+      width: parseInt(0),
+      height: parseInt(0),
+      Image: true,
+      Video: true,
     };
 
-    setMediaRulesSelectId(obj.ScreenRule[0].MediaRuleID);
+    setIsStatic(true);
+    setMediaRulesSelectId(0);
     setMediaRulesSelect(media_rule);
     media_obj.slots = parseInt(booking_slot);
     setScreenSelect({ screen, value: media_obj });
@@ -508,7 +511,7 @@ const Select_Booking = () => {
                     <></>
                   )}
 
-                  {page_permission?.update ? (
+                  {/* {page_permission?.update ? (
                     <button
                       onClick={() => setShowPublishScreen(!showPublishScreen)}
                       className="w-52 h-10 rounded-md text-white bg-[#6425FE] hover:bg-[#3b1694] font-poppins"
@@ -517,7 +520,7 @@ const Select_Booking = () => {
                     </button>
                   ) : (
                     <></>
-                  )}
+                  )} */}
                 </>
               ) : (
                 <></>
@@ -733,7 +736,7 @@ const Select_Booking = () => {
                                         </>
                                       )}
                                     </div>
-                                    <div className="w-full font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px] mt-1">
+                                    {/* <div className="w-full font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px] mt-1">
                                       <div className="flex items-center justify-center">
                                         Media Rule
                                       </div>
@@ -749,7 +752,7 @@ const Select_Booking = () => {
                                             )}`
                                           : "Not Set"}
                                       </div>
-                                    </div>
+                                    </div> */}
                                   </div>
                                   <div className="flex justify-center items-center w-1/5">
                                     <IoIosInformationCircleOutline
@@ -1048,6 +1051,7 @@ const Select_Booking = () => {
           setFactAllocation={setFactAllocation}
           fact_allocation={fact_allocation}
           fact_panel1={fact_panel1}
+          isStatic={is_Static}
         />
       )}
       {openModalUploadNewMedia && (
@@ -1064,6 +1068,7 @@ const Select_Booking = () => {
           setItemsPanel2={setItemsPanel2}
           itemsPanel2={itemsPanel2}
           media_allocation_upload_index={media_allocation_upload_index}
+          isStatic={is_Static}
         />
       )}
       {modalPlayerOpen && (

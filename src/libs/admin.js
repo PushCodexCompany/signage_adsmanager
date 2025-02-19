@@ -973,23 +973,22 @@ export default {
     return data;
   },
 
-  getScreens: async function (token) {
+  getScreens: async function (token, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const data = await this._get(
-      `api/v1/get_screens?brandcode=${brand_code}`,
-      "",
-      config
-    );
-    if (data.status === 200) {
-      return data.data;
-    } else {
-      return false;
+
+    let url = `api/v1/get_screens?brandcode=${brand_code}`;
+
+    if (type) {
+      url += `&screentypeid=${type}`;
     }
+    // console.log(url);
+    const { data } = await this._get(url, "", config);
+    return data;
   },
 
   getScreenList: async function (token, page, screen_name, filter, type) {
@@ -1032,7 +1031,7 @@ export default {
     return data;
   },
 
-  getScreensWithAdsCapacity: async function (bookingid, slot, token) {
+  getScreensWithAdsCapacity: async function (bookingid, slot, token, type) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1042,6 +1041,10 @@ export default {
 
     let url = `api/v1/get_screens?adscapacity=${slot}&bookingid=${bookingid}&brandcode=${brand_code}`;
 
+    if (type) {
+      url += `&screentypeid=${type}`;
+    }
+    // console.log(url);
     const { data } = await this._get(url, "", config);
     return data;
   },
@@ -1077,6 +1080,7 @@ export default {
     }
     // console.log(url);
     const { data } = await this._get(url, "", config);
+    // console.log("data", data);
     return data;
   },
 
@@ -1315,7 +1319,7 @@ export default {
     );
 
     if (data.status === 200) {
-      return data.data;
+      return data.data.bookingslot;
     } else {
       return false;
     }
@@ -1408,6 +1412,7 @@ export default {
     }
 
     const { data } = await this._post(urlString, hash, config);
+    console.log("data", data);
     return data;
   },
 
@@ -1484,7 +1489,6 @@ export default {
         "Content-Type": "multipart/form-data",
       },
     };
-
     const { data } = await this._post(
       `api/v1/update_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&mediaplaylistid=${obj.mediaplaylistid}&brandcode=${brand_code}`,
       obj,

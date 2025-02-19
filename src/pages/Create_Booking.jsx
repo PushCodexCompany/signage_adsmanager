@@ -123,7 +123,6 @@ const Create_Booking = () => {
     } else {
       all_screens_data = await User.getScreens(token);
     }
-
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
       const existing = acc?.find((item) => item.ScreenID === screenID);
@@ -174,7 +173,7 @@ const Create_Booking = () => {
 
       return acc;
     }, []);
-
+    console.log("groupedByScreenID", groupedByScreenID);
     setScreenData(groupedByScreenID);
 
     let result = [];
@@ -390,8 +389,19 @@ const Create_Booking = () => {
       screenids: screenIDs,
     };
 
+    // Show loading modal
+    Swal.fire({
+      title: "กำลังดำเนินการ...",
+      text: "โปรดรอสักครู่",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       const data = await User.selectScreenBooking(obj, token);
+
       if (data.code === 200) {
         Swal.fire({
           icon: "success",
@@ -415,6 +425,11 @@ const Create_Booking = () => {
       }
     } catch (error) {
       console.log("error", error);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "เกิดข้อผิดพลาดในการเชื่อมต่อ",
+      });
     }
   };
 

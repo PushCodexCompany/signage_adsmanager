@@ -229,40 +229,41 @@ export const GridTable = ({
   };
 
   const handleDeleteScreen = async (screen_id, screen_name) => {
-    // Swal.fire({
-    //   text: `คุณต้องการลบจอ ${screen_name} ?`,
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "ยืนยัน",
-    //   cancelButtonText: "ยกเลิก",
-    // }).then(async (result) => {
-    //   if (result.isConfirmed) {
-    //     const { token } = User.getCookieData();
-    //     const data = await User.deleteScreen(screen_id, token);
-    //     if (data.code === 200) {
-    //       Swal.fire({
-    //         icon: "success",
-    //         title: "Delete Screen Success ...",
-    //         text: `ลบ Screen สำเร็จ!`,
-    //       }).then((result) => {
-    //         if (
-    //           result.isConfirmed ||
-    //           result.dismiss === Swal.DismissReason.backdrop
-    //         ) {
-    //           navigate("/screen");
-    //         }
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         icon: "error",
-    //         title: "เกิดข้อผิดพลาด!",
-    //         text: data.message,
-    //       });
-    //     }
-    //   }
-    // });
+    Swal.fire({
+      text: `คุณต้องการลบจอ ${screen_name} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "ยืนยัน",
+      cancelButtonText: "ยกเลิก",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { token } = User.getCookieData();
+        const data = await User.deleteScreen(screen_id, token);
+        if (data.code === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Delete Screen Success ...",
+            text: `ลบ Screen สำเร็จ!`,
+          }).then(async (result) => {
+            if (
+              result.isConfirmed ||
+              result.dismiss === Swal.DismissReason.backdrop
+            ) {
+              const data = await fetchDataForPage(currentPage);
+              setData(data.screens);
+            }
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: data.message,
+          });
+        }
+      }
+    });
   };
 
   const fetchDataForPage = async (page) => {

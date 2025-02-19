@@ -61,6 +61,7 @@ const Ads_Allocation_Booking = ({
   setFactAllocation,
   fact_allocation,
   fact_panel1,
+  isStatic,
 }) => {
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [full_media_items, setFullMediasItems] = useState([]);
@@ -1728,23 +1729,26 @@ const Ads_Allocation_Booking = ({
                       </div>
                       <div className="col-span-1" />
                     </div>
-
-                    <div className="grid grid-cols-12 mt-10">
-                      <div className="col-span-1" />
-                      <div className="col-span-3 flex justify-end items-center">
-                        <div className="font-poppins font-bold">
-                          Screen Resolution :
+                    {!isStatic ? (
+                      <div className="grid grid-cols-12 mt-10">
+                        <div className="col-span-1" />
+                        <div className="col-span-3 flex justify-end items-center">
+                          <div className="font-poppins font-bold">
+                            Screen Resolution :
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-span-1" />
-                      <div className="col-span-6">
-                        <div className="font-poppins font-medium text-lg">
-                          W {media_rules_select?.width} x H{" "}
-                          {media_rules_select?.height} px
+                        <div className="col-span-1" />
+                        <div className="col-span-6">
+                          <div className="font-poppins font-medium text-lg">
+                            W {media_rules_select?.width} x H{" "}
+                            {media_rules_select?.height} px
+                          </div>
                         </div>
+                        <div className="col-span-1" />
                       </div>
-                      <div className="col-span-1" />
-                    </div>
+                    ) : (
+                      <></>
+                    )}
 
                     <div className="grid grid-cols-12 mt-3">
                       <div className="col-span-1" />
@@ -1761,27 +1765,30 @@ const Ads_Allocation_Booking = ({
                       </div>
                       <div className="col-span-1" />
                     </div>
-
-                    <div className="grid grid-cols-12 mt-3">
-                      <div className="col-span-1" />
-                      <div className="col-span-3 flex justify-end items-center">
-                        <div className="font-poppins font-bold">
-                          Media Rule :
+                    {!isStatic ? (
+                      <div className="grid grid-cols-12 mt-3">
+                        <div className="col-span-1" />
+                        <div className="col-span-3 flex justify-end items-center">
+                          <div className="font-poppins font-bold">
+                            Media Rule :
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-span-1" />
-                      <div className="col-span-6">
-                        <div className="h-[40px] bg-[#FD6822] rounded-md">
-                          <div className="flex justify-center items-center">
-                            <div className="font-poppins font-medium text-lg text-white text-center mt-2">
-                              Resolution : W {media_rules_select?.width} x H{" "}
-                              {media_rules_select?.height} px
+                        <div className="col-span-1" />
+                        <div className="col-span-6">
+                          <div className="h-[40px] bg-[#FD6822] rounded-md">
+                            <div className="flex justify-center items-center">
+                              <div className="font-poppins font-medium text-lg text-white text-center mt-2">
+                                Resolution : W {media_rules_select?.width} x H{" "}
+                                {media_rules_select?.height} px
+                              </div>
                             </div>
                           </div>
                         </div>
+                        <div className="col-span-1" />
                       </div>
-                      <div className="col-span-1" />
-                    </div>
+                    ) : (
+                      <></>
+                    )}
 
                     <div
                       className={`grid grid-cols-10 mt-12  ${

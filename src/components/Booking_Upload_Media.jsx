@@ -19,6 +19,7 @@ const Booking_Upload_Media = ({
   setItemsPanel2,
   itemsPanel2,
   media_allocation_upload_index,
+  isStatic,
 }) => {
   const { token } = User.getCookieData();
   const [uploads, setUploads] = useState([]);
@@ -105,10 +106,7 @@ const Booking_Upload_Media = ({
                 size: fileSize.toString(),
               };
 
-              if (
-                media_rules_select.width === width &&
-                media_rules_select.height === height
-              ) {
+              if (isStatic) {
                 const form = new FormData();
                 form.append("file[]", file);
                 form.append("contenttype", fileType);
@@ -129,11 +127,36 @@ const Booking_Upload_Media = ({
                   )
                 );
               } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "เกิดข้อผิดพลาด!",
-                  text: "ขนาดของ Video ไม่ตรงกับ Media Rule",
-                });
+                if (
+                  media_rules_select.width === width &&
+                  media_rules_select.height === height
+                ) {
+                  const form = new FormData();
+                  form.append("file[]", file);
+                  form.append("contenttype", fileType);
+                  form.append(
+                    "contentproperties",
+                    JSON.stringify(fileProperties)
+                  );
+                  setUploads((prevUploads) =>
+                    prevUploads.map((upload) =>
+                      upload.id === id
+                        ? {
+                            ...upload,
+                            name: file.name,
+                            size: file.size,
+                            formData: form,
+                          }
+                        : upload
+                    )
+                  );
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: "ขนาดของ Video ไม่ตรงกับ Media Rule",
+                  });
+                }
               }
             });
             video.src = e.target.result;
@@ -154,10 +177,7 @@ const Booking_Upload_Media = ({
                 size: fileSize.toString(),
               };
 
-              if (
-                media_rules_select.width === width &&
-                media_rules_select.height === height
-              ) {
+              if (isStatic) {
                 const form = new FormData();
                 form.append("file[]", file);
                 form.append("contenttype", fileType);
@@ -179,11 +199,37 @@ const Booking_Upload_Media = ({
                   )
                 );
               } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "เกิดข้อผิดพลาด!",
-                  text: "ขนาดของ Image ไม่ตรงกับ Media Rule",
-                });
+                if (
+                  media_rules_select.width === width &&
+                  media_rules_select.height === height
+                ) {
+                  const form = new FormData();
+                  form.append("file[]", file);
+                  form.append("contenttype", fileType);
+                  form.append(
+                    "contentproperties",
+                    JSON.stringify(fileProperties)
+                  );
+
+                  setUploads((prevUploads) =>
+                    prevUploads.map((upload) =>
+                      upload.id === id
+                        ? {
+                            ...upload,
+                            name: file.name,
+                            size: file.size,
+                            formData: form,
+                          }
+                        : upload
+                    )
+                  );
+                } else {
+                  Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: "ขนาดของ Image ไม่ตรงกับ Media Rule",
+                  });
+                }
               }
             };
             img.src = e.target.result;

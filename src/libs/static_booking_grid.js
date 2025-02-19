@@ -57,7 +57,7 @@ export const GridTable = ({
   };
 
   const getScreenData = async () => {
-    const all_screens_data = await User.getScreens(token);
+    const all_screens_data = await User.getScreens(token, 2);
     all_screens_data.map(async (items) => {
       const screen_status = await firebase_func.getStatusScreen(items);
       items.screen_status = screen_status;

@@ -120,7 +120,7 @@ const Create_Static_Booking = () => {
     if (location.state.screen_data) {
       all_screens_data = location.state.screen_data;
     } else {
-      all_screens_data = await User.getScreens(token);
+      all_screens_data = await User.getScreens(token, 2);
     }
 
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
@@ -173,7 +173,7 @@ const Create_Static_Booking = () => {
 
       return acc;
     }, []);
-
+    console.log("groupedByScreenID", groupedByScreenID);
     setScreenData(groupedByScreenID);
 
     let result = [];
@@ -204,7 +204,7 @@ const Create_Static_Booking = () => {
 
   const setBookingData = async () => {
     const booking_data = await User.getBookingById(bookingId, token);
-    const all_screens_data = await User.getScreens(token);
+    const all_screens_data = await User.getScreens(token, 2);
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
       const existing = acc?.find((item) => item.ScreenID === screenID);
@@ -266,7 +266,13 @@ const Create_Static_Booking = () => {
 
   const getAllScreen = async () => {
     const { SlotPerDay } = location.state.data;
-    const data = await User.getScreensWithAdsCapacity(null, SlotPerDay, token);
+    const data = await User.getScreensWithAdsCapacity(
+      null,
+      SlotPerDay,
+      token,
+      2
+    );
+    // console.log("data", data);
     data.map(async (items) => {
       const screen_status = await firebase_func.getStatusScreen(items);
       items.screen_status = screen_status;
@@ -377,7 +383,7 @@ const Create_Static_Booking = () => {
     };
 
     try {
-      const data = await User.selectScreenBooking(obj, token, 2);
+      const data = await User.selectScreenBooking(obj, token, 3);
       if (data.code === 200) {
         Swal.fire({
           icon: "success",
@@ -590,7 +596,7 @@ const Create_Static_Booking = () => {
       });
 
       try {
-        const data = await User.updateBookingSlots(obj, token, 2);
+        const data = await User.updateBookingSlots(obj, token, 3);
         if (data.code === 200) {
           Swal.fire({
             icon: "success",
@@ -1130,7 +1136,7 @@ const Create_Static_Booking = () => {
                                           Max Capacity {items.MaxSlot}/Day
                                         </div>
                                       </div>
-                                      <div className="flex justify-start items-center">
+                                      {/* <div className="flex justify-start items-center">
                                         <div className="w-full font-poppins text-xs bg-[#FD6822] text-white rounded-lg p-[2px]">
                                           <div className="flex items-center justify-center ">
                                             Media Rule
@@ -1143,7 +1149,7 @@ const Create_Static_Booking = () => {
                                             }`}
                                           </div>
                                         </div>
-                                      </div>
+                                      </div> */}
                                     </div>
                                     <div className="col-span-1 flex justify-center items-center">
                                       <IoIosInformationCircleOutline

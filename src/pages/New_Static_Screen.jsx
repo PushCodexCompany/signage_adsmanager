@@ -68,7 +68,7 @@ const New_screen = () => {
       fetchScreen();
     }
     getCity();
-    getMediaRules();
+    // getMediaRules();
     getScreenOption();
     getConfigurationData();
   }, [id]);
@@ -96,8 +96,8 @@ const New_screen = () => {
 
     setScreenId(ScreenID);
     setScreenName(ScreenName);
-    setMediaRule(ScreenRule[0]?.MediaRuleID);
-    setResolutionAdsCapacity(ScreenRule[0]?.MediaRuleID);
+    // setMediaRule(ScreenRule[0]?.MediaRuleID);
+    // setResolutionAdsCapacity(ScreenRule[0]?.MediaRuleID);
     setScreenTag(ScreenTag);
     setDumpTag(location?.state?.tag);
     setPreviewImg(ScreenPhoto);
@@ -140,10 +140,10 @@ const New_screen = () => {
     setCityData(data?.configuration?.cities);
   };
 
-  const getMediaRules = async () => {
-    const media_rules = await User.getMediaRules(token);
-    setMediaRulesDD(media_rules);
-  };
+  // const getMediaRules = async () => {
+  //   const media_rules = await User.getMediaRules(token);
+  //   setMediaRulesDD(media_rules);
+  // };
 
   const getScreenOption = async () => {
     const screen_option = await User.getScreensOptions(token);
@@ -181,19 +181,19 @@ const New_screen = () => {
     }
   };
 
-  const setResolutionAdsCapacity = async (id) => {
-    const media_rules = await User.getMediaRules(token);
-    const data = media_rules.find(
-      (items) => items.MediaRuleID === parseInt(id)
-    );
+  // const setResolutionAdsCapacity = async (id) => {
+  //   const media_rules = await User.getMediaRules(token);
+  //   const data = media_rules.find(
+  //     (items) => items.MediaRuleID === parseInt(id)
+  //   );
 
-    setResulotionData(
-      `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
-        data.Height
-      ).toString()}`
-    );
-    setAdsCapacityData(data.AdsCapacity);
-  };
+  //   setResulotionData(
+  //     `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
+  //       data.Height
+  //     ).toString()}`
+  //   );
+  //   setAdsCapacityData(data.AdsCapacity);
+  // };
 
   const handleImageChange = () => {
     // Trigger file input click
@@ -255,56 +255,32 @@ const New_screen = () => {
       if (notificationDelay >= maNotification) {
         const obj = {
           screenname: screenName.trim(),
-          mediaruleid: mediaRule || "",
+          // mediaruleid: mediaRule || "",
           tagids: screenTag.map((item) => String(item.TagID)),
           screencoords: `${latLong.lat},${latLong.long}`,
           screenlocation: screenLocationName || "",
           screencity: screenCityName || "",
           screendesc: screenDescription || "",
-          screenresolutionid: screenResolution || "",
-          screenphysizeid: screenPhysical || "",
-          screenorientation: orientation || "",
-          screenplacement: inDoorOutdoot || "",
-          screenopentime: openTime || "",
-          screenclosetime: closeTime || "",
-          manotifydelay: notificationDelay || "",
+          // screenresolutionid: screenResolution || "",
+          // screenphysizeid: screenPhysical || "",
+          // screenorientation: orientation || "",
+          // screenplacement: inDoorOutdoot || "",
+          // screenopentime: openTime || "",
+          // screenclosetime: closeTime || "",
+          // manotifydelay: notificationDelay || "",
         };
         if (obj?.screenname) {
-          if (mediaRule) {
-            try {
-              const data = await User.createNewScreen(obj, token, 2);
-              setDisableCreateButton(true);
-              if (data.code === 200) {
-                if (selectedImage) {
-                  const form = new FormData();
-                  form.append("target", "screenphoto");
-                  form.append("screenid", data?.screenid);
-                  form.append("logo", selectedImage);
-                  const data_img = await User.saveImgAccountScreens(
-                    form,
-                    token
-                  );
-                  if (data_img.code === 200) {
-                    Swal.fire({
-                      icon: "success",
-                      title: "สร้าง Screen สำเร็จ!",
-                      text: `สร้าง Screen สำเร็จ!`,
-                    }).then((result) => {
-                      if (
-                        result.isConfirmed ||
-                        result.dismiss === Swal.DismissReason.backdrop
-                      ) {
-                        navigate(`/screen`);
-                      }
-                    });
-                  } else {
-                    Swal.fire({
-                      icon: "error",
-                      title: "เกิดข้อผิดพลาด!",
-                      text: data_img.message,
-                    });
-                  }
-                } else {
+          try {
+            const data = await User.createNewScreen(obj, token, 2);
+            setDisableCreateButton(true);
+            if (data.code === 200) {
+              if (selectedImage) {
+                const form = new FormData();
+                form.append("target", "screenphoto");
+                form.append("screenid", data?.screenid);
+                form.append("logo", selectedImage);
+                const data_img = await User.saveImgAccountScreens(form, token);
+                if (data_img.code === 200) {
                   Swal.fire({
                     icon: "success",
                     title: "สร้าง Screen สำเร็จ!",
@@ -317,84 +293,7 @@ const New_screen = () => {
                       navigate(`/screen`);
                     }
                   });
-                }
-              } else {
-                setDisableCreateButton(false);
-                Swal.fire({
-                  icon: "error",
-                  title: "เกิดข้อผิดพลาด!",
-                  text: data.message,
-                });
-              }
-            } catch (error) {
-              console.log("error", error);
-            }
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "เกิดข้อผิดพลาด!",
-              text: "กรุณาเลือก Media Rule",
-            });
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "เกิดข้อผิดพลาด!",
-            text: "กรุณากรอกชื่อ Screen Name",
-          });
-        }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด!",
-          text: "จำนวน Notification Delay (sec) ผิดพลาด ...",
-        });
-      }
-    } else {
-      const obj = {
-        screenname: screenName.trim(),
-        mediaruleid: mediaRule || "",
-        tagids: screenTag.map((item) => String(item.TagID)),
-        screencoords: `${latLong.lat},${latLong.long}`,
-        screenlocation: screenLocationName || "",
-        screencity: screenCityName || "",
-        screendesc: screenDescription || "",
-        screenresolutionid: screenResolution || "",
-        screenphysizeid: screenPhysical || "",
-        screenorientation: orientation || "",
-        screenplacement: inDoorOutdoot || "",
-        screenopentime: openTime || "",
-        screenclosetime: closeTime || "",
-        manotifydelay: null,
-      };
-      if (obj.screenname) {
-        if (mediaRule) {
-          try {
-            console.log(obj);
-            setDisableCreateButton(true);
-            const data = await User.createNewScreen(obj, token, 2);
-            if (data.code === 200) {
-              if (selectedImage) {
-                const form = new FormData();
-                form.append("target", "screenphoto");
-                form.append("screenid", data.screenid);
-                form.append("logo", selectedImage);
-                const data_img = await User.saveImgAccountScreens(form, token);
-                if (data_img.code === 200) {
-                  Swal.fire({
-                    icon: "success",
-                    title: "สร้าง Static Screen สำเร็จ!",
-                    text: `สร้าง Static Screen สำเร็จ!`,
-                  }).then((result) => {
-                    if (
-                      result.isConfirmed ||
-                      result.dismiss === Swal.DismissReason.backdrop
-                    ) {
-                      navigate(`/static_screen`);
-                    }
-                  });
                 } else {
-                  setDisableCreateButton(false);
                   Swal.fire({
                     icon: "error",
                     title: "เกิดข้อผิดพลาด!",
@@ -404,14 +303,14 @@ const New_screen = () => {
               } else {
                 Swal.fire({
                   icon: "success",
-                  title: "สร้าง Static Screen สำเร็จ!",
-                  text: `สร้าง Static Screen สำเร็จ!`,
+                  title: "สร้าง Screen สำเร็จ!",
+                  text: `สร้าง Screen สำเร็จ!`,
                 }).then((result) => {
                   if (
                     result.isConfirmed ||
                     result.dismiss === Swal.DismissReason.backdrop
                   ) {
-                    navigate(`/static_screen`);
+                    navigate(`/screen`);
                   }
                 });
               }
@@ -430,8 +329,89 @@ const New_screen = () => {
           Swal.fire({
             icon: "error",
             title: "เกิดข้อผิดพลาด!",
-            text: "กรุณาเลือก Media Rule",
+            text: "กรุณากรอกชื่อ Screen Name",
           });
+        }
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "จำนวน Notification Delay (sec) ผิดพลาด ...",
+        });
+      }
+    } else {
+      const obj = {
+        screenname: screenName.trim(),
+        // mediaruleid: mediaRule || "",
+        tagids: screenTag.map((item) => String(item.TagID)),
+        screencoords: `${latLong.lat},${latLong.long}`,
+        screenlocation: screenLocationName || "",
+        screencity: screenCityName || "",
+        screendesc: screenDescription || "",
+        // screenresolutionid: screenResolution || "",
+        // screenphysizeid: screenPhysical || "",
+        // screenorientation: orientation || "",
+        // screenplacement: inDoorOutdoot || "",
+        // screenopentime: openTime || "",
+        // screenclosetime: closeTime || "",
+        // manotifydelay: null,
+      };
+      if (obj.screenname) {
+        try {
+          setDisableCreateButton(true);
+          const data = await User.createNewScreen(obj, token, 2);
+          if (data.code === 200) {
+            if (selectedImage) {
+              const form = new FormData();
+              form.append("target", "screenphoto");
+              form.append("screenid", data.screenid);
+              form.append("logo", selectedImage);
+              const data_img = await User.saveImgAccountScreens(form, token);
+              if (data_img.code === 200) {
+                Swal.fire({
+                  icon: "success",
+                  title: "สร้าง Static Screen สำเร็จ!",
+                  text: `สร้าง Static Screen สำเร็จ!`,
+                }).then((result) => {
+                  if (
+                    result.isConfirmed ||
+                    result.dismiss === Swal.DismissReason.backdrop
+                  ) {
+                    navigate(`/static_screen`);
+                  }
+                });
+              } else {
+                setDisableCreateButton(false);
+                Swal.fire({
+                  icon: "error",
+                  title: "เกิดข้อผิดพลาด!",
+                  text: data_img.message,
+                });
+              }
+            } else {
+              Swal.fire({
+                icon: "success",
+                title: "สร้าง Static Screen สำเร็จ!",
+                text: `สร้าง Static Screen สำเร็จ!`,
+              }).then((result) => {
+                if (
+                  result.isConfirmed ||
+                  result.dismiss === Swal.DismissReason.backdrop
+                ) {
+                  navigate(`/static_screen`);
+                }
+              });
+            }
+          } else {
+            setDisableCreateButton(false);
+            Swal.fire({
+              icon: "error",
+              title: "เกิดข้อผิดพลาด!",
+              text: data.message,
+            });
+          }
+        } catch (error) {
+          console.log("error", error);
         }
       } else {
         Swal.fire({
@@ -459,19 +439,19 @@ const New_screen = () => {
             const obj = {
               screenid: screenId,
               screenname: screenName,
-              mediaruleid: mediaRule || "",
+              // mediaruleid: mediaRule || "",
               tagids: screenTag.map((item) => String(item.TagID)),
               screencoords: `${latLong.lat},${latLong.long}`,
               screenlocation: screenLocationName || "",
               screencity: parseInt(screenCityName) || "",
               screendesc: screenDescription || "",
-              screenresolutionid: screenResolution || "",
-              screenphysizeid: screenPhysical || "",
-              screenorientation: orientation || "",
-              screenplacement: inDoorOutdoot || "",
-              screenopentime: openTime || "",
-              screenclosetime: closeTime || "",
-              manotifydelay: notificationDelay || "",
+              // screenresolutionid: screenResolution || "",
+              // screenphysizeid: screenPhysical || "",
+              // screenorientation: orientation || "",
+              // screenplacement: inDoorOutdoot || "",
+              // screenopentime: openTime || "",
+              // screenclosetime: closeTime || "",
+              // manotifydelay: notificationDelay || "",
             };
             if (selectedImage) {
               const form = new FormData();
@@ -532,19 +512,19 @@ const New_screen = () => {
           const obj = {
             screenid: screenId,
             screenname: screenName,
-            mediaruleid: mediaRule || "",
+            // mediaruleid: mediaRule || "",
             tagids: screenTag.map((item) => String(item.TagID)),
             screencoords: `${latLong.lat},${latLong.long}`,
             screenlocation: screenLocationName || "",
             screencity: parseInt(screenCityName) || "",
             screendesc: screenDescription || "",
-            screenresolutionid: screenResolution || "",
-            screenphysizeid: screenPhysical || "",
-            screenorientation: orientation || "",
-            screenplacement: inDoorOutdoot || "",
-            screenopentime: openTime || "",
-            screenclosetime: closeTime || "",
-            manotifydelay: null,
+            // screenresolutionid: screenResolution || "",
+            // screenphysizeid: screenPhysical || "",
+            // screenorientation: orientation || "",
+            // screenplacement: inDoorOutdoot || "",
+            // screenopentime: openTime || "",
+            // screenclosetime: closeTime || "",
+            // manotifydelay: null,
           };
           if (selectedImage) {
             const form = new FormData();
@@ -629,11 +609,11 @@ const New_screen = () => {
     );
 
     setResulotionData(
-      `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
-        data.Height
+      `W: ${parseInt(data?.Width).toString()} x H: ${parseInt(
+        data?.Height
       ).toString()}`
     );
-    setAdsCapacityData(data.AdsCapacity);
+    setAdsCapacityData(data?.AdsCapacity);
     setMediaRule(id);
   };
 
@@ -676,7 +656,7 @@ const New_screen = () => {
                 }}
               />
             </div>
-            <div className="mt-2">
+            {/* <div className="mt-2">
               <div className="grid grid-cols-12 space-x-2">
                 <div className="col-span-4 border border-gray-300 rounded-md shadow-sm">
                   <div className="flex justify-center items-center">
@@ -717,7 +697,7 @@ const New_screen = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="mt-5">
               <div className="grid grid-cols-6 space-x-1">
                 <div className="col-span-1 flex justify-start">
@@ -991,7 +971,7 @@ const New_screen = () => {
                   />
                 </div>
               </div>
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
                   {mediaRule ? (
                     <label
@@ -1054,160 +1034,8 @@ const New_screen = () => {
                     </svg>
                   </div>
                 </div>
-              </div>
-              {/* <div className="mt-4">
-                <div className="grid grid-cols-6 space-x-1">
-                  <div className="col-span-3">
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
-                      <select
-                        name="screenResolution"
-                        id="screenResolution"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onChange={(e) => setScreenResolution(e.target.value)}
-                        value={screenResolution}
-                      >
-                        <option value="" disabled selected hidden>
-                          Screen Resolution
-                        </option>
-                        {screen_resolution_dd.length > 0 &&
-                          screen_resolution_dd.map((items) => (
-                            <option value={items.ScreenResolutionID}>
-                              {items.Resolution}
-                            </option>
-                          ))}
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                        <svg
-                          width="13"
-                          height="15"
-                          viewBox="0 0 13 21"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                            stroke="#6425FE"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-span-3">
-                    <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                      <select
-                        name="screenPhysical"
-                        id="screenPhysical"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onChange={(e) => setScreenPhysical(e.target.value)}
-                        value={screenPhysical}
-                      >
-                        <option value="" disabled selected hidden>
-                          Screen Physical Size
-                        </option>
-                        {screen_physical_size_dd.length > 0 &&
-                          screen_physical_size_dd.map((items) => (
-                            <option value={items.ScreenPhySizeID}>
-                              {items.PhysicalSize}
-                            </option>
-                          ))}
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                        <svg
-                          width="13"
-                          height="15"
-                          viewBox="0 0 13 21"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                            stroke="#6425FE"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="grid grid-cols-6 space-x-1">
-                  <div className="col-span-3">
-                    <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
-                      <select
-                        name="orientation"
-                        id="orientation"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onChange={(e) => setOrientation(e.target.value)}
-                        value={orientation}
-                      >
-                        <option value="" disabled selected hidden>
-                          Orientation
-                        </option>
-                        <option value="portrait">Portrait</option>
-                        <option value="landscape">Landscape</option>
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                        <svg
-                          width="13"
-                          height="15"
-                          viewBox="0 0 13 21"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                            stroke="#6425FE"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-span-3">
-                    <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                      <select
-                        name="IndoorOutdoor"
-                        id="IndoorOutdoor"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                        onChange={(e) => setIndoorOutDoor(e.target.value)}
-                        value={inDoorOutdoot}
-                      >
-                        <option value="" disabled selected hidden>
-                          Placement
-                        </option>
-                        <option value="indoor">Indoor</option>
-                        <option value="outdoor">Outdoor</option>
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-[#6425FE] font-bold">
-                        <svg
-                          width="13"
-                          height="15"
-                          viewBox="0 0 13 21"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M2 14.1875L6.6875 18.875L11.375 14.1875M2 6.6875L6.6875 2L11.375 6.6875"
-                            stroke="#6425FE"
-                            stroke-width="3"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div> */}
-              <div className="mt-4">
+              {/* <div className="mt-4">
                 <div className="grid grid-cols-6 space-x-1">
                   <div className="col-span-3 ml-1">
                     <div className="grid grid-cols-12">
@@ -1265,19 +1093,10 @@ const New_screen = () => {
                     </div>
                   </div>
                   <div className="col-span-3">
-                    {/* <div className="relative flex flex-col justify-left items-center h-full text-sm font-bold ml-1">
-                      <input
-                        onChange={(e) => setSlotPerDay(e.target.value)}
-                        value={slotPerDay}
-                        type="number"
-                        placeholder="Slot Per Day"
-                        className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border  border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                      />
-                    </div> */}
                   </div>
                 </div>
-              </div>
-              <div className="mt-4">
+              </div> */}
+              {/* <div className="mt-4">
                 <div className="grid grid-cols-6 space-x-1">
                   <div className="col-span-3 ml-2">
                     <div className="grid grid-cols-4">
@@ -1348,7 +1167,7 @@ const New_screen = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="mt-16">
                 <div className="flex justify-center items-center">
                   {id === "new" ? (
