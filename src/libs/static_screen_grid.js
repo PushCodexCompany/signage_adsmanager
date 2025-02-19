@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+
 import { useNavigate } from "react-router-dom";
 import User from "../libs/admin";
 import Swal from "sweetalert2";
 import { BiLinkAlt } from "react-icons/bi";
-import { RiDeleteBin5Line, RiEditLine } from "react-icons/ri";
+import { RiDeleteBin5Line, RiEditLine, RiCalendar2Fill } from "react-icons/ri";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export const GridTable = ({
@@ -19,14 +20,15 @@ export const GridTable = ({
   openPairScreenModal,
   openUnPairScreenModal,
   setScreenSelect,
+  setOpenInfoScreenModal,
+  openInfoScreenModal,
   // setCheckboxes,
   // checkboxes,
   // screen_checkbox_select,
   // setScreenCheckboxSelect,
+  page_permission,
 }) => {
   const navigate = useNavigate();
-
-  const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
 
   // table
   const { token } = User.getCookieData();
@@ -162,42 +164,90 @@ export const GridTable = ({
                   )}
                 </div>
               </td>
-              <td className="px-6 py-4 text-center whitespace-nowrap border-b  border-gray-200">
+              <td className="px-1 py-4 text-center whitespace-nowrap border-b  border-gray-200">
                 <div className="space-x-2">
                   {isScreenPaired ? (
-                    <button>
+                    <button className="relative group">
                       <BiLinkAlt
                         onClick={() => handleUnpairScreen(row)}
                         size={20}
                         className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                       />
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      >
+                        Unpair Screen
+                      </div>
                     </button>
                   ) : (
-                    <button>
+                    <button className="relative group">
                       <BiLinkAlt
                         onClick={() => handlePairScreen(row)}
                         size={20}
                         className="text-[#ccc] hover:text-[#ccc] cursor-pointer"
                       />
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                      >
+                        Pair Screen
+                      </div>
                     </button>
                   )}
-                  <button onClick={() => handleEditScreen(row)}>
-                    <RiEditLine
-                      size={20}
-                      className="text-[#6425FE] hover:text-[#ccc] cursor-pointer"
-                    />
-                  </button>
+                  {page_permission?.update && (
+                    <button
+                      className="relative group"
+                      onClick={() => handleEditScreen(row)}
+                    >
+                      <RiEditLine
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                      >
+                        Edit Screen
+                      </div>
+                    </button>
+                  )}
 
                   <button
-                    onClick={() =>
-                      handleDeleteScreen(row.ScreenID, row.ScreenName)
-                    }
+                    className="relative group"
+                    onClick={() => handleSelectInfoScreen(row)}
                   >
-                    <RiDeleteBin5Line
+                    <RiCalendar2Fill
                       size={20}
                       className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
                     />
+                    <div
+                      style={{ pointerEvents: "none" }}
+                      className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                    >
+                      Screen Detail
+                    </div>
                   </button>
+
+                  {page_permission?.delete && (
+                    <button
+                      className="relative group"
+                      onClick={() =>
+                        handleDeleteScreen(row.ScreenID, row.ScreenName)
+                      }
+                    >
+                      <RiDeleteBin5Line
+                        size={20}
+                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      />
+                      <div
+                        style={{ pointerEvents: "none" }}
+                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mt-2 min-w-[150px] w-auto p-2 font-poppins bg-black text-white text-sm rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                      >
+                        Delete Screen
+                      </div>
+                    </button>
+                  )}
                 </div>
               </td>
             </tr>

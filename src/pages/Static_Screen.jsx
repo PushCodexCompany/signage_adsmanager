@@ -4,6 +4,9 @@ import { Header, Navbar } from "../components";
 import Filter from "../components/Filter";
 import User from "../libs/admin";
 import { GridTable } from "../libs/static_screen_grid";
+import Screen_Info from "../components/Screen_Info";
+import Permission from "../libs/permission";
+import Swal from "sweetalert2";
 
 const Static_Screen = () => {
   const [searchTerm, setSearchTerm] = useState(null);
@@ -15,6 +18,8 @@ const Static_Screen = () => {
   const [openPairScreenModal, setOpenPairScreenModal] = useState(false);
   const [openUnPairScreenModal, setOpenUnPairScreenModal] = useState(false);
   const [screen_select, setScreenSelect] = useState(null);
+  const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
+  const [page_permission, setPagePermission] = useState([]);
 
   const { token } = User.getCookieData();
   const navigate = useNavigate();
@@ -22,6 +27,7 @@ const Static_Screen = () => {
   useEffect(async () => {
     await fetchScreenData();
     fetchScreenOptionsData();
+    getPermission();
     // testFirebase();
   }, [searchTerm]);
 
@@ -46,6 +52,24 @@ const Static_Screen = () => {
     setScreensOptionsData(screens_option.screenresolution);
   };
 
+  const getPermission = async () => {
+    const { user } = User.getCookieData();
+    const { permissions } = Permission.convertNewPermissionValuesToBoolean([
+      user,
+    ]);
+    if (!permissions.digiScrnMgt.view) {
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาติดต่อ Admin",
+      });
+      navigate("/dashboard");
+      return;
+    }
+
+    setPagePermission(permissions?.digiScrnMgt);
+  };
+
   return (
     <>
       <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
@@ -58,14 +82,15 @@ const Static_Screen = () => {
             </div>
           </div>
           <div className="col-span-4">
-            <div className="flex justify-end space-x-1">
-              <button
-                onClick={() => navigate("/static_screen/create/new")}
-                className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
-              >
-                New Static Screen +
-              </button>
-              {/* <button
+            {page_permission?.create ? (
+              <div className="flex justify-end space-x-1">
+                <button
+                  onClick={() => navigate("/static_screen/create/new")}
+                  className="bg-[#6425FE]  hover:bg-[#3b1694] text-white text-sm font-poppins w-[180px] h-[45px] rounded-md"
+                >
+                  New Static Screen +
+                </button>
+                {/* <button
                 onClick={() => {
                   setScreenSelect(null);
                   setOpenSelectPairScreenModel(!openSelectPairScreenModel);
@@ -75,7 +100,10 @@ const Static_Screen = () => {
               >
                 Pair Screen
               </button> */}
-            </div>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
 
@@ -93,11 +121,14 @@ const Static_Screen = () => {
               all_pages={all_pages}
               setScreensData={setScreensData}
               searchTerm={searchTerm}
+              setOpenInfoScreenModal={setOpenInfoScreenModal}
+              openInfoScreenModal={openInfoScreenModal}
               // screens_options_data={screens_options_data}
               setOpenPairScreenModal={setOpenPairScreenModal}
               setOpenUnPairScreenModal={setOpenUnPairScreenModal}
               openUnPairScreenModal={openUnPairScreenModal}
               setScreenSelect={setScreenSelect}
+              page_permission={page_permission}
               // setCheckboxes={setCheckboxes}
               // checkboxes={checkboxes}
               // screen_checkbox_select={screen_checkbox_select}
@@ -112,6 +143,23 @@ const Static_Screen = () => {
           )}
         </div>
       </div>
+
+      {openInfoScreenModal && (
+        <a
+          onClick={() => setOpenInfoScreenModal(!openInfoScreenModal)}
+          className="fixed top-0 w-full left-[0px] h-full opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openInfoScreenModal && (
+        <Screen_Info
+          setOpenInfoScreenModal={setOpenInfoScreenModal}
+          selectInfoScreen={selectInfoScreen}
+          from="list"
+          page_permission={page_permission}
+          type="static"
+        />
+      )}
     </>
   );
 };

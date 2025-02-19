@@ -533,14 +533,6 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
     };
 
     try {
-      const obj = {
-        BookingID: 123123123123,
-        AdvertiserLogo: select_merchandise.AdvertiserLogo,
-        AdvertiserName: select_merchandise.AdvertiserName,
-        BookingName: booking_name,
-        SlotPerDay: booking_slot,
-        booking_date,
-      };
       const data_booking = await User.createBooking(obj_save_booking, token, 3);
       if (data_booking.code === 200) {
         Swal.fire({

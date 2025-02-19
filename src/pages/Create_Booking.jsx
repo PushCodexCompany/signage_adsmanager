@@ -602,6 +602,7 @@ const Create_Booking = () => {
         bookingaction: "saved",
         bookingcontent: [],
       };
+
       screenData.forEach((screen) => {
         screen.booking.forEach((booking) => {
           const matchingBooking = bookingSelect?.find(
@@ -618,8 +619,19 @@ const Create_Booking = () => {
         });
       });
 
+      // Show loading modal before making request
+      Swal.fire({
+        title: "กำลังบันทึก...",
+        text: "โปรดรอสักครู่",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       try {
         const data = await User.updateBookingSlots(obj, token);
+
         if (data.code === 200) {
           Swal.fire({
             icon: "success",
@@ -646,6 +658,11 @@ const Create_Booking = () => {
         }
       } catch (error) {
         console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "เกิดข้อผิดพลาด!",
+          text: "เกิดข้อผิดพลาดในการเชื่อมต่อ",
+        });
       }
     } else {
       Swal.fire({

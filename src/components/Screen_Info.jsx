@@ -98,6 +98,7 @@ const Screen_Info = ({
   selectInfoScreen,
   from,
   page_permission,
+  type,
 }) => {
   const { token } = User.getCookieData();
   const [openMediaScheduleModal, setOpenMediaScheduleModal] = useState(false);
@@ -542,79 +543,84 @@ const Screen_Info = ({
               </div>
 
               {/* Right section */}
-              <div
-                className={` ${width >= 1026 ? "w-1/2 pl-8" : "w-full"} p-4 `}
-              >
-                <div className="p-4 border border-gray-200">
-                  <div className="mt-[70px]">
-                    <div className="grid grid-cols-12">
-                      <div className="col-span-4">
-                        <div className="font-poppins text-[30px] font-bold">
-                          Schedule
+              {type !== "static" ? (
+                <div
+                  className={` ${width >= 1026 ? "w-1/2 pl-8" : "w-full"} p-4 `}
+                >
+                  <div className="p-4 border border-gray-200">
+                    <div className="mt-[70px]">
+                      <div className="grid grid-cols-12">
+                        <div className="col-span-4">
+                          <div className="font-poppins text-[30px] font-bold">
+                            Schedule
+                          </div>
                         </div>
-                      </div>
-                      <div className="col-span-2">
-                        <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                          <select
-                            name="month"
-                            id="month"
-                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            onChange={(e) => setMonth(e.target.value)}
-                            value={month}
-                          >
-                            <option value="" disabled selected hidden>
-                              Month
-                            </option>
-                            {month_data.map((items) => (
-                              <option value={items.value}>{items.name}</option>
-                            ))}
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <IoIosArrowDown size={18} color="#6425FE" />
+                        <div className="col-span-2">
+                          <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                            <select
+                              name="month"
+                              id="month"
+                              className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                              onChange={(e) => setMonth(e.target.value)}
+                              value={month}
+                            >
+                              <option value="" disabled selected hidden>
+                                Month
+                              </option>
+                              {month_data.map((items) => (
+                                <option value={items.value}>
+                                  {items.name}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                              <IoIosArrowDown size={18} color="#6425FE" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-2">
+                          <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
+                            <select
+                              name="year"
+                              id="year"
+                              className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
+                              onChange={(e) => setYear(e.target.value)}
+                              value={year}
+                            >
+                              <option value="" disabled selected hidden>
+                                Year
+                              </option>
+                              {year_data.map((items) => (
+                                <option value={items.value}>
+                                  {items.name}
+                                </option>
+                              ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                              <IoIosArrowDown size={18} color="#6425FE" />
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="col-span-2">
-                        <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-1">
-                          <select
-                            name="year"
-                            id="year"
-                            className="block appearance-none w-full p-3 rounded-lg bg-[#f2f2f2] text-sm border text-center border-gray-300   pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 font-poppins"
-                            onChange={(e) => setYear(e.target.value)}
-                            value={year}
-                          >
-                            <option value="" disabled selected hidden>
-                              Year
-                            </option>
-                            {year_data.map((items) => (
-                              <option value={items.value}>{items.name}</option>
-                            ))}
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <IoIosArrowDown size={18} color="#6425FE" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
-                    {schedule.length > 0 ? (
-                      <div className="w-[720px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px] ">
-                        <div className="mt-3">
-                          <div className="flex space-x-2">
-                            {schedule?.map((items, index) => (
-                              <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
-                                <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
-                                  {format(items.BookingDate, "EEE")}
+                      {schedule.length > 0 ? (
+                        <div className="w-[720px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px] ">
+                          <div className="mt-3">
+                            <div className="flex space-x-2">
+                              {schedule?.map((items, index) => (
+                                <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
+                                  <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
+                                    {format(items.BookingDate, "EEE")}
+                                  </div>
+                                  <div className="font-poppins font-bold flex justify-center items-center text-[30px]">
+                                    {format(items.BookingDate, "dd")}
+                                  </div>
+                                  <div className="font-poppins font-bold flex justify-center items-center text-[9px] ">
+                                    {format(items.BookingDate, "MMM yyyy")}
+                                  </div>
                                 </div>
-                                <div className="font-poppins font-bold flex justify-center items-center text-[30px]">
-                                  {format(items.BookingDate, "dd")}
-                                </div>
-                                <div className="font-poppins font-bold flex justify-center items-center text-[9px] ">
-                                  {format(items.BookingDate, "MMM yyyy")}
-                                </div>
-                              </div>
-                            ))}
-                            {/* {selectInfoScreen.schedule?.map((items, index) => (
+                              ))}
+                              {/* {selectInfoScreen.schedule?.map((items, index) => (
                            <div className="border border-[#E8E8E8] min-w-[60px] h-[60px]">
                              <div className="font-poppins font-bold text-[11px] flex justify-center items-center">
                                {format(items.date, "EEE")}
@@ -627,120 +633,123 @@ const Screen_Info = ({
                              </div>
                            </div>
                          ))} */}
-                          </div>
-                        </div>
-                        <div className="mt-4">
-                          <div className="w-[720px] flex space-x-2">
-                            {schedule?.map((items, index) => (
-                              <div
-                                onClick={() => handleSelectMedia(items)}
-                                className={`${
-                                  items.MaxSlot - items.TotalUseSlot === 0
-                                    ? "bg-[#5C5C5C]"
-                                    : items.MaxSlot - items.TotalUseSlot ===
-                                      items.MaxSlot
-                                    ? "bg-[#018C41] opacity-40"
-                                    : "bg-[#018C41]"
-                                } min-w-[60px] h-[60px] flex justify-center items-center cursor-pointer rounded-md`}
-                              >
-                                <div className="font-poppins text-white text-[18px]">
-                                  {items.TotalUseSlot}/{items.MaxSlot}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-center text-center mt-2">
-                        <div className="font-poppins text-2xl text-gray-300">
-                          --- No Schedule ---
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="mt-10 flex justify-center border-b-2 items-center text-[#DBDBDB] " />
-                    <div className="mt-2">
-                      <div className="font-poppins text-[30px] font-bold">
-                        Screen Health
-                      </div>
-                      <div className="w-full  overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
-                        <div className="mt-2 mb-2">
-                          <div className="flex items-end">
-                            {health?.map((height, index) => (
-                              <div
-                                key={index}
-                                className={`h-[${height}px] bg-[#2F8B5A] w-4 m-[1px]`}
-                                style={{ minWidth: "1rem" }}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-2">
-                        <div className="font-poppins text-[18px] font-bold">
-                          {`Up Time ${selectInfoScreen.uptime || " "} %`}
-                        </div>
-                      </div>
-                      <div className="mt-6">
-                        <div className="grid grid-cols-4 space-x-2">
-                          <div className="col-span-2">
-                            <div className="grid grid-cols-3">
-                              <div className="col-span-2">
-                                <div className="font-poppins text-[18px] font-bold">
-                                  Maintenance Notification
-                                </div>
-                              </div>
-                              <div className="col-span-1">
-                                <div className="flex justify-end">
-                                  {selectInfoScreen.MANotifyDelay ? (
-                                    <BiToggleRight
-                                      size={32}
-                                      className="text-[#6425FE]"
-                                    />
-                                  ) : (
-                                    <BiToggleLeft
-                                      size={32}
-                                      className="text-[#6425FE]"
-                                    />
-                                  )}
-                                </div>
-                              </div>
                             </div>
                           </div>
-                          <div className="col-span-2">
-                            <div className="grid grid-cols-3">
-                              <div className="col-span-2">
-                                <div className="font-poppins text-[18px] font-bold">
-                                  Offline Notification Delay
-                                </div>
-                              </div>
-                              <div className="col-span-1">
-                                <div className="flex justify-end items-center space-x-2">
-                                  <div className="text-[#A9A9A9] text-[15px] font-poppins">
-                                    {selectInfoScreen.MANotifyDelay}
+                          <div className="mt-4">
+                            <div className="w-[720px] flex space-x-2">
+                              {schedule?.map((items, index) => (
+                                <div
+                                  onClick={() => handleSelectMedia(items)}
+                                  className={`${
+                                    items.MaxSlot - items.TotalUseSlot === 0
+                                      ? "bg-[#5C5C5C]"
+                                      : items.MaxSlot - items.TotalUseSlot ===
+                                        items.MaxSlot
+                                      ? "bg-[#018C41] opacity-40"
+                                      : "bg-[#018C41]"
+                                  } min-w-[60px] h-[60px] flex justify-center items-center cursor-pointer rounded-md`}
+                                >
+                                  <div className="font-poppins text-white text-[18px]">
+                                    {items.TotalUseSlot}/{items.MaxSlot}
                                   </div>
-                                  <LuClock4
-                                    size={24}
-                                    className="text-[#6425FE]"
-                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center text-center mt-2">
+                          <div className="font-poppins text-2xl text-gray-300">
+                            --- No Schedule ---
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mt-10 flex justify-center border-b-2 items-center text-[#DBDBDB] " />
+                      <div className="mt-2">
+                        <div className="font-poppins text-[30px] font-bold">
+                          Screen Health
+                        </div>
+                        <div className="w-full  overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
+                          <div className="mt-2 mb-2">
+                            <div className="flex items-end">
+                              {health?.map((height, index) => (
+                                <div
+                                  key={index}
+                                  className={`h-[${height}px] bg-[#2F8B5A] w-4 m-[1px]`}
+                                  style={{ minWidth: "1rem" }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-2">
+                          <div className="font-poppins text-[18px] font-bold">
+                            {`Up Time ${selectInfoScreen.uptime || " "} %`}
+                          </div>
+                        </div>
+                        <div className="mt-6">
+                          <div className="grid grid-cols-4 space-x-2">
+                            <div className="col-span-2">
+                              <div className="grid grid-cols-3">
+                                <div className="col-span-2">
+                                  <div className="font-poppins text-[18px] font-bold">
+                                    Maintenance Notification
+                                  </div>
+                                </div>
+                                <div className="col-span-1">
+                                  <div className="flex justify-end">
+                                    {selectInfoScreen.MANotifyDelay ? (
+                                      <BiToggleRight
+                                        size={32}
+                                        className="text-[#6425FE]"
+                                      />
+                                    ) : (
+                                      <BiToggleLeft
+                                        size={32}
+                                        className="text-[#6425FE]"
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-span-2">
+                              <div className="grid grid-cols-3">
+                                <div className="col-span-2">
+                                  <div className="font-poppins text-[18px] font-bold">
+                                    Offline Notification Delay
+                                  </div>
+                                </div>
+                                <div className="col-span-1">
+                                  <div className="flex justify-end items-center space-x-2">
+                                    <div className="text-[#A9A9A9] text-[15px] font-poppins">
+                                      {selectInfoScreen.MANotifyDelay}
+                                    </div>
+                                    <LuClock4
+                                      size={24}
+                                      className="text-[#6425FE]"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="mt-8">
-                        <div className="flex justify-center items-center">
-                          <div className="font-poppins text-[15px] font-bold">
-                            Screen Description : {selectInfoScreen.ScreenDesc}
+                        <div className="mt-8">
+                          <div className="flex justify-center items-center">
+                            <div className="font-poppins text-[15px] font-bold">
+                              Screen Description : {selectInfoScreen.ScreenDesc}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
