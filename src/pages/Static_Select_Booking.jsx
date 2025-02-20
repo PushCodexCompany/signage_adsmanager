@@ -134,7 +134,7 @@ const Select_Booking = () => {
 
       // get Booking Content
       const booking_content = await User.getBookingContent(BookingID, token);
-      console.log("booking_content", booking_content);
+      // console.log("booking_content", booking_content);
       calculateSize(booking_content);
       setBookingStatus(BookingStatus);
 

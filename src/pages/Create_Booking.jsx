@@ -95,111 +95,129 @@ const Create_Booking = () => {
   };
 
   const setBooking = async () => {
-    const {
-      AdvertiserLogo,
-      AdvertiserName,
-      BookingName,
-      SlotPerDay,
-      BookingID,
-    } = location.state.data;
-
-    setBookingName(BookingName);
-    setMerchandise({
-      AdvertiserLogo,
-      AdvertiserName,
-      AccountCode: await findAccountCode(AdvertiserName),
+    Swal.fire({
+      title: "กำลังสร้างตาราง...",
+      text: "โปรดรอสักครู่",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
     });
-    setBookingId(BookingID);
 
-    const booking_data = await User.getBookingById(BookingID, token);
-    const booking_date = [
-      ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
-    ];
-    setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
-    setBookingSlot(parseInt(SlotPerDay));
-    let all_screens_data;
-    if (location.state.screen_data) {
-      all_screens_data = location.state.screen_data;
-    } else {
-      all_screens_data = await User.getScreens(token);
-    }
-    const groupedByScreenID = booking_data.reduce((acc, curr) => {
-      const screenID = curr.ScreenID;
-      const existing = acc?.find((item) => item.ScreenID === screenID);
-      const filter_screen = all_screens_data?.find(
-        (items) => items.ScreenID === screenID
-      );
-      if (filter_screen) {
-        if (existing) {
-          existing.booking.push({
-            BookingDateID: curr.BookingDateID,
-            UsedSlot: curr.UsedSlot,
-            OtherUseSlot: curr.OtherUseSlot,
-            UsedTotal: curr.UsedTotal,
-            MaxSlot: curr.MaxSlot,
-            AvailableSlot: curr.AvailableSlot,
-          });
-        } else {
-          acc.push({
-            ScreenID: screenID,
-            ScreenName: curr.ScreenName,
-            Media_Rules:
-              filter_screen.ScreenRule[0]?.Width &&
-              filter_screen.ScreenRule[0]?.Height
-                ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
-                  "x" +
-                  parseInt(filter_screen.ScreenRule[0]?.Height).toString()
-                : "Not Set",
-            MaxSlot: parseInt(curr.MaxSlot),
-            AccountCode: filter_screen.AccountCode,
-            BrandCode: filter_screen.BrandCode,
-            BranchCode: filter_screen.BranchCode,
-            ScreenCode: filter_screen.ScreenCode,
-            screen_status: filter_screen.screen_status,
-            ScreenLocation: filter_screen.ScreenLocation,
-            booking: [
-              {
-                BookingDateID: curr.BookingDateID,
-                UsedSlot: curr.UsedSlot,
-                OtherUseSlot: curr.OtherUseSlot,
-                UsedTotal: curr.UsedTotal,
-                MaxSlot: curr.MaxSlot,
-                AvailableSlot: curr.AvailableSlot,
-              },
-            ],
-          });
-        }
-      }
+    try {
+      const {
+        AdvertiserLogo,
+        AdvertiserName,
+        BookingName,
+        SlotPerDay,
+        BookingID,
+      } = location.state.data;
 
-      return acc;
-    }, []);
-    console.log("groupedByScreenID", groupedByScreenID);
-    setScreenData(groupedByScreenID);
-
-    let result = [];
-    groupedByScreenID.forEach((screen, screenIndex) => {
-      screen.booking.forEach((booking, dateIndex) => {
-        if (parseInt(booking.UsedSlot) > 0) {
-          result.push({
-            screenIndex,
-            dateIndex,
-            ScreenID: screen.ScreenID,
-            BookingDateID: booking.BookingDateID,
-          });
-        }
+      setBookingName(BookingName);
+      setMerchandise({
+        AdvertiserLogo,
+        AdvertiserName,
+        AccountCode: await findAccountCode(AdvertiserName),
       });
-    });
+      setBookingId(BookingID);
 
-    setBookingSelect(result);
+      const booking_data = await User.getBookingById(BookingID, token);
+      const booking_date = [
+        ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
+      ];
+      setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
+      setBookingSlot(parseInt(SlotPerDay));
+      let all_screens_data;
+      if (location.state.screen_data) {
+        all_screens_data = location.state.screen_data;
+      } else {
+        all_screens_data = await User.getScreens(token);
+      }
+      const groupedByScreenID = booking_data.reduce((acc, curr) => {
+        const screenID = curr.ScreenID;
+        const existing = acc?.find((item) => item.ScreenID === screenID);
+        const filter_screen = all_screens_data?.find(
+          (items) => items.ScreenID === screenID
+        );
+        if (filter_screen) {
+          if (existing) {
+            existing.booking.push({
+              BookingDateID: curr.BookingDateID,
+              UsedSlot: curr.UsedSlot,
+              OtherUseSlot: curr.OtherUseSlot,
+              UsedTotal: curr.UsedTotal,
+              MaxSlot: curr.MaxSlot,
+              AvailableSlot: curr.AvailableSlot,
+            });
+          } else {
+            acc.push({
+              ScreenID: screenID,
+              ScreenName: curr.ScreenName,
+              Media_Rules:
+                filter_screen.ScreenRule[0]?.Width &&
+                filter_screen.ScreenRule[0]?.Height
+                  ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
+                    "x" +
+                    parseInt(filter_screen.ScreenRule[0]?.Height).toString()
+                  : "Not Set",
+              MaxSlot: parseInt(curr.MaxSlot),
+              AccountCode: filter_screen.AccountCode,
+              BrandCode: filter_screen.BrandCode,
+              BranchCode: filter_screen.BranchCode,
+              ScreenCode: filter_screen.ScreenCode,
+              screen_status: filter_screen.screen_status,
+              ScreenLocation: filter_screen.ScreenLocation,
+              booking: [
+                {
+                  BookingDateID: curr.BookingDateID,
+                  UsedSlot: curr.UsedSlot,
+                  OtherUseSlot: curr.OtherUseSlot,
+                  UsedTotal: curr.UsedTotal,
+                  MaxSlot: curr.MaxSlot,
+                  AvailableSlot: curr.AvailableSlot,
+                },
+              ],
+            });
+          }
+        }
 
-    groupedByScreenID.map((items, index) => {});
+        return acc;
+      }, []);
+      setScreenData(groupedByScreenID);
 
-    const output = {};
-    groupedByScreenID.forEach((item) => {
-      output[item.ScreenID] = true;
-    });
+      let result = [];
+      groupedByScreenID.forEach((screen, screenIndex) => {
+        screen.booking.forEach((booking, dateIndex) => {
+          if (parseInt(booking.UsedSlot) > 0) {
+            result.push({
+              screenIndex,
+              dateIndex,
+              ScreenID: screen.ScreenID,
+              BookingDateID: booking.BookingDateID,
+            });
+          }
+        });
+      });
 
-    setCheckboxes(output);
+      setBookingSelect(result);
+
+      groupedByScreenID.map((items, index) => {});
+
+      const output = {};
+      groupedByScreenID.forEach((item) => {
+        output[item.ScreenID] = true;
+      });
+
+      setCheckboxes(output);
+      Swal.close();
+    } catch (error) {
+      console.error("Error fetching booking data:", error);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่สามารถโหลดข้อมูลได้",
+      });
+    }
   };
 
   const setBookingData = async () => {

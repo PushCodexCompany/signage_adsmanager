@@ -64,7 +64,6 @@ const Booking_Summary = () => {
               result.dismiss === Swal.DismissReason.backdrop
             ) {
               const replacedString = booking_name.replace(/\//g, "_");
-              console.log("location.state.select", location.state.select);
               navigate(`/static_booking/select/${replacedString}`, {
                 state: { data: location.state.select },
               });

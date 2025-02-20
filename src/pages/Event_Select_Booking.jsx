@@ -95,70 +95,94 @@ const Select_Booking = () => {
   }, []);
 
   const getBookingData = async () => {
-    const {
-      AdvertiserID,
-      AdvertiserLogo,
-      AdvertiserName,
-      BookingName,
-      SlotPerDay,
-      BookingID,
-      LastPublish,
-      PublishBy,
-      BookingStatus,
-    } = location.state.data;
-
-    setBookingName(BookingName);
-    setBookingId(BookingID);
-    setAdvertiserId(AdvertiserID);
-    setMerchandise({
-      AdvertiserLogo,
-      AdvertiserName,
-      AccountCode: await findAccountCode(AdvertiserName),
+    Swal.fire({
+      title: "กำลังสร้างตาราง...",
+      text: "โปรดรอสักครู่",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
     });
-    setBookingSlot(SlotPerDay);
 
-    setLastestPublishDate(LastPublish);
-    setLastestPublishName(PublishBy);
+    try {
+      const {
+        AdvertiserID,
+        AdvertiserLogo,
+        AdvertiserName,
+        BookingName,
+        SlotPerDay,
+        BookingID,
+        LastPublish,
+        PublishBy,
+        BookingStatus,
+      } = location.state.data;
 
-    // get Booking Content
-    const booking_content = await User.getBookingContent(BookingID, token);
+      setBookingName(BookingName);
+      setBookingId(BookingID);
+      setAdvertiserId(AdvertiserID);
+      setMerchandise({
+        AdvertiserLogo,
+        AdvertiserName,
+        AccountCode: await findAccountCode(AdvertiserName),
+      });
+      setBookingSlot(SlotPerDay);
 
-    calculateSize(booking_content);
-    setBookingStatus(BookingStatus);
+      setLastestPublishDate(LastPublish);
+      setLastestPublishName(PublishBy);
 
-    // get Screen Data
-    const uniqueScreenIDs = [
-      ...new Set(booking_content.map((item) => item.ScreenID)),
-    ];
-    const output = uniqueScreenIDs.map((screenID) => ({ ScreenID: screenID }));
-    let all_screen;
-    if (location.state.screen_data) {
-      all_screen = location.state.screen_data;
-    } else {
-      all_screen = await User.getScreens(token);
+      // get Booking Content
+      const booking_content = await User.getBookingContent(BookingID, token);
+
+      calculateSize(booking_content);
+      setBookingStatus(BookingStatus);
+
+      // get Screen Data
+      const uniqueScreenIDs = [
+        ...new Set(booking_content.map((item) => item.ScreenID)),
+      ];
+      const output = uniqueScreenIDs.map((screenID) => ({
+        ScreenID: screenID,
+      }));
+      let all_screen;
+      if (location.state.screen_data) {
+        all_screen = location.state.screen_data;
+      } else {
+        all_screen = await User.getScreens(token);
+      }
+      setAllScreenData(all_screen);
+      const filteredOutput = all_screen?.filter((screen) => {
+        return output.some(
+          (item) => parseInt(item.ScreenID) === screen.ScreenID
+        );
+      });
+
+      const filteredOutputWithBooking = filteredOutput?.map((screen) => {
+        const booking = booking_content?.filter(
+          (booking) => parseInt(booking.ScreenID) === screen.ScreenID
+        );
+        return {
+          ...screen,
+          booking_content: booking,
+        };
+      });
+      setScreen(filteredOutputWithBooking);
+
+      //get Booking Date
+      const booking_data = await User.getBookingById(BookingID, token);
+      const booking_date = [
+        ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
+      ];
+      setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
+
+      Swal.close();
+    } catch (error) {
+      console.error("Error fetching booking data:", error);
+      Swal.fire({
+        icon: "error",
+        title: "เกิดข้อผิดพลาด!",
+        text: "ไม่สามารถโหลดข้อมูลได้",
+      });
     }
-    setAllScreenData(all_screen);
-    const filteredOutput = all_screen?.filter((screen) => {
-      return output.some((item) => parseInt(item.ScreenID) === screen.ScreenID);
-    });
-
-    const filteredOutputWithBooking = filteredOutput?.map((screen) => {
-      const booking = booking_content?.filter(
-        (booking) => parseInt(booking.ScreenID) === screen.ScreenID
-      );
-      return {
-        ...screen,
-        booking_content: booking,
-      };
-    });
-    setScreen(filteredOutputWithBooking);
-
-    //get Booking Date
-    const booking_data = await User.getBookingById(BookingID, token);
-    const booking_date = [
-      ...new Set(booking_data.map((items) => +new Date(items.BookingDate))),
-    ];
-    setBookingDate(booking_date.map((timestamp) => new Date(timestamp)));
   };
 
   const getMediaItemsData = async () => {

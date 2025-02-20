@@ -1145,7 +1145,7 @@ export default {
       urlString += `&screentypeid=${type}`;
     }
 
-    console.log("urlString", urlString);
+    // console.log("urlString", urlString);
     const { data } = await this._post(urlString, "", config);
 
     return data;
@@ -1412,7 +1412,7 @@ export default {
     }
 
     const { data } = await this._post(urlString, hash, config);
-    console.log("data", data);
+    // console.log("data", data);
     return data;
   },
 
