@@ -85,6 +85,8 @@ const Select_Booking = () => {
   const [selectDateView, setSelectDateView] = useState(null);
   const [fact_panel1, setFactPanel1] = useState([]);
 
+  const [isEvent, setIsEvent] = useState(false);
+
   useEffect(() => {
     getBookingData();
     getMediaItemsData();
@@ -449,6 +451,7 @@ const Select_Booking = () => {
       Video: obj.ScreenRule[0].VideoContentTypeID !== 0 ? true : false,
     };
 
+    setIsEvent(true);
     setMediaRulesSelectId(obj.ScreenRule[0].MediaRuleID);
     setMediaRulesSelect(media_rule);
     media_obj.slots = parseInt(booking_slot);
@@ -1072,6 +1075,7 @@ const Select_Booking = () => {
           setFactAllocation={setFactAllocation}
           fact_allocation={fact_allocation}
           fact_panel1={fact_panel1}
+          isEvent={isEvent}
         />
       )}
       {openModalUploadNewMedia && (

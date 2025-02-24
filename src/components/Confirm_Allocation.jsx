@@ -24,6 +24,9 @@ const Confirm_Allocation = ({
   setCheckboxes,
   setIsEdit,
   isEdit,
+  isEvent,
+  openTime,
+  closeTime,
 }) => {
   const [screen, setScreen] = useState([]);
   const { token } = User.getCookieData();
@@ -71,15 +74,34 @@ const Confirm_Allocation = ({
       .map((screen) => screen.screenid)
       .join(",");
 
-    const obj = {
-      bookingid: bookingId,
-      dates: date_range,
-      screenids: screenIdsString,
-      mediaplaylistid: parseInt(media_playlist_id),
-    };
+    let obj;
+
+    if (isEvent) {
+      obj = {
+        bookingid: bookingId,
+        dates: date_range,
+        screenids: screenIdsString,
+        mediaplaylistid: parseInt(media_playlist_id),
+        starttime: openTime,
+        endtime: closeTime,
+      };
+    } else {
+      obj = {
+        bookingid: bookingId,
+        dates: date_range,
+        screenids: screenIdsString,
+        mediaplaylistid: parseInt(media_playlist_id),
+      };
+    }
 
     try {
-      const data = await User.updateBookingContent(obj, token);
+      let data;
+      if (isEvent) {
+        data = await User.updateBookingContent(obj, token, true);
+      } else {
+        data = await User.updateBookingContent(obj, token, false);
+      }
+
       if (data.code === 200) {
         Swal.fire({
           icon: "success",

@@ -25,6 +25,10 @@ import Create_New_Playlist_Allocation from "../components/Create_New_Playlist_Al
 import Detail_Screen_Booking from "../components/Detail_Screen_Booking";
 import "./css/alert.css";
 import Permission from "../libs/permission";
+import moment from "moment";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 const Ads_Allocation_Booking = ({
   setOpenAdsAllocationModal,
@@ -62,6 +66,7 @@ const Ads_Allocation_Booking = ({
   fact_allocation,
   fact_panel1,
   isStatic,
+  isEvent,
 }) => {
   const [isApplyToScreen, setIsApplyToScreen] = useState(false);
   const [full_media_items, setFullMediasItems] = useState([]);
@@ -85,6 +90,8 @@ const Ads_Allocation_Booking = ({
 
   const [isEdit, setIsEdit] = useState(false);
   const [file_config, setFileConfig] = useState([]);
+  const [openTime, setOpenTime] = useState(null);
+  const [closeTime, setCloseTime] = useState(null);
 
   const navigate = useNavigate();
 
@@ -896,12 +903,25 @@ const Ads_Allocation_Booking = ({
           return;
         }
 
-        const obj = {
-          bookingid: bookingId,
-          dates: date_range,
-          screenids: screenIdsString,
-          mediaplaylistid: parseInt(media_playlist_id),
-        };
+        let obj;
+
+        if (isEvent) {
+          obj = {
+            bookingid: bookingId,
+            dates: date_range,
+            screenids: screenIdsString,
+            mediaplaylistid: parseInt(media_playlist_id),
+            starttime: openTime,
+            endtime: closeTime,
+          };
+        } else {
+          obj = {
+            bookingid: bookingId,
+            dates: date_range,
+            screenids: screenIdsString,
+            mediaplaylistid: parseInt(media_playlist_id),
+          };
+        }
 
         const obj_check = {
           mediaplaylistid: parseInt(media_playlist_id),
@@ -945,7 +965,13 @@ const Ads_Allocation_Booking = ({
             setIsOpenConfirmAllocation(!isOpenConfirmAllocation);
           } else {
             // ถ้าไม่มีจออื่นใช้
-            const data = await User.updateBookingContent(obj, token);
+            let data;
+            if (isEvent) {
+              data = await User.updateBookingContent(obj, token, true);
+            } else {
+              data = await User.updateBookingContent(obj, token, false);
+            }
+
             if (data.code === 200) {
               Swal.fire({
                 icon: "success",
@@ -990,6 +1016,19 @@ const Ads_Allocation_Booking = ({
     }));
     setOpenAdsAllocationModal(!openAdsAllocationModal);
     setFactAllocation(!fact_allocation);
+  };
+
+  const handleSetOpenTime = (time) => {
+    setOpenTime(time.format("HH:mm:ss"));
+  };
+
+  const handleSetCloseTime = (time) => {
+    setCloseTime(time.format("HH:mm:ss"));
+  };
+
+  const handleClearTime = () => {
+    setOpenTime();
+    setCloseTime();
   };
 
   const [playlist_name, setPlaylistName] = useState(null);
@@ -1546,6 +1585,91 @@ const Ads_Allocation_Booking = ({
                       </div>
                       <div className="col-span-1" />
                     </div>
+                    {isEvent ? (
+                      <div className="grid grid-cols-12 mt-2">
+                        <div className="col-span-1" />
+                        <div className="col-span-3 flex justify-end items-center">
+                          <div className="font-poppins font-bold">
+                            Start Time - End Time :
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                        <div className="col-span-6">
+                          <div className="col-span-3 ml-1">
+                            <div className="grid grid-cols-12">
+                              <div className="col-span-5">
+                                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold">
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                  >
+                                    <TimePicker
+                                      ampm={false}
+                                      label="Start time"
+                                      onChange={handleSetOpenTime}
+                                      views={["hours", "minutes", "seconds"]}
+                                      defaultValue={
+                                        openTime
+                                          ? moment(openTime, "HH:mm:ss")
+                                          : null
+                                      }
+                                      value={
+                                        openTime
+                                          ? moment(openTime, "HH:mm:ss")
+                                          : null
+                                      }
+                                    />
+                                  </LocalizationProvider>
+                                </div>
+                              </div>
+                              <div className="col-span-1">
+                                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
+                                  <div className="font-poppins font-bold">
+                                    -
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-span-5">
+                                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ">
+                                  <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                  >
+                                    <TimePicker
+                                      ampm={false}
+                                      label="End time"
+                                      onChange={handleSetCloseTime}
+                                      views={["hours", "minutes", "seconds"]}
+                                      defaultValue={
+                                        closeTime
+                                          ? moment(closeTime, "HH:mm:ss")
+                                          : null
+                                      }
+                                      value={
+                                        closeTime
+                                          ? moment(closeTime, "HH:mm:ss")
+                                          : null
+                                      }
+                                    />
+                                  </LocalizationProvider>
+                                </div>
+                              </div>
+                              <div className="col-span-1">
+                                <div className="relative flex flex-col justify-center items-center h-full text-sm font-bold ml-10">
+                                  <button
+                                    onClick={() => handleClearTime()}
+                                    className="bg-[#6425FE] hover:bg-[#3b1694] w-[60px] h-[35px] font-poppins text-white rounded-lg "
+                                  >
+                                    Clear
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-1" />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
 
                     <div className="grid grid-cols-12 mt-2">
                       <div className="col-span-1" />
@@ -2580,6 +2704,9 @@ const Ads_Allocation_Booking = ({
           setCheckboxes={setCheckboxes}
           setIsEdit={setIsEdit}
           isEdit={isEdit}
+          isEvent={isEvent}
+          openTime={openTime}
+          closeTime={closeTime}
         />
       )}
 

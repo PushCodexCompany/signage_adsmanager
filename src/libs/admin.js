@@ -1481,7 +1481,7 @@ export default {
     return data;
   },
 
-  updateBookingContent: async function (obj, token) {
+  updateBookingContent: async function (obj, token, isEvent) {
     const { brand_code } = this.getBrandCode();
     const config = {
       headers: {
@@ -1489,11 +1489,16 @@ export default {
         "Content-Type": "multipart/form-data",
       },
     };
-    const { data } = await this._post(
-      `api/v1/update_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&mediaplaylistid=${obj.mediaplaylistid}&brandcode=${brand_code}`,
-      obj,
-      config
-    );
+
+    let url;
+
+    if (isEvent) {
+      url = `api/v1/update_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&mediaplaylistid=${obj.mediaplaylistid}&brandcode=${brand_code}&starttime=${obj.starttime}&endtime=${obj.endtime}`;
+    } else {
+      url = `api/v1/update_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&mediaplaylistid=${obj.mediaplaylistid}&brandcode=${brand_code}`;
+    }
+
+    const { data } = await this._post(url, obj, config);
     return data;
   },
 
@@ -1506,11 +1511,8 @@ export default {
       },
     };
 
-    const { data } = await this._post(
-      `api/v1/delete_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&brandcode=${brand_code}`,
-      obj,
-      config
-    );
+    let urlString = `api/v1/delete_bookingcontent?bookingid=${obj.bookingid}&dates=${obj.dates}&screenids=${obj.screenids}&brandcode=${brand_code}`;
+    const { data } = await this._post(urlString, "", config);
     return data;
   },
 
@@ -1664,17 +1666,10 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await this._post(
-      `api/v1/publish_bookingcontent?brandcode=${brand_code}&bookingid=${hash.bookingid}&screenids=${hash.screenids} `,
-      "",
-      config
-    );
 
-    if (data.code === 200) {
-      return data;
-    } else {
-      return false;
-    }
+    let urlString = `api/v1/publish_bookingcontent?brandcode=${brand_code}&bookingid=${hash.bookingid}&screenids=${hash.screenids}`;
+    const { data } = await this._post(urlString, "", config);
+    return data;
   },
 
   getMedia: async function (hash, token) {
