@@ -629,16 +629,20 @@ const Edit_Merchandises = () => {
                   <input
                     value={contact_person_phone}
                     type="number"
+                    maxLength={10}
+                    pattern="\d{10}" // Ensures only 10 digits are entered
                     onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                      if (value.length > 10) return; // Prevent exceeding 10 digits
+
                       if (
-                        location.state?.merchandise?.ContactNumber !==
-                        e.target.value
+                        location.state?.merchandise?.ContactNumber !== value
                       ) {
                         setIsEdit(true);
                       } else {
                         setIsEdit(false);
                       }
-                      setContactPersonPhone(e.target.value);
+                      setContactPersonPhone(value);
                     }}
                     className="border border-gray-300 rounded-lg p-3 w-full font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                     disabled={isView}

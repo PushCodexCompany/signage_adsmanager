@@ -360,9 +360,9 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                 <div className="h-10 relative mt-3">
                   <input
                     className={`w-full h-full pl-2 pr-10 border-2 rounded-md outline-none font-poppins`}
+                    value={contact_person_name}
                     type="text"
                     placeholder="Contact Person Name"
-                    value={contact_person_name}
                     onChange={(e) => setContactPersonName(e.target.value)}
                     required
                     autoFocus
@@ -412,7 +412,6 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                         size={26}
                         color={"#6425FE"}
                         className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
-                        d
                       />
                     </div>
                   </div>
@@ -434,7 +433,6 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                         size={26}
                         color={"#6425FE"}
                         className="cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-2"
-                        d
                       />
                     </div>
                   </div>

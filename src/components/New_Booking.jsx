@@ -923,7 +923,13 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                   </div>
                   <div className="mt-3">
                     <input
-                      onChange={(e) => setBookingSlot(e.target.value)}
+                      maxLength={3} // Limits to 10 characters
+                      pattern="\d{3}" // Ensures only 10 digits are entered
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                        if (value.length > 3) return; // Prevent exceeding 10 digits
+                        setBookingSlot(value);
+                      }}
                       value={booking_slot}
                       type="number"
                       className="font-poppins w-[80%] h-11 text-left rounded-lg pl-2 border border-gray-300 shadow-sm"
@@ -1260,7 +1266,13 @@ const New_Booking = ({ setShowModalAddNewBooking }) => {
                       <input
                         value={contact_person_phone}
                         type="number"
-                        onChange={(e) => setContactPersonPhone(e.target.value)}
+                        maxLength={10}
+                        pattern="\d{10}" // Ensures only 10 digits are entered
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                          if (value.length > 10) return; // Prevent exceeding 10 digits
+                          setContactPersonPhone(value);
+                        }}
                         className="border border-gray-300 rounded-lg p-3 w-full  font-bold placeholder-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm font-poppins"
                       />
                     </div>

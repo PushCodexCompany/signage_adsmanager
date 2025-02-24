@@ -954,13 +954,15 @@ const Create_Static_Booking = () => {
                               </div>
                             </div>
                             <div className="flex justify-start items-center">
-                              {items.screen_status === 0 ? (
+                              {items.screen_status === 0 ||
+                              !items.screen_status ? (
                                 <div className="bg-red-500 w-[6px] h-[6px]  rounded-xl"></div>
                               ) : (
                                 <div className="bg-[#00C32B] w-[6px] h-[6px]  rounded-xl"></div>
                               )}
                               <div className="font-poppins text-xs p-[2px]">
-                                {items.screen_status === 0
+                                {items.screen_status === 0 ||
+                                !items.screen_status
                                   ? "Offline"
                                   : "Online"}
                               </div>
