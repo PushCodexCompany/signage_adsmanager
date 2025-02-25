@@ -5,8 +5,12 @@ import Filter from "../components/Filter";
 import User from "../libs/admin";
 import { GridTable } from "../libs/static_screen_grid";
 import Screen_Info from "../components/Screen_Info";
+import Pair_Screen from "../components/Pair_Screen";
 import Permission from "../libs/permission";
 import Swal from "sweetalert2";
+import Unpair_screen from "../components/Unpair_screen";
+import Select_Pair_screen from "../components/Select_Pair_screen";
+import IsPairScreen from "../components/IsPairScreen";
 
 const Static_Screen = () => {
   const [searchTerm, setSearchTerm] = useState(null);
@@ -20,6 +24,10 @@ const Static_Screen = () => {
   const [screen_select, setScreenSelect] = useState(null);
   const [openInfoScreenModal, setOpenInfoScreenModal] = useState(false);
   const [page_permission, setPagePermission] = useState([]);
+  const [openSelectPairScreenModel, setOpenSelectPairScreenModel] =
+    useState(false);
+  const [screen_checkbox_select, setScreenCheckboxSelect] = useState([]);
+  const [openIsPairModal, setOpenIsPairModal] = useState(false);
 
   const { token } = User.getCookieData();
   const navigate = useNavigate();
@@ -158,6 +166,76 @@ const Static_Screen = () => {
           from="list"
           page_permission={page_permission}
           type="static"
+        />
+      )}
+
+      {openSelectPairScreenModel && (
+        <a
+          onClick={() =>
+            setOpenSelectPairScreenModel(!openSelectPairScreenModel)
+          }
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openSelectPairScreenModel && (
+        <Select_Pair_screen
+          setOpenSelectPairScreenModel={setOpenSelectPairScreenModel}
+          openSelectPairScreenModel={openSelectPairScreenModel}
+          screen_checkbox_select={screen_checkbox_select}
+          setOpenPairScreenModal={setOpenPairScreenModal}
+          openPairScreenModal={openPairScreenModal}
+          setScreenSelect={setScreenSelect}
+        />
+      )}
+
+      {openPairScreenModal && (
+        <a
+          onClick={() => setOpenPairScreenModal(!openPairScreenModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openPairScreenModal && (
+        <Pair_Screen
+          openPairScreenModal={openPairScreenModal}
+          setOpenPairScreenModal={setOpenPairScreenModal}
+          screen_preselect={screen_select}
+          openSelectPairScreenModel={openSelectPairScreenModel}
+          setOpenSelectPairScreenModel={setOpenSelectPairScreenModel}
+          screen_select={screen_select}
+          setOpenIsPairModal={setOpenIsPairModal}
+          openIsPairModal={openIsPairModal}
+        />
+      )}
+
+      {openIsPairModal && (
+        <a
+          onClick={() => setOpenIsPairModal(!openIsPairModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openIsPairModal && (
+        <IsPairScreen
+          setOpenIsPairModal={setOpenIsPairModal}
+          openIsPairModal={openIsPairModal}
+          screen_select={screen_select}
+        />
+      )}
+
+      {openUnPairScreenModal && (
+        <a
+          onClick={() => setOpenUnPairScreenModal(!openUnPairScreenModal)}
+          className="fixed top-0 w-screen left-[0px] h-screen opacity-80 bg-black z-10 backdrop-blur"
+        />
+      )}
+
+      {openUnPairScreenModal && (
+        <Unpair_screen
+          setOpenUnPairScreenModal={setOpenUnPairScreenModal}
+          openUnPairScreenModal={openUnPairScreenModal}
+          screen_select={screen_select}
         />
       )}
     </>
