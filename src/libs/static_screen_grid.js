@@ -318,7 +318,7 @@ export const GridTable = ({
 
   const fetchDataForPage = async (page) => {
     if (page) {
-      const data = await User.getScreenList(token, page, searchTerm);
+      const data = await User.getScreenList(token, page, searchTerm, "", 2);
       return data;
     }
   };

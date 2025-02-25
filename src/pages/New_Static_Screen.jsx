@@ -290,7 +290,7 @@ const New_screen = () => {
                       result.isConfirmed ||
                       result.dismiss === Swal.DismissReason.backdrop
                     ) {
-                      navigate(`/screen`);
+                      navigate(`/static_screen`);
                     }
                   });
                 } else {
@@ -310,7 +310,7 @@ const New_screen = () => {
                     result.isConfirmed ||
                     result.dismiss === Swal.DismissReason.backdrop
                   ) {
-                    navigate(`/screen`);
+                    navigate(`/static_screen`);
                   }
                 });
               }
@@ -348,13 +348,6 @@ const New_screen = () => {
         screenlocation: screenLocationName || "",
         screencity: screenCityName || "",
         screendesc: screenDescription || "",
-        // screenresolutionid: screenResolution || "",
-        // screenphysizeid: screenPhysical || "",
-        // screenorientation: orientation || "",
-        // screenplacement: inDoorOutdoot || "",
-        // screenopentime: openTime || "",
-        // screenclosetime: closeTime || "",
-        // manotifydelay: null,
       };
       if (obj.screenname) {
         try {
