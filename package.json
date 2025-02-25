@@ -41,6 +41,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-select": "^5.8.0",
+    "react-window": "^1.8.11",
     "styled-components": "^6.1.11",
     "sweetalert2": "^11.0.11",
     "tailwind-scrollbar": "^3.0.5"

@@ -224,12 +224,14 @@ const Create_Event_Booking = () => {
   const setBookingData = async () => {
     const booking_data = await User.getBookingById(bookingId, token);
     const all_screens_data = await User.getScreens(token);
+
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
-      const existing = acc?.find((item) => item.ScreenID === screenID);
+      const existing = acc.find((item) => item.ScreenID === screenID);
       const filter_screen = all_screens_data?.find(
         (items) => items.ScreenID === screenID
       );
+
       if (filter_screen) {
         if (existing) {
           existing.booking.push({
@@ -247,9 +249,9 @@ const Create_Event_Booking = () => {
             Media_Rules:
               filter_screen.ScreenRule[0]?.Width &&
               filter_screen.ScreenRule[0]?.Height
-                ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
-                  "x" +
-                  parseInt(filter_screen.ScreenRule[0]?.Height).toString()
+                ? `${parseInt(filter_screen.ScreenRule[0]?.Width)}x${parseInt(
+                    filter_screen.ScreenRule[0]?.Height
+                  )}`
                 : "Not Set",
             MaxSlot: parseInt(curr.MaxSlot),
             screen_status: filter_screen.screen_status,
@@ -275,10 +277,10 @@ const Create_Event_Booking = () => {
       return acc;
     }, []);
 
-    groupedByScreenID.map(async (items) => {
-      const screen_status = await firebase_func.getStatusScreen(items);
-      items.screen_status = screen_status;
-    });
+    // Fetch screen status asynchronously
+    for (const items of groupedByScreenID) {
+      items.screen_status = await firebase_func.getStatusScreen(items);
+    }
 
     setScreenData(groupedByScreenID);
   };

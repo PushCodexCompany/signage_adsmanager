@@ -134,6 +134,11 @@ const Screen_Info = ({
   }, [month]);
 
   useEffect(() => {
+    getSchulde();
+    getScreenStatus();
+  }, [year]);
+
+  useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
 
     window.addEventListener("resize", handleResize);

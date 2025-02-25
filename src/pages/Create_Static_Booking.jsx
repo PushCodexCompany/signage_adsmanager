@@ -223,64 +223,120 @@ const Create_Static_Booking = () => {
   const setBookingData = async () => {
     const booking_data = await User.getBookingById(bookingId, token);
     const all_screens_data = await User.getScreens(token, 2);
+
     const groupedByScreenID = booking_data.reduce((acc, curr) => {
       const screenID = curr.ScreenID;
-      const existing = acc?.find((item) => item.ScreenID === screenID);
+      let existing = acc.find((item) => item.ScreenID === screenID);
       const filter_screen = all_screens_data?.find(
-        (items) => items.ScreenID === screenID
+        (item) => item.ScreenID === screenID
       );
+
       if (filter_screen) {
-        if (existing) {
-          existing.booking.push({
-            BookingDateID: curr.BookingDateID,
-            UsedSlot: curr.UsedSlot,
-            OtherUseSlot: curr.OtherUseSlot,
-            UsedTotal: curr.UsedTotal,
-            MaxSlot: curr.MaxSlot,
-            AvailableSlot: curr.AvailableSlot,
-          });
-        } else {
-          acc.push({
+        if (!existing) {
+          existing = {
             ScreenID: screenID,
             ScreenName: curr.ScreenName,
             Media_Rules:
               filter_screen.ScreenRule[0]?.Width &&
               filter_screen.ScreenRule[0]?.Height
-                ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
-                  "x" +
-                  parseInt(filter_screen.ScreenRule[0]?.Height).toString()
+                ? `${filter_screen.ScreenRule[0].Width}x${filter_screen.ScreenRule[0].Height}`
                 : "Not Set",
-            MaxSlot: parseInt(curr.MaxSlot),
+            MaxSlot: Number(curr.MaxSlot),
             screen_status: filter_screen.screen_status,
             ScreenLocation: filter_screen.ScreenLocation,
             AccountCode: filter_screen.AccountCode,
             BrandCode: filter_screen.BrandCode,
             BranchCode: filter_screen.BranchCode,
             ScreenCode: filter_screen.ScreenCode,
-            booking: [
-              {
-                BookingDateID: curr.BookingDateID,
-                UsedSlot: curr.UsedSlot,
-                OtherUseSlot: curr.OtherUseSlot,
-                UsedTotal: curr.UsedTotal,
-                MaxSlot: curr.MaxSlot,
-                AvailableSlot: curr.AvailableSlot,
-              },
-            ],
-          });
+            booking: [],
+          };
+          acc.push(existing);
         }
+
+        existing.booking.push({
+          BookingDateID: curr.BookingDateID,
+          UsedSlot: curr.UsedSlot,
+          OtherUseSlot: curr.OtherUseSlot,
+          UsedTotal: curr.UsedTotal,
+          MaxSlot: curr.MaxSlot,
+          AvailableSlot: curr.AvailableSlot,
+        });
       }
 
       return acc;
     }, []);
 
-    groupedByScreenID.map(async (items) => {
-      const screen_status = await firebase_func.getStatusScreen(items);
-      items.screen_status = screen_status;
-    });
+    // Fetch all screen statuses in parallel and update state
+    await Promise.all(
+      groupedByScreenID.map(async (item) => {
+        item.screen_status = await firebase_func.getStatusScreen(item);
+      })
+    );
 
     setScreenData(groupedByScreenID);
   };
+
+  // const setBookingData = async () => {
+  //   const booking_data = await User.getBookingById(bookingId, token);
+  //   const all_screens_data = await User.getScreens(token, 2);
+  //   const groupedByScreenID = booking_data.reduce((acc, curr) => {
+  //     const screenID = curr.ScreenID;
+  //     const existing = acc?.find((item) => item.ScreenID === screenID);
+  //     const filter_screen = all_screens_data?.find(
+  //       (items) => items.ScreenID === screenID
+  //     );
+  //     if (filter_screen) {
+  //       if (existing) {
+  //         existing.booking.push({
+  //           BookingDateID: curr.BookingDateID,
+  //           UsedSlot: curr.UsedSlot,
+  //           OtherUseSlot: curr.OtherUseSlot,
+  //           UsedTotal: curr.UsedTotal,
+  //           MaxSlot: curr.MaxSlot,
+  //           AvailableSlot: curr.AvailableSlot,
+  //         });
+  //       } else {
+  //         acc.push({
+  //           ScreenID: screenID,
+  //           ScreenName: curr.ScreenName,
+  //           Media_Rules:
+  //             filter_screen.ScreenRule[0]?.Width &&
+  //             filter_screen.ScreenRule[0]?.Height
+  //               ? parseInt(filter_screen.ScreenRule[0]?.Width).toString() +
+  //                 "x" +
+  //                 parseInt(filter_screen.ScreenRule[0]?.Height).toString()
+  //               : "Not Set",
+  //           MaxSlot: parseInt(curr.MaxSlot),
+  //           screen_status: filter_screen.screen_status,
+  //           ScreenLocation: filter_screen.ScreenLocation,
+  //           AccountCode: filter_screen.AccountCode,
+  //           BrandCode: filter_screen.BrandCode,
+  //           BranchCode: filter_screen.BranchCode,
+  //           ScreenCode: filter_screen.ScreenCode,
+  //           booking: [
+  //             {
+  //               BookingDateID: curr.BookingDateID,
+  //               UsedSlot: curr.UsedSlot,
+  //               OtherUseSlot: curr.OtherUseSlot,
+  //               UsedTotal: curr.UsedTotal,
+  //               MaxSlot: curr.MaxSlot,
+  //               AvailableSlot: curr.AvailableSlot,
+  //             },
+  //           ],
+  //         });
+  //       }
+  //     }
+
+  //     return acc;
+  //   }, []);
+
+  //   groupedByScreenID.map(async (items) => {
+  //     const screen_status = await firebase_func.getStatusScreen(items);
+  //     items.screen_status = screen_status;
+  //   });
+
+  //   setScreenData(groupedByScreenID);
+  // };
 
   const getAllScreen = async () => {
     const { SlotPerDay } = location.state.data;
