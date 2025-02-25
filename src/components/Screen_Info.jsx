@@ -318,6 +318,16 @@ const Screen_Info = ({
     return <>{cityName}</>;
   };
 
+  const isTodayOrFuture = (date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to midnight for accurate comparison
+
+    const inputDate = new Date(date);
+    inputDate.setHours(0, 0, 0, 0); // Reset time to midnight
+
+    return inputDate >= today;
+  };
+
   // const toggleYearSelect = () => {
   //   setIsYearOpen((prevIsOpen) => !prevIsOpen);
   // };
@@ -890,8 +900,9 @@ const Screen_Info = ({
                               index={index}
                               isDragDisabled={
                                 from === "list" &&
-                                new Date() >
+                                isTodayOrFuture(
                                   new Date(mediaScheduleData.BookingDate)
+                                )
                                   ? false
                                   : true
                               }
@@ -955,7 +966,9 @@ const Screen_Info = ({
                   </DragDropContext>
                   {from === "list" ? (
                     <>
-                      {new Date() > new Date(mediaScheduleData.BookingDate) ? (
+                      {isTodayOrFuture(
+                        new Date(mediaScheduleData.BookingDate)
+                      ) ? (
                         <div className="flex justify-center items-center mt-10 mb-10">
                           {page_permission?.update ? (
                             <button

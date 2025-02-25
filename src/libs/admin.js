@@ -1754,9 +1754,7 @@ export default {
         Authorization: `Bearer ${token}`,
       },
     };
-    console.log(
-      `api/v1/get_screenschedule?brandcode=${brand_code}&screenid=${obj.screenid}&selectmonth=${obj.selectmonth}&selectyear=${obj.selectyear}`
-    );
+
     const { data } = await this._get(
       `api/v1/get_screenschedule?brandcode=${brand_code}&screenid=${obj.screenid}&selectmonth=${obj.selectmonth}&selectyear=${obj.selectyear}`,
       "",
