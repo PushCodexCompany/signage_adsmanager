@@ -915,7 +915,7 @@ export const GridTable = ({
                       value={edit_username}
                       required
                       disabled
-                      autoComplete="username"
+                      // autoComplete="username"
                     />
                   </div>
                 </div>
@@ -941,7 +941,7 @@ export const GridTable = ({
                       defaultValue={edit_name}
                       value={edit_name}
                       required
-                      autoComplete="name"
+                      // autoComplete="name"
                     />
                   </div>
                 </div>
@@ -967,7 +967,7 @@ export const GridTable = ({
                       defaultValue={edit_lastname}
                       value={edit_lastname}
                       required
-                      autoComplete="lastname"
+                      // autoComplete="lastname"
                     />
                   </div>
                 </div>
@@ -994,7 +994,7 @@ export const GridTable = ({
                       value={edit_email}
                       required
                       autoFocus
-                      autoComplete="email"
+                      // autoComplete="email"
                     />
                   </div>
                 </div>
@@ -1234,7 +1234,7 @@ export const GridTable = ({
                       placeholder="Your Old Password"
                       value={chg_oldPassword}
                       required
-                      autoComplete="oldPassword"
+                      // autoComplete="oldPassword"
                     />
                     <button
                       type="button"
@@ -1273,7 +1273,7 @@ export const GridTable = ({
                       placeholder="Your New Password"
                       value={chg_password}
                       required
-                      autoComplete="newPassword"
+                      // autoComplete="newPassword"
                     />
                     <button
                       type="button"
@@ -1428,7 +1428,7 @@ export const GridTable = ({
                       onChange={(e) => setRePassword(e.target.value)}
                       value={re_password}
                       required
-                      autoComplete="newPassword"
+                      // autoComplete="newPassword"
                     />
                     <button
                       type="button"

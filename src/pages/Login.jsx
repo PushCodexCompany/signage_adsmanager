@@ -360,7 +360,7 @@ const Login = () => {
                     value={username === null ? "" : username}
                     required
                     autoFocus
-                    autoComplete="email"
+                    // autoComplete="email"
                   />
                 </div>
                 <div className="mb-6 w-full">
@@ -372,7 +372,7 @@ const Login = () => {
                     required
                     minLength={6}
                     placeholder="Your Password"
-                    autoComplete="password"
+                    // autoComplete="password"
                   />
                 </div>
                 <div className="text-center mb-8 w-full">

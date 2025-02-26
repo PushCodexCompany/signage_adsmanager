@@ -146,7 +146,7 @@ const Pair_Screen = ({
                       <input
                         type="text"
                         // type={passwordVisible ? "text" : "password"}
-                        autoComplete={false}
+                        // autoComplete={false}
                         onChange={(e) => setPairingCode(e.target.value)}
                         className="block appearance-none w-full bg-[#f2f2f2] font-poppins text-[#2F3847] text-[22px] font-medium border border-gray-300 rounded p-1 pr-6 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200"
                       />

@@ -416,7 +416,7 @@ const User_Management = () => {
                       value={reg_username === null ? "" : reg_username}
                       required
                       autoFocus
-                      autoComplete="username"
+                      // autoComplete="username"
                     />
                   </div>
                 </div>
@@ -434,7 +434,7 @@ const User_Management = () => {
                       placeholder="Your Name"
                       value={reg_name === null ? "" : reg_name}
                       required
-                      autoComplete="name"
+                      // autoComplete="name"
                     />
                   </div>
                 </div>
@@ -452,7 +452,7 @@ const User_Management = () => {
                       placeholder="Your Lastname"
                       value={reg_lastname === null ? "" : reg_lastname}
                       required
-                      autoComplete="lastname"
+                      // autoComplete="lastname"
                     />
                   </div>
                 </div>
@@ -470,7 +470,7 @@ const User_Management = () => {
                       placeholder="Your Email"
                       value={reg_email === null ? "" : reg_email}
                       required
-                      autoComplete="email"
+                      // autoComplete="email"
                     />
                   </div>
                 </div>
@@ -488,7 +488,7 @@ const User_Management = () => {
                       placeholder="Your Password"
                       value={reg_password === null ? "" : reg_password}
                       required
-                      autoComplete="password"
+                      // autoComplete="password"
                     />
                   </div>
                 </div>
@@ -506,7 +506,7 @@ const User_Management = () => {
                       placeholder="Confirm Password"
                       value={reg_re_password === null ? "" : reg_re_password}
                       required
-                      autoComplete="password"
+                      // autoComplete="password"
                     />
                   </div>
                 </div>

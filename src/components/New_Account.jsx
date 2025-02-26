@@ -264,7 +264,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
                       value={account_name}
                       onChange={(e) => setAccountName(e.target.value)}
                       required
-                      autoComplete="account"
+                      // autoComplete="account"
                     />
                   ) : (
                     <input
@@ -275,7 +275,7 @@ const New_Account = ({ setShowModalAddNewAccount, edit_account }) => {
                       onChange={(e) => setAccountName(e.target.value)}
                       onBlur={() => generateImg()}
                       required
-                      autoComplete="account"
+                      // autoComplete="account"
                     />
                   )}
 

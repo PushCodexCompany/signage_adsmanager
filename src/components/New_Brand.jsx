@@ -287,7 +287,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                     onChange={(e) => setBrandName(e.target.value)}
                     required
                     autoFocus
-                    autoComplete="brand"
+                    // autoComplete="brand"
                   />
                   <HiOutlinePencil
                     size={26}
@@ -307,7 +307,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                     onChange={(e) => setBrandDescription(e.target.value)}
                     required
                     autoFocus
-                    autoComplete="brand"
+                    // autoComplete="brand"
                   />
                   <HiOutlinePencil
                     size={26}
@@ -366,7 +366,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                     onChange={(e) => setContactPersonName(e.target.value)}
                     required
                     autoFocus
-                    autoComplete="brand"
+                    // autoComplete="brand"
                   />
                   <HiOutlinePencil
                     size={26}
@@ -386,7 +386,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                         onChange={(e) => setDepartmentContact(e.target.value)}
                         required
                         autoFocus
-                        autoComplete="department"
+                        // autoComplete="department"
                       />
                       <HiOutlinePencil
                         size={26}
@@ -406,7 +406,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                         onChange={(e) => setPositionContact(e.target.value)}
                         required
                         autoFocus
-                        autoComplete="position"
+                        // autoComplete="position"
                       />
                       <HiOutlinePencil
                         size={26}
@@ -427,7 +427,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                         onChange={(e) => setEmailContact(e.target.value)}
                         required
                         autoFocus
-                        autoComplete="email"
+                        // autoComplete="email"
                       />
                       <HiOutlinePencil
                         size={26}
@@ -446,7 +446,7 @@ const New_Brand = ({ setShowModalAddNewBrand, edit_brand }) => {
                         onChange={(e) => setRemarkContact(e.target.value)}
                         required
                         autoFocus
-                        autoComplete="remark"
+                        // autoComplete="remark"
                       />
                     </div>
                   </div>

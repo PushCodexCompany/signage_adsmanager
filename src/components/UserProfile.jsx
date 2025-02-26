@@ -431,7 +431,7 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
                       placeholder="Your Old Password"
                       value={chg_oldPassword}
                       required
-                      autoComplete="oldPassword"
+                      // autoComplete="oldPassword"
                     />
                     <button
                       type="button"
@@ -470,7 +470,7 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
                       placeholder="Your New Password"
                       value={chg_password}
                       required
-                      autoComplete="newPassword"
+                      // autoComplete="newPassword"
                     />
                     <button
                       type="button"

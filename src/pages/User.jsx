@@ -382,7 +382,7 @@ const User = () => {
                 value={reg_email === null ? "" : reg_email}
                 required
                 autoFocus
-                autoComplete="email"
+                // autoComplete="email"
               />
             </div>
             <div className="mb-4 flex justify-center items-center">
@@ -394,7 +394,7 @@ const User = () => {
                 value={reg_password === null ? "" : reg_password}
                 required
                 autoFocus
-                autoComplete="password"
+                // autoComplete="password"
               />
             </div>
             <div className="mb-4 flex justify-center items-center">
@@ -406,7 +406,7 @@ const User = () => {
                 value={reg_re_password === null ? "" : reg_re_password}
                 required
                 autoFocus
-                autoComplete="password"
+                // autoComplete="password"
               />
             </div>
             <div className="mb-4 flex justify-center items-center">
