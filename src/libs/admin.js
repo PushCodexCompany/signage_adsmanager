@@ -1147,7 +1147,7 @@ export default {
 
     // console.log("urlString", urlString);
     const { data } = await this._post(urlString, "", config);
-    // console.log("data", data);
+    console.log("data", data);
     return data;
   },
 

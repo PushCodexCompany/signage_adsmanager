@@ -1021,25 +1021,37 @@ const Dashboard = () => {
           {/* Chart Section */}
           <div className="h-[445px]">
             {activeTab === 0 && (
-              <DataBarChart
-                dataType="numberOfBookingByDay"
-                dataSet={number_booking_by_day}
-                maxValue={max_booking_by_day}
-              />
+              <>
+                {number_booking_by_day.length > 0 && (
+                  <DataBarChart
+                    dataType="numberOfBookingByDay"
+                    dataSet={number_booking_by_day}
+                    maxValue={max_booking_by_day}
+                  />
+                )}
+              </>
             )}
             {activeTab === 1 && (
-              <DataBarChart
-                dataType="percentageByMonth"
-                dataSet={percent_booking_by_month}
-                maxValue={max_percent_booking_by_month}
-              />
+              <>
+                {percent_booking_by_month.length > 0 && (
+                  <DataBarChart
+                    dataType="percentageByMonth"
+                    dataSet={percent_booking_by_month}
+                    maxValue={max_percent_booking_by_month}
+                  />
+                )}
+              </>
             )}
             {activeTab === 2 && (
-              <DataBarChart
-                dataType="percentageByStore"
-                dataSet={percent_booking_by_store}
-                maxValue={max_percent_booking_by_store}
-              />
+              <>
+                {percent_booking_by_store.length > 0 && (
+                  <DataBarChart
+                    dataType="percentageByStore"
+                    dataSet={percent_booking_by_store}
+                    maxValue={max_percent_booking_by_store}
+                  />
+                )}
+              </>
             )}
           </div>
         </div>
