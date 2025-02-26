@@ -10,6 +10,7 @@ const Configuration = () => {
   const navigate = useNavigate();
   const [config_data, setConfigData] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   const [inputValues, setInputValues] = useState(
     config_data.reduce((acc, item) => {
@@ -120,7 +121,7 @@ const Configuration = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Setting"} lv2={"configuration"} />
         <div className="grid grid-cols-5 gap-4 mt-10">

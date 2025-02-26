@@ -22,6 +22,7 @@ const User_Account = () => {
   const [dropdownStates, setDropdownStates] = useState({});
 
   const [edit_account, setEditAccount] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(null);
 
   useEffect(() => {
     const user = User.getCookieData();
@@ -127,7 +128,7 @@ const User_Account = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <div className="text-6xl font-[700] text-center font-poppins">
           Select Your Account

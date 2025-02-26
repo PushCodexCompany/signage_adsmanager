@@ -36,6 +36,8 @@ const Create_Media_Rule = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [file_type, setFileType] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+
   useEffect(() => {
     if (location.state.data) {
       fetchData();
@@ -291,7 +293,7 @@ const Create_Media_Rule = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header
           lv1={"Setting"}

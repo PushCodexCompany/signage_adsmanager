@@ -99,6 +99,7 @@ const Navbar_Booking_Report = ({ setSearchTermBooking, searchTermBooking }) => {
                 placeholder="Search..."
                 value={searchTermBooking}
                 onChange={(e) => searchByName(e.target.value)}
+                autocomplete="off"
               />
             </div>
           </div>

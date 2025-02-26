@@ -70,6 +70,8 @@ const Create_Event_Booking = () => {
   const [detailScreen, setDetailScreen] = useState(null);
   const [page_permission, setPagePermission] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+
   useEffect(() => {
     setBooking();
     getAllScreen();
@@ -825,7 +827,7 @@ const Create_Event_Booking = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header
           lv1={"Event Booking"}

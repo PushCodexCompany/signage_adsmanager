@@ -54,6 +54,7 @@ const New_screen = () => {
 
   const [screenInUse, setScreenInUse] = useState(false);
   const [maNotification, setMaNotification] = useState();
+  const [searchTerm, setSearchTerm] = useState(null);
 
   // New Tag
 
@@ -638,7 +639,7 @@ const New_screen = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header
           lv1={"Screens"}

@@ -23,6 +23,7 @@ const Tag_managment = () => {
   const [select_tag, setSelectTag] = useState([]);
   const navigate = useNavigate();
   const { token } = User.getCookieData();
+  const [searchTerm, setSearchTerm] = useState(null);
 
   // Setup Data
   useEffect(async () => {
@@ -132,7 +133,7 @@ const Tag_managment = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Setting"} lv2={"tag_management"} />
         <div className="font-poppins font-semibold text-2xl mt-10">

@@ -72,6 +72,8 @@ const Create_Booking = () => {
   const [detailScreen, setDetailScreen] = useState(null);
   const [page_permission, setPagePermission] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+
   useEffect(() => {
     setBooking();
     getAllScreen();
@@ -870,7 +872,7 @@ const Create_Booking = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Booking"} lv1Url={"/booking"} lv2={bookingName} />
         <div className="grid grid-cols-10 mt-5">

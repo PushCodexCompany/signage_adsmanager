@@ -78,6 +78,8 @@ const styles = {
 const Content_type = () => {
   useCheckPermission();
 
+  const [searchTerm, setSearchTerm] = useState(null);
+
   const TagSection = ({ name, color, width, onSliderSelect }) => {
     return (
       <div
@@ -910,7 +912,7 @@ const Content_type = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header category="Page" title="Home" />
         <div className="font-poppins font-semibold text-2xl mt-10">

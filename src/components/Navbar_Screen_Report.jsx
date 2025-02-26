@@ -99,6 +99,7 @@ const Navbar_Screen_Report = ({ setSearchTermScreen, searchTermScreen }) => {
                 placeholder="Search..."
                 value={searchTermScreen}
                 onChange={(e) => searchByName(e.target.value)}
+                autocomplete="off"
               />
             </div>
           </div>

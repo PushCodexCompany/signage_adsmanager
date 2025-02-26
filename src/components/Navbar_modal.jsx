@@ -89,6 +89,7 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => searchByName(e.target.value)}
+                autocomplete="off"
               />
             </div>
           </div>

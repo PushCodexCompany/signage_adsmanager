@@ -21,6 +21,8 @@ const Booking_Summary = () => {
   const [total_slot, setTotalSlot] = useState(null);
   const [publish_data, setPublishData] = useState([]);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+
   useEffect(() => {
     setBookingData();
   }, []);
@@ -92,7 +94,7 @@ const Booking_Summary = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header
           lv1={"Static Booking"}

@@ -43,6 +43,8 @@ const Edit_Merchandises = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isView, setIsView] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState(null);
+
   useEffect(() => {
     if (id !== "new") {
       fetchMerchandise();
@@ -395,7 +397,7 @@ const Edit_Merchandises = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header
           lv1={"customer"}
