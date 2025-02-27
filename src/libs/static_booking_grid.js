@@ -47,10 +47,10 @@ export const GridTable = ({
         const obj = {
           tagids: result,
         };
-        const data = await User.getBooking(token, page, searchTerm, obj, 2);
+        const data = await User.getBooking(token, page, searchTerm, obj, 3);
         return data;
       } else {
-        const data = await User.getBooking(token, page, searchTerm, "", 2);
+        const data = await User.getBooking(token, page, searchTerm, "", 3);
         return data;
       }
     }
@@ -235,16 +235,16 @@ export const GridTable = ({
               </div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
-              <div className="font-poppins text-md flex justify-center items-center">
-                {row.BookingStatus === 0
-                  ? "Published"
-                  : row.BookingStatus === 1
-                  ? "Incomplete Booking"
-                  : row.BookingStatus === 2
-                  ? "Non Publish"
-                  : row.BookingStatus === 3
-                  ? "Inactive"
-                  : "No Status"}
+              <div
+                className={`font-poppins text-md flex justify-center items-center ${
+                  row.ExpiredPeriod.length > 0
+                    ? "text-[#00CB45]"
+                    : "text-[#FF0000]"
+                }`}
+              >
+                {row.ExpiredPeriod.length > 0
+                  ? `Expire in ${row.ExpiredPeriod[0].DaysUntilExpiration} day(s)`
+                  : "Expired"}
               </div>
             </td>
 
@@ -427,7 +427,7 @@ export const GridTable = ({
                   Slots
                 </th>
                 <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[250px]">
-                  Content Status
+                  Day Expired
                 </th>
                 <th className="px-6 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Action
