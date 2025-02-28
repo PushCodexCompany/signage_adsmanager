@@ -238,12 +238,16 @@ export const GridTable = ({
               <div
                 className={`font-poppins text-md flex justify-center items-center ${
                   row.ExpiredPeriod.length > 0
-                    ? "text-[#00CB45]"
-                    : "text-[#FF0000]"
+                    ? row.ExpiredPeriod[0].DaysUntilExpiration === 0
+                      ? "text-[#cab332]" // Yellow for "Expire Today"
+                      : "text-[#00CB45]" // Green for future expiration
+                    : "text-[#FF0000]" // Red for expired
                 }`}
               >
                 {row.ExpiredPeriod.length > 0
-                  ? `Expire in ${row.ExpiredPeriod[0].DaysUntilExpiration} day(s)`
+                  ? row.ExpiredPeriod[0].DaysUntilExpiration === 0
+                    ? "Expire Today"
+                    : `Expire in ${row.ExpiredPeriod[0].DaysUntilExpiration} day(s)`
                   : "Expired"}
               </div>
             </td>
