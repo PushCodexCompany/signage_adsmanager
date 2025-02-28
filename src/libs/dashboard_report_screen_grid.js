@@ -124,6 +124,7 @@ export const GridTableReportScreen = ({
   const renderTableData = () => {
     return (
       <>
+        {console.log("report_screen_booking", report_screen_booking)}
         {report_screen_booking?.map((row, index) => (
           <tr key={row.ScreenID}>
             <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
@@ -160,24 +161,30 @@ export const GridTableReportScreen = ({
             <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
               <div className="font-poppins ">{row.ScreenLocation}</div>
             </td>
-            <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
-              <div className="font-poppins flex justify-center items-center">
-                {row.ScreenRule[0].ImageContentTypeID !== 0 ? (
-                  <FaCheck className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
-                ) : (
-                  <FaXmark className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
-                )}
-              </div>
-            </td>
-            <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
-              <div className="font-poppins flex justify-center items-center">
-                {row.ScreenRule[0].VideoContentTypeID !== 0 ? (
-                  <FaCheck className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
-                ) : (
-                  <FaXmark className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
-                )}
-              </div>
-            </td>
+            {row.ScreenRule.length > 0 ? (
+              <>
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins flex justify-center items-center">
+                    {row.ScreenRule[0].ImageContentTypeID !== 0 ? (
+                      <FaCheck className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
+                    ) : (
+                      <FaXmark className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
+                    )}
+                  </div>
+                </td>
+                <td className="px-6 py-2 whitespace-nowrap border-b font-poppins border-gray-200">
+                  <div className="font-poppins flex justify-center items-center">
+                    {row.ScreenRule[0].VideoContentTypeID !== 0 ? (
+                      <FaCheck className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
+                    ) : (
+                      <FaXmark className="text-lg p-2.5 w-8 h-8 border border-gray-500 rounded-full flex items-center justify-center" />
+                    )}
+                  </div>
+                </td>
+              </>
+            ) : (
+              <></>
+            )}
           </tr>
         ))}
       </>
