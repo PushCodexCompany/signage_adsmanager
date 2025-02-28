@@ -294,8 +294,8 @@ export const GridTable = ({
         if (data.code === 200) {
           Swal.fire({
             icon: "success",
-            title: "Delete Screen Success ...",
-            text: `ลบ Screen สำเร็จ!`,
+            title: "Delete Static Screen Success ...",
+            text: `ลบ Static Screen สำเร็จ!`,
           }).then(async (result) => {
             if (
               result.isConfirmed ||

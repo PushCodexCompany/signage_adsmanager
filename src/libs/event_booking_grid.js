@@ -146,8 +146,8 @@ export const GridTable = ({
         if (data.code === 200) {
           Swal.fire({
             icon: "success",
-            title: "ลบ Digital Booking สำเร็จ",
-            text: `ลบ Digital Booking ${booking_data.BookingName} สำเร็จ`,
+            title: "ลบ Event Booking สำเร็จ",
+            text: `ลบ Event Booking ${booking_data.BookingName} สำเร็จ`,
           }).then((result) => {
             if (
               result.isConfirmed ||
@@ -159,7 +159,7 @@ export const GridTable = ({
         } else {
           Swal.fire({
             icon: "error",
-            title: "ลบ Digital Booking ไม่สำเร็จ",
+            title: "ลบ Event Booking ไม่สำเร็จ",
             text: data.message,
           });
         }

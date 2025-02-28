@@ -488,7 +488,7 @@ const Create_Static_Booking = () => {
 
   const handleDeleteClick = (item) => {
     Swal.fire({
-      text: `คุณต้องการลบจอ ${item.ScreenName} ออกจาก Booking ${bookingName}?`,
+      text: `คุณต้องการลบจอ ${item.ScreenName} ออกจาก Static Booking ${bookingName}?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",

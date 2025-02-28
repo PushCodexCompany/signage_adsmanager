@@ -301,7 +301,7 @@ const Select_Booking = () => {
         });
 
         const result = await Swal.fire({
-          title: `คุณต้องการเปลี่ยน Booking name ?`,
+          title: `คุณต้องการเปลี่ยน Static Booking name ?`,
           showCancelButton: true,
           confirmButtonColor: "#d33",
           confirmButtonText: "ลบข้อมูล",
