@@ -61,7 +61,7 @@ const Main_Dashboard = () => {
 
   useEffect(() => {
     if (!select_campaign) {
-      window.location.href = "/brand";
+      window.location.href = "/logout";
     }
   }, []);
 

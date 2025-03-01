@@ -22,12 +22,14 @@ const useCheckPermission = () => {
           }
 
           if (!brand) {
-            navigate("/brand");
+            navigate("/logout");
+            // navigate("/brand");
           }
         }
 
         if (!brand) {
-          navigate("/brand");
+          navigate("/logout");
+          // navigate("/brand");
         }
       }
     };
