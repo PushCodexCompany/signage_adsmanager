@@ -795,9 +795,20 @@ const New_screen = () => {
                           </label>
                           <input
                             value={latLong.lat}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, lat: e.target.value })
-                            }
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const regex = /^[0-9.-]*$/; // Only numbers, hyphen, and period allowed
+                              if (regex.test(value)) {
+                                setLatLong({ ...latLong, lat: value });
+                              } else {
+                                Swal.fire({
+                                  icon: "error",
+                                  title: "เกิดข้อผิดพลาด!",
+                                  text: "กรุณากรอกเฉพาะตัวเลข หรือ . , - เท่านั้น",
+                                });
+                                setLatLong({ ...latLong, lat: latLong.lat });
+                              }
+                            }}
                             type="text"
                             className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                           />
@@ -816,9 +827,20 @@ const New_screen = () => {
                           </label>
                           <input
                             value={latLong.long}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, long: e.target.value })
-                            }
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const regex = /^[0-9.-]*$/; // Only numbers, hyphen, and period allowed
+                              if (regex.test(value)) {
+                                setLatLong({ ...latLong, long: value });
+                              } else {
+                                Swal.fire({
+                                  icon: "error",
+                                  title: "เกิดข้อผิดพลาด!",
+                                  text: "กรุณากรอกเฉพาะตัวเลข หรือ . , - เท่านั้น",
+                                });
+                                setLatLong({ ...latLong, long: latLong.long });
+                              }
+                            }}
                             type="text"
                             className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                           />

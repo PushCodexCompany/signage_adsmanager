@@ -45,7 +45,8 @@ const New_screen = () => {
 
   const [resolutionData, setResulotionData] = useState(null);
   const [adsCapacityData, setAdsCapacityData] = useState(null);
-  const [mediaTypeData, setMediaTypeData] = useState(null);
+  const [imgTypeData, setImgTypeData] = useState(null);
+  const [videoTypeData, setVideoTypeData] = useState(null);
 
   const [media_rules_dd, setMediaRulesDD] = useState([]);
   const [screen_resolution_dd, setScreenResolutionDD] = useState([]);
@@ -74,7 +75,7 @@ const New_screen = () => {
     getConfigurationData();
   }, [id]);
 
-  const fetchScreen = () => {
+  const fetchScreen = async () => {
     const {
       ScreenID,
       ScreenName,
@@ -99,6 +100,22 @@ const New_screen = () => {
     setScreenName(ScreenName);
     setMediaRule(ScreenRule[0]?.MediaRuleID);
     setResolutionAdsCapacity(ScreenRule[0]?.MediaRuleID);
+    const media_rules = await User.getMediaRules(token);
+    const data = media_rules.find(
+      (items) => items.MediaRuleID === parseInt(ScreenRule[0]?.MediaRuleID)
+    );
+    if (data?.ImageContentTypeID === 1) {
+      setImgTypeData(true);
+    } else {
+      setImgTypeData(false);
+    }
+
+    if (data?.VideoContentTypeID === 1) {
+      setVideoTypeData(true);
+    } else {
+      setVideoTypeData(false);
+    }
+
     setScreenTag(ScreenTag);
     setDumpTag(location?.state?.tag);
     setPreviewImg(ScreenPhoto);
@@ -627,13 +644,25 @@ const New_screen = () => {
     const data = media_rules_dd.find(
       (items) => items.MediaRuleID === parseInt(id)
     );
-
     setResulotionData(
-      `W: ${parseInt(data.Width).toString()} x H: ${parseInt(
-        data.Height
+      `W: ${parseInt(data?.Width).toString()} x H: ${parseInt(
+        data?.Height
       ).toString()}`
     );
-    setAdsCapacityData(data.AdsCapacity);
+
+    if (data?.ImageContentTypeID === 1) {
+      setImgTypeData(true);
+    } else {
+      setImgTypeData(false);
+    }
+
+    if (data?.VideoContentTypeID === 1) {
+      setVideoTypeData(true);
+    } else {
+      setVideoTypeData(false);
+    }
+
+    setAdsCapacityData(data?.AdsCapacity);
     setMediaRule(id);
   };
 
@@ -712,7 +741,13 @@ const New_screen = () => {
                   </div>
                   <div className="flex justify-center items-center mb-2">
                     <div className="font-poppins text-sm text-gray-500">
-                      {mediaTypeData ? mediaTypeData : "-"}
+                      {imgTypeData && videoTypeData
+                        ? "Image, Video"
+                        : imgTypeData
+                        ? "Image"
+                        : videoTypeData
+                        ? "Video"
+                        : "-"}
                     </div>
                   </div>
                 </div>
@@ -820,9 +855,20 @@ const New_screen = () => {
                           </label>
                           <input
                             value={latLong.lat}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, lat: e.target.value })
-                            }
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const regex = /^[0-9.-]*$/; // Only numbers, hyphen, and period allowed
+                              if (regex.test(value)) {
+                                setLatLong({ ...latLong, lat: value });
+                              } else {
+                                Swal.fire({
+                                  icon: "error",
+                                  title: "เกิดข้อผิดพลาด!",
+                                  text: "กรุณากรอกเฉพาะตัวเลข หรือ . , - เท่านั้น",
+                                });
+                                setLatLong({ ...latLong, lat: latLong.lat });
+                              }
+                            }}
                             type="text"
                             className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                           />
@@ -841,9 +887,20 @@ const New_screen = () => {
                           </label>
                           <input
                             value={latLong.long}
-                            onChange={(e) =>
-                              setLatLong({ ...latLong, long: e.target.value })
-                            }
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              const regex = /^[0-9.-]*$/; // Only numbers, hyphen, and period allowed
+                              if (regex.test(value)) {
+                                setLatLong({ ...latLong, long: value });
+                              } else {
+                                Swal.fire({
+                                  icon: "error",
+                                  title: "เกิดข้อผิดพลาด!",
+                                  text: "กรุณากรอกเฉพาะตัวเลข หรือ . , - เท่านั้น",
+                                });
+                                setLatLong({ ...latLong, long: latLong.long });
+                              }
+                            }}
                             type="text"
                             className="w-[156px] h-[48px] rounded-lg p-3 font-poppins border border-gray-300 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 shadow-sm"
                           />

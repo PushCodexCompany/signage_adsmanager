@@ -401,8 +401,13 @@ export const GridTable = ({
   };
 
   const getImgBrand = (id) => {
-    const brand_img = brand?.find((item) => item.BrandID === parseInt(id));
-    return brand_img?.BrandLogo ? brand_img.BrandLogo : empty_img;
+    const brand_img = brand.find((item) => item.BrandID === id);
+    return brand_img
+      ? brand_img.BrandLogo ||
+          `https://ui-avatars.com/api/?name=${
+            brand_img.BrandName
+          }&background=${"000000"}&color=fff`
+      : null;
   };
 
   const getImgMerchandise = (id) => {
@@ -448,12 +453,13 @@ export const GridTable = ({
             icon: "success",
             title: "ลบผู้ใช้งาน!",
             text: `ลบผู้ใช้งาน ${name} สำเร็จ!`,
-          }).then((result) => {
+          }).then(async (result) => {
             if (
               result.isConfirmed ||
               result.dismiss === Swal.DismissReason.backdrop
             ) {
-              setData();
+              const data = await fetchDataForPage(currentPage);
+              setData(data.users);
             }
           });
         } else {
@@ -1177,6 +1183,9 @@ export const GridTable = ({
               <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
                 <button
                   onClick={() => {
+                    setChgOldPassword("");
+                    setChgPassword("");
+                    setChgConfirmPassword("");
                     setOldModal(!oldModal);
                     setModalChangePassword(!modal_change_password);
                   }}

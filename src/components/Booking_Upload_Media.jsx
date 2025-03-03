@@ -78,7 +78,7 @@ const Booking_Upload_Media = ({
         Swal.fire({
           icon: "error",
           title: "เกิดข้อผิดพลาด!",
-          text: "ลักษณะของไฟล์ไม่ถูกต้องต้อง Media Rule.",
+          text: "ลักษณะของไฟล์ไม่ถูกต้อง Media Rule.",
         });
         return;
       }

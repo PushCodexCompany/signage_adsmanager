@@ -379,7 +379,20 @@ const User_Management = () => {
             {/* Close button - adjust positioning */}
             <div className="sticky top-0 right-0 z-30 flex justify-end">
               <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
-                <button onClick={() => setModalNewUser(!modalNewUser)}>
+                <button
+                  onClick={() => {
+                    setRegUserName(null);
+                    setRegName(null);
+                    setRegLastname(null);
+                    setRegEmail(null);
+                    setRegPassword(null);
+                    setRegRePassword(null);
+                    setRegRole(null);
+                    setRegBrand([]);
+                    setRegMerchandise([]);
+                    setModalNewUser(!modalNewUser);
+                  }}
+                >
                   <IoIosClose size={25} color={"#6425FE"} />
                 </button>
               </div>

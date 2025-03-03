@@ -324,21 +324,21 @@ export const GridTable = ({
     <>
       <div className="w-auto h-[480px] overflow-auto">
         <table className="min-w-full border border-gray-300">
-          <thead className="sticky -top-1 bg-gray-200 z-5">
+          <thead className="sticky -top-1  bg-gray-200 z-10">
             <tr>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[100px]">
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[100px]">
                 ID
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[400px]">
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[400px]">
                 Rule Name
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[500px]">
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider w-[500px]">
                 Rule Properties
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Screens
               </th>
-              <th className="px-6 py-3 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
+              <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                 Action
               </th>
             </tr>
@@ -347,15 +347,17 @@ export const GridTable = ({
             {media_rules.map((row) => (
               <tr key={row.MediaRuleID}>
                 <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
-                  <div className="font-poppins text-md">{row.MediaRuleID}</div>
+                  <div className="font-poppins text-md flex justify-center">
+                    {row.MediaRuleID}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
-                  <div className="font-poppins text-lg text-[#59606C]">
+                  <div className="font-poppins text-lg text-[#59606C] flex justify-center">
                     {row.MediaRuleName}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
-                  <div className="flex flex-wrap">
+                  <div className="flex flex-wrap  justify-center">
                     <div
                       className="bg-[#D9D9D9] flex justify-center h-[25px] items-center mb-1 mr-1 shadow-sm"
                       style={{ flexBasis: "calc(45% - 8px)" }}
@@ -392,9 +394,9 @@ export const GridTable = ({
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
-                  <div className="space-x-2">
+                  <div className="space-x-2 flex justify-center">
                     <button
-                      className="relative group"
+                      className="relative group "
                       onClick={() => onClickView(row)}
                     >
                       <FiExternalLink

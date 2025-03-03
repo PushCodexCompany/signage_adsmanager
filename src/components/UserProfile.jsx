@@ -374,6 +374,9 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
               <div className="bg-[#E8E8E8] border-3 border-black rounded-full w-10 h-10 flex justify-center items-center">
                 <button
                   onClick={() => {
+                    setChgOldPassword("");
+                    setChgPassword("");
+                    setChgConfirmPassword("");
                     setModalChangePassword(!modal_change_password);
                     setFactChgPassword(!fact_chgPassword);
                   }}

@@ -274,7 +274,7 @@ export const GridTable = ({
 
   const handleEditScreen = (screen) => {
     navigate(`/static_screen/create/${screen.ScreenID}`, {
-      state: { screen: screen },
+      state: { screen: screen, tag: screen.ScreenTag },
     });
   };
 

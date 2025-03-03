@@ -93,6 +93,8 @@ const Ads_Allocation_Booking = ({
   const [openTime, setOpenTime] = useState(null);
   const [closeTime, setCloseTime] = useState(null);
 
+  const [default_content_time, setDefaultContentTime] = useState(15);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -111,8 +113,14 @@ const Ads_Allocation_Booking = ({
   const getConfig = async () => {
     const {
       configuration: { contenttype },
+      configuration: { brandconfig },
     } = await User.getConfiguration(token);
 
+    const parameterValue = brandconfig.find(
+      (item) => item.ParameterKey === "CONTENTPERSLOT_SEC"
+    )?.ParameterValue;
+    const result = parameterValue ? parseInt(parameterValue) : null;
+    setDefaultContentTime(result);
     setFileConfig(contenttype);
   };
 
@@ -432,7 +440,7 @@ const Ads_Allocation_Booking = ({
             ...draggedItem,
             MediaID: 0,
             slot_size: 1,
-            duration: 15,
+            duration: default_content_time,
           });
 
           if (!checkAreArraysEqual(fact_panel1.medias, newDestinationItems)) {
@@ -466,7 +474,7 @@ const Ads_Allocation_Booking = ({
     const target = updatedMediaList[index];
     if ("slot_size" in target) {
       target.slot_size = target.slot_size + 1;
-      target.duration = target.duration + 15;
+      target.duration = target.duration + default_content_time;
     } else {
       target.slot_size = 2;
     }
@@ -494,7 +502,7 @@ const Ads_Allocation_Booking = ({
     //*** only needed to expand slot_size if at least one empty slot is still available
     if ("slot_size" in target) {
       target.slot_size = target.slot_size - 1;
-      target.duration = target.duration - 15;
+      target.duration = target.duration - default_content_time;
     } else {
       target.slot_size = 0;
     }
@@ -623,7 +631,7 @@ const Ads_Allocation_Booking = ({
         ContentProperties: null,
         slot_size: 1,
         slot_num: i + 1,
-        duration: 15,
+        duration: default_content_time,
       });
     }
 
@@ -1766,6 +1774,8 @@ const Ads_Allocation_Booking = ({
                         className={`col-span-6 space-y-1 ${
                           datePickers.length > 1
                             ? "h-[150px] overflow-y-auto"
+                            : isStatic
+                            ? "h-[100px]"
                             : "h-[70px]"
                         }`}
                       >
@@ -1916,7 +1926,11 @@ const Ads_Allocation_Booking = ({
 
                     <div
                       className={`grid grid-cols-10 mt-12  ${
-                        datePickers.length > 1 ? "lg:mt-22" : "lg:mt-36"
+                        datePickers.length > 1
+                          ? "lg:mt-22"
+                          : isStatic
+                          ? "lg:mt-16"
+                          : "lg:mt-8"
                       }`}
                     >
                       <div className="col-span-2" />
@@ -2203,135 +2217,261 @@ const Ads_Allocation_Booking = ({
                                   </div>
                                 </div>
                                 <div className="mt-5">
-                                  <Droppable droppableId="panel-2">
-                                    {(provided) => (
-                                      <div
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                        className="h-[600px] overflow-y-auto space-y-2"
-                                      >
-                                        {itemsPanel2.length > 0 &&
-                                          itemsPanel2
-                                            .filter(
-                                              (item) =>
-                                                (item.ContentTypeName ===
-                                                  "Image" &&
-                                                  media_rules_select.Image) ||
-                                                (item.ContentTypeName ===
-                                                  "Video" &&
-                                                  media_rules_select.Video)
-                                            )
-                                            .filter((item) => {
-                                              const contentProperties =
-                                                JSON.parse(
-                                                  item.ContentProperties
-                                                );
-                                              return (
-                                                parseInt(
-                                                  contentProperties.width
-                                                ) ===
-                                                  media_rules_select?.width &&
-                                                parseInt(
-                                                  contentProperties.height
-                                                ) === media_rules_select?.height
-                                              );
-                                            })
-                                            .map((items, index) => (
-                                              <Draggable
-                                                key={`panel2-${index}`}
-                                                draggableId={`panel2-${items.ContentID}`}
-                                                index={index}
-                                                isDragDisabled={
-                                                  playlist_permission?.craete ||
-                                                  playlist_permission?.update
-                                                    ? false
-                                                    : true
-                                                }
-                                              >
-                                                {(provided) => (
-                                                  <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                  {isStatic ? (
+                                    <>
+                                      <Droppable droppableId="panel-2">
+                                        {(provided) => (
+                                          <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                            className="h-[600px] overflow-y-auto space-y-2"
+                                          >
+                                            {itemsPanel2.length > 0 &&
+                                              itemsPanel2.map(
+                                                (items, index) => (
+                                                  <Draggable
+                                                    key={`panel2-${index}`}
+                                                    draggableId={`panel2-${items.ContentID}`}
+                                                    index={index}
+                                                    isDragDisabled={
+                                                      playlist_permission?.craete ||
+                                                      playlist_permission?.update
+                                                        ? false
+                                                        : true
+                                                    }
                                                   >
-                                                    <div className="col-span-2 flex justify-center items-center">
-                                                      {items.ContentTypeName ===
-                                                      "Video" ? (
-                                                        <FiVideo size={30} />
-                                                      ) : (
-                                                        <FiImage size={30} />
-                                                      )}
-                                                    </div>
-                                                    <div className="col-span-8">
-                                                      <div className="flex justify-start items-center mt-2">
-                                                        <div className="font-poppins text-[15px]">
-                                                          {items.ContentName
-                                                            .length > 30 ? (
-                                                            <span>
-                                                              {items.ContentName.slice(
-                                                                0,
-                                                                27
-                                                              ) + "..."}
-                                                            </span>
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                                      >
+                                                        <div className="col-span-2 flex justify-center items-center">
+                                                          {items.ContentTypeName ===
+                                                          "Video" ? (
+                                                            <FiVideo
+                                                              size={30}
+                                                            />
                                                           ) : (
-                                                            <span>
-                                                              {
-                                                                items.ContentName
-                                                              }
-                                                            </span>
+                                                            <FiImage
+                                                              size={30}
+                                                            />
                                                           )}
                                                         </div>
-                                                      </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                          File Size :{" "}
-                                                          {parseFloat(
-                                                            JSON.parse(
-                                                              items.ContentProperties
-                                                            ).size
-                                                          ).toFixed(2)}{" "}
-                                                          MB
+                                                        <div className="col-span-8">
+                                                          <div className="flex justify-start items-center mt-2">
+                                                            <div className="font-poppins text-[15px]">
+                                                              {items.ContentName
+                                                                .length > 30 ? (
+                                                                <span>
+                                                                  {items.ContentName.slice(
+                                                                    0,
+                                                                    27
+                                                                  ) + "..."}
+                                                                </span>
+                                                              ) : (
+                                                                <span>
+                                                                  {
+                                                                    items.ContentName
+                                                                  }
+                                                                </span>
+                                                              )}
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                              File Size :{" "}
+                                                              {parseFloat(
+                                                                JSON.parse(
+                                                                  items.ContentProperties
+                                                                ).size
+                                                              ).toFixed(2)}{" "}
+                                                              MB
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            {items.ContentTypeName ===
+                                                              "Video" && (
+                                                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                                Duration :{" "}
+                                                                {parseFloat(
+                                                                  JSON.parse(
+                                                                    items.ContentProperties
+                                                                  ).duration
+                                                                ).toFixed(
+                                                                  2
+                                                                )}{" "}
+                                                                sec
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                        <div className="col-span-1 flex justify-start items-center">
+                                                          <IoIosPlayCircle
+                                                            size={26}
+                                                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                            onClick={() => {
+                                                              setModalPlayerOpen(
+                                                                !modalPlayerOpen
+                                                              );
+
+                                                              setMediaDisplay(
+                                                                items
+                                                              );
+                                                            }}
+                                                          />
                                                         </div>
                                                       </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        {items.ContentTypeName ===
-                                                          "Video" && (
-                                                          <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                            Duration :{" "}
-                                                            {parseFloat(
-                                                              JSON.parse(
-                                                                items.ContentProperties
-                                                              ).duration
-                                                            ).toFixed(2)}{" "}
-                                                            sec
+                                                    )}
+                                                  </Draggable>
+                                                )
+                                              )}
+                                            {provided.placeholder}
+                                          </div>
+                                        )}
+                                      </Droppable>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Droppable droppableId="panel-2">
+                                        {(provided) => (
+                                          <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                            className="h-[600px] overflow-y-auto space-y-2"
+                                          >
+                                            {itemsPanel2.length > 0 &&
+                                              itemsPanel2
+                                                .filter(
+                                                  (item) =>
+                                                    (item.ContentTypeName ===
+                                                      "Image" &&
+                                                      media_rules_select.Image) ||
+                                                    (item.ContentTypeName ===
+                                                      "Video" &&
+                                                      media_rules_select.Video)
+                                                )
+                                                .filter((item) => {
+                                                  const contentProperties =
+                                                    JSON.parse(
+                                                      item.ContentProperties
+                                                    );
+                                                  return (
+                                                    parseInt(
+                                                      contentProperties.width
+                                                    ) ===
+                                                      media_rules_select?.width &&
+                                                    parseInt(
+                                                      contentProperties.height
+                                                    ) ===
+                                                      media_rules_select?.height
+                                                  );
+                                                })
+                                                .map((items, index) => (
+                                                  <Draggable
+                                                    key={`panel2-${index}`}
+                                                    draggableId={`panel2-${items.ContentID}`}
+                                                    index={index}
+                                                    isDragDisabled={
+                                                      playlist_permission?.craete ||
+                                                      playlist_permission?.update
+                                                        ? false
+                                                        : true
+                                                    }
+                                                  >
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                                      >
+                                                        <div className="col-span-2 flex justify-center items-center">
+                                                          {items.ContentTypeName ===
+                                                          "Video" ? (
+                                                            <FiVideo
+                                                              size={30}
+                                                            />
+                                                          ) : (
+                                                            <FiImage
+                                                              size={30}
+                                                            />
+                                                          )}
+                                                        </div>
+                                                        <div className="col-span-8">
+                                                          <div className="flex justify-start items-center mt-2">
+                                                            <div className="font-poppins text-[15px]">
+                                                              {items.ContentName
+                                                                .length > 30 ? (
+                                                                <span>
+                                                                  {items.ContentName.slice(
+                                                                    0,
+                                                                    27
+                                                                  ) + "..."}
+                                                                </span>
+                                                              ) : (
+                                                                <span>
+                                                                  {
+                                                                    items.ContentName
+                                                                  }
+                                                                </span>
+                                                              )}
+                                                            </div>
                                                           </div>
-                                                        )}
-                                                      </div>
-                                                    </div>
-                                                    <div className="col-span-1 flex justify-start items-center">
-                                                      <IoIosPlayCircle
-                                                        size={26}
-                                                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                        onClick={() => {
-                                                          setModalPlayerOpen(
-                                                            !modalPlayerOpen
-                                                          );
+                                                          <div className="flex justify-start items-center ">
+                                                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                              File Size :{" "}
+                                                              {parseFloat(
+                                                                JSON.parse(
+                                                                  items.ContentProperties
+                                                                ).size
+                                                              ).toFixed(2)}{" "}
+                                                              MB
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            {items.ContentTypeName ===
+                                                              "Video" && (
+                                                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                                Duration :{" "}
+                                                                {parseFloat(
+                                                                  JSON.parse(
+                                                                    items.ContentProperties
+                                                                  ).duration
+                                                                ).toFixed(
+                                                                  2
+                                                                )}{" "}
+                                                                sec
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                        <div className="col-span-1 flex justify-start items-center">
+                                                          <IoIosPlayCircle
+                                                            size={26}
+                                                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                            onClick={() => {
+                                                              setModalPlayerOpen(
+                                                                !modalPlayerOpen
+                                                              );
 
-                                                          setMediaDisplay(
-                                                            items
-                                                          );
-                                                        }}
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                )}
-                                              </Draggable>
-                                            ))}
-                                        {provided.placeholder}
-                                      </div>
-                                    )}
-                                  </Droppable>
+                                                              setMediaDisplay(
+                                                                items
+                                                              );
+                                                            }}
+                                                          />
+                                                        </div>
+                                                      </div>
+                                                    )}
+                                                  </Draggable>
+                                                ))}
+                                            {provided.placeholder}
+                                          </div>
+                                        )}
+                                      </Droppable>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             )}
@@ -2356,135 +2496,264 @@ const Ads_Allocation_Booking = ({
                                   </div>
                                 </div>
                                 <div className="mt-5">
-                                  <Droppable droppableId="panel-2">
-                                    {(provided) => (
-                                      <div
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                        className="h-[600px] overflow-y-auto space-y-2"
-                                      >
-                                        {itemsPanel2.length > 0 &&
-                                          itemsPanel2
-                                            .filter(
-                                              (item) =>
-                                                (item.ContentTypeName ===
-                                                  "Image" &&
-                                                  media_rules_select.Image) ||
-                                                (item.ContentTypeName ===
-                                                  "Video" &&
-                                                  media_rules_select.Video)
-                                            )
-                                            .filter(
-                                              (item) =>
-                                                item.ContentTypeName ===
-                                                  "Video" &&
-                                                parseInt(
-                                                  JSON.parse(
-                                                    item.ContentProperties
-                                                  ).width
-                                                ) ===
-                                                  media_rules_select?.width &&
-                                                parseInt(
-                                                  JSON.parse(
-                                                    item.ContentProperties
-                                                  ).height
-                                                ) === media_rules_select?.height
-                                            )
-                                            .map((items, index) => (
-                                              <Draggable
-                                                key={`panel2-${index}`}
-                                                draggableId={`panel2-${items.ContentID}`}
-                                                index={index}
-                                                isDragDisabled={
-                                                  playlist_permission?.craete ||
-                                                  playlist_permission?.update
-                                                    ? false
-                                                    : true
-                                                }
-                                              >
-                                                {(provided) => (
-                                                  <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                  {isStatic ? (
+                                    <>
+                                      <Droppable droppableId="panel-2">
+                                        {(provided) => (
+                                          <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                            className="h-[600px] overflow-y-auto space-y-2"
+                                          >
+                                            {itemsPanel2.length > 0 &&
+                                              itemsPanel2
+                                                .filter(
+                                                  (item) =>
+                                                    item.ContentTypeName ===
+                                                    "Video"
+                                                )
+                                                .map((items, index) => (
+                                                  <Draggable
+                                                    key={`panel2-${index}`}
+                                                    draggableId={`panel2-${items.ContentID}`}
+                                                    index={index}
+                                                    isDragDisabled={
+                                                      playlist_permission?.craete ||
+                                                      playlist_permission?.update
+                                                        ? false
+                                                        : true
+                                                    }
                                                   >
-                                                    <div className="col-span-2 flex justify-center items-center">
-                                                      {items.ContentTypeName ===
-                                                      "Video" ? (
-                                                        <FiVideo size={30} />
-                                                      ) : (
-                                                        <FiImage size={30} />
-                                                      )}
-                                                    </div>
-                                                    <div className="col-span-8">
-                                                      <div className="flex justify-start items-center mt-2">
-                                                        <div className="font-poppins text-[15px]">
-                                                          {items.ContentName
-                                                            .length > 30 ? (
-                                                            <span>
-                                                              {items.ContentName.slice(
-                                                                0,
-                                                                27
-                                                              ) + "..."}
-                                                            </span>
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                                      >
+                                                        <div className="col-span-2 flex justify-center items-center">
+                                                          {items.ContentTypeName ===
+                                                          "Video" ? (
+                                                            <FiVideo
+                                                              size={30}
+                                                            />
                                                           ) : (
-                                                            <span>
-                                                              {
-                                                                items.ContentName
-                                                              }
-                                                            </span>
+                                                            <FiImage
+                                                              size={30}
+                                                            />
                                                           )}
                                                         </div>
-                                                      </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                          File Size :{" "}
-                                                          {parseFloat(
-                                                            JSON.parse(
-                                                              items.ContentProperties
-                                                            ).size
-                                                          ).toFixed(2)}{" "}
-                                                          MB
+                                                        <div className="col-span-8">
+                                                          <div className="flex justify-start items-center mt-2">
+                                                            <div className="font-poppins text-[15px]">
+                                                              {items.ContentName
+                                                                .length > 30 ? (
+                                                                <span>
+                                                                  {items.ContentName.slice(
+                                                                    0,
+                                                                    27
+                                                                  ) + "..."}
+                                                                </span>
+                                                              ) : (
+                                                                <span>
+                                                                  {
+                                                                    items.ContentName
+                                                                  }
+                                                                </span>
+                                                              )}
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                              File Size :{" "}
+                                                              {parseFloat(
+                                                                JSON.parse(
+                                                                  items.ContentProperties
+                                                                ).size
+                                                              ).toFixed(2)}{" "}
+                                                              MB
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            {items.ContentTypeName ===
+                                                              "Video" && (
+                                                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                                Duration :{" "}
+                                                                {parseFloat(
+                                                                  JSON.parse(
+                                                                    items.ContentProperties
+                                                                  ).duration
+                                                                ).toFixed(
+                                                                  2
+                                                                )}{" "}
+                                                                sec
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                        <div className="col-span-1 flex justify-start items-center">
+                                                          <IoIosPlayCircle
+                                                            size={26}
+                                                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                            onClick={() => {
+                                                              setModalPlayerOpen(
+                                                                !modalPlayerOpen
+                                                              );
+                                                              setMediaDisplay(
+                                                                items
+                                                              );
+                                                            }}
+                                                          />
                                                         </div>
                                                       </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        {items.ContentTypeName ===
-                                                          "Video" && (
-                                                          <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                            Duration :{" "}
-                                                            {parseFloat(
-                                                              JSON.parse(
-                                                                items.ContentProperties
-                                                              ).duration
-                                                            ).toFixed(2)}{" "}
-                                                            sec
+                                                    )}
+                                                  </Draggable>
+                                                ))}
+                                            {provided.placeholder}
+                                          </div>
+                                        )}
+                                      </Droppable>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Droppable droppableId="panel-2">
+                                        {(provided) => (
+                                          <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                            className="h-[600px] overflow-y-auto space-y-2"
+                                          >
+                                            {itemsPanel2.length > 0 &&
+                                              itemsPanel2
+                                                .filter(
+                                                  (item) =>
+                                                    (item.ContentTypeName ===
+                                                      "Image" &&
+                                                      media_rules_select.Image) ||
+                                                    (item.ContentTypeName ===
+                                                      "Video" &&
+                                                      media_rules_select.Video)
+                                                )
+                                                .filter(
+                                                  (item) =>
+                                                    item.ContentTypeName ===
+                                                      "Video" &&
+                                                    parseInt(
+                                                      JSON.parse(
+                                                        item.ContentProperties
+                                                      ).width
+                                                    ) ===
+                                                      media_rules_select?.width &&
+                                                    parseInt(
+                                                      JSON.parse(
+                                                        item.ContentProperties
+                                                      ).height
+                                                    ) ===
+                                                      media_rules_select?.height
+                                                )
+                                                .map((items, index) => (
+                                                  <Draggable
+                                                    key={`panel2-${index}`}
+                                                    draggableId={`panel2-${items.ContentID}`}
+                                                    index={index}
+                                                    isDragDisabled={
+                                                      playlist_permission?.craete ||
+                                                      playlist_permission?.update
+                                                        ? false
+                                                        : true
+                                                    }
+                                                  >
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                                      >
+                                                        <div className="col-span-2 flex justify-center items-center">
+                                                          {items.ContentTypeName ===
+                                                          "Video" ? (
+                                                            <FiVideo
+                                                              size={30}
+                                                            />
+                                                          ) : (
+                                                            <FiImage
+                                                              size={30}
+                                                            />
+                                                          )}
+                                                        </div>
+                                                        <div className="col-span-8">
+                                                          <div className="flex justify-start items-center mt-2">
+                                                            <div className="font-poppins text-[15px]">
+                                                              {items.ContentName
+                                                                .length > 30 ? (
+                                                                <span>
+                                                                  {items.ContentName.slice(
+                                                                    0,
+                                                                    27
+                                                                  ) + "..."}
+                                                                </span>
+                                                              ) : (
+                                                                <span>
+                                                                  {
+                                                                    items.ContentName
+                                                                  }
+                                                                </span>
+                                                              )}
+                                                            </div>
                                                           </div>
-                                                        )}
+                                                          <div className="flex justify-start items-center ">
+                                                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                              File Size :{" "}
+                                                              {parseFloat(
+                                                                JSON.parse(
+                                                                  items.ContentProperties
+                                                                ).size
+                                                              ).toFixed(2)}{" "}
+                                                              MB
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            {items.ContentTypeName ===
+                                                              "Video" && (
+                                                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                                Duration :{" "}
+                                                                {parseFloat(
+                                                                  JSON.parse(
+                                                                    items.ContentProperties
+                                                                  ).duration
+                                                                ).toFixed(
+                                                                  2
+                                                                )}{" "}
+                                                                sec
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                        <div className="col-span-1 flex justify-start items-center">
+                                                          <IoIosPlayCircle
+                                                            size={26}
+                                                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                            onClick={() => {
+                                                              setModalPlayerOpen(
+                                                                !modalPlayerOpen
+                                                              );
+                                                              setMediaDisplay(
+                                                                items
+                                                              );
+                                                            }}
+                                                          />
+                                                        </div>
                                                       </div>
-                                                    </div>
-                                                    <div className="col-span-1 flex justify-start items-center">
-                                                      <IoIosPlayCircle
-                                                        size={26}
-                                                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                        onClick={() => {
-                                                          setModalPlayerOpen(
-                                                            !modalPlayerOpen
-                                                          );
-                                                          setMediaDisplay(
-                                                            items
-                                                          );
-                                                        }}
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                )}
-                                              </Draggable>
-                                            ))}
-                                        {provided.placeholder}
-                                      </div>
-                                    )}
-                                  </Droppable>
+                                                    )}
+                                                  </Draggable>
+                                                ))}
+                                            {provided.placeholder}
+                                          </div>
+                                        )}
+                                      </Droppable>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             )}
@@ -2509,135 +2778,264 @@ const Ads_Allocation_Booking = ({
                                   </div>
                                 </div>
                                 <div className="mt-5">
-                                  <Droppable droppableId="panel-2">
-                                    {(provided) => (
-                                      <div
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                        className="h-[600px] overflow-y-auto space-y-2"
-                                      >
-                                        {itemsPanel2.length > 0 &&
-                                          itemsPanel2
-                                            .filter(
-                                              (item) =>
-                                                (item.ContentTypeName ===
-                                                  "Image" &&
-                                                  media_rules_select.Image) ||
-                                                (item.ContentTypeName ===
-                                                  "Video" &&
-                                                  media_rules_select.Video)
-                                            )
-                                            .filter(
-                                              (item) =>
-                                                item.ContentTypeName ===
-                                                  "Image" &&
-                                                parseInt(
-                                                  JSON.parse(
-                                                    item.ContentProperties
-                                                  ).width
-                                                ) ===
-                                                  media_rules_select?.width &&
-                                                parseInt(
-                                                  JSON.parse(
-                                                    item.ContentProperties
-                                                  ).height
-                                                ) === media_rules_select?.height
-                                            )
-                                            .map((items, index) => (
-                                              <Draggable
-                                                key={`panel2-${index}`}
-                                                draggableId={`panel2-${items.ContentID}`}
-                                                index={index}
-                                                isDragDisabled={
-                                                  playlist_permission?.craete ||
-                                                  playlist_permission?.update
-                                                    ? false
-                                                    : true
-                                                }
-                                              >
-                                                {(provided) => (
-                                                  <div
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                  {isStatic ? (
+                                    <>
+                                      <Droppable droppableId="panel-2">
+                                        {(provided) => (
+                                          <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                            className="h-[600px] overflow-y-auto space-y-2"
+                                          >
+                                            {itemsPanel2.length > 0 &&
+                                              itemsPanel2
+                                                .filter(
+                                                  (item) =>
+                                                    item.ContentTypeName ===
+                                                    "Image"
+                                                )
+                                                .map((items, index) => (
+                                                  <Draggable
+                                                    key={`panel2-${index}`}
+                                                    draggableId={`panel2-${items.ContentID}`}
+                                                    index={index}
+                                                    isDragDisabled={
+                                                      playlist_permission?.craete ||
+                                                      playlist_permission?.update
+                                                        ? false
+                                                        : true
+                                                    }
                                                   >
-                                                    <div className="col-span-2 flex justify-center items-center">
-                                                      {items.ContentTypeName ===
-                                                      "video" ? (
-                                                        <FiVideo size={30} />
-                                                      ) : (
-                                                        <FiImage size={30} />
-                                                      )}
-                                                    </div>
-                                                    <div className="col-span-8">
-                                                      <div className="flex justify-start items-center mt-2">
-                                                        <div className="font-poppins text-[15px]">
-                                                          {items.ContentName
-                                                            .length > 30 ? (
-                                                            <span>
-                                                              {items.ContentName.slice(
-                                                                0,
-                                                                27
-                                                              ) + "..."}
-                                                            </span>
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                                      >
+                                                        <div className="col-span-2 flex justify-center items-center">
+                                                          {items.ContentTypeName ===
+                                                          "video" ? (
+                                                            <FiVideo
+                                                              size={30}
+                                                            />
                                                           ) : (
-                                                            <span>
-                                                              {
-                                                                items.ContentName
-                                                              }
-                                                            </span>
+                                                            <FiImage
+                                                              size={30}
+                                                            />
                                                           )}
                                                         </div>
-                                                      </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                          File Size :{" "}
-                                                          {parseFloat(
-                                                            JSON.parse(
-                                                              items.ContentProperties
-                                                            ).size
-                                                          ).toFixed(2)}{" "}
-                                                          MB
+                                                        <div className="col-span-8">
+                                                          <div className="flex justify-start items-center mt-2">
+                                                            <div className="font-poppins text-[15px]">
+                                                              {items.ContentName
+                                                                .length > 30 ? (
+                                                                <span>
+                                                                  {items.ContentName.slice(
+                                                                    0,
+                                                                    27
+                                                                  ) + "..."}
+                                                                </span>
+                                                              ) : (
+                                                                <span>
+                                                                  {
+                                                                    items.ContentName
+                                                                  }
+                                                                </span>
+                                                              )}
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                              File Size :{" "}
+                                                              {parseFloat(
+                                                                JSON.parse(
+                                                                  items.ContentProperties
+                                                                ).size
+                                                              ).toFixed(2)}{" "}
+                                                              MB
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            {items.ContentTypeName ===
+                                                              "Video" && (
+                                                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                                Duration :{" "}
+                                                                {parseFloat(
+                                                                  JSON.parse(
+                                                                    items.ContentProperties
+                                                                  ).duration
+                                                                ).toFixed(
+                                                                  2
+                                                                )}{" "}
+                                                                sec
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                        <div className="col-span-1 flex justify-start items-center">
+                                                          <IoIosPlayCircle
+                                                            size={26}
+                                                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                            onClick={() => {
+                                                              setModalPlayerOpen(
+                                                                !modalPlayerOpen
+                                                              );
+                                                              setMediaDisplay(
+                                                                items
+                                                              );
+                                                            }}
+                                                          />
                                                         </div>
                                                       </div>
-                                                      <div className="flex justify-start items-center ">
-                                                        {items.ContentTypeName ===
-                                                          "Video" && (
-                                                          <div className="font-poppins text-[#8A8A8A] text-[12px]">
-                                                            Duration :{" "}
-                                                            {parseFloat(
-                                                              JSON.parse(
-                                                                items.ContentProperties
-                                                              ).duration
-                                                            ).toFixed(2)}{" "}
-                                                            sec
+                                                    )}
+                                                  </Draggable>
+                                                ))}
+                                            {provided.placeholder}
+                                          </div>
+                                        )}
+                                      </Droppable>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Droppable droppableId="panel-2">
+                                        {(provided) => (
+                                          <div
+                                            ref={provided.innerRef}
+                                            {...provided.droppableProps}
+                                            className="h-[600px] overflow-y-auto space-y-2"
+                                          >
+                                            {itemsPanel2.length > 0 &&
+                                              itemsPanel2
+                                                .filter(
+                                                  (item) =>
+                                                    (item.ContentTypeName ===
+                                                      "Image" &&
+                                                      media_rules_select.Image) ||
+                                                    (item.ContentTypeName ===
+                                                      "Video" &&
+                                                      media_rules_select.Video)
+                                                )
+                                                .filter(
+                                                  (item) =>
+                                                    item.ContentTypeName ===
+                                                      "Image" &&
+                                                    parseInt(
+                                                      JSON.parse(
+                                                        item.ContentProperties
+                                                      ).width
+                                                    ) ===
+                                                      media_rules_select?.width &&
+                                                    parseInt(
+                                                      JSON.parse(
+                                                        item.ContentProperties
+                                                      ).height
+                                                    ) ===
+                                                      media_rules_select?.height
+                                                )
+                                                .map((items, index) => (
+                                                  <Draggable
+                                                    key={`panel2-${index}`}
+                                                    draggableId={`panel2-${items.ContentID}`}
+                                                    index={index}
+                                                    isDragDisabled={
+                                                      playlist_permission?.craete ||
+                                                      playlist_permission?.update
+                                                        ? false
+                                                        : true
+                                                    }
+                                                  >
+                                                    {(provided) => (
+                                                      <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        className="grid grid-cols-11 h-[80px] border border-gray-300 rounded-lg shadow-sm"
+                                                      >
+                                                        <div className="col-span-2 flex justify-center items-center">
+                                                          {items.ContentTypeName ===
+                                                          "video" ? (
+                                                            <FiVideo
+                                                              size={30}
+                                                            />
+                                                          ) : (
+                                                            <FiImage
+                                                              size={30}
+                                                            />
+                                                          )}
+                                                        </div>
+                                                        <div className="col-span-8">
+                                                          <div className="flex justify-start items-center mt-2">
+                                                            <div className="font-poppins text-[15px]">
+                                                              {items.ContentName
+                                                                .length > 30 ? (
+                                                                <span>
+                                                                  {items.ContentName.slice(
+                                                                    0,
+                                                                    27
+                                                                  ) + "..."}
+                                                                </span>
+                                                              ) : (
+                                                                <span>
+                                                                  {
+                                                                    items.ContentName
+                                                                  }
+                                                                </span>
+                                                              )}
+                                                            </div>
                                                           </div>
-                                                        )}
+                                                          <div className="flex justify-start items-center ">
+                                                            <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                              File Size :{" "}
+                                                              {parseFloat(
+                                                                JSON.parse(
+                                                                  items.ContentProperties
+                                                                ).size
+                                                              ).toFixed(2)}{" "}
+                                                              MB
+                                                            </div>
+                                                          </div>
+                                                          <div className="flex justify-start items-center ">
+                                                            {items.ContentTypeName ===
+                                                              "Video" && (
+                                                              <div className="font-poppins text-[#8A8A8A] text-[12px]">
+                                                                Duration :{" "}
+                                                                {parseFloat(
+                                                                  JSON.parse(
+                                                                    items.ContentProperties
+                                                                  ).duration
+                                                                ).toFixed(
+                                                                  2
+                                                                )}{" "}
+                                                                sec
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                        <div className="col-span-1 flex justify-start items-center">
+                                                          <IoIosPlayCircle
+                                                            size={26}
+                                                            className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                                                            onClick={() => {
+                                                              setModalPlayerOpen(
+                                                                !modalPlayerOpen
+                                                              );
+                                                              setMediaDisplay(
+                                                                items
+                                                              );
+                                                            }}
+                                                          />
+                                                        </div>
                                                       </div>
-                                                    </div>
-                                                    <div className="col-span-1 flex justify-start items-center">
-                                                      <IoIosPlayCircle
-                                                        size={26}
-                                                        className="text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                                                        onClick={() => {
-                                                          setModalPlayerOpen(
-                                                            !modalPlayerOpen
-                                                          );
-                                                          setMediaDisplay(
-                                                            items
-                                                          );
-                                                        }}
-                                                      />
-                                                    </div>
-                                                  </div>
-                                                )}
-                                              </Draggable>
-                                            ))}
-                                        {provided.placeholder}
-                                      </div>
-                                    )}
-                                  </Droppable>
+                                                    )}
+                                                  </Draggable>
+                                                ))}
+                                            {provided.placeholder}
+                                          </div>
+                                        )}
+                                      </Droppable>
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             )}
@@ -2681,6 +3079,7 @@ const Ads_Allocation_Booking = ({
           showDetailScreen={showDetailScreen}
           setDetailScreen={setDetailScreen}
           setSelectAll={setSelectAll}
+          isStatic={isStatic}
         />
       )}
 

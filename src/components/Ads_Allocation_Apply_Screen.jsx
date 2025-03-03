@@ -28,6 +28,7 @@ const Ads_Allocation_Apply_Screen = ({
   setShowDetailScreen,
   showDetailScreen,
   setDetailScreen,
+  isStatic,
 }) => {
   const { token } = User.getCookieData();
   const [screens_options_data, setScreenOptionsData] = useState([]);
@@ -36,7 +37,9 @@ const Ads_Allocation_Apply_Screen = ({
 
   useEffect(() => {
     getScreenOption();
+
     filterByMediaRules();
+
     handleSetDefaultCheckbox();
   }, []);
 
@@ -46,16 +49,20 @@ const Ads_Allocation_Apply_Screen = ({
   };
 
   const filterByMediaRules = () => {
-    const filteredScreens = screen.filter((screen) => {
-      if (screen.ScreenRule.length === 0) return false; // If no ScreenRule, exclude the screen
-      const rule = screen.ScreenRule[0]; // Assuming there's only one rule per screen
-      return (
-        rule.Width === `${media_rules_select.width}.00` &&
-        rule.Height === `${media_rules_select.height}.00`
-      );
-    });
+    if (isStatic) {
+      setScreenFilter(screen);
+    } else {
+      const filteredScreens = screen.filter((screen) => {
+        if (screen.ScreenRule.length === 0) return false; // If no ScreenRule, exclude the screen
+        const rule = screen.ScreenRule[0]; // Assuming there's only one rule per screen
+        return (
+          rule.Width === `${media_rules_select.width}.00` &&
+          rule.Height === `${media_rules_select.height}.00`
+        );
+      });
 
-    setScreenFilter(filteredScreens);
+      setScreenFilter(filteredScreens);
+    }
   };
 
   const handleSetDefaultCheckbox = () => {
