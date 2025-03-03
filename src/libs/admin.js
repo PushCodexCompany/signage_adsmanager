@@ -1078,7 +1078,7 @@ export default {
     if (type) {
       url += `&bookingtypeid=${type}`;
     }
-    // console.log(url);
+    console.log(url);
     const { data } = await this._get(url, "", config);
     // console.log("data", data);
     return data;

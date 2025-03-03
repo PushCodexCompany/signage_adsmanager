@@ -73,7 +73,9 @@ export const GridTable = ({
             bookingId,
             booking_slot,
             page,
-            obj
+            obj,
+            "",
+            3
           );
           return data;
         } else {
@@ -81,7 +83,10 @@ export const GridTable = ({
             token,
             bookingId,
             booking_slot,
-            page
+            page,
+            "",
+            "",
+            3
           );
           return data;
         }
@@ -97,7 +102,8 @@ export const GridTable = ({
             booking_slot,
             page,
             obj,
-            searchTerm
+            searchTerm,
+            3
           );
           return data;
         } else {
@@ -107,7 +113,8 @@ export const GridTable = ({
             booking_slot,
             page,
             "",
-            searchTerm
+            searchTerm,
+            3
           );
           return data;
         }

@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import User from "../libs/admin";
 import firebase_func from "../libs/firebase_func";
-import { GridTable } from "../libs/add_screen_booking_grids";
+import { GridTable } from "../libs/add_screen_static_booking_grids";
 import Permission from "../libs/permission";
 
 const Add_Screen_Booking = ({
@@ -72,7 +72,7 @@ const Add_Screen_Booking = ({
               3
             );
           } else {
-            // console.log("no filter no search term");
+            console.log("no filter no search term");
             data = await User.getScreensInAddScreen(
               token,
               bookingId,
@@ -255,7 +255,7 @@ const Add_Screen_Booking = ({
           </div>
         </div>
         <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-        {/* <Filter
+        <Filter
           page_name={"digiScrnMgt"}
           filter_screen={filter_screen}
           setFilterScreen={setFilterScreen}
@@ -265,7 +265,7 @@ const Add_Screen_Booking = ({
           setAllPages={setAllPages}
           searchTerm={searchTerm}
           getScreenData={getScreenData}
-        /> */}
+        />
 
         <div className="mt-5 p-6">
           <div className="font-poppins">

@@ -255,7 +255,7 @@ const Add_Screen_Booking = ({
           </div>
         </div>
         <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
-        {/* <Filter
+        <Filter
           page_name={"digiScrnMgt"}
           filter_screen={filter_screen}
           setFilterScreen={setFilterScreen}
@@ -265,7 +265,7 @@ const Add_Screen_Booking = ({
           setAllPages={setAllPages}
           searchTerm={searchTerm}
           getScreenData={getScreenData}
-        /> */}
+        />
 
         <div className="mt-5 p-6">
           <div className="font-poppins">
