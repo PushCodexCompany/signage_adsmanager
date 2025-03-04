@@ -107,26 +107,7 @@ export const GridTable = ({
                   {row.ScreenLocation || "No Data"}
                 </div>
               </td>
-              <td className="px-2 py-4 whitespace-nowrap border-b  border-gray-200">
-                <div className="flex justify-center items-center font-poppins font-bold">
-                  {/* {findScreenResolutionID(row.ScreenResolutionID)} */}
-                  {row?.ScreenRule[0]?.Width && row?.ScreenRule[0]?.Height
-                    ? parseInt(row.ScreenRule[0].Width, 10) +
-                      "x" +
-                      parseInt(row.ScreenRule[0].Height, 10)
-                    : "Not Set"}
-                </div>
-              </td>
-              <td className="px-1 py-4 whitespace-nowrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                  {row.ScreenRule[0]?.AdsCapacity || "No Data"}
-                </div>
-              </td>
-              <td className="px-1 py-4 whitespace-nowrap border-b text-center  border-gray-200">
-                <div className="font-poppins font-bold border border-[#DBDBDB] rounded-lg">
-                  {row.loopDuration ? `${row.loopDuration} Second` : "No Data"}
-                </div>
-              </td>
+
               <td className="px-2 py-4 whitespace-nowrap border-b border-gray-200">
                 <div className="flex flex-wrap">
                   {row.ScreenTag.length > 0 ? (
@@ -464,15 +445,7 @@ export const GridTable = ({
                 <th className="px-2 py-4 border-b border-gray-300 text-left leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Location
                 </th>
-                <th className="px-2 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                  Media Rule
-                </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                  Slot Per Day
-                </th>
-                <th className="px-1 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
-                  Loop Duration
-                </th>
+
                 <th className="px-2 py-4 border-b border-gray-300 text-center leading-4 text-[16px] font-poppins font-normal text-[#59606C] tracking-wider">
                   Tag
                 </th>

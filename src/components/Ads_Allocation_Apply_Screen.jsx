@@ -55,9 +55,16 @@ const Ads_Allocation_Apply_Screen = ({
       const filteredScreens = screen.filter((screen) => {
         if (screen.ScreenRule.length === 0) return false; // If no ScreenRule, exclude the screen
         const rule = screen.ScreenRule[0]; // Assuming there's only one rule per screen
+        const updatedRule = {
+          ...rule,
+          ImageContentTypeID: rule.ImageContentTypeID === 1,
+          VideoContentTypeID: rule.VideoContentTypeID === 1,
+        };
         return (
-          rule.Width === `${media_rules_select.width}.00` &&
-          rule.Height === `${media_rules_select.height}.00`
+          updatedRule.Width === `${media_rules_select.width}.00` &&
+          updatedRule.Height === `${media_rules_select.height}.00` &&
+          updatedRule.ImageContentTypeID === media_rules_select.Image &&
+          updatedRule.VideoContentTypeID === media_rules_select.Video
         );
       });
 

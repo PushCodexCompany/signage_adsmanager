@@ -157,6 +157,16 @@ const Create_Media_Rule = () => {
           imagecontenttypeid: media_img || null,
           videocontenttypeid: media_video || null,
         };
+
+        if (!media_img && !media_video) {
+          Swal.fire({
+            icon: "error",
+            title: "Create Media Rule Failed ...",
+            text: "กรุณาเลือก Media Type อย่างน้อย 1 อย่าง!",
+          });
+          return;
+        }
+
         if (
           media_rule_width === 0 ||
           media_rule_height === 0 ||
@@ -217,6 +227,16 @@ const Create_Media_Rule = () => {
           imagecontenttypeid: media_img || null,
           videocontenttypeid: media_video || null,
         };
+
+        if (!media_img && !media_video) {
+          Swal.fire({
+            icon: "error",
+            title: "Create Media Rule Failed ...",
+            text: "กรุณาเลือก Media Type อย่างน้อย 1 อย่าง!",
+          });
+          return;
+        }
+
         Swal.fire({
           text: `คุณยืนยันการแก้ไข Media Rule : ${media_rule_name} `,
           icon: "warning",

@@ -189,11 +189,37 @@ const User_Management = () => {
   };
 
   const registerNewUser = async () => {
+    if (!reg_username) {
+      Swal.fire({
+        icon: "error",
+        title: "Register Failed ...",
+        text: "กรุณากรอกชื่อผู้ใช้งาน!",
+      });
+      return;
+    }
+
+    if (!reg_name) {
+      Swal.fire({
+        icon: "error",
+        title: "Register Failed ...",
+        text: "กรุณากรอกชื่อ!",
+      });
+      return;
+    }
+
     if (!reg_password) {
       Swal.fire({
         icon: "error",
         title: "Register Failed ...",
         text: "กรุณากรอกรหัสผ่าน!",
+      });
+    }
+
+    if (!reg_re_password) {
+      Swal.fire({
+        icon: "error",
+        title: "Register Failed ...",
+        text: "กรุณายืนยันรหัสผ่าน!",
       });
     }
 
