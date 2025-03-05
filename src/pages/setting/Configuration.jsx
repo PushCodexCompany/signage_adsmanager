@@ -70,6 +70,10 @@ const Configuration = () => {
     });
   };
 
+  const isNumber = (value) => {
+    return /^\d+$/.test(value); // Matches whole numbers (integers only)
+  };
+
   const handleSaveConfiguration = async () => {
     Swal.fire({
       text: `คุณยืนยันการแก้ไข Configuration `,
@@ -81,6 +85,42 @@ const Configuration = () => {
       reverseButtons: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
+        if (!inputValues.CONTENTPERSLOT_SEC) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: " ค่า Configuration ไม่สามารถเป็นค่าว่างได้ ...",
+          });
+          return;
+        }
+
+        if (!isNumber(inputValues.CONTENTPERSLOT_SEC)) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: " ค่า Configuration ต้องเป็นตัวเลขเท่านั้น ...",
+          });
+          return;
+        }
+
+        if (!inputValues.NOTIDELAY_SEC) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: " ค่า Configuration ไม่สามารถเป็นค่าว่างได้ ...",
+          });
+          return;
+        }
+
+        if (!isNumber(inputValues.NOTIDELAY_SEC)) {
+          Swal.fire({
+            icon: "error",
+            title: "เกิดข้อผิดพลาด!",
+            text: " ค่า Configuration ต้องเป็นตัวเลขเท่านั้น ...",
+          });
+          return;
+        }
+
         const obj = {
           configs: inputValues,
         };
