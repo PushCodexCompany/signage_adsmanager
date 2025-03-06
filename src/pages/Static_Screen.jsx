@@ -165,7 +165,7 @@ const Static_Screen = () => {
           selectInfoScreen={selectInfoScreen}
           from="list"
           page_permission={page_permission}
-          type="static"
+          type="digital2"
         />
       )}
 

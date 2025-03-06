@@ -1030,7 +1030,7 @@ const Select_Booking = () => {
           setOpenInfoScreenModal={setOpenInfoScreenModal}
           selectInfoScreen={selectInfoScreen}
           from="edit"
-          type="static"
+          type="digital2"
         />
       )}
       {openAdsAllocationModal && (

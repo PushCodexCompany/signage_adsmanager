@@ -385,12 +385,20 @@ export const GridTable = ({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
                   <div className="flex items-center justify-center">
-                    <div
-                      onClick={() => handleMediaRuleViewScreen(row.MediaRuleID)}
-                      className="font-poppins font-bold text-md  underline text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
-                    >
-                      {row.TotalInUse}
-                    </div>
+                    {row.TotalInUse > 0 ? (
+                      <div
+                        onClick={() =>
+                          handleMediaRuleViewScreen(row.MediaRuleID)
+                        }
+                        className="font-poppins font-bold text-md  underline text-[#6425FE] hover:text-[#3b1694] cursor-pointer"
+                      >
+                        {row.TotalInUse}
+                      </div>
+                    ) : (
+                      <div className="font-poppins font-bold text-md  text-[#6425FE] hover:text-[#3b1694]">
+                        {row.TotalInUse}
+                      </div>
+                    )}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">

@@ -1516,7 +1516,7 @@ const Create_Static_Booking = () => {
           setOpenInfoScreenModal={setOpenInfoScreenModal}
           selectInfoScreen={selectInfoScreen}
           from="edit"
-          type="static"
+          type="digital2"
         />
       )}
 
