@@ -247,7 +247,10 @@ export const GridTable = ({
                 {row.ExpiredPeriod.length > 0
                   ? row.ExpiredPeriod[0].DaysUntilExpiration === 0
                     ? "Expire Today"
-                    : `Expire in ${row.ExpiredPeriod[0].DaysUntilExpiration} day(s)`
+                    : `Expire in ${
+                        row.ExpiredPeriod[row.ExpiredPeriod.length - 1]
+                          .DaysUntilExpiration
+                      } day(s)`
                   : "Expired"}
               </div>
             </td>
