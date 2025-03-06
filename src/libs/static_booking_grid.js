@@ -235,24 +235,36 @@ export const GridTable = ({
               </div>
             </td>
             <td className="px-6 py-4 whitespace-nowrap border-b  border-gray-200">
-              <div
-                className={`font-poppins text-md flex justify-center items-center ${
-                  row.ExpiredPeriod.length > 0
-                    ? row.ExpiredPeriod[0].DaysUntilExpiration === 0
-                      ? "text-[#cab332]" // Yellow for "Expire Today"
-                      : "text-[#00CB45]" // Green for future expiration
-                    : "text-[#FF0000]" // Red for expired
-                }`}
-              >
-                {row.ExpiredPeriod.length > 0
-                  ? row.ExpiredPeriod[0].DaysUntilExpiration === 0
-                    ? "Expire Today"
-                    : `Expire in ${
-                        row.ExpiredPeriod[row.ExpiredPeriod.length - 1]
-                          .DaysUntilExpiration
-                      } day(s)`
-                  : "Expired"}
-              </div>
+              {row.BookingStatus === 3 ? (
+                <>
+                  <div
+                    className={`font-poppins text-md flex justify-center items-center text-gray-500`}
+                  >
+                    Inactive
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className={`font-poppins text-md flex justify-center items-center ${
+                      row.ExpiredPeriod.length > 0
+                        ? row.ExpiredPeriod[0].DaysUntilExpiration === 0
+                          ? "text-[#cab332]" // Yellow for "Expire Today"
+                          : "text-[#00CB45]" // Green for future expiration
+                        : "text-[#FF0000]" // Red for expired
+                    }`}
+                  >
+                    {row.ExpiredPeriod.length > 0
+                      ? row.ExpiredPeriod[0].DaysUntilExpiration === 0
+                        ? "Expire Today"
+                        : `Expire in ${
+                            row.ExpiredPeriod[row.ExpiredPeriod.length - 1]
+                              .DaysUntilExpiration
+                          } day(s)`
+                      : "Expired"}
+                  </div>
+                </>
+              )}
             </td>
 
             {row.BookingStatus === 1 ? (

@@ -654,7 +654,9 @@ const Screen_Info = ({
                             <div className="w-[720px] flex space-x-2">
                               {schedule?.map((items, index) => (
                                 <div
-                                  onClick={() => handleSelectMedia(items)}
+                                  onClick={() => {
+                                    handleSelectMedia(items);
+                                  }}
                                   className={`${
                                     items.MaxSlot - items.TotalUseSlot === 0
                                       ? "bg-[#5C5C5C]"
@@ -682,7 +684,7 @@ const Screen_Info = ({
 
                       <div className="mt-10 flex justify-center border-b-2 items-center text-[#DBDBDB] " />
                       <div className="mt-2">
-                        <div className="font-poppins text-[30px] font-bold">
+                        {/* <div className="font-poppins text-[30px] font-bold">
                           Screen Health
                         </div>
                         <div className="w-full  overflow-y-auto scrollbar-thin scrollbar-thumb-[#6425FE] scrollbar-track-[#CDCDCD] pb-[10px]">
@@ -697,8 +699,8 @@ const Screen_Info = ({
                               ))}
                             </div>
                           </div>
-                        </div>
-                        <div className="mt-2">
+                        </div> */}
+                        {/* <div className="mt-2">
                           <div className="font-poppins text-[18px] font-bold">
                             {`Up Time ${selectInfoScreen.uptime || " "} %`}
                           </div>
@@ -750,7 +752,7 @@ const Screen_Info = ({
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                         <div className="mt-8">
                           <div className="flex justify-center items-center">
                             <div className="font-poppins text-[15px] font-bold">
