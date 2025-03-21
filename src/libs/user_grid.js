@@ -911,8 +911,11 @@ export const GridTable = ({
                       Username :
                     </div>
                   </div>
-                  <div className="col-span-8">
-                    <input
+                  <div className="col-span-8 flex items-center">
+                    <text className="lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins">
+                      {edit_username}
+                    </text>
+                    {/* <input
                       className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       onChange={(e) => setEditUsername(e.target.value)}
                       type="text"
@@ -922,7 +925,7 @@ export const GridTable = ({
                       required
                       disabled
                       // autoComplete="username"
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">
@@ -1215,8 +1218,13 @@ export const GridTable = ({
                       Username :
                     </div>
                   </div>
-                  <div className="col-span-8">
-                    <input
+                  <div className="col-span-8 flex items-center  ">
+                    <text
+                      className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    >
+                      {chg_username}
+                    </text>
+                    {/* <input
                       className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       type="text"
                       placeholder="Your Username"
@@ -1224,7 +1232,7 @@ export const GridTable = ({
                       value={chg_username}
                       required
                       disabled
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4 ">
@@ -1411,8 +1419,13 @@ export const GridTable = ({
                       Username :
                     </div>
                   </div>
-                  <div className="col-span-8">
-                    <input
+                  <div className="col-span-8 flex items-center">
+                    <text
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    >
+                      {re_username}
+                    </text>
+                    {/* <input
                       className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       type="text"
                       placeholder="Your Username"
@@ -1420,7 +1433,7 @@ export const GridTable = ({
                       value={re_username}
                       required
                       disabled
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">

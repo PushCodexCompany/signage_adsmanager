@@ -406,8 +406,13 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
                       Username :
                     </div>
                   </div>
-                  <div className="col-span-8">
-                    <input
+                  <div className="col-span-8 flex items-center">
+                    <text
+                      className={`lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
+                    >
+                      {chg_username}
+                    </text>
+                    {/* <input
                       className={` lg:w-[60%] py-2 px-3 border-2 rounded-2xl outline-none font-poppins`}
                       type="text"
                       placeholder="Your Username"
@@ -415,7 +420,7 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
                       value={chg_username}
                       required
                       disabled
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="grid grid-cols-12 space-x-2 mb-4">

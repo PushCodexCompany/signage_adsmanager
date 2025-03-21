@@ -93,13 +93,12 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
                 icon={<AiOutlineSearch />}
               />
               <input
-                className="w-full h-[50px] rounded transition-all font-poppins  focus:border-transparent focus:outline-none"
+                className="w-full h-[50px] rounded transition-all font-poppins focus:border-transparent focus:outline-none"
                 type="text"
                 name="search"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => searchByName(e.target.value)}
-                autocomplete="off"
               />
             </div>
           </div>
