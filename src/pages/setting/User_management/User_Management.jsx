@@ -54,6 +54,8 @@ const User_Management = () => {
 
   const { token } = User.getCookieData();
 
+  const [isDisableNavbar, setIsDisableNavbar] = useState(false);
+
   useEffect(() => {
     fetchRoleData();
     fetchUsersList();
@@ -336,7 +338,11 @@ const User_Management = () => {
 
   return (
     <>
-      <Navbar setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+      <Navbar
+        setSearchTerm={setSearchTerm}
+        searchTerm={searchTerm}
+        isDisableNavbar={isDisableNavbar}
+      />
       <div className="m-1 md:m-5 mt-24 p-2 md:p-5 bg-white rounded-3xl">
         <Header lv1={"Setting"} lv2={"User Management"} lv3={"user"} />
         <div className="grid grid-cols-10 mt-10">
@@ -380,6 +386,7 @@ const User_Management = () => {
               all_pages={all_pages}
               permission_reset_password={permission_reset_password}
               permission_change_password={permission_change_password}
+              setIsDisableNavbar={setIsDisableNavbar}
             />
           </div>
         ) : (

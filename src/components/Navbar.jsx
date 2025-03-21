@@ -30,7 +30,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 
 const search = () => {};
 
-const Navbar = ({ setSearchTerm, searchTerm }) => {
+const Navbar = ({ setSearchTerm, searchTerm, isDisableNavbar }) => {
   const {
     currentColor,
     activeMenu,
@@ -87,18 +87,19 @@ const Navbar = ({ setSearchTerm, searchTerm }) => {
           <div className="basis-8/12 lg:basis-11/12 h-[52px] rounded-lg border border-gray-200">
             <div className="flex">
               <NavButton
-                customFunc={search}
+                customFunc={() => search()}
                 title="Search"
                 color="grey"
                 icon={<AiOutlineSearch />}
               />
               <input
-                className="w-full h-[50px] rounded transition-all font-poppins focus:border-transparent focus:outline-none"
+                className="w-full h-[50px] rounded transition-all font-poppins"
                 type="text"
                 name="search"
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => searchByName(e.target.value)}
+                disabled={isDisableNavbar}
               />
             </div>
           </div>

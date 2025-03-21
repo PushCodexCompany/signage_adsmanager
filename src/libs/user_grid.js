@@ -27,6 +27,7 @@ export const GridTable = ({
   all_pages,
   permission_reset_password,
   permission_change_password,
+  setIsDisableNavbar,
 }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(user_lists);
@@ -217,6 +218,7 @@ export const GridTable = ({
     setChgUserId(UserID);
     setChgUserName(Username);
     setOldModal(!oldModal);
+    setIsDisableNavbar(true);
     setModalChangePassword(!modal_change_password);
   };
 
@@ -225,6 +227,7 @@ export const GridTable = ({
     setReUserId(UserID);
     setReUserName(Username);
     setOldModal(!oldModal);
+    setIsDisableNavbar(true);
     setModalResetPassword(!modal_reset_password);
   };
 
@@ -710,6 +713,7 @@ export const GridTable = ({
               ) {
                 setOldModal(!oldModal);
                 setModalChangePassword(!modal_change_password);
+                setIsDisableNavbar(false);
               }
             });
           } else {
@@ -773,6 +777,7 @@ export const GridTable = ({
               ) {
                 setOldModal(!oldModal);
                 setModalResetPassword(!modal_reset_password);
+                setIsDisableNavbar(false);
               }
             });
           } else {
@@ -1191,6 +1196,7 @@ export const GridTable = ({
                     setChgConfirmPassword("");
                     setOldModal(!oldModal);
                     setModalChangePassword(!modal_change_password);
+                    setIsDisableNavbar(false);
                   }}
                 >
                   <IoIosClose size={25} color={"#6425FE"} />
@@ -1392,6 +1398,7 @@ export const GridTable = ({
                   onClick={() => {
                     setOldModal(!oldModal);
                     setModalResetPassword(!modal_reset_password);
+                    setIsDisableNavbar(false);
                   }}
                 >
                   <IoIosClose size={25} color={"#6425FE"} />

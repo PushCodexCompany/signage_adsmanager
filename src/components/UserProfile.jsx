@@ -144,7 +144,8 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
     }
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = (e) => {
+    e.preventDefault();
     setFactChgPassword(false);
     setModalChangePassword(!modal_change_password);
   };
@@ -279,7 +280,7 @@ const UserProfile = ({ user, after_login, showModal, setShowModal }) => {
 
               <div className="mt-2 text-md cursor-pointer  text-blue-500 hover:text-blue-900">
                 <button
-                  onClick={() => handleChangePassword()}
+                  onClick={(e) => handleChangePassword(e)}
                   className="underline font-poppins"
                 >
                   Change password
