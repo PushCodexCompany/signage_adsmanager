@@ -22,10 +22,15 @@ export default {
         console.error("Error querying Firebase", error);
         return null;
       });
-    if (screenData[ScreenCode]) {
-      if (screenData[ScreenCode].is_online !== undefined) {
-        if (screenData[ScreenCode].is_online === 1) {
-          return 1;
+
+    if (screenData) {
+      if (screenData[ScreenCode]) {
+        if (screenData[ScreenCode].is_online !== undefined) {
+          if (screenData[ScreenCode].is_online === 1) {
+            return 1;
+          } else {
+            return 0;
+          }
         } else {
           return 0;
         }

@@ -154,6 +154,7 @@ const Event = () => {
     if (searchTerm === null) {
       const data = await User.getScreenList(token, 1);
       data.screens.map(async (items) => {
+        console.log("items", items);
         const screen_status = await firebase_func.getStatusScreen(items);
         items.screen_status = screen_status;
       });
